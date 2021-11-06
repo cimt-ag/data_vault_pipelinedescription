@@ -1,0 +1,8 @@
+
+
+-- DROP SCHEMA DV_PIPELINE_DESCRIPTION;
+
+CREATE schema if not EXISTS DV_PIPELINE_DESCRIPTION;
+
+COMMENT ON SCHEMA DV_PIPELINE_DESCRIPTION
+  IS 'Metadata for running the data vault pipelines';
