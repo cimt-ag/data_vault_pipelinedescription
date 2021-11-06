@@ -20,12 +20,13 @@ VALUES('rkpsf_auftrag_p1', '{
 		"reject_processing": "reject_container"
 	},
 	"fields": [{
-			"field_name": "FI_ID",
-			"technical_type": "Varchar(20)",
-			"parsing_expression": "1",
+			"field_name": "FI_ID",			"technical_type": "Varchar(20)",			"parsing_expression": "1",
 			"uniqeness_groups": ["key"],
 			"targets": [{
 				"table_name": "rkpsf_auftrag_hub"
+			},{
+				"table_name": "rsfrc_kunde_hub",
+				"field_groups": ["haupt_kunde","co_kunde"]
 			}]
 		}, {
 			"field_name": "AUFTRAGSNR",

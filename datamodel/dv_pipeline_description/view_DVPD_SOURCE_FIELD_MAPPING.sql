@@ -33,7 +33,7 @@ from source_fields
 -- finale structure
 select 
  lower(pipeline) as  pipeline
-,case when field_groups is not null then json_array_elements_text(field_groups) else '##all##' end as field_groups
+,case when field_groups is not null then json_array_elements_text(field_groups) else '##all##' end as field_group
 ,upper(field_name) as field_name
 ,upper(field_type) as field_type
 ,parsing_expression

@@ -1,4 +1,4 @@
-drop view dv_pipeline_description.DVPD_DV_MODEL_COLUMN;
+drop view if exists dv_pipeline_description.DVPD_DV_MODEL_COLUMN;
 create or replace view dv_pipeline_description.DVPD_DV_MODEL_COLUMN as (
 with link_parent_tables as (
 select distinct
