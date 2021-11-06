@@ -1,254 +1,15 @@
-/*
-Create table dvpd_meta_lookup (
-  stereotype VARCHAR(10),
-  meta_column_name VARCHAR(60),
-  meta_column_type VARCHAR(60)
-  ); */
-
-/*
-TRUNCATE TABLE public.dvpd_meta_lookup;
-INSERT INTO public.dvpd_meta_lookup
-(stereotype, meta_column_name, meta_column_type)
-VALUES('hub', 'META_INSERTED_AT', 'TIMESTAMP'),
-	  ('sat', 'META_INSERTED_AT', 'TIMESTAMP'),	
-	  ('link', 'META_INSERTED_AT', 'TIMESTAMP'),	
-	  ('msat', 'META_INSERTED_AT', 'TIMESTAMP'),	
-	  ('esat', 'META_INSERTED_AT', 'TIMESTAMP'),	
-	  ('hub',  'META_RECORD_SOURCE', 'VARCHAR(255)'),	
-	  ('link', 'META_RECORD_SOURCE', 'VARCHAR(255)'),	
-	  ('sat',  'META_RECORD_SOURCE', 'VARCHAR(255)'),	
-	  ('esat', 'META_RECORD_SOURCE', 'VARCHAR(255)'),	
-	  ('msat', 'META_RECORD_SOURCE', 'VARCHAR(255)'),	
-	  ('hub', 'META_JOB_INSTANCE_ID', 'LONG'),	
-	  ('link', 'META_JOB_INSTANCE_ID', 'LONG'),	
-	  ('sat', 'META_JOB_INSTANCE_ID', 'LONG'),	
-	  ('esat', 'META_JOB_INSTANCE_ID', 'LONG'),	
-	  ('msat', 'META_JOB_INSTANCE_ID', 'LONG'),	
-	  ('sat', 'META_VALID_BEFORE', 'TIMESTAMP'),	
-	  ('sat', 'META_IS_DELETED', 'BOOLEAN'),	
-	  ('msat', 'META_VALID_BEFORE', 'TIMESTAMP'),	
-	  ('msat', 'META_IS_DELETED', 'BOOLEAN'),	
-	  ('esat', 'META_VALID_BEFORE', 'TIMESTAMP'),	
-	  ('esat', 'META_IS_DELETED', 'BOOLEAN')	
-	 ;
-*/
-
-
-/*
-  drop table  dvpd_dictionary cascade;
-  create table dvpd_dictionary (
-  pipeline_name VARCHAR(100),
-  dvpd_json json,
-  PRIMARY KEY ( pipeline_name)
-  );
-*/
-
-truncate table public.dvpd_dictionary;
-
-/* test jsons*/
-INSERT INTO public.dvpd_dictionary
-(pipeline_name, dvpd_json)
-VALUES('rkpsf_auftrag_p1', '{
-	"DVPD_Version": "1.0",
-	"pipeline_name": "rkpsf_auftrag_p1",
-	"record_source_name_expression": "knuppisoft.auftrag",
-	"data_fetch_module": {
-		"fetch_module_name": "read_file_delimted",
-		"search_expression": "$PipelineInputDirectory/Auftrag*.csv",
-		"file_archive_path": "$PipelineArchiveDirectory"
-	},
-	"data_parse_module": {
-		"parse_module_name": "delimited_text",
-		"codepage": "UTF_8",
-		"columnseparator": "|",
-		"rowseparator": "\n",
-		"skip_first_rows": "1",
-		"reject_processing": "reject_container"
-	},
-	"fields": [{
-			"field_name": "FI_ID",
-			"technical_type": "Varchar(20)",
-			"parsing_expression": "1",
-			"uniqeness_groups": ["key"],
-			"targets": [{
-				"table_name": "rkpsf_auftrag_hub"
-			}]
-		}, {
-			"field_name": "AUFTRAGSNR",
-			"technical_type": "Decimal(10,0)",
-			"parsing_expression": "2",
-			"uniqeness_groups": ["key"],
-			"targets": [{
-				"table_name": "rkpsf_auftrag_hub",
-				"target_column_name": "A_NUMMER"
-			}]
-		}, {
-			"field_name": "KUNDE_NR",
-			"technical_type": "DECIMAL(10,0)",
-			"parsing_expression": "3",
-			"targets": [{
-				"table_name": "rsfrc_kunde_hub",
-				"field_groups": ["haupt_kunde"]
-			}]
-		}, {
-			"field_name": "CO_KUNDE_NR",
-			"technical_type": "DECIMAL(10,0)",
-			"parsing_expression": "4",
-			"targets": [{
-				"table_name": "rsfrc_kunde_hub",
-				"target_column_name": "KUNDE_NR",
-				"field_groups": ["co_kunde"]
-			}]
-		}, {
-			"field_name": "AUFTRAGSART",
-			"technical_type": "Varchar(20)",
-			"parsing_expression": "6",
-			"targets": [{
-				"table_name": "rkpsf_auftrag_p1_sat"
-			}]
-		}, {
-			"field_name": "PREIS_NETTO",
-			"technical_type": "DECIMAL(12,2)",
-			"parsing_expression": "7",
-			"targets": [{
-				"table_name": "rkpsf_auftrag_p1_sat"
-			}]
-		},
-		{
-			"field_name": "STATUS",
-			"technical_type": "VARCHAR(10)",
-			"parsing_expression": "8",
-			"targets": [{
-				"table_name": "rkpsf_auftrag_p1_sat"
-			}]
-		},
-		{
-			"field_name": "SYSTEMMODTIME",
-			"technical_type": "TIMESTAMP",
-			"parsing_expression": "9",
-			"targets": [{
-				"table_name": "rkpsf_auftrag_p1_sat",
-				"exclude_from_diff_hash": "true"
-			}]
-		}
-	],
-	"data_vault_modell": [{
-			"schema_name": "rvlt_salesforce",
-			"tables": [{
-				"table_name": "rsfrc_kunde_hub",
-				"stereotype": "hub",
-				"hub_key_column_name": "HK_RSFRC_KUNDE"
-			}, {
-				"table_name": "rsfrc_kunde_p1_sat",
-				"stereotype": "sat",
-				"satellite_parent_table": "rsfrc_kunde_hub",
-				"diff_hash_column_name": "RH_KUNDE_P1_SAT"
-			}]
-		},
-		{
-			"schema_name": "rvlt_knuppisoft",
-			"tables": [{
-					"table_name": "rkpsf_auftrag_hub",
-					"stereotype": "hub",
-					"hub_key_column_name": "HK_RKPSF_AUFTRAG"
-				}, {
-					"table_name": "rkpsf_auftrag_p1_sat",
-					"stereotype": "sat",
-					"satellite_parent_table": "rkpsf_auftrag_hub",
-					"diff_hash_column_name": "RH_AUFTRAG_P1_SAT"
-				}, {
-					"table_name": "rkpsf_auftrag_kunde_lnk",
-					"stereotype": "link",
-					"link_key_column_name": "LK_RKPSF_AUFTRAG_KUNDE",
-					"link_parent_tables": ["rkpsf_auftrag_hub","rsfrc_kunde_hub"]
-				}, {
-					"table_name": "rkpsf_auftrag_kunde_esat",
-					"stereotype": "esat",
-					"satellite_parent_table": "rkpsf_auftrag_kunde_lnk",
-					"tracked_field_groups": ["hauptkunde"],
-					"driving_hub_keys": ["hk_rkpsf_auftrag"]
-				},
-				{
-					"table_name": "rkpsf_auftrag_co_kunde_esat",
-					"stereotype": "esat",
-					"satellite_parent_table": "rkpsf_auftrag_kunde_lnk",
-					"tracked_field_groups": ["co_kunde"],
-					"driving_hub_keys": ["hk_rkpsf_auftrag"]
-				}
-			]
-		}
-	]
-}'),
-('rsfrc_kunde_master','{
- 	"DVPD_Version": "1.0",
- 	"pipeline_name": "rsfrc_kunde_master",
- 	"record_source_name_expression": "salesforce.kundenmaster",
- 	"data_fetch_module": {
- 		"fetch_module_name": "read_file_delimted",
- 		"search_expression": "$PipelineInputDirectory/kunde_master*.csv",
- 		"file_archive_path": "$PipelineArchiveDirectory"
- 	},
- 	"data_parse_module": {
- 		"parse_module_name": "delimited_text",
- 		"codepage": "UTF_8",
- 		"columnseparator": "|",
- 		"rowseparator": "\n",
- 		"skip_first_rows": "1",
- 		"reject_processing": "reject_container"
- 	},
- 	"fields": [{
- 		"field_name": "KUNDE_NR",
- 		"technical_type": "DECIMAL(10,0)",
- 		"parsing_expression": "3",
- 		"targets": [{
- 			"table_name": "rsfrc_kunde_hub"
- 		}]
- 	}, {
- 		"field_name": "MASTER_KUNDE_NR",
- 		"technical_type": "DECIMAL(10,0)",
- 		"parsing_expression": "4",
- 		"targets": [{
- 			"table_name": "rsfrc_kunde_hub",
- 			"target_column_name": "KUNDE_NR",
- 			"hierarchy_key_suffix": "master"
- 		}]
-
- 	}],
- 	"data_vault_modell": [{
- 		"schema_name": "rvlt_salesforce",
- 		"tables": [{
- 				"table_name": "rsfrc_kunde_hub",
- 				"stereotype": "hub",
- 				"hub_key_column_name": "HK_RSFRC_KUNDE"
- 			}, {
- 				"table_name": "rkpsf_kunde_kunde_master_lnk",
- 				"stereotype": "link",
- 				"link_key_column_name": "LK_RKPSF_AUFTRAG_KUNDE",
- 				"link_parent_tables": ["rsfrc_kunde_hub"]
- 			},
- 			{
- 				"table_name": "rkpsf_kunde_kunde_master_esat",
-				"satellite_parent_table": "rkpsf_kunde_kunde_master_lnk",
- 				"stereotype": "esat",
- 				"satellite_parent": "rkpsf_kunde_kunde_master_lnk",
- 				"driving_hub_keys": ["HK_RSFRC_KUNDE"]
- 			}
- 		]
- 	}]
- }');
 
 
 
 
-
-drop view dvpd_dv_model_table cascade;
-create or replace view dvpd_dv_model_table as 
+drop view dv_pipeline_description.DVPD_DV_MODEL_TABLE cascade;
+create or replace view dv_pipeline_description.DVPD_DV_MODEL_TABLE as 
 with data_vault_schema_basics as (
 select 
 dvpd_json ->>'pipeline_name' as pipeline
 , json_array_elements(dvpd_json->'data_vault_modell')->>'schema_name' as schema_name
 , json_array_elements(dvpd_json->'data_vault_modell')->'tables' as tables
-from public.dvpd_dictionary dt 
+from dv_pipeline_description.dvpd_dictionary dt 
 )
 select
   lower(pipeline) as  pipeline
@@ -280,59 +41,7 @@ from (
 
 select * from dvpd_dv_model_table ;
 
-drop view dvpd_field_mapping cascade;
-create or replace view dvpd_field_mapping as
-with source_fields AS (
-Select 
-dvpd_json ->>'pipeline_name' as pipeline
-,json_array_elements(dvpd_json->'fields')->>'field_name' as field_name
-,json_array_elements(dvpd_json->'fields')->>'technical_type' as field_type
-,json_array_elements(dvpd_json->'fields')->>'parsing_expression' as parsing_expression
-,json_array_elements(dvpd_json->'fields')->'targets' as targets
-,json_array_elements(dvpd_json->'fields')->'uniqeness_groups' as uniqeness_groups
-,json_array_elements(dvpd_json->'fields')->'field_comment' as field_comment
-from public.dvpd_dictionary dt 
-)
-,target_expansion AS (
-select 
- pipeline
-,field_name
-,field_type
-,parsing_expression
-,json_array_elements(targets)->>'table_name' as target_table
-,json_array_elements(targets)->>'target_column_name' as target_column_name
-,json_array_elements(targets)->>'target_column_type' as target_column_type
-,json_array_elements(targets)->'field_groups' as field_groups
-,json_array_elements(targets)->>'prio_in_key_hash' as prio_in_key_hash
-,json_array_elements(targets)->>'exclude_from_key_hash' as exclude_from_key_hash
-,json_array_elements(targets)->>'hierarchy_key_suffix' as hierarchy_key_suffix
-,json_array_elements(targets)->>'prio_in_diff_hash' as prio_in_diff_hash
-,json_array_elements(targets)->>'exclude_from_diff_hash' as exclude_from_diff_hash
-,json_array_elements(targets)->>'is_encrypted' as is_encrypted
-,json_array_elements(targets)->'hash_cleansing_rules' as hash_cleansing_rules
-from source_fields
-)
--- finale structure
-select 
- lower(pipeline) as  pipeline
-,upper(field_name) as field_name
-,upper(field_type) as field_type
-,parsing_expression
-,lower(target_table) as target_table
-,upper(coalesce (target_column_name,field_name)) as target_column_name
-,upper(coalesce (target_column_type,field_type)) as target_column_type
-,case when field_groups is not null then json_array_elements_text(field_groups) else '##all##' end as field_group
-,coalesce(to_number(prio_in_key_hash,'9'),0) as prio_in_hashkey
-,coalesce(exclude_from_key_hash::bool,false) as exclude_from_key_hash
-,upper(coalesce(hierarchy_key_suffix,'')) as hierarchy_key_suffix
-,coalesce(to_number(prio_in_diff_hash,'9'),0) as prio_in_diff_hash
-,coalesce(exclude_from_diff_hash::bool,false) as exclude_from_diff_hash
-,coalesce(is_encrypted::bool,false) as is_encrypted
-,hash_cleansing_rules
-from target_expansion;
 
-select * from dvpd_field_mapping
-order by pipeline ,field_name,target_table;
 
 drop view dvpd_dv_model_column;
 create or replace view dvpd_dv_model_column as (
@@ -368,7 +77,7 @@ where length(hierarchy_key_suffix)>0
    ,dml.meta_column_name as column_name
    ,dml.meta_column_type as column_type
  from dvpd_dv_model_table tb
- join public.dvpd_meta_lookup dml on dml.stereotype ='link'
+ join dv_pipeline_description.dvpd_meta_lookup dml on dml.stereotype ='link'
  where tb.stereotype ='link'
 union 
  select -- own key column
@@ -414,7 +123,7 @@ select -- suffixed keys of parents
    ,dml.meta_column_name as column_name
    ,dml.meta_column_type 
  from dvpd_dv_model_table tb
- join public.dvpd_meta_lookup dml on dml.stereotype ='hub'
+ join dv_pipeline_description.dvpd_meta_lookup dml on dml.stereotype ='hub'
  where tb.stereotype ='hub'
  union 
  select -- own key column
@@ -456,7 +165,7 @@ select -- suffixed keys of parents
    ,dml.meta_column_name as column_name
    ,dml.meta_column_type as column_type
  from dvpd_dv_model_table tb
- join public.dvpd_meta_lookup dml on dml.stereotype = tb.stereotype 
+ join dv_pipeline_description.dvpd_meta_lookup dml on dml.stereotype = tb.stereotype 
  where tb.stereotype in ('sat','esat','msat')
  union 
 select -- own key column
@@ -562,7 +271,7 @@ with target_leafs as (
 			select  distinct
 			pipeline,
 			 target_table
-			from public.dvpd_field_mapping dfm  
+			from dv_pipeline_description.dvpd_field_mapping dfm  
 		) direct_mapped_tables
 )
 , sat_parents as (
@@ -570,7 +279,7 @@ select tl.pipeline
 ,tb.satellite_parent  as table_name 
 ,leaf_table
 from target_leafs tl
-join public.dvpd_dv_model_table_basics tb on tb.pipeline =tl.pipeline
+join dv_pipeline_description.dvpd_dv_model_table_basics tb on tb.pipeline =tl.pipeline
 										 and tb.table_name=tl.table_name
 )
 , 
