@@ -1,5 +1,6 @@
 drop view dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE cascade;
 create or replace view dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE as 
+
 with data_vault_schema_basics as (
 select 
 dvpd_json ->>'pipeline_name' as pipeline
@@ -19,6 +20,7 @@ select
 , link_parent_tables
 , driving_hub_keys
 , tracked_field_groups
+, coalesce(is_link_without_sat::bool,false) as is_link_without_sat
 from (
 	select
 	pipeline
@@ -32,6 +34,7 @@ from (
 	, json_array_elements(tables)->'link_parent_tables' as link_parent_tables
 	, json_array_elements(tables)->'driving_hub_keys' as driving_hub_keys
 	, json_array_elements(tables)->'tracked_field_groups' as tracked_field_groups
+	, json_array_elements(tables)->>'is_link_without_sat' as is_link_without_sat
 	from data_vault_schema_basics
 ) json_parsed
 ;

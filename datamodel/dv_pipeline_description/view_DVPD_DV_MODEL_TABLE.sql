@@ -1,4 +1,4 @@
-drop view dv_pipeline_description.DVPD_DV_MODEL_TABLE cascade;
+drop view if exists dv_pipeline_description.DVPD_DV_MODEL_TABLE cascade;
 create or replace view dv_pipeline_description.DVPD_DV_MODEL_TABLE as 
 select distinct 
 	schema_name
@@ -8,6 +8,7 @@ select distinct
 	,link_key_column_name
 	,diff_hash_column_name
 	,satellite_parent_table 
+	,is_link_without_sat
 from dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE ;
 
 -- select * From dv_pipeline_description.DVPD_DV_MODEL_TABLE;
