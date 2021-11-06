@@ -10,13 +10,13 @@ from (
 	 pipeline 
 	 ,table_name 
 	 ,json_array_elements_text(link_parent_tables) as parent_table_name
-	from dv_pipeline_description.dvpd_dv_model_table
+	from dv_pipeline_description.dvpd_dv_model_table_per_pipeline
 	where stereotype ='link'
 	) json_parsed
 )
 ,suffixed_key_parents as (
-select distinct fm.pipeline
-,table_name
+select distinct 
+table_name
 ,parent_table_name 
 ,hierarchy_key_suffix 
 from dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING  fm
@@ -25,8 +25,7 @@ where length(hierarchy_key_suffix)>0
 )
 ,link_columns as (
  select -- meta columns
- 	pipeline 
-   ,table_name
+ 	table_name
    ,1 as column_block
    ,'meta' as dv_column_class
    ,dml.meta_column_name as column_name
@@ -36,8 +35,7 @@ where length(hierarchy_key_suffix)>0
  where tb.stereotype ='link'
 union 
  select -- own key column
- 	pipeline 
-   ,table_name
+ 	table_name
    ,2 as column_block
    ,'key' as dv_column_class
    ,tb.link_key_column_name column_name 
@@ -46,33 +44,28 @@ union
  where tb.stereotype ='link'
  union
 select -- keys of parents
- lpt.pipeline 
- ,lpt.table_name 
+ lpt.table_name 
  ,3 as column_block
  ,'parent_key' as dv_column_class
  ,tb.hub_key_column_name as column_name
  ,'CHAR(28)' as column_type
  from link_parent_tables lpt
- join dv_pipeline_description.dvpd_dv_model_table tb on tb.pipeline = lpt.pipeline 
- 									and tb.table_name = lpt.parent_table_name
+ join dv_pipeline_description.dvpd_dv_model_table tb on tb.table_name = lpt.parent_table_name
  union 									
 select -- suffixed keys of parents
- lpt.pipeline 
- ,lpt.table_name 
+ lpt.table_name 
  ,4 as column_block
  ,'parent_key' as dv_column_class
  ,tb.hub_key_column_name||'_'||lpt.hierarchy_key_suffix as column_name
  ,'CHAR(28)' as column_type
  from suffixed_key_parents lpt
- join dv_pipeline_description.dvpd_dv_model_table tb on tb.pipeline = lpt.pipeline 
- 									and tb.table_name = lpt.parent_table_name
+ join dv_pipeline_description.dvpd_dv_model_table tb on  tb.table_name = lpt.parent_table_name
 -- content 
  -- #TBD# 								   
  )
 ,hub_columns as (
  select -- meta columns
- 	pipeline 
-   ,table_name
+ 	table_name
    ,1 as column_block
    ,'meta' as dv_column_class
    ,dml.meta_column_name as column_name
@@ -82,8 +75,7 @@ select -- suffixed keys of parents
  where tb.stereotype ='hub'
  union 
  select -- own key column
- 	pipeline 
-   ,table_name
+ 	table_name
    ,2 as column_block
    ,'key' as dv_column_class
    ,tb.hub_key_column_name  
@@ -92,13 +84,12 @@ select -- suffixed keys of parents
  where tb.stereotype ='hub'
  union
  select -- content
- 	tb.pipeline 
-   ,tb.table_name
+ 	tb.table_name
    ,8 as column_block
    ,case when dfm.exclude_from_key_hash then 'content' ELSE 'business_key' end as dv_column_class
    ,dfm.target_column_name  
    ,dfm.target_column_type 
- from dv_pipeline_description.dvpd_dv_model_table tb
+ from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
  left join dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING dfm on dfm.pipeline=tb.pipeline 
  								 and dfm.target_table = tb.table_name 
  where tb.stereotype ='hub'
@@ -108,13 +99,12 @@ select -- suffixed keys of parents
 	 pipeline 
 	 ,table_name 
 	 ,satellite_parent_table as parent_table
-	from dv_pipeline_description.dvpd_dv_model_table
+	from dv_pipeline_description.dvpd_dv_model_table_per_pipeline
 	where stereotype in ('sat','esat','msat')
 )
 ,sat_columns as (
  select -- meta columns
- 	pipeline 
-   ,table_name
+ 	table_name
    ,1 as column_block
    ,'meta' as dv_column_class
    ,dml.meta_column_name as column_name
@@ -124,19 +114,17 @@ select -- suffixed keys of parents
  where tb.stereotype in ('sat','esat','msat')
  union 
 select -- own key column
- 	sr.pipeline 
-   ,sr.table_name
+ 	sr.table_name
    ,2 as column_block
    ,'parent_key' as dv_column_class
    ,coalesce (pa.hub_key_column_name  ,pa.link_key_column_name ) key_column_name
    ,'CHAR(28)' as column_type
  from sat_parent_table_ref sr
- join dv_pipeline_description.dvpd_dv_model_table pa  on pa.pipeline = sr.pipeline 
+ join dv_pipeline_description.dvpd_dv_model_table_per_pipeline pa  on pa.pipeline = sr.pipeline 
  					     and pa.table_name  =sr.parent_table
  union
  select -- diff_hash_column
- 	pipeline 
-   ,table_name
+ 	table_name
    ,3 as column_block
    ,'diff_hash' as dv_column_class
    ,tb.diff_hash_column_name  
@@ -145,13 +133,12 @@ select -- own key column
  where tb.stereotype in ('sat','msat')
  union
  select -- content
- 	tb.pipeline 
-   ,tb.table_name
+ 	tb.table_name
    ,8 as column_block
    ,'content' as dv_column_class
    ,dfm.target_column_name  
    ,dfm.target_column_type 
- from dv_pipeline_description.dvpd_dv_model_table tb
+ from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
  left join dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING dfm on dfm.pipeline = tb.pipeline 
  							and dfm.target_table = tb.table_name 
  where tb.stereotype in ('sat','msat')
