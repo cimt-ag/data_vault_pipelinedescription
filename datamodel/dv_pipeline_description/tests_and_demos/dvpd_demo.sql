@@ -1,19 +1,4 @@
-/* Leaf Targets of pipeline - direct links an satellites) */
-select distinct pipeline ,table_name
-from dv_pipeline_description.dvpd_source_field_mapping dsfm 
-join dv_pipeline_description.dvpd_dv_model_table ddmt on ddmt.table_name = dsfm.target_table 
-where ddmt.stereotype in('sat','msat') or ddmt.is_link_without_sat 
-
-
-
-
-
-
-
-
-/* Leaf Targets of pipeline - esats satellites) */
-
-
+/* Basic queries to the dictionary */
 
 select * from dv_pipeline_description.dvpd_dv_model_table 
 order by table_name ;
@@ -21,11 +6,31 @@ order by table_name ;
 select * from dv_pipeline_description.dvpd_dv_model_column ddmc 
 order by table_name,column_block ,column_name ;
  
-
-
 select * from dv_pipeline_description.dvpd_source_field_mapping dsfm 
 order by pipeline ,field_name ;
 
+select * from  dv_pipeline_description.dvpd_pipeline_leaf_and_process_table
+order by pipeline ,leaf_table,table_to_process ;
+ 
+/* Stage table column structure */
+
+select distinct 
+	plap.pipeline 
+	,case when mc.column_name = sfm.field_name or sfm.field_name is null 
+												then mc.column_name
+											   else mc.column_name||'__X__'|| 	sfm.field_name end stage_column_name
+	,mc.column_type 
+	,mc.column_block 
+	,sfm.field_name 
+	,sfm.field_type 
+	,sfm.is_encrypted 
+from dv_pipeline_description.dvpd_pipeline_leaf_and_process_table plap 
+join dv_pipeline_description.dvpd_dv_model_column mc on mc.table_name = plap.table_to_process 
+													 and mc.dv_column_class not in ('meta')
+left join dv_pipeline_description.dvpd_source_field_mapping sfm on sfm.target_table = plap.table_to_process 	
+														  and sfm.target_column_name =mc.column_name 
+order by pipeline,mc.column_block ,2 
+														  
 
 
 
