@@ -20,8 +20,8 @@ VALUES('rkpsf_auftrag_p1', '{
 		"reject_processing": "reject_container"
 	},
 	"fields": [{
-			"field_name": "FI_ID",			"technical_type": "Varchar(20)",			"parsing_expression": "1",
-			"uniqeness_groups": ["key"],
+			"field_name": "FI_ID",			"technical_type": "Varchar(20)",			"field_position": "1",
+			"uniqueness_groups": ["key"],
 			"targets": [{
 				"table_name": "rkpsf_auftrag_hub"
 			},{
@@ -31,8 +31,8 @@ VALUES('rkpsf_auftrag_p1', '{
 		}, {
 			"field_name": "AUFTRAGSNR",
 			"technical_type": "Decimal(10,0)",
-			"parsing_expression": "2",
-			"uniqeness_groups": ["key"],
+			"field_position": "2",
+			"uniqueness_groups": ["key"],
 			"targets": [{
 				"table_name": "rkpsf_auftrag_hub",
 				"target_column_name": "A_NUMMER"
@@ -40,7 +40,7 @@ VALUES('rkpsf_auftrag_p1', '{
 		}, {
 			"field_name": "KUNDE_NR",
 			"technical_type": "DECIMAL(10,0)",
-			"parsing_expression": "3",
+			"field_position": "3",
 			"targets": [{
 				"table_name": "rsfrc_kunde_hub",
 				"field_groups": ["haupt_kunde"]
@@ -48,7 +48,7 @@ VALUES('rkpsf_auftrag_p1', '{
 		}, {
 			"field_name": "CO_KUNDE_NR",
 			"technical_type": "DECIMAL(10,0)",
-			"parsing_expression": "4",
+			"field_position": "4",
 			"targets": [{
 				"table_name": "rsfrc_kunde_hub",
 				"target_column_name": "KUNDE_NR",
@@ -57,14 +57,14 @@ VALUES('rkpsf_auftrag_p1', '{
 		}, {
 			"field_name": "AUFTRAGSART",
 			"technical_type": "Varchar(20)",
-			"parsing_expression": "6",
+			"field_position": "6",
 			"targets": [{
 				"table_name": "rkpsf_auftrag_p1_sat"
 			}]
 		}, {
 			"field_name": "PREIS_NETTO",
 			"technical_type": "DECIMAL(12,2)",
-			"parsing_expression": "7",
+			"field_position": "7",
 			"targets": [{
 				"table_name": "rkpsf_auftrag_p1_sat"
 			}]
@@ -72,7 +72,7 @@ VALUES('rkpsf_auftrag_p1', '{
 		{
 			"field_name": "STATUS",
 			"technical_type": "VARCHAR(10)",
-			"parsing_expression": "8",
+			"field_position": "8",
 			"targets": [{
 				"table_name": "rkpsf_auftrag_p1_sat"
 			}]
@@ -80,7 +80,7 @@ VALUES('rkpsf_auftrag_p1', '{
 		{
 			"field_name": "SYSTEMMODTIME",
 			"technical_type": "TIMESTAMP",
-			"parsing_expression": "9",
+			"field_position": "9",
 			"targets": [{
 				"table_name": "rkpsf_auftrag_p1_sat",
 				"exclude_from_diff_hash": "true"

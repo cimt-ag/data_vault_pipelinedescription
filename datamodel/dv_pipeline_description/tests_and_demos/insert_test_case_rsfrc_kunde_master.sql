@@ -23,14 +23,14 @@ VALUES
  	"fields": [{
  		"field_name": "KUNDE_NR",
  		"technical_type": "DECIMAL(10,0)",
- 		"parsing_expression": "3",
+ 		"field_position": "3",
  		"targets": [{
  			"table_name": "rsfrc_kunde_hub"
  		}]
  	}, {
  		"field_name": "MASTER_KUNDE_NR",
  		"technical_type": "DECIMAL(10,0)",
- 		"parsing_expression": "4",
+ 		"field_position": "4",
  		"targets": [{
  			"table_name": "rsfrc_kunde_hub",
  			"target_column_name": "KUNDE_NR",
