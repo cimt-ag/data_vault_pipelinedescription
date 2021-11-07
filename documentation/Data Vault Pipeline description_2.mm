@@ -137,7 +137,19 @@
 <node CREATED="1635592233422" ID="ID_600624307" MODIFIED="1635856880294" TEXT="Table_Name">
 <icon BUILTIN="forward"/>
 </node>
-<node COLOR="#006699" CREATED="1635592243679" ID="ID_1114463808" MODIFIED="1635856567518" TEXT="target_column_name=&lt;field_name&gt;"/>
+<node COLOR="#006699" CREATED="1635592243679" ID="ID_1114463808" MODIFIED="1636300474282" TEXT="target_column_name=&lt;field_name&gt;">
+<richcontent TYPE="NOTE"><html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      canbe META_IS_DELETED to provide explicit deletion data
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
 <node COLOR="#006699" CREATED="1635591229782" ID="ID_529770496" MODIFIED="1635865319050" TEXT="target_column_type=&lt;techical_type&gt;"/>
 <node COLOR="#006699" CREATED="1635594257893" ID="ID_1820031178" MODIFIED="1635873699773" TEXT="field_groups[]">
 <linktarget COLOR="#b0b0b0" DESTINATION="ID_1820031178" ENDARROW="Default" ENDINCLINATION="645;0;" ID="Arrow_ID_744515587" SOURCE="ID_1447805734" STARTARROW="None" STARTINCLINATION="645;0;"/>
@@ -161,7 +173,6 @@
 <node COLOR="#006699" CREATED="1635591375174" ID="ID_1974579049" MODIFIED="1635856660960" TEXT="format=no change"/>
 <node CREATED="1635591382839" ID="ID_140889450" MODIFIED="1635591384178" TEXT="..."/>
 </node>
-<node COLOR="#006699" CREATED="1636300237828" ID="ID_1016033412" MODIFIED="1636300265150" TEXT="meta_is_deleted=false"/>
 <node COLOR="#006699" CREATED="1635591314431" ID="ID_1304316423" MODIFIED="1635857527648" TEXT="column_content_comment=&lt;field_comment&gt;"/>
 </node>
 <node COLOR="#006699" CREATED="1635857507548" ID="ID_1870604769" MODIFIED="1635857536489" TEXT="field_comment=&lt;none&gt;"/>
