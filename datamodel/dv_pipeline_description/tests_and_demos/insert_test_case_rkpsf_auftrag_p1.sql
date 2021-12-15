@@ -87,7 +87,7 @@ VALUES('rkpsf_auftrag_p1', '{
 			}]
 		}
 	],
-	"data_vault_modell": [{
+	"data_vault_model": [{
 			"schema_name": "rvlt_salesforce",
 			"tables": [{
 				"table_name": "rsfrc_kunde_hub",

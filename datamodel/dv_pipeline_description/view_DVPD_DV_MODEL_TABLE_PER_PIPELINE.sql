@@ -4,8 +4,8 @@ create or replace view dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE 
 with data_vault_schema_basics as (
 select 
 dvpd_json ->>'pipeline_name' as pipeline
-, json_array_elements(dvpd_json->'data_vault_modell')->>'schema_name' as schema_name
-, json_array_elements(dvpd_json->'data_vault_modell')->'tables' as tables
+, json_array_elements(dvpd_json->'data_vault_model')->>'schema_name' as schema_name
+, json_array_elements(dvpd_json->'data_vault_model')->'tables' as tables
 from dv_pipeline_description.dvpd_dictionary dt 
 )
 select 
