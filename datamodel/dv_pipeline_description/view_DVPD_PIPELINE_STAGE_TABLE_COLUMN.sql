@@ -1,4 +1,4 @@
-drop view if exists dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN cascade;
+--drop view if exists dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN cascade;
 create or replace view dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN as 
 
 select distinct 

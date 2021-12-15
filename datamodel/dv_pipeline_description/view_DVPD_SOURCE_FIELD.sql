@@ -1,4 +1,4 @@
-drop view if exists dv_pipeline_description.DVPD_SOURCE_FIELD cascade;
+--drop view if exists dv_pipeline_description.DVPD_SOURCE_FIELD cascade;
 create or replace view dv_pipeline_description.DVPD_SOURCE_FIELD as
 
 with raw_field_list as( 
