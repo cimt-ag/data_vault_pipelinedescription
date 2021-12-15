@@ -7,56 +7,36 @@ VALUES
  	"DVPD_Version": "1.0",
  	"pipeline_name": "rsfrc_kunde_master",
  	"record_source_name_expression": "salesforce.kundenmaster",
- 	"data_fetch_module": {
- 		"fetch_module_name": "read_file_delimted",
- 		"search_expression": "$PipelineInputDirectory/kunde_master*.csv",
- 		"file_archive_path": "$PipelineArchiveDirectory"
- 	},
- 	"data_parse_module": {
- 		"parse_module_name": "delimited_text",
- 		"codepage": "UTF_8",
- 		"columnseparator": "|",
- 		"rowseparator": "\n",
- 		"skip_first_rows": "1",
- 		"reject_processing": "reject_container"
- 	},
- 	"fields": [{
- 		"field_name": "KUNDE_NR",
- 		"technical_type": "DECIMAL(10,0)",
- 		"field_position": "3",
- 		"targets": [{
- 			"table_name": "rsfrc_kunde_hub"
- 		}]
- 	}, {
- 		"field_name": "MASTER_KUNDE_NR",
- 		"technical_type": "DECIMAL(10,0)",
- 		"field_position": "4",
- 		"targets": [{
- 			"table_name": "rsfrc_kunde_hub",
- 			"target_column_name": "KUNDE_NR",
- 			"hierarchy_key_suffix": "master"
- 		}]
+	"data_extraction": {
+		"fetch_module_name": "file_read",
+		"increment_logic": "archive_container",
+		"search_expression": "$PipelineInputDirectory/kunde_master*.csv",
+		"file_archive_path": "$PipelineArchiveDirectory",
+		"parse_module_name": "delimited_text",
+		"codepage": "UTF_8",
+		"columnseparator": "|",
+		"rowseparator": "\n",
+		"skip_first_rows": "1",
+		"reject_procedure": "reject_container"
+	},
+ 	"fields": [
+		{"field_name": "KUNDE_NR",			"technical_type": "DECIMAL(10,0)","field_position": "3","targets": [{"table_name": "rsfrc_kunde_hub"	}]},
+		{"field_name": "MASTER_KUNDE_NR",	"technical_type": "DECIMAL(10,0)","field_position": "4","targets": [{"table_name": "rsfrc_kunde_hub",
+																								 			"target_column_name": "KUNDE_NR",
+																								 			"hierarchy_key_suffix": "master"}]}
+	],
+ 	"data_vault_model": [
+		{"schema_name": "rvlt_salesforce",
+ 		"tables": [
+			{"table_name": "rsfrc_kunde_hub",				"stereotype": "hub","hub_key_column_name": "HK_RSFRC_KUNDE"},
+			{"table_name": "rkpsf_kunde_kunde_master_lnk",	"stereotype": "link","link_key_column_name": "LK_RKPSF_AUFTRAG_KUNDE",
+ 																				 "link_parent_tables": ["rsfrc_kunde_hub"],
+																				 "hierarchical_parents": [ {"table_name":"rsfrc_kunde_hub",
+																											"hierarchy_key_suffix": "master"}]},
 
- 	}],
- 	"data_vault_model": [{
- 		"schema_name": "rvlt_salesforce",
- 		"tables": [{
- 				"table_name": "rsfrc_kunde_hub",
- 				"stereotype": "hub",
- 				"hub_key_column_name": "HK_RSFRC_KUNDE"
- 			}, {
- 				"table_name": "rkpsf_kunde_kunde_master_lnk",
- 				"stereotype": "link",
- 				"link_key_column_name": "LK_RKPSF_AUFTRAG_KUNDE",
- 				"link_parent_tables": ["rsfrc_kunde_hub"]
- 			},
- 			{
- 				"table_name": "rkpsf_kunde_kunde_master_esat",
-				"satellite_parent_table": "rkpsf_kunde_kunde_master_lnk",
- 				"stereotype": "esat",
- 				"satellite_parent": "rkpsf_kunde_kunde_master_lnk",
- 				"driving_hub_keys": ["HK_RSFRC_KUNDE"]
- 			}
- 		]
- 	}]
+ 			{"table_name": "rkpsf_kunde_kunde_master_esat",	"stereotype": "esat","satellite_parent_table": "rkpsf_kunde_kunde_master_lnk",
+																			 				"driving_hub_keys": ["HK_RSFRC_KUNDE"]}
+ 			]
+ 		}
+	]
  }');

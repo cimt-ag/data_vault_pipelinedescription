@@ -1,9 +1,9 @@
 /* insert Testcase 1*/
-DELETE FROM dv_pipeline_description.dvpd_dictionary where pipeline_name = 'rsfrc_artikel_p1';
+DELETE FROM dv_pipeline_description.dvpd_dictionary where pipeline_name = 'rkpsf_artikel_p1';
 INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
-('rsfrc_artikel_p1','{
+('rkpsf_artikel_p1','{
 	"DVPD_Version": "1.0",
 	"pipeline_name": "rkpsf_artikel_p1",
 	"record_source_name_expression": "knuppisoft.artikel",
@@ -26,7 +26,7 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_knuppisoft", "tables": [
 				{"table_name": "rkpsf_artikel_hub",		"stereotype": "hub","hub_key_column_name": "HK_RKPSF_AUFTRAG"},
-				{"table_name": "rkpsf_artikel_p1_sat",	"stereotype": "sat","satellite_parent": "rsfrc_artikel_p1_sat","diff_hash_column_name": "RH_AUFTRAG_P1_SAT"}
+				{"table_name": "rkpsf_artikel_p1_sat",	"stereotype": "sat","satellite_parent_table": "rkpsf_artikel_hub","diff_hash_column_name": "RH_RKPSF_ARTIKEL_P1_SAT"}
 				]
 		}
 	]
