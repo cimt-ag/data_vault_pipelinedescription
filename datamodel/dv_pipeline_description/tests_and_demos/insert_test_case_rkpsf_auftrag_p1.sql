@@ -47,7 +47,8 @@ VALUES('rkpsf_auftrag_p1', '{
 		"schema_name": "rvlt_salesforce",
 			"tables": [
 				{"table_name": "rsfrc_kunde_hub",	"stereotype": "hub","hub_key_column_name": "HK_RSFRC_KUNDE"},
- 				{"table_name": "rsfrc_kunde_p1_sat","stereotype": "sat","satellite_parent_table": "rsfrc_kunde_hub","diff_hash_column_name": "RH_RSFRC_KUNDE_P1_SAT"}
+ 				{"table_name": "rsfrc_kunde_p1_sat","stereotype": "sat","satellite_parent_table": "rsfrc_kunde_hub","diff_hash_column_name": "RH_RSFRC_KUNDE_P1_SAT",
+																	"tracked_field_groups": ["hauptkunde"]}
 			]
 		},
 		{"schema_name": "rvlt_knuppisoft",
