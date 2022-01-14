@@ -3,9 +3,7 @@ create or replace view dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN 
 
 select distinct 
 	plap.pipeline 
-	,case when mc.vault_column_name = sfm.field_name or sfm.field_name is null 
-												then mc.vault_column_name
-											   else mc.vault_column_name||'__X__'|| 	sfm.field_name end stage_column_name
+	,coalesce (sfm.field_name,mc.vault_column_name ) stage_column_name
 	,mc.column_type 
 	,mc.column_block 
 	,sfm.field_name 
