@@ -32,6 +32,9 @@ VALUES('rkpsf_auftrag_p1', '{
 		{"field_name": "CO_KUNDE_NR",	"technical_type": "DECIMAL(10,0)",	"field_position": "4",
 								"targets": [{"table_name": "rsfrc_kunde_hub","target_column_name": "KUNDE_NR","field_groups": ["co_kunde"]}]},
 
+		{"field_name": "KUNDEN_NAME",		"technical_type": "VARCHAR(200)", "field_position": "5",
+								"targets": [{"table_name": "rsfrc_kunde_p1_sat","field_groups": ["haupt_kunde"]}]},
+
 		{"field_name": "AUFTRAGSART",	"technical_type": "Varchar(20)",	"field_position": "6",
 								"targets": [{"table_name": "rkpsf_auftrag_p1_sat"}]},
  		
@@ -44,7 +47,7 @@ VALUES('rkpsf_auftrag_p1', '{
 		"schema_name": "rvlt_salesforce",
 			"tables": [
 				{"table_name": "rsfrc_kunde_hub",	"stereotype": "hub","hub_key_column_name": "HK_RSFRC_KUNDE"},
- 				{"table_name": "rsfrc_kunde_p1_sat","stereotype": "sat","satellite_parent_table": "rsfrc_kunde_hub","diff_hash_column_name": "RH_KUNDE_P1_SAT"}
+ 				{"table_name": "rsfrc_kunde_p1_sat","stereotype": "sat","satellite_parent_table": "rsfrc_kunde_hub","diff_hash_column_name": "RH_RSFRC_KUNDE_P1_SAT"}
 			]
 		},
 		{"schema_name": "rvlt_knuppisoft",
