@@ -87,7 +87,7 @@ select -- suffixed keys of parents
  	tb.table_name
    ,8 as column_block
    ,case when dfm.exclude_from_key_hash then 'content' ELSE 'business_key' end as dv_column_class
-   ,dfm.stage_column_name   as vault_column_name
+   ,dfm.target_column_name   as vault_column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
  left join dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING dfm on dfm.pipeline=tb.pipeline 
@@ -136,7 +136,7 @@ select -- own key column
  	tb.table_name
    ,8 as column_block
    ,'content' as dv_column_class
-   ,dfm.stage_column_name  as vault_column_name
+   ,dfm.target_column_name  as vault_column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
  left join dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING dfm on dfm.pipeline = tb.pipeline 

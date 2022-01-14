@@ -1,4 +1,4 @@
---drop view dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING cascade;
+drop view dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING cascade;
 create or replace view dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING as
 with source_fields AS (
 Select 
@@ -38,7 +38,7 @@ select
 ,upper(field_type) as field_type
 ,parsing_expression
 ,lower(target_table) as target_table
-,upper(coalesce (target_column_name,field_name)) as stage_column_name
+,upper(coalesce (target_column_name,field_name)) as target_column_name
 ,upper(coalesce(hierarchy_key_suffix,'')) as hierarchy_key_suffix
 ,upper(coalesce (target_column_type,field_type)) as target_column_type
 ,coalesce(to_number(prio_in_key_hash,'9'),0) as prio_in_hashkey
