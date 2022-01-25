@@ -1,4 +1,4 @@
-drop view dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE cascade;
+drop view if exists dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE cascade;
 create or replace view dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE as 
 
 with data_vault_schema_basics as (

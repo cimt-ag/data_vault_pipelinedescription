@@ -1,5 +1,6 @@
 --drop view if exists dv_pipeline_description.DVPD_PIPELINE_LEAF_AND_PROCESS_TABLE cascade;
 create or replace view dv_pipeline_description.DVPD_PIPELINE_LEAF_AND_PROCESS_TABLE as 
+
 with leaf_tables_per_pipeline as (
 	select distinct pipeline,ddmt.table_name 
 	from dv_pipeline_description.dvpd_dv_model_table_per_pipeline ddmt   

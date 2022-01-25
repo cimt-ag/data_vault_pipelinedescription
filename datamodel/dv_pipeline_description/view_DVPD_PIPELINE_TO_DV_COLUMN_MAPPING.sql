@@ -17,7 +17,7 @@ select distinct pipeline
 	,column_block 
 from dv_pipeline_description.dvpd_source_field_mapping dsfm 
 join dv_key_columns dkl on dkl.table_name = dsfm.target_table 
-order by pipeline ,field_group,target_table ,column_block ,dv_column_class 
+order by pipeline ,field_group,target_table ,column_block ,dv_column_class ;
 
 
 

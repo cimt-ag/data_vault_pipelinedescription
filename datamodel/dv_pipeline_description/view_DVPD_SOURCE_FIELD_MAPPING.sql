@@ -1,4 +1,4 @@
-drop view dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING cascade;
+drop view if exists dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING cascade;
 create or replace view dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING as
 with source_fields AS (
 Select 

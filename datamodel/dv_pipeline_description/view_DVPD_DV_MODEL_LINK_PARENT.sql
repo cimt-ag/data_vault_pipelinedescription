@@ -1,5 +1,6 @@
 drop view if exists dv_pipeline_description.DVPD_DV_MODEL_LINK_PARENT cascade;
 create or replace view dv_pipeline_description.DVPD_DV_MODEL_LINK_PARENT as 
+
 with normalized_link_parents as (
 	select 
 		table_name

@@ -1,4 +1,4 @@
---drop view if exists dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN_BASIC cascade;
+drop view if exists dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN_BASIC cascade;
 
 create or replace view dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN_BASIC as 
 
@@ -25,7 +25,7 @@ select distinct
 from  leaf_field_group lfg
 join  dv_pipeline_description.dvpd_pipeline_leaf_and_process_table dplapt
     on 	dplapt.pipeline = lfg.pipeline 
-	and dplapt.leaf_table =lfg.table_name 
+	and dplapt.leaf_table =lfg.table_name ;
 
 												
 -- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN_BASIC order by pipeline,field_group,table_name;										
