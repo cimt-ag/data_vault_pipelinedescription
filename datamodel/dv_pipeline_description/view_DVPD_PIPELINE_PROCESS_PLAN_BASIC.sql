@@ -12,6 +12,7 @@ join dv_pipeline_description.dvpd_pipeline_leaf_and_process_table dplapt
 	on dplapt.pipeline = ddmtpp.pipeline 
 	and dplapt.leaf_table =ddmtpp.table_name 
 )
+,process_plan_basic as (
 select distinct
 	pipeline 
    ,field_group 
@@ -25,7 +26,23 @@ select distinct
 from  leaf_field_group lfg
 join  dv_pipeline_description.dvpd_pipeline_leaf_and_process_table dplapt
     on 	dplapt.pipeline = lfg.pipeline 
-	and dplapt.leaf_table =lfg.table_name ;
+	and dplapt.leaf_table =lfg.table_name
+)
+--,table_bk_variants as (
+select
+ppb.pipeline
+,table_name
+,ppb.field_group
+,target_column_name
+,field_name 
+,sfm.field_group
+from process_plan_basic ppb
+join dv_pipeline_description.dvpd_source_field_mapping sfm on sfm.target_table=ppb.table_name
+								and (sfm.field_group = ppb.field_group or sfm.field_group='##all##')
+								and sfm.pipeline=ppb.pipeline
+--group by 1,2,3
+order by pipeline, table_name,ppb.field_group,target_column_name
+;
 
 												
 -- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN_BASIC order by pipeline,field_group,table_name;										
