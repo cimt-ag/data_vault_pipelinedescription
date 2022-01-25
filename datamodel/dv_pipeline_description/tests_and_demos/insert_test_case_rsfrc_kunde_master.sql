@@ -29,7 +29,7 @@ VALUES
 		{"schema_name": "rvlt_salesforce",
  		"tables": [
 			{"table_name": "rsfrc_kunde_hub",				"stereotype": "hub","hub_key_column_name": "HK_RSFRC_KUNDE"},
-			{"table_name": "rkpsf_kunde_kunde_master_lnk",	"stereotype": "link","link_key_column_name": "LK_RKPSF_AUFTRAG_KUNDE",
+			{"table_name": "rkpsf_kunde_kunde_master_lnk",	"stereotype": "lnk","link_key_column_name": "LK_RKPSF_KUNDE_KUNDE_MASTER",
  																				 "link_parent_tables": ["rsfrc_kunde_hub"],
 																				 "hierarchical_parents": [ {"table_name":"rsfrc_kunde_hub",
 																											"hierarchy_key_suffix": "master"}]},

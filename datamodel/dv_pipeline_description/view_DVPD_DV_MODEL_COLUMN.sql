@@ -69,7 +69,7 @@ select -- suffixed keys of parents
    ,dfm.target_column_name   as column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
- left join dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING dfm on dfm.pipeline=tb.pipeline 
+ join dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING dfm on dfm.pipeline=tb.pipeline 
  								 and dfm.target_table = tb.table_name 
  where tb.stereotype ='lnk'								   
  )

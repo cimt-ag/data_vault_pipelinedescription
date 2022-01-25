@@ -21,19 +21,19 @@ VALUES('rkpsf_auftrag_p1', '{
 	"fields": [
 		{"field_name": "FI_ID",			"technical_type": "Varchar(20)",  "field_position": "1", "uniqueness_groups": ["key"],
 								"targets": [{"table_name": "rkpsf_auftrag_hub"},
-									        {"table_name": "rsfrc_kunde_hub","field_groups": ["haupt_kunde","co_kunde"]}]},
+									        {"table_name": "rsfrc_kunde_hub"}]},
 
  		{"field_name": "AUFTRAGSNR",	"technical_type": "Decimal(10,0)", "field_position": "2","uniqueness_groups": ["key"],
 								"targets": [{"table_name": "rkpsf_auftrag_hub","target_column_name": "A_NUMMER"}]},
 
 		{"field_name": "KUNDE_NR",		"technical_type": "DECIMAL(10,0)", "field_position": "3",
-								"targets": [{"table_name": "rsfrc_kunde_hub","field_groups": ["haupt_kunde"]}]},
+								"targets": [{"table_name": "rsfrc_kunde_hub","field_groups": ["hauptkunde"]}]},
 
 		{"field_name": "CO_KUNDE_NR",	"technical_type": "DECIMAL(10,0)",	"field_position": "4",
 								"targets": [{"table_name": "rsfrc_kunde_hub","target_column_name": "KUNDE_NR","field_groups": ["co_kunde"]}]},
 
 		{"field_name": "KUNDEN_NAME",		"technical_type": "VARCHAR(200)", "field_position": "5",
-								"targets": [{"table_name": "rsfrc_kunde_p1_sat","field_groups": ["haupt_kunde"]}]},
+								"targets": [{"table_name": "rsfrc_kunde_p1_sat","field_groups": ["hauptkunde"]}]},
 
 		{"field_name": "AUFTRAGSART",	"technical_type": "Varchar(20)",	"field_position": "6",
 								"targets": [{"table_name": "rkpsf_auftrag_p1_sat"}]},
@@ -55,7 +55,7 @@ VALUES('rkpsf_auftrag_p1', '{
 			"tables": [
 				{"table_name": "rkpsf_auftrag_hub",		 "stereotype": "hub","hub_key_column_name": "HK_RKPSF_AUFTRAG"},
 				{"table_name": "rkpsf_auftrag_p1_sat",	 "stereotype": "sat","satellite_parent_table": "rkpsf_auftrag_hub","diff_hash_column_name": "RH_AUFTRAG_P1_SAT"},
-				{"table_name": "rkpsf_auftrag_kunde_lnk","stereotype": "link","link_key_column_name": "LK_RKPSF_AUFTRAG_KUNDE"
+				{"table_name": "rkpsf_auftrag_kunde_lnk","stereotype": "lnk","link_key_column_name": "LK_RKPSF_AUFTRAG_KUNDE"
 																	,	"link_parent_tables": ["rkpsf_auftrag_hub","rsfrc_kunde_hub"]},
 				{"table_name": "rkpsf_auftrag_kunde_esat","stereotype": "esat","satellite_parent_table": "rkpsf_auftrag_kunde_lnk",
 																		"tracked_field_groups": ["hauptkunde"],

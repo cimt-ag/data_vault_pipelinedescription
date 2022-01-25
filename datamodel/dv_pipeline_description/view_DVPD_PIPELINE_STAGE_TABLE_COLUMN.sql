@@ -1,9 +1,13 @@
 --drop view if exists dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN cascade;
 create or replace view dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN as
 
+#not working
+
 select distinct 
 	plap.pipeline 
-	,coalesce (sfm.field_name,mc.column_name ) stage_column_name
+	,case when mc.column_type  in('key','hash_diff') and  sfm.field_group<>'##all##'  then 
+			 mc.column_name||'__'||sfm.field_group
+			 else coalesce (sfm.field_name,mc.column_name ) end  stage_column_name
 	,mc.column_type 
 	,min(mc.column_block)
 	,sfm.field_name 
