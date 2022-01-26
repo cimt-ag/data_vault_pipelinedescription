@@ -31,7 +31,8 @@ select  sadcb.pipeline
 	,sadcb.dv_column_class
 	,sadcb.column_block 
 from stage_and_dv_columns_basic sadcb 
-left join dv_pipeline_description.dvpd_source_field_mapping dsfm on dsfm.target_table=sadcb.target_table
+left join dv_pipeline_description.dvpd_source_field_mapping dsfm on dsfm.pipeline = sadcb.pipeline
+										and dsfm.target_table=sadcb.target_table
 										and dsfm.field_group=sadcb.field_group
 										and dsfm.target_column_name=sadcb.column_name
 order by pipeline ,field_group,target_table ,column_block ,dv_column_class ,column_name

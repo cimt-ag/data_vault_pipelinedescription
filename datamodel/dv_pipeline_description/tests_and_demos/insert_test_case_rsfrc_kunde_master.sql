@@ -20,6 +20,8 @@ VALUES
 		"reject_procedure": "reject_container"
 	},
  	"fields": [
+		{"field_name": "FI_ID",			"technical_type": "Varchar(20)",  "field_position": "1", "uniqueness_groups": ["key"],
+									        "targets": [{"table_name": "rsfrc_kunde_hub"}]},
 		{"field_name": "KUNDE_NR",			"technical_type": "DECIMAL(10,0)","field_position": "3","targets": [{"table_name": "rsfrc_kunde_hub"	}]},
 		{"field_name": "MASTER_KUNDE_NR",	"technical_type": "DECIMAL(10,0)","field_position": "4","targets": [{"table_name": "rsfrc_kunde_hub",
 																								 			"target_column_name": "KUNDE_NR",
