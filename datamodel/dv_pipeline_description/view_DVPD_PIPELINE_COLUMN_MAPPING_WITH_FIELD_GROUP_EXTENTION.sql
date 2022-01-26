@@ -1,4 +1,4 @@
-drop view if exists dv_pipeline_description.DVPD_PIPELINE_COLUMN_MAPPING_WITH_FIELD_GROUP_EXTENTION cascade;
+--drop view if exists dv_pipeline_description.DVPD_PIPELINE_COLUMN_MAPPING_WITH_FIELD_GROUP_EXTENTION cascade;
 
 create or replace view dv_pipeline_description.DVPD_PIPELINE_COLUMN_MAPPING_WITH_FIELD_GROUP_EXTENTION as 
 
@@ -33,7 +33,7 @@ select  sadcb.pipeline
 from stage_and_dv_columns_basic sadcb 
 left join dv_pipeline_description.dvpd_source_field_mapping dsfm on dsfm.pipeline = sadcb.pipeline
 										and dsfm.target_table=sadcb.target_table
-										and dsfm.field_group=sadcb.field_group
+										and (dsfm.field_group=sadcb.field_group or dsfm.field_group='##all##')
 										and dsfm.target_column_name=sadcb.column_name
 order by pipeline ,field_group,target_table ,column_block ,dv_column_class ,column_name
 ;
