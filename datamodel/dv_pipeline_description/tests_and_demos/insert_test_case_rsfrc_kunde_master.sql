@@ -1,6 +1,6 @@
 /* insert Testcase 1*/
 DELETE FROM dv_pipeline_description.dvpd_dictionary where pipeline_name = 'rsfrc_kunde_master';
-INSERT INTO dv_pipeline_description.dvpd_dictionary
+INSERT INTO dv_pipeline_description.dvpd_dictionary 
 (pipeline_name, dvpd_json)
 VALUES
 ('rsfrc_kunde_master','{
