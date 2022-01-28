@@ -2,63 +2,60 @@ drop view if exists dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN cascade;
 
 create or replace view dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN as 
 
-with dv_table_column_count as (
-select distinct
-    table_name 	
-   , count(1) data_column_count
-from dv_pipeline_description.dvpd_dv_model_column ddmtpp
-where dv_column_class not in ('meta','key','parent_key','diff_hash')
-group by table_name
-)
---,target_process_block 
-
-select distinct 
-	pipeline 
-	,process_block 
-	,target_table 
-from dv_pipeline_description.dvpd_source_field_mapping
-
---,field_Mappings_per_process_block
---,table_columns_per_pipeline
+with hash_input_columns as (
 select
-	pipeline 
-	,tpp.table_name 
-	,column_name
-	, json_array_elements_text(tracked_field_groups) field_group
-from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tpp
-join dv_pipeline_description.dvpd_dv_model_column dvcol on dvcol.table_name = tpp.table_name 
-where dvcol.dv_column_class not in('meta')
-union 
-select
-	pipeline 
-	,tpp.table_name 
-	,column_name
-	, '_A_' field_group 
-from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tpp
-join dv_pipeline_description.dvpd_dv_model_column dvcol on dvcol.table_name = tpp.table_name 
-where dvcol.dv_column_class not in('meta') and tracked_field_groups is null
-order by 1,2,3
-														
-
-,field_group_target_column_count as (
-select distinct
-	pipeline
-   ,field_group 
-   ,target_table
-   ,count(1) field_count
-from dv_pipeline_description.dvpd_pipeline_column_mapping_with_field_group_extention
-where field_name is not null
-group by pipeline,field_group,target_table 
-)
+	 hash_target.table_name 
+	,hash_target.column_name hash_column
+	,content_key.table_name content_table
+	,content_key.column_name  content_key_column
+ from dv_pipeline_description.dvpd_dv_model_column hash_target
+join dv_pipeline_description.dvpd_dv_model_column content_key on content_key.table_name =hash_target.table_name 
+						and content_key.dv_column_class in ('business_key','dependent_child_key')
+where hash_target.dv_column_class in ('key')
+union all
 select 
- pipeline
-, field_group
-, dtcc.table_name
-, dtcc.data_column_count
-, fgtcc.field_count
-,  dtcc.data_column_count-fgtcc.field_count
-from dv_table_column_count dtcc
-join field_group_target_column_count fgtcc on fgtcc.target_table = dtcc.table_name
+	 link_parent.table_name 
+	,link_parent.parent_hub_key_column_name 
+	,content_key.table_name  content_table
+	,content_key.column_name  content_key_column
+ from dv_pipeline_description.dvpd_dv_model_link_parent link_parent
+join dv_pipeline_description.dvpd_dv_model_column content_key on content_key.table_name =link_parent.parent_table_name 
+						and content_key.dv_column_class in ('business_key','dependent_child_key')
+union all
+select
+	 hash_target.table_name 
+	,hash_target.column_name hash_column
+	,content_key.table_name content_table
+	,content_key.column_name  content_key_column
+ from dv_pipeline_description.dvpd_dv_model_column hash_target
+join dv_pipeline_description.dvpd_dv_model_column content_key on content_key.table_name =hash_target.table_name 
+						and content_key.dv_column_class in ('content')
+where hash_target.dv_column_class in ('diff_hash')
+order by 1,2,3,4
+)
+, unusable_process_blocks as (
+select distinct
+ pcmwfge.pipeline 
+,pcmwfge.process_block 
+,pcmwfge.target_table 
+,pcmwfge.stage_column_name 
+,pcmwfge.column_name 
+,pcmwfge.column_block 
+,hic.content_table
+,hic.content_key_column
+,pcm.field_name 
+from dv_pipeline_description.dvpd_pipeline_column_mapping_with_field_group_extention pcmwfge
+join hash_input_columns hic on hic.table_name=pcmwfge.target_table 
+								and hic.hash_column=pcmwfge.column_name 
+left join dv_pipeline_description.dvpd_pipeline_column_mapping_with_field_group_extention pcm 
+						     on pcm.pipeline = pcmwfge.pipeline 
+							 and  pcm.target_table=hic.content_table
+						     and pcm.column_name =hic.content_key_column
+						     and pcmwfge.process_block=pcm.process_block 
+where pcm.field_name is null						     
+order by pipeline,target_table, column_block ,column_name 						     
+)
 
+### hier gehts weiter
 
 -- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN_BASIC order by pipeline,field_group,table_name;										

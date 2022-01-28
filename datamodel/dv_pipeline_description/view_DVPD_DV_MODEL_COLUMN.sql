@@ -65,7 +65,7 @@ select -- suffixed keys of parents
  select -- content
  	tb.table_name
    ,8 as column_block
-   ,case when dfm.exclude_from_key_hash then 'content' ELSE 'dependent_child_key' end as dv_column_class
+   ,case when dfm.exclude_from_key_hash then 'content_untracked' ELSE 'dependent_child_key' end as dv_column_class
    ,dfm.target_column_name   as column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
@@ -96,7 +96,7 @@ select -- suffixed keys of parents
  select -- content
  	tb.table_name
    ,8 as column_block
-   ,case when dfm.exclude_from_key_hash then 'content' ELSE 'business_key' end as dv_column_class
+   ,case when dfm.exclude_from_key_hash then 'content_untracked' ELSE 'business_key' end as dv_column_class
    ,dfm.target_column_name   as column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
@@ -145,7 +145,7 @@ select -- own key column
  select -- content
  	tb.table_name
    ,8 as column_block
-   ,'content' as dv_column_class
+   ,case when dfm.exclude_from_diff_hash then 'content_untracked' else 'content' end as dv_column_class
    ,dfm.target_column_name  as column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb

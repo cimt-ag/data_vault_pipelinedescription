@@ -26,8 +26,8 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_b", 
 		 "tables": [
-				{"table_name": "rtstb_artikel_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtstb_AUFTRAG"},
-				{"table_name": "rtstb_artikel_p1_sat",	"stereotype": "sat","satellite_parent_table": "rtstb_artikel_hub","diff_hash_column_name": "RH_rtstb_ARTIKEL_P1_SAT"}
+				{"table_name": "rtstb_artikel_hub",		"stereotype": "hub","hub_key_column_name": "HK_RTSTB_ARTIKEL"},
+				{"table_name": "rtstb_artikel_p1_sat",	"stereotype": "sat","satellite_parent_table": "RTSTB_ARTIKEL_HUB","diff_hash_column_name": "RH_RTSTB_ARTIKEL_P1_SAT"}
 				]
 		}
 	]
