@@ -33,7 +33,7 @@ select
 	pipeline 
 	,tpp.table_name 
 	,column_name
-	, '##all##' field_group 
+	, '_A_' field_group 
 from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tpp
 join dv_pipeline_description.dvpd_dv_model_column dvcol on dvcol.table_name = tpp.table_name 
 where dvcol.dv_column_class not in('meta') and tracked_field_groups is null

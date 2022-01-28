@@ -5,7 +5,7 @@ create or replace view dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN 
 
 select distinct 
 	plap.pipeline 
-	,case when mc.column_type  in('key','hash_diff') and  sfm.field_group<>'##all##'  then 
+	,case when mc.column_type  in('key','hash_diff') and  sfm.field_group<>'_A_'  then 
 			 mc.column_name||'__'||sfm.field_group
 			 else coalesce (sfm.field_name,mc.column_name ) end  stage_column_name
 	,mc.column_type 

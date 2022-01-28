@@ -34,7 +34,7 @@ from source_fields
 ,field_group_expansion_and_normalization AS (
 select 
  lower(pipeline) as  pipeline
-,case when field_groups is not null then json_array_elements_text(field_groups) else '##all##' end as field_group
+,case when field_groups is not null then json_array_elements_text(field_groups) else '_A_' end as field_group
 ,upper(field_name) as field_name
 ,upper(field_type) as field_type
 ,lower(target_table) as target_table

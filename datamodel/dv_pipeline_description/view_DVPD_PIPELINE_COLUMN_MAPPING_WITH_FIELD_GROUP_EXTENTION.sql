@@ -11,7 +11,7 @@ where ddmc.dv_column_class not in ('meta')
 select distinct pipeline 
 	,field_group 
 	,target_table 
-	,case when field_group = '##all##' OR dv_column_class not in ('key','parent_key','diff_hash')   then dc.column_name
+	,case when field_group = '_A_' OR dv_column_class not in ('key','parent_key','diff_hash')   then dc.column_name
 	else dc.column_name||'___'||UPPER(field_group) END stage_column_name_basic
 	,column_name 
 	,dv_column_class
@@ -33,7 +33,7 @@ select  sadcb.pipeline
 from stage_and_dv_columns_basic sadcb 
 left join dv_pipeline_description.dvpd_source_field_mapping dsfm on dsfm.pipeline = sadcb.pipeline
 										and dsfm.target_table=sadcb.target_table
-										and (dsfm.field_group=sadcb.field_group or dsfm.field_group='##all##')
+										and (dsfm.field_group=sadcb.field_group or dsfm.field_group='_A_')
 										and dsfm.target_column_name=sadcb.column_name
 order by pipeline ,field_group,target_table ,column_block ,dv_column_class ,column_name
 ;
