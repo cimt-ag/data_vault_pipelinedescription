@@ -34,7 +34,7 @@ left join dv_pipeline_description.dvpd_dv_model_table_per_pipeline dmtpp on dmtp
 										and dmtpp.table_name = apr.parent_table 
 ;
 
--- select * from dv_pipeline_description.DVPD_CHECK_MODEL_STEREOTYPE_AND_PARAMETERS order by 1,2,3
+-- select * from dv_pipeline_description.DVPD_CHECK_MODEL_RELATIONS order by 1,2,3
 
 
 
