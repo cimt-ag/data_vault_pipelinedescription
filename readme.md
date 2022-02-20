@@ -1,7 +1,9 @@
-# Der Data Vault Pipieline Description Standard
+Data Vault Pipeline Description proof of concept and reference
+==============================================================
 
-ist ein Ansatz um die Beschreibung einer **Ladestrecke für 
-Daten in ein Data Vault Modell** soweit zu formalisieren, dass generische Verfahren 
-darauf aussetzen können
+This is an implementation of the "Data Vault Description Pipeline" concept. 
+It is used for
+* testing and extending the core concept
+* providing a implementation reference and testcases for other implementations
 
-Hintergründe und Beschreibung sind im Confluence hinterlegt [Data Vault Pipeline Description Standard (DVPD)](https://cimtag.atlassian.net/wiki/spaces/CW/pages/3159719975/Data+Vault+Pipeline+Description+Standard+DVPD)
+The detailed concept is documented in the [cimt confluence](https://cimtag.atlassian.net/wiki/spaces/CW/pages/3159719975/Data+Vault+Pipeline+Description+Standard+DVPD)
