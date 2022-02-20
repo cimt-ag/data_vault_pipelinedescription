@@ -48,14 +48,14 @@ VALUES
 			,["rtjj_20_aaa_p1_sat",	8,	"content_untracked",	"F6_AAA_SP1_TIMESTAMP_XRH",	"TIMESTAMP"]
 ],
  "stage_table_column": [
-["F1_BK_AAA_VARCHAR","VARCHAR(20)",8,"F1_BK_AAA_VARCHAR","VARCHAR(20)",false],
-["F2_BK_AAA_DECIMAL","DECIMAL(20,0)",8,"F2_BK_AAA_DECIMAL","DECIMAL(20,0)",false],
-["F3_DC_AAA_DDD_VARCHAR","DATE",8,"F3_DC_AAA_DDD_VARCHAR","DATE",false],
-["F4_AAA_DDD_SP1_DECIMAL","DECIMAL(5,0)",8,"F4_AAA_DDD_SP1_DECIMAL","DECIMAL(5,0)",false],
-["F5_AAA_DDD_SP1_DECIMAL","DECIMAL(5,0)",8,"F5_AAA_DDD_SP1_DECIMAL","DECIMAL(5,0)",false],
-["HK_RTJJ_30_AAA","CHAR(28)",2,null,null,false],
-["LK_RTJJ_30_AAA_DDD","CHAR(28)",2,null,null,false],
-["RH_RTJJ_30_AAA_DDD_P1_SAT","CHAR(28)",3,null,null,false]
+		["F1_BK_AAA_VARCHAR","VARCHAR(20)",8,"F1_BK_AAA_VARCHAR","VARCHAR(20)",false],
+		["F2_BK_AAA_DECIMAL","DECIMAL(20,0)",8,"F2_BK_AAA_DECIMAL","DECIMAL(20,0)",false],
+		["F3_AAA_SP1_VARCHAR","VARCHAR(200)",8,"F3_AAA_SP1_VARCHAR","VARCHAR(200)",false],
+		["F4_AAA_SP1_DECIMAL","DECIMAL(5,0)",8,"F4_AAA_SP1_DECIMAL","DECIMAL(5,0)",false],
+		["F5_XXX_BAD_NAME_XXX","VARCHAR(200)",8,"F5_XXX_BAD_NAME_XXX","VARCHAR(200)",false],
+		["F6_AAA_SP1_TIMESTAMP_XRH","TIMESTAMP",8,"F6_AAA_SP1_TIMESTAMP_XRH","TIMESTAMP",false],
+		["HK_RTJJ_20_AAA","CHAR(28)",2,null,null,false],
+		["RH_RTJJ_20_AAA_P1_SAT","CHAR(28)",3,null,null,false]
 ]
 }');                                                                                                              
 

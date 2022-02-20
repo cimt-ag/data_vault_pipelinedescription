@@ -14,7 +14,7 @@ select
 	,(table_row->>2) :: int column_block
 	,table_row->>3 field_name
 	,table_row->>4 field_type
-	,table_row->>5 encrypt
+	,(table_row->>5) :: boolean encrypt 
 from parsed_dvmodel_column 
 
 );
