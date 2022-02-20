@@ -8,7 +8,7 @@ select '["'
 from dv_pipeline_description.dvpd_dv_model_table_per_pipeline dmtpp
 join dv_pipeline_description.dvpd_dv_model_column dmc  on  dmc.table_name =dmtpp.table_name 
    													and dmc.dv_column_class  <> 'meta'											
-where dmtpp.pipeline ='test99_test_atmtst_issue_detection'  													
+where dmtpp.pipeline ='test24_one_satellite_on_linked_hub'  													
 
 
 
@@ -23,5 +23,5 @@ select '["'
  || coalesce(encrypt::varchar,'null') || '],'
 from dv_pipeline_description.dvpd_pipeline_stage_table_column									
 where not is_meta   
-and   pipeline ='test99_test_atmtst_issue_detection'  													
+and   pipeline ='test24_one_satellite_on_linked_hub'  													
 
