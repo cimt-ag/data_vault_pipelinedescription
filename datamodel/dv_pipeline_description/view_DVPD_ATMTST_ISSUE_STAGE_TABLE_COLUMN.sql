@@ -48,6 +48,10 @@ from only_in_reference
 
 );
 
+
+comment on view dv_pipeline_description.DVPD_ATMTST_ISSUE_STAGE_TABLE_COLUMN IS
+	'Shows all issues from automated testing of stage_table_columns, for pipelines, where reference data is available';
+
 -- select * from dv_pipeline_description.DVPD_ATMTST_ISSUE_DV_MODEL_COLUMN ddmcc  order by 1,2,3,4,5;
 
 
