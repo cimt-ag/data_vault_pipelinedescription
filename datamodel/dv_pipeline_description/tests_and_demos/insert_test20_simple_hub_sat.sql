@@ -30,3 +30,22 @@ VALUES
 	]
 }
 ');
+
+DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test20_simple_hub_sat';
+INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE
+(pipeline_name, reference_data_json)
+VALUES
+('test20_simple_hub_sat','{
+	"dv_model_column": [
+["rtjj_20_aaa_hub"	,2,	"key",				"HK_RTJJ_20_AAA"	,"CHAR(28)"]
+,["rtjj_20_aaa_hub"	,8,	"business_key",		"F1_BK_AAA_VARCHAR"	,"VARCHAR(20)"]
+,["rtjj_20_aaa_hub"	,8,	"business_key",		"F2_BK_AAA_DECIMAL"	,"DECIMAL(20,0)"]
+,["rtjj_20_aaa_p1_sat",	2,	"parent_key",	"HK_RTJJ_20_AAA"	,"CHAR(28)"]
+,["rtjj_20_aaa_p1_sat",	3,	"diff_hash",	"RH_RTJJ_20_AAA_P1_SAT"	,"CHAR(28)"]
+,["rtjj_20_aaa_p1_sat",	8,	"content",		"F3_AAA_SP1_VARCHAR"	,"VARCHAR(200)"]
+,["rtjj_20_aaa_p1_sat",	8,	"content",		"F4_AAA_SP1_DECIMAL"	,"DECIMAL(5,0)"]
+,["rtjj_20_aaa_p1_sat",	8,	"content",		"F5_AAA_SP1_VARCHAR"	,"VARCHAR(200)"]
+,["rtjj_20_aaa_p1_sat",	8,	"content_untracked",	"F6_AAA_SP1_TIMESTAMP_XRH",	"TIMESTAMP"]
+]
+}');                                                                                                              
+
