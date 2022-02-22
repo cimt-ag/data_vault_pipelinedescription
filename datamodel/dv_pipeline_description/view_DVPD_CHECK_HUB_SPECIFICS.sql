@@ -20,12 +20,33 @@ select
  	,'DVPD_CHECK_HUB_SPECIFICS'::text  check_ruleset
 	, case when bk_count = 0 THEN 'No business key defined for the table'
 		else 'ok' end :: text message
-from bk_count_for_tables;
+from bk_count_for_tables
 
-comment on view dv_pipeline_description.DVPD_CHECK_ESAT_SPECIFICS IS
+union
+
+(with hk_count as (
+select 
+	pipeline 
+	,hub_key_column_name 
+	,count(1) hk_count
+	,string_agg(table_name ,', ') table_list 
+from dv_pipeline_description.dvpd_dv_model_table_per_pipeline
+where stereotype = 'hub'
+group by 1,2
+)
+select 
+	pipeline 
+ 	,'Hub Key'::TEXT  object_type 
+ 	, hub_key_column_name object_name 
+ 	,'DVPD_CHECK_HUB_SPECIFICS'::text  check_ruleset
+	, case when hk_count > 1 THEN 'HK Name used for multiple hubs: '||table_list
+		else 'ok' end :: text message
+FROM hk_count);
+
+comment on view dv_pipeline_description.DVPD_CHECK_HUB_SPECIFICS IS
 	'Test for hub specific rules';
 
--- select * from dv_pipeline_description.DVPD_CHECK_ESAT_SPECIFICS order by 1,2,3
+-- select * from dv_pipeline_description.DVPD_CHECK_HUB_SPECIFICS order by 1,2,3
 
 
 
