@@ -31,7 +31,7 @@ select
 	,count(1) hk_count
 	,string_agg(table_name ,', ') table_list 
 from dv_pipeline_description.dvpd_dv_model_table_per_pipeline
-where stereotype = 'hub'
+where stereotype = 'hub' and hub_key_column_name is not null
 group by 1,2
 )
 select 
