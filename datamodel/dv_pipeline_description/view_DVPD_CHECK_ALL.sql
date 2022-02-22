@@ -9,6 +9,9 @@ where message <>'ok'
 UNION
 select * FROM dv_pipeline_description.dvpd_check_model_stereotype_and_parameters
 where message <>'ok'
+UNION
+select * FROM dv_pipeline_description.dvpd_check_esat_specifics  
+where message <>'ok'
 ORDER BY 1,2,3;
 
 
