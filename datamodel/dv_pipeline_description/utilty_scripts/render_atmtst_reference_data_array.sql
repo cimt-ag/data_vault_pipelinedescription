@@ -1,5 +1,6 @@
 /* DV_MODEL_COLUMN REFERENCE DATA ARRAY */
 select '["' 
+ || dmtpp.schema_name  || '","'
  || dmc.table_name || '",'
  || coalesce(dmc.column_block,-1) || ',"'
  || coalesce(dmc.dv_column_class,'') || '","'

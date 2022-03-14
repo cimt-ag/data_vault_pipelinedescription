@@ -32,11 +32,11 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE
 VALUES
 ('test40_ref_simple_with_history','{
 	"dv_model_column": [
-			["rtjj_40_aaa_ref",3,"diff_hash","RH_RTJJ_40_AAA_REF","CHAR(28)"],                   
-			["rtjj_40_aaa_ref",8,"content","F1_AAA_VARCHAR","VARCHAR(20)"],                      
-			["rtjj_40_aaa_ref",8,"content","F2_BBB_DECIMAL","DECIMAL(20,0)"],                    
-			["rtjj_40_aaa_ref",8,"content","F3_CCC_DATE","DATE"],                                
-			["rtjj_40_aaa_ref",8,"content_untracked","F4_DDD_NOT_IN_RH__DECIMAL","DECIMAL(5,0)"]
+			["rvlt_test_jj","rtjj_40_aaa_ref",3,"diff_hash","RH_RTJJ_40_AAA_REF","CHAR(28)"],                   
+			["rvlt_test_jj","rtjj_40_aaa_ref",8,"content","F1_AAA_VARCHAR","VARCHAR(20)"],                      
+			["rvlt_test_jj","rtjj_40_aaa_ref",8,"content","F2_BBB_DECIMAL","DECIMAL(20,0)"],                    
+			["rvlt_test_jj","rtjj_40_aaa_ref",8,"content","F3_CCC_DATE","DATE"],                                
+			["rvlt_test_jj","rtjj_40_aaa_ref",8,"content_untracked","F4_DDD_NOT_IN_RH__DECIMAL","DECIMAL(5,0)"]
 ],
  "stage_table_column": [
 			["F1_AAA_VARCHAR","VARCHAR(20)",8,"F1_AAA_VARCHAR","VARCHAR(20)",false],                        

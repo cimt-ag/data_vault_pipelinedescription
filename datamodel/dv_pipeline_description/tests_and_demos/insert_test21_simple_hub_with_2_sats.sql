@@ -37,18 +37,18 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE
 VALUES
 ('test21_simple_hub_with_2_sats','{
 	"dv_model_column": [
-		["rtjj_21_aaa_hub",2,"key","HK_RTJJ_21_AAA","CHAR(28)"],
-		["rtjj_21_aaa_hub",8,"business_key","F1_BK_AAA_VARCHAR","VARCHAR(20)"],
-		["rtjj_21_aaa_hub",8,"business_key","F2_BK_AAA_DECIMAL","DECIMAL(20,0)"],
-		["rtjj_21_aaa_p1_sat",2,"parent_key","HK_RTJJ_21_AAA","CHAR(28)"],
-		["rtjj_21_aaa_p1_sat",3,"diff_hash","RH_RTJJ_21_AAA_P1_SAT","CHAR(28)"],
-		["rtjj_21_aaa_p1_sat",8,"content","F3_AAA_SP1_VARCHAR","VARCHAR(200)"],
-		["rtjj_21_aaa_p1_sat",8,"content","F5_AAA_SP1_AND_SP2_DECIMAL","VARCHAR(200)"],
-		["rtjj_21_aaa_p1_sat",8,"content_untracked","F6_AAA_SP1_TIMESTAMP_XRH","TIMESTAMP"],
-		["rtjj_21_aaa_p2_sat",2,"parent_key","HK_RTJJ_21_AAA","CHAR(28)"],
-		["rtjj_21_aaa_p2_sat",3,"diff_hash","RH_RTJJ_21_AAA_P2_SAT","CHAR(28)"],
-		["rtjj_21_aaa_p2_sat",8,"content","F4_AAA_SP2_DECIMAL","DECIMAL(5,0)"],
-		["rtjj_21_aaa_p2_sat",8,"content","F5_AAA_SP1_AND_SP2_DECIMAL","VARCHAR(200)"]
+		["rvlt_test_jj","rtjj_21_aaa_hub",2,"key","HK_RTJJ_21_AAA","CHAR(28)"],
+		["rvlt_test_jj","rtjj_21_aaa_hub",8,"business_key","F1_BK_AAA_VARCHAR","VARCHAR(20)"],
+		["rvlt_test_jj","rtjj_21_aaa_hub",8,"business_key","F2_BK_AAA_DECIMAL","DECIMAL(20,0)"],
+		["rvlt_test_jj","rtjj_21_aaa_p1_sat",2,"parent_key","HK_RTJJ_21_AAA","CHAR(28)"],
+		["rvlt_test_jj","rtjj_21_aaa_p1_sat",3,"diff_hash","RH_RTJJ_21_AAA_P1_SAT","CHAR(28)"],
+		["rvlt_test_jj","rtjj_21_aaa_p1_sat",8,"content","F3_AAA_SP1_VARCHAR","VARCHAR(200)"],
+		["rvlt_test_jj","rtjj_21_aaa_p1_sat",8,"content","F5_AAA_SP1_AND_SP2_DECIMAL","VARCHAR(200)"],
+		["rvlt_test_jj","rtjj_21_aaa_p1_sat",8,"content_untracked","F6_AAA_SP1_TIMESTAMP_XRH","TIMESTAMP"],
+		["rvlt_test_jj","rtjj_21_aaa_p2_sat",2,"parent_key","HK_RTJJ_21_AAA","CHAR(28)"],
+		["rvlt_test_jj","rtjj_21_aaa_p2_sat",3,"diff_hash","RH_RTJJ_21_AAA_P2_SAT","CHAR(28)"],
+		["rvlt_test_jj","rtjj_21_aaa_p2_sat",8,"content","F4_AAA_SP2_DECIMAL","DECIMAL(5,0)"],
+		["rvlt_test_jj","rtjj_21_aaa_p2_sat",8,"content","F5_AAA_SP1_AND_SP2_DECIMAL","VARCHAR(200)"]
 ],
  "stage_table_column": [
 		["F1_BK_AAA_VARCHAR","VARCHAR(20)",8,"F1_BK_AAA_VARCHAR","VARCHAR(20)",false],

@@ -28,10 +28,10 @@ VALUES
 				,{"table_name": "rtjj_05_bbb_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_05_bbb"}
 				,{"table_name": "rtjj_05_ccc_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_05_bbb"}
 				,{"table_name": "rtjj_05_aaa_bbb_XXX_with_same_lk_lnk",	"stereotype": "lnk","link_key_column_name": "LK_rtjj_05_XXX_same_LK",
-																				"link_parent_tables": ["rtjj_05_aaa_hub","rtjj_05_bbb_hub"]}
+																				"link_parent_tables": ["rvlt_test_jj","rtjj_05_aaa_hub","rtjj_05_bbb_hub"]}
 				,{"table_name": "rtjj_05_aaa_bbb_esat",	"stereotype": "esat","satellite_parent_table": "rtjj_05_aaa_bbb_XXX_with_same_lk_lnk"}
 				,{"table_name": "rtjj_05_aaa_ccc_XXX_with_same_lk_lnk",	"stereotype": "lnk","link_key_column_name": "LK_rtjj_05_XXX_same_LK",
-																				"link_parent_tables": ["rtjj_05_aaa_hub","rtjj_05_ccc_hub"]}
+																				"link_parent_tables": ["rvlt_test_jj","rtjj_05_aaa_hub","rtjj_05_ccc_hub"]}
 				,{"table_name": "rtjj_05_aaa_ccc_esat",	"stereotype": "esat","satellite_parent_table": "rtjj_05_aaa_ccc_XXX_with_same_lk_lnk"}
 				]
 		}

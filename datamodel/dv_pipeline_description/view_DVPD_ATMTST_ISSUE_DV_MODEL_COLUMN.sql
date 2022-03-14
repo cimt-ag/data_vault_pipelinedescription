@@ -9,6 +9,7 @@ from dv_pipeline_description.dvpd_atmtst_ref_dv_model_column
 ,result_data as (
 select 
  dmtpp.pipeline 
+ ,dmtpp.schema_name 
  ,dmc.table_name 
  ,dmc.column_block 
  ,dmc.dv_column_class 
@@ -21,7 +22,8 @@ join dv_pipeline_description.dvpd_dv_model_column dmc  on  dmc.table_name =dmtpp
 )   													
 , reference_data as ( 
 select 
- pipeline_name  
+ pipeline_name 
+ ,schema_name
  ,table_name 
  ,column_block 
  ,dv_column_class 
