@@ -18,7 +18,7 @@ select
 , upper(diff_hash_column_name) as diff_hash_column_name
 , lower(satellite_parent_table) as satellite_parent_table
 , link_parent_tables
-, driving_hub_keys
+, driving_keys
 , tracked_field_groups
 , coalesce(is_link_without_sat::bool,false) as is_link_without_sat
 , coalesce(is_historized ::bool,true) as is_historized 
@@ -33,7 +33,7 @@ from (
 	, json_array_elements(tables)->>'diff_hash_column_name' as diff_hash_column_name
 	, json_array_elements(tables)->>'satellite_parent_table' as satellite_parent_table
 	, json_array_elements(tables)->'link_parent_tables' as link_parent_tables
-	, json_array_elements(tables)->'driving_hub_keys' as driving_hub_keys
+	, json_array_elements(tables)->'driving_keys' as driving_keys
 	, json_array_elements(tables)->'tracked_field_groups' as tracked_field_groups
 	, json_array_elements(tables)->>'is_link_without_sat' as is_link_without_sat
 	, json_array_elements(tables)->>'is_historized' as is_historized 
