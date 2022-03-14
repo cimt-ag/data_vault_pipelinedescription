@@ -172,7 +172,7 @@ select -- own key column
    ,tb.diff_hash_column_name   as column_name
    ,'CHAR(28)' as column_type
  from dv_pipeline_description.dvpd_dv_model_table tb
- where tb.stereotype in ('ref')
+ where tb.stereotype in ('ref') and tb.is_historized 
  union
  select -- content
  	tb.table_name
