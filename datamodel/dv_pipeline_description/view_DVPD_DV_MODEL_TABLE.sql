@@ -9,6 +9,7 @@ select distinct
 	,diff_hash_column_name
 	,satellite_parent_table 
 	,is_link_without_sat
+	,is_historized
 from dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE ;
 
 -- select * From dv_pipeline_description.DVPD_DV_MODEL_TABLE;

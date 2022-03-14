@@ -153,11 +153,47 @@ select -- own key column
  							and dfm.target_table = tb.table_name 
  where tb.stereotype in ('sat','msat')
  )
+ ,ref_columns as (
+ 
+ select -- meta columns
+ 	table_name
+   ,1 as column_block
+   ,'meta' as dv_column_class
+   ,dml.meta_column_name as column_name
+   ,dml.meta_column_type as column_type
+ from dv_pipeline_description.dvpd_dv_model_table tb
+ join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype = 'ref' or ( dml.stereotype = 'ref_hist' and tb.is_historized ) 
+ where tb.stereotype in ('ref')
+ union 
+ select -- diff_hash_column
+ 	table_name
+   ,3 as column_block
+   ,'diff_hash' as dv_column_class
+   ,tb.diff_hash_column_name   as column_name
+   ,'CHAR(28)' as column_type
+ from dv_pipeline_description.dvpd_dv_model_table tb
+ where tb.stereotype in ('ref')
+ union
+ select -- content
+ 	tb.table_name
+   ,8 as column_block
+   ,case when dfm.exclude_from_diff_hash then 'content_untracked' else 'content' end as dv_column_class
+   ,dfm.target_column_name  as column_name
+   ,dfm.target_column_type 
+ from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
+ left join dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING dfm on dfm.pipeline = tb.pipeline 
+ 							and dfm.target_table = tb.table_name 
+ where tb.stereotype in ('ref')
+ 
+ )
  select * from link_columns
  union
  select * from hub_columns
  union
  select * from sat_columns
+ union 
+ select * from ref_columns
+ 
  
 );
  

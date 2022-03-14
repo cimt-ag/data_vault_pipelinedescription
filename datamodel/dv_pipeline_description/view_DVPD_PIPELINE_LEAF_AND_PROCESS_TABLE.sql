@@ -4,7 +4,7 @@ create or replace view dv_pipeline_description.DVPD_PIPELINE_LEAF_AND_PROCESS_TA
 with leaf_tables_per_pipeline as (
 	select distinct pipeline,ddmt.table_name 
 	from dv_pipeline_description.dvpd_dv_model_table_per_pipeline ddmt   
-	where ddmt.stereotype in('sat','msat','esat') or ddmt.is_link_without_sat 
+	where ddmt.stereotype in('sat','msat','esat','ref') or ddmt.is_link_without_sat 
 )
 -- leaf table itself
 Select 

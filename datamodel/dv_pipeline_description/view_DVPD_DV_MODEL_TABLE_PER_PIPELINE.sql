@@ -21,6 +21,7 @@ select
 , driving_hub_keys
 , tracked_field_groups
 , coalesce(is_link_without_sat::bool,false) as is_link_without_sat
+, coalesce(is_historized ::bool,true) as is_historized 
 from (
 	select
 	pipeline
@@ -35,6 +36,7 @@ from (
 	, json_array_elements(tables)->'driving_hub_keys' as driving_hub_keys
 	, json_array_elements(tables)->'tracked_field_groups' as tracked_field_groups
 	, json_array_elements(tables)->>'is_link_without_sat' as is_link_without_sat
+	, json_array_elements(tables)->>'is_historized' as is_historized 
 	from data_vault_schema_basics
 ) json_parsed
 ;
