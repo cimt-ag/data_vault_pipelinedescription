@@ -9,7 +9,7 @@ select '["'
 from dv_pipeline_description.dvpd_dv_model_table_per_pipeline dmtpp
 join dv_pipeline_description.dvpd_dv_model_column dmc  on  dmc.table_name =dmtpp.table_name 
    													and dmc.dv_column_class  <> 'meta'											
-where dmtpp.pipeline like 'test40%'  													
+where dmtpp.pipeline like 'test26%'  													
 
 
 
@@ -24,5 +24,5 @@ select '["'
  || coalesce(encrypt::varchar,'null') || '],'
 from dv_pipeline_description.dvpd_pipeline_stage_table_column									
 where not is_meta   
-and   pipeline like 'test40%'  													
+and   pipeline like 'test26%'  													
 
