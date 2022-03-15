@@ -44,4 +44,4 @@ comment on view dv_pipeline_description.DVPD_PIPELINE_COLUMN_MAPPING_WITH_FIELD_
 is 'For every pipeline render stage_column name and provide columns_name for all theoretical process_blocks and table combinations';
 
 											
--- select * from dv_pipeline_description.DVPD_PIPELINE_COLUMN_MAPPING_WITH_FIELD_GROUP_EXTENTION ;										
+-- select * from dv_pipeline_description.DVPD_PIPELINE_COLUMN_MAPPING_WITH_FIELD_GROUP_EXTENTION where pipeline not like 'test0%' order by pipeline,process_block,field_group,target_table,column_block,column_name,stage_column_name ;										
