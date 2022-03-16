@@ -70,9 +70,9 @@ where partner.hierarchy_key_suffix <>''
 -- finale structure (adding process block information)
 select 
  fgean.*
- ,case when hierarchy_key_suffix <>''  then replace(fgean.field_group,'_A_','')||'H0_'||hierarchy_key_suffix
+ ,case when hierarchy_key_suffix <>''  then replace(fgean.field_group,'_A_','')||'H1_'||hierarchy_key_suffix
  	   when partner_hierarchy_key_suffix is not null and partner_hierarchy_key_suffix <> '' 	
- 	   									then replace(fgean.field_group,'_A_','')||'H1_'||partner_hierarchy_key_suffix
+ 	   									then replace(fgean.field_group,'_A_','')||'H0_'||partner_hierarchy_key_suffix
  	   else fgean.field_group end process_block
 from field_group_expansion_and_normalization fgean
 left join hierachy_partner_field hpf on  hpf.pipeline=fgean.pipeline
