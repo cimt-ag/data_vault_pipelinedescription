@@ -7,19 +7,21 @@ select table_name ,column_name ,dv_column_class,column_block
 from dv_pipeline_description.dvpd_dv_model_column ddmc 
 where ddmc.dv_column_class not in ('meta')
 )
-,stage_and_dv_columns_basic as(
+--,stage_and_dv_columns_basic as(
 select distinct pipeline 
+	,target_table 
 	,process_block
 	,field_group 
-	,target_table 
 	,case when process_block = '_A_' OR dv_column_class not in ('key','parent_key','diff_hash')   then dc.column_name
 	else dc.column_name||'___'||UPPER(process_block) END stage_column_name_basic
-	,column_name 
+	,column_name
+	,field_name
 	,dv_column_class
 	,column_block 
 from dv_pipeline_description.dvpd_source_field_mapping dsfm 
 join dv_columns dc on dc.table_name = dsfm.target_table 
 )
+,
 select  sadcb.pipeline 
 	,sadcb.process_block
 	,sadcb.field_group 
