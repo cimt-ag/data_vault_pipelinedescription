@@ -18,6 +18,7 @@ select
 , upper(diff_hash_column_name) as diff_hash_column_name
 , lower(satellite_parent_table) as satellite_parent_table
 , link_parent_tables
+, hierarchical_parents
 , driving_keys
 , tracked_field_groups
 , coalesce(is_link_without_sat::bool,false) as is_link_without_sat
@@ -33,6 +34,7 @@ from (
 	, json_array_elements(tables)->>'diff_hash_column_name' as diff_hash_column_name
 	, json_array_elements(tables)->>'satellite_parent_table' as satellite_parent_table
 	, json_array_elements(tables)->'link_parent_tables' as link_parent_tables
+	, json_array_elements(tables)->'hierarchical_parents' as hierarchical_parents
 	, json_array_elements(tables)->'driving_keys' as driving_keys
 	, json_array_elements(tables)->'tracked_field_groups' as tracked_field_groups
 	, json_array_elements(tables)->>'is_link_without_sat' as is_link_without_sat
