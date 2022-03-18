@@ -179,7 +179,7 @@ Select distinct
   ,stereotype
 from tables_restricted_to_field_group
 )
---, final_table_field_group_relation as (
+, final_table_field_group_relation as (
 select 
   pipeline 
   ,table_name 
@@ -195,5 +195,39 @@ select
   ,field_group
   ,fg_rule 
 from tables_restricted_to_field_group
-
+)
+, additional_hierarchical_hub_processes as (
+Select 
+  ftfgr_hub.pipeline 
+  ,ftfgr_hub.table_name 
+  ,ftfgr_hub.stereotype
+  ,ftfgr_hub.field_group
+  ,ftfgr_hub.fg_rule 
+  ,dmlp.hierarchy_key_suffix 
+from final_table_field_group_relation ftfgr_hub
+join dv_pipeline_description.dvpd_dv_model_link_parent dmlp on dmlp.parent_table_name = ftfgr_hub.table_name 
+															and dmlp.is_hierarchical_relation
+join final_table_field_group_relation ftfgr_link on ftfgr_link.pipeline = ftfgr_hub.pipeline 
+												and ftfgr_link.table_name = dmlp.table_name 
+												and ftfgr_link.field_group = ftfgr_hub.field_group 
+)
+select 
+  pipeline 
+  ,table_name 
+  ,stereotype
+  ,field_group
+  ,null hierarchy_key_suffix
+  ,field_group as process_block 
+  ,fg_rule 
+from final_table_field_group_relation
+union
+select
+  pipeline 
+  ,table_name 
+  ,stereotype
+  ,field_group
+  ,hierarchy_key_suffix
+  ,field_group||'_'||hierarchy_key_suffix process_block
+  ,fg_rule 
+from additional_hierarchical_hub_processes;
 -- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN_BASIC order by pipeline,field_group,table_name;										
