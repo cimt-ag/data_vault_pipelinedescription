@@ -41,7 +41,7 @@ VALUES
  "stage_table_column": [
 			["F1_AAA_VARCHAR","VARCHAR(20)",8,"F1_AAA_VARCHAR","VARCHAR(20)",false],                        
 			["F2_BBB_DECIMAL","DECIMAL(20,0)",8,"F2_BBB_DECIMAL","DECIMAL(20,0)",false],                    
-			["F3_CCC_XXXBADNAMEXXX_DATE","DATE",8,"F3_CCC_XXXBADNAMEXXX_DATE","DATE",false],                
+			["F3_CCC_DATE","DATE",8,"F3_CCC_XXXBADNAMEXXX_DATE","DATE",false],                
 			["F4_DDD_NOT_IN_RH__DECIMAL","DECIMAL(5,0)",8,"F4_DDD_NOT_IN_RH__DECIMAL","DECIMAL(5,0)",false],
 			["RH_RTJJ_40_AAA_REF","CHAR(28)",3,null,null,false]                                            
 ]

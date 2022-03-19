@@ -1,4 +1,4 @@
-drop view if exists dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING cascade;
+--drop view if exists dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING cascade;
 
 create or replace view dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING as 
 
@@ -8,7 +8,7 @@ select distinct
 	,ppp.table_name
 	,dmc.column_name 
 	,dmc.dv_column_class  
-	,case when pfte.field_group ='_A_' and pfte.hierarchy_key_suffix='' then dmc.column_name 
+	,case when (pfte.field_group ='_A_' and pfte.hierarchy_key_suffix='') or process_block ='_A_' then dmc.column_name 
 	 else dmc.column_name||'_'||process_block end stage_column_name
 	,dmc.column_type 
 	,dmc.column_block 

@@ -59,7 +59,7 @@ VALUES
 		["F2_BK_BBB_DECIMAL","DECIMAL(20,0)",8,"F2_BK_BBB_DECIMAL","DECIMAL(20,0)",false],  
 		["F3_AAA_SP1_VARCHAR","VARCHAR(200)",8,"F3_AAA_SP1_VARCHAR","VARCHAR(200)",false],  
 		["F4_AAA_SP1_DECIMAL","DECIMAL(5,0)",8,"F4_AAA_SP1_DECIMAL","DECIMAL(5,0)",false],  
-		["F5_XXX_BAD_NAME_XXX","VARCHAR(200)",8,"F5_XXX_BAD_NAME_XXX","VARCHAR(200)",false],
+		["F5_AAA_SP1_VARCHAR","VARCHAR(200)",8,"F5_XXX_BAD_NAME_XXX","VARCHAR(200)",false],
 		["HK_RTJJ_26_AAA","CHAR(28)",2,null,null,false],                                    
 		["HK_RTJJ_26_BBB","CHAR(28)",2,null,null,false],                                    
 		["LK_RTJJ_26_AAA_BBB","CHAR(28)",2,null,null,false],                                
