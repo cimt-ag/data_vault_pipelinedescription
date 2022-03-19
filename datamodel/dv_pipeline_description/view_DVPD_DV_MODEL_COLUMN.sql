@@ -11,7 +11,7 @@ from (
 	 pipeline 
 	 ,table_name 
 	 ,json_array_elements_text(link_parent_tables) as parent_table_name
-	from dv_pipeline_description.dvpd_dv_model_table_per_pipeline
+	from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
 	where stereotype ='lnk'
 	) json_parsed
 )
@@ -68,7 +68,7 @@ select -- suffixed keys of parents
    ,case when dfm.exclude_from_key_hash then 'content_untracked' ELSE 'dependent_child_key' end as dv_column_class
    ,dfm.target_column_name   as column_name
    ,dfm.target_column_type 
- from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
+ from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE tb
  join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline=tb.pipeline 
  								 and dfm.target_table = tb.table_name 
  where tb.stereotype ='lnk'								   
@@ -99,7 +99,7 @@ select -- suffixed keys of parents
    ,case when dfm.exclude_from_key_hash then 'content_untracked' ELSE 'business_key' end as dv_column_class
    ,dfm.target_column_name   as column_name
    ,dfm.target_column_type 
- from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
+ from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE tb
  left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline=tb.pipeline 
  								 and dfm.target_table = tb.table_name 
  where tb.stereotype ='hub'
@@ -109,7 +109,7 @@ select -- suffixed keys of parents
 	 pipeline 
 	 ,table_name 
 	 ,satellite_parent_table as parent_table
-	from dv_pipeline_description.dvpd_dv_model_table_per_pipeline
+	from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
 	where stereotype in ('sat','esat','msat')
 )
 ,sat_columns as (
@@ -130,7 +130,7 @@ select -- own key column
    ,coalesce (pa.hub_key_column_name  ,pa.link_key_column_name )  as column_name
    ,'CHAR(28)' as column_type
  from sat_parent_table_ref sr
- join dv_pipeline_description.dvpd_dv_model_table_per_pipeline pa  on pa.pipeline = sr.pipeline 
+ join dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE pa  on pa.pipeline = sr.pipeline 
  					     and pa.table_name  =sr.parent_table
  union
  select -- diff_hash_column
@@ -148,7 +148,7 @@ select -- own key column
    ,case when dfm.exclude_from_diff_hash then 'content_untracked' else 'content' end as dv_column_class
    ,dfm.target_column_name  as column_name
    ,dfm.target_column_type 
- from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
+ from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE tb
  left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline = tb.pipeline 
  							and dfm.target_table = tb.table_name 
  where tb.stereotype in ('sat','msat')
@@ -180,7 +180,7 @@ select -- own key column
    ,case when dfm.exclude_from_diff_hash then 'content_untracked' else 'content' end as dv_column_class
    ,dfm.target_column_name  as column_name
    ,dfm.target_column_type 
- from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
+ from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE tb
  left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline = tb.pipeline 
  							and dfm.target_table = tb.table_name 
  where tb.stereotype in ('ref')

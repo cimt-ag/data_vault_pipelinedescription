@@ -1,5 +1,5 @@
-drop view if exists dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE cascade;
-create or replace view dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE as 
+drop view if exists dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE cascade;
+create or replace view dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE as 
 
 with data_vault_schema_basics as (
 select 
@@ -43,4 +43,4 @@ from (
 ) json_parsed
 ;
 
--- select * from dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE ;
+-- select * from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE ;

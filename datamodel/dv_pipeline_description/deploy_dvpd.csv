@@ -6,7 +6,7 @@ mandantory,type,schema_name,name
 
 1,view,dv_pipeline_description,DVPD_PIPELINE_FIELD_TARGET_EXPANSION
 1,view,dv_pipeline_description,DVPD_PIPELINE_FIELD_PARSE_PROPERTIES
-1,view,dv_pipeline_description,DVPD_DV_MODEL_TABLE_PER_PIPELINE
+1,view,dv_pipeline_description,DVPD_PIPELINE_TARGET_TABLE
 1,view,dv_pipeline_description,DVPD_DV_MODEL_TABLE
 1,view,dv_pipeline_description,DVPD_DV_MODEL_LINK_PARENT
 1,view,dv_pipeline_description,DVPD_DV_MODEL_COLUMN

@@ -5,14 +5,14 @@ with normalized_link_parents as (
 	select 
 		table_name
 		,json_array_elements_text(link_parent_tables) link_parent_table
-	from dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE
+	from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
 ) 
 , normalized_hierarchical_parents as (
 	select 
 		table_name
 		,json_array_elements(hierarchical_parents)->>'table_name'::text as link_parent_table
 		,json_array_elements(hierarchical_parents)->>'hierarchy_key_suffix'::text as hierarchy_key_suffix
-	from dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE
+	from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
 )
 select distinct 
 	nlp.table_name

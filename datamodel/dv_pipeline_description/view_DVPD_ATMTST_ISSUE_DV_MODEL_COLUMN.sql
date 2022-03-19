@@ -16,7 +16,7 @@ select
  ,dmc.column_name 
  ,dmc.column_type 
 from  pipelines_with_atmtst_data pwad
-join dv_pipeline_description.dvpd_dv_model_table_per_pipeline dmtpp on dmtpp.pipeline =pwad.pipeline_name 
+join dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp on dmtpp.pipeline =pwad.pipeline_name 
 join dv_pipeline_description.dvpd_dv_model_column dmc  on  dmc.table_name =dmtpp.table_name 
    													and dmc.dv_column_class  <> 'meta'											
 )   													

@@ -4,7 +4,7 @@ create or replace view dv_pipeline_description.DVPD_DV_MODEL_PARENT_BUSINESS_KEY
 
 with leaf_targets as (
 	select table_name , satellite_parent_table 
-	from dv_pipeline_description.dvpd_dv_model_table_per_pipeline 
+	from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE 
 	where stereotype in('sat','msat','esat') or is_link_without_sat
 	)
 -- satellite parents

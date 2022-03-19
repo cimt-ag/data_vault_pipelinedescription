@@ -6,7 +6,7 @@ select
 	dmtpp.pipeline 
 	,dmtpp.table_name  
 	,count (sfm.field_name ) bk_count
-from dv_pipeline_description.dvpd_dv_model_table_per_pipeline dmtpp 
+from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp 
 left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm ON dmtpp.table_name = lower(sfm.target_table  )
 			and sfm.pipeline = dmtpp.pipeline 
 			and not sfm.exclude_from_key_hash
@@ -30,7 +30,7 @@ select
 	,hub_key_column_name 
 	,count(1) hk_count
 	,string_agg(table_name ,', ') table_list 
-from dv_pipeline_description.dvpd_dv_model_table_per_pipeline
+from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
 where stereotype = 'hub' and hub_key_column_name is not null
 group by 1,2
 )

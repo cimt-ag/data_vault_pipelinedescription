@@ -19,7 +19,7 @@ select distinct
 	,stereotype 
 	,json_array_elements_text(tracked_field_groups) field_group
 	,'explicit' fg_rule
-from dv_pipeline_description.dvpd_dv_model_table_per_pipeline
+from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
 where tracked_field_groups is not null
 )
 ,tables_without_explicit_field_group as(
@@ -27,7 +27,7 @@ select distinct
 	dmtpp.pipeline 
 	,dmtpp.table_name
 	,dmtpp.stereotype 
-from dv_pipeline_description.dvpd_dv_model_table_per_pipeline dmtpp
+from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp
 left join tables_with_explicit_field_group twepb on twepb.pipeline =dmtpp.pipeline 
 												   and twepb.table_name = dmtpp.table_name 
 where twepb.table_name is null												   
@@ -40,7 +40,7 @@ select
 	,twepb.field_group 
 	,'restrict by sat'::text fg_rule
 from tables_without_explicit_field_group  twogb
-join dv_pipeline_description.dvpd_dv_model_table_per_pipeline dmtpp on dmtpp.pipeline = twogb.pipeline 
+join dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp on dmtpp.pipeline = twogb.pipeline 
 																and dmtpp.satellite_parent_table = twogb.table_name 
 join tables_with_explicit_field_group twepb on twepb.pipeline = twogb.pipeline 
 											 and twepb.table_name = dmtpp.table_name 
@@ -128,7 +128,7 @@ select
 	,hlpsfos.field_group 
     ,'restricted by parent'::text fg_rule
 from hub_links_probably_driving_fg_of_satellite  hlpsfos 
-join dv_pipeline_description.dvpd_dv_model_table_per_pipeline dmtpp on dmtpp.pipeline = hlpsfos.pipeline 
+join dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp on dmtpp.pipeline = hlpsfos.pipeline 
 																and dmtpp.satellite_parent_table  = hlpsfos.table_name 
 join tables_without_explicit_field_group twoefg on twoefg.pipeline = hlpsfos.pipeline 
 												and twoefg.table_name =dmtpp.table_name 
