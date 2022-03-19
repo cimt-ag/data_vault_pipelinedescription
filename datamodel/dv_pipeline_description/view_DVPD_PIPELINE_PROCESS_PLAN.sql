@@ -17,7 +17,7 @@ select distinct
 	pipeline 
 	,table_name 
 	,stereotype 
-	,json_array_elements_text(tracked_field_groups) field_group
+	,upper(json_array_elements_text(tracked_field_groups)) field_group
 	,'explicit' fg_rule
 from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
 where tracked_field_groups is not null
@@ -211,6 +211,7 @@ join final_table_field_group_relation ftfgr_link on ftfgr_link.pipeline = ftfgr_
 												and ftfgr_link.table_name = dmlp.table_name 
 												and ftfgr_link.field_group = ftfgr_hub.field_group 
 )
+-- >>>>> Final view <<<<
 select 
   pipeline 
   ,table_name 
@@ -225,7 +226,8 @@ select
   pipeline 
   ,table_name 
   ,stereotype
-  ,field_group||'_'||hierarchy_key_suffix process_block
+  ,case when field_group='_A_' then '_'||hierarchy_key_suffix 
+  	  else field_group ||'_'||hierarchy_key_suffix end     as process_block
   ,field_group
   ,hierarchy_key_suffix
   ,fg_rule 

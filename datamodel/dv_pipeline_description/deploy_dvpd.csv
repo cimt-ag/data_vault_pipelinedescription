@@ -10,7 +10,8 @@ mandantory,type,schema_name,name
 1,view,dv_pipeline_description,DVPD_DV_MODEL_TABLE
 1,view,dv_pipeline_description,DVPD_DV_MODEL_LINK_PARENT
 1,view,dv_pipeline_description,DVPD_DV_MODEL_COLUMN
-1,view,dv_pipeline_description,DVPD_PIPELINE_STAGE_TABLE_COLUMN
+1,view,dv_pipeline_description,DVPD_PIPELINE_PROCESS_PLAN
+1,view,dv_pipeline_description,DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING
 1,view,dv_pipeline_description,DVPD_PIPELINE_STAGE_TABLE_COLUMN
 
 1,view,dv_pipeline_description,DVPD_ATMTST_CATALOG
