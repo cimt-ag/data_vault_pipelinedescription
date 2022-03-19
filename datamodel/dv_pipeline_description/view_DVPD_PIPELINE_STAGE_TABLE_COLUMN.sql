@@ -16,8 +16,10 @@ select distinct
 	,column_type 
 	,min(column_block) column_block
 	,false is_meta
+	,field_name
+	,field_type
 from  dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping
-group by 1,2,3,5
+group by 1,2,3,5,6,7
 union 
 select
 	pipeline 
@@ -25,6 +27,8 @@ select
 	,dmcl.meta_column_type 
 	, 1
 	,true is_meta
+	,null field_name 
+	,null field_type 
 from pipelines 
 join dv_pipeline_description.dvpd_meta_column_lookup dmcl on dmcl.stereotype ='_stg' ;
 

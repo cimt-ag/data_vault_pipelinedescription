@@ -12,10 +12,10 @@ VALUES
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 	"fields": [
-		      {"field_name": "F1_BK_AAA_FG1", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_66_aaa_hub"
+		      {"field_name": "F1_BK_AAA_G1", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_66_aaa_hub"
 																					,"target_column_name": "BK_AAA"
 																				 	,"field_groups":["fg1"]}]}
-		      ,{"field_name": "F2_BK_AAA_FG2", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_66_aaa_hub"
+		      ,{"field_name": "F2_BK_AAA_G2", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_66_aaa_hub"
 																					,"target_column_name": "BK_AAA"
 																				 	,"field_groups":["fg2"]}]}		 	  
 		      ,{"field_name": "F3_BK_BBB", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_66_bbb_hub"}]}		 

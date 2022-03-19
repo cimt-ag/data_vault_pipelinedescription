@@ -1,4 +1,4 @@
-drop view if exists dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN cascade;
+-- drop view if exists dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN cascade;
 
 create or replace view dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN as 
 
@@ -218,7 +218,7 @@ select
   ,stereotype
   ,field_group as process_block 
   ,field_group
-  ,null hierarchy_key_suffix
+  ,'' hierarchy_key_suffix
   ,fg_rule 
 from final_table_field_group_relation
 union

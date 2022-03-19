@@ -18,7 +18,7 @@ VALUES
 		      ,{"field_name": "F2_BK_AAA_FG2", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_70_aaa_hub"
 																					,"target_column_name": "BK_AAA"
 																				 	,"field_groups":["fg2"]}]}		 	  
-		      ,{"field_name": "F3_BK_AAA_HRCHY1_FG1", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_70_aaa_hub"
+		      ,{"field_name": "F3_BK_AAA_H1_FG1", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_70_aaa_hub"
 																					,"target_column_name": "BK_AAA"
 																				 	,"field_groups":["fg1"]
 																					,"hierarchy_key_suffix": "HRCHY1"}]}		  
@@ -32,7 +32,7 @@ VALUES
 																			,"hierarchical_parents": [ {"table_name":"rtjj_70_aaa_hub"
 																										,"hierarchy_key_suffix": "HRCHY1"}]}
 				,{"table_name": "rtjj_70_aaa_aaa1_esat",	"stereotype": "esat","satellite_parent_table": "rtjj_70_aaa_aaa1_lnk"
-																				 ,"tracked_field_groups":["fg2"]}
+																				 ,"tracked_field_groups":["fg1"]}
 
 				]
 		}
