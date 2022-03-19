@@ -20,7 +20,7 @@ select distinct
 table_name
 ,parent_table_name 
 ,hierarchy_key_suffix 
-from dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING  fm
+from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION  fm
 join link_parent_tables pt on pt.pipeline=fm.pipeline and pt.parent_table_name = fm.target_table 
 where length(hierarchy_key_suffix)>0
 )
@@ -69,7 +69,7 @@ select -- suffixed keys of parents
    ,dfm.target_column_name   as column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
- join dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING dfm on dfm.pipeline=tb.pipeline 
+ join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline=tb.pipeline 
  								 and dfm.target_table = tb.table_name 
  where tb.stereotype ='lnk'								   
  )
@@ -100,7 +100,7 @@ select -- suffixed keys of parents
    ,dfm.target_column_name   as column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
- left join dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING dfm on dfm.pipeline=tb.pipeline 
+ left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline=tb.pipeline 
  								 and dfm.target_table = tb.table_name 
  where tb.stereotype ='hub'
 )
@@ -149,7 +149,7 @@ select -- own key column
    ,dfm.target_column_name  as column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
- left join dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING dfm on dfm.pipeline = tb.pipeline 
+ left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline = tb.pipeline 
  							and dfm.target_table = tb.table_name 
  where tb.stereotype in ('sat','msat')
  )
@@ -181,7 +181,7 @@ select -- own key column
    ,dfm.target_column_name  as column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.dvpd_dv_model_table_per_pipeline tb
- left join dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING dfm on dfm.pipeline = tb.pipeline 
+ left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline = tb.pipeline 
  							and dfm.target_table = tb.table_name 
  where tb.stereotype in ('ref')
  

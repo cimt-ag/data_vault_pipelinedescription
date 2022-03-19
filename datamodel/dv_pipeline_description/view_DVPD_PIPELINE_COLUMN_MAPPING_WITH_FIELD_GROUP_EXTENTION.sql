@@ -18,7 +18,7 @@ select distinct pipeline
 	,field_name
 	,dv_column_class
 	,column_block 
-from dv_pipeline_description.dvpd_source_field_mapping dsfm 
+from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dsfm 
 join dv_columns dc on dc.table_name = dsfm.target_table 
 )
 ,
@@ -35,7 +35,7 @@ select  sadcb.pipeline
 	,sadcb.dv_column_class
 	,sadcb.column_block 
 from stage_and_dv_columns_basic sadcb 
-left join dv_pipeline_description.dvpd_source_field_mapping dsfm on dsfm.pipeline = sadcb.pipeline
+left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dsfm on dsfm.pipeline = sadcb.pipeline
 										and dsfm.target_table=sadcb.target_table
 										and (dsfm.process_block=sadcb.process_block or dsfm.process_block='_A_')
 										and dsfm.target_column_name=sadcb.column_name

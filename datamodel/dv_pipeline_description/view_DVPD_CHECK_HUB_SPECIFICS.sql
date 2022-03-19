@@ -7,7 +7,7 @@ select
 	,dmtpp.table_name  
 	,count (sfm.field_name ) bk_count
 from dv_pipeline_description.dvpd_dv_model_table_per_pipeline dmtpp 
-left join dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING sfm ON dmtpp.table_name = lower(sfm.target_table  )
+left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm ON dmtpp.table_name = lower(sfm.target_table  )
 			and sfm.pipeline = dmtpp.pipeline 
 			and not sfm.exclude_from_key_hash
 where dmtpp.stereotype ='hub'   

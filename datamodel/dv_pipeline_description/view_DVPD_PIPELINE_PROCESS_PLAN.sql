@@ -9,7 +9,7 @@ select distinct
 	,dmt.stereotype 
 	,field_group
 	,'explicit' fg_rule
-from dv_pipeline_description.dvpd_source_field_mapping sfm
+from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm
 join dv_pipeline_description.dvpd_dv_model_table dmt on dmt.table_name =sfm.target_table 
 where field_group <> '_A_'
 union

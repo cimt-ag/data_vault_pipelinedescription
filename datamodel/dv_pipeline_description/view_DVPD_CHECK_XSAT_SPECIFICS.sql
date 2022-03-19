@@ -10,7 +10,7 @@ with no_columns_on_esat as (
 	 	,'DVPD_CHECK_XSAT_SPECIFICS'::text  check_ruleset
 		, 'a field cannot be mapped to an effecitivy satellite (esat)':: text message
 	from dv_pipeline_description.dvpd_dv_model_table_per_pipeline dmtpp 
-	join dv_pipeline_description.DVPD_SOURCE_FIELD_MAPPING sfm ON dmtpp.table_name = lower(sfm.target_table  )
+	join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm ON dmtpp.table_name = lower(sfm.target_table  )
 				and sfm.pipeline = dmtpp.pipeline 
 	where dmtpp.stereotype ='esat'
 )

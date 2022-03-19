@@ -4,7 +4,7 @@ mandantory,type,schema_name,name
 1,table,dv_pipeline_description,DVPD_ATMTST_REFERENCE
 1,table,dv_pipeline_description,DVPD_STEREOTYPE_CHECK_MATRIX
 
-1,view,dv_pipeline_description,DVPD_SOURCE_FIELD_MAPPING
+1,view,dv_pipeline_description,DVPD_PIPELINE_FIELD_TARGET_EXPANSION
 1,view,dv_pipeline_description,DVPD_SOURCE_FIELD
 1,view,dv_pipeline_description,DVPD_DV_MODEL_TABLE_PER_PIPELINE
 1,view,dv_pipeline_description,DVPD_DV_MODEL_TABLE
