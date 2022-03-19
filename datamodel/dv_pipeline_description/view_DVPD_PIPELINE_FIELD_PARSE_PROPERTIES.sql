@@ -1,5 +1,5 @@
---drop view if exists dv_pipeline_description.DVPD_SOURCE_FIELD cascade;
-create or replace view dv_pipeline_description.DVPD_SOURCE_FIELD as
+--drop view if exists dv_pipeline_description.DVPD_PIPELINE_FIELD_PARSE_PROPERTIES cascade;
+create or replace view dv_pipeline_description.DVPD_PIPELINE_FIELD_PARSE_PROPERTIES as
 
 with raw_field_list as( 
 Select 
@@ -14,13 +14,13 @@ Select
 from dv_pipeline_description.dvpd_dictionary dt
 )
 select
- pipeline,
- field_name,
- field_type,
- coalesce(explicit_field_position::integer,row_number() over (PARTITION BY pipeline )) field_position,
- parsing_expression,
- uniqueness_groups,
- field_comment
+ pipeline
+ ,upper(field_name) as field_name
+ ,upper(field_type) as field_type
+ ,coalesce(explicit_field_position::integer,row_number() over (PARTITION BY pipeline )) field_position
+ ,parsing_expression
+ ,uniqueness_groups
+ ,field_comment
 from raw_field_list;
 
 

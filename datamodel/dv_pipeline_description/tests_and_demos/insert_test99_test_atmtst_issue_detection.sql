@@ -33,11 +33,11 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE
 VALUES
 ('test99_test_atmtst_issue_detection','{
 	"dv_model_column": [
-	["rtjj_99_aaa_hub",2,"key","HK_RTJJ_99_AAA_HUB","CHAR(28)"],
-	["rtjj_99_aaa_hub",8,"business_key","F1_BK_AAA_DECIMAL","DECIMAL(20,0)"],
-	["rtjj_99_aaa_p1_sat",2,"parent_key","HK_RTJJ_99_AAA_HUB","CHAR(28)"],
-	["rtjj_99_aaa_p1_sat",3,"diff_hash","RH_RTJJ_99_AAA_P1_SAT","CHAR(28)"],
-	["rtjj_99_aaa_p1_sat",8,"content","F2_AAA_XXX_BAD_FIELD_IN_REF_DECIMAL","DECIMAL(20,0)"]
+	["rvlt_test_jj","rtjj_99_aaa_hub",2,"key","HK_RTJJ_99_AAA_HUB","CHAR(28)"],
+	["rvlt_test_jj","rtjj_99_aaa_hub",8,"business_key","F1_BK_AAA_DECIMAL","DECIMAL(20,0)"],
+	["rvlt_test_jj","rtjj_99_aaa_p1_sat",2,"parent_key","HK_RTJJ_99_AAA_HUB","CHAR(28)"],
+	["rvlt_test_jj","rtjj_99_aaa_p1_sat",3,"diff_hash","RH_RTJJ_99_AAA_P1_SAT","CHAR(28)"],
+	["rvlt_test_jj","rtjj_99_aaa_p1_sat",8,"content","F2_AAA_XXX_BAD_FIELD_IN_REF_DECIMAL","DECIMAL(20,0)"]
 ],
  "stage_table_column": [
 		["F1_BK_AAA_DECIMAL","DECIMAL(20,0)",8,"F1_BK_AAA_DECIMAL","DECIMAL(20,0)",false],

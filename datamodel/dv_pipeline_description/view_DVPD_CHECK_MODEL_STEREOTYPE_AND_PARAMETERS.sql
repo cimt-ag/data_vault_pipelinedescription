@@ -16,7 +16,7 @@ select
   		when scm.needs_link_parent_tables  = 1 and dmtpp.link_parent_tables  is null 
   			 then 'link_parent_tables are not declared'
     else 'ok' end  message
-from dv_pipeline_description.dvpd_dv_model_table_per_pipeline dmtpp
+from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp
 left join dv_pipeline_description.dvpd_stereotype_check_matrix scm on scm.stereotype = dmtpp.stereotype 
 ;
 

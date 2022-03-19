@@ -11,14 +11,14 @@ select
 		pipeline 
 		,table_name
 		,json_array_elements_text(link_parent_tables) parent_table
-	from dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE
+	from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
 	where link_parent_tables is not null
 	union
 	select 
 		pipeline 
 		,table_name
 		,satellite_parent_table  parent_table
-	from dv_pipeline_description.DVPD_DV_MODEL_TABLE_PER_PIPELINE
+	from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
 	where satellite_parent_table is not null
 	) raw_union
 )
@@ -30,7 +30,7 @@ select
   ,case when dmtpp.table_name is null then 'Unknown parent_table: '|| apr.parent_table  
     else 'ok' end  message
 from all_parent_relations apr
-left join dv_pipeline_description.dvpd_dv_model_table_per_pipeline dmtpp on dmtpp.pipeline = apr.pipeline 
+left join dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp on dmtpp.pipeline = apr.pipeline 
 										and dmtpp.table_name = apr.parent_table 
 ;
 

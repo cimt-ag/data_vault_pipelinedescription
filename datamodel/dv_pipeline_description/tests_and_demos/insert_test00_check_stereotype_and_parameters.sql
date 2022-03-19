@@ -28,9 +28,9 @@ VALUES
 			,	{"table_name": "rtjj_00_DDD_EEE_XXX_LNK_WITHOUT_PARENT_DECLARATION", "stereotype": "lnk","link_key_column_name": "LK_rtjj_00_DDD_EEE_XXX_LINK_WITHOUT_PARENT_DECLARATION"}
 			,	{"table_name": "rtjj_00_FFF_HUB",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_00_FFF_HUB"}
 			,	{"table_name": "rtjj_00_GGG_HUB",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_00_GGG_HUB"}
-			,	{"table_name": "rtjj_00_FFF_GGG_XXX_LNK_WITHOUT_LINK_KEY_COLUMN", "stereotype": "lnk","link_parent_tables":["rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
-			,	{"table_name": "rtjj_00_FFF_GGG_XXX_DLNK_WITHOUT_LINK_KEY_COLUMN", "stereotype": "lnk","link_parent_tables":["rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
-			,	{"table_name": "rtjj_00_FFF_GGG_LNK", "stereotype": "lnk","link_key_column_name": "LK_rtjj_00_FFF_GGG","link_parent_tables":["rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
+			,	{"table_name": "rtjj_00_FFF_GGG_XXX_LNK_WITHOUT_LINK_KEY_COLUMN", "stereotype": "lnk","link_parent_tables":["rvlt_test_jj","rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
+			,	{"table_name": "rtjj_00_FFF_GGG_XXX_DLNK_WITHOUT_LINK_KEY_COLUMN", "stereotype": "lnk","link_parent_tables":["rvlt_test_jj","rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
+			,	{"table_name": "rtjj_00_FFF_GGG_LNK", "stereotype": "lnk","link_key_column_name": "LK_rtjj_00_FFF_GGG","link_parent_tables":["rvlt_test_jj","rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
 			,	{"table_name": "rtjj_00_FFF_GGG_XXX_ESAT_WITHOUT_PARENT", "stereotype": "esat"}
 				]
 		}

@@ -1,5 +1,6 @@
---drop view if exists dv_pipeline_description.DVPD_ATMTST_REF_DV_MODEL_COLUMN;
+--drop view if exists dv_pipeline_description.DVPD_ATMTST_REF_DV_MODEL_COLUMN cascade;
 create or replace view dv_pipeline_description.DVPD_ATMTST_REF_DV_MODEL_COLUMN as (
+
 with parsed_dvmodel_column as (
 select 
 	pipeline_name 
@@ -8,12 +9,14 @@ from dv_pipeline_description.DVPD_ATMTST_REFERENCE
 )
 select 
 	pipeline_name 
-	,table_row->>0 table_name
-	,(table_row->>1) :: int column_block
-	,table_row->>2 dv_column_class
-	,table_row->>3 column_name
-	,table_row->>4 column_type
+	,table_row->>0 schema_name
+	,table_row->>1 table_name
+	,(table_row->>2) :: int column_block
+	,table_row->>3 dv_column_class
+	,table_row->>4 column_name
+	,table_row->>5 column_type
 from parsed_dvmodel_column 
+
 );
  
  

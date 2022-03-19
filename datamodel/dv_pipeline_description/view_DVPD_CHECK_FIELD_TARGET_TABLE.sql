@@ -8,8 +8,8 @@ select
   ,'DVPD_CHECK_FIELD_TARGET_TABLE'::text  check_ruleset
   ,case when dmtpp.table_name is null then 'Unknown target_table: '|| sfm.target_table   
     else 'ok' end  message
-from dv_pipeline_description.dvpd_source_field_mapping sfm
-left join dv_pipeline_description.dvpd_dv_model_table_per_pipeline dmtpp on dmtpp.pipeline = sfm.pipeline 
+from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm
+left join dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp on dmtpp.pipeline = sfm.pipeline 
 										and dmtpp.table_name = sfm.target_table 
 ;
 
