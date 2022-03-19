@@ -215,9 +215,9 @@ select
   pipeline 
   ,table_name 
   ,stereotype
+  ,field_group as process_block 
   ,field_group
   ,null hierarchy_key_suffix
-  ,field_group as process_block 
   ,fg_rule 
 from final_table_field_group_relation
 union
@@ -225,9 +225,10 @@ select
   pipeline 
   ,table_name 
   ,stereotype
+  ,field_group||'_'||hierarchy_key_suffix process_block
   ,field_group
   ,hierarchy_key_suffix
-  ,field_group||'_'||hierarchy_key_suffix process_block
   ,fg_rule 
 from additional_hierarchical_hub_processes;
--- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN_BASIC order by pipeline,field_group,table_name;										
+
+-- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN order by pipeline,table_name,process_block;										
