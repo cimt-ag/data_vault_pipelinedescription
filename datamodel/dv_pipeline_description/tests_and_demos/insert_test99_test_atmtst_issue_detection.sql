@@ -44,5 +44,9 @@ VALUES
 		["F2_AAA_XXX_BAD_COLUMN_IN_REF_DECIMAL","DECIMAL(20,0)",8,"F2_AAA_XXX_BAD_FIELD_IN_REF_DECIMAL","DECIMAL(20,0)",false],
 		["HK_RTJJ_99_AAA_HUB","CHAR(28)",2,null,null,false],
 		["RH_RTJJ_99_AAA_P1_SAT","CHAR(28)",3,null,null,false]
+],
+"stage_hash_input_field": [                                                          
+        ["_A_","HK_RTJJ_99_AAA_HUB","F1_BK_AAA_DECIMAL",0,0],                        
+        ["_A_","RH_RTJJ_99_AAA_P1_SAT","XXX BAD FIELD IN REF TRIGGER XXX",0,0]
 ]
 }');                                                                                                              
