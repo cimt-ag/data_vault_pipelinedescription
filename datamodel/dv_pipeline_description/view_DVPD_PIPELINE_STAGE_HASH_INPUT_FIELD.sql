@@ -6,30 +6,64 @@ create or replace view dv_pipeline_description.DVPD_PIPELINE_STAGE_HASH_INPUT_FI
 with target_hash_columns as (
 	select  pipeline
 		,process_block 
+		,field_group 
+		,hierarchy_key_suffix 
 		,stage_column_name 
 		,table_name 
+		,stereotype
 		,column_name 
-		,hierarchy_key_suffix 
+		,dv_column_class 
 	from dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm_key
 	where dv_column_class in ('key','diff_hash')
 )
+, fields_for_link_key_hashes as (
 select distinct
  thc.pipeline 
  ,thc.process_block 
  ,thc.stage_column_name 
  ,ppstdmm.field_name
+ ,ppstdmm.field_group 
  ,ppstdmm.prio_in_hashkey 
  ,ppstdmm.prio_in_diff_hash  
+ ,ppstdmm.hierarchy_key_suffix 
+ ,dmhic.content_column 
+ ,dmhic.content_hierarchy_key_suffix 
 from target_hash_columns  thc
 join dv_pipeline_description.dvpd_dv_model_hash_input_column dmhic on dmhic.table_name =thc.table_name 
 																  and dmhic.key_column =thc.column_name 
 join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm on ppstdmm.pipeline =thc.pipeline 
-					and (ppstdmm.process_block = thc.process_block 	
-					or (ppstdmm.hierarchy_key_suffix =dmhic.hierarchy_key_suffix 
-					and thc.process_block = '_A_'))
+					and ppstdmm.field_group = thc.field_group 	
+					and ppstdmm.hierarchy_key_suffix =dmhic.content_hierarchy_key_suffix 
 					and ppstdmm.table_name = dmhic.content_table 
 					and ppstdmm.column_name = dmhic.content_column 
+where thc.stereotype  ='lnk' 
+)
+--, fields_for_not_link_key_hashes as (
+select distinct
+ thc.pipeline 
+ ,thc.process_block target_pb
+ ,ppstdmm.process_block  field_pb
+ ,thc.field_group target_fg
+ ,ppstdmm.field_group  field_fg
+ ,thc.stage_column_name 
+ ,ppstdmm.field_name
+ ,ppstdmm.prio_in_hashkey 
+ ,ppstdmm.prio_in_diff_hash  
+ ,ppstdmm.hierarchy_key_suffix 
+ ,dmhic.content_column 
+ ,dmhic.content_hierarchy_key_suffix 
+from target_hash_columns  thc
+join dv_pipeline_description.dvpd_dv_model_hash_input_column dmhic on dmhic.table_name =thc.table_name 
+																  and dmhic.key_column =thc.column_name 
+join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm on ppstdmm.pipeline =thc.pipeline 
+					and ppstdmm.table_name = dmhic.content_table 
+					and ppstdmm.column_name = dmhic.content_column 
+					and ppstdmm.process_block = thc.process_block     
+where thc.stereotype  !='lnk' 
+
 ; 
 
+### todo: union the two parts and check full resultset
 														 
+where thc.pipeline in( 'test70_fg_drive_scenario_10','test69_fg_drive_scenario_9_simple_hierarchy') and thc.stage_column_name like  'LK_%' 				
 -- select * from dv_pipeline_description.DVPD_PIPELINE_STAGE_HASH_INPUT_FIELD order by pipeline,process_block ,stage_column_name,field_name 										
