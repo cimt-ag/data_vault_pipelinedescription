@@ -1,10 +1,6 @@
 --drop view if exists dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN cascade;
 
--- This version is limited to work only without field groups and hierarchical links
-
 create or replace view dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN as
-
-
 
 with pipelines AS(
 select distinct pipeline 
