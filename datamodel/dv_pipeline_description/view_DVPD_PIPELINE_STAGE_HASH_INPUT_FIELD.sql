@@ -16,11 +16,7 @@ with target_hash_columns as (
 select distinct
  thc.pipeline 
  ,thc.process_block 
- ,thc.hierarchy_key_suffix thc_hks
  ,thc.stage_column_name 
- ,dmhic.content_table 
- ,dmhic.content_column 
- ,dmhic.hierarchy_key_suffix 
  ,ppstdmm.field_name
  ,ppstdmm.prio_in_hashkey 
  ,ppstdmm.prio_in_diff_hash  
@@ -28,11 +24,11 @@ from target_hash_columns  thc
 join dv_pipeline_description.dvpd_dv_model_hash_input_column dmhic on dmhic.table_name =thc.table_name 
 																  and dmhic.key_column =thc.column_name 
 join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm on ppstdmm.pipeline =thc.pipeline 
-																					and (ppstdmm.process_block = thc.process_block 	
-																					or (ppstdmm.hierarchy_key_suffix =dmhic.hierarchy_key_suffix 
-																					and ppstdmm.process_block = '_A_'))
-																					and ppstdmm.table_name = dmhic.content_table 
-																					and ppstdmm.column_name = dmhic.content_column 
+					and (ppstdmm.process_block = thc.process_block 	
+					or (ppstdmm.hierarchy_key_suffix =dmhic.hierarchy_key_suffix 
+					and thc.process_block = '_A_'))
+					and ppstdmm.table_name = dmhic.content_table 
+					and ppstdmm.column_name = dmhic.content_column 
 ; 
 
 														 
