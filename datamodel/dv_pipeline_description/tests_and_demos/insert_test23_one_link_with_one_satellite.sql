@@ -62,6 +62,14 @@ VALUES
 		["HK_RTJJ_23_BBB","CHAR(28)",2,null,null,false],
 		["LK_RTJJ_23_AAA_BBB","CHAR(28)",2,null,null,false],
 		["RH_RTJJ_23_AAA_BBB_SAT","CHAR(28)",3,null,null,false]
-]
-}');                                                                                                              
+ ],
+ "stage_hash_input_field": [
+         ["_A_","HK_RTJJ_23_AAA","F1_BK_AAA_VARCHAR",0,0],
+         ["_A_","HK_RTJJ_23_BBB","F2_BK_BBB_DECIMAL",0,0],
+         ["_A_","LK_RTJJ_23_AAA_BBB","F1_BK_AAA_VARCHAR",0,0],
+         ["_A_","LK_RTJJ_23_AAA_BBB","F2_BK_BBB_DECIMAL",0,0],
+         ["_A_","RH_RTJJ_23_AAA_BBB_SAT","F3_AAA_SP1_VARCHAR",0,0],
+         ["_A_","RH_RTJJ_23_AAA_BBB_SAT","F4_AAA_SP1_DECIMAL",0,0],
+         ["_A_","RH_RTJJ_23_AAA_BBB_SAT","F5_XXX_BAD_NAME_XXX",0,0]
+  ]    }');                                                                                                             
 

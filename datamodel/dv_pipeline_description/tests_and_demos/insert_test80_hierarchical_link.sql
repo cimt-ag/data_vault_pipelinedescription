@@ -64,5 +64,12 @@ VALUES
 		["HK_RTJJ_22_BBB","CHAR(28)",2,null,null,false],
 		["LK_RTJJ_22_AAA_BBB","CHAR(28)",2,null,null,false],
 		["RH_RTJJ_22_AAA_P1_SAT","CHAR(28)",3,null,null,false]
-]
-}'); 
+ ],
+ "stage_hash_input_field": [
+         ["_A_","HK_RTSTA_80_KUNDE","FI_ID",0,0],
+         ["_A_","HK_RTSTA_80_KUNDE","KUNDE_NR",0,0],
+         ["_A_","LK_RTSTA_80_KUNDE_KUNDE_MASTER","FI_ID",0,0],
+         ["_A_","LK_RTSTA_80_KUNDE_KUNDE_MASTER","KUNDE_NR",0,0],
+         ["_A_","LK_RTSTA_80_KUNDE_KUNDE_MASTER","MASTER_KUNDE_NR",0,0],
+         ["_MASTER","HK_RTSTA_80_KUNDE__MASTER","MASTER_KUNDE_NR",0,0]
+  ]    }'); 

@@ -44,5 +44,9 @@ VALUES
 			["F3_CCC_DATE","DATE",8,"F3_CCC_XXXBADNAMEXXX_DATE","DATE",false],                
 			["F4_DDD_NOT_IN_RH__DECIMAL","DECIMAL(5,0)",8,"F4_DDD_NOT_IN_RH__DECIMAL","DECIMAL(5,0)",false],
 			["RH_RTJJ_40_AAA_REF","CHAR(28)",3,null,null,false]                                            
-]
-}');                                                                                                              
+ ],
+ "stage_hash_input_field": [
+         ["_A_","RH_RTJJ_40_AAA_REF","F1_AAA_VARCHAR",0,0],
+         ["_A_","RH_RTJJ_40_AAA_REF","F2_BBB_DECIMAL",0,0],
+         ["_A_","RH_RTJJ_40_AAA_REF","F3_CCC_XXXBADNAMEXXX_DATE",0,0]
+  ]    }');                                                                                                             

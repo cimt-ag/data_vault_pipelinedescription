@@ -1,14 +1,14 @@
 with target as (
 select distinct pipeline
 from dv_pipeline_description.dvpd_pipeline_target_table
-where pipeline like 'test27%'
+where pipeline like 'test80%'
 )
 select 1 block
 ,'DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = '''||pipeline||''';' script
 from target
 union
 select 2 block
-,'INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES;' script
+,'INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES' script
 union
 select 9 block
 ,'('''||pipeline||''',''{' script
@@ -31,7 +31,7 @@ join dv_pipeline_description.dvpd_dv_model_column dmc  on  dmc.table_name =dptt.
 where pipeline in (select pipeline from target) 
 union
 select 12 block
-,' ],"'
+,' ],'
 union
 -- >>> STAGE_TABLE_COLUMN REFERENCE DATA ARRAY <<<<
 select 20 block, ' "stage_table_column": [' script
@@ -47,10 +47,9 @@ select 21 block
 from dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN								
 where not is_meta   
 and   pipeline in (select pipeline from target) 
-
 union
 select 22 block
-,' ],"'union
+,' ],'union
 -- >>> STAGE_HASH_INPUT_FIELD DATA ARRAY <<<
 select 30 block, ' "stage_hash_input_field": [' script
 union
@@ -65,6 +64,6 @@ from dv_pipeline_description.dvpd_pipeline_stage_hash_input_field
 where   pipeline in (select pipeline from target) 	
 union
 select 80 block
-,'  ]    }'');"' script
+,'  ]    }'');' script
 order by block,script
 
