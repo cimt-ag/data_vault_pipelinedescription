@@ -1,4 +1,4 @@
-drop view if exists dv_pipeline_description.DVPD_DV_MODEL_LINK_PARENT cascade;
+-- drop view if exists dv_pipeline_description.DVPD_DV_MODEL_LINK_PARENT cascade;
 create or replace view dv_pipeline_description.DVPD_DV_MODEL_LINK_PARENT as 
 
 with normalized_link_parents as (
@@ -20,7 +20,7 @@ select distinct
 	,hub_key_column_name as hub_key_column_name
 	,hub_key_column_name as parent_hub_key_column_name
 	,false as is_hierarchical_relation
-	,null as hierarchy_key_suffix
+	,'' as hierarchy_key_suffix
 from normalized_link_parents nlp 
 join dv_pipeline_description.DVPD_DV_MODEL_TABLE mt on mt.table_name=link_parent_table
 union 
@@ -30,7 +30,7 @@ select distinct
 	,hub_key_column_name || '_'||upper(hierarchy_key_suffix) as hub_key_column_name
 	,hub_key_column_name as parent_hub_key_column_name
 	,true as is_hierarchical_relation
-	,hierarchy_key_suffix
+	,coalesce(hierarchy_key_suffix,'') hierarchy_key_suffix
 from normalized_hierarchical_parents nlp 
 join dv_pipeline_description.DVPD_DV_MODEL_TABLE mt on mt.table_name=link_parent_table
 ;

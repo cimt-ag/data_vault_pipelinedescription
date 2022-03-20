@@ -16,7 +16,9 @@ select distinct
 	,ppp.hierarchy_key_suffix 
 	,pfte.field_name 
 	,pfte.field_type 
-	,pfte.is_encrypted 
+	,pfte.is_encrypted
+	,pfte.prio_in_hashkey 
+	,pfte.prio_in_diff_hash 
 from dv_pipeline_description.dvpd_pipeline_process_plan ppp
 join dv_pipeline_description.dvpd_dv_model_column dmc on dmc.table_name=ppp.table_name 
 												and dmc.dv_column_class not in ('meta')
