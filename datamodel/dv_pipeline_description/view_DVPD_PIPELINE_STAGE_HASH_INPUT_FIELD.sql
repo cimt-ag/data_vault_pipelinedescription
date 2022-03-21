@@ -38,12 +38,12 @@ join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping pps
 					and ppstdmm.column_name = dmhic.content_column 
 where thc.stereotype  ='lnk' 
 )
---, fields_for_not_link_key_hashes as (
+, fields_for_not_link_key_hashes as (
 select distinct
  thc.pipeline 
- ,thc.process_block target_pb
- ,ppstdmm.process_block  field_pb
- ,thc.field_group target_fg
+ ,thc.process_block 
+ ,ppstdmm.process_block field_pb
+ ,thc.field_group 
  ,ppstdmm.field_group  field_fg
  ,thc.stage_column_name 
  ,ppstdmm.field_name
@@ -60,10 +60,34 @@ join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping pps
 					and ppstdmm.column_name = dmhic.content_column 
 					and ppstdmm.process_block = thc.process_block     
 where thc.stereotype  !='lnk' 
-
+)
+select 
+ pipeline 
+ ,process_block 
+ ,stage_column_name 
+ ,field_name
+ ,field_group 
+ ,prio_in_hashkey 
+ ,prio_in_diff_hash  
+ ,hierarchy_key_suffix 
+ ,content_column 
+ ,content_hierarchy_key_suffix
+ from fields_for_link_key_hashes
+ union 
+select 
+ pipeline 
+ ,process_block 
+ ,stage_column_name 
+ ,field_name
+ ,field_group 
+ ,prio_in_hashkey 
+ ,prio_in_diff_hash  
+ ,hierarchy_key_suffix 
+ ,content_column 
+ ,content_hierarchy_key_suffix
+ from fields_for_not_link_key_hashes
 ; 
 
-### todo: union the two parts and check full resultset
-														 
-where thc.pipeline in( 'test70_fg_drive_scenario_10','test69_fg_drive_scenario_9_simple_hierarchy') and thc.stage_column_name like  'LK_%' 				
+
+													 
 -- select * from dv_pipeline_description.DVPD_PIPELINE_STAGE_HASH_INPUT_FIELD order by pipeline,process_block ,stage_column_name,field_name 										

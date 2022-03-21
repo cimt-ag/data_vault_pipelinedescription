@@ -36,8 +36,13 @@ VALUES
 
 				]
 		}
-	]
-}
-');
+ ],
+ "stage_hash_input_field": [
+         ["FG1","HK_RTJJ_70_AAA_FG1","F1_BK_AAA_FG1",0,0],
+         ["FG1","LK_RTJJ_70_AAA_AAA1_FG1","F1_BK_AAA_FG1",0,0],
+         ["FG1","LK_RTJJ_70_AAA_AAA1_FG1","F3_BK_AAA_H1_FG1",0,0],
+         ["FG1_HRCHY1","HK_RTJJ_70_AAA_FG1_HRCHY1","F3_BK_AAA_H1_FG1",0,0],
+         ["FG2","HK_RTJJ_70_AAA_FG2","F2_BK_AAA_FG2",0,0]
+  ]    }');
 
 	
