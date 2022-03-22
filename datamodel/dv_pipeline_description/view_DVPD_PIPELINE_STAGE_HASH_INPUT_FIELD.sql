@@ -7,7 +7,7 @@ with target_hash_columns as (
 	select  pipeline
 		,process_block 
 		,field_group 
-		,hierarchy_key_suffix 
+		,recursion_suffix 
 		,stage_column_name 
 		,table_name 
 		,stereotype
@@ -25,15 +25,15 @@ select distinct
  ,ppstdmm.field_group 
  ,ppstdmm.prio_in_hashkey 
  ,ppstdmm.prio_in_diff_hash  
- ,ppstdmm.hierarchy_key_suffix 
+ ,ppstdmm.recursion_suffix 
  ,dmhic.content_column 
- ,dmhic.content_hierarchy_key_suffix 
+ ,dmhic.content_recursion_suffix 
 from target_hash_columns  thc
 join dv_pipeline_description.dvpd_dv_model_hash_input_column dmhic on dmhic.table_name =thc.table_name 
 																  and dmhic.key_column =thc.column_name 
 join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm on ppstdmm.pipeline =thc.pipeline 
 					and ppstdmm.field_group = thc.field_group 	
-					and ppstdmm.hierarchy_key_suffix =dmhic.content_hierarchy_key_suffix 
+					and ppstdmm.recursion_suffix =dmhic.content_recursion_suffix 
 					and ppstdmm.table_name = dmhic.content_table 
 					and ppstdmm.column_name = dmhic.content_column 
 where thc.stereotype  ='lnk' 
@@ -49,9 +49,9 @@ select distinct
  ,ppstdmm.field_name
  ,ppstdmm.prio_in_hashkey 
  ,ppstdmm.prio_in_diff_hash  
- ,ppstdmm.hierarchy_key_suffix 
+ ,ppstdmm.recursion_suffix 
  ,dmhic.content_column 
- ,dmhic.content_hierarchy_key_suffix 
+ ,dmhic.content_recursion_suffix 
 from target_hash_columns  thc
 join dv_pipeline_description.dvpd_dv_model_hash_input_column dmhic on dmhic.table_name =thc.table_name 
 																  and dmhic.key_column =thc.column_name 
@@ -69,9 +69,9 @@ select
  ,field_group 
  ,prio_in_hashkey 
  ,prio_in_diff_hash  
- ,hierarchy_key_suffix 
+ ,recursion_suffix 
  ,content_column 
- ,content_hierarchy_key_suffix
+ ,content_recursion_suffix
  from fields_for_link_key_hashes
  union 
 select 
@@ -82,9 +82,9 @@ select
  ,field_group 
  ,prio_in_hashkey 
  ,prio_in_diff_hash  
- ,hierarchy_key_suffix 
+ ,recursion_suffix 
  ,content_column 
- ,content_hierarchy_key_suffix
+ ,content_recursion_suffix
  from fields_for_not_link_key_hashes
 ; 
 

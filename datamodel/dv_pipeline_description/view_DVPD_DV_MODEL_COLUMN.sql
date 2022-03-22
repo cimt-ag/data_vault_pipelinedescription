@@ -19,10 +19,10 @@ from (
 select distinct 
 table_name
 ,parent_table_name 
-,hierarchy_key_suffix 
+,recursion_suffix 
 from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION  fm
 join link_parent_tables pt on pt.pipeline=fm.pipeline and pt.parent_table_name = fm.target_table 
-where length(hierarchy_key_suffix)>0
+where length(recursion_suffix)>0
 )
 ,link_columns as (   -- <<<<<<<<<<<<<<<<<<<<<<<<< LINK
  select -- meta columns
@@ -57,7 +57,7 @@ select -- suffixed keys of parents
  lpt.table_name 
  ,4 as column_block
  ,'parent_key' as dv_column_class
- ,tb.hub_key_column_name||'__'||lpt.hierarchy_key_suffix  as column_name
+ ,tb.hub_key_column_name||'__'||lpt.recursion_suffix  as column_name
  ,'CHAR(28)' as column_type
  from suffixed_key_parents lpt
  join dv_pipeline_description.dvpd_dv_model_table tb on  tb.table_name = lpt.parent_table_name

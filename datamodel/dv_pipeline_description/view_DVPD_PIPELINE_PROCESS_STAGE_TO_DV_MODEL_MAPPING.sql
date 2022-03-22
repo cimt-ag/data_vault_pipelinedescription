@@ -5,9 +5,9 @@ create or replace view dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV
 with hub_with_recursion_link as (
 select distinct
 	parent_table_name  table_name
-	,hierarchy_key_suffix 
+	,recursion_suffix 
 from dv_pipeline_description.dvpd_dv_model_link_parent
-where hierarchy_key_suffix <> ''
+where recursion_suffix <> ''
 )
 , implicit_recursion_businesskey as (
 select 
@@ -25,12 +25,12 @@ having count(1) = 1
 	 pipeline
 	 ,target_table 
 	 ,target_column_name 
-	 ,hierarchy_key_suffix 
+	 ,recursion_suffix 
 	from implicit_recursion_businesskey irb
 	join (
-		select table_name,hierarchy_key_suffix  from hub_with_recursion_link
+		select table_name,recursion_suffix  from hub_with_recursion_link
 		union 
-		select table_name,'' hierarchy_key_suffix from  hub_with_recursion_link
+		select table_name,'' recursion_suffix from  hub_with_recursion_link
 	) suffix_row  on suffix_row.table_name = irb.target_table  
 )
 ,dvpd_pipeline_field_target_expansion_with_implicit_recursion as (
@@ -39,7 +39,7 @@ select
 	,pfte.target_table 
 	,pfte.target_column_name 
 	,field_group 
-	,coalesce (irbsa.hierarchy_key_suffix,pfte.hierarchy_key_suffix  ) hierarchy_key_suffix
+	,coalesce (irbsa.recursion_suffix,pfte.recursion_suffix  ) recursion_suffix
 	,field_name 
 	,field_type 
 	,is_encrypted 
@@ -57,12 +57,12 @@ select distinct
 	,ppp.stereotype 
 	,dmc.column_name 
 	,dmc.dv_column_class  
-	,case when (pfte.field_group ='_A_' and pfte.hierarchy_key_suffix='') or process_block ='_A_' then dmc.column_name 
+	,case when (pfte.field_group ='_A_' and pfte.recursion_suffix='') or process_block ='_A_' then dmc.column_name 
 	 else dmc.column_name||'_'||process_block end stage_column_name
 	,dmc.column_type 
 	,dmc.column_block 
 	,ppp.field_group
-	,ppp.hierarchy_key_suffix 
+	,ppp.recursion_suffix 
 	,pfte.field_name 
 	,pfte.field_type 
 	,pfte.is_encrypted
@@ -75,7 +75,7 @@ left join dvpd_pipeline_field_target_expansion_with_implicit_recursion pfte on p
 																		and pfte.target_table =dmc.table_name 
 																		and pfte.target_column_name =dmc.column_name
 																		and (pfte.field_group = ppp.field_group or pfte.field_group ='_A_')
-																		and pfte.hierarchy_key_suffix = ppp.hierarchy_key_suffix 
+																		and pfte.recursion_suffix = ppp.recursion_suffix 
 where dv_column_class in ('meta','key','parent_key','diff_hash') or pfte.field_name is not null																		
 
 

@@ -21,7 +21,7 @@ VALUES
 		      ,{"field_name": "F3_BK_AAA_H1_FG1", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_70_aaa_hub"
 																					,"target_column_name": "BK_AAA"
 																				 	,"field_groups":["fg1"]
-																					,"hierarchy_key_suffix": "HRCHY1"}]}		  
+																					,"recursion_suffix": "HRCHY1"}]}		  
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
@@ -29,8 +29,8 @@ VALUES
 				{"table_name": "rtjj_70_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_70_aaa"}
 				,{"table_name": "rtjj_70_aaa_aaa1_lnk",	"stereotype": "lnk" ,"link_key_column_name": "LK_rtjj_70_aaa_aaa1"
 																			,"link_parent_tables": ["rtjj_70_aaa_hub"]
-																			,"hierarchical_parents": [ {"table_name":"rtjj_70_aaa_hub"
-																										,"hierarchy_key_suffix": "HRCHY1"}]}
+																			,"recursive_parents": [ {"table_name":"rtjj_70_aaa_hub"
+																										,"recursion_suffix": "HRCHY1"}]}
 				,{"table_name": "rtjj_70_aaa_aaa1_esat",	"stereotype": "esat","satellite_parent_table": "rtjj_70_aaa_aaa1_lnk"
 																				 ,"tracked_field_groups":["fg1"]}
 

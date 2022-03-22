@@ -7,7 +7,7 @@ select
 	,hash_target.column_name key_column
 	,content_key.table_name content_table
 	,content_key.column_name  content_column
-	,'' content_hierarchy_key_suffix
+	,'' content_recursion_suffix
  from dv_pipeline_description.dvpd_dv_model_column hash_target
 join dv_pipeline_description.dvpd_dv_model_column content_key on content_key.table_name =hash_target.table_name 
 						and content_key.dv_column_class in ('business_key','dependent_child_key')
@@ -18,7 +18,7 @@ select
 	,dmt.link_key_column_name 
 	,content_key.table_name  content_table
 	,content_key.column_name  content_column
-	,hierarchy_key_suffix content_hierarchy_key_suffix
+	,recursion_suffix content_recursion_suffix
 from dv_pipeline_description.dvpd_dv_model_link_parent link_table
 join dv_pipeline_description.dvpd_dv_model_table dmt on dmt.table_name =link_table .table_name 
 join dv_pipeline_description.dvpd_dv_model_column content_key on content_key.table_name =link_table.parent_table_name 
@@ -29,7 +29,7 @@ select
 	,hash_target.column_name key_column
 	,content_key.table_name content_table
 	,content_key.column_name  content_column
-	,'' content_hierarchy_key_suffix
+	,'' content_recursion_suffix
  from dv_pipeline_description.dvpd_dv_model_column hash_target
 join dv_pipeline_description.dvpd_dv_model_column content_key on content_key.table_name =hash_target.table_name 
 						and content_key.dv_column_class in ('content')
