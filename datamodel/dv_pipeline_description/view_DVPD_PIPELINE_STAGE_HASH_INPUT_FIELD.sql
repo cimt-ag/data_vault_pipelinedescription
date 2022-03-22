@@ -23,7 +23,7 @@ select distinct
  ,thc.stage_column_name 
  ,ppstdmm.field_name
  ,ppstdmm.field_group 
- ,ppstdmm.prio_in_hashkey 
+ ,ppstdmm.prio_in_key_hash 
  ,ppstdmm.prio_in_diff_hash  
  ,ppstdmm.recursion_suffix 
  ,dmhic.content_column 
@@ -47,7 +47,7 @@ select distinct
  ,ppstdmm.field_group  field_fg
  ,thc.stage_column_name 
  ,ppstdmm.field_name
- ,ppstdmm.prio_in_hashkey 
+ ,ppstdmm.prio_in_key_hash 
  ,ppstdmm.prio_in_diff_hash  
  ,ppstdmm.recursion_suffix 
  ,dmhic.content_column 
@@ -67,7 +67,7 @@ select
  ,stage_column_name 
  ,field_name
  ,field_group 
- ,prio_in_hashkey 
+ ,prio_in_key_hash 
  ,prio_in_diff_hash  
  ,recursion_suffix 
  ,content_column 
@@ -80,7 +80,7 @@ select
  ,stage_column_name 
  ,field_name
  ,field_group 
- ,prio_in_hashkey 
+ ,prio_in_key_hash 
  ,prio_in_diff_hash  
  ,recursion_suffix 
  ,content_column 

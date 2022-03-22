@@ -12,7 +12,7 @@ select
 	,process_block
 	,stage_column_name
 	,field_name
-	,prio_in_hashkey
+	,prio_in_key_hash
 	,prio_in_diff_hash
 from  pipelines_with_atmtst_data pwad
 join dv_pipeline_description.dvpd_pipeline_stage_hash_input_field pshif on pshif.pipeline  =pwad.pipeline_name 
@@ -23,7 +23,7 @@ select
 	,process_block
 	,stage_column_name
 	,field_name
-	,prio_in_hashkey
+	,prio_in_key_hash
 	,prio_in_diff_hash
 from dv_pipeline_description.dvpd_atmtst_ref_stage_hash_input_field
 )

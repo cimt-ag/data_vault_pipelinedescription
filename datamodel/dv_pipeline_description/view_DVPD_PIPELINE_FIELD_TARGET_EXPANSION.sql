@@ -39,7 +39,7 @@ select
 ,case when field_groups is not null then upper(json_array_elements_text(field_groups)) else '_A_' end as field_group
 ,upper(coalesce(recursion_suffix,'')) as recursion_suffix
 ,upper(coalesce (target_column_type,field_type)) as target_column_type
-,coalesce(to_number(prio_in_key_hash,'9'),0) as prio_in_hashkey
+,coalesce(to_number(prio_in_key_hash,'9'),0) as prio_in_key_hash
 ,coalesce(exclude_from_key_hash::bool,false) as exclude_from_key_hash
 ,coalesce(to_number(prio_in_diff_hash,'9'),0) as prio_in_diff_hash
 ,coalesce(exclude_from_diff_hash::bool,false) as exclude_from_diff_hash

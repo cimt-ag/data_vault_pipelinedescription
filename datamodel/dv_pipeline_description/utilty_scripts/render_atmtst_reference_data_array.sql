@@ -58,7 +58,7 @@ select 31 block
  || coalesce(process_block,'null') || '","'
  || stage_column_name || '","'
  || field_name || '",'
- || prio_in_hashkey || ','
+ || prio_in_key_hash || ','
  || prio_in_diff_hash  || '],' script
 from dv_pipeline_description.dvpd_pipeline_stage_hash_input_field								
 where   pipeline in (select pipeline from target) 	

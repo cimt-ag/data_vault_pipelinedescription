@@ -43,7 +43,7 @@ select
 	,field_name 
 	,field_type 
 	,is_encrypted 
-	,prio_in_hashkey 
+	,prio_in_key_hash 
 	,prio_in_diff_hash 
 from dv_pipeline_description.dvpd_pipeline_field_target_expansion pfte
 left join implicit_recursion_businesskey_suffix_addon irbsa on irbsa.pipeline = pfte.pipeline 
@@ -66,7 +66,7 @@ select distinct
 	,pfte.field_name 
 	,pfte.field_type 
 	,pfte.is_encrypted
-	,pfte.prio_in_hashkey 
+	,pfte.prio_in_key_hash 
 	,pfte.prio_in_diff_hash 
 from dv_pipeline_description.dvpd_pipeline_process_plan ppp
 join dv_pipeline_description.dvpd_dv_model_column dmc on dmc.table_name=ppp.table_name 
