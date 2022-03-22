@@ -37,21 +37,20 @@ VALUES
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test80_recursive_link_with_common_bk_field';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
 ('test80_recursive_link_with_common_bk_field','{
- "dv_model_column": [
+  "dv_model_column": [
          ["rvlt_test_a","rtsta_80_kunde_hub",2,"key","HK_RTSTA_80_KUNDE","CHAR(28)"],
          ["rvlt_test_a","rtsta_80_kunde_hub",8,"business_key","FI_ID","VARCHAR(20)"],
          ["rvlt_test_a","rtsta_80_kunde_hub",8,"business_key","KUNDE_NR","DECIMAL(10,0)"],
          ["rvlt_test_a","rtsta_80_kunde_kunde_master_esat",2,"parent_key","LK_RTSTA_80_KUNDE_KUNDE_MASTER","CHAR(28)"],
          ["rvlt_test_a","rtsta_80_kunde_kunde_master_lnk",2,"key","LK_RTSTA_80_KUNDE_KUNDE_MASTER","CHAR(28)"],
          ["rvlt_test_a","rtsta_80_kunde_kunde_master_lnk",3,"parent_key","HK_RTSTA_80_KUNDE","CHAR(28)"],
-         ["rvlt_test_a","rtsta_80_kunde_kunde_master_lnk",4,"parent_key","HK_RTSTA_80_KUNDE_MASTER","CHAR(28)"]
+         ["rvlt_test_a","rtsta_80_kunde_kunde_master_lnk",4,"parent_key","HK_RTSTA_80_KUNDE__MASTER","CHAR(28)"]
  ],
  "stage_table_column": [
          ["FI_ID","VARCHAR(20)",8,"FI_ID","VARCHAR(20)",false],
          ["FI_ID__MASTER","VARCHAR(20)",8,"FI_ID","VARCHAR(20)",false],
          ["HK_RTSTA_80_KUNDE","CHAR(28)",2,null,null,false],
          ["HK_RTSTA_80_KUNDE__MASTER","CHAR(28)",2,null,null,false],
-         ["HK_RTSTA_80_KUNDE_MASTER","CHAR(28)",4,null,null,false],
          ["KUNDE_NR","DECIMAL(10,0)",8,"KUNDE_NR","DECIMAL(10,0)",false],
          ["KUNDE_NR__MASTER","DECIMAL(10,0)",8,"MASTER_KUNDE_NR","DECIMAL(10,0)",false],
          ["LK_RTSTA_80_KUNDE_KUNDE_MASTER","CHAR(28)",2,null,null,false]

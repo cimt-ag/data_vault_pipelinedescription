@@ -57,7 +57,7 @@ select -- suffixed keys of parents
  lpt.table_name 
  ,4 as column_block
  ,'parent_key' as dv_column_class
- ,tb.hub_key_column_name||'_'||lpt.hierarchy_key_suffix  as column_name
+ ,tb.hub_key_column_name||'__'||lpt.hierarchy_key_suffix  as column_name
  ,'CHAR(28)' as column_type
  from suffixed_key_parents lpt
  join dv_pipeline_description.dvpd_dv_model_table tb on  tb.table_name = lpt.parent_table_name
