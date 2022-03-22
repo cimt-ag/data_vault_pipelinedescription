@@ -14,7 +14,7 @@ select distinct
 	,false is_meta
 	,field_name
 	,field_type
-	,is_encrypted
+	,needs_encryption
 from  dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping
 group by 1,2,3,5,6,7,8
 union 
@@ -26,7 +26,7 @@ select
 	,true is_meta
 	,null field_name 
 	,null field_type 
-	,false is_encrypted 
+	,false needs_encryption 
 from pipelines 
 join dv_pipeline_description.dvpd_meta_column_lookup dmcl on dmcl.stereotype ='_stg' ;
 

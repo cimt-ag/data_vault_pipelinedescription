@@ -42,7 +42,7 @@ select
 	,coalesce (irbsa.recursion_suffix,pfte.recursion_suffix  ) recursion_suffix
 	,field_name 
 	,field_type 
-	,is_encrypted 
+	,needs_encryption 
 	,prio_in_key_hash 
 	,prio_in_diff_hash 
 from dv_pipeline_description.dvpd_pipeline_field_target_expansion pfte
@@ -65,7 +65,7 @@ select distinct
 	,ppp.recursion_suffix 
 	,pfte.field_name 
 	,pfte.field_type 
-	,pfte.is_encrypted
+	,pfte.needs_encryption
 	,pfte.prio_in_key_hash 
 	,pfte.prio_in_diff_hash 
 from dv_pipeline_description.dvpd_pipeline_process_plan ppp

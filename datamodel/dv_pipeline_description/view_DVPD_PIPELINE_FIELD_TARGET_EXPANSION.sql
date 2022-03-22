@@ -25,7 +25,7 @@ select
 ,json_array_elements(targets)->>'recursion_suffix' as recursion_suffix
 ,json_array_elements(targets)->>'prio_in_diff_hash' as prio_in_diff_hash
 ,json_array_elements(targets)->>'exclude_from_diff_hash' as exclude_from_diff_hash
-,json_array_elements(targets)->>'is_encrypted' as is_encrypted
+,json_array_elements(targets)->>'needs_encryption' as needs_encryption
 ,json_array_elements(targets)->>'column_content_comment' as column_content_comment
 ,json_array_elements(targets)->'hash_cleansing_rules' as hash_cleansing_rules
 from source_fields
@@ -43,7 +43,7 @@ select
 ,coalesce(exclude_from_key_hash::bool,false) as exclude_from_key_hash
 ,coalesce(to_number(prio_in_diff_hash,'9'),0) as prio_in_diff_hash
 ,coalesce(exclude_from_diff_hash::bool,false) as exclude_from_diff_hash
-,coalesce(is_encrypted::bool,false) as is_encrypted
+,coalesce(needs_encryption::bool,false) as needs_encryption
 ,hash_cleansing_rules
 ,field_comment
 ,coalesce (column_content_comment ,field_comment ) column_content_comment

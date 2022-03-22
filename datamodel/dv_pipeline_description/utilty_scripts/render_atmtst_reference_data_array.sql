@@ -43,7 +43,7 @@ select 21 block
  || coalesce(column_block,-1) || ','
  || coalesce('"'||field_name||'"','null') || ','
  || coalesce('"'||field_type||'"','null') || ','
- || coalesce(is_encrypted::varchar,'false') || '],'
+ || coalesce(needs_encryption::varchar,'false') || '],'
 from dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN								
 where not is_meta   
 and   pipeline in (select pipeline from target) 
