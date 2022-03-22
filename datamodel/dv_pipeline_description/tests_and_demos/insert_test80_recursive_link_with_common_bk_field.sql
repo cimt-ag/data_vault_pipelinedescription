@@ -41,7 +41,7 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rvlt_test_jj","rtjj_80_aaa_aaa1_esat",2,"parent_key","LK_RTJJ_80_AAA_AAA1","CHAR(28)"],
          ["rvlt_test_jj","rtjj_80_aaa_aaa1_lnk",2,"key","LK_RTJJ_80_AAA_AAA1","CHAR(28)"],
          ["rvlt_test_jj","rtjj_80_aaa_aaa1_lnk",3,"parent_key","HK_RTJJ_80_AAA","CHAR(28)"],
-         ["rvlt_test_jj","rtjj_80_aaa_aaa1_lnk",4,"parent_key","HK_RTJJ_80_AAA__RCS1","CHAR(28)"],
+         ["rvlt_test_jj","rtjj_80_aaa_aaa1_lnk",4,"parent_key","HK_RTJJ_80_AAA_RCS1","CHAR(28)"],
          ["rvlt_test_jj","rtjj_80_aaa_hub",2,"key","HK_RTJJ_80_AAA","CHAR(28)"],
          ["rvlt_test_jj","rtjj_80_aaa_hub",8,"business_key","BK_AAA_CM","VARCHAR(20)"],
          ["rvlt_test_jj","rtjj_80_aaa_hub",8,"business_key","BK_AAA_SPLIT","VARCHAR(20)"]
@@ -49,9 +49,9 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
  "stage_table_column": [
          ["BK_AAA_CM","VARCHAR(20)",8,"F1_BK_AAA_COMMON","VARCHAR(20)",false],
          ["BK_AAA_SPLIT","VARCHAR(20)",8,"F2_BK_AAA_ORIGIN","VARCHAR(20)",false],
-         ["BK_AAA_SPLIT__RCS1","VARCHAR(20)",8,"F3_BK_AAA_RECURSE1","VARCHAR(20)",false],
+         ["BK_AAA_SPLIT_RCS1","VARCHAR(20)",8,"F3_BK_AAA_RECURSE1","VARCHAR(20)",false],
          ["HK_RTJJ_80_AAA","CHAR(28)",2,null,null,false],
-         ["HK_RTJJ_80_AAA__RCS1","CHAR(28)",2,null,null,false],
+         ["HK_RTJJ_80_AAA_RCS1","CHAR(28)",2,null,null,false],
          ["LK_RTJJ_80_AAA_AAA1","CHAR(28)",2,null,null,false]
  ],
  "stage_hash_input_field": [
@@ -60,6 +60,6 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["_A_","LK_RTJJ_80_AAA_AAA1","F1_BK_AAA_COMMON",0,0],
          ["_A_","LK_RTJJ_80_AAA_AAA1","F2_BK_AAA_ORIGIN",0,0],
          ["_A_","LK_RTJJ_80_AAA_AAA1","F3_BK_AAA_RECURSE1",0,0],
-         ["_RCS1","HK_RTJJ_80_AAA__RCS1","F1_BK_AAA_COMMON",0,0],
-         ["_RCS1","HK_RTJJ_80_AAA__RCS1","F3_BK_AAA_RECURSE1",0,0]
+         ["_RCS1","HK_RTJJ_80_AAA_RCS1","F1_BK_AAA_COMMON",0,0],
+         ["_RCS1","HK_RTJJ_80_AAA_RCS1","F3_BK_AAA_RECURSE1",0,0]
   ]    }');

@@ -58,10 +58,9 @@ select distinct
 	,ppp.stereotype 
 	,dmc.column_name 
 	,dmc.dv_column_class  
-	,case when (pfte.field_group ='_A_' and pfte.recursion_suffix='') 
-				or process_block ='_A_' 
-				or is_implicit_suffix then dmc.column_name 
-	 else dmc.column_name||'_'||process_block end stage_column_name
+	,case when process_block ='_A_' or is_implicit_suffix  then dmc.column_name 
+	  		 else dmc.column_name||process_block  
+	 end stage_column_name
 	,dmc.column_type 
 	,dmc.column_block 
 	,ppp.field_group
@@ -81,7 +80,7 @@ left join dvpd_pipeline_field_target_expansion_with_implicit_recursion pfte on p
 																		and pfte.recursion_suffix = ppp.recursion_suffix 
 where (dv_column_class in ('meta','key','parent_key','diff_hash') or pfte.field_name is not null	)																	
 ;
---and ppp.pipeline like 'test70%'
---order by 2,3,5,6
+--and ppp.pipeline like 'test80%' or ppp.pipeline like 'test70%'
+--order by pipeline ,stage_column_name 
 
 -- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING order by pipeline,table_name,process_block;										

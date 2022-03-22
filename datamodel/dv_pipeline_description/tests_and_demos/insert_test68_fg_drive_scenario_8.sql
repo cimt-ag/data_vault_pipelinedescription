@@ -64,10 +64,10 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["LK_RTJJ_68_AAA_BBB_FG2","CHAR(28)",2,null,null,false]
  ],
  "stage_hash_input_field": [
-         ["FG1","HK_RTJJ_68_AAA_FG1","F1_BK_AAA_G1",0,0],
-         ["FG2","HK_RTJJ_68_AAA_FG2","F2_BK_AAA_G2",0,0],
-         ["FG2","HK_RTJJ_68_BBB_FG2","F3_BK_BBB_G2",0,0],
-         ["FG2","LK_RTJJ_68_AAA_BBB_FG2","F2_BK_AAA_G2",0,0],
-         ["FG2","LK_RTJJ_68_AAA_BBB_FG2","F3_BK_BBB_G2",0,0],
-         ["FG3","HK_RTJJ_68_BBB_FG3","F4_BK_BBB_G3",0,0]
+         ["_FG1","HK_RTJJ_68_AAA_FG1","F1_BK_AAA_G1",0,0],
+         ["_FG2","HK_RTJJ_68_AAA_FG2","F2_BK_AAA_G2",0,0],
+         ["_FG2","HK_RTJJ_68_BBB_FG2","F3_BK_BBB_G2",0,0],
+         ["_FG2","LK_RTJJ_68_AAA_BBB_FG2","F2_BK_AAA_G2",0,0],
+         ["_FG2","LK_RTJJ_68_AAA_BBB_FG2","F3_BK_BBB_G2",0,0],
+         ["_FG3","HK_RTJJ_68_BBB_FG3","F4_BK_BBB_G3",0,0]
   ]    }');

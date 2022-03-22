@@ -216,7 +216,9 @@ select
   pipeline 
   ,table_name 
   ,stereotype
-  ,field_group as process_block 
+  ,case when field_group <> '_A_' then '_'||field_group
+  		else field_group 
+	end as process_block 
   ,field_group
   ,'' recursion_suffix
   ,fg_rule 
@@ -227,7 +229,7 @@ select
   ,table_name 
   ,stereotype
   ,case when field_group='_A_' then '_'||recursion_suffix 
-  	  else field_group ||'_'||recursion_suffix end     as process_block
+  	  else  '_'||recursion_suffix||'_'||field_group end     as process_block
   ,field_group
   ,recursion_suffix
   ,fg_rule 
