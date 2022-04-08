@@ -4,7 +4,6 @@
 CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION_RAW (
 	pipeline_name text NULL,
 	field_name text NULL,
-	field_type text NULL,
 	target_table text NULL,
 	target_column_name text NULL,
 	field_group text NULL,
