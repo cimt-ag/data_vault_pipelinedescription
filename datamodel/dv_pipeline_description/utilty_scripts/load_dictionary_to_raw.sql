@@ -84,3 +84,18 @@ from
 	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_raw;
 
 
+truncate table dv_pipeline_description.dvpd_pipeline_dv_table_field_group_raw;
+insert
+	into
+	dv_pipeline_description.dvpd_pipeline_dv_table_field_group_raw
+(pipeline_name,
+	table_name,
+	field_group)
+select
+	pipeline_name,
+	table_name,
+	field_group
+from
+	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_field_group_raw;
+
+
