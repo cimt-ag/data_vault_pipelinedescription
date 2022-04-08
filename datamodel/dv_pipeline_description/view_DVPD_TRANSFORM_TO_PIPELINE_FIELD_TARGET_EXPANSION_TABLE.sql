@@ -1,12 +1,11 @@
---drop view if exists dv_pipeline_description.DVPD_TRANSFORM_TO_DVPD_PIPELINE_FIELD_TARGET_EXPANSION_RAW cascade;
+--drop view if exists dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_FIELD_TARGET_EXPANSION_RAW cascade;
 
-create or replace view dv_pipeline_description.DVPD_TRANSFORM_TO_DVPD_PIPELINE_FIELD_TARGET_EXPANSION_RAW as
+create or replace view dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_FIELD_TARGET_EXPANSION_RAW as
 
 with source_fields AS (
 Select 
 	dvpd_json ->>'pipeline_name' as pipeline_name
 	,json_array_elements(dvpd_json->'fields')->>'field_name' as field_name
-	,json_array_elements(dvpd_json->'fields')->>'technical_type' as field_type
 	,json_array_elements(dvpd_json->'fields')->'targets' as targets
 	,json_array_elements(dvpd_json->'fields')->>'field_comment' as field_comment
 from dv_pipeline_description.dvpd_dictionary dt 
@@ -15,7 +14,6 @@ from dv_pipeline_description.dvpd_dictionary dt
 select 
 	 pipeline_name
 	,field_name
-	,field_type
 	,field_comment
 	,json_array_elements(targets)->>'table_name' as target_table
 	,json_array_elements(targets)->>'target_column_name' as target_column_name
@@ -43,7 +41,6 @@ from source_fields
 select 
 	te1.pipeline_name 
 	,te1.field_name 
-	,te1.field_type 
 	,te1.target_table 
 	,te1.target_column_name 
 	,field_group
@@ -53,9 +50,6 @@ select
 	,exclude_from_key_hash
 	,prio_in_diff_hash
 	,exclude_from_diff_hash
-	,needs_encryption
-	,hash_cleansing_rules
-	,field_comment
 	,column_content_comment
 from target_expansion te1
 left join field_group_expansion fge on fge.pipeline_name = te1.pipeline_name 

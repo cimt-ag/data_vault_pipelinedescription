@@ -5,7 +5,6 @@ INSERT
 	dv_pipeline_description.dvpd_pipeline_field_target_expansion_raw
 (pipeline_name,
 	field_name,
-	field_type,
 	target_table,
 	target_column_name,
 	field_group,
@@ -15,14 +14,10 @@ INSERT
 	exclude_from_key_hash,
 	prio_in_diff_hash,
 	exclude_from_diff_hash,
-	needs_encryption,
-	hash_cleansing_rules,
-	field_comment,
 	column_content_comment)
 SELECT
 	pipeline_name,
 	field_name,
-	field_type,
 	target_table,
 	target_column_name,
 	field_group,
@@ -32,10 +27,31 @@ SELECT
 	exclude_from_key_hash,
 	prio_in_diff_hash,
 	exclude_from_diff_hash,
-	needs_encryption,
-	hash_cleansing_rules,
-	field_comment,
 	column_content_comment
 FROM
-	dv_pipeline_description.dvpd_transform_to_dvpd_pipeline_field_target_expansion_raw;
+	dv_pipeline_description.dvpd_transform_to_pipeline_field_target_expansion_raw;
 ;
+
+
+truncate
+	table dv_pipeline_description.dvpd_pipeline_field_properties_raw;
+
+insert
+	into
+	dv_pipeline_description.dvpd_pipeline_field_properties_raw
+(pipeline,
+	field_name,
+	field_type,
+	field_position,
+	parsing_expression,
+	field_comment)
+select
+	pipeline,
+	field_name,
+	field_type,
+	field_position,
+	parsing_expression,
+	field_comment
+from
+	dv_pipeline_description.dvpd_transform_to_pipeline_field_properties_raw;
+
