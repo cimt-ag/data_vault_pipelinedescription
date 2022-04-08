@@ -1,3 +1,9 @@
+# Release 0.4.0
+
+## bugfixes
+- Added missing Hash column views in deployment.csv
+
+
 # Release 0.3.0
 ## new features
 - automated tests for hash content mapping
