@@ -1,5 +1,5 @@
---drop view if exists dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_TARGET_TABLE_RAW cascade;
-create or replace view dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_TARGET_TABLE_RAW as 
+--drop view if exists dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_DV_TABLE_RAW cascade;
+create or replace view dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_DV_TABLE_RAW as 
 
 with data_vault_schema_basics as (
 	select 
