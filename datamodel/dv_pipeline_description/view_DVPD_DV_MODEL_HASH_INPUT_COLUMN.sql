@@ -2,7 +2,8 @@
 
 create or replace view dv_pipeline_description.DVPD_DV_MODEL_HASH_INPUT_COLUMN as 
 
-select
+-- HK / LK input of  business keys and dependent child keys from  the same table
+select  
 	 hash_target.table_name 
 	,hash_target.column_name key_column
 	,content_key.table_name content_table
@@ -13,6 +14,7 @@ join dv_pipeline_description.dvpd_dv_model_column content_key on content_key.tab
 						and content_key.dv_column_class in ('business_key','dependent_child_key')
 where hash_target.dv_column_class in ('key')
 union 
+-- LK input of business keys from parent tables
 select 
 	 link_table.table_name 
 	,dmt.link_key_column_name 
@@ -24,6 +26,7 @@ join dv_pipeline_description.dvpd_dv_model_table dmt on dmt.table_name =link_tab
 join dv_pipeline_description.dvpd_dv_model_column content_key on content_key.table_name =link_table.parent_table_name 
 						and content_key.dv_column_class in ('business_key')
 union
+-- diff hash input from the same table
 select
 	 hash_target.table_name 
 	,hash_target.column_name key_column
