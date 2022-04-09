@@ -1,0 +1,9 @@
+-- DROP TABLE dv_pipeline_description.dvpd_pipeline_dv_table_link_parent_raw;
+
+CREATE TABLE dv_pipeline_description.dvpd_pipeline_dv_table_link_parent_raw (
+	pipeline_name text NULL,
+	table_name text NULL,
+	parent_table_name text NULL,
+	is_recursive_relation bool NULL,
+	recursion_name text NULL
+);

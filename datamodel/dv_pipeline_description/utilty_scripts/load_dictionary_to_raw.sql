@@ -99,3 +99,9 @@ from
 	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_field_group_raw;
 
 
+truncate table dv_pipeline_description.dvpd_pipeline_dv_table_link_parent_raw;
+INSERT INTO dv_pipeline_description.dvpd_pipeline_dv_table_link_parent_raw
+(pipeline_name, table_name, parent_table_name, is_recursive_relation, recursion_name)
+SELECT pipeline_name, table_name, parent_table_name, is_recursive_relation, recursion_name
+FROM dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_link_parent_raw;
+
