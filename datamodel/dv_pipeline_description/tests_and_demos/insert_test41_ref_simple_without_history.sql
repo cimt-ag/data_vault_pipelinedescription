@@ -12,7 +12,7 @@ VALUES
 	"fields": [
 		      {"field_name": "F1_AAA_VARCHAR", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_41_aaa_ref"}]},
 		 	  {"field_name": "F2_BBB_DECIMAL",	"technical_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_41_aaa_ref"}]},
-		 	  {"field_name": "F3_CCC_XXXBADNAMEXXX_DATE",		"technical_type": "DATE",			"targets": [{"table_name": "rtjj_41_aaa_ref"
+		 	  {"field_name": "F3_CCC_FIELDNAME_DATE",		"technical_type": "DATE",			"targets": [{"table_name": "rtjj_41_aaa_ref"
 																											,"target_column_name":"F3_CCC_DATE"}]},
 			  {"field_name": "F4_DDD_NOT_IN_RH__DECIMAL",		"technical_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_41_aaa_ref","exclude_from_diff_hash": "true"}]}
 			 ],
@@ -40,7 +40,7 @@ VALUES
  "stage_table_column": [
 				["F1_AAA_VARCHAR","VARCHAR(20)",8,"F1_AAA_VARCHAR","VARCHAR(20)",false],                        
 				["F2_BBB_DECIMAL","DECIMAL(20,0)",8,"F2_BBB_DECIMAL","DECIMAL(20,0)",false],                    
-				["F3_CCC_DATE","DATE",8,"F3_CCC_XXXBADNAMEXXX_DATE","DATE",false],                
+				["F3_CCC_FIELDNAME_DATE","DATE",8,"F3_CCC_FIELDNAME_DATE","DATE",false],                
 				["F4_DDD_NOT_IN_RH__DECIMAL","DECIMAL(5,0)",8,"F4_DDD_NOT_IN_RH__DECIMAL","DECIMAL(5,0)",false]
 ]
 }');                                                                                                              

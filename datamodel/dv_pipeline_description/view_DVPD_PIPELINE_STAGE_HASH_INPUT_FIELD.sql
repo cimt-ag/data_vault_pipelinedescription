@@ -32,7 +32,7 @@ from target_hash_columns  thc
 join dv_pipeline_description.dvpd_dv_model_hash_input_column dmhic on dmhic.table_name =thc.table_name 
 																  and dmhic.key_column =thc.column_name 
 join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm on ppstdmm.pipeline =thc.pipeline 
-					and ppstdmm.field_group = thc.field_group 	
+					and (ppstdmm.field_group = thc.field_group 	or ppstdmm.field_group = '_A_')
 					and ppstdmm.recursion_suffix =dmhic.content_recursion_suffix 
 					and ppstdmm.table_name = dmhic.content_table 
 					and ppstdmm.column_name = dmhic.content_column 

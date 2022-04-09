@@ -16,7 +16,7 @@ VALUES
 		 	  ,{"field_name": "F2_BK_BBB_DECIMAL",	"technical_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_26_bbb_hub"}]}
 		 	  ,{"field_name": "F3_AAA_SP1_VARCHAR",	"technical_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_26_aaa_bbb_sat"}]}
 			  ,{"field_name": "F4_AAA_SP1_DECIMAL",	"technical_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_26_aaa_bbb_sat"}]}
-			  ,{"field_name": "F5_XXX_BAD_NAME_XXX",	"technical_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_26_aaa_bbb_sat",
+			  ,{"field_name": "F5__FIELD_NAME",	"technical_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_26_aaa_bbb_sat",
 																									 "target_column_name":"F5_AAA_SP1_VARCHAR"}]}
 			 ],
 	"data_vault_model": [
@@ -59,7 +59,7 @@ VALUES
 		["F2_BK_BBB_DECIMAL","DECIMAL(20,0)",8,"F2_BK_BBB_DECIMAL","DECIMAL(20,0)",false],  
 		["F3_AAA_SP1_VARCHAR","VARCHAR(200)",8,"F3_AAA_SP1_VARCHAR","VARCHAR(200)",false],  
 		["F4_AAA_SP1_DECIMAL","DECIMAL(5,0)",8,"F4_AAA_SP1_DECIMAL","DECIMAL(5,0)",false],  
-		["F5_AAA_SP1_VARCHAR","VARCHAR(200)",8,"F5_XXX_BAD_NAME_XXX","VARCHAR(200)",false],
+		["F5__FIELD_NAME","VARCHAR(200)",8,"F5__FIELD_NAME","VARCHAR(200)",false],
 		["HK_RTJJ_26_AAA","CHAR(28)",2,null,null,false],                                    
 		["HK_RTJJ_26_BBB","CHAR(28)",2,null,null,false],                                    
 		["LK_RTJJ_26_AAA_BBB","CHAR(28)",2,null,null,false],                                
@@ -72,5 +72,5 @@ VALUES
          ["_A_","LK_RTJJ_26_AAA_BBB","F2_BK_BBB_DECIMAL",0,0],
          ["_A_","RH_RTJJ_26_AAA_BBB_SAT","F3_AAA_SP1_VARCHAR",0,0],
          ["_A_","RH_RTJJ_26_AAA_BBB_SAT","F4_AAA_SP1_DECIMAL",0,0],
-         ["_A_","RH_RTJJ_26_AAA_BBB_SAT","F5_XXX_BAD_NAME_XXX",0,0]
+         ["_A_","RH_RTJJ_26_AAA_BBB_SAT","F5__FIELD_NAME",0,0]
   ]    }');
