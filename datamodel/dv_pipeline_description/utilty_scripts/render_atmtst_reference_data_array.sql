@@ -1,7 +1,7 @@
 with target as (
 select distinct pipeline
 from dv_pipeline_description.dvpd_pipeline_target_table
-where pipeline like 'test66%'
+where pipeline like 'test51%'
 )
 select 1 block
 ,'DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = '''||pipeline||''';' script

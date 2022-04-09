@@ -15,7 +15,7 @@ VALUES('test50_double_esat_field_group', '{
 								"targets": [{"table_name": "rtjj_50_aaa_hub"},
 									        {"table_name": "rtkk_50_bbb_hub"}]}
 
- 		,{"field_name": "F2_BK_AAA_XXBADNAMEXX",	"technical_type": "Decimal(10,0)", "field_position": "2","uniqueness_groups": ["key"],
+ 		,{"field_name": "F2_BK_AAA_FIELDNAME",	"technical_type": "Decimal(10,0)", "field_position": "2","uniqueness_groups": ["key"],
 								"targets": [{"table_name": "rtjj_50_aaa_hub","target_column_name": "F2_BK_AAA_2"}]}
 
 		,{"field_name": "F3_AAA_SP1",	"technical_type": "Varchar(20)",	"field_position": "6",
@@ -64,3 +64,65 @@ VALUES('test50_double_esat_field_group', '{
 		}
 	]
 }');
+
+DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test50_double_esat_field_group';
+INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
+('test50_double_esat_field_group','{
+ "dv_model_column": [
+         ["rvlt_test_jj","rtjj_50_aaa_hub",2,"key","HK_RTJJ_50_AAA","CHAR(28)"],
+         ["rvlt_test_jj","rtjj_50_aaa_hub",8,"business_key","F1_BK_1","VARCHAR(20)"],
+         ["rvlt_test_jj","rtjj_50_aaa_hub",8,"business_key","F2_BK_AAA_2","DECIMAL(10,0)"],
+         ["rvlt_test_jj","rtjj_50_aaa_p1_sat",2,"parent_key","HK_RTJJ_50_AAA","CHAR(28)"],
+         ["rvlt_test_jj","rtjj_50_aaa_p1_sat",3,"diff_hash","RH_RTJJ_50_AAA_P1_SAT","CHAR(28)"],
+         ["rvlt_test_jj","rtjj_50_aaa_p1_sat",8,"content","F3_AAA_SP1","VARCHAR(20)"],
+         ["rvlt_test_jj","rtjj_50_aaa_p1_sat",8,"content","F4_AAA_SP1","DECIMAL(12,2)"],
+         ["rvlt_test_jj","rtjj_50_aaa_p1_sat",8,"content","F5_AAA_SP1","VARCHAR(10)"],
+         ["rvlt_test_jj","rtjj_50_aaa_p1_sat",8,"content_untracked","F6_AAA_SP1_EXCLUDED_FROM_DIFF","TIMESTAMP"],
+         ["rvlt_test_jj","rtjj_50_aaa_rtjkk_bbb_g1_esat",2,"parent_key","LK_RTJJ_50_AAA_RTJKK_BBB","CHAR(28)"],
+         ["rvlt_test_jj","rtjj_50_aaa_rtjkk_bbb_g2_esat",2,"parent_key","LK_RTJJ_50_AAA_RTJKK_BBB","CHAR(28)"],
+         ["rvlt_test_jj","rtjj_50_aaa_rtjkk_bbb_lnk",2,"key","LK_RTJJ_50_AAA_RTJKK_BBB","CHAR(28)"],
+         ["rvlt_test_jj","rtjj_50_aaa_rtjkk_bbb_lnk",3,"parent_key","HK_RTJJ_50_AAA","CHAR(28)"],
+         ["rvlt_test_jj","rtjj_50_aaa_rtjkk_bbb_lnk",3,"parent_key","HK_RTKK_50_BBB","CHAR(28)"],
+         ["rvlt_test_kk","rtkk_50_bbb_hub",2,"key","HK_RTKK_50_BBB","CHAR(28)"],
+         ["rvlt_test_kk","rtkk_50_bbb_hub",8,"business_key","F1_BK_1","VARCHAR(20)"],
+         ["rvlt_test_kk","rtkk_50_bbb_hub",8,"business_key","F7_BK_BBB_2","DECIMAL(10,0)"],
+         ["rvlt_test_kk","rtkk_50_bbb_p1_sat",2,"parent_key","HK_RTKK_50_BBB","CHAR(28)"],
+         ["rvlt_test_kk","rtkk_50_bbb_p1_sat",3,"diff_hash","RH_RTKK_50_BBB_P1_SAT","CHAR(28)"],
+         ["rvlt_test_kk","rtkk_50_bbb_p1_sat",8,"content","F9_BBB_SP1_L1","VARCHAR(200)"]
+ ],
+ "stage_table_column": [
+         ["F1_BK_1","VARCHAR(20)",8,"F1_BK_1","VARCHAR(20)",false],
+         ["F2_BK_AAA_FIELDNAME","DECIMAL(10,0)",8,"F2_BK_AAA_FIELDNAME","DECIMAL(10,0)",false],
+         ["F3_AAA_SP1","VARCHAR(20)",8,"F3_AAA_SP1","VARCHAR(20)",false],
+         ["F4_AAA_SP1","DECIMAL(12,2)",8,"F4_AAA_SP1","DECIMAL(12,2)",false],
+         ["F5_AAA_SP1","VARCHAR(10)",8,"F5_AAA_SP1","VARCHAR(10)",false],
+         ["F6_AAA_SP1_EXCLUDED_FROM_DIFF","TIMESTAMP",8,"F6_AAA_SP1_EXCLUDED_FROM_DIFF","TIMESTAMP",false],
+         ["F7_BK_BBB_2_L1","DECIMAL(10,0)",8,"F7_BK_BBB_2_L1","DECIMAL(10,0)",false],
+         ["F8_BK_BBB_2_L2","DECIMAL(10,0)",8,"F8_BK_BBB_2_L2","DECIMAL(10,0)",false],
+         ["F9_BBB_SP1_L1","VARCHAR(200)",8,"F9_BBB_SP1_L1","VARCHAR(200)",false],
+         ["HK_RTJJ_50_AAA","CHAR(28)",2,null,null,false],
+         ["HK_RTKK_50_BBB_FG1","CHAR(28)",2,null,null,false],
+         ["HK_RTKK_50_BBB_FG2","CHAR(28)",2,null,null,false],
+         ["LK_RTJJ_50_AAA_RTJKK_BBB_FG1","CHAR(28)",2,null,null,false],
+         ["LK_RTJJ_50_AAA_RTJKK_BBB_FG2","CHAR(28)",2,null,null,false],
+         ["RH_RTJJ_50_AAA_P1_SAT","CHAR(28)",3,null,null,false],
+         ["RH_RTKK_50_BBB_P1_SAT_FG1","CHAR(28)",3,null,null,false]
+ ],
+ "stage_hash_input_field": [
+         ["_A_","HK_RTJJ_50_AAA","F1_BK_1",0,0],
+         ["_A_","HK_RTJJ_50_AAA","F2_BK_AAA_FIELDNAME",0,0],
+         ["_A_","RH_RTJJ_50_AAA_P1_SAT","F3_AAA_SP1",0,0],
+         ["_A_","RH_RTJJ_50_AAA_P1_SAT","F4_AAA_SP1",0,0],
+         ["_A_","RH_RTJJ_50_AAA_P1_SAT","F5_AAA_SP1",0,0],
+         ["_FG1","HK_RTKK_50_BBB_FG1","F1_BK_1",0,0],
+         ["_FG1","HK_RTKK_50_BBB_FG1","F7_BK_BBB_2_L1",0,0],
+         ["_FG1","LK_RTJJ_50_AAA_RTJKK_BBB_FG1","F1_BK_1",0,0],
+         ["_FG1","LK_RTJJ_50_AAA_RTJKK_BBB_FG1","F2_BK_AAA_FIELDNAME",0,0],
+         ["_FG1","LK_RTJJ_50_AAA_RTJKK_BBB_FG1","F7_BK_BBB_2_L1",0,0],
+         ["_FG1","RH_RTKK_50_BBB_P1_SAT_FG1","F9_BBB_SP1_L1",0,0],
+         ["_FG2","HK_RTKK_50_BBB_FG2","F1_BK_1",0,0],
+         ["_FG2","HK_RTKK_50_BBB_FG2","F8_BK_BBB_2_L2",0,0],
+         ["_FG2","LK_RTJJ_50_AAA_RTJKK_BBB_FG2","F1_BK_1",0,0],
+         ["_FG2","LK_RTJJ_50_AAA_RTJKK_BBB_FG2","F2_BK_AAA_FIELDNAME",0,0],
+         ["_FG2","LK_RTJJ_50_AAA_RTJKK_BBB_FG2","F8_BK_BBB_2_L2",0,0]
+  ]    }');
