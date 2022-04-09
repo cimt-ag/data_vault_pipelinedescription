@@ -4,7 +4,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test01_check_model_relations','{
-	"DVPD_Version": "1.0",
+	"dvpd_version": "1.0",
 	"pipeline_name": "test01_check_model_relations",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {

@@ -4,7 +4,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test69_fg_drive_scenario_9_simple_hierarchy','{
-	"DVPD_Version": "1.0",
+	"dvpd_version": "1.0",
 	"pipeline_name": "test69_fg_drive_scenario_9_simple_hierarchy",
 	"record_source_name_expression":"dvpd implementation test",
 	"data_extraction": {

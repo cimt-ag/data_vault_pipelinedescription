@@ -4,7 +4,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test80_recursive_link_with_common_bk_field','{
- 	"DVPD_Version": "1.0",
+ 	"dvpd_version": "1.0",
  	"pipeline_name": "test80_recursive_link_with_common_bk_field",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"

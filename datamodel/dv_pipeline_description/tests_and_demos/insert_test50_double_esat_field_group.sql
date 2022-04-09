@@ -3,7 +3,7 @@ DELETE FROM dv_pipeline_description.dvpd_dictionary where pipeline_name = 'test5
 INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES('test50_double_esat_field_group', '{
-	"DVPD_Version": "1.0",
+	"dvpd_version": "1.0",
 	"pipeline_name": "test50_double_esat_field_group",
 	"record_source_name_expression": "knuppisoft.auftrag",
 	"data_extraction": {

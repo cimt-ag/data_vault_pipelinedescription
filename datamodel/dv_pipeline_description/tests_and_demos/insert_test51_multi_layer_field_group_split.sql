@@ -4,7 +4,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test51_multi_layer_field_group_split','{
-	"DVPD_Version": "1.0",
+	"dvpd_version": "1.0",
 	"pipeline_name": "test51_multi_layer_field_group_split",
 	"purpose":"Test dvpd transformation for multilayered field groups",
 	"record_source_name_expression": "knuppisoft.artikel",

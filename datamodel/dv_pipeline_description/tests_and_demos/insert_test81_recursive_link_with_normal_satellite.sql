@@ -4,7 +4,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test81_recursive_link_with_normal_satellite','{
- 	"DVPD_Version": "1.0",
+ 	"dvpd_version": "1.0",
  	"pipeline_name": "test81_recursive_link_with_normal_satellite",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"

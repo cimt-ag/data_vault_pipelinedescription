@@ -4,7 +4,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test66_fg_drive_scenario_6','{
-	"DVPD_Version": "1.0",
+	"dvpd_version": "1.0",
 	"pipeline_name": "test66_fg_drive_scenario_6",
 	"purpose":"Test dvpd transformation for multilayered field groups",
 	"record_source_name_expression": "knuppisoft.artikel",
