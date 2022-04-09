@@ -1,4 +1,3 @@
-/* insert Testcase 1*/
 DELETE FROM dv_pipeline_description.dvpd_dictionary where pipeline_name = 'test25_one_link_one_esat_three_hubs';
 INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
@@ -67,6 +66,14 @@ VALUES
 		["HK_RTJJ_25_CCC","CHAR(28)",2,null,null,false],
 		["LK_RTJJ_25_AAA_BBB_CCC","CHAR(28)",2,null,null,false],
 		["RH_RTJJ_25_AAA_P1_SAT","CHAR(28)",3,null,null,false]
-]
-}');                                                                                                              
-
+ ],
+ "stage_hash_input_field": [
+         ["_A_","HK_RTJJ_25_AAA","F1_BK_AAA_VARCHAR",0,0],
+         ["_A_","HK_RTJJ_25_BBB","F2_BK_BBB_DECIMAL",0,0],
+         ["_A_","HK_RTJJ_25_CCC","F3_BK_CCC_DECIMAL",0,0],
+         ["_A_","LK_RTJJ_25_AAA_BBB_CCC","F1_BK_AAA_VARCHAR",0,0],
+         ["_A_","LK_RTJJ_25_AAA_BBB_CCC","F2_BK_BBB_DECIMAL",0,0],
+         ["_A_","LK_RTJJ_25_AAA_BBB_CCC","F3_BK_CCC_DECIMAL",0,0],
+         ["_A_","RH_RTJJ_25_AAA_P1_SAT","F4_AAA_SP1_VARCHAR",0,0],
+         ["_A_","RH_RTJJ_25_AAA_P1_SAT","F5_AAA_SP1_DECIMAL",0,0]
+  ]    }');
