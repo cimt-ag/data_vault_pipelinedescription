@@ -5,56 +5,62 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES('test50_double_esat_field_group', '{
 	"dvpd_version": "1.0",
 	"pipeline_name": "test50_double_esat_field_group",
-	"record_source_name_expression": "knuppisoft.auftrag",
+	"record_source_name_expression":"dvpd implementation test",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 
 	"fields": [
-		{"field_name": "FI_ID",			"technical_type": "Varchar(20)",  "field_position": "1", "uniqueness_groups": ["key"],
-								"targets": [{"table_name": "rtstb_50_auftrag_hub"},
-									        {"table_name": "rtsta_50_kunde_hub"}]},
+		{"field_name": "F1_BK_1",			"technical_type": "Varchar(20)",  "field_position": "1", "uniqueness_groups": ["key"],
+								"targets": [{"table_name": "rtjj_50_aaa_hub"},
+									        {"table_name": "rtkk_50_bbb_hub"}]}
 
- 		{"field_name": "AUFTRAGSNR",	"technical_type": "Decimal(10,0)", "field_position": "2","uniqueness_groups": ["key"],
-								"targets": [{"table_name": "rtstb_50_auftrag_hub","target_column_name": "A_NUMMER"}]},
+ 		,{"field_name": "F2_BK_AAA_XXBADNAMEXX",	"technical_type": "Decimal(10,0)", "field_position": "2","uniqueness_groups": ["key"],
+								"targets": [{"table_name": "rtjj_50_aaa_hub","target_column_name": "F2_BK_AAA_2"}]}
 
-		{"field_name": "KUNDE_NR",		"technical_type": "DECIMAL(10,0)", "field_position": "3",
-								"targets": [{"table_name": "rtsta_50_kunde_hub","field_groups": ["hauptkunde"]}]},
-
-		{"field_name": "CO_KUNDE_NR",	"technical_type": "DECIMAL(10,0)",	"field_position": "4",
-								"targets": [{"table_name": "rtsta_50_kunde_hub","target_column_name": "KUNDE_NR","field_groups": ["co_kunde"]}]},
-
-		{"field_name": "KUNDEN_NAME",		"technical_type": "VARCHAR(200)", "field_position": "5",
-								"targets": [{"table_name": "rtsta_50_kunde_p1_sat","field_groups": ["hauptkunde"]}]},
-
-		{"field_name": "AUFTRAGSART",	"technical_type": "Varchar(20)",	"field_position": "6",
-								"targets": [{"table_name": "rtstb_50_auftrag_p1_sat"}]},
+		,{"field_name": "F3_AAA_SP1",	"technical_type": "Varchar(20)",	"field_position": "6",
+								"targets": [{"table_name": "rtjj_50_aaa_p1_sat"}]}
  		
-		{"field_name": "PREIS_NETTO",	"technical_type": "DECIMAL(12,2)",	"field_position": "7",	"targets": [{"table_name": "rtstb_50_auftrag_p1_sat"}]},
-		{"field_name": "STATUS",		"technical_type": "VARCHAR(10)",	"field_position": "8",	"targets": [{"table_name": "rtstb_50_auftrag_p1_sat"}]},
-		{"field_name": "SYSTEMMODTIME",	"technical_type": "TIMESTAMP",		"field_position": "9",	"targets": [{"table_name": "rtstb_50_auftrag_p1_sat",
-																												"exclude_from_diff_hash": "true"}]}
+		,{"field_name": "F4_AAA_SP1",	"technical_type": "DECIMAL(12,2)",	"field_position": "7",	
+								"targets": [{"table_name": "rtjj_50_aaa_p1_sat"}]}
+
+		,{"field_name": "F5_AAA_SP1",		"technical_type": "VARCHAR(10)",	"field_position": "8",	
+								"targets": [{"table_name": "rtjj_50_aaa_p1_sat"}]}
+
+		,{"field_name": "F6_AAA_SP1_EXCLUDED_FROM_DIFF",	"technical_type": "TIMESTAMP",		"field_position": "9",	
+								"targets": [{"table_name": "rtjj_50_aaa_p1_sat","exclude_from_diff_hash": "true"}]}
+
+		,{"field_name": "F7_BK_BBB_2_G1",		"technical_type": "DECIMAL(10,0)", "field_position": "3",
+								"targets": [{"table_name": "rtjj_50_aaa_p1_sat","field_groups": ["fg1"]}]}
+
+		,{"field_name": "F8_BK_BBB_2_G2",	"technical_type": "DECIMAL(10,0)",	"field_position": "4",
+								"targets": [{"table_name": "rtjj_50_aaa_p1_sat","target_column_name": "F3_BK_BBB_2_G1"
+								,"field_groups": ["fg1"]}]}
+
+		,{"field_name": "F9_BBB_SP1_G1",		"technical_type": "VARCHAR(200)", "field_position": "5",
+								"targets": [{"table_name": "rtjj_50_aaa_p1_sat","field_groups": ["fg1"]}]}
+
 	],
 	"data_vault_model": [{
-		"schema_name": "rvlt_test_a",
+		"schema_name": "rvlt_test_jj",
 			"tables": [
-				{"table_name": "rtsta_50_kunde_hub",	"stereotype": "hub","hub_key_column_name": "HK_rtsta_50_KUNDE"},
- 				{"table_name": "rtsta_50_kunde_p1_sat","stereotype": "sat","satellite_parent_table": "rtsta_50_kunde_hub","diff_hash_column_name": "RH_rtsta_50_KUNDE_P1_SAT",
+				{"table_name": "rtjj_50_aaa_hub",	"stereotype": "hub","hub_key_column_name": "HK_rtjj_50_aaa"}
+ 				,{"table_name": "rtjj_50_aaa_p1_sat","stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_hub","diff_hash_column_name": "RH_rtjj_50_aaa_p1_sat",
 																	"tracked_field_groups": ["hauptkunde"]}
+				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_lnk","stereotype": "lnk","link_key_column_name": "LK_rtjj_50_aaa_rtjkk_bbb"
+																	,	"link_parent_tables": ["rtjj_50_aaa_hub","rtkk_50_bbb_hub"]}
+				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g1_esat","stereotype": "esat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
+																		"tracked_field_groups": ["fg1"],
+																		"driving_hub_keys": ["HK_rtjj_50_aaa"]}
+				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g2_esat","stereotype": "esat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
+																		"tracked_field_groups": ["fg2"],
+																		"driving_hub_keys": ["HK_rtjj_50_aaa"]}
 			]
 		},
-		{"schema_name": "rvlt_test_b",
+		{"schema_name": "rvlt_test_kk",
 			"tables": [
-				{"table_name": "rtstb_50_auftrag_hub",		 "stereotype": "hub","hub_key_column_name": "HK_rtstb_50_AUFTRAG"},
-				{"table_name": "rtstb_50_auftrag_p1_sat",	 "stereotype": "sat","satellite_parent_table": "rtstb_50_auftrag_hub","diff_hash_column_name": "RH_AUFTRAG_P1_SAT"},
-				{"table_name": "rtstb_50_auftrag_kunde_lnk","stereotype": "lnk","link_key_column_name": "LK_rtstb_50_AUFTRAG_KUNDE"
-																	,	"link_parent_tables": ["rtstb_50_auftrag_hub","rtsta_50_kunde_hub"]},
-				{"table_name": "rtstb_50_auftrag_kunde_esat","stereotype": "esat","satellite_parent_table": "rtstb_50_auftrag_kunde_lnk",
-																		"tracked_field_groups": ["hauptkunde"],
-																		"driving_hub_keys": ["hk_rtstb_50_auftrag"]},
-				{"table_name": "rtstb_50_auftrag_co_kunde_esat","stereotype": "esat","satellite_parent_table": "rtstb_50_auftrag_kunde_lnk",
-																		"tracked_field_groups": ["co_kunde"],
-																		"driving_hub_keys": ["hk_rtstb_50_auftrag"]}
+				{"table_name": "rtkk_50_bbb_hub",		 "stereotype": "hub","hub_key_column_name": "HK_rtkk_50_bbb"}
+				,{"table_name": "rtkk_50_bbb_p1_sat",	 "stereotype": "sat","satellite_parent_table": "rtkk_50_bbb_hub","diff_hash_column_name": "rh_rtkk_50_bbb_p1_sat"}
 			]
 		}
 	]
