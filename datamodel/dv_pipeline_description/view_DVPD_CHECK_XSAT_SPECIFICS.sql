@@ -14,13 +14,15 @@ with no_columns_on_esat as (
 				and sfm.pipeline_name = dmtpp.pipeline_name 
 	where dmtpp.stereotype ='esat'
 )
-/*,driving_key_per_pipeline_and_sat_table as (
+,driving_key_per_pipeline_and_sat_table as (
 	select 
-		pipeline_name 
-		,table_name 
-		,upper(json_array_elements_text(driving_keys)) driving_key
+		ptt.pipeline_name 
+		,ptt.table_name 
 		,satellite_parent_table 
-	from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
+		,driving_key
+	from dv_pipeline_description.dvpd_pipeline_target_table ptt 
+	join dv_pipeline_description.dvpd_pipeline_dv_table_driving_key pdtdk on pdtdk.pipeline_name =ptt.pipeline_name 
+																		 and pdtdk.table_name =ptt.table_name 
 	where stereotype in ('sat','esat','msat')
 )
 ,do_driving_keys_exist_in_parent as (
@@ -34,12 +36,11 @@ select
 from driving_key_per_pipeline_and_sat_table dkppast 
 left join dv_pipeline_description.dvpd_dv_model_column dmc ON dmc.table_name = dkppast.satellite_parent_table
 and dmc.column_name =dkppast.driving_key 
-
-) */
+) 
 select * from no_columns_on_esat
-/*union
+union
 select * from do_driving_keys_exist_in_parent ;
-*/
+
 
 comment on view dv_pipeline_description.DVPD_CHECK_XSAT_SPECIFICS IS
 	'Test for satellite specific rules';

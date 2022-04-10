@@ -140,3 +140,18 @@ select
 from
 	dv_pipeline_description.dvpd_transform_to_pipeline_properties_raw;
 
+truncate table dv_pipeline_description.dvpd_pipeline_dv_table_driving_key_raw;
+insert
+	into
+	dv_pipeline_description.dvpd_pipeline_dv_table_driving_key_raw
+(	pipeline_name,
+	table_name,
+	driving_key)
+select
+	pipeline_name,
+	table_name,
+	driving_key
+from
+	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_driving_key_raw;
+
+
