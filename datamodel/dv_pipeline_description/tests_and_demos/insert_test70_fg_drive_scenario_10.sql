@@ -51,7 +51,19 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rvlt_test_jj","rtjj_70_aaa_hub",2,"key","HK_RTJJ_70_AAA","CHAR(28)"],
          ["rvlt_test_jj","rtjj_70_aaa_hub",8,"business_key","BK_AAA","VARCHAR(20)"]
  ],
- "stage_table_column": [
+ "process_column_mapping": [
+         ["rtjj_70_aaa_hierarchy_esat","_FG1","LK_RTJJ_70_AAA_HIERARCHY","LK_RTJJ_70_AAA_HIERARCHY_FG1",null],
+         ["rtjj_70_aaa_hierarchy_hlnk","_FG1","LK_RTJJ_70_AAA_HIERARCHY","LK_RTJJ_70_AAA_HIERARCHY_FG1",null],
+         ["rtjj_70_aaa_hierarchy_hlnk","_FG1","HK_RTJJ_70_AAA","HK_RTJJ_70_AAA_FG1",null],
+         ["rtjj_70_aaa_hierarchy_hlnk","_FG1","HK_RTJJ_70_AAA_HRCHY1","HK_RTJJ_70_AAA_HRCHY1_FG1",null],
+         ["rtjj_70_aaa_hub","_FG1","HK_RTJJ_70_AAA","HK_RTJJ_70_AAA_FG1",null],
+         ["rtjj_70_aaa_hub","_FG1","BK_AAA","F1_BK_AAA_L1","F1_BK_AAA_L1"],
+         ["rtjj_70_aaa_hub","_FG2","HK_RTJJ_70_AAA","HK_RTJJ_70_AAA_FG2",null],
+         ["rtjj_70_aaa_hub","_FG2","BK_AAA","F2_BK_AAA_L2","F2_BK_AAA_L2"],
+         ["rtjj_70_aaa_hub","_HRCHY1_FG1","HK_RTJJ_70_AAA","HK_RTJJ_70_AAA_HRCHY1_FG1",null],
+         ["rtjj_70_aaa_hub","_HRCHY1_FG1","BK_AAA","F3_BK_AAA_H1_L1","F3_BK_AAA_H1_L1"]
+ ], 
+"stage_table_column": [
          ["F1_BK_AAA_L1","VARCHAR(20)",8,"F1_BK_AAA_L1","VARCHAR(20)",false],
          ["F2_BK_AAA_L2","VARCHAR(20)",8,"F2_BK_AAA_L2","VARCHAR(20)",false],
          ["F3_BK_AAA_H1_L1","VARCHAR(20)",8,"F3_BK_AAA_H1_L1","VARCHAR(20)",false],

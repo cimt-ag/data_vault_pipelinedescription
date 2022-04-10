@@ -46,6 +46,18 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rvlt_test_jj","rtjj_80_aaa_recu_lnk",3,"parent_key","HK_RTJJ_80_AAA","CHAR(28)"],
          ["rvlt_test_jj","rtjj_80_aaa_recu_lnk",4,"parent_key","HK_RTJJ_80_AAA_RCS1","CHAR(28)"]
  ],
+ "process_column_mapping": [
+         ["rtjj_80_aaa_hub","_A_","HK_RTJJ_80_AAA","HK_RTJJ_80_AAA",null],
+         ["rtjj_80_aaa_hub","_A_","BK_AAA_CM","F1_BK_AAA_COMMON","F1_BK_AAA_COMMON"],
+         ["rtjj_80_aaa_hub","_A_","BK_AAA_SPLIT","F2_BK_AAA_ORIGIN","F2_BK_AAA_ORIGIN"],
+         ["rtjj_80_aaa_hub","_RCS1","HK_RTJJ_80_AAA","HK_RTJJ_80_AAA_RCS1",null],
+         ["rtjj_80_aaa_hub","_RCS1","BK_AAA_CM","F1_BK_AAA_COMMON","F1_BK_AAA_COMMON"],
+         ["rtjj_80_aaa_hub","_RCS1","BK_AAA_SPLIT","F3_BK_AAA_RECURSE1","F3_BK_AAA_RECURSE1"],
+         ["rtjj_80_aaa_recu_esat","_A_","LK_RTJJ_80_AAA_RECU","LK_RTJJ_80_AAA_RECU",null],
+         ["rtjj_80_aaa_recu_lnk","_A_","LK_RTJJ_80_AAA_RECU","LK_RTJJ_80_AAA_RECU",null],
+         ["rtjj_80_aaa_recu_lnk","_A_","HK_RTJJ_80_AAA","HK_RTJJ_80_AAA",null],
+         ["rtjj_80_aaa_recu_lnk","_A_","HK_RTJJ_80_AAA_RCS1","HK_RTJJ_80_AAA_RCS1",null]
+ ],
  "stage_table_column": [
          ["F1_BK_AAA_COMMON","VARCHAR(20)",8,"F1_BK_AAA_COMMON","VARCHAR(20)",false],
          ["F2_BK_AAA_ORIGIN","VARCHAR(20)",8,"F2_BK_AAA_ORIGIN","VARCHAR(20)",false],

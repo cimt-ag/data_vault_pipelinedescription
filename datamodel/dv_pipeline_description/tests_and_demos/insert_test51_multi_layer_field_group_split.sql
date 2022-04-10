@@ -79,7 +79,30 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["RH_RTSTA_51_FAHRZEUG_P1_SAT_FZG2","CHAR(28)",3,null,null,false],
          ["RH_RTSTA_51_FAHRZEUG_P1_SAT_FZG3","CHAR(28)",3,null,null,false]
  ],
- "stage_hash_input_field": [
+ "process_column_mapping": [
+         ["rtsta_51_fahrzeug_hub","_FZG1","HK_RTSTB_FAHRZEUG","HK_RTSTB_FAHRZEUG_FZG1",null],
+         ["rtsta_51_fahrzeug_hub","_FZG1","FAHRZEUG_KENNUNG","KENN_1","KENN_1"],
+         ["rtsta_51_fahrzeug_hub","_FZG1","FAHRZEUG_TYP","FZG_TY_1_U_2","FZG_TY_1_U_2"],
+         ["rtsta_51_fahrzeug_hub","_FZG1","MANDANT","MANDANT","MANDANT"],
+         ["rtsta_51_fahrzeug_hub","_FZG2","HK_RTSTB_FAHRZEUG","HK_RTSTB_FAHRZEUG_FZG2",null],
+         ["rtsta_51_fahrzeug_hub","_FZG2","FAHRZEUG_KENNUNG","KENN_2","KENN_2"],
+         ["rtsta_51_fahrzeug_hub","_FZG2","FAHRZEUG_TYP","FZG_TY_1_U_2","FZG_TY_1_U_2"],
+         ["rtsta_51_fahrzeug_hub","_FZG2","MANDANT","MANDANT","MANDANT"],
+         ["rtsta_51_fahrzeug_hub","_FZG3","HK_RTSTB_FAHRZEUG","HK_RTSTB_FAHRZEUG_FZG3",null],
+         ["rtsta_51_fahrzeug_hub","_FZG3","FAHRZEUG_KENNUNG","KENN_3","KENN_3"],
+         ["rtsta_51_fahrzeug_hub","_FZG3","FAHRZEUG_TYP","FZG_TY_3","FZG_TY_3"],
+         ["rtsta_51_fahrzeug_hub","_FZG3","MANDANT","MANDANT","MANDANT"],
+         ["rtsta_51_fahrzeug_p1_sat","_FZG1","HK_RTSTB_FAHRZEUG","HK_RTSTB_FAHRZEUG_FZG1",null],
+         ["rtsta_51_fahrzeug_p1_sat","_FZG1","RH_RTSTA_51_FAHRZEUG_P1_SAT","RH_RTSTA_51_FAHRZEUG_P1_SAT_FZG1",null],
+         ["rtsta_51_fahrzeug_p1_sat","_FZG1","MARKE","MARKE_1","MARKE_1"],
+         ["rtsta_51_fahrzeug_p1_sat","_FZG2","HK_RTSTB_FAHRZEUG","HK_RTSTB_FAHRZEUG_FZG2",null],
+         ["rtsta_51_fahrzeug_p1_sat","_FZG2","RH_RTSTA_51_FAHRZEUG_P1_SAT","RH_RTSTA_51_FAHRZEUG_P1_SAT_FZG2",null],
+         ["rtsta_51_fahrzeug_p1_sat","_FZG2","MARKE","MARKE_2","MARKE_2"],
+         ["rtsta_51_fahrzeug_p1_sat","_FZG3","HK_RTSTB_FAHRZEUG","HK_RTSTB_FAHRZEUG_FZG3",null],
+         ["rtsta_51_fahrzeug_p1_sat","_FZG3","RH_RTSTA_51_FAHRZEUG_P1_SAT","RH_RTSTA_51_FAHRZEUG_P1_SAT_FZG3",null],
+         ["rtsta_51_fahrzeug_p1_sat","_FZG3","MARKE","MARKE_3","MARKE_3"]
+ ], 
+"stage_hash_input_field": [
          ["_FZG1","HK_RTSTB_FAHRZEUG_FZG1","FZG_TY_1_U_2",0,0],
          ["_FZG1","HK_RTSTB_FAHRZEUG_FZG1","KENN_1",0,0],
          ["_FZG1","HK_RTSTB_FAHRZEUG_FZG1","MANDANT",0,0],

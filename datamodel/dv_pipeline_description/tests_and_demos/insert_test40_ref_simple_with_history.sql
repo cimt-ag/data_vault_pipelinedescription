@@ -38,7 +38,14 @@ VALUES
 			["rvlt_test_jj","rtjj_40_aaa_ref",8,"content","F3_CCC_DATE","DATE"],                                
 			["rvlt_test_jj","rtjj_40_aaa_ref",8,"content_untracked","F4_DDD_NOT_IN_RH__DECIMAL","DECIMAL(5,0)"]
 ],
- "stage_table_column": [
+ "process_column_mapping": [
+         ["rtjj_40_aaa_ref","_A_","RH_RTJJ_40_AAA_REF","RH_RTJJ_40_AAA_REF",null],
+         ["rtjj_40_aaa_ref","_A_","F1_AAA_VARCHAR","F1_AAA_VARCHAR","F1_AAA_VARCHAR"],
+         ["rtjj_40_aaa_ref","_A_","F2_BBB_DECIMAL","F2_BBB_DECIMAL","F2_BBB_DECIMAL"],
+         ["rtjj_40_aaa_ref","_A_","F3_CCC_DATE","F3_CCC_FIELDNAME_DATE","F3_CCC_FIELDNAME_DATE"],
+         ["rtjj_40_aaa_ref","_A_","F4_DDD_NOT_IN_RH__DECIMAL","F4_DDD_NOT_IN_RH__DECIMAL","F4_DDD_NOT_IN_RH__DECIMAL"]
+ ], 
+"stage_table_column": [
 			["F1_AAA_VARCHAR","VARCHAR(20)",8,"F1_AAA_VARCHAR","VARCHAR(20)",false],                        
 			["F2_BBB_DECIMAL","DECIMAL(20,0)",8,"F2_BBB_DECIMAL","DECIMAL(20,0)",false],                    
 			["F3_CCC_FIELDNAME_DATE","DATE",8,"F3_CCC_FIELDNAME_DATE","DATE",false],                

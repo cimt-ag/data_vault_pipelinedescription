@@ -47,6 +47,19 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rvlt_test_jj","rtjj_81_aaa_recu_sat",8,"content","F3_AAA_RECU_CONTENT","VARCHAR(20)"],
          ["rvlt_test_jj","rtjj_81_aaa_recu_sat",8,"content","F4_AAA_RECU_CONTENT2","VARCHAR(20)"]
  ],
+ "process_column_mapping": [
+         ["rtjj_81_aaa_hub","_A_","HK_RTJJ_81_AAA","HK_RTJJ_81_AAA",null],
+         ["rtjj_81_aaa_hub","_A_","BK_AAA","F1_BK_AAA_ORIGIN","F1_BK_AAA_ORIGIN"],
+         ["rtjj_81_aaa_hub","_RCS1","HK_RTJJ_81_AAA","HK_RTJJ_81_AAA_RCS1",null],
+         ["rtjj_81_aaa_hub","_RCS1","BK_AAA","F2_BK_AAA_RECURSE1","F2_BK_AAA_RECURSE1"],
+         ["rtjj_81_aaa_recu_lnk","_A_","LK_RTJJ_81_AAA_RECU","LK_RTJJ_81_AAA_RECU",null],
+         ["rtjj_81_aaa_recu_lnk","_A_","HK_RTJJ_81_AAA","HK_RTJJ_81_AAA",null],
+         ["rtjj_81_aaa_recu_lnk","_A_","HK_RTJJ_81_AAA_RCS1","HK_RTJJ_81_AAA_RCS1",null],
+         ["rtjj_81_aaa_recu_sat","_A_","LK_RTJJ_81_AAA_RECU","LK_RTJJ_81_AAA_RECU",null],
+         ["rtjj_81_aaa_recu_sat","_A_","RH_RTJJ_81_AAA_RECU_SAT","RH_RTJJ_81_AAA_RECU_SAT",null],
+         ["rtjj_81_aaa_recu_sat","_A_","F3_AAA_RECU_CONTENT","F3_AAA_RECU_CONTENT","F3_AAA_RECU_CONTENT"],
+         ["rtjj_81_aaa_recu_sat","_A_","F4_AAA_RECU_CONTENT2","F4_AAA_RECU_CONTENT2","F4_AAA_RECU_CONTENT2"]
+ ],
  "stage_table_column": [
          ["F1_BK_AAA_ORIGIN","VARCHAR(20)",8,"F1_BK_AAA_ORIGIN","VARCHAR(20)",false],
          ["F2_BK_AAA_RECURSE1","VARCHAR(20)",8,"F2_BK_AAA_RECURSE1","VARCHAR(20)",false],

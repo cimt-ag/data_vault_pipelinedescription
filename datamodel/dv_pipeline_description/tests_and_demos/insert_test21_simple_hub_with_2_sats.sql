@@ -50,7 +50,21 @@ VALUES
 		["rvlt_test_jj","rtjj_21_aaa_p2_sat",8,"content","F4_AAA_SP2_DECIMAL","DECIMAL(5,0)"],
 		["rvlt_test_jj","rtjj_21_aaa_p2_sat",8,"content","F5_AAA_SP1_AND_SP2_DECIMAL","VARCHAR(200)"]
 ],
- "stage_table_column": [
+  "process_column_mapping": [
+         ["rtjj_21_aaa_hub","_A_","HK_RTJJ_21_AAA","HK_RTJJ_21_AAA",null],
+         ["rtjj_21_aaa_hub","_A_","F1_BK_AAA_VARCHAR","F1_BK_AAA_VARCHAR","F1_BK_AAA_VARCHAR"],
+         ["rtjj_21_aaa_hub","_A_","F2_BK_AAA_DECIMAL","F2_BK_AAA_DECIMAL","F2_BK_AAA_DECIMAL"],
+         ["rtjj_21_aaa_p1_sat","_A_","HK_RTJJ_21_AAA","HK_RTJJ_21_AAA",null],
+         ["rtjj_21_aaa_p1_sat","_A_","RH_RTJJ_21_AAA_P1_SAT","RH_RTJJ_21_AAA_P1_SAT",null],
+         ["rtjj_21_aaa_p1_sat","_A_","F3_AAA_SP1_VARCHAR","F3_AAA_SP1_VARCHAR","F3_AAA_SP1_VARCHAR"],
+         ["rtjj_21_aaa_p1_sat","_A_","F5_AAA_SP1_AND_SP2_DECIMAL","F5_AAA_SP1_AND_SP2_DECIMAL","F5_AAA_SP1_AND_SP2_DECIMAL"],
+         ["rtjj_21_aaa_p1_sat","_A_","F6_AAA_SP1_TIMESTAMP_XRH","F6_AAA_SP1_TIMESTAMP_XRH","F6_AAA_SP1_TIMESTAMP_XRH"],
+         ["rtjj_21_aaa_p2_sat","_A_","HK_RTJJ_21_AAA","HK_RTJJ_21_AAA",null],
+         ["rtjj_21_aaa_p2_sat","_A_","RH_RTJJ_21_AAA_P2_SAT","RH_RTJJ_21_AAA_P2_SAT",null],
+         ["rtjj_21_aaa_p2_sat","_A_","F4_AAA_SP2_DECIMAL","F4_AAA_SP2_DECIMAL","F4_AAA_SP2_DECIMAL"],
+         ["rtjj_21_aaa_p2_sat","_A_","F5_AAA_SP1_AND_SP2_DECIMAL","F5_AAA_SP1_AND_SP2_DECIMAL","F5_AAA_SP1_AND_SP2_DECIMAL"]
+ ],
+"stage_table_column": [
 		["F1_BK_AAA_VARCHAR","VARCHAR(20)",8,"F1_BK_AAA_VARCHAR","VARCHAR(20)",false],
 		["F2_BK_AAA_DECIMAL","DECIMAL(20,0)",8,"F2_BK_AAA_DECIMAL","DECIMAL(20,0)",false],
 		["F3_AAA_SP1_VARCHAR","VARCHAR(200)",8,"F3_AAA_SP1_VARCHAR","VARCHAR(200)",false],
