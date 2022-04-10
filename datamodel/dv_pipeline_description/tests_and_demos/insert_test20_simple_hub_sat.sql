@@ -47,6 +47,17 @@ VALUES
 			,["rvlt_test_jj","rtjj_20_aaa_p1_sat",	8,	"content",		"F5_AAA_SP1_VARCHAR"	,"VARCHAR(200)"]
 			,["rvlt_test_jj","rtjj_20_aaa_p1_sat",	8,	"content_untracked",	"F6_AAA_SP1_TIMESTAMP_XRH",	"TIMESTAMP"]
 ],
+ "process_column_mapping": [
+         ["rtjj_20_aaa_hub","_A_","HK_RTJJ_20_AAA","HK_RTJJ_20_AAA",null],
+         ["rtjj_20_aaa_hub","_A_","F1_BK_AAA_VARCHAR","F1_BK_AAA_VARCHAR","F1_BK_AAA_VARCHAR"],
+         ["rtjj_20_aaa_hub","_A_","F2_BK_AAA_DECIMAL","F2_BK_AAA_DECIMAL","F2_BK_AAA_DECIMAL"],
+         ["rtjj_20_aaa_p1_sat","_A_","HK_RTJJ_20_AAA","HK_RTJJ_20_AAA",null],
+         ["rtjj_20_aaa_p1_sat","_A_","RH_RTJJ_20_AAA_P1_SAT","RH_RTJJ_20_AAA_P1_SAT",null],
+         ["rtjj_20_aaa_p1_sat","_A_","F3_AAA_SP1_VARCHAR","F3_AAA_SP1_VARCHAR","F3_AAA_SP1_VARCHAR"],
+         ["rtjj_20_aaa_p1_sat","_A_","F4_AAA_SP1_DECIMAL","F4_AAA_SP1_DECIMAL","F4_AAA_SP1_DECIMAL"],
+         ["rtjj_20_aaa_p1_sat","_A_","F5_AAA_SP1_VARCHAR","F5__FIELD_NAME","F5__FIELD_NAME"],
+         ["rtjj_20_aaa_p1_sat","_A_","F6_AAA_SP1_TIMESTAMP_XRH","F6_AAA_SP1_TIMESTAMP_XRH","F6_AAA_SP1_TIMESTAMP_XRH"]
+ ],
  "stage_table_column": [
 		["F1_BK_AAA_VARCHAR","VARCHAR(20)",8,"F1_BK_AAA_VARCHAR","VARCHAR(20)",false],
 		["F2_BK_AAA_DECIMAL","DECIMAL(20,0)",8,"F2_BK_AAA_DECIMAL","DECIMAL(20,0)",false],

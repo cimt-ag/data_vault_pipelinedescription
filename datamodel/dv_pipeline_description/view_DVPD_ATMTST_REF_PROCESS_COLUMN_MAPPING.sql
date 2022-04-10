@@ -1,5 +1,5 @@
---drop view if exists dv_pipeline_description.DVPD_ATMTST_REF_STAGE_TABLE_COLUMN;
-create or replace view dv_pipeline_description.DVPD_ATMTST_REF_STAGE_TABLE_COLUMN as (
+--drop view if exists dv_pipeline_description.DVPD_ATMTST_REF_PROCESS_COLUMN_MAPPING;
+create or replace view dv_pipeline_description.DVPD_ATMTST_REF_PROCESS_COLUMN_MAPPING as (
 
 with parsed_dvmodel_column as (
 select 

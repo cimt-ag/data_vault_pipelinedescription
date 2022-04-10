@@ -39,6 +39,13 @@ VALUES
 	["rvlt_test_jj","rtjj_99_aaa_p1_sat",3,"diff_hash","RH_RTJJ_99_AAA_P1_SAT","CHAR(28)"],
 	["rvlt_test_jj","rtjj_99_aaa_p1_sat",8,"content","F2_AAA_XXX_BAD_FIELD_IN_REF_DECIMAL","DECIMAL(20,0)"]
 ],
+ "process_column_mapping": [
+         ["TEST99 Trigger","_A_","HK_RTJJ_99_AAA_HUB","HK_RTJJ_99_AAA_HUB",null],
+         ["rtjj_99_aaa_hub","_A_","F1_BK_AAA_DECIMAL","F1_BK_AAA_DECIMAL","F1_BK_AAA_DECIMAL"],
+         ["rtjj_99_aaa_p1_sat","_A_","HK_RTJJ_99_AAA_HUB","HK_RTJJ_99_AAA_HUB",null],
+         ["rtjj_99_aaa_p1_sat","_A_","RH_RTJJ_99_AAA_P1_SAT","RH_RTJJ_99_AAA_P1_SAT",null],
+         ["rtjj_99_aaa_p1_sat","_A_","F2_AAA_XXX_BAD_FIELD_IN_RESULT_DECIMAL","F2_AAA_XXX_BAD_FIELD_IN_RESULT_DECIMAL","F2_AAA_XXX_BAD_FIELD_IN_RESULT_DECIMAL"]
+ ],
  "stage_table_column": [
 		["F1_BK_AAA_DECIMAL","DECIMAL(20,0)",8,"F1_BK_AAA_DECIMAL","DECIMAL(20,0)",false],
 		["F2_AAA_XXX_BAD_COLUMN_IN_REF_DECIMAL","DECIMAL(20,0)",8,"F2_AAA_XXX_BAD_FIELD_IN_REF_DECIMAL","DECIMAL(20,0)",false],
