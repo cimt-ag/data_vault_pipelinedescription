@@ -1,7 +1,7 @@
 with target as (
 select distinct pipeline
 from dv_pipeline_description.dvpd_pipeline_target_table
-where pipeline like 'test21%'
+where pipeline like 'test99%'
 )
 select 1 block
 ,1 reverse_order
@@ -67,7 +67,7 @@ select 16 block
  ||(case when reverse_order=1 then '' else ',' end)
 from (
 	select 
-	 rank () OVER (order by table_name desc ,process_block desc ,column_name desc ) reverse_order
+	 rank () OVER (order by table_name desc ,process_block desc ,column_block desc, column_name desc ) reverse_order
 	,table_name 
 	,process_block 
 	,column_name 
