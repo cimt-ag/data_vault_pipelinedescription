@@ -4,7 +4,7 @@ create or replace view dv_pipeline_description.DVPD_CHECK_LINK_SPECIFICS as
 
 with lk_count as (
 select 
-	pipeline 
+	pipeline_name 
 	,link_key_column_name 
 	,count(1) lk_count
 	,string_agg(table_name ,', ') table_list 
@@ -13,7 +13,7 @@ where stereotype = 'lnk' and link_key_column_name is not null
 group by 1,2
 )
 select 
-	pipeline 
+	pipeline_name 
  	,'Link Key'::TEXT  object_type 
  	, link_key_column_name object_name 
  	,'DVPD_CHECK_LINK_SPECIFICS'::text  check_ruleset
