@@ -3,11 +3,11 @@
 create or replace view dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN as
 
 with pipelines AS(
-select distinct pipeline 
+select distinct pipeline_name 
 from dv_pipeline_description.dvpd_pipeline_target_table
 )
 select distinct 
-	pipeline 
+	pipeline_name 
 	,stage_column_name
 	,column_type 
 	,min(column_block) column_block
@@ -19,7 +19,7 @@ from  dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping
 group by 1,2,3,5,6,7,8
 union 
 select
-	pipeline 
+	pipeline_name 
 	,dmcl.meta_column_name 
 	,dmcl.meta_column_type 
 	, 1

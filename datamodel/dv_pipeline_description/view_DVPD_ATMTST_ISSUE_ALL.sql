@@ -2,7 +2,7 @@
 create or replace view dv_pipeline_description.DVPD_ATMTST_ISSUE_ALL as (
 
 select
-	pipeline
+	pipeline_name
 	,'01 DV Model Columns' issue_class
 	,rank() over (order by schema_name ,table_name,column_block,column_name,atmtst_issue_message ) issue_order
 	,coalesce(schema_name || '.','') ||
@@ -42,7 +42,7 @@ from
 	dv_pipeline_description.dvpd_atmtst_issue_stage_hash_input_field
 union
 select
-	pipeline
+	pipeline_name
 	,'04 Stage Table Columns' issue_class
 	,rank() over (order by column_block,stage_column_name ) issue_order
 	,coalesce(stage_column_name,'#missing#') || ' | ' ||
@@ -56,7 +56,7 @@ select
 	,atmtst_issue_message
 from
 	dv_pipeline_description.dvpd_atmtst_issue_stage_table_column
-order by pipeline,issue_class ,issue_order 
+order by pipeline_name,issue_class ,issue_order 
 
 );
  

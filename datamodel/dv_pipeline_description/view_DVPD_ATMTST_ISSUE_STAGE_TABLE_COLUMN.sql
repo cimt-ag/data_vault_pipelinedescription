@@ -8,7 +8,7 @@ from dv_pipeline_description.dvpd_atmtst_ref_stage_table_column
 )
 ,result_data as (
 select 
- pstc.pipeline
+ pstc.pipeline_name
  ,stage_column_name
  ,column_type
  ,column_block
@@ -16,7 +16,7 @@ select
  ,coalesce(field_type,'')  field_type
  ,coalesce(pstc.needs_encryption ,false) encrypt
 from  pipelines_with_atmtst_data pwad
-join dv_pipeline_description.dvpd_pipeline_stage_table_column pstc on pstc.pipeline  =pwad.pipeline_name 
+join dv_pipeline_description.dvpd_pipeline_stage_table_column pstc on pstc.pipeline_name  =pwad.pipeline_name 
 	   													and not pstc.is_meta 			   													
 )   													
 , reference_data as ( 
