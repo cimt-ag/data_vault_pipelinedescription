@@ -65,6 +65,8 @@ VALUES('test50_double_esat_field_group', '{
 	]
 }');
 
+select DVPD_LOAD_PIPELINE_TO_RAW('test50_double_esat_field_group');
+
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test50_double_esat_field_group';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
 ('test50_double_esat_field_group','{

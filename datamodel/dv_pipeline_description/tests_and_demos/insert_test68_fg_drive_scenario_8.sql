@@ -39,6 +39,8 @@ VALUES
 }
 ');
 
+select DVPD_LOAD_PIPELINE_TO_RAW('test68_fg_drive_scenario_8');
+
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test68_fg_drive_scenario_8';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
 ('test68_fg_drive_scenario_8','{

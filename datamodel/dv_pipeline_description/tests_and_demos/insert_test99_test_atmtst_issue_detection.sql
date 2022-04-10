@@ -26,6 +26,8 @@ VALUES
 }
 ');
 
+select DVPD_LOAD_PIPELINE_TO_RAW('test99_test_atmtst_issue_detection');
+
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test99_test_atmtst_issue_detection';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE

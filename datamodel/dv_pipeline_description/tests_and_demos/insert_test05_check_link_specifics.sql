@@ -39,5 +39,6 @@ VALUES
 }
 ');
 
+select DVPD_LOAD_PIPELINE_TO_RAW('test05_one_link_one_esat');
                                                                    
 

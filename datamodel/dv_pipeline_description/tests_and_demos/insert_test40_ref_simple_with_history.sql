@@ -26,6 +26,8 @@ VALUES
 }
 ');
 
+select DVPD_LOAD_PIPELINE_TO_RAW('test40_ref_simple_with_history');
+
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test40_ref_simple_with_history';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE
 (pipeline_name, reference_data_json)
