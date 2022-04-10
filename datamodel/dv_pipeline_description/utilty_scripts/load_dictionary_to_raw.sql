@@ -44,6 +44,7 @@ insert
 	field_type,
 	field_position,
 	parsing_expression,
+	needs_encryption,
 	field_comment)
 select
 	pipeline,
@@ -51,6 +52,7 @@ select
 	field_type,
 	field_position,
 	parsing_expression,
+	needs_encryption,
 	field_comment
 from
 	dv_pipeline_description.dvpd_transform_to_pipeline_field_properties_raw;
