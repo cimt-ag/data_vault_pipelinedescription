@@ -1,4 +1,4 @@
-
+/* Load json scripts into relational raw model */
 truncate table dv_pipeline_description.dvpd_pipeline_field_target_expansion_raw;
 INSERT
 	INTO

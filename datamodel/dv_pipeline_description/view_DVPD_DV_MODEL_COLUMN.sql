@@ -3,17 +3,12 @@ create or replace view dv_pipeline_description.DVPD_DV_MODEL_COLUMN as (
 
 with link_parent_tables as (
 select distinct
- pipeline 
- ,table_name 
+ pipeline_name 
+ ,ptt.table_name 
  ,parent_table_name
-from (
-	select 
-	 pipeline 
-	 ,table_name 
-	 ,json_array_elements_text(link_parent_tables) as parent_table_name
-	from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
-	where stereotype ='lnk'
-	) json_parsed
+from dv_pipeline_description.dvpd_pipeline_target_table ptt
+ join dv_pipeline_description.dvpd_dv_model_link_parent dmlp on dmlp.table_name = ptt.table_name 
+ where stereotype = 'lnk'
 )
 ,suffixed_key_parents as (
 select distinct 
@@ -21,8 +16,9 @@ table_name
 ,parent_table_name 
 ,recursion_suffix 
 from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION  fm
-join link_parent_tables pt on pt.pipeline=fm.pipeline and pt.parent_table_name = fm.target_table 
+join link_parent_tables pt on pt.pipeline_name=fm.pipeline_name and pt.parent_table_name = fm.target_table 
 where length(recursion_suffix)>0
+
 )
 ,link_columns as (   -- <<<<<<<<<<<<<<<<<<<<<<<<< LINK
  select -- meta columns
@@ -69,7 +65,7 @@ select -- suffixed keys of parents
    ,dfm.target_column_name   as column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE tb
- join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline=tb.pipeline 
+ join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline_name=tb.pipeline_name 
  								 and dfm.target_table = tb.table_name 
  where tb.stereotype ='lnk'								   
  )
@@ -100,13 +96,13 @@ select -- suffixed keys of parents
    ,dfm.target_column_name   as column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE tb
- left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline=tb.pipeline 
+ left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline_name=tb.pipeline_name 
  								 and dfm.target_table = tb.table_name 
  where tb.stereotype ='hub'
 )
 ,sat_parent_table_ref as (
 	select 
-	 pipeline 
+	 pipeline_name 
 	 ,table_name 
 	 ,satellite_parent_table as parent_table
 	from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
@@ -130,7 +126,7 @@ select -- own key column
    ,coalesce (pa.hub_key_column_name  ,pa.link_key_column_name )  as column_name
    ,'CHAR(28)' as column_type
  from sat_parent_table_ref sr
- join dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE pa  on pa.pipeline = sr.pipeline 
+ join dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE pa  on pa.pipeline_name = sr.pipeline_name 
  					     and pa.table_name  =sr.parent_table
  union
  select -- diff_hash_column
@@ -149,7 +145,7 @@ select -- own key column
    ,dfm.target_column_name  as column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE tb
- left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline = tb.pipeline 
+ left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline_name = tb.pipeline_name 
  							and dfm.target_table = tb.table_name 
  where tb.stereotype in ('sat','msat')
  )
@@ -181,7 +177,7 @@ select -- own key column
    ,dfm.target_column_name  as column_name
    ,dfm.target_column_type 
  from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE tb
- left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline = tb.pipeline 
+ left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION dfm on dfm.pipeline_name = tb.pipeline_name 
  							and dfm.target_table = tb.table_name 
  where tb.stereotype in ('ref')
  

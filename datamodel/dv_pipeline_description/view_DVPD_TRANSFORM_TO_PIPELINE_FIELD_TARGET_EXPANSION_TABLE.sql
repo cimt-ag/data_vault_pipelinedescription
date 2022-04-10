@@ -29,7 +29,8 @@ select
 	,json_array_elements(targets)->'hash_cleansing_rules' as hash_cleansing_rules
 from source_fields
 )
-, field_group_expansion as (select 
+, field_group_expansion as (
+	select 
 	pipeline_name 
 	,field_name 
 	,target_table
@@ -37,7 +38,7 @@ from source_fields
 	,recursion_suffix
 	,json_array_elements_text(field_groups) field_group
 	from target_expansion
-)
+	)
 select 
 	te1.pipeline_name 
 	,te1.field_name 
@@ -55,8 +56,8 @@ from target_expansion te1
 left join field_group_expansion fge on fge.pipeline_name = te1.pipeline_name 
 									and fge.field_name = te1.field_name 
 									and fge.target_table = te1.target_table 
-									and fge.target_column_name = te1.target_column_name 
-									and fge.recursion_suffix = te1.recursion_suffix ; 
+									and coalesce (fge.target_column_name,'') = coalesce (te1.target_column_name,'')
+									and coalesce (fge.recursion_suffix,'') = coalesce ( te1.recursion_suffix,'') ; 
 
 
 

@@ -15,7 +15,7 @@ select
 	,stage_column_name
 	,field_name
 from  pipelines_with_atmtst_data pwad
-join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmmc on ppstdmmc.pipeline  =pwad.pipeline_name 
+join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmmc on ppstdmmc.pipeline_name  =pwad.pipeline_name 
 	   													and dv_column_class not in ('meta') 			   													
 )   													
 , reference_data as ( 

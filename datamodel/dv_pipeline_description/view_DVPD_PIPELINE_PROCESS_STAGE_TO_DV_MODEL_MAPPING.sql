@@ -4,27 +4,27 @@ create or replace view dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV
 
 with parent_table_keys_and_process_block_check as (
 select 
-	parent_plan.pipeline 
+	parent_plan.pipeline_name 
 	,mlp.table_name 
 	,mlp.parent_table_name 
 	,coalesce (dptt.hub_key_column_name ,dptt.link_key_column_name ) parent_key_column_name
 	,sum( case when parent_plan.process_block <>'_A_' then 1 else 0 end) non_general_process_count
 from dv_pipeline_description.dvpd_dv_model_link_parent mlp
 join dv_pipeline_description.dvpd_pipeline_process_plan parent_plan on parent_plan.table_name =mlp.parent_table_name 
-join dv_pipeline_description.dvpd_pipeline_target_table dptt on dptt.pipeline = parent_plan.pipeline 
+join dv_pipeline_description.dvpd_pipeline_target_table dptt on dptt.pipeline_name = parent_plan.pipeline_name 
 															 and dptt.table_name = mlp.parent_table_name 		
 group by 1,2,3,4
 union 
 select 
-	parent_plan.pipeline 
+	parent_plan.pipeline_name 
 	,dptt.table_name 
 	,dptt.satellite_parent_table parent_table_name 
 	,coalesce (parent.hub_key_column_name ,parent.link_key_column_name ) parent_key_column_name
 	,sum( case when parent_plan.process_block <>'_A_' then 1 else 0 end) non_general_process_count
 from dv_pipeline_description.dvpd_pipeline_target_table dptt  
-join dv_pipeline_description.dvpd_pipeline_process_plan parent_plan on parent_plan.pipeline = dptt.pipeline 
+join dv_pipeline_description.dvpd_pipeline_process_plan parent_plan on parent_plan.pipeline_name = dptt.pipeline_name 
 															and parent_plan.table_name =dptt.satellite_parent_table  
-join dv_pipeline_description.dvpd_pipeline_target_table parent on parent.pipeline = parent_plan.pipeline 
+join dv_pipeline_description.dvpd_pipeline_target_table parent on parent.pipeline_name = parent_plan.pipeline_name 
 														 and parent.table_name = dptt.satellite_parent_table 															
 group by 1,2,3,4
 )
@@ -37,7 +37,7 @@ where recursion_suffix <> ''
 )
 , implicit_recursion_businesskey as (
 select 
-pipeline 
+pipeline_name 
  ,target_table 
  ,target_column_name 
  ,count(1)
@@ -48,7 +48,7 @@ having count(1) = 1
 )
 ,implicit_recursion_businesskey_suffix_addon as (
 	select 
-	 pipeline
+	 pipeline_name
 	 ,target_table 
 	 ,target_column_name 
 	 ,recursion_suffix 
@@ -61,7 +61,7 @@ having count(1) = 1
 )
 ,dvpd_pipeline_field_target_expansion_with_implicit_recursion as (
 select 
-	pfte.pipeline 
+	pfte.pipeline_name 
 	,pfte.target_table 
 	,pfte.target_column_name 
 	,field_group 
@@ -73,12 +73,12 @@ select
 	,prio_in_key_hash 
 	,prio_in_diff_hash 
 from dv_pipeline_description.dvpd_pipeline_field_target_expansion pfte
-left join implicit_recursion_businesskey_suffix_addon irbsa on irbsa.pipeline = pfte.pipeline 
+left join implicit_recursion_businesskey_suffix_addon irbsa on irbsa.pipeline_name = pfte.pipeline_name 
 									   and irbsa.target_table = pfte.target_table 
 									   and irbsa.target_column_name = pfte.target_column_name 
 )
 select distinct 
-	ppp.pipeline
+	ppp.pipeline_name
 	,ppp.process_block 
 	,ppp.table_name
 	,ppp.stereotype 
@@ -100,10 +100,10 @@ select distinct
 from dv_pipeline_description.dvpd_pipeline_process_plan ppp
 join dv_pipeline_description.dvpd_dv_model_column dmc on dmc.table_name=ppp.table_name 
 												and dmc.dv_column_class not in ('meta')
-left join parent_table_keys_and_process_block_check ptapbc	 on ptapbc.pipeline = ppp.pipeline 
+left join parent_table_keys_and_process_block_check ptapbc	 on ptapbc.pipeline_name = ppp.pipeline_name 
 														and ptapbc.table_name = ppp.table_name 
 														and ptapbc.parent_key_column_name = dmc.column_name 
-left join dvpd_pipeline_field_target_expansion_with_implicit_recursion pfte on pfte.pipeline =ppp.pipeline 
+left join dvpd_pipeline_field_target_expansion_with_implicit_recursion pfte on pfte.pipeline_name =ppp.pipeline_name 
 																		and pfte.target_table =dmc.table_name 
 																		and pfte.target_column_name =dmc.column_name
 																		and (pfte.field_group = ppp.field_group or pfte.field_group ='_A_')
