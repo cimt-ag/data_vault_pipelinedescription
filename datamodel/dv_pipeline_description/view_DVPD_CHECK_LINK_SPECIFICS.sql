@@ -8,7 +8,7 @@ select
 	,link_key_column_name 
 	,count(1) lk_count
 	,string_agg(table_name ,', ') table_list 
-from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
+from  dv_pipeline_description.dvpd_pipeline_dv_table pdt
 where stereotype = 'lnk' and link_key_column_name is not null 
 group by 1,2
 )

@@ -6,11 +6,11 @@ select
   ,'Field'::TEXT  object_type 
   ,sfm.field_name object_name
   ,'DVPD_CHECK_FIELD_TARGET_TABLE'::text  check_ruleset
-  ,case when dmtpp.table_name is null then 'Unknown target_table: '|| sfm.target_table   
+  ,case when pdt.table_name is null then 'Unknown target_table: '|| sfm.target_table   
     else 'ok' end  message
 from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm
-left join dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp on dmtpp.pipeline_name = sfm.pipeline_name 
-										and dmtpp.table_name = sfm.target_table 
+left join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = sfm.pipeline_name 
+										and pdt.table_name = sfm.target_table 
 ;
 
 -- select * from dv_pipeline_description.DVPD_CHECK_FIELD_TARGET_TABLE order by 1,2,3

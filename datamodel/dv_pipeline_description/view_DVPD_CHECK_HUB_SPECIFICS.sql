@@ -3,14 +3,14 @@ create or replace view dv_pipeline_description.DVPD_CHECK_HUB_SPECIFICS as
 
 with bk_count_for_tables as (
 select 
-	dmtpp.pipeline_name 
-	,dmtpp.table_name  
+	pdt.pipeline_name 
+	,pdt.table_name  
 	,count (sfm.field_name ) bk_count
-from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp 
-left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm ON dmtpp.table_name = lower(sfm.target_table  )
-			and sfm.pipeline_name = dmtpp.pipeline_name 
+from dv_pipeline_description.dvpd_pipeline_dv_table pdt
+left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm ON pdt.table_name = lower(sfm.target_table  )
+			and sfm.pipeline_name = pdt.pipeline_name 
 			and not sfm.exclude_from_key_hash
-where dmtpp.stereotype ='hub'   
+where pdt.stereotype ='hub'   
 group by 1,2
 )
 select 
@@ -28,7 +28,7 @@ select
 	,hub_key_column_name 
 	,count(1) hk_count
 	,string_agg(table_name ,', ') table_list 
-from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE
+from dv_pipeline_description.dvpd_pipeline_dv_table pdt
 where stereotype = 'hub' and hub_key_column_name is not null
 group by 1,2
 )
