@@ -32,7 +32,7 @@ VALUES
  ]
  }');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test81_recursive_link_with_normal_satellite');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test81_recursive_link_with_normal_satellite');
  
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test81_recursive_link_with_normal_satellite';

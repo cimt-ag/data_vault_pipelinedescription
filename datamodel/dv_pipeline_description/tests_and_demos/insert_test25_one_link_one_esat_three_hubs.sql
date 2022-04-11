@@ -33,7 +33,7 @@ VALUES
 }
 ');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test25_one_link_one_esat_three_hubs');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test25_one_link_one_esat_three_hubs');
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test25_one_link_one_esat_three_hubs';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE

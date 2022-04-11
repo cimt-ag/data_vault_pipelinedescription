@@ -27,4 +27,4 @@ VALUES
 }
 ');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test04_check_hub_specifics');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test04_check_hub_specifics');

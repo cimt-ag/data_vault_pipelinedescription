@@ -34,7 +34,7 @@ VALUES
 }
 ');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test66_fg_drive_scenario_6');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test66_fg_drive_scenario_6');
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test66_fg_drive_scenario_6';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES

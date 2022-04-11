@@ -33,7 +33,7 @@ VALUES
  ]
  }');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test80_recursive_link_with_common_bk_field');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test80_recursive_link_with_common_bk_field');
  
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test80_recursive_link_with_common_bk_field';

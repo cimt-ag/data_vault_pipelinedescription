@@ -37,7 +37,7 @@ VALUES
 }
 ');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test24_one_satellite_on_linked_hub');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test24_one_satellite_on_linked_hub');
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test24_one_satellite_on_linked_hub';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE

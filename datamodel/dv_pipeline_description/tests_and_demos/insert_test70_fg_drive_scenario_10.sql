@@ -39,7 +39,7 @@ VALUES
  ]
 }');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test70_fg_drive_scenario_10');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test70_fg_drive_scenario_10');
 
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test70_fg_drive_scenario_10';

@@ -30,7 +30,7 @@ VALUES
 	]
 }
 ');
-select DVPD_LOAD_PIPELINE_TO_RAW('test20_simple_hub_sat');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test20_simple_hub_sat');
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test20_simple_hub_sat';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE

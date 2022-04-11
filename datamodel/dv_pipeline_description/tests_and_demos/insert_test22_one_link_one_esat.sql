@@ -34,7 +34,7 @@ VALUES
 }
 ');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test22_one_link_one_esat');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test22_one_link_one_esat');
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test22_one_link_one_esat';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE

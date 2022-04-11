@@ -33,7 +33,7 @@ VALUES
 }
 ');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test23_one_link_with_one_satellite');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test23_one_link_with_one_satellite');
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test23_one_link_with_one_satellite';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE

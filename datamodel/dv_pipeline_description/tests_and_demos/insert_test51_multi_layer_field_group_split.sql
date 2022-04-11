@@ -50,7 +50,7 @@ VALUES
 }
 ');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test51_multi_layer_field_group_split');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test51_multi_layer_field_group_split');
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test51_multi_layer_field_group_split';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES

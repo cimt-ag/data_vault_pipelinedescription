@@ -35,7 +35,7 @@ VALUES
 }
 ');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test26_link_with_satellite_and_driving_key');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test26_link_with_satellite_and_driving_key');
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test26_link_with_satellite_and_driving_key';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE

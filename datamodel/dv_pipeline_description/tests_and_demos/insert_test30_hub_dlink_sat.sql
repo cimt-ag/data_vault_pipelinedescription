@@ -29,7 +29,7 @@ VALUES
 }
 ');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test30_hub_dlink_sat');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test30_hub_dlink_sat');
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test30_hub_dlink_sat';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE

@@ -25,4 +25,4 @@ VALUES
 }
 ');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test02_check_field_target_table');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test02_check_field_target_table');

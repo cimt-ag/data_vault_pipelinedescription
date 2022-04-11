@@ -1,5 +1,5 @@
 --drop function DVPD_LOAD_PIPELINE_TO_RAW(varchar);
-create or replace function DVPD_LOAD_PIPELINE_TO_RAW(
+create or replace function dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW(
    pipeline_to_load varchar
 )
 returns boolean

@@ -38,4 +38,4 @@ VALUES
 }
 ');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test00_check_stereotype_and_parameters');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test00_check_stereotype_and_parameters');

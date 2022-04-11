@@ -35,4 +35,4 @@ VALUES
 }
 ');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test03_check_xsat_specifics');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test03_check_xsat_specifics');

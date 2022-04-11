@@ -34,7 +34,7 @@ VALUES
 }
 ');
 
-select DVPD_LOAD_PIPELINE_TO_RAW('test69_fg_drive_scenario_9_simple_hierarchy');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test69_fg_drive_scenario_9_simple_hierarchy');
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test69_fg_drive_scenario_9_simple_hierarchy';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
