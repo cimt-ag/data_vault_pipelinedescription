@@ -3,36 +3,37 @@
 create or replace view dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN as 
 
 with tables_with_explicit_field_group as (
--- field groups from field mappings
+-- field groups declared on field mappings
 select distinct 
-	pipeline_name
-	,target_table  table_name
-	,dmt.stereotype 
+	pdt.pipeline_name
+	,pdt.table_name
+	,pdt.stereotype 
 	,field_group
 	,'explicit' fg_rule
-from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm
-join dv_pipeline_description.dvpd_dv_model_table dmt on dmt.table_name =sfm.target_table 
+from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte
+join dv_pipeline_description.dvpd_pipeline_dv_table pdt  on pdt.table_name =pfte.target_table 
+														and pdt.pipeline_name = pfte.pipeline_name 
 where field_group <> '_A_'
 union
--- field groups defined in model
+-- field groups declared in model
 select distinct
-	ptt.pipeline_name 
-	,ptt.table_name 
-	,ptt.stereotype 
+	pdt.pipeline_name 
+	,pdt.table_name 
+	,pdt.stereotype 
 	,upper(field_group) field_group
 	,'explicit' fg_rule
-from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE ptt
-join dv_pipeline_description.dvpd_pipeline_dv_table_field_group_raw tfgr on tfgr.pipeline_name = ptt.pipeline_name 
-																		and tfgr.table_name = ptt.table_name 
+from dv_pipeline_description.dvpd_pipeline_dv_table pdt
+join dv_pipeline_description.dvpd_pipeline_dv_table_field_group_raw tfgr on tfgr.pipeline_name = pdt.pipeline_name 
+																		and tfgr.table_name = pdt.table_name 
 )
 ,tables_without_explicit_field_group as(
 select distinct 
-	dmtpp.pipeline_name 
-	,dmtpp.table_name
-	,dmtpp.stereotype 
-from dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp
-left join tables_with_explicit_field_group twepb on twepb.pipeline_name  =dmtpp.pipeline_name 
-												   and twepb.table_name = dmtpp.table_name 
+	pdt.pipeline_name 
+	,pdt.table_name
+	,pdt.stereotype 
+from dv_pipeline_description.dvpd_pipeline_dv_table pdt
+left join tables_with_explicit_field_group twepb on twepb.pipeline_name  =pdt.pipeline_name 
+												   and twepb.table_name = pdt.table_name 
 where twepb.table_name is null												   
 )
 ,links_restricted_by_satellite as (
@@ -43,12 +44,12 @@ select
 	,twepb.field_group 
 	,'restrict by sat'::text fg_rule
 from tables_without_explicit_field_group  twogb
-join dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp on dmtpp.pipeline_name = twogb.pipeline_name 
-																and dmtpp.satellite_parent_table = twogb.table_name 
+join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = twogb.pipeline_name 
+																and pdt.satellite_parent_table = twogb.table_name 
 join tables_with_explicit_field_group twepb on twepb.pipeline_name = twogb.pipeline_name 
-											 and twepb.table_name = dmtpp.table_name 
+											 and twepb.table_name = pdt.table_name 
 											 and twepb.stereotype in ('msat','esat','sat')
-where twogb.stereotype = 'lnk'  
+where twogb.stereotype = 'lnk'
 )
 ,links_not_restricted_by_satellite as (
 select 	pipeline_name
@@ -66,32 +67,34 @@ from links_restricted_by_satellite
 select 	lnrbs.pipeline_name
 	,lnrbs.table_name
 	,lnrbs.stereotype
-	,dmlp.parent_table_name
+	,pdtlp.link_parent_table 
 	,twepb.field_group 
 from links_not_restricted_by_satellite lnrbs
-join dv_pipeline_description.dvpd_dv_model_link_parent dmlp on dmlp.table_name = lnrbs.table_name 
+join dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp on pdtlp.table_name = lnrbs.table_name 
+													and pdtlp.pipeline_name = lnrbs .pipeline_name 
 join tables_with_explicit_field_group twepb on twepb.pipeline_name =lnrbs.pipeline_name 
-										     and twepb.table_name  = dmlp.parent_table_name 
+										     and twepb.table_name  = pdtlp.link_parent_table  
 )										     
 ,link_parent_count_per_hub_fg as (
 select pipeline_name
 	,table_name 
 	,field_group
-	,count(distinct parent_table_name) fg_driven_hub_count
+	,count(distinct link_parent_table) fg_driven_hub_count
 from links_relevant_to_determine_hub_field_groups
 group by pipeline_name ,table_name,field_group
 )
 ,link_parent_count_for_fg_free_hubs as (
-select pipeline_name 
-	,dmlp.table_name 
-	,count(distinct parent_table_name) free_hub_count
-from dv_pipeline_description.dvpd_dv_model_link_parent dmlp
-join tables_without_explicit_field_group twoefg on twoefg.table_name = dmlp.parent_table_name  
-group by pipeline_name,dmlp.table_name
+select pdtlp.pipeline_name 
+	,pdtlp.table_name 
+	,count(distinct link_parent_table) free_hub_count
+from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp
+join tables_without_explicit_field_group twoefg on twoefg.table_name = pdtlp.link_parent_table 
+									and twoefg.pipeline_name =pdtlp.pipeline_name  
+group by pdtlp.pipeline_name,pdtlp.table_name
 )
 ,link_parent_count_in_model as (
-select table_name ,count(distinct parent_table_name) parent_count
-from dv_pipeline_description.dvpd_dv_model_link_parent
+select table_name ,count(distinct link_parent_table) parent_count
+from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp
 group by table_name
 )
 ,links_restricted_by_hub_field_groups as (
@@ -131,10 +134,10 @@ select
 	,hlpsfos.field_group 
     ,'restricted by parent'::text fg_rule
 from hub_links_probably_driving_fg_of_satellite  hlpsfos 
-join dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp on dmtpp.pipeline_name = hlpsfos.pipeline_name 
-																and dmtpp.satellite_parent_table  = hlpsfos.table_name 
+join dv_pipeline_description.dvpd_pipeline_dv_table pdt  on pdt.pipeline_name = hlpsfos.pipeline_name 
+																and pdt.satellite_parent_table  = hlpsfos.table_name 
 join tables_without_explicit_field_group twoefg on twoefg.pipeline_name = hlpsfos.pipeline_name 
-												and twoefg.table_name =dmtpp.table_name 
+												and twoefg.table_name =pdt.table_name 
 )
 , tables_restricted_to_field_group as (
 select 
@@ -206,12 +209,13 @@ Select
   ,ftfgr_hub.stereotype
   ,ftfgr_hub.field_group
   ,ftfgr_hub.fg_rule 
-  ,dmlp.recursion_suffix 
-from final_table_field_group_relation ftfgr_hub
-join dv_pipeline_description.dvpd_dv_model_link_parent dmlp on dmlp.parent_table_name = ftfgr_hub.table_name 
-															and dmlp.is_recursive_relation
+  ,pdtlp.recursion_name 
+from final_table_field_group_relation ftfgr_hub 
+join dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp on pdtlp.pipeline_name =ftfgr_hub .pipeline_name 
+															and pdtlp.link_parent_table = ftfgr_hub.table_name 
+															and pdtlp.is_recursive_relation
 join final_table_field_group_relation ftfgr_link on ftfgr_link.pipeline_name = ftfgr_hub.pipeline_name 
-												and ftfgr_link.table_name = dmlp.table_name 
+												and ftfgr_link.table_name = pdtlp.table_name 
 												and ftfgr_link.field_group = ftfgr_hub.field_group 
 )
 -- >>>>> Final view <<<<
@@ -223,7 +227,7 @@ select
   		else field_group 
 	end as process_block 
   ,field_group
-  ,'' recursion_suffix
+  ,'' recursion_name
   ,fg_rule 
 from final_table_field_group_relation
 union
@@ -231,10 +235,10 @@ select
   pipeline_name 
   ,table_name 
   ,stereotype
-  ,case when field_group='_A_' then '_'||recursion_suffix 
-  	  else  '_'||recursion_suffix||'_'||field_group end     as process_block
+  ,case when field_group='_A_' then '_'||recursion_name 
+  	  else  '_'||recursion_name||'_'||field_group end     as process_block
   ,field_group
-  ,recursion_suffix
+  ,recursion_name
   ,fg_rule 
 from additional_recursive_hub_processes;
 
