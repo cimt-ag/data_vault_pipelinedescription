@@ -4,7 +4,7 @@ create or replace view dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN 
 
 with pipelines AS(
 select distinct pipeline_name 
-from dv_pipeline_description.dvpd_pipeline_target_table
+from dv_pipeline_description.dvpd_pipeline_properties_raw
 )
 select distinct 
 	pipeline_name 

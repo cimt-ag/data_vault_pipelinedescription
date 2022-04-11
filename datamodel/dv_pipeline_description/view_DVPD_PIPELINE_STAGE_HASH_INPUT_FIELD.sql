@@ -7,7 +7,7 @@ with target_hash_columns as (
 	select  pipeline_name
 		,process_block 
 		,field_group 
-		,recursion_suffix 
+		,recursion_name 
 		,stage_column_name 
 		,table_name 
 		,stereotype
@@ -25,15 +25,16 @@ select distinct
  ,ppstdmm.field_group 
  ,ppstdmm.prio_in_key_hash 
  ,ppstdmm.prio_in_diff_hash  
- ,ppstdmm.recursion_suffix 
+ ,ppstdmm.recursion_name 
  ,dmhic.content_column 
- ,dmhic.content_recursion_suffix 
+ ,dmhic.content_recursion_name 
 from target_hash_columns  thc
-join dv_pipeline_description.dvpd_dv_model_hash_input_column dmhic on dmhic.table_name =thc.table_name 
+join dv_pipeline_description.dvpd_pipeline_dv_hash_input_column dmhic on dmhic.pipeline_name = thc.pipeline_name 
+																  and dmhic.table_name =thc.table_name 
 																  and dmhic.key_column =thc.column_name 
 join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm on ppstdmm.pipeline_name =thc.pipeline_name 
 					and (ppstdmm.field_group = thc.field_group 	or ppstdmm.field_group = '_A_')
-					and ppstdmm.recursion_suffix =dmhic.content_recursion_suffix 
+					and ppstdmm.recursion_name =dmhic.content_recursion_name 
 					and ppstdmm.table_name = dmhic.content_table 
 					and ppstdmm.column_name = dmhic.content_column 
 where thc.stereotype  ='lnk' 
@@ -49,11 +50,12 @@ select distinct
  ,ppstdmm.field_name
  ,ppstdmm.prio_in_key_hash 
  ,ppstdmm.prio_in_diff_hash  
- ,ppstdmm.recursion_suffix 
+ ,ppstdmm.recursion_name
  ,dmhic.content_column 
- ,dmhic.content_recursion_suffix 
+ ,dmhic.content_recursion_name 
 from target_hash_columns  thc
-join dv_pipeline_description.dvpd_dv_model_hash_input_column dmhic on dmhic.table_name =thc.table_name 
+join dv_pipeline_description.dvpd_pipeline_dv_hash_input_column dmhic on dmhic.pipeline_name = thc.pipeline_name
+																	and  dmhic.table_name =thc.table_name 
 																  and dmhic.key_column =thc.column_name 
 join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm on ppstdmm.pipeline_name =thc.pipeline_name 
 					and ppstdmm.table_name = dmhic.content_table 
@@ -69,9 +71,9 @@ select
  ,field_group 
  ,prio_in_key_hash 
  ,prio_in_diff_hash  
- ,recursion_suffix 
+ ,recursion_name 
  ,content_column 
- ,content_recursion_suffix
+ ,content_recursion_name
  from fields_for_link_key_hashes
  union 
 select 
@@ -82,9 +84,9 @@ select
  ,field_group 
  ,prio_in_key_hash 
  ,prio_in_diff_hash  
- ,recursion_suffix 
+ ,recursion_name 
  ,content_column 
- ,content_recursion_suffix
+ ,content_recursion_name
  from fields_for_not_link_key_hashes
 ; 
 
