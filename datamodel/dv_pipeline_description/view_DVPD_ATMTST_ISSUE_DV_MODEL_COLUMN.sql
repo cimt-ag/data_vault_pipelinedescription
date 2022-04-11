@@ -8,17 +8,18 @@ from dv_pipeline_description.dvpd_atmtst_ref_dv_model_column
 )
 ,result_data as (
 select 
- dmtpp.pipeline_name 
- ,dmtpp.schema_name 
- ,dmc.table_name 
- ,dmc.column_block 
- ,dmc.dv_column_class 
- ,dmc.column_name 
- ,dmc.column_type 
+ pwad.pipeline_name 
+ ,pdt.schema_name 
+ ,pdc.table_name 
+ ,pdc.column_block 
+ ,pdc.dv_column_class 
+ ,pdc.column_name 
+ ,pdc.column_type 
 from  pipelines_with_atmtst_data pwad
-join dv_pipeline_description.DVPD_PIPELINE_TARGET_TABLE dmtpp on dmtpp.pipeline_name =pwad.pipeline_name 
-join dv_pipeline_description.dvpd_dv_model_column dmc  on  dmc.table_name =dmtpp.table_name 
-   													and dmc.dv_column_class  <> 'meta'											
+join dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN pdc  on  pdc.pipeline_name =pwad.pipeline_name 
+   													and pdc.dv_column_class  <> 'meta'	
+join dv_pipeline_description.dvpd_pipeline_dv_table pdt  on pdt.pipeline_name =  pwad.pipeline_name 
+													and pdt.table_name = pdc.table_name 
 )   													
 , reference_data as ( 
 select 

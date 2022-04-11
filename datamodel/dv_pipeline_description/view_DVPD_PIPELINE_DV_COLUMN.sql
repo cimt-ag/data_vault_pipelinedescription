@@ -27,7 +27,7 @@ union
 select -- keys of parents
   pdt.pipeline_name 
  ,pdtlp.table_name 
- ,3 as column_block
+ ,case when pdtlp.is_recursive_relation then 4 else 3 end as column_block
  ,'parent_key' as dv_column_class
  ,case when pdtlp.is_recursive_relation then  pdt.hub_key_column_name||'_'||pdtlp.recursion_name
  		else pdt.hub_key_column_name end as column_name
