@@ -6,7 +6,7 @@ select
 	,upper(field_type) as field_type
 	,lower(target_table) as target_table
 	,upper(coalesce (target_column_name,pfter.field_name)) as target_column_name
-	,upper(coalesce(recursion_suffix,'')) as recursion_suffix
+	,upper(coalesce(recursion_name,'')) as recursion_name
 	,coalesce(upper(field_group) ,'_A_') field_group
 	,upper(coalesce (target_column_type,field_type)) as target_column_type
 	,coalesce(to_number(prio_in_key_hash,'9'),0) as prio_in_key_hash

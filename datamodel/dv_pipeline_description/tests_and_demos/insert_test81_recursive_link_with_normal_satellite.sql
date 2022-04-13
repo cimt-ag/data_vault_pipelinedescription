@@ -14,7 +14,7 @@ VALUES
 																					,"target_column_name": "BK_AAA"}]}		 	  
 		      ,{"field_name": "F2_BK_AAA_RECURSE1", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_hub"
 																					,"target_column_name": "BK_AAA"
-																					,"recursion_suffix": "RCS1"}]}
+																					,"recursion_name": "RCS1"}]}
 			  ,{"field_name": "F3_AAA_RECU_CONTENT", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_RECU_sat"}]}		  
 			  ,{"field_name": "F4_AAA_RECU_CONTENT2", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_RECU_sat"}]}		  
 			 ],
@@ -25,7 +25,7 @@ VALUES
 				,{"table_name": "rtjj_81_aaa_RECU_lnk",	"stereotype": "lnk" ,"link_key_column_name": "LK_rtjj_81_aaa_RECU"
 																			,"link_parent_tables": ["rtjj_81_aaa_hub"]
 																			,"recursive_parents": [ {"table_name":"rtjj_81_aaa_hub"
-																										,"recursion_suffix": "RCS1"}]}
+																										,"recursion_name": "RCS1"}]}
 				,{"table_name": "rtjj_81_aaa_RECU_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_81_aaa_RECU_lnk","diff_hash_column_name":"rh_rtjj_81_aaa_RECU_sat"}
 				]
 		}

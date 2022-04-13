@@ -16,7 +16,7 @@ VALUES
 																					,"target_column_name": "BK_AAA"}]}
 		      ,{"field_name": "F2_BK_AAA_H1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_69_aaa_hub"
 																					,"target_column_name": "BK_AAA"
-																					,"recursion_suffix": "HRCHY1"}]}		  
+																					,"recursion_name": "HRCHY1"}]}		  
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
@@ -25,7 +25,7 @@ VALUES
 				,{"table_name": "rtjj_69_aaa_hierarchy_hlnk",	"stereotype": "lnk" ,"link_key_column_name": "LK_rtjj_69_aaa_hierarchy"
 																			,"link_parent_tables": ["rtjj_69_aaa_hub"]
 																			,"recursive_parents": [ {"table_name":"rtjj_69_aaa_hub"
-																										,"recursion_suffix": "HRCHY1"}]}
+																										,"recursion_name": "HRCHY1"}]}
 				,{"table_name": "rtjj_69_aaa_hierarchy_esat",	"stereotype": "esat","satellite_parent_table": "rtjj_69_aaa_hierarchy_hlnk"}
 
 				]

@@ -69,7 +69,7 @@ select
 	,pfte.target_table 
 	,pfte.target_column_name 
 	,field_group 
-	,coalesce (irbsa.recursion_name,pfte.recursion_suffix  ) recursion_name
+	,coalesce (irbsa.recursion_name,pfte.recursion_name  ) recursion_name
 	,(irbsa.recursion_name is not null) is_implicit_suffix
 	,field_name 
 	,field_type 

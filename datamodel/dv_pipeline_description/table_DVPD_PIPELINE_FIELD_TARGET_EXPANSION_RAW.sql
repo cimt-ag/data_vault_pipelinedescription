@@ -8,7 +8,7 @@ CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION_RAW (
 	target_table text NULL,
 	target_column_name text NULL,
 	field_group text NULL,
-	recursion_suffix text NULL,
+	recursion_name text NULL,
 	target_column_type text NULL,
 	prio_in_key_hash text NULL,
 	exclude_from_key_hash text NULL,

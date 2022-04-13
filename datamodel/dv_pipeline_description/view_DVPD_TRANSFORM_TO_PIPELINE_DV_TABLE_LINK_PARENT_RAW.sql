@@ -30,7 +30,7 @@ from dv_pipeline_description.dvpd_dictionary dt
 	,  table_name
 	, json_array_elements(recursive_parents)->>'table_name' as parent_table_name
 	, true is_recursive_relation
-	, json_array_elements(recursive_parents)->>'recursion_suffix' as recursion_name
+	, json_array_elements(recursive_parents)->>'recursion_name' as recursion_name
 	from table_expansion
 	)	
 select * from  link_parent_tables

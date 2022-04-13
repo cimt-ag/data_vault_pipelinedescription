@@ -38,7 +38,7 @@ select
 	,hash_target.column_name key_column
 	,content_key.table_name content_table
 	,content_key.column_name  content_column
-	,'' content_recursion_suffix
+	,'' content_recursion_name
  from dv_pipeline_description.dvpd_pipeline_dv_column hash_target
 join dv_pipeline_description.dvpd_pipeline_dv_column content_key on content_key.pipeline_name = hash_target.pipeline_name 
 						and content_key.table_name =hash_target.table_name 
