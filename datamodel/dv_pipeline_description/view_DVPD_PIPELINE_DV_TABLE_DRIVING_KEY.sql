@@ -9,6 +9,4 @@ SELECT
 FROM
 	dv_pipeline_description.dvpd_pipeline_dv_table_driving_key_raw;
 
-;
-
 -- select * from dv_pipeline_description.DVPD_DV_MODEL_LINK_PARENT;

@@ -35,4 +35,4 @@ from dv_pipeline_description.dvpd_dictionary dt
 	)	
 select * from  link_parent_tables
 union
-select * from  recursive_parent_tables
+select * from  recursive_parent_tables;

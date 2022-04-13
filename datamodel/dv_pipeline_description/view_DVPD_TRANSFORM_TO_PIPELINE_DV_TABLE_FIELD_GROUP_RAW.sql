@@ -18,4 +18,4 @@ select
  pipeline_name 
 , table_name
 , json_array_elements_text(tracked_field_groups) field_group
-from table_expansion
+from table_expansion;

@@ -4,7 +4,8 @@ create or replace function dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW(
 )
 returns boolean
 language plpgsql    
-as $$
+as 
+$$
 begin
 	
 	/* Load json scripts into relational raw model */
@@ -163,6 +164,5 @@ from
 
 return true;
 
-end;$$;
-
-select DVPD_LOAD_PIPELINE_TO_RAW('mypipe')
+end;
+$$;
