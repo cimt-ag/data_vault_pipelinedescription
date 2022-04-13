@@ -6,7 +6,8 @@
 - attribute "recusion_suffix" was renamed to "recusion_name"
 - dvpd json is now preparsed into a relational model. Loading a json requiers now 2 steps. 
 1st Load json to dictionary table as usual, 2nd trigger the preparsing by calling function "dvpd_load_pipeline_to_raw(<name of the pipeline in dictionary)
-
+- View "dvpd_dv_model_column" is replaced by "dpvd_pipeline_dv_column",providing also the pipeline name. The unified model of all pipeleins is now provided in"dvpd_dv_column"
+- View "dvdp_pipeline_target_table" has been renamed to "dvpd_dv_table"
 
 ## bugfixes
 - Added missing Hash column views in deployment.csv
