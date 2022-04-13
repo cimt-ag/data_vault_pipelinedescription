@@ -12,12 +12,12 @@ VALUES
 	},
 
 	"fields": [
-		      	{"field_name": "F1_BK_AAA_VARCHAR", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_AAA_XXX_BAD_STEREOTYPE"}]}
-		 	  ,	{"field_name": "F2_BK_BBB_DECIMAL",	"technical_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_00_BBB_XXX_HUB_WITHOUT_HUB_KEY_COLUMN"}]}
-			  ,	{"field_name": "F3_CCC_SP1_DECIMAL",	"technical_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_00_CCC_XXX_SAT_WITHOUT_PARENT_DECLARATION"}]}
-		      , {"field_name": "F4_BK_FFF_VARCHAR", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_FFF_HUB"}]}
-		      , {"field_name": "F5_BK_GGG_VARCHAR", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_GGG_HUB"}]}
-		      , {"field_name": "F6_DC_FFF_GGG_XXX_DLINK_VARCHAR", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_FFF_GGG_XXX_DLNK_WITHOUT_LINK_KEY_COLUMN"}]}
+		      	{"field_name": "F1_BK_AAA_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_AAA_XXX_BAD_STEREOTYPE"}]}
+		 	  ,	{"field_name": "F2_BK_BBB_DECIMAL",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_00_BBB_XXX_HUB_WITHOUT_HUB_KEY_COLUMN"}]}
+			  ,	{"field_name": "F3_CCC_SP1_DECIMAL",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_00_CCC_XXX_SAT_WITHOUT_PARENT_DECLARATION"}]}
+		      , {"field_name": "F4_BK_FFF_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_FFF_HUB"}]}
+		      , {"field_name": "F5_BK_GGG_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_GGG_HUB"}]}
+		      , {"field_name": "F6_DC_FFF_GGG_XXX_DLINK_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_FFF_GGG_XXX_DLNK_WITHOUT_LINK_KEY_COLUMN"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

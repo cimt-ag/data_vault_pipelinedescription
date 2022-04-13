@@ -12,13 +12,13 @@ VALUES
 	},
  
 	"fields": [
-		      {"field_name": "F1_BK_AAA_L1", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_70_aaa_hub"
+		      {"field_name": "F1_BK_AAA_L1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_70_aaa_hub"
 																					,"target_column_name": "BK_AAA"
 																				 	,"field_groups":["fg1"]}]}
-		      ,{"field_name": "F2_BK_AAA_L2", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_70_aaa_hub"
+		      ,{"field_name": "F2_BK_AAA_L2", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_70_aaa_hub"
 																					,"target_column_name": "BK_AAA"
 																				 	,"field_groups":["fg2"]}]}		 	  
-		      ,{"field_name": "F3_BK_AAA_H1_L1", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_70_aaa_hub"
+		      ,{"field_name": "F3_BK_AAA_H1_L1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_70_aaa_hub"
 																					,"target_column_name": "BK_AAA"
 																				 	,"field_groups":["fg1"]
 																					,"recursion_suffix": "HRCHY1"}]}		  

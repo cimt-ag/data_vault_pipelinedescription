@@ -12,9 +12,9 @@ VALUES
 	},
  
 	"fields": [
-		      {"field_name": "F1_BK_AAA", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_69_aaa_hub"
+		      {"field_name": "F1_BK_AAA", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_69_aaa_hub"
 																					,"target_column_name": "BK_AAA"}]}
-		      ,{"field_name": "F2_BK_AAA_H1", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_69_aaa_hub"
+		      ,{"field_name": "F2_BK_AAA_H1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_69_aaa_hub"
 																					,"target_column_name": "BK_AAA"
 																					,"recursion_suffix": "HRCHY1"}]}		  
 			 ],

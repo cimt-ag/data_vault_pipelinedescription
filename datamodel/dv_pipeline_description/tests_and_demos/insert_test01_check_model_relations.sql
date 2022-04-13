@@ -12,10 +12,10 @@ VALUES
 	},
 
 	"fields": [
-		      	{"field_name": "F1_BK_AAA_VARCHAR", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_01_AAA_HUB"}]}
-		 	  ,	{"field_name": "F2_BK_BBB_DECIMAL",	"technical_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_01_BBB_HUB"}]}
-			  ,	{"field_name": "F3_CCC_SP1_DECIMAL",	"technical_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_01_CCC_XXX_SAT_WITH_UNKNOWN_PARENT"}]}
-		      , {"field_name": "F4_DC_FFF_GGG_XXX_DLINK_VARCHAR", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_01_AAA_CCC_XXX_DLINK_WITH_UNKNOWN_PARENT"}]}
+		      	{"field_name": "F1_BK_AAA_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_01_AAA_HUB"}]}
+		 	  ,	{"field_name": "F2_BK_BBB_DECIMAL",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_01_BBB_HUB"}]}
+			  ,	{"field_name": "F3_CCC_SP1_DECIMAL",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_01_CCC_XXX_SAT_WITH_UNKNOWN_PARENT"}]}
+		      , {"field_name": "F4_DC_FFF_GGG_XXX_DLINK_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_01_AAA_CCC_XXX_DLINK_WITH_UNKNOWN_PARENT"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

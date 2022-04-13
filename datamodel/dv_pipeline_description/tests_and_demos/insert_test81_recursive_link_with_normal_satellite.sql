@@ -10,13 +10,13 @@ VALUES
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
  	"fields": [
-			   {"field_name": "F1_BK_AAA_ORIGIN", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_hub"
+			   {"field_name": "F1_BK_AAA_ORIGIN", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_hub"
 																					,"target_column_name": "BK_AAA"}]}		 	  
-		      ,{"field_name": "F2_BK_AAA_RECURSE1", 	"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_hub"
+		      ,{"field_name": "F2_BK_AAA_RECURSE1", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_hub"
 																					,"target_column_name": "BK_AAA"
 																					,"recursion_suffix": "RCS1"}]}
-			  ,{"field_name": "F3_AAA_RECU_CONTENT", 	"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_RECU_sat"}]}		  
-			  ,{"field_name": "F4_AAA_RECU_CONTENT2", 	"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_RECU_sat"}]}		  
+			  ,{"field_name": "F3_AAA_RECU_CONTENT", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_RECU_sat"}]}		  
+			  ,{"field_name": "F4_AAA_RECU_CONTENT2", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_RECU_sat"}]}		  
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

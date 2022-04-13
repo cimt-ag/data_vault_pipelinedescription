@@ -12,8 +12,8 @@ VALUES
 	},
 
 	"fields": [
-		      	{"field_name": "F1_XXX_MAPPED_TO_UNKNOWN_TABLE", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_02_XXX_UNKNOWN_HUB"}]}
-		 	  ,	{"field_name": "F2_BK_BBB_DECIMAL",	"technical_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_02_BBB_HUB"}]}
+		      	{"field_name": "F1_XXX_MAPPED_TO_UNKNOWN_TABLE", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_02_XXX_UNKNOWN_HUB"}]}
+		 	  ,	{"field_name": "F2_BK_BBB_DECIMAL",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_02_BBB_HUB"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

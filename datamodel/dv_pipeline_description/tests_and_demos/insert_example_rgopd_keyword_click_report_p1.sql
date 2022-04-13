@@ -11,10 +11,10 @@ VALUES
 		"fetch_module_name":"hardcoded fetch and stage"
 	},
 	"fields": [
-		      {"field_name": "key", 			"technical_type": "Varchar(200)",	"targets": [{"table_name": "rgopd_keyword_hub","target_column_name": "keyword_id"}]},
-		      {"field_name": "date", 			"technical_type": "date",			"targets": [{"table_name": "rgopd_keyword_click_report_dlnk"}]},
-		 	  {"field_name": "json_object",		"technical_type": "json",			"targets": [{"table_name": "rgopd_keyword_click_report_p1_sat","exclude_from_diff_hash": "true"}]},
-		 	  {"field_name": "json_object_sorted","technical_type": "json",			"targets": [{"table_name": "rgopd_keyword_click_report_p1_sat"}]}
+		      {"field_name": "key", 			"field_type": "Varchar(200)",	"targets": [{"table_name": "rgopd_keyword_hub","target_column_name": "keyword_id"}]},
+		      {"field_name": "date", 			"field_type": "date",			"targets": [{"table_name": "rgopd_keyword_click_report_dlnk"}]},
+		 	  {"field_name": "json_object",		"field_type": "json",			"targets": [{"table_name": "rgopd_keyword_click_report_p1_sat","exclude_from_diff_hash": "true"}]},
+		 	  {"field_name": "json_object_sorted","field_type": "json",			"targets": [{"table_name": "rgopd_keyword_click_report_p1_sat"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_google_pandata", "tables": [

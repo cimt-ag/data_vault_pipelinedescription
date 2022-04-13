@@ -12,8 +12,8 @@ VALUES
 	},
 
 	"fields": [
-		 	  {"field_name": "F5_BK_BBB_VARCHAR",		"technical_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_04_bbb_xxx_same_hk_hub"}]}
-  		 	  ,{"field_name": "F6_BK_CCC_VARCHAR",		"technical_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_04_ccc_xxx_same_hk_hub"}]}
+		 	  {"field_name": "F5_BK_BBB_VARCHAR",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_04_bbb_xxx_same_hk_hub"}]}
+  		 	  ,{"field_name": "F6_BK_CCC_VARCHAR",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_04_ccc_xxx_same_hk_hub"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

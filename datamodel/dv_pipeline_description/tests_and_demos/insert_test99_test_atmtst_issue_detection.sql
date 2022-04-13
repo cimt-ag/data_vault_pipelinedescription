@@ -12,8 +12,8 @@ VALUES
 	},
 
 	"fields": [
-		 	  	{"field_name": "F1_BK_AAA_DECIMAL",	"technical_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_99_AAA_HUB"}]}
-		 	  	,{"field_name": "F2_AAA_XXX_BAD_FIELD_IN_RESULT_DECIMAL",	"technical_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_99_aaa_p1_sat"}]}
+		 	  	{"field_name": "F1_BK_AAA_DECIMAL",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_99_AAA_HUB"}]}
+		 	  	,{"field_name": "F2_AAA_XXX_BAD_FIELD_IN_RESULT_DECIMAL",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_99_aaa_p1_sat"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

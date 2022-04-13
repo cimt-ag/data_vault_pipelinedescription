@@ -12,16 +12,16 @@ VALUES
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 	"fields": [
-		      {"field_name": "F1_BK_AAA_L1", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_68_aaa_hub"
+		      {"field_name": "F1_BK_AAA_L1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_68_aaa_hub"
 																					,"target_column_name": "BK_AAA"
 																				 	,"field_groups":["fg1"]}]}
-		      ,{"field_name": "F2_BK_AAA_L2", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_68_aaa_hub"
+		      ,{"field_name": "F2_BK_AAA_L2", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_68_aaa_hub"
 																					,"target_column_name": "BK_AAA"
 																				 	,"field_groups":["fg2"]}]}		 	  
-		      ,{"field_name": "F3_BK_BBB_L2", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_68_bbb_hub"
+		      ,{"field_name": "F3_BK_BBB_L2", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_68_bbb_hub"
 																					,"target_column_name": "BK_BBB"
 																				 	,"field_groups":["fg2"]}]}		 
-		      ,{"field_name": "F4_BK_BBB_L3", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_68_bbb_hub"
+		      ,{"field_name": "F4_BK_BBB_L3", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_68_bbb_hub"
 																					,"target_column_name": "BK_BBB"
 																				 	,"field_groups":["fg3"]}]}		 
 			 ],

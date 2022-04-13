@@ -10,11 +10,11 @@ VALUES
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
  	"fields": [
-		      {"field_name": "F1_BK_AAA_COMMON", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
+		      {"field_name": "F1_BK_AAA_COMMON", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
 																					,"target_column_name": "BK_AAA_CM"}]}
-		      ,{"field_name": "F2_BK_AAA_ORIGIN", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
+		      ,{"field_name": "F2_BK_AAA_ORIGIN", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
 																					,"target_column_name": "BK_AAA_SPLIT"}]}		 	  
-		      ,{"field_name": "F3_BK_AAA_RECURSE1", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
+		      ,{"field_name": "F3_BK_AAA_RECURSE1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
 																					,"target_column_name": "BK_AAA_SPLIT"
 																					,"recursion_suffix": "RCS1"}]}		  
 			 ],

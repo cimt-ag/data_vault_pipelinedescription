@@ -1,7 +1,18 @@
+
 # Release 0.4.0
+
+## concept changes
+- Attribute "technical_type" was renamed to "field_type"
+- attribute "recusion_suffix" was renamed to "recusion_name"
+- dvpd json is now preparsed into a relational model. Loading a json requiers now 2 steps. 
+1st Load json to dictionary table as usual, 2nd trigger the preparsing by calling function "dvpd_load_pipeline_to_raw(<name of the pipeline in dictionary)
+
 
 ## bugfixes
 - Added missing Hash column views in deployment.csv
+
+## Annotation
+The preparsed layer was added to make the reference implementation more portable. All complex transformations now is written on pure SQL Syntax without any json extention.  Parsing the json into the relational model is the only PostgreSQL specific code and can be replaced by any other method without any deep knowledge about the transformation
 
 
 # Release 0.3.0

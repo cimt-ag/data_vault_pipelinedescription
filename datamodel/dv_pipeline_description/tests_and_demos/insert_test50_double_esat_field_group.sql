@@ -11,32 +11,32 @@ VALUES('test50_double_esat_field_group', '{
 	},
 
 	"fields": [
-		{"field_name": "F1_BK_1",			"technical_type": "Varchar(20)",  "field_position": "1", "uniqueness_groups": ["key"],
+		{"field_name": "F1_BK_1",			"field_type": "Varchar(20)",  "field_position": "1", "uniqueness_groups": ["key"],
 								"targets": [{"table_name": "rtjj_50_aaa_hub"},
 									        {"table_name": "rtkk_50_bbb_hub"}]}
 
- 		,{"field_name": "F2_BK_AAA_FIELDNAME",	"technical_type": "Decimal(10,0)", "field_position": "2","uniqueness_groups": ["key"],
+ 		,{"field_name": "F2_BK_AAA_FIELDNAME",	"field_type": "Decimal(10,0)", "field_position": "2","uniqueness_groups": ["key"],
 								"targets": [{"table_name": "rtjj_50_aaa_hub","target_column_name": "F2_BK_AAA_2"}]}
 
-		,{"field_name": "F3_AAA_SP1",	"technical_type": "Varchar(20)",	"field_position": "6",
+		,{"field_name": "F3_AAA_SP1",	"field_type": "Varchar(20)",	"field_position": "6",
 								"targets": [{"table_name": "rtjj_50_aaa_p1_sat"}]}
  		
-		,{"field_name": "F4_AAA_SP1",	"technical_type": "DECIMAL(12,2)",	"field_position": "7",	
+		,{"field_name": "F4_AAA_SP1",	"field_type": "DECIMAL(12,2)",	"field_position": "7",	
 								"targets": [{"table_name": "rtjj_50_aaa_p1_sat"}]}
 
-		,{"field_name": "F5_AAA_SP1",		"technical_type": "VARCHAR(10)",	"field_position": "8",	
+		,{"field_name": "F5_AAA_SP1",		"field_type": "VARCHAR(10)",	"field_position": "8",	
 								"targets": [{"table_name": "rtjj_50_aaa_p1_sat"}]}
 
-		,{"field_name": "F6_AAA_SP1_EXCLUDED_FROM_DIFF",	"technical_type": "TIMESTAMP",		"field_position": "9",	
+		,{"field_name": "F6_AAA_SP1_EXCLUDED_FROM_DIFF",	"field_type": "TIMESTAMP",		"field_position": "9",	
 								"targets": [{"table_name": "rtjj_50_aaa_p1_sat","exclude_from_diff_hash": "true"}]}
 
-		,{"field_name": "F7_BK_BBB_2_L1",		"technical_type": "DECIMAL(10,0)", "field_position": "3",
+		,{"field_name": "F7_BK_BBB_2_L1",		"field_type": "DECIMAL(10,0)", "field_position": "3",
 								"targets": [{"table_name": "rtkk_50_bbb_hub","target_column_name": "F7_BK_BBB_2","field_groups": ["fg1"]}]}
 
-		,{"field_name": "F8_BK_BBB_2_L2",	"technical_type": "DECIMAL(10,0)",	"field_position": "4",
+		,{"field_name": "F8_BK_BBB_2_L2",	"field_type": "DECIMAL(10,0)",	"field_position": "4",
 								"targets": [{"table_name": "rtkk_50_bbb_hub","target_column_name": "F7_BK_BBB_2","field_groups": ["fg2"]}]}
 
-		,{"field_name": "F9_BBB_SP1_L1",		"technical_type": "VARCHAR(200)", "field_position": "5",
+		,{"field_name": "F9_BBB_SP1_L1",		"field_type": "VARCHAR(200)", "field_position": "5",
 								"targets": [{"table_name": "rtkk_50_bbb_p1_sat","field_groups": ["fg1"]}]}
 
 	],

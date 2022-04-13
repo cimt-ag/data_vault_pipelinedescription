@@ -10,11 +10,11 @@ VALUES
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 	"fields": [
-		      {"field_name": "F1_BK_AAA_VARCHAR", 		"technical_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_30_aaa_hub"}]},
-		 	  {"field_name": "F2_BK_AAA_DECIMAL",	"technical_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_30_aaa_hub"}]},
-		 	  {"field_name": "F3_DC_AAA_DDD_VARCHAR",		"technical_type": "DATE",			"targets": [{"table_name": "rtjj_30_aaa_ddd_dlnk"}]},
-			  {"field_name": "F4_AAA_DDD_SP1_DECIMAL",		"technical_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_30_aaa_ddd_p1_sat"}]},
-			  {"field_name": "F5_AAA_DDD_SP1_DECIMAL",		"technical_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_30_aaa_ddd_p1_sat"}]}
+		      {"field_name": "F1_BK_AAA_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_30_aaa_hub"}]},
+		 	  {"field_name": "F2_BK_AAA_DECIMAL",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_30_aaa_hub"}]},
+		 	  {"field_name": "F3_DC_AAA_DDD_VARCHAR",		"field_type": "DATE",			"targets": [{"table_name": "rtjj_30_aaa_ddd_dlnk"}]},
+			  {"field_name": "F4_AAA_DDD_SP1_DECIMAL",		"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_30_aaa_ddd_p1_sat"}]},
+			  {"field_name": "F5_AAA_DDD_SP1_DECIMAL",		"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_30_aaa_ddd_p1_sat"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

@@ -5,7 +5,7 @@ with raw_field_list as(
 Select 
 	dvpd_json ->>'pipeline_name' as pipeline
 	,json_array_elements(dvpd_json->'fields')->>'field_name' as field_name
-	,json_array_elements(dvpd_json->'fields')->>'technical_type' as field_type
+	,json_array_elements(dvpd_json->'fields')->>'field_type' as field_type
 	,json_array_elements(dvpd_json->'fields')->>'field_position' as explicit_field_position
 	,json_array_elements(dvpd_json->'fields')->>'parsing_expression' as parsing_expression
 	,json_array_elements(dvpd_json->'fields')->>'field_comment' as field_comment
