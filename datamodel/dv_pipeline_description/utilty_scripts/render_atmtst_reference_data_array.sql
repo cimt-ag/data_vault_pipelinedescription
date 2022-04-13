@@ -1,11 +1,11 @@
 with target as (
-select distinct pipeline
-from dv_pipeline_description.dvpd_pipeline_target_table
-where pipeline like 'test81%'
+select distinct pipeline_name
+from dv_pipeline_description.dvpd_pipeline_DV_table
+where pipeline_name like 'test15%'
 )
 select 1 block
 ,1 reverse_order
-,'DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = '''||pipeline||''';' script
+,'DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = '''||pipeline_name||''';' script
 from target
 union
 select 2 block
@@ -14,7 +14,7 @@ select 2 block
 union
 select 9 block
 ,1 reverse_order
-,'('''||pipeline||''',''{' script
+,'('''||pipeline_name||''',''{' script
 from target
 union
 -- >>> DV_MODEL_COLUMN REFERENCE DATA ARRAY <<<
@@ -24,27 +24,28 @@ select 10 block
 union
 select 11 block
 ,reverse_order
-,'         ["' 
+,'      ["' 
  || schema_name  || '","'
  || table_name || '",'
  || column_block || ',"'
  || dv_column_class || '","'
  || column_name || '","'
- || column_type || '"]"'
+ || column_type || '"]'
  ||(case when reverse_order=1 then '' else ',' end)
 from (
 	select 
-	rank () OVER (order by schema_name desc, dmc.table_name desc, column_block desc, column_name desc ) reverse_order
+	rank () OVER (order by dmc.pipeline_name desc, schema_name desc, dmc.table_name desc, column_block desc, column_name desc ) reverse_order
 	, dptt.schema_name  
 	, dmc.table_name 
 	,coalesce(dmc.column_block,-1) column_block
 	,coalesce(dmc.dv_column_class,'') dv_column_class
 	,coalesce(dmc.column_name,'')  column_name
 	,coalesce(dmc.column_type,'')  column_type
-	from dv_pipeline_description.dvpd_pipeline_target_table dptt  
-	join dv_pipeline_description.dvpd_dv_model_column dmc  on  dmc.table_name =dptt.table_name 
+	from dv_pipeline_description.dvpd_pipeline_dv_table dptt  
+	join dv_pipeline_description.dvpd_pipeline_dv_column dmc  on  dmc.table_name =dptt.table_name 
 	   													and dmc.dv_column_class  <> 'meta'	
-where pipeline in (select pipeline from target) 
+	   													and dmc.pipeline_name =dptt.pipeline_name 
+where dptt.pipeline_name in (select pipeline_name from target) 
 ) the_data
 union
 select 12 block
@@ -75,7 +76,7 @@ from (
 	,field_name 
 	from dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping								
 	where  dv_column_class not in ('meta')
-	and  pipeline in (select pipeline from target) 
+	and  pipeline_name in (select pipeline_name from target) 
 	) the_data
 union
 select 17 block
@@ -108,7 +109,7 @@ from (
 		,coalesce(needs_encryption::varchar,'false') needs_encryption
 	from dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN								
 	where not is_meta   
-	and   pipeline in (select pipeline from target) 
+	and   pipeline_name in (select pipeline_name from target) 
 	) the_data
 union
 select 22 block
@@ -138,7 +139,7 @@ from (
 	 , prio_in_key_hash 
 	 , prio_in_diff_hash  
 	from dv_pipeline_description.dvpd_pipeline_stage_hash_input_field								
-	where   pipeline in (select pipeline from target) 	
+	where   pipeline_name in (select pipeline_name from target) 	
 	) the_data 
 union
 select 80 block
