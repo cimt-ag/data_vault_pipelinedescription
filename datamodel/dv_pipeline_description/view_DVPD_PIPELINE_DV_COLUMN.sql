@@ -99,7 +99,7 @@ select -- keys of parents
    ,dml.meta_column_name as column_name
    ,dml.meta_column_type as column_type
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype = pdt.stereotype 
+ join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype = pdt.stereotype or ( dml.stereotype = 'xsat_hist' and pdt.is_historized )
  where pdt.stereotype in ('sat','esat','msat')
  union 
 select -- own key column

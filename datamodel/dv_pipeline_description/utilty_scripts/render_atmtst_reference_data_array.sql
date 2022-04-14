@@ -1,7 +1,7 @@
 with target as (
 select distinct pipeline_name
 from dv_pipeline_description.dvpd_pipeline_DV_table
-where pipeline_name like 'test27%'
+where pipeline_name like 'test28%'
 )
 select 1 block
 ,1 reverse_order
@@ -43,7 +43,7 @@ from (
 	,coalesce(dmc.column_type,'')  column_type
 	from dv_pipeline_description.dvpd_pipeline_dv_table dptt  
 	join dv_pipeline_description.dvpd_pipeline_dv_column dmc  on  dmc.table_name =dptt.table_name 
-	   													and dmc.dv_column_class  <> 'meta'	
+	   													--and dmc.dv_column_class  <> 'meta'	
 	   													and dmc.pipeline_name =dptt.pipeline_name 
 where dptt.pipeline_name in (select pipeline_name from target) 
 ) the_data
