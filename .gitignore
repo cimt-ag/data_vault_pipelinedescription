@@ -1,2 +1,5 @@
 datamodel/.dbeaver/
 datamodel/Scripts/
+.idea/
+config/
+lib/__pycache__/
