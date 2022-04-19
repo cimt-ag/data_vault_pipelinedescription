@@ -51,45 +51,38 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
       ["rvlt_test_jj","rtjj_62_aaa_p1_sat",1,"meta","META_VALID_BEFORE","TIMESTAMP"],
       ["rvlt_test_jj","rtjj_62_aaa_p1_sat",2,"parent_key","HK_RTJJ_62_AAA","CHAR(28)"],
       ["rvlt_test_jj","rtjj_62_aaa_p1_sat",3,"diff_hash","RH_RTJJ_62_AAA_P1_SAT","CHAR(28)"],
-      ["rvlt_test_jj","rtjj_62_aaa_p1_sat",8,"content","F4_AAA_S1_COLA","VARCHAR(20)"],
-      ["rvlt_test_jj","rtjj_62_aaa_p1_sat",8,"content","F5_AAA_S1_COLB","VARCHAR(20)"]
+      ["rvlt_test_jj","rtjj_62_aaa_p1_sat",8,"content","F3_AAA_S1_COLA","VARCHAR(20)"],
+      ["rvlt_test_jj","rtjj_62_aaa_p1_sat",8,"content","F4_AAA_S1_COLB","VARCHAR(20)"]
  ],
  "process_column_mapping": [
          ["rtjj_62_aaa_hub","_FG1","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_FG1",null],
          ["rtjj_62_aaa_hub","_FG1","BK_AAA","F1_BK_AAA_L1","F1_BK_AAA_L1"],
          ["rtjj_62_aaa_hub","_FG2","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_FG2",null],
          ["rtjj_62_aaa_hub","_FG2","BK_AAA","F2_BK_AAA_L2","F2_BK_AAA_L2"],
-         ["rtjj_62_aaa_hub","_FG3","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_FG3",null],
-         ["rtjj_62_aaa_hub","_FG3","BK_AAA","F3_BK_AAA_L3","F3_BK_AAA_L3"],
          ["rtjj_62_aaa_p1_sat","_FG1","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_FG1",null],
          ["rtjj_62_aaa_p1_sat","_FG1","RH_RTJJ_62_AAA_P1_SAT","RH_RTJJ_62_AAA_P1_SAT_FG1",null],
-         ["rtjj_62_aaa_p1_sat","_FG1","F4_AAA_S1_COLA","F4_AAA_S1_COLA","F4_AAA_S1_COLA"],
-         ["rtjj_62_aaa_p1_sat","_FG1","F5_AAA_S1_COLB","F5_AAA_S1_COLB","F5_AAA_S1_COLB"],
+         ["rtjj_62_aaa_p1_sat","_FG1","F3_AAA_S1_COLA","F3_AAA_S1_COLA","F3_AAA_S1_COLA"],
+         ["rtjj_62_aaa_p1_sat","_FG1","F4_AAA_S1_COLB","F4_AAA_S1_COLB","F4_AAA_S1_COLB"],
          ["rtjj_62_aaa_p1_sat","_FG2","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_FG2",null],
          ["rtjj_62_aaa_p1_sat","_FG2","RH_RTJJ_62_AAA_P1_SAT","RH_RTJJ_62_AAA_P1_SAT_FG2",null],
-         ["rtjj_62_aaa_p1_sat","_FG2","F4_AAA_S1_COLA","F6_AAA_S1_COLA_L2","F6_AAA_S1_COLA_L2"],
-         ["rtjj_62_aaa_p1_sat","_FG2","F5_AAA_S1_COLB","F7_AAA_S1_COLB_L2","F7_AAA_S1_COLB_L2"]
+         ["rtjj_62_aaa_p1_sat","_FG2","F3_AAA_S1_COLA","F3_AAA_S1_COLA","F3_AAA_S1_COLA"],
+         ["rtjj_62_aaa_p1_sat","_FG2","F4_AAA_S1_COLB","F4_AAA_S1_COLB","F4_AAA_S1_COLB"]
  ],
  "stage_table_column": [
          ["HK_RTJJ_62_AAA_FG1","CHAR(28)",2,null,null,false],
          ["HK_RTJJ_62_AAA_FG2","CHAR(28)",2,null,null,false],
-         ["HK_RTJJ_62_AAA_FG3","CHAR(28)",2,null,null,false],
          ["RH_RTJJ_62_AAA_P1_SAT_FG1","CHAR(28)",3,null,null,false],
          ["RH_RTJJ_62_AAA_P1_SAT_FG2","CHAR(28)",3,null,null,false],
          ["F1_BK_AAA_L1","VARCHAR(20)",8,"F1_BK_AAA_L1","VARCHAR(20)",false],
          ["F2_BK_AAA_L2","VARCHAR(20)",8,"F2_BK_AAA_L2","VARCHAR(20)",false],
-         ["F3_BK_AAA_L3","VARCHAR(20)",8,"F3_BK_AAA_L3","VARCHAR(20)",false],
-         ["F4_AAA_S1_COLA","VARCHAR(20)",8,"F4_AAA_S1_COLA","VARCHAR(20)",false],
-         ["F5_AAA_S1_COLB","VARCHAR(20)",8,"F5_AAA_S1_COLB","VARCHAR(20)",false],
-         ["F6_AAA_S1_COLA_L2","VARCHAR(20)",8,"F6_AAA_S1_COLA_L2","VARCHAR(20)",false],
-         ["F7_AAA_S1_COLB_L2","VARCHAR(20)",8,"F7_AAA_S1_COLB_L2","VARCHAR(20)",false]
+         ["F3_AAA_S1_COLA","VARCHAR(20)",8,"F3_AAA_S1_COLA","VARCHAR(20)",false],
+         ["F4_AAA_S1_COLB","VARCHAR(20)",8,"F4_AAA_S1_COLB","VARCHAR(20)",false]
  ],
  "stage_hash_input_field": [
          ["_FG1","HK_RTJJ_62_AAA_FG1","F1_BK_AAA_L1",0,0],
-         ["_FG1","RH_RTJJ_62_AAA_P1_SAT_FG1","F4_AAA_S1_COLA",0,0],
-         ["_FG1","RH_RTJJ_62_AAA_P1_SAT_FG1","F5_AAA_S1_COLB",0,0],
+         ["_FG1","RH_RTJJ_62_AAA_P1_SAT_FG1","F3_AAA_S1_COLA",0,0],
+         ["_FG1","RH_RTJJ_62_AAA_P1_SAT_FG1","F4_AAA_S1_COLB",0,0],
          ["_FG2","HK_RTJJ_62_AAA_FG2","F2_BK_AAA_L2",0,0],
-         ["_FG2","RH_RTJJ_62_AAA_P1_SAT_FG2","F6_AAA_S1_COLA_L2",0,0],
-         ["_FG2","RH_RTJJ_62_AAA_P1_SAT_FG2","F7_AAA_S1_COLB_L2",0,0],
-         ["_FG3","HK_RTJJ_62_AAA_FG3","F3_BK_AAA_L3",0,0]
+         ["_FG2","RH_RTJJ_62_AAA_P1_SAT_FG2","F3_AAA_S1_COLA",0,0],
+         ["_FG2","RH_RTJJ_62_AAA_P1_SAT_FG2","F4_AAA_S1_COLB",0,0]
   ]    }');
