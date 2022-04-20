@@ -96,4 +96,4 @@ select dv_processing.DVPC_GENERATE_HUB_INSERT('test50_double_esat_field_group'::
 											'_A_'::varchar,
 											now()::timestamp without time zone ,
 											'test50.dummy record source'::varchar,
-											-1) 
+											-1) ;

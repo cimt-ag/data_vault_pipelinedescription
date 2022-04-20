@@ -118,6 +118,7 @@ def main(file_to_deploy="#all#"):
 
 if __name__ == '__main__':
     #main("10_deploy_dvpd")
+    #main("20_deploy_processing")
     #main("50_testcases")
 
     main()
