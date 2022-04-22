@@ -32,11 +32,12 @@ select
  	, dkppast.table_name   object_name 
  	,'DVPD_CHECK_XSAT_SPECIFICS'::text  check_ruleset
 	, case when dc.column_name is null then 'driving key "'||dkppast.driving_key ||'" does not exist in parent table':: text
+	   when dc.dv_column_class not in ('parent_key','dependent_child_key') then 'column "'||dkppast.driving_key ||'" is not a parent key or dependent child key'
 			else 'ok' end message
 from driving_key_per_pipeline_and_sat_table dkppast 
 left join dv_pipeline_description.dvpd_pipeline_dv_column dc ON dc.pipeline_name =dkppast.pipeline_name 
 															and dc.table_name = dkppast.satellite_parent_table
-and dc.column_name =dkppast.driving_key 
+															and dc.column_name =dkppast.driving_key 
 ) 
 select * from no_columns_on_esat
 union
