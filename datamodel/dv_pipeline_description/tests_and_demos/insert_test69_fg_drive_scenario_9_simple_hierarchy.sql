@@ -26,7 +26,8 @@ VALUES
 																			,"link_parent_tables": ["rtjj_69_aaa_hub"]
 																			,"recursive_parents": [ {"table_name":"rtjj_69_aaa_hub"
 																										,"recursion_name": "HRCHY1"}]}
-				,{"table_name": "rtjj_69_aaa_hierarchy_esat",	"stereotype": "esat","satellite_parent_table": "rtjj_69_aaa_hierarchy_hlnk"}
+				,{"table_name": "rtjj_69_aaa_hierarchy_esat",	"stereotype": "esat","satellite_parent_table": "rtjj_69_aaa_hierarchy_hlnk"
+																				,"driving_keys": ["HK_rtjj_69_aaa_HRCHY1"]}
 
 				]
 		}
