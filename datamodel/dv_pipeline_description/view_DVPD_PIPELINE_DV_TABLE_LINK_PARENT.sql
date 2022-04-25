@@ -17,7 +17,6 @@ select distinct
 	,clp.table_name
 	,clp.link_parent_table
 	,pdmt.hub_key_column_name as hub_key_column_name
-	,pdmt.hub_key_column_name as parent_hub_key_column_name
 	,is_recursive_relation
 	,recursion_name
 	,link_parent_order 

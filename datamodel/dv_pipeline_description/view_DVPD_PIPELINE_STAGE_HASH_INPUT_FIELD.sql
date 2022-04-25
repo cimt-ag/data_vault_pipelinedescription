@@ -28,6 +28,8 @@ select distinct
  ,ppstdmm.recursion_name 
  ,dmhic.content_column 
  ,dmhic.content_recursion_name 
+ ,dmhic.link_parent_order 
+ ,dmhic.recursive_parent_order 
 from target_hash_columns  thc
 join dv_pipeline_description.dvpd_pipeline_dv_hash_input_column dmhic on dmhic.pipeline_name = thc.pipeline_name 
 																  and dmhic.table_name =thc.table_name 
@@ -53,6 +55,8 @@ select distinct
  ,ppstdmm.recursion_name
  ,dmhic.content_column 
  ,dmhic.content_recursion_name 
+ ,dmhic.link_parent_order 
+ ,dmhic.recursive_parent_order 
 from target_hash_columns  thc
 join dv_pipeline_description.dvpd_pipeline_dv_hash_input_column dmhic on dmhic.pipeline_name = thc.pipeline_name
 																	and  dmhic.table_name =thc.table_name 
@@ -74,6 +78,8 @@ select
  ,recursion_name 
  ,content_column 
  ,content_recursion_name
+ ,link_parent_order 
+ ,recursive_parent_order 
  from fields_for_link_key_hashes
  union 
 select 
@@ -87,6 +93,8 @@ select
  ,recursion_name 
  ,content_column 
  ,content_recursion_name
+ ,link_parent_order 
+ ,recursive_parent_order 
  from fields_for_not_link_key_hashes
 ; 
 

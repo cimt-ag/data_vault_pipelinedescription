@@ -10,6 +10,8 @@ select
 	,content_key.table_name content_table
 	,content_key.column_name  content_column
 	,'' content_recursion_name
+	,null::integer link_parent_order
+	,null::integer recursive_parent_order 
  from dv_pipeline_description.dvpd_pipeline_dv_column hash_target
 join dv_pipeline_description.dvpd_pipeline_dv_column content_key on content_key.pipeline_name = hash_target .pipeline_name 
 						and content_key.table_name =hash_target.table_name 
@@ -24,6 +26,8 @@ select
 	,content_key.table_name  content_table
 	,content_key.column_name  content_column
 	,recursion_name content_recursion_name
+	,link_table.link_parent_order 
+	,link_table.recursive_parent_order 
 from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent link_table
 join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = link_table.pipeline_name 
 														and pdt.table_name =link_table .table_name 
@@ -39,6 +43,8 @@ select
 	,content_key.table_name content_table
 	,content_key.column_name  content_column
 	,'' content_recursion_name
+	,null::integer link_parent_order
+	,null::integer recursive_parent_order 
  from dv_pipeline_description.dvpd_pipeline_dv_column hash_target
 join dv_pipeline_description.dvpd_pipeline_dv_column content_key on content_key.pipeline_name = hash_target.pipeline_name 
 						and content_key.table_name =hash_target.table_name 
