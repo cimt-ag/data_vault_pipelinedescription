@@ -29,7 +29,9 @@ select
   ,apr.table_name object_name
   ,'DVPD_CHECK_MODEL_RELATIONS'::text  check_ruleset
   ,case when pdt.table_name is null then 'Unknown parent_table: '|| apr.parent_table  
-    else 'ok' end  message
+  		 when pdt.stereotype not in ('hub','lnk') then 'Parent table :'|| apr.parent_table || ' is not a hub or link'
+    	else 'ok' 
+    end  message
 from all_parent_relations apr
 left join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = apr.pipeline_name 
 										and pdt.table_name = apr.parent_table 

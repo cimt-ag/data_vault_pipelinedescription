@@ -28,6 +28,8 @@ VALUES
 			,	{"table_name": "rtjj_01_AAA_CCC_XXX_DLINK_WITH_UNKNOWN_PARENT", "stereotype": "lnk","link_key_column_name": "rtjj_01_AAA_CCC_XXX_DLINK_WITH_UNKNOWN_PARENT",
 																									"link_parent_tables":["rvlt_test_jj","rtjj_01_AAA_HUB","rtjj_01_CCC_XXX_UNKNOWN_HUB"]}
 			,	{"table_name": "rtjj_01_BBB_CCC_XXX_ESAT_WITH_UNKNOWN_PARENT", "stereotype": "esat","satellite_parent_table":"rtjj_01_CCC_XXX_UNKNOWN_HUB"}
+			,	{"table_name": "rtjj_01_AAA_EEE_DONT_USE_AS_PARENT",	"stereotype": "sat","satellite_parent_table":"rtjj_01_AAA_HUB","diff_hash_column_name": "rh_rtjj_01_AAA_EEE_DONT_USE_AS_PARENT"}
+			,	{"table_name": "rtjj_01_FFF_XXX_SAT_WITH_BAD_PARENT",	"stereotype": "sat","satellite_parent_table":"rtjj_01_AAA_EEE_DONT_USE_AS_PARENT","diff_hash_column_name": "rh_rtjj_01_FFF_XXX_SAT_WITH_BAD_PARENT"}
 				]
 		}
 	]
