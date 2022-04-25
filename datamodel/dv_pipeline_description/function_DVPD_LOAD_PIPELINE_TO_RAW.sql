@@ -117,13 +117,15 @@ insert
 	table_name,
 	parent_table_name,
 	is_recursive_relation,
-	recursion_name)
+	recursion_name,link_parent_order,recursive_parent_order)
 select
 	pipeline_name,
 	table_name,
 	parent_table_name,
 	is_recursive_relation,
-	recursion_name
+	recursion_name,
+	link_parent_order,
+	recursive_parent_order
 from
 	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_link_parent_raw;
 
