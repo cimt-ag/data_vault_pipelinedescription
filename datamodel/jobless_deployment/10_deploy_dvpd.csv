@@ -22,6 +22,7 @@ mandantory,type,schema_name,name
 
 1,function,dv_pipeline_description,DVPD_LOAD_PIPELINE_TO_RAW
 
+1,view,dv_pipeline_description,DVPD_PIPELINE_PROPERTIES
 1,view,dv_pipeline_description,DVPD_PIPELINE_FIELD_TARGET_EXPANSION
 1,view,dv_pipeline_description,DVPD_PIPELINE_FIELD_PROPERTIES
 1,view,dv_pipeline_description,DVPD_PIPELINE_DV_TABLE
