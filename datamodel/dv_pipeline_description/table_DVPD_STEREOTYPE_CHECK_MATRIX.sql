@@ -1,8 +1,8 @@
--- drop table if exists dv_pipeline_description.DVPD_STEREOTYPE_CHECK_MATRIX 
+-- drop table if exists dv_pipeline_description.DVPD_STEREOTYPE_CHECK_MATRIX cascade;
 
 Create table if not exists dv_pipeline_description.DVPD_STEREOTYPE_CHECK_MATRIX (
   meta_inserted_at TIMESTAMP DEFAULT NOW(),
-  stereotype VARCHAR(10),
+  stereotype VARCHAR(20),
   needs_hub_key_column_name int,
   needs_link_key_column_name int,
   needs_sattelite_parent_table int,

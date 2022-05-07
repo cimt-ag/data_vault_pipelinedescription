@@ -1,4 +1,10 @@
 mandantory,type,schema_name,name
-1,table,dv_pipeline_description,XENC_PIPELINE_DV_TABLE_PROPERTIES_RAW
 
 1,data,dv_pipeline_description,XENC_META_COLUMN_LOOKUP
+1,data,dv_pipeline_description,XENC_STEREOTYPE_CHECK_MATRIX
+
+1,table,dv_pipeline_description,XENC_PIPELINE_DV_TABLE_PROPERTIES_RAW
+
+1,view,dv_pipeline_description,XENC_TRANSFORM_TO_PIPELINE_DV_TABLE_RAW
+
+1,function,dv_pipeline_description,XENC_LOAD_PIPELINE_TO_RAW
