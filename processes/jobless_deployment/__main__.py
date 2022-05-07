@@ -28,6 +28,8 @@ def deploy_process(file_path, type, schema_name, name, mandantory):
             deployment_manager.deploy_view(schema_name=schema_name, view_name=name)
         if type == 'function':
             deployment_manager.deploy_function(schema_name=schema_name, function_name=name)
+        if type == 'data':
+            deployment_manager.execute_data_insert(schema_name=schema_name, data_name=name)
         if type == 'testdata':
             deployment_manager.execute_testdata_insert(schema_name=schema_name, test_name=name)
 
@@ -117,9 +119,11 @@ def main(file_to_deploy="#all#"):
 
 
 if __name__ == '__main__':
-    #main("10_deploy_dvpd")
-    #main("20_deploy_processing")
+    main("10_deploy_dvpd_base")
+    main("11_deploy_xenc")
+    main("19_deploy_dvpd_final")
+    main("20_deploy_processing")
     #main("50_testcases")
 
-    main()
+    #main()
 

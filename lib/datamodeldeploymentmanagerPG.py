@@ -129,8 +129,12 @@ class DataModelDeploymentManager:
         self._deploy_normal_script(schema_name, f"function_{function_name.lower()}.sql")
 
     def execute_testdata_insert(self, schema_name, test_name):
-        """Deploy functionm script from DDL repository if necessary"""
+        """Execute the insert script that resides in testdata directory"""
         self._execute_testdata_insert_script(schema_name, f"insert_{test_name.lower()}.sql")
+
+    def execute_data_insert(self, schema_name, data_name):
+        """Execute the insert script that resides in deployment directory"""
+        self._execute_data_insert_script(schema_name, f"data_{data_name.lower()}.sql")
 
     def _deploy_normal_script(self, schema_name, file_name):
         full_path = f"{self.ddl_root_path}/{schema_name.lower()}/{file_name}"
@@ -145,6 +149,11 @@ class DataModelDeploymentManager:
     def _execute_testdata_insert_script(self, schema_name, file_name):
         full_path = f"{self.ddl_root_path}/{schema_name}/tests_and_demos/{file_name}"
         print("Executing testdata insert script :", schema_name, file_name)
+        self._deploy_script(schema_name, full_path)
+
+    def _execute_data_insert_script(self, schema_name, file_name):
+        full_path = f"{self.ddl_root_path}/{schema_name}/{file_name}"
+        print("Executing data insert script :", schema_name, file_name)
         self._deploy_script(schema_name, full_path)
 
     def _deploy_script(self, schema_name, file_path):

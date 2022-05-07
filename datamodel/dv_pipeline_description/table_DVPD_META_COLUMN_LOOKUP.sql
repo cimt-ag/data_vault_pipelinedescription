@@ -1,7 +1,8 @@
+-- drop table dv_pipeline_description.DVPD_META_COLUMN_LOOKUP cascade;
 
 Create table if not exists dv_pipeline_description.DVPD_META_COLUMN_LOOKUP (
   meta_inserted_at TIMESTAMP DEFAULT NOW(),
-  stereotype VARCHAR(10),
+  stereotype VARCHAR(20),
   meta_column_name VARCHAR(60),
   meta_column_type VARCHAR(60),
   PRIMARY KEY(stereotype,meta_column_name)
@@ -40,3 +41,5 @@ VALUES('hub', 'META_INSERTED_AT', 'TIMESTAMP'),
 	  ('esat', 'META_IS_DELETED', 'BOOLEAN'),	
 	  ('ref_hist', 'META_VALID_BEFORE', 'TIMESTAMP')	
 	 ;
+
+	

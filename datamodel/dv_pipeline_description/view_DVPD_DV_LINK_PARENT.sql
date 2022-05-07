@@ -7,7 +7,6 @@ SELECT
 	link_parent_table,
 	case when is_recursive_relation then hub_key_column_name||'_'||recursion_name 
 			else hub_key_column_name end hub_key_column_name_in_link,
-	parent_hub_key_column_name,
 	is_recursive_relation,
 	recursion_name
 FROM
