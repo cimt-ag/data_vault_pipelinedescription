@@ -2,7 +2,7 @@
 create or replace view dv_pipeline_description.XENC_PIPELINE_DV_COLUMN as (
 
 
-with link_columns as (   -- <<<<<<<<<<<<<<<<<<<<<<<<< LINK
+with link_ek_columns as (   -- <<<<<<<<<<<<<<<<<<<<<<<<< LINK-ek
  select -- meta columns
  	pipeline_name 
    ,table_name
