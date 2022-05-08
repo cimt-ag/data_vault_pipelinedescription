@@ -17,7 +17,9 @@ select
 		else null end)	as xenc_content_salted_hash_column_name
 , lower(xenc_content_table_name) as xenc_content_table_name
 , upper(coalesce(xenc_encryption_key_column_name,'EK_'||cpdt.table_name )) as xenc_encryption_key_column_name
-, upper(coalesce(xenc_encryption_key_index_column_name,'EKI_'||cpdt.table_name )) as xenc_encryption_key_index_column_name
+, upper(case when pdt.stereotype in ('xenc_sat-ek','xenc_msat-ek') and cpdt.is_historized 
+		then  coalesce(xenc_encryption_key_index_column_name,'EKI_'||cpdt.table_name )
+		else null end) as xenc_encryption_key_index_column_name
 , coalesce(pdt.diff_hash_column_name ,cpdt.diff_hash_column_name ) as xenc_diff_hash_column_name
 from dv_pipeline_description.xenc_pipeline_dv_table_properties_raw epdtp
 join  dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = epdtp.pipeline_name  
@@ -34,7 +36,7 @@ select
 	, null::text as xenc_content_table_name
 	, null::text as xenc_encryption_key_column_name
 	, xenc_encryption_key_index_column_name
-	, cpdt.diff_hash_column_name  as xenc_diff_hash_column_name
+	, null::text as xenc_diff_hash_column_name
 from normalized_declared_properties ndp
 left join  dv_pipeline_description.dvpd_pipeline_dv_table cpdt on cpdt.pipeline_name = ndp.pipeline_name  
 															 and cpdt.table_name = ndp.xenc_content_table_name 
