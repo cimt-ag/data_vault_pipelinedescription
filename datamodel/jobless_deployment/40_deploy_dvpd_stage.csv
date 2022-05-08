@@ -1,0 +1,12 @@
+mandantory,type,schema_name,name
+
+1,view,dv_pipeline_description,DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING
+
+1,view,dv_pipeline_description,DVPD_PIPELINE_STAGE_TABLE_COLUMN
+1,view,dv_pipeline_description,DVPD_PIPELINE_DV_HASH_INPUT_COLUMN
+1,view,dv_pipeline_description,DVPD_PIPELINE_STAGE_HASH_INPUT_FIELD
+
+1,view,dv_pipeline_description,DVPD_DV_TABLE
+1,view,dv_pipeline_description,DVPD_DV_LINK_PARENT
+1,view,dv_pipeline_description,DVPD_DV_COLUMN
+

@@ -93,18 +93,17 @@ def main(file_to_deploy="#all#"):
                 print(" #### ^^^^ ERROR while installing file: ", file)
                 print("")
 
-        print("\n", 20 * "#", "files whose items are successfully deployed: ", 20 * "#")
+        print("\n", 5 * "-", "files OK: ", 5 * "-")
         for f in files_succesfully_full_deployed:
-            print("\t", os.path.split(f)[1])
+            print("\t\t", os.path.split(f)[1])
+        print( 25 * "-")
 
         if count_files_with_error > 0:
-            print("\n", 30 * "-", 'number of files with error: ', count_files_with_error, 30 * "-")
-            print(20 * "#", "files which can not be successfully deployed: ", 20 * "#")
-
+            print(5 * "#", "files FAILED: ", 5 * "#")
             for f in files_not_deployed:
-                print("\t\t\t\t\t\t", os.path.split(f)[1])
+                print("\t\t>>>>>", os.path.split(f)[1])
             print("\n")
-
+            print("\n", 5 * "-", 'number of files with error: ', count_files_with_error, 30 * "-")
             raise NameError('at least one file has error')
 
     except Exception as e:
@@ -120,10 +119,10 @@ def main(file_to_deploy="#all#"):
 
 if __name__ == '__main__':
     #main("10_deploy_dvpd_base")
-    main("11_deploy_xenc")
+    #main("11_deploy_xenc_base")
     #main("19_deploy_dvpd_final")
     #main("20_deploy_processing")
     #main("50_testcases")
 
-    #main()
+    main()
 
