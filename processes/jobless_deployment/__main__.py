@@ -120,9 +120,7 @@ def main(file_to_deploy="#all#"):
 if __name__ == '__main__':
     #main("10_deploy_dvpd_base")
     #main("11_deploy_xenc_base")
-    #main("19_deploy_dvpd_final")
-    #main("20_deploy_processing")
-    #main("50_testcases")
+    #main("91_testcases_xenc")
 
     main()
 
