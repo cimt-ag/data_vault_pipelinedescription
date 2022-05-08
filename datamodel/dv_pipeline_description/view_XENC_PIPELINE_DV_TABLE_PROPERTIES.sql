@@ -1,15 +1,50 @@
 --drop view if exists dv_pipeline_description.XENC_PIPELINE_DV_TABLE_PROPERTIES cascade;
 create or replace view dv_pipeline_description.XENC_PIPELINE_DV_TABLE_PROPERTIES as 
 
+with normalized_declared_properties as (
 select 
- lower(pipeline_name) as pipeline_name 
-, lower(table_name) as table_name
-, upper(xenc_content_hash_column_name)  as xenc_content_hash_column_name
-, upper(xenc_content_salted_hash_column_name) as xenc_content_salted_hash_column_name
+ lower(epdtp.pipeline_name) as pipeline_name 
+, lower(epdtp.table_name) as table_name
+, upper(case when pdt.stereotype ='xenc_hub-ek' 
+		then coalesce(xenc_content_hash_column_name,'bkh_'||pdt.table_name)
+      when pdt.stereotype ='xenc_lnk-ek' 
+		then coalesce(xenc_content_hash_column_name,'dch_'||pdt.table_name)
+		else null end)  as xenc_content_hash_column_name
+, upper(case when pdt.stereotype ='xenc_hub-ek' 
+		then coalesce(xenc_content_salted_hash_column_name,'bkh_'||pdt.table_name||'_st')
+      when pdt.stereotype ='xenc_lnk-ek' 
+		then coalesce(xenc_content_salted_hash_column_name,'dch_'||pdt.table_name||'_st')
+		else null end)	as xenc_content_salted_hash_column_name
 , lower(xenc_content_table_name) as xenc_content_table_name
-, upper(xenc_encryption_key_column_name) as xenc_encryption_key_column_name
-, upper(xenc_encryption_key_index_column_name) as xenc_encryption_key_index_column_name
-from dv_pipeline_description.xenc_pipeline_dv_table_properties_raw
+, upper(coalesce(xenc_encryption_key_column_name,'EK_'||cpdt.table_name )) as xenc_encryption_key_column_name
+, upper(coalesce(xenc_encryption_key_index_column_name,'EKI_'||cpdt.table_name )) as xenc_encryption_key_index_column_name
+, coalesce(pdt.diff_hash_column_name ,cpdt.diff_hash_column_name ) as xenc_diff_hash_column_name
+from dv_pipeline_description.xenc_pipeline_dv_table_properties_raw epdtp
+join  dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = epdtp.pipeline_name  
+															 and pdt.table_name = epdtp.table_name 
+left join  dv_pipeline_description.dvpd_pipeline_dv_table cpdt on cpdt.pipeline_name = epdtp.pipeline_name  
+															 and cpdt.table_name = epdtp.xenc_content_table_name 
+)
+,default_content_table_properties as (
+select 
+	ndp.pipeline_name
+	,ndp.xenc_content_table_name as table_name 
+	, null::text as xenc_content_hash_column_name
+	, null::text as xenc_content_salted_hash_column_name
+	, null::text as xenc_content_table_name
+	, null::text as xenc_encryption_key_column_name
+	, xenc_encryption_key_index_column_name
+	, cpdt.diff_hash_column_name  as xenc_diff_hash_column_name
+from normalized_declared_properties ndp
+left join  dv_pipeline_description.dvpd_pipeline_dv_table cpdt on cpdt.pipeline_name = ndp.pipeline_name  
+															 and cpdt.table_name = ndp.xenc_content_table_name 
+where xenc_content_table_name not in (Select table_name from normalized_declared_properties)
+and cpdt.stereotype in ('sat','msat')
+)
+-- final select
+select * from normalized_declared_properties
+union
+select * from default_content_table_properties
 ;
 
--- select * from dv_pipeline_description.DVPD_PIPELINE_DV_TABLE ;
+-- select * from dv_pipeline_description.XENC_PIPELINE_DV_TABLE_PROPERTIES ;
