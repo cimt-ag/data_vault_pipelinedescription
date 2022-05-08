@@ -1,54 +1,52 @@
 --drop view if exists dv_pipeline_description.XENC_PIPELINE_DV_COLUMN;
 create or replace view dv_pipeline_description.XENC_PIPELINE_DV_COLUMN as (
 
-
-with link_ek_columns as (   -- <<<<<<<<<<<<<<<<<<<<<<<<< LINK-ek
- select -- meta columns
- 	pipeline_name 
-   ,table_name
-   ,1 as column_block
-   ,'meta' as dv_column_class
-   ,dml.meta_column_name  as column_name
-   ,dml.meta_column_type as column_type
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
- join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype ='lnk'
- where pdt.stereotype ='lnk'
-union 
+with enhance_xenc_table_properties as (
+select epdtp.pipeline_name
+	,epdtp.table_name
+	,epdtp.xenc_content_hash_column_name
+	,epdtp.xenc_content_salted_hash_column_name
+	,epdtp.xenc_content_table_name
+	,epdtp.xenc_encryption_key_column_name
+	,epdtp.xenc_encryption_key_index_column_name
+	,epdtp.xenc_diff_hash_column_name
+	,epdtp.xenc_table_key_column_name
+	, pdt.stereotype
+from dv_pipeline_description.xenc_pipeline_dv_table_properties epdtp
+join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = epdtp.pipeline_name 
+														and pdt.table_name = epdtp .table_name 
+)
+, model_profile as (
+select pdt.table_name ,dvmp.property_name ,dvmp.property_value 
+from dv_pipeline_description.dvpd_pipeline_dv_table pdt
+left join dv_pipeline_description.dvpd_data_vault_model_profile dvmp on dvmp.data_vault_model_profile_name =pdt.data_vault_model_profile_name 
+)
+,general_encryption_table_columns as (
  select -- own key column
- 	pipeline_name 
-   ,table_name
+ 	extp.pipeline_name 
+   ,extp.table_name
    ,2 as column_block
    ,'key' as dv_column_class
-   ,pdt.link_key_column_name  as column_name 
-   ,'CHAR(28)' as column_type
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
- where pdt.stereotype ='lnk'
+   , xenc_table_key_column_name  as column_name
+   ,mp.property_value as column_type
+ from enhance_xenc_table_properties extp
+ left join model_profile mp on mp.table_name = extp.table_name 
+ 		and mp.property_name ='table_key_column_type'
+ where stereotype like 'xenc_%-ek'
  union
-select -- keys of parents
-  pdt.pipeline_name 
- ,pdtlp.table_name 
- ,case when pdtlp.is_recursive_relation then 4 else 3 end as column_block
- ,'parent_key' as dv_column_class
- ,case when pdtlp.is_recursive_relation then  pdt.hub_key_column_name||'_'||pdtlp.recursion_name
- 		else pdt.hub_key_column_name end as column_name
- ,'CHAR(28)' as column_type
- from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp
- join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.table_name = pdtlp.link_parent_table 
- 														and pdt.pipeline_name =pdtlp.pipeline_name 
- union 									
- select -- content
- 	pdt.pipeline_name 
-   ,pdt.table_name
+ select -- encryption key column
+ 	extp.pipeline_name 
+   ,extp.table_name
    ,8 as column_block
-   ,case when pfte.exclude_from_key_hash then 'content_untracked' ELSE 'dependent_child_key' end as dv_column_class
-   ,pfte.target_column_name   as column_name
-   ,pfte.target_column_type 
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte on pfte.pipeline_name=pdt.pipeline_name 
- 								 and pfte.target_table = pdt.table_name 
- where pdt.stereotype ='lnk'		
+   ,'xenc_encryption_key' as dv_column_class
+   , xenc_encryption_key_column_name  as column_name
+   ,mp.property_value as column_type
+ from enhance_xenc_table_properties extp
+ left join model_profile mp on mp.table_name = extp.table_name 
+ 		and mp.property_name ='xenc_encryption_key_column_type'
+ where stereotype like 'xenc_%-ek'
  )
-,hub_columns as ( -- <<<<<<<<<<<<<<<<<<<<<<<<< HUB
+, hub_ek_columns as ( -- <<<<<<<<<<<<<<<<<<<<<<<<< XENC_HUB-EK
  select -- meta columns
  	pdt.pipeline_name 
    ,table_name
@@ -57,128 +55,136 @@ select -- keys of parents
    ,dml.meta_column_name  as column_name
    ,dml.meta_column_type 
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype ='hub'
- where pdt.stereotype ='hub'
+ left join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype ='xenc_hub-ek'
+ where pdt.stereotype ='xenc_hub-ek'
  union 
- select -- own key column
- 	pdt.pipeline_name 
-   ,table_name
-   ,2 as column_block
-   ,'key' as dv_column_class
-   ,pdt.hub_key_column_name   as column_name
-   ,'CHAR(28)' as column_type
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- where pdt.stereotype ='hub'
- union
- select -- content
- 	pdt.pipeline_name 
-   ,pdt.table_name
-   ,8 as column_block
-   ,case when pfte.exclude_from_key_hash then 'content_untracked' ELSE 'business_key' end as dv_column_class
-   ,pfte.target_column_name   as column_name
-   ,pfte.target_column_type 
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte on pfte.pipeline_name=pdt.pipeline_name 
- 								 and pfte.target_table = pdt.table_name 
- where pdt.stereotype ='hub'
-)
-,sat_parent_table_ref as (  -- <<<<<<<<<<<<<<<<<<<<<<<<< SAT
-	select 
-	 pipeline_name 
-	 ,table_name 
-	 ,satellite_parent_table as parent_table
-	from  dv_pipeline_description.dvpd_pipeline_dv_table pdt
-	where stereotype in ('sat','esat','msat')
-)
-,sat_columns as (
- select -- meta columns
- 	pipeline_name 
-   ,table_name
-   ,1 as column_block
-   ,'meta' as dv_column_class
-   ,dml.meta_column_name as column_name
-   ,dml.meta_column_type as column_type
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype = pdt.stereotype or ( dml.stereotype = 'xsat_hist' and pdt.is_historized )
- where pdt.stereotype in ('sat','esat','msat')
+ select -- content hash column
+ 	extp.pipeline_name 
+   ,extp.table_name
+   ,7 as column_block
+   ,'xenc_bk_hash' as dv_column_class
+   , xenc_content_hash_column_name  as column_name
+   ,mp.property_value as column_type
+ from enhance_xenc_table_properties extp
+ left join model_profile mp on mp.table_name = extp.table_name 
+ 		and mp.property_name ='xenc_content_hash_column_type'
+where stereotype ='xenc_hub-ek'
  union 
-select -- own key column
- 	pdt.pipeline_name 
-	,sr.table_name
-   ,2 as column_block
-   ,'parent_key' as dv_column_class
-   ,coalesce (pdt.hub_key_column_name  ,pdt.link_key_column_name )  as column_name
-   ,'CHAR(28)' as column_type
- from sat_parent_table_ref sr
- join dv_pipeline_description.dvpd_pipeline_dv_table pdt   on pdt.pipeline_name = sr.pipeline_name 
- 					     and pdt.table_name  =sr.parent_table
- union
- select -- diff_hash_column
- 	pdt.pipeline_name 
-   ,table_name
-   ,3 as column_block
-   ,'diff_hash' as dv_column_class
-   ,pdt.diff_hash_column_name   as column_name
-   ,'CHAR(28)' as column_type
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- where pdt.stereotype in ('sat','msat') and pdt.diff_hash_column_name is not null
- union
- select -- content
- 	pdt.pipeline_name 
-   ,pdt.table_name
-   ,8 as column_block
-   ,case when pfte.exclude_from_diff_hash then 'content_untracked' else 'content' end as dv_column_class
-   ,pfte.target_column_name  as column_name
-   ,pfte.target_column_type 
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte on pfte.pipeline_name = pdt.pipeline_name 
- 							and pfte.target_table = pdt.table_name 
- where pdt.stereotype in ('sat','msat')
- )
- ,ref_columns as (-- <<<<<<<<<<<<<<<<<<<<<<<<< REF
+ select -- content hash column
+ 	extp.pipeline_name 
+   ,extp.table_name
+   ,7 as column_block
+   ,'xenc_bk_salted_hash' as dv_column_class
+   , xenc_content_salted_hash_column_name  as column_name
+   ,mp.property_value as column_type
+ from enhance_xenc_table_properties extp
+ left join model_profile mp on mp.table_name = extp.table_name 
+ 		and mp.property_name ='xenc_content_hash_column_type'
+where stereotype ='xenc_hub-ek'
+)
+, lnk_ek_columns as ( -- <<<<<<<<<<<<<<<<<<<<<<<<< XENC_LNK-EK
  select -- meta columns
  	pdt.pipeline_name 
    ,table_name
    ,1 as column_block
    ,'meta' as dv_column_class
+   ,dml.meta_column_name  as column_name
+   ,dml.meta_column_type 
+ from dv_pipeline_description.dvpd_pipeline_dv_table pdt
+ left join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype ='xenc_lnk-ek'
+ where pdt.stereotype ='xenc_lnk-ek'
+ union 
+ select -- content hash column
+ 	extp.pipeline_name 
+   ,extp.table_name
+   ,7 as column_block
+   ,'xenc_dc_hash' as dv_column_class
+   , xenc_content_hash_column_name  as column_name
+   ,mp.property_value as column_type
+ from enhance_xenc_table_properties extp
+ left join model_profile mp on mp.table_name = extp.table_name 
+ 		and mp.property_name ='xenc_content_hash_column_type'
+ where stereotype ='xenc_lnk-ek'
+ union 
+ select -- content hash column
+ 	extp.pipeline_name 
+   ,extp.table_name
+   ,7 as column_block
+   ,'xenc_dc_salted_hash' as dv_column_class
+   , xenc_content_salted_hash_column_name  as column_name
+   ,mp.property_value as column_type
+ from enhance_xenc_table_properties extp
+ left join model_profile mp on mp.table_name = extp.table_name 
+ 		and mp.property_name ='xenc_content_hash_column_type'
+where stereotype ='xenc_lnk-ek'
+)
+,sat_ek_columns as ( -- <<<<<<<<<<<<<<<<<<<<<<<<< XENC_SAT-EK
+ select -- meta columns
+ 	extp.pipeline_name 
+   ,extp.table_name
+   ,1 as column_block
+   ,'meta' as dv_column_class
    ,dml.meta_column_name as column_name
    ,dml.meta_column_type as column_type
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype = 'ref' or ( dml.stereotype = 'ref_hist' and pdt.is_historized ) 
- where pdt.stereotype in ('ref')
+ from enhance_xenc_table_properties extp
+ join dv_pipeline_description.dvpd_pipeline_dv_table cpdt on cpdt.pipeline_name = extp.pipeline_name 
+ 														and cpdt.table_name = extp.xenc_content_table_name
+ join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype = extp.stereotype 
+ or ( dml.stereotype = 'xsat_hist' and cpdt.is_historized )
+ where extp.stereotype in ('xenc_sat-ek','xenc_msat-ek')
  union 
- select -- diff_hash_column
- 	pdt.pipeline_name 
-   ,table_name
-   ,3 as column_block
-   ,'diff_hash' as dv_column_class
-   ,pdt.diff_hash_column_name   as column_name
-   ,'CHAR(28)' as column_type
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- where pdt.stereotype in ('ref') and pdt.is_historized 
- union
- select -- content
- 	pdt.pipeline_name 
-   ,pdt.table_name
+  select -- encryption key index column
+ 	extp.pipeline_name 
+   ,extp.table_name
    ,8 as column_block
-   ,case when pfte.exclude_from_diff_hash then 'content_untracked' else 'content' end as dv_column_class
-   ,pfte.target_column_name  as column_name
-   ,pfte.target_column_type 
- from   dv_pipeline_description.dvpd_pipeline_dv_table pdt
- left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte on pfte.pipeline_name = pdt.pipeline_name 
- 							and pfte.target_table = pdt.table_name 
- where pdt.stereotype in ('ref')
- 
+   ,'xenc_encryption_key_index' as dv_column_class
+   , xenc_encryption_key_index_column_name  as column_name
+   ,mp.property_value as column_type
+ from enhance_xenc_table_properties extp
+ left join model_profile mp on mp.table_name = extp.table_name 
+ 		and mp.property_name ='xenc_encryption_key_index_column_type'
+ where stereotype like 'xenc_%sat-ek'
+ union
+  select -- diff hash
+ 	extp.pipeline_name 
+   ,extp.table_name
+   ,3 as column_block
+   ,'diff_hash'::text as dv_column_class
+   , xenc_diff_hash_column_name  as column_name
+   ,mp.property_value as column_type
+ from enhance_xenc_table_properties extp
+ left join model_profile mp on mp.table_name = extp.table_name 
+ 		and mp.property_name ='diff_hash_column_type'
+ where stereotype like 'xenc_%sat-ek'
+ and xenc_diff_hash_column_name is not null
  )
- select * from link_columns
+,sat_columns as ( -- <<<<<<<<<<<<<<<<<<<<<<<<< SAT
+  select -- encryption key index column
+ 	extp.pipeline_name 
+   ,extp.table_name
+   ,4 as column_block
+   ,'xenc_encryption_key_index'::text as dv_column_class
+   , xenc_encryption_key_index_column_name  as column_name
+   ,mp.property_value as column_type
+ from enhance_xenc_table_properties extp
+ left join model_profile mp on mp.table_name = extp.table_name 
+ 		and mp.property_name ='xenc_encryption_key_index_column_type'
+ where stereotype in ('sat','msat')
+
+ )
+-- ,ref_ek_columns as (-- <<<<<<<<<<<<<<<<<<<<<<<<< REF #TBD
+--
+-- ========== FINAL UNION =================
+ select * from general_encryption_table_columns
  union
- select * from hub_columns
+ select * from hub_ek_columns
  union
+ select * from lnk_ek_columns
+ union 
+ select * from sat_ek_columns
+ union 
  select * from sat_columns
- union 
- select * from ref_columns
- 
 );
  
  
--- select * from dv_pipeline_description.DVPD_DV_MODEL_COLUMN ddmc  order by 1,2,3,4,5;
+-- select * from dv_pipeline_description.XENC_PIPELINE_DV_COLUMN ddmc  order by 1,2,3,4,5;

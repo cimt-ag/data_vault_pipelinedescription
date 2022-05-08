@@ -12,6 +12,11 @@ TRUNCATE TABLE dv_pipeline_description.DVPD_DATA_VAULT_MODEL_PROFILE;
 INSERT INTO dv_pipeline_description.DVPD_DATA_VAULT_MODEL_PROFILE
 (data_vault_model_profile_name, property_name, property_value)
 VALUES('_default', 'table_key_column_type', 'CHAR(28)')
+	  ,('_default', 'table_key_hash_type', 'sha-1')
+	  ,('_default', 'table_key_hash_encoding', 'BASE64')
+	  ,('_default', 'diff_hash_column_type', 'CHAR(28)')
+	  ,('_default', 'diff_hash_type', 'sha-1')
+	  ,('_default', 'diff_hash_encoding', 'BASE64')
 	  ,('_default', 'xenc_encryption_key_column_type', 'CHAR(28)')
 	  ,('_default', 'xenc_encryption_key_index_column_type', 'INT8')
 	 ;

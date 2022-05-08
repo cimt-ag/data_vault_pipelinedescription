@@ -4,6 +4,8 @@ create or replace view dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN as (
 
 
  select * from dv_pipeline_description.dvpd_pipeline_dv_column_core
+ union
+ select * from dv_pipeline_description.xenc_pipeline_dv_column
  
 );
  
