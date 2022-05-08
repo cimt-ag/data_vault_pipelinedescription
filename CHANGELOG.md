@@ -1,4 +1,8 @@
+# Release 0.4.1
 
+## new features
+- first elements  of extention to support cimt encryption added: Declaration of tables, adding columns to model. Currently missing: stage table for encryption tables, full test for fg processing and recursion processing
+- driving key information is now available
 
 # Release 0.4.0
 
