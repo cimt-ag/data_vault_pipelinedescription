@@ -19,6 +19,6 @@ pipeline_name
 from data_vault_schema_basics
 )
 select * from json_parsing 
-where xenc_content_table_name  is not null;
+where xenc_content_table_name  is not null or xenc_encryption_key_index_column_name is not null;
 
 
