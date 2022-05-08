@@ -28,7 +28,7 @@ VALUES
 		}
 		,{"schema_name": "rvlt_xenc_keys", 
 		 "tables": [
-				{"table_name": "rxeck_20_aaa_p1_sat_ek",	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_20_aaa_p1_sat"}
+				{"table_name": "rxeck_20_aaa_sat_ek",	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_20_aaa_sat"}
 				]
 		}
 	]

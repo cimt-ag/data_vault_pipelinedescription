@@ -41,7 +41,7 @@ VALUES
 		,{"schema_name": "rvlt_xenc_keys", 
 		 "tables": [
 				{"table_name": "rxeck_22_aaa_hub_ek",		"stereotype": "xenc_hub-ek", "xenc_content_table_name":"rxecd_22_aaa_hub"}
-				,{"table_name": "rxeck_22_aaa_p1_sat_ek",	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_22_aaa_p1_sat"}
+				,{"table_name": "rxeck_22_aaa_sat_ek",	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_22_aaa_sat"}
 				,{"table_name": "rxeck_22_aaa_bbb_lnk_ek",	"stereotype": "xenc_lnk-ek", "xenc_content_table_name":"rxecd_22_aaa_bbb_lnk"}
 				,{"table_name": "rxeck_22_aaa_bbb_sat_ek",	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_22_aaa_bbb_sat"}
 				]
