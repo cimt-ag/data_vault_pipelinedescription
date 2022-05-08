@@ -21,7 +21,8 @@ insert
 	xenc_content_salted_hash_column_name,
 	xenc_content_table_name,
 	xenc_encryption_key_column_name,
-	xenc_encryption_key_index_column_name)
+	xenc_encryption_key_index_column_name,
+	xenc_table_key_column_name)
 select
 	pipeline_name,
 	table_name,
@@ -29,7 +30,8 @@ select
 	xenc_content_salted_hash_column_name,
 	xenc_content_table_name,
 	xenc_encryption_key_column_name,
-	xenc_encryption_key_index_column_name
+	xenc_encryption_key_index_column_name,
+	xenc_table_key_column_name
 from
 	dv_pipeline_description.xenc_transform_to_pipeline_dv_table_properties_raw;
 

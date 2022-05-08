@@ -12,6 +12,7 @@ select
 , lower(satellite_parent_table) as satellite_parent_table
 , coalesce(is_link_without_sat::bool,false) as is_link_without_sat
 , coalesce(is_historized ::bool,true) as is_historized 
+, '_default' as data_vault_model_profile_name -- will be configurable later
 from dv_pipeline_description.dvpd_pipeline_dv_table_raw
 ;
 

@@ -16,6 +16,7 @@ pipeline_name
 , json_array_elements(tables)->>'xenc_content_table_name' as xenc_content_table_name
 , json_array_elements(tables)->>'xenc_encryption_key_column_name' as xenc_encryption_key_column_name
 , json_array_elements(tables)->>'xenc_encryption_key_index_column_name' as xenc_encryption_key_index_column_name
+, json_array_elements(tables)->>'xenc_table_key_column_name' as xenc_table_key_column_name
 from data_vault_schema_basics
 )
 select * from json_parsing 

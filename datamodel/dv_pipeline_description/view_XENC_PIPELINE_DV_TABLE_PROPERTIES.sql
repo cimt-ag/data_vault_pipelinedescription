@@ -21,11 +21,19 @@ select
 		then  coalesce(xenc_encryption_key_index_column_name,'EKI_'||cpdt.table_name )
 		else null end) as xenc_encryption_key_index_column_name
 , coalesce(pdt.diff_hash_column_name ,cpdt.diff_hash_column_name ) as xenc_diff_hash_column_name
+, upper(coalesce(xenc_table_key_column_name, 
+			case when pdt.stereotype = 'xenc_hub-ek' then cpdt.hub_key_column_name 
+				 when pdt.stereotype = 'xenc_lnk-ek' then cpdt.link_key_column_name
+				 when pdt.stereotype in ('xenc_sat-ek','xenc_msat-ek') then coalesce(pcpdt.hub_key_column_name ,pcpdt.link_key_column_name )
+				 end
+				 )) as xenc_table_key_column_name
 from dv_pipeline_description.xenc_pipeline_dv_table_properties_raw epdtp
 join  dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = epdtp.pipeline_name  
 															 and pdt.table_name = epdtp.table_name 
 left join  dv_pipeline_description.dvpd_pipeline_dv_table cpdt on cpdt.pipeline_name = epdtp.pipeline_name  
 															 and cpdt.table_name = epdtp.xenc_content_table_name 
+left join dv_pipeline_description.dvpd_pipeline_dv_table pcpdt on pcpdt.pipeline_name = cpdt.pipeline_name 
+														and pcpdt.table_name = cpdt.satellite_parent_table														 
 )
 ,default_content_table_properties as (
 select 
@@ -37,6 +45,7 @@ select
 	, null::text as xenc_encryption_key_column_name
 	, xenc_encryption_key_index_column_name
 	, null::text as xenc_diff_hash_column_name
+	, null::text as xenc_table_key_column_name
 from normalized_declared_properties ndp
 left join  dv_pipeline_description.dvpd_pipeline_dv_table cpdt on cpdt.pipeline_name = ndp.pipeline_name  
 															 and cpdt.table_name = ndp.xenc_content_table_name 

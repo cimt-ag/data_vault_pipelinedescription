@@ -1,5 +1,6 @@
 mandantory,type,schema_name,name
 1,table,dv_pipeline_description,DVPD_META_COLUMN_LOOKUP
+1,table,dv_pipeline_description,DVPD_DATA_VAULT_MODEL_PROFILE
 1,table,dv_pipeline_description,DVPD_ATMTST_REFERENCE
 1,table,dv_pipeline_description,DVPD_STEREOTYPE_CHECK_MATRIX
 
