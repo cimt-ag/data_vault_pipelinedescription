@@ -19,6 +19,9 @@ VALUES('_default', 'table_key_column_type', 'CHAR(28)')
 	  ,('_default', 'diff_hash_encoding', 'BASE64')
 	  ,('_default', 'xenc_encryption_key_column_type', 'CHAR(28)')
 	  ,('_default', 'xenc_encryption_key_index_column_type', 'INT8')
+	  ,('_default', 'xenc_content_hash_column_type', 'CHAR(28)')
+	  ,('_default', 'xenc_content_hash_type', 'sha-1')
+	  ,('_default', 'xenc_content_hash_encoding', 'BASE64')
 	 ;
 
 	
