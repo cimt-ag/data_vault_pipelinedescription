@@ -37,7 +37,7 @@ left join dv_pipeline_description.dvpd_data_vault_model_profile dvmp on dvmp.dat
  select -- encryption key column
  	extp.pipeline_name 
    ,extp.table_name
-   ,8 as column_block
+   ,5 as column_block
    ,'xenc_encryption_key' as dv_column_class
    , xenc_encryption_key_column_name  as column_name
    ,mp.property_value as column_type
@@ -136,7 +136,7 @@ where stereotype ='xenc_lnk-ek'
   select -- encryption key index column
  	extp.pipeline_name 
    ,extp.table_name
-   ,8 as column_block
+   ,6 as column_block
    ,'xenc_encryption_key_index' as dv_column_class
    , xenc_encryption_key_index_column_name  as column_name
    ,mp.property_value as column_type
@@ -162,7 +162,7 @@ where stereotype ='xenc_lnk-ek'
   select -- encryption key index column
  	extp.pipeline_name 
    ,extp.table_name
-   ,4 as column_block
+   ,6 as column_block
    ,'xenc_encryption_key_index'::text as dv_column_class
    , xenc_encryption_key_index_column_name  as column_name
    ,mp.property_value as column_type
