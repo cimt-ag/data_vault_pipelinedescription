@@ -170,7 +170,6 @@ where stereotype ='xenc_lnk-ek'
  left join model_profile mp on mp.table_name = extp.table_name 
  		and mp.property_name ='xenc_encryption_key_index_column_type'
  where stereotype in ('sat','msat')
-
  )
 -- ,ref_ek_columns as (-- <<<<<<<<<<<<<<<<<<<<<<<<< REF #TBD
 --
@@ -184,6 +183,7 @@ where stereotype ='xenc_lnk-ek'
  select * from sat_ek_columns
  union 
  select * from sat_columns
+ 
 );
  
  

@@ -7,7 +7,7 @@ select distinct pipeline_name
 from dv_pipeline_description.dvpd_pipeline_dv_table
 where stereotype like 'xenc%'
 )
-select distinct 
+select distinct -- encryption specific columns
 	pipeline_name 
 	,stage_column_name
 	,column_type 
@@ -18,7 +18,22 @@ select distinct
 	,field_type
 	,needs_encryption
 from  dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping_base
-where stereotype like 'xenc%'
+where stereotype like 'xenc%' 
+and dv_column_class  <> 'key'
+group by 1,2,3,4,6,7,8,9
+select distinct -- key columns
+	pipeline_name 
+	,stage_column_name
+	,column_type 
+	,dv_column_class
+	,min(column_block) column_block
+	,false is_meta
+	,field_name
+	,field_type
+	,needs_encryption
+from  dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping_base
+where stereotype like 'xenc%' 
+and dv_column_class  <> 'key'
 group by 1,2,3,4,6,7,8,9
 union 
 select
