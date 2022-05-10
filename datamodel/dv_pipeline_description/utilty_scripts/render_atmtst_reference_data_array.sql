@@ -1,8 +1,8 @@
 with target as (
 select distinct pipeline_name
 from dv_pipeline_description.dvpd_pipeline_DV_table
-where pipeline_name like 'test82%'
-)
+where pipeline_name like 'xenc%61%'
+) /**/
 select 1 block
 ,1 reverse_order
 ,'DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = '''||pipeline_name||''';' script
@@ -142,6 +142,44 @@ from (
 	where   pipeline_name in (select pipeline_name from target) 	
 	) the_data 
 union
+select 32 block
+,1 reverse_order 
+,' ],'
+union
+-- >>> XENC PROCESS COLUMN MAPPING DATA ARRAY <<<<
+select 60 block
+,1 reverse_order
+, ' "xenc_process_column_mapping": [' script
+union 
+/**/
+select 61 block
+,reverse_order
+,'         ["' 
+ || table_name || '","'
+ || process_block  || '","'
+ || column_name || '","'
+ || column_type || '","'
+ || dv_column_class || '","'
+ || stage_column_name || '",'
+ || coalesce('"'||content_stage_hash_column||'"','null') ||','
+ || coalesce('"'||content_table_name||'"','null') || ']'
+ ||(case when reverse_order=1 then '' else ',' end)
+from (
+	select 
+	 rank () OVER (order by table_name desc ,process_block desc ,column_block desc, column_name desc ) reverse_order
+	,table_name 
+	,process_block 
+	,column_name 
+	,column_type
+	,dv_column_class 
+	,stage_column_name
+	,content_stage_hash_column
+	,content_table_name
+	from dv_pipeline_description.xenc_pipeline_process_stage_to_enc_model_mapping								
+	where  dv_column_class not in ('meta')
+	and  pipeline_name in (select pipeline_name from target) 
+	) the_data
+	union
 select 80 block
 ,1 reverse_order 
 ,'  ]    }'');' script

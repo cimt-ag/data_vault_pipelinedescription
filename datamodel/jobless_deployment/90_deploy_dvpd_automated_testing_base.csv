@@ -9,5 +9,4 @@ mandantory,type,schema_name,name
 1,view,dv_pipeline_description,DVPD_ATMTST_ISSUE_STAGE_TABLE_COLUMN
 1,view,dv_pipeline_description,DVPD_ATMTST_REF_STAGE_HASH_INPUT_FIELD
 1,view,dv_pipeline_description,DVPD_ATMTST_ISSUE_STAGE_HASH_INPUT_FIELD
-1,view,dv_pipeline_description,DVPD_ATMTST_CATALOG
-1,view,dv_pipeline_description,DVPD_ATMTST_ISSUE_ALL
+

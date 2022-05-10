@@ -56,6 +56,22 @@ select
 	,atmtst_issue_message
 from
 	dv_pipeline_description.dvpd_atmtst_issue_stage_table_column
+union
+select
+	 pipeline_name
+	,'10 Encryption Table Process Column Mapping' issue_class
+	,rank() over (order by table_name,process_block,column_name ) issue_order
+	,	coalesce (table_name,'#missing#') || ' | ' ||
+		coalesce (process_block,'#missing#') || ' | ' ||
+		coalesce (column_name,'#missing#') || ' | ' ||
+		coalesce (column_type,'#missing#') || ' | ' ||
+		coalesce (dv_column_class,'#missing#') || ' | ' ||
+		coalesce (stage_column_name,'#missing#') || ' | ' ||
+		coalesce (content_stage_hash_column,'') || ' | ' ||
+		coalesce (content_table_name,'') result_string
+	,atmtst_issue_message
+from
+	dv_pipeline_description.xenc_atmtst_issue_process_column_mapping	
 order by pipeline_name,issue_class ,issue_order 
 
 );
