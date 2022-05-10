@@ -27,18 +27,18 @@ select -- columns with same name in every process block
  pdc.pipeline_name 
  ,pdc.table_name 
  ,extp.process_block 
- ,pdc.column_name 
+ ,pdc.column_name stage_column_name 
  ,pdc.column_type 
  ,pdc.column_block 
  ,dv_column_class
- ,null related_stage_hash_column
- ,null related_hash_column
+ ,null content_stage_hash_column
+ ,null content_table_name
 from dv_pipeline_description.dvpd_pipeline_dv_column pdc
 join expanded_xenc_table_properties extp on extp.pipeline_name = pdc.pipeline_name  
 										and extp.table_name = pdc.table_name 
 where dv_column_class  in ('meta','xenc_encryption_key_index')
 union 
-select -- encryption table columns referring to hash columns
+select -- encryption table columns referring to process block specific hash columns
  pdc.pipeline_name 
  ,pdc.table_name 
  ,extp.process_block 
@@ -47,8 +47,8 @@ select -- encryption table columns referring to hash columns
   ,pdc.column_type 
  ,pdc.column_block 
  ,pdc.dv_column_class
- ,pstdmmb.stage_column_name  related_stage_hash_column
- ,pstdmmb.column_name  related_hash_column
+ ,pstdmmb.stage_column_name  content_stage_hash_column
+ ,extp.xenc_content_table_name content_table_name
 from dv_pipeline_description.dvpd_pipeline_dv_column pdc
 join expanded_xenc_table_properties extp on extp.pipeline_name = pdc.pipeline_name  
 										and extp.table_name = pdc.table_name 
