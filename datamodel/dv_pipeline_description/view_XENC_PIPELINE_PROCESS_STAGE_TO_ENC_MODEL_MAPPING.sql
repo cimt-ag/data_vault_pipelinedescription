@@ -22,6 +22,7 @@ join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = e
 join dv_pipeline_description.dvpd_pipeline_process_plan ppp on ppp.pipeline_name =epdtp.pipeline_name 
 														    and ppp.table_name = epdtp.xenc_content_table_name 
 where pdt.stereotype like 'xenc%'
+--and epdtp.pipeline_name like 'xenc%22%' -- for debugging
 )
 select -- columns with same name in every process block
  pdc.pipeline_name 
@@ -78,10 +79,12 @@ left join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mappin
 										and pstdmmb.table_name = extp.xenc_content_table_name 
 										and pstdmmb.process_block = extp.process_block 
 where (pdc.dv_column_class in ('key','xenc_bk_hash','xenc_bk_salted_hash', 'xenc_dc_hash','xenc_dc_salted_hash')
-		and pstdmmb.dv_column_class in ('key','parent_key'))
+		and ((pstdmmb.stereotype in ('hub','lnk') and  pstdmmb.dv_column_class = 'key') 
+				or (pstdmmb.stereotype not in ('hub','lnk') and  pstdmmb.dv_column_class = 'parent_key')))
 		or 
 		(pdc.dv_column_class in ('diff_hash')
 		and pstdmmb.dv_column_class = 'diff_hash')
+--order by table_name ,column_block,column_name -- for debugging
 ;
 
 -- select * from dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_ENC_MODEL_MAPPING order by pipeline,table_name,process_block;										
