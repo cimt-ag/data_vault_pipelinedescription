@@ -47,7 +47,7 @@ Select
 string_agg( meta_column_content || ' AS ' || column_name  ,',' order by column_name)
 INTO  stage_meta_column_list
 from dv_pipeline_description.dvpd_pipeline_dv_column pdc 
-join dv_processing.dvpc_meta_column_content mcc on mcc.meta_column_name = pdc.column_name 
+join dv_processing.dvpd_meta_column_content mcc on mcc.meta_column_name = pdc.column_name
 --where pdc.pipeline_name like 'test50%'
 --and pdc.table_name = 'rtjj_50_aaa_hub'
 where pipeline_name = a_pipeline_name
