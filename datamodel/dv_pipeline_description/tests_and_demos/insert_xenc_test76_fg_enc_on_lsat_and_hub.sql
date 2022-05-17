@@ -1,11 +1,11 @@
 /* insert Testcase 1*/
-DELETE FROM dv_pipeline_description.dvpd_dictionary where pipeline_name = 'xenc_test76_fgs_enc_on_lsat_and_hub';
+DELETE FROM dv_pipeline_description.dvpd_dictionary where pipeline_name = 'xenc_test76_fg_enc_on_lsat_and_hub';
 INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
-('xenc_test76_fgs6_enc_on_lsat_and_hub','{
+('xenc_test76_fg_enc_on_lsat_and_hub','{
 	"dvpd_version": "1.0",
-	"pipeline_name": "xenc_test76_fgs6_enc_on_lsat_and_hub",
+	"pipeline_name": "xenc_test76_fg_enc_on_lsat_and_hub",
 	"purpose":"Test dvpd transformation for multilayered field groups",
 	"record_source_name_expression": "knuppisoft.artikel",
 	"data_extraction": {
@@ -47,12 +47,12 @@ VALUES
 }
 ');
 
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test76_fgs6_enc_on_lsat_and_hub');
-select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test76_fgs6_enc_on_lsat_and_hub');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test76_fg_enc_on_lsat_and_hub');
+select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test76_fg_enc_on_lsat_and_hub');
 
-DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test76_fgs6_enc_on_lsat_and_hub';
+DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test76_fg_enc_on_lsat_and_hub';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
-('xenc_test76_fgs6_enc_on_lsat_and_hub','{
+('xenc_test76_fg_enc_on_lsat_and_hub','{
  "dv_model_column": [
       ["rvlt_xenc_data","rxecd_76_aaa_bbb_lnk",1,"meta","META_INSERTED_AT","TIMESTAMP"],
       ["rvlt_xenc_data","rxecd_76_aaa_bbb_lnk",1,"meta","META_JOB_INSTANCE_ID","INT8"],
