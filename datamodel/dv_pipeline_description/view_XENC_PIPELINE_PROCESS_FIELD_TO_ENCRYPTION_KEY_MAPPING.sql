@@ -9,6 +9,7 @@ select ppstdmmb.pipeline_name
 	,ppstdmmb.stage_column_name content_stage_column_name
 	,ppstdmmb.table_name 
 	,ppstdmmb.column_name
+	,pdtp.table_name encryption_key_table_name
 	,pstemm.stage_column_name   encrytion_key_stage_column_name
 	,rank() over (partition by  ppstdmmb .pipeline_name ,ppstdmmb .stage_column_name  order by ppstdmmb .table_name  ) stage_map_rank
 from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE ppstdmmb 
@@ -31,6 +32,7 @@ Select -- final view with extended stage column name
 			else content_stage_column_name end content_stage_column_name
 	,table_name content_table_name 
 	,column_name content_column_name
+	,encryption_key_table_name
 	,encrytion_key_stage_column_name
 	,stage_map_rank
 from field_to_key_derivation
