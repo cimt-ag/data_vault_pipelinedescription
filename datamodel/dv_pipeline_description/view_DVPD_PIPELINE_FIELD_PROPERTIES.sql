@@ -1,4 +1,4 @@
---drop view if exists dv_pipeline_description.DVPD_PIPELINE_FIELD_PARSE_PROPERTIES cascade;
+--drop view if exists dv_pipeline_description.DVPD_PIPELINE_FIELD_PROPERTIES cascade;
 create or replace view dv_pipeline_description.DVPD_PIPELINE_FIELD_PROPERTIES as
 
 
@@ -8,7 +8,7 @@ select
  ,upper(field_type) as field_type
  ,field_position  
  ,parsing_expression
- ,coalesce (needs_encryption,false)
+ ,coalesce (needs_encryption,false) needs_encryption 
  ,field_comment
 from dv_pipeline_description.dvpd_pipeline_field_properties_raw;
 

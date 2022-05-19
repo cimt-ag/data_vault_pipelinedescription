@@ -1,3 +1,7 @@
+# Release 0.5.0
+- full support of cimt encryption concept, implemented as an extention
+- provide ordering information  
+
 # Release 0.4.1
 
 ## new features
