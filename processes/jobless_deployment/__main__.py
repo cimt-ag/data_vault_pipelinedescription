@@ -121,6 +121,6 @@ if __name__ == '__main__':
     #main("10_deploy_dvpd_base")
     #main("11_deploy_xenc_base")
     #main("91_testcases_xenc")
-
-    main()
+    main("80_deploy_processing")
+    #main()
 
