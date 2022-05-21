@@ -1,8 +1,8 @@
 with target as (
 select distinct pipeline_name
 from dv_pipeline_description.dvpd_pipeline_DV_table
-where pipeline_name like 'xenc%70%'
-) /**/
+where pipeline_name like 'xenc%23%'
+) /* */
 select 1 block
 ,1 reverse_order
 ,'DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = '''||pipeline_name||''';' script
@@ -180,6 +180,38 @@ from (
 	and  pipeline_name in (select pipeline_name from target) 
 	) the_data
 	union
+select 63 block
+,1 reverse_order 
+,' ],'
+union
+-- >>> XENC_PIPELINE_PROCESS_FIELD_TO_ENCRYPTION_KEY_MAPPING ARRAY<<<<
+select 64 block
+,1 reverse_order
+, ' "xenc_process_field_to_encryption_key_mapping": [' script
+union 
+/* */
+select 65 block
+,reverse_order
+,'         ["' 
+ || process_block  || '","'
+ || field_name || '","'
+ || content_stage_column_name || '","'
+ || encryption_key_stage_column_name || '",'
+ || stage_map_rank ||  ']'
+ ||(case when reverse_order=1 then '' else ',' end)
+from (
+	select 
+	 rank () OVER (partition by pipeline_name order by process_block desc ,field_name desc, content_stage_column_name desc ) reverse_order
+	,pipeline_name  
+	,process_block 
+	,field_name  
+	,content_stage_column_name
+	,encryption_key_stage_column_name 
+	,stage_map_rank
+	from dv_pipeline_description.XENC_PIPELINE_PROCESS_FIELD_TO_ENCRYPTION_KEY_MAPPING								
+	where  pipeline_name in (select pipeline_name from target) 
+	) the_data
+union	
 select 80 block
 ,1 reverse_order 
 ,'  ]    }'');' script
