@@ -51,6 +51,7 @@ select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test70_hierarchy_
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test70_hierarchy_and_fg_with_encrypted_bk');
 
 
+-- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test70_hierarchy_and_fg_with_encrypted_bk';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
 ('xenc_test70_hierarchy_and_fg_with_encrypted_bk','{
@@ -97,9 +98,9 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["HK_RXECD_70_AAA_FG2","CHAR(28)",2,null,null,false],
          ["HK_RXECD_70_AAA_HRCHY1_FG1","CHAR(28)",2,null,null,false],
          ["LK_RXECD_70_AAA_HIERARCHY_FG1","CHAR(28)",2,null,null,false],
-         ["F1_BK_AAA_L1","VARCHAR(20)",8,"F1_BK_AAA_L1","VARCHAR(20)",false],
-         ["F2_BK_AAA_L2","VARCHAR(20)",8,"F2_BK_AAA_L2","VARCHAR(20)",false],
-         ["F3_BK_AAA_H1_L1","VARCHAR(20)",8,"F3_BK_AAA_H1_L1","VARCHAR(20)",false]
+         ["F1_BK_AAA_L1","VARCHAR(20)",8,"F1_BK_AAA_L1","VARCHAR(20)",true],
+         ["F2_BK_AAA_L2","VARCHAR(20)",8,"F2_BK_AAA_L2","VARCHAR(20)",true],
+         ["F3_BK_AAA_H1_L1","VARCHAR(20)",8,"F3_BK_AAA_H1_L1","VARCHAR(20)",true]
  ],
  "stage_hash_input_field": [
          ["_FG1","HK_RXECD_70_AAA_FG1","F1_BK_AAA_L1",0,0],
@@ -121,4 +122,9 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rxecd_70_aaa_hub_ek","_HRCHY1_FG1","EK_RXECD_70_AAA_HUB","CHAR(28)","xenc_encryption_key","EK_RXECD_70_AAA_HUB_HRCHY1_FG1",null,null],
          ["rxecd_70_aaa_hub_ek","_HRCHY1_FG1","BKH_RXECD_70_AAA_HUB_EK","CHAR(28)","xenc_bk_hash","BKH_RXECD_70_AAA_HUB_EK_HRCHY1_FG1","HK_RXECD_70_AAA_HRCHY1_FG1","rxecd_70_aaa_hub"],
          ["rxecd_70_aaa_hub_ek","_HRCHY1_FG1","BKH_RXECD_70_AAA_HUB_EK_ST","CHAR(28)","xenc_bk_salted_hash","BKH_RXECD_70_AAA_HUB_EK_ST_HRCHY1_FG1","HK_RXECD_70_AAA_HRCHY1_FG1","rxecd_70_aaa_hub"]
+ ],
+ "xenc_process_field_to_encryption_key_mapping": [
+         ["_FG1","F1_BK_AAA_L1","F1_BK_AAA_L1","EK_RXECD_70_AAA_HUB_FG1",1],
+         ["_FG2","F2_BK_AAA_L2","F2_BK_AAA_L2","EK_RXECD_70_AAA_HUB_FG2",1],
+         ["_HRCHY1_FG1","F3_BK_AAA_H1_L1","F3_BK_AAA_H1_L1","EK_RXECD_70_AAA_HUB_HRCHY1_FG1",1]
   ]    }');

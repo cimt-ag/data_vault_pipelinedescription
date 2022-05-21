@@ -44,6 +44,7 @@ VALUES
 select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test21_encrypt_on_hub');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test21_encrypt_on_hub');
 
+-- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test21_encrypt_on_hub';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
 ('xenc_test21_encrypt_on_hub','{
@@ -99,7 +100,7 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["HK_RXECD_21_BBB","CHAR(28)",2,null,null,false],
          ["LK_RXECD_21_AAA_BBB","CHAR(28)",2,null,null,false],
          ["RH_RXECD_21_AAA_SAT","CHAR(28)",3,null,null,false],
-         ["F1_BK_AAA_ENCRYPT_ME","VARCHAR(20)",8,"F1_BK_AAA_ENCRYPT_ME","VARCHAR(20)",false],
+         ["F1_BK_AAA_ENCRYPT_ME","VARCHAR(20)",8,"F1_BK_AAA_ENCRYPT_ME","VARCHAR(20)",true],
          ["F2_BK_BBB_DECIMAL","DECIMAL(20,0)",8,"F2_BK_BBB_DECIMAL","DECIMAL(20,0)",false],
          ["F3_AAA_SP1_VARCHAR","VARCHAR(200)",8,"F3_AAA_SP1_VARCHAR","VARCHAR(200)",false],
          ["F4_AAA_SP1_VARCHAR","VARCHAR(200)",8,"F4_AAA_SP1_VARCHAR","VARCHAR(200)",false]
@@ -117,4 +118,7 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rxeck_21_aaa_hub_ek","_A_","EK_RXECD_21_AAA_HUB","CHAR(28)","xenc_encryption_key","EK_RXECD_21_AAA_HUB",null,null],
          ["rxeck_21_aaa_hub_ek","_A_","BKH_RXECK_21_AAA_HUB_EK","CHAR(28)","xenc_bk_hash","BKH_RXECK_21_AAA_HUB_EK","HK_RXECD_21_AAA","rxecd_21_aaa_hub"],
          ["rxeck_21_aaa_hub_ek","_A_","BKH_RXECK_21_AAA_HUB_EK_ST","CHAR(28)","xenc_bk_salted_hash","BKH_RXECK_21_AAA_HUB_EK_ST","HK_RXECD_21_AAA","rxecd_21_aaa_hub"]
+ ],
+ "xenc_process_field_to_encryption_key_mapping": [
+         ["_A_","F1_BK_AAA_ENCRYPT_ME","F1_BK_AAA_ENCRYPT_ME","EK_RXECD_21_AAA_HUB",1]
   ]    }');

@@ -54,6 +54,7 @@ VALUES
 select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test22_encrypt_on_all_stereotypes');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test22_encrypt_on_all_stereotypes');
 
+-- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test22_encrypt_on_all_stereotypes';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
 ('xenc_test22_encrypt_on_all_stereotypes','{
@@ -156,13 +157,13 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["RH_RXECD_22_AAA_SAT","CHAR(28)",3,null,null,false],
          ["EKI_RXECD_22_AAA_BBB_SAT","INT8",6,null,null,false],
          ["EKI_RXECD_22_AAA_SAT","INT8",6,null,null,false],
-         ["F1_BK_AAA_ENCRYPT_ME","VARCHAR(20)",8,"F1_BK_AAA_ENCRYPT_ME","VARCHAR(20)",false],
+         ["F1_BK_AAA_ENCRYPT_ME","VARCHAR(20)",8,"F1_BK_AAA_ENCRYPT_ME","VARCHAR(20)",true],
          ["F2_BK_BBB_DECIMAL","DECIMAL(20,0)",8,"F2_BK_BBB_DECIMAL","DECIMAL(20,0)",false],
          ["F3_AAA_SP1_VARCHAR","VARCHAR(200)",8,"F3_AAA_SP1_VARCHAR","VARCHAR(200)",false],
-         ["F4_AAA_SP1_ENCRYPT_ME","VARCHAR(200)",8,"F4_AAA_SP1_ENCRYPT_ME","VARCHAR(200)",false],
-         ["F5_DC_AAA_BBB_ENCRYPT_ME","DECIMAL(20,0)",8,"F5_DC_AAA_BBB_ENCRYPT_ME","DECIMAL(20,0)",false],
+         ["F4_AAA_SP1_ENCRYPT_ME","VARCHAR(200)",8,"F4_AAA_SP1_ENCRYPT_ME","VARCHAR(200)",true],
+         ["F5_DC_AAA_BBB_ENCRYPT_ME","DECIMAL(20,0)",8,"F5_DC_AAA_BBB_ENCRYPT_ME","DECIMAL(20,0)",true],
          ["F6_AAA_BBB_SP1_DECIMAL","DECIMAL(5,0)",8,"F6_AAA_BBB_SP1_DECIMAL","DECIMAL(5,0)",false],
-         ["F7_AAA_BBB_SP1_ENCRYPT_ME","DECIMAL(5,0)",8,"F7_AAA_BBB_SP1_ENCRYPT_ME","DECIMAL(5,0)",false]
+         ["F7_AAA_BBB_SP1_ENCRYPT_ME","DECIMAL(5,0)",8,"F7_AAA_BBB_SP1_ENCRYPT_ME","DECIMAL(5,0)",true]
  ],
  "stage_hash_input_field": [
          ["_A_","HK_RXECD_22_AAA","F1_BK_AAA_ENCRYPT_ME",0,0],
@@ -192,4 +193,10 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rxeck_22_aaa_sat_ek","_A_","RH_RXECD_22_AAA_SAT","CHAR(28)","diff_hash","RH_RXECD_22_AAA_SAT","RH_RXECD_22_AAA_SAT","rxecd_22_aaa_sat"],
          ["rxeck_22_aaa_sat_ek","_A_","EK_RXECD_22_AAA_SAT","CHAR(28)","xenc_encryption_key","EK_RXECD_22_AAA_SAT",null,null],
          ["rxeck_22_aaa_sat_ek","_A_","EKI_RXECD_22_AAA_SAT","INT8","xenc_encryption_key_index","EKI_RXECD_22_AAA_SAT",null,null]
+ ],
+ "xenc_process_field_to_encryption_key_mapping": [
+         ["_A_","F1_BK_AAA_ENCRYPT_ME","F1_BK_AAA_ENCRYPT_ME","EK_RXECD_22_AAA_HUB",1],
+         ["_A_","F4_AAA_SP1_ENCRYPT_ME","F4_AAA_SP1_ENCRYPT_ME","EK_RXECD_22_AAA_SAT",1],
+         ["_A_","F5_DC_AAA_BBB_ENCRYPT_ME","F5_DC_AAA_BBB_ENCRYPT_ME","EK_RXECD_22_AAA_BBB_LNK",1],
+         ["_A_","F7_AAA_BBB_SP1_ENCRYPT_ME","F7_AAA_BBB_SP1_ENCRYPT_ME","EK_RXECD_22_AAA_BBB_SAT",1]
   ]    }');

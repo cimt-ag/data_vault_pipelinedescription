@@ -50,6 +50,7 @@ VALUES
 select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test76_fg_enc_on_lsat_and_hub');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test76_fg_enc_on_lsat_and_hub');
 
+-- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test76_fg_enc_on_lsat_and_hub';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
 ('xenc_test76_fg_enc_on_lsat_and_hub','{
@@ -137,11 +138,11 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["RH_RXECD_76_AAA_BBB_SAT_FG2","CHAR(28)",3,null,null,false],
          ["EKI_RXECD_76_AAA_BBB_SAT_FG1","INT8",6,null,null,false],
          ["EKI_RXECD_76_AAA_BBB_SAT_FG2","INT8",6,null,null,false],
-         ["F1_BK_AAA_L1","VARCHAR(20)",8,"F1_BK_AAA_L1","VARCHAR(20)",false],
-         ["F2_BK_AAA_L2","VARCHAR(20)",8,"F2_BK_AAA_L2","VARCHAR(20)",false],
-         ["F3_BK_BBB","VARCHAR(20)",8,"F3_BK_BBB","VARCHAR(20)",false],
-         ["F4_AAA_BBB_S1_COLA_L1","VARCHAR(20)",8,"F4_AAA_BBB_S1_COLA_L1","VARCHAR(20)",false],
-         ["F4_AAA_BBB_S1_COLA_L2","VARCHAR(20)",8,"F4_AAA_BBB_S1_COLA_L2","VARCHAR(20)",false],
+         ["F1_BK_AAA_L1","VARCHAR(20)",8,"F1_BK_AAA_L1","VARCHAR(20)",true],
+         ["F2_BK_AAA_L2","VARCHAR(20)",8,"F2_BK_AAA_L2","VARCHAR(20)",true],
+         ["F3_BK_BBB","VARCHAR(20)",8,"F3_BK_BBB","VARCHAR(20)",true],
+         ["F4_AAA_BBB_S1_COLA_L1","VARCHAR(20)",8,"F4_AAA_BBB_S1_COLA_L1","VARCHAR(20)",true],
+         ["F4_AAA_BBB_S1_COLA_L2","VARCHAR(20)",8,"F4_AAA_BBB_S1_COLA_L2","VARCHAR(20)",true],
          ["F5_AAA_BBB_S1_COLB","VARCHAR(20)",8,"F5_AAA_BBB_S1_COLB","VARCHAR(20)",false]
  ],
  "stage_hash_input_field": [
@@ -177,4 +178,11 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rxecd_76_bbb_hub_ek","_A_","EK_RXECD_76_BBB_HUB","CHAR(28)","xenc_encryption_key","EK_RXECD_76_BBB_HUB",null,null],
          ["rxecd_76_bbb_hub_ek","_A_","BKH_RXECD_76_BBB_HUB_EK","CHAR(28)","xenc_bk_hash","BKH_RXECD_76_BBB_HUB_EK","HK_RXECD_76_BBB","rxecd_76_bbb_hub"],
          ["rxecd_76_bbb_hub_ek","_A_","BKH_RXECD_76_BBB_HUB_EK_ST","CHAR(28)","xenc_bk_salted_hash","BKH_RXECD_76_BBB_HUB_EK_ST","HK_RXECD_76_BBB","rxecd_76_bbb_hub"]
+ ],
+ "xenc_process_field_to_encryption_key_mapping": [
+         ["_A_","F3_BK_BBB","F3_BK_BBB","EK_RXECD_76_BBB_HUB",1],
+         ["_FG1","F1_BK_AAA_L1","F1_BK_AAA_L1","EK_RXECD_76_AAA_HUB_FG1",1],
+         ["_FG1","F4_AAA_BBB_S1_COLA_L1","F4_AAA_BBB_S1_COLA_L1","EK_RXECD_76_AAA_BBB_SAT_FG1",1],
+         ["_FG2","F2_BK_AAA_L2","F2_BK_AAA_L2","EK_RXECD_76_AAA_HUB_FG2",1],
+         ["_FG2","F4_AAA_BBB_S1_COLA_L2","F4_AAA_BBB_S1_COLA_L2","EK_RXECD_76_AAA_BBB_SAT_FG2",1]
   ]    }');

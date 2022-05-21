@@ -52,6 +52,7 @@ VALUES
 select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test61_fgs1_enc_on_sat');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test61_fgs1_enc_on_sat');
 
+-- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test61_fgs1_enc_on_sat';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
 ('xenc_test61_fgs1_enc_on_sat','{
@@ -111,9 +112,9 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["F2_BK_AAA_L2","VARCHAR(20)",8,"F2_BK_AAA_L2","VARCHAR(20)",false],
          ["F3_BK_AAA_L3","VARCHAR(20)",8,"F3_BK_AAA_L3","VARCHAR(20)",false],
          ["F4_AAA_S1_COLA","VARCHAR(20)",8,"F4_AAA_S1_COLA","VARCHAR(20)",false],
-         ["F5_AAA_S1_COLB","VARCHAR(20)",8,"F5_AAA_S1_COLB","VARCHAR(20)",false],
+         ["F5_AAA_S1_COLB","VARCHAR(20)",8,"F5_AAA_S1_COLB","VARCHAR(20)",true],
          ["F6_AAA_S1_COLA_L2","VARCHAR(20)",8,"F6_AAA_S1_COLA_L2","VARCHAR(20)",false],
-         ["F7_AAA_S1_COLB_L2","VARCHAR(20)",8,"F7_AAA_S1_COLB_L2","VARCHAR(20)",false]
+         ["F7_AAA_S1_COLB_L2","VARCHAR(20)",8,"F7_AAA_S1_COLB_L2","VARCHAR(20)",true]
  ],
  "stage_hash_input_field": [
          ["_FG1","HK_RXECD_61_AAA_FG1","F1_BK_AAA_L1",0,0],
@@ -133,4 +134,8 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rxeck_61_aaa_sat_ek","_FG2","RH_RXECD_61_AAA_P1_SAT","CHAR(28)","diff_hash","RH_RXECD_61_AAA_P1_SAT_FG2","RH_RXECD_61_AAA_P1_SAT_FG2","rxecd_61_aaa_p1_sat"],
          ["rxeck_61_aaa_sat_ek","_FG2","EK_RXECD_61_AAA_P1_SAT","CHAR(28)","xenc_encryption_key","EK_RXECD_61_AAA_P1_SAT_FG2",null,null],
          ["rxeck_61_aaa_sat_ek","_FG2","EKI_RXECD_61_AAA_P1_SAT","INT8","xenc_encryption_key_index","EKI_RXECD_61_AAA_P1_SAT",null,null]
+ ],
+ "xenc_process_field_to_encryption_key_mapping": [
+         ["_FG1","F5_AAA_S1_COLB","F5_AAA_S1_COLB","EK_RXECD_61_AAA_P1_SAT_FG1",1],
+         ["_FG2","F7_AAA_S1_COLB_L2","F7_AAA_S1_COLB_L2","EK_RXECD_61_AAA_P1_SAT_FG2",1]
   ]    }');

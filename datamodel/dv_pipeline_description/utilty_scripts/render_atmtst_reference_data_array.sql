@@ -1,14 +1,19 @@
 with target as (
 select distinct pipeline_name
 from dv_pipeline_description.dvpd_pipeline_DV_table
-where pipeline_name like 'xenc%23%'
+where pipeline_name like 'xenc%99%'
 ) /* */
 select 1 block
+,1 reverse_order
+,'-- vvvvv Reference data for automated testing of dvpd implementation vvvv' script
+from target
+union
+select 5 block
 ,1 reverse_order
 ,'DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = '''||pipeline_name||''';' script
 from target
 union
-select 2 block
+select 8 block
 ,1 reverse_order
 ,'INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES' script
 union

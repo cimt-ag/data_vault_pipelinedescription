@@ -43,6 +43,7 @@ VALUES
 select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test69_simple_hierarchy_with_encrypted_bk');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test69_simple_hierarchy_with_encrypted_bk');
 
+-- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test69_simple_hierarchy_with_encrypted_bk';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
 ('xenc_test69_simple_hierarchy_with_encrypted_bk','{
@@ -86,8 +87,8 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["HK_RXECD_69_AAA","CHAR(28)",2,null,null,false],
          ["HK_RXECD_69_AAA_HRCHY1","CHAR(28)",2,null,null,false],
          ["LK_RXECD_69_AAA_HIERARCHY","CHAR(28)",2,null,null,false],
-         ["F1_BK_AAA","VARCHAR(20)",8,"F1_BK_AAA","VARCHAR(20)",false],
-         ["F2_BK_AAA_H1","VARCHAR(20)",8,"F2_BK_AAA_H1","VARCHAR(20)",false]
+         ["F1_BK_AAA","VARCHAR(20)",8,"F1_BK_AAA","VARCHAR(20)",true],
+         ["F2_BK_AAA_H1","VARCHAR(20)",8,"F2_BK_AAA_H1","VARCHAR(20)",true]
  ],
  "stage_hash_input_field": [
          ["_A_","HK_RXECD_69_AAA","F1_BK_AAA",0,0],
@@ -104,4 +105,8 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rxecd_69_aaa_hub_ek","_HRCHY1","EK_RXECD_69_AAA_HUB","CHAR(28)","xenc_encryption_key","EK_RXECD_69_AAA_HUB_HRCHY1",null,null],
          ["rxecd_69_aaa_hub_ek","_HRCHY1","BKH_RXECD_69_AAA_HUB_EK","CHAR(28)","xenc_bk_hash","BKH_RXECD_69_AAA_HUB_EK_HRCHY1","HK_RXECD_69_AAA_HRCHY1","rxecd_69_aaa_hub"],
          ["rxecd_69_aaa_hub_ek","_HRCHY1","BKH_RXECD_69_AAA_HUB_EK_ST","CHAR(28)","xenc_bk_salted_hash","BKH_RXECD_69_AAA_HUB_EK_ST_HRCHY1","HK_RXECD_69_AAA_HRCHY1","rxecd_69_aaa_hub"]
+ ],
+ "xenc_process_field_to_encryption_key_mapping": [
+         ["_A_","F1_BK_AAA","F1_BK_AAA","EK_RXECD_69_AAA_HUB",1],
+         ["_HRCHY1","F2_BK_AAA_H1","F2_BK_AAA_H1","EK_RXECD_69_AAA_HUB_HRCHY1",1]
   ]    }');

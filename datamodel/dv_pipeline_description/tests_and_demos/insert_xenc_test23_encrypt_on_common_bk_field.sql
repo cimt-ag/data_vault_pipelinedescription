@@ -48,6 +48,7 @@ VALUES
 select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test23_encrypt_on_common_bk_field');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test23_encrypt_on_common_bk_field');
 
+-- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test23_encrypt_on_common_bk_field';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
 ('xenc_test23_encrypt_on_common_bk_field','{

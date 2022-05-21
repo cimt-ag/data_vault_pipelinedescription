@@ -82,7 +82,7 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["EKI_RXECD_99_AAA_SAT","INT8",6,null,null,false],
          ["F1_BK_AAA_ENCRYPT_ME","VARCHAR(20)",8,"F1_BK_AAA_ENCRYPT_ME","VARCHAR(20)",false],
          ["F2_AAA_SP1_VARCHAR","VARCHAR(200)",8,"F2_AAA_SP1_VARCHAR","VARCHAR(200)",false],
-         ["F3_AAA_SP1_ENCRYPT_ME","VARCHAR(200)",8,"F3_AAA_SP1_ENCRYPT_ME","VARCHAR(200)",false]
+         ["F3_AAA_SP1_ENCRYPT_ME","VARCHAR(200)",8,"F3_AAA_SP1_ENCRYPT_ME","VARCHAR(200)",true]
  ],
  "stage_hash_input_field": [
          ["_A_","HK_RXECD_99_AAA","F1_BK_AAA_ENCRYPT_ME",0,0],
@@ -94,4 +94,7 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rxeck_99_aaa_sat_ek","_A_","RH_RXECD_99_AAA_SAT","CHAR(28)","diff_hash","RH_RXECD_99_AAA_SAT","RH_RXECD_99_AAA_SAT","rxecd_99_aaa_sat"],
          ["rxeck_99_aaa_sat_ek","_A_","EK_RXECD_99_AAA_SAT","CHAR(28)","xenc_encryption_key","EK_RXECD_99_AAA_SAT",null,null],
          ["rxeck_99_aaa_sat_ek","_A_","EKI_RXECD_99_AAA_SAT","INT8","xenc_encryption_key_index","EKI_RXECD_99_AAA_SAT",null,null]
+ ],
+ "xenc_process_field_to_encryption_key_mapping": [
+         ["_A_","F3_AAA_SP1_ENCRYPT_ME","F3_AAA_SP1_ENCRYPT_ME","EK_ISSUE_TRIGGERSAT",1]
   ]    }');
