@@ -30,6 +30,7 @@ Select -- final view with extended stage column name
 	,field_name 
 	,case when stage_map_rank>1 then  content_stage_column_name||'_XENC'||stage_map_rank 
 			else content_stage_column_name end content_stage_column_name
+	,content_stage_column_name origin_content_stage_column_name
 	,table_name content_table_name 
 	,column_name content_column_name
 	,encryption_key_table_name

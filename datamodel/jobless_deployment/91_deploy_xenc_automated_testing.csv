@@ -2,3 +2,4 @@ mandantory,type,schema_name,name
 
 1,view,dv_pipeline_description,XENC_ATMTST_REF_PROCESS_COLUMN_MAPPING
 1,view,dv_pipeline_description,XENC_ATMTST_ISSUE_PROCESS_COLUMN_MAPPING
+1,view,dv_pipeline_description,XENC_ATMTST_ISSUE_PROCESS_PROCESS_FIELD_TO_ENCRYPTION_KEY_MAPPING

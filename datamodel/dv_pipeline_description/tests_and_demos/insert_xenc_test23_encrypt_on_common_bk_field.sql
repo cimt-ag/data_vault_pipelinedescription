@@ -113,6 +113,7 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rxecd_23_aaa_sat","_A_","F4_AAA_SP1_VARCHAR","F4_AAA_SP1_VARCHAR","F4_AAA_SP1_VARCHAR"],
          ["rxecd_23_bbb_hub","_A_","HK_RXECD_23_BBB","HK_RXECD_23_BBB",null],
          ["rxecd_23_bbb_hub","_A_","F1_BK_AUB_ENCRYPT_ME","F1_BK_AUB_ENCRYPT_ME","F1_BK_AUB_ENCRYPT_ME"],
+         ["rxecd_23_bbb_hub","_A_","F1_BK_AUB_ENCRYPT_ME","F1_BK_AUB_ENCRYPT_ME_XENC2","F1_BK_AUB_ENCRYPT_ME"],
          ["rxecd_23_bbb_hub","_A_","F3_BK_BBB_DECIMAL","F3_BK_BBB_DECIMAL","F3_BK_BBB_DECIMAL"]
  ],
  "stage_table_column": [
@@ -121,6 +122,7 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["LK_RXECD_23_AAA_BBB","CHAR(28)",2,null,null,false],
          ["RH_RXECD_23_AAA_SAT","CHAR(28)",3,null,null,false],
          ["F1_BK_AUB_ENCRYPT_ME","VARCHAR(20)",8,"F1_BK_AUB_ENCRYPT_ME","VARCHAR(20)",true],
+         ["F1_BK_AUB_ENCRYPT_ME_XENC2","VARCHAR(20)",8,"F1_BK_AUB_ENCRYPT_ME","VARCHAR(20)",true],
          ["F2_BK_AAA_DECIMAL","DECIMAL(20,0)",8,"F2_BK_AAA_DECIMAL","DECIMAL(20,0)",false],
          ["F3_BK_BBB_DECIMAL","DECIMAL(20,0)",8,"F3_BK_BBB_DECIMAL","DECIMAL(20,0)",false],
          ["F4_AAA_SP1_VARCHAR","VARCHAR(200)",8,"F4_AAA_SP1_VARCHAR","VARCHAR(200)",false]
