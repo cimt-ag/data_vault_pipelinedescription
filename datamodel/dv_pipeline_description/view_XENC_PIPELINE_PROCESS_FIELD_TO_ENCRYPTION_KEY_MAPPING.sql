@@ -37,4 +37,4 @@ Select -- final view with extended stage column name
 	,stage_map_rank
 from field_to_key_derivation
 
--- select * from dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_ADDITION order by pipeline,table_name,process_block;										
+-- select * from dv_pipeline_description.XENC_PIPELINE_PROCESS_FIELD_TO_ENCRYPTION_KEY_MAPPING order by pipeline_name,process_block,field_name;										

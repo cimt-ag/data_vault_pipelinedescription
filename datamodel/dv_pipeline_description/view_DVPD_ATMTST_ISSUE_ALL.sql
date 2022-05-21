@@ -72,7 +72,20 @@ select
 	,atmtst_issue_message
 from
 	dv_pipeline_description.xenc_atmtst_issue_process_column_mapping	
-order by pipeline_name,issue_class ,issue_order 
+union
+select
+	 pipeline_name
+	,'11 Field to Encryption Key mapping' issue_class
+	,rank() over (order by process_block,field_name,content_stage_column_name ) issue_order
+	,	coalesce (process_block,'#missing#') || ' | ' ||
+		coalesce (field_name,'#missing#') || ' | ' ||
+		coalesce (content_stage_column_name,'#missing#') || ' | ' ||
+		coalesce (encryption_key_stage_column_name,'#missing#') || ' | ' ||
+		coalesce (stage_map_rank::varchar,'#missing#') 
+	,atmtst_issue_message
+from
+	dv_pipeline_description.xenc_atmtst_issue_process_process_field_to_encryption_key_mapping
+order by pipeline_name,issue_class ,issue_order
 
 );
  
