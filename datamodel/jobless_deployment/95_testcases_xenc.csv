@@ -1,4 +1,5 @@
 mandantory,type,schema_name,name
+1,testdata,dv_pipeline_description,xenc_test01_check_bad_reference
 1,testdata,dv_pipeline_description,xenc_test20_encrypt_on_sat
 1,testdata,dv_pipeline_description,xenc_test21_encrypt_on_hub
 1,testdata,dv_pipeline_description,xenc_test22_encrypt_on_all_stereotypes
