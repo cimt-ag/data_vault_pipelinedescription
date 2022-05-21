@@ -15,7 +15,7 @@ VALUES
 		      {"field_name": "F1_BK_AAA_ENCRYPT_ME", 	"field_type": "Varchar(20)", "needs_encryption":true
 														,"targets": [{"table_name": "rxecd_01_aaa_hub"}]}
 		 	  ,{"field_name": "F2_AAA_SP1_VARCHAR"	,		"field_type": "VARCHAR(200)"
-														,"targets": [{"table_name": "rxecd_01_aaa_sat"}]}
+														,"targets": [{"table_name": "rxecd_01_aaa_no_encrpytion_sat"}]}
 		 	  ,{"field_name": "F3_AAA_SP1_VARCHAR",	"field_type": "VARCHAR(200)"
 														,"targets": [{"table_name": "rxecd_01_aaa_no_encrpytion_sat"}]}
 		 	  ,{"field_name": "F4_AAA_SP2_ENCRYPT_ME",	"field_type": "VARCHAR(200)", "needs_encryption":true
