@@ -34,4 +34,4 @@ join dv_pipeline_description.dvpd_meta_column_lookup dmcl on dmcl.stereotype ='_
 
 
 														 
--- select * from dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN order by pipeline,column_block ,stage_column_name 										
+-- select * from dv_pipeline_description.XENC_PIPELINE_STAGE_TABLE_COLUMN order by pipeline_name,column_block ,stage_column_name 										
