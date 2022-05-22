@@ -1,6 +1,22 @@
+# Release 0.5.0
+- added check about consistency of declaration from multiple fields to same target column
+- essential support of cimt encryption concept, implemented as extention "xenc" (encryption of reference tables is missing)
+- provide ordering information of tables and fields for consistent hash calculation
+- added installation guide to the readme.md
+
+## Encryption extention
+The encryption extention provides the following features
+* declaration of encryption key tables and mapping to the table with the encrypted data 
+* derivation of necessary columns for the key tables depending on stereotype and partner
+* derivation of processing steps and stage table structure to store the encryption keys
+* addition of columns to the partner table (encryption key index for satellites) 
+* addition of stage columns for the content in case of distribution of encrypted fields
+over multiple target tables
+* lots of checks about consistency of the declaration for encryption
+* detailed information is provided in the [module documentation](https://cimtag.atlassian.net/wiki/spaces/CW/pages/3337879553/DVPD+-+cimt+encryption+extention+xenc)
+
 # Release 0.4.1
 
-## new features
 - first elements  of extention to support cimt encryption added: Declaration of tables, adding columns to model. Currently missing: stage table for encryption tables, full test for fg processing and recursion processing
 - driving key information is now available
 

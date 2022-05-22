@@ -9,7 +9,7 @@ Select
 	,json_array_elements(dvpd_json->'fields')->>'field_position' as explicit_field_position
 	,json_array_elements(dvpd_json->'fields')->>'parsing_expression' as parsing_expression
 	,json_array_elements(dvpd_json->'fields')->>'field_comment' as field_comment
-	,json_array_elements(dvpd_json->'fields')->>'needs_ecryption' as needs_encryption
+	,json_array_elements(dvpd_json->'fields')->>'needs_encryption' as needs_encryption
 	,row_number() over (PARTITION BY dvpd_json ->>'pipeline_name') as keep_array_order -- must onyl exist to provide originalarray order in resulset
 from dv_pipeline_description.dvpd_dictionary dt
 )

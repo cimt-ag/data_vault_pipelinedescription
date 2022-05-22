@@ -56,7 +56,36 @@ select
 	,atmtst_issue_message
 from
 	dv_pipeline_description.dvpd_atmtst_issue_stage_table_column
-order by pipeline_name,issue_class ,issue_order 
+union
+select
+	 pipeline_name
+	,'10 Encryption Table Process Column Mapping' issue_class
+	,rank() over (order by table_name,process_block,column_name ) issue_order
+	,	coalesce (table_name,'#missing#') || ' | ' ||
+		coalesce (process_block,'#missing#') || ' | ' ||
+		coalesce (column_name,'#missing#') || ' | ' ||
+		coalesce (column_type,'#missing#') || ' | ' ||
+		coalesce (dv_column_class,'#missing#') || ' | ' ||
+		coalesce (stage_column_name,'#missing#') || ' | ' ||
+		coalesce (content_stage_hash_column,'') || ' | ' ||
+		coalesce (content_table_name,'') result_string
+	,atmtst_issue_message
+from
+	dv_pipeline_description.xenc_atmtst_issue_process_column_mapping	
+union
+select
+	 pipeline_name
+	,'11 Field to Encryption Key mapping' issue_class
+	,rank() over (order by process_block,field_name,content_stage_column_name ) issue_order
+	,	coalesce (process_block,'#missing#') || ' | ' ||
+		coalesce (field_name,'#missing#') || ' | ' ||
+		coalesce (content_stage_column_name,'#missing#') || ' | ' ||
+		coalesce (encryption_key_stage_column_name,'#missing#') || ' | ' ||
+		coalesce (stage_map_rank::varchar,'#missing#') 
+	,atmtst_issue_message
+from
+	dv_pipeline_description.xenc_atmtst_issue_process_process_field_to_encryption_key_mapping
+order by pipeline_name,issue_class ,issue_order
 
 );
  

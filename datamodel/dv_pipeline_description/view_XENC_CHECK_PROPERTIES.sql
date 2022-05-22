@@ -2,20 +2,19 @@
 create or replace view dv_pipeline_description.XENC_CHECK_PROPERTIES as
 
 
-
 select
-  epdtp.pipeline_name
-  ,'Table'::TEXT  object_type 
-  ,epdtp.table_name object_name
-  ,'XENC_CHECK'::text  check_ruleset
-  ,case when cpdt.table_name is null then 'Unknown xenc_content_table_name: '|| epdtp.xenc_content_table_name  
+  pdtp.pipeline_name
+  ,'encryption key table'::TEXT  object_type 
+  ,pdtp.table_name object_name
+  ,'XENC_CHECK_PROPERTIES'::text  check_ruleset
+  ,case when xenc_content_table_name is null then 'Content table name not declared'
     	else 'ok' 
     end  message
-from dv_pipeline_description.xenc_pipeline_dv_table_properties_raw epdtp
-left join  dv_pipeline_description.dvpd_pipeline_dv_table cpdt on cpdt.pipeline_name = epdtp.pipeline_name  
-															 and cpdt.table_name = epdtp.xenc_content_table_name 
-where cpdt.table_name is null															 
-;
+from dv_pipeline_description.xenc_pipeline_dv_table_properties pdtp
+join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = pdtp.pipeline_name 
+														and (pdt.table_name = pdtp.table_name)
+where pdt.stereotype like 'xenc%';
+
 
 comment on view dv_pipeline_description.XENC_CHECK_PROPERTIES IS
 	'Check for encryption extention specific properties';

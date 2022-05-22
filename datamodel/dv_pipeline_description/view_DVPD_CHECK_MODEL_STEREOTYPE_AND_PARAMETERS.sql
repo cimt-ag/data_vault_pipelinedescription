@@ -12,7 +12,8 @@ select
   ,'Table'::TEXT  object_type 
   ,pdt.table_name object_name
   ,'CHECK_MODEL_STEREOTYPE_AND_PARAMETERS'::text  check_ruleset
-  ,case when scm.stereotype is null then 'Unknown stereotype:'||pdt.stereotype 
+  ,case when pdt.table_name is null then 'table_name not declared' 
+  		when scm.stereotype is null then 'Unknown stereotype:'||pdt.stereotype 
   		when scm.needs_hub_key_column_name = 1 and pdt.hub_key_column_name is null 
   			 then 'hub_key_column_name is not declared'
   		when scm.needs_link_key_column_name = 1 and pdt.link_key_column_name is null 

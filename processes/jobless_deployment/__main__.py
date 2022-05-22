@@ -68,7 +68,7 @@ def read_file(file_to_process):
         raise
 
 
-def main(file_to_deploy="#all#"):
+def main(file_to_deploy="#all#", die_on_error=False):
     """Check the unprocessed directory and load any present files into stage."""
 
     in_preparation=True
@@ -92,6 +92,8 @@ def main(file_to_deploy="#all#"):
                 files_not_deployed.append(file)
                 print(" #### ^^^^ ERROR while installing file: ", file)
                 print("")
+                if die_on_error:
+                    raise
 
         print("\n", 5 * "-", "files OK: ", 5 * "-")
         for f in files_succesfully_full_deployed:
@@ -118,9 +120,8 @@ def main(file_to_deploy="#all#"):
 
 
 if __name__ == '__main__':
-    #main("10_deploy_dvpd_base")
-    #main("11_deploy_xenc_base")
+    #main("01_deploy_xenc_base")
     #main("91_testcases_xenc")
-
-    main()
+    #main("80_deploy_processing")
+    main(die_on_error=True)
 
