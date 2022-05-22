@@ -22,6 +22,9 @@ union
 select * FROM dv_pipeline_description.xenc_check_properties 
 where message <>'ok'
 union
+select * FROM dv_pipeline_description.xenc_check_properties  
+where message <>'ok'
+union
 select * FROM dv_pipeline_description.xenc_check_relations 
 where message <>'ok'
 

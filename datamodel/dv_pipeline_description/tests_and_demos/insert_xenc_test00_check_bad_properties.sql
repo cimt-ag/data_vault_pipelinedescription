@@ -26,9 +26,9 @@ VALUES
 		}
 		,{"schema_name": "rvlt_xenc_keys", 
 		 "tables": [
-				{	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_xxxnot_existingxxx"}
-				,{"table_name": "rxecd_00_content_not_declared_ek",	"stereotype": "xenc_sat-ek"}
+				{"table_name": "rxecd_00_content_not_declared_ek",	"stereotype": "xenc_sat-ek"}
 				,{"table_name": "rxecd_00_bad_stereotype",	"stereotype": "xenc_baaad"}
+				,{	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_xxxnot_existingxxx"}
 				]
 		}
 	]

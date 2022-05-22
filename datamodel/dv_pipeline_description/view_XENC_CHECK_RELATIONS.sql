@@ -13,9 +13,9 @@ where pfp.needs_encryption
 , check_content_table_relation as (
 select
   epdtp.pipeline_name
-  ,'Table'::TEXT  object_type 
+  ,'encryption key table'::TEXT  object_type 
   ,epdtp.table_name object_name
-  ,'XENC_CHECK'::text  check_ruleset
+  ,'XENC_CHECK_RELATIONS'::text  check_ruleset
   ,case when cpdt.table_name is null then 'Unknown xenc_content_table_name: '|| epdtp.xenc_content_table_name  
   		when ttwec.table_name is null then 'Target table has no encrypted columns:' || epdtp.xenc_content_table_name
     	else 'ok' 
@@ -40,9 +40,9 @@ group by 1,2
 , check_encrytion_coverage_content as (
 select
   ttwec.pipeline_name
-  ,'Table'::TEXT  object_type 
+  ,'encryption key table'::TEXT  object_type 
   ,ttwec.table_name object_name
-  ,'XENC_CHECK'::text  check_ruleset
+  ,'XENC_CHECK_RELATIONS'::text  check_ruleset
   ,case when cetc.coverage_count is null then 'Table with encryted data has no partner'
   		when cetc.coverage_count > 1 then 'Table is covered by multiple encryption tables:'|| cetc.covering_table_names
     	else 'ok' 
