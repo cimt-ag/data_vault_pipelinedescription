@@ -3,7 +3,7 @@ create or replace view dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANS
 select 
 	 lower(pfter.pipeline_name) as  pipeline_name
 	,upper(pfter.field_name) as field_name
-	,upper(field_type) as field_type
+	,upper(trim(field_type)) as field_type
 	,lower(target_table) as target_table
 	,upper(coalesce (target_column_name,pfter.field_name)) as target_column_name
 	,upper(coalesce(recursion_name,'')) as recursion_name

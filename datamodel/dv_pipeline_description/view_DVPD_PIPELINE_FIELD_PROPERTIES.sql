@@ -5,7 +5,7 @@ create or replace view dv_pipeline_description.DVPD_PIPELINE_FIELD_PROPERTIES as
 select
  pipeline
  ,upper(field_name) as field_name
- ,upper(field_type) as field_type
+ ,upper(trim(field_type)) as field_type
  ,field_position  
  ,parsing_expression
  ,coalesce (needs_encryption,false) needs_encryption 

@@ -28,7 +28,7 @@ VALUES
 		      ,{"field_name": "F6_AAA_S1_COLA_L2","field_type": "Varchar(20)",	"targets": [{"table_name": "rxecd_62_aaa_p1_sat"
 																					,"target_column_name": "F4_AAA_S1_COLA"
 																				 	,"field_groups":["fg2"]}]}		 
-		      ,{"field_name": "F7_AAA_S1_COLB_L2","field_type": "Varchar(20)",	"needs_encryption":true, "targets": [{"table_name": "rxecd_62_aaa_p1_sat"
+		      ,{"field_name": "F7_AAA_S1_COLB_L2","field_type": "Varchar(20)",	 "targets": [{"table_name": "rxecd_62_aaa_p1_sat"
 																					,"target_column_name": "F5_AAA_S1_COLB"
 																				 	,"field_groups":["fg2"]}]}		 
 			 ],
@@ -108,7 +108,7 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["F4_AAA_S1_COLA","VARCHAR(20)",8,"F4_AAA_S1_COLA","VARCHAR(20)",false],
          ["F5_AAA_S1_COLB","VARCHAR(20)",8,"F5_AAA_S1_COLB","VARCHAR(20)",false],
          ["F6_AAA_S1_COLA_L2","VARCHAR(20)",8,"F6_AAA_S1_COLA_L2","VARCHAR(20)",false],
-         ["F7_AAA_S1_COLB_L2","VARCHAR(20)",8,"F7_AAA_S1_COLB_L2","VARCHAR(20)",true]
+         ["F7_AAA_S1_COLB_L2","VARCHAR(20)",8,"F7_AAA_S1_COLB_L2","VARCHAR(20)",false]
  ],
  "stage_hash_input_field": [
          ["_FG1","HK_RXECD_62_AAA_FG1","F1_BK_AAA_L1",0,0],

@@ -95,15 +95,15 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
       ["rvlt_xenc_keys","rxeck_76_aaa_hub_ek",1,"meta","META_RECORD_SOURCE","VARCHAR(255)"],
       ["rvlt_xenc_keys","rxeck_76_aaa_hub_ek",2,"key","HK_RXECD_76_AAA","CHAR(28)"],
       ["rvlt_xenc_keys","rxeck_76_aaa_hub_ek",5,"xenc_encryption_key","EK_RXECD_76_AAA_HUB","CHAR(28)"],
-      ["rvlt_xenc_keys","rxeck_76_aaa_hub_ek",7,"xenc_bk_hash","BKH_rxeck_76_aaa_hub_ek","CHAR(28)"],
-      ["rvlt_xenc_keys","rxeck_76_aaa_hub_ek",7,"xenc_bk_salted_hash","BKH_rxeck_76_aaa_hub_ek_ST","CHAR(28)"],
+      ["rvlt_xenc_keys","rxeck_76_aaa_hub_ek",7,"xenc_bk_hash","BKH_RXECK_76_AAA_HUB_EK","CHAR(28)"],
+      ["rvlt_xenc_keys","rxeck_76_aaa_hub_ek",7,"xenc_bk_salted_hash","BKH_RXECK_76_AAA_HUB_EK_ST","CHAR(28)"],
       ["rvlt_xenc_keys","rxeck_76_bbb_hub_ek",1,"meta","META_INSERTED_AT","TIMESTAMP"],
       ["rvlt_xenc_keys","rxeck_76_bbb_hub_ek",1,"meta","META_JOB_INSTANCE_ID","INT8"],
       ["rvlt_xenc_keys","rxeck_76_bbb_hub_ek",1,"meta","META_RECORD_SOURCE","VARCHAR(255)"],
       ["rvlt_xenc_keys","rxeck_76_bbb_hub_ek",2,"key","HK_RXECD_76_BBB","CHAR(28)"],
       ["rvlt_xenc_keys","rxeck_76_bbb_hub_ek",5,"xenc_encryption_key","EK_RXECD_76_BBB_HUB","CHAR(28)"],
-      ["rvlt_xenc_keys","rxeck_76_bbb_hub_ek",7,"xenc_bk_hash","BKH_rxeck_76_bbb_hub_ek","CHAR(28)"],
-      ["rvlt_xenc_keys","rxeck_76_bbb_hub_ek",7,"xenc_bk_salted_hash","BKH_rxeck_76_bbb_hub_ek_ST","CHAR(28)"]
+      ["rvlt_xenc_keys","rxeck_76_bbb_hub_ek",7,"xenc_bk_hash","BKH_RXECK_76_BBB_HUB_EK","CHAR(28)"],
+      ["rvlt_xenc_keys","rxeck_76_bbb_hub_ek",7,"xenc_bk_salted_hash","BKH_RXECK_76_BBB_HUB_EK_ST","CHAR(28)"]
  ],
  "process_column_mapping": [
          ["rxecd_76_aaa_bbb_lnk","_FG1","LK_RXECD_76_AAA_BBB","LK_RXECD_76_AAA_BBB_FG1",null],
@@ -168,16 +168,16 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rxeck_76_aaa_bbb_sat_ek","_FG2","EKI_RXECD_76_AAA_BBB_SAT","INT8","xenc_encryption_key_index","EKI_RXECD_76_AAA_BBB_SAT",null,null],
          ["rxeck_76_aaa_hub_ek","_FG1","HK_RXECD_76_AAA","CHAR(28)","key","HK_RXECD_76_AAA_FG1","HK_RXECD_76_AAA_FG1","rxecd_76_aaa_hub"],
          ["rxeck_76_aaa_hub_ek","_FG1","EK_RXECD_76_AAA_HUB","CHAR(28)","xenc_encryption_key","EK_RXECD_76_AAA_HUB_FG1",null,null],
-         ["rxeck_76_aaa_hub_ek","_FG1","BKH_rxeck_76_aaa_hub_ek","CHAR(28)","xenc_bk_hash","BKH_rxeck_76_aaa_hub_ek_FG1","HK_RXECD_76_AAA_FG1","rxecd_76_aaa_hub"],
-         ["rxeck_76_aaa_hub_ek","_FG1","BKH_rxeck_76_aaa_hub_ek_ST","CHAR(28)","xenc_bk_salted_hash","BKH_rxeck_76_aaa_hub_ek_ST_FG1","HK_RXECD_76_AAA_FG1","rxecd_76_aaa_hub"],
+         ["rxeck_76_aaa_hub_ek","_FG1","BKH_RXECK_76_AAA_HUB_EK","CHAR(28)","xenc_bk_hash","BKH_RXECK_76_AAA_HUB_EK_FG1","HK_RXECD_76_AAA_FG1","rxecd_76_aaa_hub"],
+         ["rxeck_76_aaa_hub_ek","_FG1","BKH_RXECK_76_AAA_HUB_EK_ST","CHAR(28)","xenc_bk_salted_hash","BKH_RXECK_76_AAA_HUB_EK_ST_FG1","HK_RXECD_76_AAA_FG1","rxecd_76_aaa_hub"],
          ["rxeck_76_aaa_hub_ek","_FG2","HK_RXECD_76_AAA","CHAR(28)","key","HK_RXECD_76_AAA_FG2","HK_RXECD_76_AAA_FG2","rxecd_76_aaa_hub"],
          ["rxeck_76_aaa_hub_ek","_FG2","EK_RXECD_76_AAA_HUB","CHAR(28)","xenc_encryption_key","EK_RXECD_76_AAA_HUB_FG2",null,null],
-         ["rxeck_76_aaa_hub_ek","_FG2","BKH_rxeck_76_aaa_hub_ek","CHAR(28)","xenc_bk_hash","BKH_rxeck_76_aaa_hub_ek_FG2","HK_RXECD_76_AAA_FG2","rxecd_76_aaa_hub"],
-         ["rxeck_76_aaa_hub_ek","_FG2","BKH_rxeck_76_aaa_hub_ek_ST","CHAR(28)","xenc_bk_salted_hash","BKH_rxeck_76_aaa_hub_ek_ST_FG2","HK_RXECD_76_AAA_FG2","rxecd_76_aaa_hub"],
+         ["rxeck_76_aaa_hub_ek","_FG2","BKH_RXECK_76_AAA_HUB_EK","CHAR(28)","xenc_bk_hash","BKH_RXECK_76_AAA_HUB_EK_FG2","HK_RXECD_76_AAA_FG2","rxecd_76_aaa_hub"],
+         ["rxeck_76_aaa_hub_ek","_FG2","BKH_RXECK_76_AAA_HUB_EK_ST","CHAR(28)","xenc_bk_salted_hash","BKH_RXECK_76_AAA_HUB_EK_ST_FG2","HK_RXECD_76_AAA_FG2","rxecd_76_aaa_hub"],
          ["rxeck_76_bbb_hub_ek","_A_","HK_RXECD_76_BBB","CHAR(28)","key","HK_RXECD_76_BBB","HK_RXECD_76_BBB","rxecd_76_bbb_hub"],
          ["rxeck_76_bbb_hub_ek","_A_","EK_RXECD_76_BBB_HUB","CHAR(28)","xenc_encryption_key","EK_RXECD_76_BBB_HUB",null,null],
-         ["rxeck_76_bbb_hub_ek","_A_","BKH_rxeck_76_bbb_hub_ek","CHAR(28)","xenc_bk_hash","BKH_rxeck_76_bbb_hub_ek","HK_RXECD_76_BBB","rxecd_76_bbb_hub"],
-         ["rxeck_76_bbb_hub_ek","_A_","BKH_rxeck_76_bbb_hub_ek_ST","CHAR(28)","xenc_bk_salted_hash","BKH_rxeck_76_bbb_hub_ek_ST","HK_RXECD_76_BBB","rxecd_76_bbb_hub"]
+         ["rxeck_76_bbb_hub_ek","_A_","BKH_RXECK_76_BBB_HUB_EK","CHAR(28)","xenc_bk_hash","BKH_RXECK_76_BBB_HUB_EK","HK_RXECD_76_BBB","rxecd_76_bbb_hub"],
+         ["rxeck_76_bbb_hub_ek","_A_","BKH_RXECK_76_BBB_HUB_EK_ST","CHAR(28)","xenc_bk_salted_hash","BKH_RXECK_76_BBB_HUB_EK_ST","HK_RXECD_76_BBB","rxecd_76_bbb_hub"]
  ],
  "xenc_process_field_to_encryption_key_mapping": [
          ["_A_","F3_BK_BBB","F3_BK_BBB","EK_RXECD_76_BBB_HUB",1],

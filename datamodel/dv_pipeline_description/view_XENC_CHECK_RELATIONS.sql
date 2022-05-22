@@ -43,7 +43,7 @@ select
   ,'encryption key table'::TEXT  object_type 
   ,ttwec.table_name object_name
   ,'XENC_CHECK_RELATIONS'::text  check_ruleset
-  ,case when cetc.coverage_count is null then 'Table with encryted data has no partner'
+  ,case when cetc.coverage_count is null then 'Table with encrypted data has no partner'
   		when cetc.coverage_count > 1 then 'Table is covered by multiple encryption tables:'|| cetc.covering_table_names
     	else 'ok' 
     end  message
