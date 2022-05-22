@@ -58,6 +58,7 @@ from target_constellation_count
 select * from target_existence
 union
 select * from target_specification_consistency
+;
 
 -- select * from dv_pipeline_description.DVPD_CHECK_FIELD_TARGET_TABLE order by 1,2,3
 
