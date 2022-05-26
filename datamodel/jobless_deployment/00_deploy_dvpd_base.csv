@@ -1,8 +1,9 @@
 mandantory,type,schema_name,name
 1,table,dv_pipeline_description,DVPD_META_COLUMN_LOOKUP
-1,table,dv_pipeline_description,DVPD_DATA_VAULT_MODEL_PROFILE
+1,table,dv_pipeline_description,DVPD_MODEL_PROFILE
 
 1,table,dv_pipeline_description,DVPD_DICTIONARY
+1,table,dv_pipeline_description,DVPD_JSON_STORAGE
 1,table,dv_pipeline_description,DVPD_PIPELINE_DV_TABLE_DRIVING_KEY_RAW
 1,table,dv_pipeline_description,DVPD_PIPELINE_DV_TABLE_FIELD_GROUP_RAW
 1,table,dv_pipeline_description,DVPD_PIPELINE_DV_TABLE_LINK_PARENT_RAW
