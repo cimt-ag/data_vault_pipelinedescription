@@ -19,7 +19,7 @@ join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = e
 , model_profile as (
 select pdt.table_name ,dvmp.property_name ,dvmp.property_value 
 from dv_pipeline_description.dvpd_pipeline_dv_table pdt
-left join dv_pipeline_description.DVPD_MODEL_PROFILE dvmp on dvmp.data_vault_model_profile_name =pdt.data_vault_model_profile_name 
+left join dv_pipeline_description.DVPD_MODEL_PROFILE dvmp on dvmp.model_profile_name =pdt.model_profile_name 
 )
 ,general_encryption_table_columns as (
  select -- own key column

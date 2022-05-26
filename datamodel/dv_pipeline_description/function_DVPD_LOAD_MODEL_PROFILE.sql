@@ -11,11 +11,11 @@ begin
 	/* Load json scripts into relational raw model */
 truncate table dv_pipeline_description.dvpd_model_profile;
 INSERT INTO dv_pipeline_description.dvpd_model_profile
-(data_vault_model_profile_name,
+(model_profile_name,
 property_name,
 property_value)
 SELECT
-	data_vault_model_profile_name,
+	model_profile_name,
 property_name,
 property_value
 FROM

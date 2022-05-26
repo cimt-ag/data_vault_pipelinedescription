@@ -20,8 +20,10 @@ union
    ,2 as column_block
    ,'key' as dv_column_class
    ,pdt.link_key_column_name  as column_name 
-   ,'CHAR(28)' as column_type
+   ,mp.property_value  as column_type
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
+ left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
+ 				and mp.property_name ='table_key_column_type' 
  where pdt.stereotype ='lnk'
  union
 select -- keys of parents
@@ -31,10 +33,12 @@ select -- keys of parents
  ,'parent_key' as dv_column_class
  ,case when pdtlp.is_recursive_relation then  pdt.hub_key_column_name||'_'||pdtlp.recursion_name
  		else pdt.hub_key_column_name end as column_name
- ,'CHAR(28)' as column_type
+ ,mp.property_value  as column_type
  from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp
  join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.table_name = pdtlp.link_parent_table 
  														and pdt.pipeline_name =pdtlp.pipeline_name 
+  left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
+ 				and mp.property_name ='table_key_column_type'  														
  union 									
  select -- content
  	pdt.pipeline_name 
