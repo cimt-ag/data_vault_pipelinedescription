@@ -8,10 +8,11 @@ with link_columns as (   -- <<<<<<<<<<<<<<<<<<<<<<<<< LINK
    ,table_name
    ,1 as column_block
    ,'meta' as dv_column_class
-   ,dml.meta_column_name  as column_name
-   ,dml.meta_column_type as column_type
+   ,mpmcl.meta_column_name  as column_name
+   ,mpmcl.meta_column_type as column_type
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
- join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype ='lnk'
+ join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.stereotype ='lnk'
+ 																	and mpmcl.model_profile_name =pdt .model_profile_name 
  where pdt.stereotype ='lnk'
 union 
  select -- own key column
@@ -37,7 +38,7 @@ select -- keys of parents
  from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp
  join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.table_name = pdtlp.link_parent_table 
  														and pdt.pipeline_name =pdtlp.pipeline_name 
-  left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
+ left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
  				and mp.property_name ='table_key_column_type'  														
  union 									
  select -- content
@@ -54,14 +55,15 @@ select -- keys of parents
  )
 ,hub_columns as ( -- <<<<<<<<<<<<<<<<<<<<<<<<< HUB
  select -- meta columns
- 	pdt.pipeline_name 
+ 	pipeline_name 
    ,table_name
    ,1 as column_block
    ,'meta' as dv_column_class
-   ,dml.meta_column_name  as column_name
-   ,dml.meta_column_type 
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype ='hub'
+   ,mpmcl.meta_column_name  as column_name
+   ,mpmcl.meta_column_type as column_type
+ from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
+ join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.stereotype ='hub'
+ 																	and mpmcl.model_profile_name =pdt .model_profile_name 
  where pdt.stereotype ='hub'
  union 
  select -- own key column
@@ -70,8 +72,10 @@ select -- keys of parents
    ,2 as column_block
    ,'key' as dv_column_class
    ,pdt.hub_key_column_name   as column_name
-   ,'CHAR(28)' as column_type
+   ,mp.property_value  as column_type
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
+  left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
+ 				and mp.property_name ='table_key_column_type' 
  where pdt.stereotype ='hub'
  union
  select -- content
@@ -100,10 +104,11 @@ select -- keys of parents
    ,table_name
    ,1 as column_block
    ,'meta' as dv_column_class
-   ,dml.meta_column_name as column_name
-   ,dml.meta_column_type as column_type
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype = pdt.stereotype or ( dml.stereotype = 'xsat_hist' and pdt.is_historized )
+   ,mpmcl.meta_column_name  as column_name
+   ,mpmcl.meta_column_type as column_type
+ from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
+ join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.model_profile_name =pdt .model_profile_name 
+			 								and (mpmcl.stereotype = pdt.stereotype or ( mpmcl.stereotype = 'xsat_hist' and pdt.is_historized ))
  where pdt.stereotype in ('sat','esat','msat')
  union 
 select -- own key column
@@ -112,10 +117,12 @@ select -- own key column
    ,2 as column_block
    ,'parent_key' as dv_column_class
    ,coalesce (pdt.hub_key_column_name  ,pdt.link_key_column_name )  as column_name
-   ,'CHAR(28)' as column_type
+   ,mp.property_value  as column_type
  from sat_parent_table_ref sr
  join dv_pipeline_description.dvpd_pipeline_dv_table pdt   on pdt.pipeline_name = sr.pipeline_name 
  					     and pdt.table_name  =sr.parent_table
+ left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
+ 				and mp.property_name ='table_key_column_type'  	 					     
  union
  select -- diff_hash_column
  	pdt.pipeline_name 
@@ -123,8 +130,10 @@ select -- own key column
    ,3 as column_block
    ,'diff_hash' as dv_column_class
    ,pdt.diff_hash_column_name   as column_name
-   ,'CHAR(28)' as column_type
+   ,mp.property_value  as column_type
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
+ left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
+ 				and mp.property_name ='diff_hash_column_type'  
  where pdt.stereotype in ('sat','msat') and pdt.diff_hash_column_name is not null
  union
  select -- content
@@ -141,14 +150,15 @@ select -- own key column
  )
  ,ref_columns as (-- <<<<<<<<<<<<<<<<<<<<<<<<< REF
  select -- meta columns
- 	pdt.pipeline_name 
+ 	pipeline_name 
    ,table_name
    ,1 as column_block
    ,'meta' as dv_column_class
-   ,dml.meta_column_name as column_name
-   ,dml.meta_column_type as column_type
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype = 'ref' or ( dml.stereotype = 'ref_hist' and pdt.is_historized ) 
+   ,mpmcl.meta_column_name  as column_name
+   ,mpmcl.meta_column_type as column_type
+ from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
+ join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.model_profile_name =pdt .model_profile_name 
+			 								and( mpmcl.stereotype = 'ref' or ( mpmcl.stereotype = 'ref_hist' and pdt.is_historized ) )
  where pdt.stereotype in ('ref')
  union 
  select -- diff_hash_column
@@ -157,8 +167,10 @@ select -- own key column
    ,3 as column_block
    ,'diff_hash' as dv_column_class
    ,pdt.diff_hash_column_name   as column_name
-   ,'CHAR(28)' as column_type
+   ,mp.property_value  as column_type
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
+ left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
+ 				and mp.property_name ='diff_hash_column_type' 
  where pdt.stereotype in ('ref') and pdt.is_historized 
  union
  select -- content

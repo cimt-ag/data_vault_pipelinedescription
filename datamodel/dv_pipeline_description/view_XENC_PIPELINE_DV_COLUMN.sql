@@ -12,6 +12,7 @@ select epdtp.pipeline_name
 	,epdtp.xenc_diff_hash_column_name
 	,epdtp.xenc_table_key_column_name
 	, pdt.stereotype
+	, pdt.model_profile_name 
 from dv_pipeline_description.xenc_pipeline_dv_table_properties epdtp
 join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = epdtp.pipeline_name 
 														and pdt.table_name = epdtp .table_name 
@@ -48,15 +49,16 @@ left join dv_pipeline_description.DVPD_MODEL_PROFILE dvmp on dvmp.model_profile_
  )
 , hub_ek_columns as ( -- <<<<<<<<<<<<<<<<<<<<<<<<< XENC_HUB-EK
  select -- meta columns
- 	pdt.pipeline_name 
+ 	pipeline_name 
    ,table_name
    ,1 as column_block
    ,'meta' as dv_column_class
-   ,dml.meta_column_name  as column_name
-   ,dml.meta_column_type 
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- left join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype ='xenc_hub-ek'
- where pdt.stereotype ='xenc_hub-ek'
+   ,mpmcl.meta_column_name  as column_name
+   ,mpmcl.meta_column_type as column_type
+ from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
+ join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.stereotype ='xenc_hub-ek'
+ 																	and mpmcl.model_profile_name =pdt .model_profile_name 
+  where pdt.stereotype ='xenc_hub-ek'
  union 
  select -- content hash column
  	extp.pipeline_name 
@@ -84,15 +86,16 @@ where stereotype ='xenc_hub-ek'
 )
 , lnk_ek_columns as ( -- <<<<<<<<<<<<<<<<<<<<<<<<< XENC_LNK-EK
  select -- meta columns
- 	pdt.pipeline_name 
+ 	pipeline_name 
    ,table_name
    ,1 as column_block
    ,'meta' as dv_column_class
-   ,dml.meta_column_name  as column_name
-   ,dml.meta_column_type 
- from dv_pipeline_description.dvpd_pipeline_dv_table pdt
- left join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype ='xenc_lnk-ek'
- where pdt.stereotype ='xenc_lnk-ek'
+   ,mpmcl.meta_column_name  as column_name
+   ,mpmcl.meta_column_type as column_type
+ from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
+ join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.stereotype ='xenc_lnk-ek'
+ 																	and mpmcl.model_profile_name =pdt .model_profile_name 
+where pdt.stereotype ='xenc_lnk-ek'
  union 
  select -- content hash column
  	extp.pipeline_name 
@@ -124,14 +127,15 @@ where stereotype ='xenc_lnk-ek'
    ,extp.table_name
    ,1 as column_block
    ,'meta' as dv_column_class
-   ,dml.meta_column_name as column_name
-   ,dml.meta_column_type as column_type
+   ,mpmcl.meta_column_name as column_name
+   ,mpmcl.meta_column_type as column_type
  from enhance_xenc_table_properties extp
  join dv_pipeline_description.dvpd_pipeline_dv_table cpdt on cpdt.pipeline_name = extp.pipeline_name 
  														and cpdt.table_name = extp.xenc_content_table_name
- join dv_pipeline_description.dvpd_meta_column_lookup dml on dml.stereotype = extp.stereotype 
- or ( dml.stereotype = 'xsat_hist' and cpdt.is_historized )
+ join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.model_profile_name =extp.model_profile_name 
+ 														and (mpmcl.stereotype = extp.stereotype  or ( mpmcl.stereotype = 'xsat_hist' and cpdt.is_historized ))
  where extp.stereotype in ('xenc_sat-ek','xenc_msat-ek')
+
  union 
   select -- encryption key index column
  	extp.pipeline_name 

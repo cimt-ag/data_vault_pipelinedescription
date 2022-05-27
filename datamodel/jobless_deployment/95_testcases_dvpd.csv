@@ -1,4 +1,7 @@
 mandantory,type,schema_name,name
+
+1,testdata,dv_pipeline_description,MODEL_PROFILE_TEST00
+
 1,testdata,dv_pipeline_description,test00_check_stereotype_and_parameters
 1,testdata,dv_pipeline_description,test01_check_model_relations
 1,testdata,dv_pipeline_description,test02_check_field_target_table
