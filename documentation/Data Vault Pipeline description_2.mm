@@ -1,6 +1,6 @@
 <map version="1.0.1">
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
-<node CREATED="1635590898857" ID="ID_1388939787" MODIFIED="1639501519982" TEXT="Data Vault Pipeline Description">
+<node CREATED="1635590898857" ID="ID_1388939787" MODIFIED="1653735530608" TEXT="Data Vault Pipeline Description">
 <node CREATED="1635847711555" ID="ID_448091686" MODIFIED="1639501919943" POSITION="left" TEXT="Legende">
 <node CREATED="1635847718490" ID="ID_1570997174" MODIFIED="1635847725640" TEXT="Pflichtfed"/>
 <node COLOR="#006699" CREATED="1635847726412" ID="ID_955369522" MODIFIED="1635847752603" TEXT="Optionales Feld(default)"/>
@@ -231,7 +231,7 @@
 </node>
 <node COLOR="#006699" CREATED="1635857507548" ID="ID_1870604769" MODIFIED="1635857536489" TEXT="field_comment=&lt;none&gt;"/>
 </node>
-<node CREATED="1635591044231" ID="ID_141613353" MODIFIED="1639501573171" POSITION="right" TEXT="Data Vault Model[]">
+<node CREATED="1635591044231" ID="ID_141613353" MODIFIED="1653735675743" POSITION="right" TEXT="Data Vault Model[]">
 <node CREATED="1635857102443" ID="ID_1509841484" MODIFIED="1635857224848" TEXT="schema_name">
 <icon BUILTIN="bookmark"/>
 </node>
@@ -368,6 +368,18 @@
 <icon BUILTIN="full-3"/>
 </node>
 <node CREATED="1653664736494" ID="ID_449271219" MODIFIED="1653664744028" TEXT="model_profile_name"/>
+</node>
+</node>
+<node COLOR="#999999" CREATED="1653735677423" ID="ID_59145249" MODIFIED="1653735880666" POSITION="right" TEXT="stage_tables[]">
+<font NAME="SansSerif" SIZE="10"/>
+<node COLOR="#999999" CREATED="1653735707335" ID="ID_1849443094" MODIFIED="1653735835119" TEXT="&lt;table_name&gt;">
+<font NAME="SansSerif" SIZE="10"/>
+<node COLOR="#999999" CREATED="1653735775541" ID="ID_1326020103" MODIFIED="1653735801040" TEXT="model_profile_name">
+<font NAME="SansSerif" SIZE="10"/>
+</node>
+<node COLOR="#999999" CREATED="1653735837382" ID="ID_169584721" MODIFIED="1653735867190" TEXT="covered_target_tables[]">
+<font NAME="SansSerif" SIZE="10"/>
+</node>
 </node>
 </node>
 <node COLOR="#006699" CREATED="1651042660323" ID="ID_883713473" MODIFIED="1651662057515" POSITION="right" TEXT="deletion_detection">
