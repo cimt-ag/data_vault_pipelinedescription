@@ -25,7 +25,7 @@ VALUES
 ,"deletion_flag_column_name" : "ID_T00"
 ,"deletion_flag_column_type" : "integer"
 ,"record_source_column_name" : "RS_T00"
-,"record_source_column_type" : "VARCHAR(100)<<"
+,"record_source_column_type" : "VARCHAR(100)"
 ,"load_process_id_column_name" : "LI_T00"
 ,"load_process_id_column_type" : "INT8"
 ,"xenc_encryption_key_column_type"		: "VARCHAR(100)"

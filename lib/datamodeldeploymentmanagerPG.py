@@ -92,9 +92,14 @@ class DataModelDeploymentManager:
            "drop view if exists ... cascade;" statement"""
         try:
             check_cursor = self._db_connection.cursor()
-            check_cursor.execute("""select count(1) from information_schema.views
+            check_cursor.execute("""select count(1) from 
+                                    (select table_name from information_schema.views
                                     where lower(table_schema)=lower(%s)
-                                    and lower(table_name)=lower(%s)""", (schema_name, view_name))
+                                    and lower(table_name)=lower(%s)
+                                    union
+                                    select matviewname  from pg_matviews
+                                    where lower(schemaname)=lower(%s)
+                                    and lower(matviewname)=lower(%s)) dict_rows""", (schema_name, view_name,schema_name, view_name))
             result_row = check_cursor.fetchone()
         except Error as err:
             print('ERROR during dictionary check')

@@ -1,6 +1,6 @@
--- drop view  dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP cascade;
+-- drop materialized view  dv_pipeline_description.dvpd_model_profile_meta_column_lookup cascade;
 
-Create view dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP as 
+Create materialized view dv_pipeline_description.dvpd_model_profile_meta_column_lookup as 
 	
 select mp_n.model_profile_name 
 ,stereotype 

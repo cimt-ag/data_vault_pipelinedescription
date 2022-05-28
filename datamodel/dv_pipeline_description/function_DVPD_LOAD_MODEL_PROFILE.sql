@@ -21,6 +21,9 @@ property_value
 FROM
 	dv_pipeline_description.DVPD_TRANSFORM_TO_MODEL_PROFILE;
 
+
+REFRESH MATERIALIZED VIEW dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP;
+
 return true;
 
 end;
