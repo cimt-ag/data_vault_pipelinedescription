@@ -78,7 +78,8 @@ insert
 	diff_hash_column_name,
 	satellite_parent_table,
 	is_link_without_sat,
-	is_historized)
+	is_historized,
+	model_profile_name)
 select
 	pipeline_name,
 	schema_name,
@@ -89,7 +90,8 @@ select
 	diff_hash_column_name,
 	satellite_parent_table,
 	is_link_without_sat,
-	is_historized
+	is_historized,
+	model_profile_name 
 from
 	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_raw;
 
