@@ -23,6 +23,7 @@ select
 	where satellite_parent_table is not null
 	) raw_union
 )
+, parent_relation_diagnostics as (
 select
   apr.pipeline_name
   ,'Table'::TEXT  object_type 
@@ -35,6 +36,27 @@ select
 from all_parent_relations apr
 left join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = apr.pipeline_name 
 										and pdt.table_name = apr.parent_table 
+)
+,valid_model_profiles as ( 
+select distinct model_profile_name 
+from dv_pipeline_description.dvpd_model_profile
+)
+, model_profile_diagnostics as (
+select
+  pdt.pipeline_name
+  ,'Table'::TEXT  object_type 
+  ,pdt.table_name object_name
+  ,'DVPD_CHECK_MODEL_RELATIONS'::text  check_ruleset
+  ,case when vmp.model_profile_name is null then 'Unkown model profile : '|| pdt.model_profile_name  
+    	else 'ok' 
+    end  message
+from dv_pipeline_description.dvpd_pipeline_dv_table pdt
+left join valid_model_profiles vmp on vmp.model_profile_name = pdt.model_profile_name 
+
+)
+select * from parent_relation_diagnostics
+union 
+select * from model_profile_diagnostics
 ;
 
 -- select * from dv_pipeline_description.DVPD_CHECK_MODEL_RELATIONS order by 1,2,3

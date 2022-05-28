@@ -1,6 +1,6 @@
 -- drop materialized view  dv_pipeline_description.dvpd_model_profile cascade;
 
-Create materialized view dv_pipeline_description.dvpd_model_profile as 
+Create  view dv_pipeline_description.dvpd_model_profile as 
 	
 SELECT
 	meta_inserted_at,

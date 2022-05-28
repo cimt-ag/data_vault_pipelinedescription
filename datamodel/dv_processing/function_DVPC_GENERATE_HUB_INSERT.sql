@@ -91,9 +91,9 @@ END;
 $$;
 
 -- test 
-select dv_processing.DVPC_GENERATE_HUB_INSERT('test50_double_esat_field_group'::varchar,
-											'rtjj_50_aaa_hub'::varchar,
-											'_A_'::varchar,
-											now()::timestamp without time zone ,
-											'test50.dummy record source'::varchar,
-											-1) ;
+--select dv_processing.DVPC_GENERATE_HUB_INSERT('test50_double_esat_field_group'::varchar,
+--											'rtjj_50_aaa_hub'::varchar,
+--											'_A_'::varchar,
+--											now()::timestamp without time zone ,
+--											'test50.dummy record source'::varchar,
+--											-1) ;
