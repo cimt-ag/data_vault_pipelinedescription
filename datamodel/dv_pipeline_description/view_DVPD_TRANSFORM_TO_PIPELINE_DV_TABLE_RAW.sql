@@ -19,6 +19,7 @@ pipeline_name
 , json_array_elements(tables)->>'satellite_parent_table' as satellite_parent_table
 , json_array_elements(tables)->>'is_link_without_sat' as is_link_without_sat
 , json_array_elements(tables)->>'is_historized' as is_historized 
+, json_array_elements(tables)->>'model_profile_name' as model_profile_name 
 from data_vault_schema_basics;
 
 

@@ -1,4 +1,4 @@
--- DROP TABLE dv_pipeline_description.dvpd_pipeline_properties_raw;
+-- DROP TABLE dv_pipeline_description.dvpd_pipeline_properties_raw cascade;
 
 CREATE TABLE dv_pipeline_description.dvpd_pipeline_properties_raw (
 	meta_inserted_at timestamp default now(),
@@ -8,5 +8,6 @@ CREATE TABLE dv_pipeline_description.dvpd_pipeline_properties_raw (
 	pipeline_comment text NULL,
 	record_source_name_expression text NULL,
 	fetch_module_name text NULL,
+	model_profile_name text NULL,
 	primary key (pipeline_name)
 );

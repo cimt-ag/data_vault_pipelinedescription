@@ -9,8 +9,8 @@ $$
 begin
 	
 	/* Load json scripts into relational raw model */
-truncate table dv_pipeline_description.dvpd_model_profile;
-INSERT INTO dv_pipeline_description.dvpd_model_profile
+truncate table dv_pipeline_description.dvpd_model_profile_raw;
+INSERT INTO dv_pipeline_description.dvpd_model_profile_raw
 (model_profile_name,
 property_name,
 property_value)

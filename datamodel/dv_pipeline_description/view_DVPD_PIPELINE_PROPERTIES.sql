@@ -7,7 +7,8 @@ SELECT
 	pipeline_revision_tag,
 	pipeline_comment,
 	record_source_name_expression,
-	lower(fetch_module_name) fetch_module_name
+	lower(fetch_module_name) fetch_module_name,
+	lower(coalesce(model_profile_name,'_default' )) model_profile_name
 FROM 
 	dv_pipeline_description.dvpd_pipeline_properties_raw;
 

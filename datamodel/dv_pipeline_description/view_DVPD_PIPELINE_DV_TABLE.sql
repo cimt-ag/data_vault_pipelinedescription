@@ -2,7 +2,7 @@
 create or replace view dv_pipeline_description.DVPD_PIPELINE_DV_TABLE as 
 
 select 
- lower(pipeline_name) as pipeline_name 
+ lower(pdt.pipeline_name) as pipeline_name 
 , lower(schema_name) as schema_name
 , lower(table_name) as table_name
 , lower(stereotype) as stereotype
@@ -12,8 +12,9 @@ select
 , lower(satellite_parent_table) as satellite_parent_table
 , coalesce(is_link_without_sat::bool,false) as is_link_without_sat
 , coalesce(is_historized ::bool,true) as is_historized 
-, '_default'::text as model_profile_name -- will be configurable later
-from dv_pipeline_description.dvpd_pipeline_dv_table_raw
+, lower(coalesce( pdt.model_profile_name,pp.model_profile_name )) model_profile_name
+from dv_pipeline_description.dvpd_pipeline_dv_table_raw pdt
+join dv_pipeline_description.dvpd_pipeline_properties pp on pp.pipeline_name =lower(pdt.pipeline_name )
 ;
 
 -- select * from dv_pipeline_description.DVPD_PIPELINE_DV_TABLE ;

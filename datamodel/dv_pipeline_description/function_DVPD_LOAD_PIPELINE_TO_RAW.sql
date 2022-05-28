@@ -139,14 +139,16 @@ insert
 	pipeline_revision_tag,
 	pipeline_comment,
 	record_source_name_expression,
-	fetch_module_name)
+	fetch_module_name,
+	model_profile_name)
 select
 	pipeline_name,
 	dvpd_version,
 	pipeline_revision_tag,
 	pipeline_comment,
 	record_source_name_expression,
-	fetch_module_name
+	fetch_module_name,
+	model_profile_name
 from
 	dv_pipeline_description.dvpd_transform_to_pipeline_properties_raw;
 
