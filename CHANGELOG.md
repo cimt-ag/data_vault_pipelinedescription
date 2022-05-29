@@ -1,3 +1,18 @@
+# Release 0.5.1
+- added "model profile" concept. 
+You can now configure all basic definitions by changeing the "model profile" or add new profiles and chose the model per pipline. Check out the documentation and the "data_MODEL_PROFILE_DEFAULT.sql" script for a start.
+The provided "default" model profile will generate the same content as the old "hard coded" version
+
+## Known issues
+
+- Due to introduction of the model profile, the amount of joins and lookups increased heavily. Querying some views at the "end of the foodchain" might take up to 30 seconds and more when 
+all test are loaded into the database. 
+__Workaround__: Don't load the tests. If already loaded you can remove it by deleting them from the dictionary table and run the load functions  
+
+## Announcement
+
+* multiactive satellite declaration will be changed in next version from explicit stereotype definition to simple properties of satellite (is_multiactive)
+
 # Release 0.5.0
 - added check about consistency of declaration from multiple fields to same target column
 - essential support of cimt encryption concept, implemented as extention "xenc" (encryption of reference tables is missing)
