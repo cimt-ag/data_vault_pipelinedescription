@@ -7,7 +7,7 @@ VALUES
 ('model_profile','TEST00','{
  "model_profile_name" : "TEST00"
 ,"table_key_column_type"	: "VARCHAR(100)"
-,"table_key_hash_type"		: "sha-1"
+,"table_key_hash_function"		: "sha-1"
 ,"table_key_hash_encoding"	: "BASE64"
 ,"hash_concatenation_seperator" : "_T00_"
 ,"hash_timestamp_format_sqlstyle" : "_T00"
@@ -16,7 +16,7 @@ VALUES
 ,"key_for_missing_ghost_record": "T00_FFFF"
 ,"far_future_timestamp" : "2400-01-01 00:00:01"
 ,"diff_hash_column_type"	: "VARCHAR(100)"
-,"diff_hash_type"			: "sha-1"
+,"diff_hash_function"			: "sha-1"
 ,"diff_hash_encoding"		: "BASE64"
 ,"load_date_column_name" : "IA_T00"
 ,"load_date_column_type" : "TIMESTAMP WITHOUT TIME ZONE"
@@ -31,7 +31,7 @@ VALUES
 ,"xenc_encryption_key_column_type"		: "VARCHAR(100)"
 ,"xenc_encryption_key_index_column_type": "INT8"
 ,"xenc_content_hash_column_type"		: "VARCHAR(100)"
-,"xenc_content_hash_type"				: "sha-1"
+,"xenc_content_hash_function"				: "sha-1"
 ,"xenc_content_hash_encoding"			: "BASE64"
 }
 ');

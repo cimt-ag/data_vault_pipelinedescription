@@ -7,16 +7,16 @@ VALUES
 ('model_profile','_default','{
  "model_profile_name" : "_default"
 ,"table_key_column_type"	: "CHAR(28)"
-,"table_key_hash_type"		: "sha-1"
+,"table_key_hash_function"		: "sha-1"
 ,"table_key_hash_encoding"	: "BASE64"
 ,"hash_concatenation_seperator" : "|"
-,"hash_timestamp_format_sqlstyle" : "#do be defined#"
+,"hash_timestamp_format_sqlstyle" : "YYYY-MM-DD HH24:MI:SS.US"
 ,"hash_null_value_string" : ""
 ,"key_for_null_ghost_record": 	  "0000000000000000000000000000"
 ,"key_for_missing_ghost_record": "FFFFFFFFFFFFFFFFFFFFFFFFFFFF"
 ,"far_future_timestamp" : "2299-12-30 00:00:00"
 ,"diff_hash_column_type"	: "CHAR(28)"
-,"diff_hash_type"			: "sha-1"
+,"diff_hash_function"			: "sha-1"
 ,"diff_hash_encoding"		: "BASE64"
 ,"load_date_column_name" : "META_INSERTED_AT"
 ,"load_date_column_type" : "TIMESTAMP"
@@ -31,7 +31,7 @@ VALUES
 ,"xenc_encryption_key_column_type"		: "CHAR(28)"
 ,"xenc_encryption_key_index_column_type": "INT8"
 ,"xenc_content_hash_column_type"		: "CHAR(28)"
-,"xenc_content_hash_type"				: "sha-1"
+,"xenc_content_hash_function"				: "sha-1"
 ,"xenc_content_hash_encoding"			: "BASE64"
 }
 ');

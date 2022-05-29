@@ -6,5 +6,3 @@ select object_json->>'model_profile_name' model_profile_name
  ,object_json->>json_object_keys(object_json) property_value
 from dv_pipeline_description.dvpd_json_storage 
 where object_class ='model_profile';
-;
-
