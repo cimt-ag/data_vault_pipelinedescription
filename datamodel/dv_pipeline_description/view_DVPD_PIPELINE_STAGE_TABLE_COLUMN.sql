@@ -17,11 +17,12 @@ select distinct
 	,column_type 
 	,min(column_block) column_block
 	,false is_meta
+	,(dv_column_class not in ('content','business_key','content_untracked')) is_dv_column
 	,field_name
 	,field_type
 	,needs_encryption
 from  dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping
-group by 1,2,3,5,6,7,8
+group by 1,2,3,5,6,7,8,9
 union 
 select
 	pp.pipeline_name 
@@ -29,6 +30,7 @@ select
 	,mpmcl.meta_column_type 
 	, 1
 	,true is_meta
+	,true is_dv_column
 	,null field_name 
 	,null field_type 
 	,false needs_encryption 
