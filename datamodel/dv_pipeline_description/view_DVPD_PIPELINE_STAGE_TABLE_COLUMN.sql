@@ -17,7 +17,7 @@ select distinct
 	,column_type 
 	,min(column_block) column_block
 	,false is_meta
-	,(dv_column_class not in ('content','business_key','content_untracked')) is_dv_column
+	,(dv_column_class  in ('content','business_key','content_untracked')) is_nullable
 	,field_name
 	,field_type
 	,needs_encryption
@@ -30,7 +30,7 @@ select
 	,mpmcl.meta_column_type 
 	, 1
 	,true is_meta
-	,true is_dv_column
+	,false is_nullable
 	,null field_name 
 	,null field_type 
 	,false needs_encryption 

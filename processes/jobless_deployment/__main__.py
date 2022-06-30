@@ -68,7 +68,7 @@ def read_file(file_to_process):
         raise
 
 
-def main(file_to_deploy="#all#", die_on_error=False):
+def main(file_to_deploy="#all#", file_to_stop=None, die_on_error=False):
     """Check the unprocessed directory and load any present files into stage."""
 
     in_preparation=True
@@ -84,6 +84,9 @@ def main(file_to_deploy="#all#", die_on_error=False):
         for file in sorted(base_path.iterdir()):
             try:
                 in_preparation=False
+                if file.stem==file_to_stop:
+                    print("Stopped deploy. Reched  stop file:",file_to_stop)
+                    break
                 if os.stat(file).st_size != 0 and (file_to_deploy=="#all#" or file.stem == file_to_deploy):
                     read_file(file)
                     files_succesfully_full_deployed.append(file)
@@ -123,5 +126,6 @@ if __name__ == '__main__':
     #main("01_deploy_xenc_base")
     #main("91_testcases_xenc")
     #main("80_deploy_processing")
-    main(die_on_error=True)
+    main(file_to_stop='90_deploy_dvpd_automated_testing_base')
+    #main(die_on_error=True)
 

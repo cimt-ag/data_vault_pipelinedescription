@@ -1,4 +1,4 @@
---drop view if exists dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN_CORE;
+--drop view if exists dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN_CORE cascade;
 create or replace view dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN_CORE as (
 
 
@@ -10,6 +10,7 @@ with link_columns as (   -- <<<<<<<<<<<<<<<<<<<<<<<<< LINK
    ,'meta' as dv_column_class
    ,mpmcl.meta_column_name  as column_name
    ,mpmcl.meta_column_type as column_type
+   ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.stereotype ='lnk'
  																	and mpmcl.model_profile_name =pdt .model_profile_name 
@@ -22,6 +23,7 @@ union
    ,'key' as dv_column_class
    ,pdt.link_key_column_name  as column_name 
    ,mp.property_value  as column_type
+   ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
  left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
  				and mp.property_name ='table_key_column_type' 
@@ -35,6 +37,7 @@ select -- keys of parents
  ,case when pdtlp.is_recursive_relation then  pdt.hub_key_column_name||'_'||pdtlp.recursion_name
  		else pdt.hub_key_column_name end as column_name
  ,mp.property_value  as column_type
+ ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp
  join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.table_name = pdtlp.link_parent_table 
  														and pdt.pipeline_name =pdtlp.pipeline_name 
@@ -48,6 +51,7 @@ select -- keys of parents
    ,case when pfte.exclude_from_key_hash then 'content_untracked' ELSE 'dependent_child_key' end as dv_column_class
    ,pfte.target_column_name   as column_name
    ,pfte.target_column_type 
+   ,true as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
  join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte on pfte.pipeline_name=pdt.pipeline_name 
  								 and pfte.target_table = pdt.table_name 
@@ -61,6 +65,7 @@ select -- keys of parents
    ,'meta' as dv_column_class
    ,mpmcl.meta_column_name  as column_name
    ,mpmcl.meta_column_type as column_type
+   ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.stereotype ='hub'
  																	and mpmcl.model_profile_name =pdt .model_profile_name 
@@ -73,6 +78,7 @@ select -- keys of parents
    ,'key' as dv_column_class
    ,pdt.hub_key_column_name   as column_name
    ,mp.property_value  as column_type
+   ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
   left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
  				and mp.property_name ='table_key_column_type' 
@@ -85,6 +91,7 @@ select -- keys of parents
    ,case when pfte.exclude_from_key_hash then 'content_untracked' ELSE 'business_key' end as dv_column_class
    ,pfte.target_column_name   as column_name
    ,pfte.target_column_type 
+   ,true as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
  left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte on pfte.pipeline_name=pdt.pipeline_name 
  								 and pfte.target_table = pdt.table_name 
@@ -106,6 +113,7 @@ select -- keys of parents
    ,'meta' as dv_column_class
    ,mpmcl.meta_column_name  as column_name
    ,mpmcl.meta_column_type as column_type
+   ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.model_profile_name =pdt .model_profile_name 
 			 								and (mpmcl.stereotype = pdt.stereotype or ( mpmcl.stereotype = 'xsat_hist' and pdt.is_historized ))
@@ -118,6 +126,7 @@ select -- own key column
    ,'parent_key' as dv_column_class
    ,coalesce (pdt.hub_key_column_name  ,pdt.link_key_column_name )  as column_name
    ,mp.property_value  as column_type
+   ,false as is_nullable
  from sat_parent_table_ref sr
  join dv_pipeline_description.dvpd_pipeline_dv_table pdt   on pdt.pipeline_name = sr.pipeline_name 
  					     and pdt.table_name  =sr.parent_table
@@ -131,6 +140,7 @@ select -- own key column
    ,'diff_hash' as dv_column_class
    ,pdt.diff_hash_column_name   as column_name
    ,mp.property_value  as column_type
+   ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
  left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
  				and mp.property_name ='diff_hash_column_type'  
@@ -143,6 +153,7 @@ select -- own key column
    ,case when pfte.exclude_from_diff_hash then 'content_untracked' else 'content' end as dv_column_class
    ,pfte.target_column_name  as column_name
    ,pfte.target_column_type 
+   ,true as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
  left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte on pfte.pipeline_name = pdt.pipeline_name 
  							and pfte.target_table = pdt.table_name 
@@ -156,6 +167,7 @@ select -- own key column
    ,'meta' as dv_column_class
    ,mpmcl.meta_column_name  as column_name
    ,mpmcl.meta_column_type as column_type
+   ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.model_profile_name =pdt .model_profile_name 
 			 								and( mpmcl.stereotype = 'ref' or ( mpmcl.stereotype = 'ref_hist' and pdt.is_historized ) )
@@ -168,6 +180,7 @@ select -- own key column
    ,'diff_hash' as dv_column_class
    ,pdt.diff_hash_column_name   as column_name
    ,mp.property_value  as column_type
+   ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
  left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
  				and mp.property_name ='diff_hash_column_type' 
@@ -180,6 +193,7 @@ select -- own key column
    ,case when pfte.exclude_from_diff_hash then 'content_untracked' else 'content' end as dv_column_class
    ,pfte.target_column_name  as column_name
    ,pfte.target_column_type 
+   ,true as is_nullable
  from   dv_pipeline_description.dvpd_pipeline_dv_table pdt
  left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte on pfte.pipeline_name = pdt.pipeline_name 
  							and pfte.target_table = pdt.table_name 

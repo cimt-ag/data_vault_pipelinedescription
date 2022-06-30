@@ -1,4 +1,4 @@
---drop view if exists dv_pipeline_description.XENC_PIPELINE_DV_COLUMN;
+--drop view if exists dv_pipeline_description.XENC_PIPELINE_DV_COLUMN cascade;
 create or replace view dv_pipeline_description.XENC_PIPELINE_DV_COLUMN as (
 
 with enhance_xenc_table_properties as (
@@ -30,6 +30,7 @@ left join dv_pipeline_description.DVPD_MODEL_PROFILE dvmp on dvmp.model_profile_
    ,'key' as dv_column_class
    , xenc_table_key_column_name  as column_name
    ,mp.property_value as column_type
+   ,false as is_nullable
  from enhance_xenc_table_properties extp
  left join model_profile mp on mp.table_name = extp.table_name 
  		and mp.property_name ='table_key_column_type'
@@ -42,6 +43,7 @@ left join dv_pipeline_description.DVPD_MODEL_PROFILE dvmp on dvmp.model_profile_
    ,'xenc_encryption_key' as dv_column_class
    , xenc_encryption_key_column_name  as column_name
    ,mp.property_value as column_type
+   ,false as is_nullable
  from enhance_xenc_table_properties extp
  left join model_profile mp on mp.table_name = extp.table_name 
  		and mp.property_name ='xenc_encryption_key_column_type'
@@ -55,6 +57,7 @@ left join dv_pipeline_description.DVPD_MODEL_PROFILE dvmp on dvmp.model_profile_
    ,'meta' as dv_column_class
    ,mpmcl.meta_column_name  as column_name
    ,mpmcl.meta_column_type as column_type
+   ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.stereotype ='xenc_hub-ek'
  																	and mpmcl.model_profile_name =pdt .model_profile_name 
@@ -67,6 +70,7 @@ left join dv_pipeline_description.DVPD_MODEL_PROFILE dvmp on dvmp.model_profile_
    ,'xenc_bk_hash' as dv_column_class
    , xenc_content_hash_column_name  as column_name
    ,mp.property_value as column_type
+   ,false as is_nullable
  from enhance_xenc_table_properties extp
  left join model_profile mp on mp.table_name = extp.table_name 
  		and mp.property_name ='xenc_content_hash_column_type'
@@ -79,6 +83,7 @@ where stereotype ='xenc_hub-ek'
    ,'xenc_bk_salted_hash' as dv_column_class
    , xenc_content_salted_hash_column_name  as column_name
    ,mp.property_value as column_type
+   ,false as is_nullable
  from enhance_xenc_table_properties extp
  left join model_profile mp on mp.table_name = extp.table_name 
  		and mp.property_name ='xenc_content_hash_column_type'
@@ -92,6 +97,7 @@ where stereotype ='xenc_hub-ek'
    ,'meta' as dv_column_class
    ,mpmcl.meta_column_name  as column_name
    ,mpmcl.meta_column_type as column_type
+   ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.stereotype ='xenc_lnk-ek'
  																	and mpmcl.model_profile_name =pdt .model_profile_name 
@@ -104,6 +110,7 @@ where pdt.stereotype ='xenc_lnk-ek'
    ,'xenc_dc_hash' as dv_column_class
    , xenc_content_hash_column_name  as column_name
    ,mp.property_value as column_type
+   ,false as is_nullable
  from enhance_xenc_table_properties extp
  left join model_profile mp on mp.table_name = extp.table_name 
  		and mp.property_name ='xenc_content_hash_column_type'
@@ -116,6 +123,7 @@ where pdt.stereotype ='xenc_lnk-ek'
    ,'xenc_dc_salted_hash' as dv_column_class
    , xenc_content_salted_hash_column_name  as column_name
    ,mp.property_value as column_type
+   ,false as is_nullable
  from enhance_xenc_table_properties extp
  left join model_profile mp on mp.table_name = extp.table_name 
  		and mp.property_name ='xenc_content_hash_column_type'
@@ -129,13 +137,13 @@ where stereotype ='xenc_lnk-ek'
    ,'meta' as dv_column_class
    ,mpmcl.meta_column_name as column_name
    ,mpmcl.meta_column_type as column_type
+   ,false as is_nullable
  from enhance_xenc_table_properties extp
  join dv_pipeline_description.dvpd_pipeline_dv_table cpdt on cpdt.pipeline_name = extp.pipeline_name 
  														and cpdt.table_name = extp.xenc_content_table_name
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.model_profile_name =extp.model_profile_name 
  														and (mpmcl.stereotype = extp.stereotype  or ( mpmcl.stereotype = 'xsat_hist' and cpdt.is_historized ))
  where extp.stereotype in ('xenc_sat-ek','xenc_msat-ek')
-
  union 
   select -- encryption key index column
  	extp.pipeline_name 
@@ -144,6 +152,7 @@ where stereotype ='xenc_lnk-ek'
    ,'xenc_encryption_key_index' as dv_column_class
    , xenc_encryption_key_index_column_name  as column_name
    ,mp.property_value as column_type
+   ,false as is_nullable
  from enhance_xenc_table_properties extp
  left join model_profile mp on mp.table_name = extp.table_name 
  		and mp.property_name ='xenc_encryption_key_index_column_type'
@@ -156,6 +165,7 @@ where stereotype ='xenc_lnk-ek'
    ,'diff_hash'::text as dv_column_class
    , xenc_diff_hash_column_name  as column_name
    ,mp.property_value as column_type
+   ,false as is_nullable
  from enhance_xenc_table_properties extp
  left join model_profile mp on mp.table_name = extp.table_name 
  		and mp.property_name ='diff_hash_column_type'
@@ -170,6 +180,7 @@ where stereotype ='xenc_lnk-ek'
    ,'xenc_encryption_key_index'::text as dv_column_class
    , xenc_encryption_key_index_column_name  as column_name
    ,mp.property_value as column_type
+   ,false as is_nullable
  from enhance_xenc_table_properties extp
  left join model_profile mp on mp.table_name = extp.table_name 
  		and mp.property_name ='xenc_encryption_key_index_column_type'
