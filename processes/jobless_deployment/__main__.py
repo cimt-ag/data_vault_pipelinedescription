@@ -126,6 +126,6 @@ if __name__ == '__main__':
     #main("01_deploy_xenc_base")
     #main("91_testcases_xenc")
     #main("80_deploy_processing")
-    main(file_to_stop='90_deploy_dvpd_automated_testing_base')
-    #main(die_on_error=True)
+    #main(file_to_stop='90_deploy_dvpd_automated_testing_base')
+    main(die_on_error=True)
 

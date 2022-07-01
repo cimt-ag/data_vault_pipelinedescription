@@ -48,7 +48,7 @@ VALUES
 		["rvlt_test_jj","rtjj_22_aaa_bbb_esat",2,"parent_key","LK_RTJJ_22_AAA_BBB","CHAR(28)"],
 		["rvlt_test_jj","rtjj_22_aaa_bbb_lnk",2,"key","LK_RTJJ_22_AAA_BBB","CHAR(28)"],
 		["rvlt_test_jj","rtjj_22_aaa_bbb_lnk",3,"parent_key","HK_RTJJ_22_AAA","CHAR(28)"],
-		["rvlt_test_jj","rtjj_22_aaa_bbb_lnk",3,"parent_key","HK_rtkk_22_bbb","CHAR(28)"],
+		["rvlt_test_jj","rtjj_22_aaa_bbb_lnk",3,"parent_key","HK_RTKK_22_BBB","CHAR(28)"],
 		["rvlt_test_jj","rtjj_22_aaa_hub",2,"key","HK_RTJJ_22_AAA","CHAR(28)"],
 		["rvlt_test_jj","rtjj_22_aaa_hub",8,"business_key","F1_BK_AAA_VARCHAR","VARCHAR(20)"],
 		["rvlt_test_jj","rtjj_22_aaa_p1_sat",2,"parent_key","HK_RTJJ_22_AAA","CHAR(28)"],
@@ -56,14 +56,14 @@ VALUES
 		["rvlt_test_jj","rtjj_22_aaa_p1_sat",8,"content","F3_AAA_SP1_VARCHAR","VARCHAR(200)"],
 		["rvlt_test_jj","rtjj_22_aaa_p1_sat",8,"content","F4_AAA_SP1_DECIMAL","DECIMAL(5,0)"],
 		["rvlt_test_jj","rtjj_22_aaa_p1_sat",8,"content","F5_AAA_SP1_VARCHAR","VARCHAR(200)"],
-		["rvlt_test_jj","rtkk_22_bbb_hub",2,"key","HK_rtkk_22_bbb","CHAR(28)"],
-		["rvlt_test_jj","rtkk_22_bbb_hub",8,"business_key","F2_BK_BBB_DECIMAL","DECIMAL(20,0)"]
+		["rvlt_test_kk","rtkk_22_bbb_hub",2,"key","HK_RTKK_22_BBB","CHAR(28)"],
+		["rvlt_test_kk","rtkk_22_bbb_hub",8,"business_key","F2_BK_BBB_DECIMAL","DECIMAL(20,0)"]
 ],
   "process_column_mapping": [
          ["rtjj_22_aaa_bbb_esat","_A_","LK_RTJJ_22_AAA_BBB","LK_RTJJ_22_AAA_BBB",null],
          ["rtjj_22_aaa_bbb_lnk","_A_","LK_RTJJ_22_AAA_BBB","LK_RTJJ_22_AAA_BBB",null],
          ["rtjj_22_aaa_bbb_lnk","_A_","HK_RTJJ_22_AAA","HK_RTJJ_22_AAA",null],
-         ["rtjj_22_aaa_bbb_lnk","_A_","HK_rtkk_22_bbb","HK_rtkk_22_bbb",null],
+         ["rtjj_22_aaa_bbb_lnk","_A_","HK_RTKK_22_BBB","HK_RTKK_22_BBB",null],
          ["rtjj_22_aaa_hub","_A_","HK_RTJJ_22_AAA","HK_RTJJ_22_AAA",null],
          ["rtjj_22_aaa_hub","_A_","F1_BK_AAA_VARCHAR","F1_BK_AAA_VARCHAR","F1_BK_AAA_VARCHAR"],
          ["rtjj_22_aaa_p1_sat","_A_","HK_RTJJ_22_AAA","HK_RTJJ_22_AAA",null],
@@ -71,7 +71,7 @@ VALUES
          ["rtjj_22_aaa_p1_sat","_A_","F3_AAA_SP1_VARCHAR","F3_AAA_SP1_VARCHAR","F3_AAA_SP1_VARCHAR"],
          ["rtjj_22_aaa_p1_sat","_A_","F4_AAA_SP1_DECIMAL","F4_AAA_SP1_DECIMAL","F4_AAA_SP1_DECIMAL"],
          ["rtjj_22_aaa_p1_sat","_A_","F5_AAA_SP1_VARCHAR","F5__FIELD_NAME","F5__FIELD_NAME"],
-         ["rtkk_22_bbb_hub","_A_","HK_rtkk_22_bbb","HK_rtkk_22_bbb",null],
+         ["rtkk_22_bbb_hub","_A_","HK_RTKK_22_BBB","HK_RTKK_22_BBB",null],
          ["rtkk_22_bbb_hub","_A_","F2_BK_BBB_DECIMAL","F2_BK_BBB_DECIMAL","F2_BK_BBB_DECIMAL"]
  ],
 "stage_table_column": [
@@ -81,13 +81,13 @@ VALUES
 		["F4_AAA_SP1_DECIMAL","DECIMAL(5,0)",8,"F4_AAA_SP1_DECIMAL","DECIMAL(5,0)",false],
 		["F5__FIELD_NAME","VARCHAR(200)",8,"F5__FIELD_NAME","VARCHAR(200)",false],
 		["HK_RTJJ_22_AAA","CHAR(28)",2,null,null,false],
-		["HK_rtkk_22_bbb","CHAR(28)",2,null,null,false],
+		["HK_RTKK_22_BBB","CHAR(28)",2,null,null,false],
 		["LK_RTJJ_22_AAA_BBB","CHAR(28)",2,null,null,false],
 		["RH_RTJJ_22_AAA_P1_SAT","CHAR(28)",3,null,null,false]
 ],
  "stage_hash_input_field": [
          ["_A_","HK_RTJJ_22_AAA","F1_BK_AAA_VARCHAR",0,0],
-         ["_A_","HK_rtkk_22_bbb","F2_BK_BBB_DECIMAL",0,0],
+         ["_A_","HK_RTKK_22_BBB","F2_BK_BBB_DECIMAL",0,0],
          ["_A_","LK_RTJJ_22_AAA_BBB","F1_BK_AAA_VARCHAR",0,0],
          ["_A_","LK_RTJJ_22_AAA_BBB","F2_BK_BBB_DECIMAL",0,0],
          ["_A_","RH_RTJJ_22_AAA_P1_SAT","F3_AAA_SP1_VARCHAR",0,0],

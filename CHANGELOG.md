@@ -1,3 +1,8 @@
+# Release 0.5.2
+- added "is_nullable" column to column result views (used for DDL Rendering)
+- added utility Script to render Create table statements (not yet for xenc staging)
+- jobless deployment can now be stopped explicitly when reaching a specific list file (usefull to leave out all automated tests)
+
 # Release 0.5.1
 - added "model profile" concept. 
 You can now configure all basic definitions by changeing the "model profile" or add new profiles and chose the model per pipline. Check out the documentation and the "data_MODEL_PROFILE_DEFAULT.sql" script for a start.
