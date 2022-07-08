@@ -47,3 +47,87 @@ VALUES
 
 select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test71_fg_drive_scenario_11');
 
+-- vvvvv Reference data for automated testing of dvpd implementation vvvv
+DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test71_fg_drive_scenario_11';
+INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
+('test71_fg_drive_scenario_11','{
+ "dv_model_column": [
+      ["rvlt_test_jj","rtjj_71_aaa_hub",1,"meta","META_INSERTED_AT","TIMESTAMP"],
+      ["rvlt_test_jj","rtjj_71_aaa_hub",1,"meta","META_JOB_INSTANCE_ID","INT8"],
+      ["rvlt_test_jj","rtjj_71_aaa_hub",1,"meta","META_RECORD_SOURCE","VARCHAR(255)"],
+      ["rvlt_test_jj","rtjj_71_aaa_hub",2,"key","HK_RTJJ_71_AAA","CHAR(28)"],
+      ["rvlt_test_jj","rtjj_71_aaa_hub",8,"business_key","BK_AAA","VARCHAR(20)"],
+      ["rvlt_test_jj","rtjj_71_aaa_p1_sat",1,"meta","META_INSERTED_AT","TIMESTAMP"],
+      ["rvlt_test_jj","rtjj_71_aaa_p1_sat",1,"meta","META_IS_DELETED","BOOLEAN"],
+      ["rvlt_test_jj","rtjj_71_aaa_p1_sat",1,"meta","META_JOB_INSTANCE_ID","INT8"],
+      ["rvlt_test_jj","rtjj_71_aaa_p1_sat",1,"meta","META_RECORD_SOURCE","VARCHAR(255)"],
+      ["rvlt_test_jj","rtjj_71_aaa_p1_sat",1,"meta","META_VALID_BEFORE","TIMESTAMP"],
+      ["rvlt_test_jj","rtjj_71_aaa_p1_sat",2,"parent_key","HK_RTJJ_71_AAA","CHAR(28)"],
+      ["rvlt_test_jj","rtjj_71_aaa_p1_sat",3,"diff_hash","RH_RTJJ_71_AAA_P1_SAT","CHAR(28)"],
+      ["rvlt_test_jj","rtjj_71_aaa_p1_sat",8,"content","F4_AAA_S1_COLA","VARCHAR(20)"],
+      ["rvlt_test_jj","rtjj_71_aaa_p1_sat",8,"content","F5_AAA_S1_COLB","VARCHAR(20)"],
+      ["rvlt_test_jj","rtjj_71_aaa_rec1_esat",1,"meta","META_INSERTED_AT","TIMESTAMP"],
+      ["rvlt_test_jj","rtjj_71_aaa_rec1_esat",1,"meta","META_IS_DELETED","BOOLEAN"],
+      ["rvlt_test_jj","rtjj_71_aaa_rec1_esat",1,"meta","META_JOB_INSTANCE_ID","INT8"],
+      ["rvlt_test_jj","rtjj_71_aaa_rec1_esat",1,"meta","META_RECORD_SOURCE","VARCHAR(255)"],
+      ["rvlt_test_jj","rtjj_71_aaa_rec1_esat",1,"meta","META_VALID_BEFORE","TIMESTAMP"],
+      ["rvlt_test_jj","rtjj_71_aaa_rec1_esat",2,"parent_key","LK_RTJJ_71_AAA_RECURSION","CHAR(28)"],
+      ["rvlt_test_jj","rtjj_71_aaa_rec2_esat",1,"meta","META_INSERTED_AT","TIMESTAMP"],
+      ["rvlt_test_jj","rtjj_71_aaa_rec2_esat",1,"meta","META_IS_DELETED","BOOLEAN"],
+      ["rvlt_test_jj","rtjj_71_aaa_rec2_esat",1,"meta","META_JOB_INSTANCE_ID","INT8"],
+      ["rvlt_test_jj","rtjj_71_aaa_rec2_esat",1,"meta","META_RECORD_SOURCE","VARCHAR(255)"],
+      ["rvlt_test_jj","rtjj_71_aaa_rec2_esat",1,"meta","META_VALID_BEFORE","TIMESTAMP"],
+      ["rvlt_test_jj","rtjj_71_aaa_rec2_esat",2,"parent_key","LK_RTJJ_71_AAA_RECURSION","CHAR(28)"],
+      ["rvlt_test_jj","rtjj_71_aaa_recursion_hlnk",1,"meta","META_INSERTED_AT","TIMESTAMP"],
+      ["rvlt_test_jj","rtjj_71_aaa_recursion_hlnk",1,"meta","META_JOB_INSTANCE_ID","INT8"],
+      ["rvlt_test_jj","rtjj_71_aaa_recursion_hlnk",1,"meta","META_RECORD_SOURCE","VARCHAR(255)"],
+      ["rvlt_test_jj","rtjj_71_aaa_recursion_hlnk",2,"key","LK_RTJJ_71_AAA_RECURSION","CHAR(28)"],
+      ["rvlt_test_jj","rtjj_71_aaa_recursion_hlnk",3,"parent_key","HK_RTJJ_71_AAA","CHAR(28)"],
+      ["rvlt_test_jj","rtjj_71_aaa_recursion_hlnk",4,"parent_key","HK_RTJJ_71_AAA_RRRR","CHAR(28)"]
+ ],
+ "process_column_mapping": [
+         ["rtjj_71_aaa_hub","_A_","HK_RTJJ_71_AAA","HK_RTJJ_71_AAA",null],
+         ["rtjj_71_aaa_hub","_A_","BK_AAA","F1_BK_AAA","F1_BK_AAA"],
+         ["rtjj_71_aaa_hub","_RRRR_FG1","HK_RTJJ_71_AAA","HK_RTJJ_71_AAA_RRRR_FG1",null],
+         ["rtjj_71_aaa_hub","_RRRR_FG1","BK_AAA","F2_BK_AAA_R1","F2_BK_AAA_R1"],
+         ["rtjj_71_aaa_hub","_RRRR_FG2","HK_RTJJ_71_AAA","HK_RTJJ_71_AAA_RRRR_FG2",null],
+         ["rtjj_71_aaa_hub","_RRRR_FG2","BK_AAA","F3_BK_AAA_R2","F3_BK_AAA_R2"],
+         ["rtjj_71_aaa_p1_sat","_A_","HK_RTJJ_71_AAA","HK_RTJJ_71_AAA",null],
+         ["rtjj_71_aaa_p1_sat","_A_","RH_RTJJ_71_AAA_P1_SAT","RH_RTJJ_71_AAA_P1_SAT",null],
+         ["rtjj_71_aaa_p1_sat","_A_","F4_AAA_S1_COLA","F4_AAA_S1_COLA","F4_AAA_S1_COLA"],
+         ["rtjj_71_aaa_p1_sat","_A_","F5_AAA_S1_COLB","F5_AAA_S1_COLB","F5_AAA_S1_COLB"],
+         ["rtjj_71_aaa_rec1_esat","_FG1","LK_RTJJ_71_AAA_RECURSION","LK_RTJJ_71_AAA_RECURSION_FG1",null],
+         ["rtjj_71_aaa_rec2_esat","_FG2","LK_RTJJ_71_AAA_RECURSION","LK_RTJJ_71_AAA_RECURSION_FG2",null],
+         ["rtjj_71_aaa_recursion_hlnk","_FG1","LK_RTJJ_71_AAA_RECURSION","LK_RTJJ_71_AAA_RECURSION_FG1",null],
+         ["rtjj_71_aaa_recursion_hlnk","_FG1","HK_RTJJ_71_AAA","HK_RTJJ_71_AAA_FG1",null],
+         ["rtjj_71_aaa_recursion_hlnk","_FG1","HK_RTJJ_71_AAA_RRRR","HK_RTJJ_71_AAA_RRRR_FG1",null],
+         ["rtjj_71_aaa_recursion_hlnk","_FG2","LK_RTJJ_71_AAA_RECURSION","LK_RTJJ_71_AAA_RECURSION_FG2",null],
+         ["rtjj_71_aaa_recursion_hlnk","_FG2","HK_RTJJ_71_AAA","HK_RTJJ_71_AAA_FG2",null],
+         ["rtjj_71_aaa_recursion_hlnk","_FG2","HK_RTJJ_71_AAA_RRRR","HK_RTJJ_71_AAA_RRRR_FG2",null]
+ ],
+ "stage_table_column": [
+         ["HK_RTJJ_71_AAA","CHAR(28)",2,null,null,false],
+         ["HK_RTJJ_71_AAA_RRRR_FG1","CHAR(28)",2,null,null,false],
+         ["HK_RTJJ_71_AAA_RRRR_FG2","CHAR(28)",2,null,null,false],
+         ["LK_RTJJ_71_AAA_RECURSION_FG1","CHAR(28)",2,null,null,false],
+         ["LK_RTJJ_71_AAA_RECURSION_FG2","CHAR(28)",2,null,null,false],
+         ["HK_RTJJ_71_AAA_FG1","CHAR(28)",3,null,null,false],
+         ["HK_RTJJ_71_AAA_FG2","CHAR(28)",3,null,null,false],
+         ["RH_RTJJ_71_AAA_P1_SAT","CHAR(28)",3,null,null,false],
+         ["F1_BK_AAA","VARCHAR(20)",8,"F1_BK_AAA","VARCHAR(20)",false],
+         ["F2_BK_AAA_R1","VARCHAR(20)",8,"F2_BK_AAA_R1","VARCHAR(20)",false],
+         ["F3_BK_AAA_R2","VARCHAR(20)",8,"F3_BK_AAA_R2","VARCHAR(20)",false],
+         ["F4_AAA_S1_COLA","VARCHAR(20)",8,"F4_AAA_S1_COLA","VARCHAR(20)",false],
+         ["F5_AAA_S1_COLB","VARCHAR(20)",8,"F5_AAA_S1_COLB","VARCHAR(20)",false]
+ ],
+ "stage_hash_input_field": [
+         ["_A_","HK_RTJJ_71_AAA","F1_BK_AAA",0,0],
+         ["_A_","RH_RTJJ_71_AAA_P1_SAT","F4_AAA_S1_COLA",0,0],
+         ["_A_","RH_RTJJ_71_AAA_P1_SAT","F5_AAA_S1_COLB",0,0],
+         ["_FG1","LK_RTJJ_71_AAA_RECURSION_FG1","F1_BK_AAA",0,0],
+         ["_FG1","LK_RTJJ_71_AAA_RECURSION_FG1","F2_BK_AAA_R1",0,0],
+         ["_FG2","LK_RTJJ_71_AAA_RECURSION_FG2","F1_BK_AAA",0,0],
+         ["_FG2","LK_RTJJ_71_AAA_RECURSION_FG2","F3_BK_AAA_R2",0,0],
+         ["_RRRR_FG1","HK_RTJJ_71_AAA_RRRR_FG1","F2_BK_AAA_R1",0,0],
+         ["_RRRR_FG2","HK_RTJJ_71_AAA_RRRR_FG2","F3_BK_AAA_R2",0,0]
+  ]    }');

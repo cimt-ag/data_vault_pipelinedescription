@@ -14,7 +14,7 @@ from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte
 join dv_pipeline_description.dvpd_pipeline_dv_table pdt  on pdt.table_name =pfte.target_table 
 														and pdt.pipeline_name = pfte.pipeline_name 
 where field_group <> '_A_'  
-and recursion_name is null --MWG 22020708
+and recursion_name='' --MWG 22020708
 union
 -- field groups declared in model
 select distinct

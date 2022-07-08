@@ -30,7 +30,7 @@ INI_CONF_CONNECTION_TYPE_DICT = {'owner': {'user': 'owner_user', 'password': 'ow
                                  'mart_general': {'user': 'mart_general_user', 'password': 'mart_general_password'}}
 
 
-def pg_data_warehouse_get_connection(connection_type: DwhConnectionType):
+def pg_data_warehouse_getConnection(connection_type: DwhConnectionType):
     """Reads configuration for the resource from environment and returns a new connection"""
     database = None
     user = None

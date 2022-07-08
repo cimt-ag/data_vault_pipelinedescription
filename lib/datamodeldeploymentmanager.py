@@ -1,9 +1,6 @@
 import os
-
-from psycopg2 import Error
-
+import sys
 from lib.configuration import configuration_load_ini
-
 
 # define a function that handles and parses psycopg2 exceptions
 def print_psycopg2_exception(err):
@@ -12,16 +9,19 @@ def print_psycopg2_exception(err):
     print("pgerror:", err.pgerror)
     print("pgcode:", err.pgcode, "\n")
 
-
 class DataModelDeploymentManager:
     """Object to setup datamodel objects in a target database"""
 
     def __init__(self, db_connection):
         self._db_connection = db_connection
         self._ddl_root_path = ""
+        print('var E_CONF_AVAILABLE:', os.getenv('E_CONF_AVAILABLE'))
 
-        params = configuration_load_ini('basics.ini', 'ddl_deployment')
-        self.ddl_root_path = params['ddl_root_path']
+        if os.getenv('E_CONF_AVAILABLE') == 'YES' or os.getenv('E_CONF_AVAILABLE') == 'docker' or os.getenv('E_CONF_AVAILABLE') == 'argo':
+            self.ddl_root_path = "/datamodel"
+        else:
+            params = configuration_load_ini('basics.ini', 'ddl_deployment')
+            self.ddl_root_path = params['ddl_root_path']
 
     def deploy_schema(self, schema_name):
         """Deploy create schema script from DDL repository if necessary (will deploy schema if missing)"""
@@ -33,7 +33,7 @@ class DataModelDeploymentManager:
             self._deploy_normal_script(schema_name, f"schema_{schema_name.upper()}.sql")
             self._apply_default_grants()
 
-    def deploy_table(self, schema_name: str, table_name: str):
+    def deploy_table(self, schema_name: object, table_name: object) -> object:
         """Deploy create table script from DDL repository if necessary (will deploy schema if missing)"""
         check_cursor = self._db_connection.cursor()
         check_cursor.execute("""select count(1) from information_schema.tables
@@ -48,12 +48,13 @@ class DataModelDeploymentManager:
 
     def deploy_stage_table(self, schema_name, table_name):
         """Deploy create table script from DDL repository if necessary (will deploy schema if missing)"""
+        stage_schema = '#not determined#'
         if schema_name[0].lower() == 'r' or schema_name.lower() == 'template':
             stage_schema = 'stage_rvlt'
         elif schema_name[0].lower() == 'b':
             stage_schema = 'stage_bvlt'
         else:
-            raise Exception("Could not determine stage schema. Unknown prefix")
+            raise ("Could not determine stage schema. Unknown prefix")
 
         check_cursor = self._db_connection.cursor()
         check_cursor.execute("""select count(1) from information_schema.tables
@@ -74,7 +75,7 @@ class DataModelDeploymentManager:
         elif schema_name[0].lower() == 'b':
             stage_schema = 'stage_bvlt'
         else:
-            raise Exception("Could not determine stage schema. Unknown prefix")
+            raise ("Could not determine stage schema. Unknown prefix")
 
         check_cursor = self._db_connection.cursor()
         check_cursor.execute("""select count(1) from information_schema.views
@@ -113,8 +114,8 @@ class DataModelDeploymentManager:
             print("DDL Deployment Manager: View already deployed:", view_name)
 
     def deploy_matview(self, schema_name, matview_name, force_deploy=False):
-        """Deploy materialized 'matview' script from DDL repository if necessary (will deploy schema if missing).
-            Script must include "drop materialized view if exists ... cascade;" statement"""
+        """Deploy materialized 'matview' script from DDL repository if necessary (will deploy schema if missing). Script must include
+           "drop materialized view if exists ... cascade;" statement"""
         check_cursor = self._db_connection.cursor()
         # --for mat_views
         # --select * from pg_matviews;
@@ -175,12 +176,12 @@ class DataModelDeploymentManager:
                     if script_line.strip().startswith("$$"):
                         in_dollar_quote = not in_dollar_quote
                     if script_line.rfind(";") >= 0 and not in_dollar_quote:  # One Statement complete
-                        print("Script Execute: vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
+                        print("Deploy DDL Execute: vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
                         print(current_statement)
                         print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
                         try:
                             deploy_cursor.execute(current_statement)
-                        except Error as err:
+                        except Exception as err:
                             # pass exception to function
                             print_psycopg2_exception(err)
                             raise
@@ -188,12 +189,12 @@ class DataModelDeploymentManager:
                 script_line = file.readline()
 
         if len(current_statement.strip()) > 0:  # still some letters in the buffer
-            print("Script Execute: vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
+            print("Deploy DDL Execute: vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
             print(current_statement)
             print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
             try:
                 deploy_cursor.execute(current_statement)
-            except Error as err:
+            except Exception as err:
                 # pass exception to function
                 print_psycopg2_exception(err)
             raise
@@ -201,12 +202,12 @@ class DataModelDeploymentManager:
         self._db_connection.commit()
 
     def _apply_default_grants(self):
-        full_path = f"{self.ddl_root_path}/database_creation/users/grant_schema_defaults_basics.sql"
+        full_path = f"{self.ddl_root_path}/users/grant_schema_defaults_basics.sql"
         if not os.path.exists(full_path):
             raise Exception("Could not find DDL script:" + full_path)
         self._deploy_script('', full_path)
 
-        full_path = f"{self.ddl_root_path}/database_creation/users/grant_schema_defaults_generic.sql"
+        full_path = f"{self.ddl_root_path}/users/grant_schema_defaults_generic.sql"
         if not os.path.exists(full_path):
             raise Exception("Could not find DDL script:" + full_path)
 
@@ -228,22 +229,20 @@ class DataModelDeploymentManager:
         self._db_connection.commit()
 
 
-def demonstration_and_test_of_datamodeldeploymentmanager():
-    from lib.config_pg_data_warehouse import pg_data_warehouse_get_connection, DwhConnectionType
-    my_connection = pg_data_warehouse_get_connection(DwhConnectionType.owner)
+def demonstration_and_test_of_DataModelDeploymentManager():
+    from lib.config_pg_data_warehouse import pg_data_warehouse_getConnection, DwhConnectionType
+    my_connection = pg_data_warehouse_getConnection(DwhConnectionType.owner)
     my_deployment_manager = DataModelDeploymentManager(my_connection)
 
     # my_deployment_manager.deploy_table("rvlt_sellout_weekly", "RSOWK_FEELUNIQUE_STANDARD_EXTRANET_IMPORT_P1_L10_MSAT")
-    # my_deployment_manager.deploy_view("mart_business_sales_order_sellout",
-    #                                   "sellout_monthly_product_report",
-    #                                   force_deploy=True)
+    # my_deployment_manager.deploy_view("mart_business_sales_order_sellout", "sellout_monthly_product_report", force_deploy=True)
     # my_deployment_manager.deploy_table("bvlt_business_sales_order_sellout", "BBSSO_SELLOUT_MONTHLY_B10_DLNK")
     # my_deployment_manager.deploy_table("bvlt_business_sales_order_sellout", "BBSSO_SELLOUT_MONTHLY_P1_B10_SAT")
     # my_deployment_manager.deploy_table("rvlt_general", "RGNRL_GLOBAL_PRODUCT_HUB")
     # my_deployment_manager.deploy_view("mart_business_sales_order_sellout", "sellout_monthly_product_report",
     #                                   force_deploy=True)
 
-    # my_deployment_manager.deploy_stage_table("RVLT_FACEBOOK_PANDATA", "SRFBPD_ADSET")
+   # my_deployment_manager.deploy_stage_table("RVLT_FACEBOOK_PANDATA", "SRFBPD_ADSET")
     my_deployment_manager.deploy_stage_table("template", "TMPL_TEMPLATE_P1")
     my_deployment_manager.deploy_table("template", "TMPL_TEMPLATE_P1_SAT")
     my_deployment_manager.deploy_view("monitoring", "RAW_META_JOB_INSTANCE")
@@ -254,4 +253,4 @@ def demonstration_and_test_of_datamodeldeploymentmanager():
 
 if __name__ == '__main__':
     print('Standalone')
-    demonstration_and_test_of_datamodeldeploymentmanager()
+    demonstration_and_test_of_DataModelDeploymentManager()

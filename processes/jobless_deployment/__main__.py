@@ -6,26 +6,28 @@ import os
 import csv
 import codecs
 
-from lib.config_pg_data_warehouse import pg_data_warehouse_get_connection, DwhConnectionType
-from lib.datamodeldeploymentmanagerPG import DataModelDeploymentManager
+from lib.cimtjobinstance import CimtJobInstance, cimtjobinstance_job
+from lib.config_pg_data_warehouse import pg_data_warehouse_getConnection, DwhConnectionType
+from lib.datamodeldeploymentmanager import DataModelDeploymentManager
 from lib.configuration import configuration_load_ini
 from pathlib import Path
 
 global DEPLOY_SEVERITY
 DEPLOY_SEVERITY = 1
 
-OBJECTS_DEPLOY_FAILED = []
 
-def deploy_process(file_path, type, schema_name, name, mandantory):
+def deploy_db_object(file_path, type, schema_name, name, mandantory):
     file_name = os.path.split(file_path)[1]
 
     try:
-        deployment_manager = DataModelDeploymentManager(pg_data_warehouse_get_connection(DwhConnectionType.owner))
+        deployment_manager = DataModelDeploymentManager(pg_data_warehouse_getConnection(DwhConnectionType.owner))
         # print("^^^^^^ trying deploy of", file_name, type, schema_name, name)
         if type == 'table':
             deployment_manager.deploy_table(schema_name=schema_name, table_name=name)
         if type == 'view':
             deployment_manager.deploy_view(schema_name=schema_name, view_name=name)
+        if type == 'matview':                       # for backwards compatiility. matview is now covered by view
+            deployment_manager.deploy_matview(schema_name=schema_name, function_name=name)
         if type == 'function':
             deployment_manager.deploy_function(schema_name=schema_name, function_name=name)
         if type == 'data':
@@ -37,11 +39,7 @@ def deploy_process(file_path, type, schema_name, name, mandantory):
         print("^^^^^^ ERROR while deploying: ", type, schema_name, name, " from ", file_name)
         print(err)
         if mandantory == '0':
-            VAR = 0
-        global OBJECTS_DEPLOY_FAILED
-        OBJECTS_DEPLOY_FAILED.append( type, schema_name, name, " from ", file_name)
-        print("OBJECTS_DEPLOY_FAILED ================== ", OBJECTS_DEPLOY_FAILED)
-
+            DEPLOY_SEVERITY = 0
         raise
 
 
@@ -58,7 +56,7 @@ def read_file(file_to_process):
                     schema_name = row[2]
                     object = row[3]
                     if mandantory != '2':
-                        deploy_process(file_to_process, type, schema_name, object, mandantory)
+                        deploy_db_object(file_to_process, type, schema_name, object, mandantory)
                 else:
                     if len(row) > 0:
                         raise Exception("Malformed row :", row)
@@ -67,9 +65,18 @@ def read_file(file_to_process):
         print('#### Error when reading object list file', err)
         raise
 
+def deploy_job_instance_db_objects():
+    deployment_manager = DataModelDeploymentManager(pg_data_warehouse_getConnection(DwhConnectionType.owner))
+    deployment_manager.deploy_table('metadata', 'job_instance_status');
 
-def main(file_to_deploy="#all#", file_to_stop=None, die_on_error=False):
-    """Check the unprocessed directory and load any present files into stage."""
+
+@cimtjobinstance_job
+def main(file_to_deploy="#all#", file_to_stop=None, die_on_error=False, **kwargs):
+
+    deploy_job_instance_db_objects();
+
+    my_job_instance = CimtJobInstance(kwargs['instance_job_name'])
+    my_job_instance.start_instance()
 
     in_preparation=True
 
@@ -112,13 +119,17 @@ def main(file_to_deploy="#all#", file_to_stop=None, die_on_error=False):
             raise NameError('at least one file has error')
 
     except Exception as e:
-        print(20*"#","some processing failed, check the messages above",20*"#",'\n')
         if in_preparation:
+            my_job_instance.end_instance_with_error(1, 'failed during preparation')
             raise
+
         if DEPLOY_SEVERITY == 0:
-            print('\n',10*"=-*","some mandantory deployment failed ", 10*"=-*",)
+            print('\n',10*"=-*","some mandantory deployments failed, check messages above", 10*"=-*",)
+            my_job_instance.end_instance_with_error(1, 'mandantory deployments failed')
             raise
         print (str(e))
+
+    my_job_instance.end_instance()
 
 
 
