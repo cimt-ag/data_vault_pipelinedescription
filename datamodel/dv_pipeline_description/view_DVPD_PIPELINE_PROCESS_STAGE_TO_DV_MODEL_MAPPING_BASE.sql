@@ -88,7 +88,8 @@ select distinct
 	,ppp.stereotype 
 	,pdc.column_name 
 	,pdc.dv_column_class  
-	,case when pfte.field_name is not null then pfte.field_name 
+    -- ,case when pfte.field_name is not null then pdc.column_name  -- legacy generator compatible  (Stage = Target, will fail on multiple mappings to same target)
+	,case when pfte.field_name is not null then pfte.column_name   
 		  when process_block ='_A_' or is_implicit_suffix or ptapbc.non_general_process_count =0 then pdc.column_name 
 	  		 else pdc.column_name||process_block  
 	 end stage_column_name
