@@ -22,7 +22,7 @@ select distinct
 	,link_parent_order 
 	,recursive_parent_order 
 from cleansed_link_parents clp 
-join dv_pipeline_description.DVPD_PIPELINE_DV_TABLE pdmt on pdmt.table_name=clp.link_parent_table
+left join dv_pipeline_description.DVPD_PIPELINE_DV_TABLE pdmt on pdmt.table_name=clp.link_parent_table
 														and pdmt.pipeline_name = clp.pipeline_name ;
 
 -- select * from dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_LINK_PARENT;
