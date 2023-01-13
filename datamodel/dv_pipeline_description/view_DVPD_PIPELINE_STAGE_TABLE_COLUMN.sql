@@ -16,15 +16,16 @@ select distinct
 	,stage_column_name
 	,column_type 
 	,false is_meta
-	,(dv_column_class  in ('content','business_key','content_untracked')) is_nullable
+	,(ppstdmm.dv_column_class  in ('content','business_key','content_untracked')) is_nullable
 	,field_name
 	,field_type
 	,needs_encryption
-	,min(column_block) column_block
-	,min(dv_column_class) min_dv_column_class
+	,min(coalesce(cbc.stage_column_block,999)) column_block
 	,min(table_name) min_target_table
 	,min(column_name) min_column_name
-from  dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping
+from  dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm
+left join dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION cbc on cbc.dv_column_class = ppstdmm.dv_column_class 
+																and (cbc.stereotype =  ppstdmm.stereotype  or cbc.stereotype is null)
 group by 1,2,3,4,5,6,7,8
 union 
 select
@@ -37,7 +38,6 @@ select
 	,null field_type 
 	,false needs_encryption 
 	, 1 as column_block
-	,'meta' as min_dv_column_class
 	,'-' min_target_table
 	,'-' min_column_name
 from pipelines pp
