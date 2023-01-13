@@ -1,3 +1,8 @@
+# Release 0.5.4
+### features
+- Ordering of the stage table columns in the ddl, can now be adapted via configuration and more sorting
+
+
 # Release 0.5.3
 ### bugfixes
 - process plan for recursive link setting with field grouped esats is now correct

@@ -2,7 +2,7 @@
 with target as (
 select distinct pipeline_name, 'stage_rvlt' as stage_schema_name, 's'||substring(pipeline_name,2) stage_table_name
 from dv_pipeline_description.dvpd_pipeline_DV_table
-where pipeline_name like 'test71%'
+where pipeline_name like 'test21%'
 ) /* */
 , model_profile as (select property_value load_date_column_name 
 from target tgt
@@ -131,7 +131,7 @@ select stage_table_name table_name, 70 block
  ||(case when reverse_order=1 then '' else ',' end) script
 from (
 	select 
-	rank () OVER (partition by stc.pipeline_name order by  column_block desc,min_dv_column_class desc,min_target_table desc ,min_column_name desc ,stage_column_name desc	 ) reverse_order
+	rank () OVER (partition by stc.pipeline_name order by  column_block desc,min_target_table desc ,min_column_name desc ,stage_column_name desc	 ) reverse_order
 	, stage_table_name  
 	,coalesce(stc.column_block ,-1) column_block
 	,coalesce(stc.stage_column_name ,'')  column_name
