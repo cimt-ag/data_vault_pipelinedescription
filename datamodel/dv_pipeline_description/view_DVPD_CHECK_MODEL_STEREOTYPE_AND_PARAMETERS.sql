@@ -26,6 +26,7 @@ from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp
 where not is_recursive_relation 
 group by 1,2
 )
+-- key column declaration
 select
   pdt.pipeline_name
   ,'Table'::TEXT  object_type 
@@ -46,6 +47,15 @@ from dv_pipeline_description.dvpd_pipeline_dv_table pdt
 left join dv_pipeline_description.dvpd_stereotype_check_matrix scm on scm.stereotype = pdt.stereotype 
 left join link_parent_table_count lptc  on lptc.pipeline_name = pdt.pipeline_name 
 										and lptc.table_name = pdt.table_name 
+union										
+select -- field type declaration
+  dpfp.pipeline pipeline_name
+  ,'Field'::TEXT  object_type 
+  ,dpfp.field_name object_name
+  ,'CHECK_MODEL_STEREOTYPE_AND_PARAMETERS'::text  check_ruleset
+  ,case when dpfp.field_type is null or length(trim(dpfp.field_type))<1 then 'field_type not declared' 
+    else 'ok' end  message
+from dv_pipeline_description.dvpd_pipeline_field_properties dpfp 
 
 ;
 

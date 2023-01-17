@@ -36,6 +36,8 @@ VALUES
 		      , {"field_name": "F4_BK_FFF_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_FFF_HUB"}]}
 		      , {"field_name": "F5_BK_GGG_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_GGG_HUB"}]}
 		      , {"field_name": "F6_DC_FFF_GGG_XXX_DLINK_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_FFF_GGG_XXX_DLNK_WITHOUT_LINK_KEY_COLUMN"}]}
+		      , {"field_name": "F7_XXX_FIELD_WITHOUT_TYPE", "targets": [{"table_name": "rtjj_00_FFF_GGG_XXX_DLNK_WITHOUT_LINK_KEY_COLUMN"}]}
+		      , {"field_name": "F8_XXX_FIELD_WITH_EMPTY_TYPE", 		"field_type": " ", "targets": [{"table_name": "rtjj_00_FFF_GGG_XXX_DLNK_WITHOUT_LINK_KEY_COLUMN"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
