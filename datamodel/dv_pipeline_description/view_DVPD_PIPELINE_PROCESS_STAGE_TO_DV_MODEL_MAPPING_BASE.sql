@@ -139,4 +139,7 @@ left join dvpd_pipeline_field_target_expansion_with_implicit_recursion pfte on p
 --order by table_name,process_block ,column_name 
 ;
 
+comment on view dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE is
+ 'processes specific mapping of fields to stage and target columns for every target table of a pipeline. (Base elements only) ';
+
 -- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE order by pipeline,table_name,process_block;										

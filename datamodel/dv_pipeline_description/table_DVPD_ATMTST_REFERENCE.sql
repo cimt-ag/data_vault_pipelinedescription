@@ -24,3 +24,6 @@
   reference_data_json json,
   PRIMARY KEY ( pipeline_name)
   );
+  
+ comment on table dv_pipeline_description.DVPD_ATMTST_REFERENCE is
+ 	'Reference data for the automatic test of the dvpd implementation;'

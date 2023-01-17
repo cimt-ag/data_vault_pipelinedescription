@@ -79,6 +79,8 @@ left join field_group_expansion fge on fge.pipeline_name = te1.pipeline_name
 									and coalesce (fge.recursion_name,'') = coalesce ( te1.recursion_name,'') ; 
 
 
+comment on view dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_FIELD_TARGET_EXPANSION_RAW is
+ 'technical helper view. needed by the transformation of the dvpd json into the relational model. Contains postgresql specific json syntax';
 
 -- select * from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION order by pipeline ,field_name,target_table;
 

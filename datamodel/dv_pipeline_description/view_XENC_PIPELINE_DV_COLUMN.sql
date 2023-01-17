@@ -221,5 +221,8 @@ where stereotype ='xenc_lnk-ek'
  
 );
  
+comment on view dv_pipeline_description.XENC_PIPELINE_DV_COLUMN is
+ '[Encryption Extention] All additional columns, needed for encryption ';
+
  
 -- select * from dv_pipeline_description.XENC_PIPELINE_DV_COLUMN ddmc  order by 1,2,3,4,5;

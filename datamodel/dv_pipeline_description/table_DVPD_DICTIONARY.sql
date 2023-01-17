@@ -24,3 +24,6 @@
   dvpd_json json,
   PRIMARY KEY ( pipeline_name)
   );
+  
+  comment on table dv_pipeline_description.DVPD_DICTIONARY is
+ 	'DVPD Document for every pipeline';

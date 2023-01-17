@@ -25,3 +25,7 @@ select object_json->>'model_profile_name' model_profile_name
  ,object_json->>json_object_keys(object_json) property_value
 from dv_pipeline_description.dvpd_json_storage 
 where object_class ='model_profile';
+
+
+comment on view dv_pipeline_description.DVPD_TRANSFORM_TO_MODEL_PROFILE is
+ 'technical helper view. needed by the transformation of the dvpd json into the relational model. Contains postgresql specific json syntax';

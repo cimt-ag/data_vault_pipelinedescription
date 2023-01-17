@@ -33,3 +33,6 @@ CREATE TABLE dv_pipeline_description.XENC_PIPELINE_DV_TABLE_PROPERTIES_RAW (
 );
 
 CREATE INDEX xenc_pipeline_dv_table_properties_raw_pipeline_name_idx ON dv_pipeline_description.xenc_pipeline_dv_table_properties_raw (pipeline_name,table_name);
+
+comment on table dv_pipeline_description.XENC_PIPELINE_DV_TABLE_PROPERTIES_RAW is
+ 'Encryption properties for tables of the pipeline. raw = exact copy from dvpd document';

@@ -63,5 +63,9 @@ from pipelines pp
 left join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl 
 										on mpmcl.model_profile_name = pp.model_profile_name 
 										and mpmcl.stereotype ='_stg' ;
-														 
+
+comment on view dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN is
+ 'list of columns, that need to be in the stage table of the pipeline.';
+									
+									
 -- select * from dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN order by pipeline_name,column_block,min_dv_column_class,min_target_table,min_column_name,stage_column_name									

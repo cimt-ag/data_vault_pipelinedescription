@@ -77,4 +77,7 @@ union
 select * from default_content_table_properties
 ;
 
+comment on view dv_pipeline_description.XENC_PIPELINE_DV_TABLE_PROPERTIES is
+ '[Encryption Extention] All encryption specific table properties ';
+
 -- select * from dv_pipeline_description.XENC_PIPELINE_DV_TABLE_PROPERTIES ;

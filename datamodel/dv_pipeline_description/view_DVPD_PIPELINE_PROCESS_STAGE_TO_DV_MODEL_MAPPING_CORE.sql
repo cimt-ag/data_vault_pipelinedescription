@@ -25,4 +25,7 @@ select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MA
 where (dv_column_class in ('meta','key','parent_key','diff_hash') or field_name is not null	)
 and stereotype not like 'x%'; -- exclude table stereotypes from extentions
 
+comment on view dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_CORE is
+ 'processes specific mapping of fields to stage and target columns for every target table of a pipeline. (only core elements) ';
+
 -- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE order by pipeline,table_name,process_block;										

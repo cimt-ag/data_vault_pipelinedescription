@@ -77,3 +77,6 @@ from dv_pipeline_description.dvpd_dictionary dt
 select * from link_parent_tables_with_order
 union
 select * from  recursive_parent_tables_with_order;
+
+comment on view dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_DV_TABLE_LINK_PARENT_RAW is
+ 'technical helper view. needed by the transformation of the dvpd json into the relational model. Contains postgresql specific json syntax';

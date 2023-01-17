@@ -41,4 +41,5 @@ pipeline_name
 , json_array_elements(tables)->>'model_profile_name' as model_profile_name 
 from data_vault_schema_basics;
 
-
+comment on view dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_DV_TABLE_RAW is
+ 'technical helper view. needed by the transformation of the dvpd json into the relational model. Contains postgresql specific json syntax';

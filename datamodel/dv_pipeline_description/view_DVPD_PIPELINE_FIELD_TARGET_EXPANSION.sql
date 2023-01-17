@@ -40,7 +40,8 @@ join dv_pipeline_description.dvpd_pipeline_field_properties_raw pfpr on pfpr.pip
 																	and pfpr.field_name = pfter.field_name 
 ;
 
-																
+comment on view dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION is
+ 'Fields and their mapping to tables of the pipeline. (cleased, normalized and enriched)';																
 
 -- select * from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION order by pipeline_name ,field_name,target_table;
 

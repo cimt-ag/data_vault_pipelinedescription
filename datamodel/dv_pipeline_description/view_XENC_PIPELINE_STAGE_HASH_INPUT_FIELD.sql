@@ -40,5 +40,8 @@ from  dv_pipeline_description.xenc_pipeline_process_stage_to_enc_model_mapping e
 join dv_pipeline_description.dvpd_pipeline_stage_hash_input_field pshif on pshif.pipeline_name = eppstemm.pipeline_name 
 																		and pshif.stage_column_name = eppstemm .content_stage_hash_column  
 ;																		
-														 
+
+comment on view dv_pipeline_description.XENC_PIPELINE_STAGE_HASH_INPUT_FIELD is
+ '[Encryption Extention] list of fields (and their order properties) to be used for every hash for staging to the encryption key store ';
+
 -- select * from dv_pipeline_description.XENC_PIPELINE_STAGE_HASH_INPUT_FIELD order by pipeline

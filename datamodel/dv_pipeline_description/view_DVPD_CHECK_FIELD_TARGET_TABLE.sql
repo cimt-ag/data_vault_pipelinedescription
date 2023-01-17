@@ -79,6 +79,9 @@ union
 select * from target_specification_consistency
 ;
 
+comment on view dv_pipeline_description.DVPD_CHECK_FIELD_TARGET_TABLE IS
+	'Checks for bad mapping of fields to targets (missing targets, inconsistent mappings to same target column)';
+
 -- select * from dv_pipeline_description.DVPD_CHECK_FIELD_TARGET_TABLE order by 1,2,3
 
 

@@ -43,5 +43,9 @@ select
 from raw_field_list;
 
 
+comment on view dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_FIELD_PROPERTIES_RAW is
+ 'technical helper view. needed by the transformation of the dvpd json into the relational model. Contains postgresql specific json syntax';
+
+
 -- select * from dv_pipeline_description.DVPD_SOURCE_FIELD order by pipeline ,field_position;
 

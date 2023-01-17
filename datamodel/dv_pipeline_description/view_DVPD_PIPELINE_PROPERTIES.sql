@@ -31,4 +31,5 @@ SELECT
 FROM 
 	dv_pipeline_description.dvpd_pipeline_properties_raw;
 
-
+comment on view dv_pipeline_description.DVPD_PIPELINE_PROPERTIES is
+ 'General properties of the pipeline. (cleansed and normalized)';

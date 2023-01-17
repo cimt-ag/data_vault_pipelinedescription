@@ -44,4 +44,7 @@ from cleansed_link_parents clp
 left join dv_pipeline_description.DVPD_PIPELINE_DV_TABLE pdmt on pdmt.table_name=clp.link_parent_table
 														and pdmt.pipeline_name = clp.pipeline_name ;
 
+comment on view dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_LINK_PARENT is
+ 'List of parent tables of every link table including essential properties of the relation (cleansed and normalized)';													
+													
 -- select * from dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_LINK_PARENT;

@@ -59,6 +59,7 @@ left join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl
 									and mpmcl.stereotype ='_xenc_stg-ek' ;
 
 
-
+comment on view dv_pipeline_description.XENC_PIPELINE_STAGE_TABLE_COLUMN is
+ '[Encryption Extention] All columns, needed to stage columns of the encryption key store';
 														 
 -- select * from dv_pipeline_description.XENC_PIPELINE_STAGE_TABLE_COLUMN order by pipeline_name,column_block ,stage_column_name 										

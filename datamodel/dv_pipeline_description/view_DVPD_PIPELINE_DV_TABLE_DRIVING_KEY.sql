@@ -28,4 +28,8 @@ SELECT
 FROM
 	dv_pipeline_description.dvpd_pipeline_dv_table_driving_key_raw;
 
+comment on view dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_DRIVING_KEY is
+ ' List of driving keys of every (e)sat table. raw = exact copy from dvpd document(cleansed and normalized)'; 
+
+
 -- select * from dv_pipeline_description.DVPD_DV_MODEL_LINK_PARENT;

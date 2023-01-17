@@ -31,6 +31,8 @@ select
  ,field_comment
 from dv_pipeline_description.dvpd_pipeline_field_properties_raw;
 
+comment on view dv_pipeline_description.DVPD_PIPELINE_FIELD_PROPERTIES is
+ 'Fields of the pipeline and their basic properties. (cleansed and normalized)';
 
 -- select * from dv_pipeline_description.DVPD_SOURCE_FIELD order by pipeline ,field_position;
 

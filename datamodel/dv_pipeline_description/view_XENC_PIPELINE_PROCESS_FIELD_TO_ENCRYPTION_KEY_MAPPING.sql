@@ -58,4 +58,7 @@ Select -- final view with extended stage column name
 from field_to_key_derivation
 ;
 
+comment on view dv_pipeline_description.XENC_PIPELINE_PROCESS_FIELD_TO_ENCRYPTION_KEY_MAPPING is
+ '[Encryption Extention] Derivation of column combination for encryption depending on the process block';
+
 -- select * from dv_pipeline_description.XENC_PIPELINE_PROCESS_FIELD_TO_ENCRYPTION_KEY_MAPPING order by pipeline_name,process_block,field_name;										

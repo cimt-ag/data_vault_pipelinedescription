@@ -42,4 +42,6 @@ from data_vault_schema_basics
 select * from json_parsing  -- everything delared as xenc and tables using xenc properties
 where stereotype like 'xenc%' or xenc_encryption_key_index_column_name is not null;
 
+comment on view dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_PROPERTIES_RAW is
+ 'technical helper view. needed by the transformation of the dvpd json into the relational model. Contains postgresql specific json syntax';
 

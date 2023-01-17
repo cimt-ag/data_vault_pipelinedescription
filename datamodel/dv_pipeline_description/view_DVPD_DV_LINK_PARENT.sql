@@ -32,6 +32,9 @@ FROM
 	dv_pipeline_description.dvpd_pipeline_dv_table_link_parent;
 
 
+comment on view dv_pipeline_description.DVPD_DV_LINK_PARENT is
+ 'Link parents in the dv model';
+
 -- select * From dv_pipeline_description.DVPD_DV_LINK_PARENT;
 
 

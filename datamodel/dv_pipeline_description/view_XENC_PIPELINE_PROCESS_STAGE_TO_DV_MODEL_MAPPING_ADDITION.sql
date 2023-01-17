@@ -69,5 +69,8 @@ join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping_bas
 where xenc.stage_map_rank >1			
 ;
 
+comment on view dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_ADDITION is
+ '[Encryption Extention] Additional mapping of field to stage to target column for every process block, table, pipeline ';
+
 
 -- select * from dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_ADDITION order by pipeline,table_name,process_block;										

@@ -33,4 +33,5 @@ FROM
 
 -- select * From dv_pipeline_description.DVPD_DV_COLUMN;
 
-
+comment on view dv_pipeline_description.DVPD_DV_COLUMN is
+ 'Columns of the data vault model';

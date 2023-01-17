@@ -262,4 +262,7 @@ select
 from additional_recursive_hub_processes
 ;
 
+comment on view dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN is
+ 'List of necessary processes (identified by the process_block) for every target table of a pipeline. ';		
+
 -- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN order by pipeline,table_name,process_block;										

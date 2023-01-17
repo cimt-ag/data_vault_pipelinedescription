@@ -29,4 +29,7 @@ SELECT
 FROM
 	dv_pipeline_description.dvpd_model_profile_raw;
 
+comment on view dv_pipeline_description.dvpd_model_profile is
+ 'available model profiles';
+
 -- select * from dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP;

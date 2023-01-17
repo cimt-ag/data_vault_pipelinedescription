@@ -25,3 +25,6 @@ Create table if not exists dv_pipeline_description.DVPD_MODEL_PROFILE_RAW (
   property_value VARCHAR(60),
   PRIMARY KEY(model_profile_name,property_name)
   ); 
+
+comment on table dv_pipeline_description.DVPD_MODEL_PROFILE_RAW is
+ 'available model profiles. raw = exact copy from dvpd profile document';

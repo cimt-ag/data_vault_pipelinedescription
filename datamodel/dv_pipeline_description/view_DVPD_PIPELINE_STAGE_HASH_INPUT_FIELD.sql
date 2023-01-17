@@ -117,6 +117,7 @@ select
  from fields_for_not_link_key_hashes
 ; 
 
-
+comment on view dv_pipeline_description.DVPD_PIPELINE_STAGE_HASH_INPUT_FIELD is
+ 'list of fields (and their order properties) to be used for every hash in the stage table of the pipeline depending on processing_block';
 													 
 -- select * from dv_pipeline_description.DVPD_PIPELINE_STAGE_HASH_INPUT_FIELD order by pipeline,process_block ,stage_column_name,field_name 										

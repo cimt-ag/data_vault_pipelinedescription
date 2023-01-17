@@ -31,3 +31,6 @@ select
 from dv_pipeline_description.dvpd_dictionary dt 
 ;
 
+comment on view dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_PROPERTIES_RAW is
+ 'technical helper view. needed by the transformation of the dvpd json into the relational model. Contains postgresql specific json syntax';
+

@@ -36,4 +36,7 @@ from dv_pipeline_description.dvpd_pipeline_dv_table_raw pdt
 join dv_pipeline_description.dvpd_pipeline_properties pp on pp.pipeline_name =lower(pdt.pipeline_name )
 ;
 
+comment on view dv_pipeline_description.DVPD_PIPELINE_DV_TABLE is
+ 'Tables of the pipeline. (cleansed and normalized)'; 
+
 -- select * from dv_pipeline_description.DVPD_PIPELINE_DV_TABLE ;

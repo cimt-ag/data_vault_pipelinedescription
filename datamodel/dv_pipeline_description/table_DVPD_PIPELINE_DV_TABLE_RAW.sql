@@ -33,3 +33,6 @@ CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_RAW (
 	is_historized text NULL,
 	model_profile_name text NULL
 );
+
+comment on table dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_RAW is
+ 'Tables of the pipeline. raw = exact copy from dvpd document';

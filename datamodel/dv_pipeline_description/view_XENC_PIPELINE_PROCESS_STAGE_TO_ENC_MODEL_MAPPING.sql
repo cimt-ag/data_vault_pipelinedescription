@@ -106,4 +106,7 @@ where (pdc.dv_column_class in ('key','xenc_bk_hash','xenc_bk_salted_hash', 'xenc
 --order by table_name ,column_block,column_name -- for debugging
 ;
 
+comment on view dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_ENC_MODEL_MAPPING is
+ '[Encryption Extention] Derived mapping of columns, that will be loaded to the encryption key store (ENC_MODEL)';
+
 -- select * from dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_ENC_MODEL_MAPPING order by pipeline,table_name,process_block;										
