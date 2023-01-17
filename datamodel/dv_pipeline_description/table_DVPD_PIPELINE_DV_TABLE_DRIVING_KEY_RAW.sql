@@ -24,3 +24,6 @@ CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_DRIVING_KEY_RAW (
 	table_name text NULL,
 	driving_key text NULL
 );
+
+comment on table dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_DRIVING_KEY_RAW is
+ 'Driving key array of every (e)sat table. raw = exact copy from dvpd document';

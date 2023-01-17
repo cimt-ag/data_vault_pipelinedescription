@@ -19,7 +19,7 @@
 
 -- DROP TABLE dv_pipeline_description.dvpd_pipeline_properties_raw cascade;
 
-CREATE TABLE dv_pipeline_description.dvpd_pipeline_properties_raw (
+CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_PROPERTIES_RAW (
 	meta_inserted_at timestamp default now(),
 	pipeline_name text not NULL,
 	dvpd_version text NULL,
@@ -30,3 +30,6 @@ CREATE TABLE dv_pipeline_description.dvpd_pipeline_properties_raw (
 	model_profile_name text NULL,
 	primary key (pipeline_name)
 );
+
+comment on table dv_pipeline_description.DVPD_PIPELINE_PROPERTIES_RAW is
+ 'General properties of the pipeline. raw = exact copy from dvpd document';

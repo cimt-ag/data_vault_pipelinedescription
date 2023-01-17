@@ -25,6 +25,9 @@ Create table if not exists dv_pipeline_description.DVPD_META_COLUMN_LOOKUP (
   meta_column_type VARCHAR(60),
   PRIMARY KEY(stereotype,meta_column_name)
   ); 
+ 
+comment on table dv_pipeline_description.DVPD_META_COLUMN_LOOKUP is 
+	'Definition of the meta columns needed for every data vault table stereotype';
 
 TRUNCATE TABLE dv_pipeline_description.dvpd_meta_column_lookup;
 INSERT INTO dv_pipeline_description.dvpd_meta_column_lookup
@@ -59,5 +62,6 @@ VALUES('hub', 'load_date_column_name', 'load_date_column_type'),
 	  ('esat', 'deletion_flag_column_name', 'deletion_flag_column_type'),	
 	  ('ref_hist', 'load_enddate_column_name', 'load_enddate_column_type')	
 	 ;
+
 
 	

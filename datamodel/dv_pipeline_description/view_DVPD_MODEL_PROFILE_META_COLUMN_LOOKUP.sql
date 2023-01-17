@@ -31,4 +31,8 @@ join dv_pipeline_description.dvpd_model_profile mp_t on mp_t.property_name =mcl.
 													and mp_t.model_profile_name = mp_n.model_profile_name 
 ;			
 
+
+comment on table dv_pipeline_description.DVPD_MODEL_PROFILE_RAW is
+ 'Profile specific naming and type of the meta columns needed for every data vault table stereotype';
+
 -- select * from dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP;

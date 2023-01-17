@@ -27,7 +27,8 @@ Create table if not exists dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFI
   stage_column_block int4
   ); 
 
-COMMENT on TABLE dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION is 'Table to determine the major order of columns in the stage table ddl';
+COMMENT on TABLE dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION 
+     is 'Table to determine the major order of columns in the stage table ddl';
 
 -- talend tHashRow optimized version
 TRUNCATE TABLE dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION;

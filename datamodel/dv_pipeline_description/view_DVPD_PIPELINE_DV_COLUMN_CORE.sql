@@ -229,5 +229,7 @@ select -- own key column
  
 );
  
+comment on view dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN_CORE is
+ 'table columns of the pipeline derived by the dvpd core implementation'; 
  
 -- select * from dv_pipeline_description.DVPD_DV_MODEL_COLUMN ddmc  order by 1,2,3,4,5;

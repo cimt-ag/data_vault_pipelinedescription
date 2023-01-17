@@ -27,4 +27,4 @@
   );
   
  comment on table  dv_pipeline_description.DVPD_JSON_STORAGE is 
- 'Table to store the json input texts for pipelines and profiles';
+ 'Json input texts for profiles (pipelines will be placed here in later releases)';

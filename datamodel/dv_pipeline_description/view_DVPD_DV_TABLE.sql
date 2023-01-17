@@ -32,6 +32,10 @@ select distinct
 	,is_historized
 from dv_pipeline_description.dvpd_pipeline_dv_table;
 
+
+comment on view dv_pipeline_description.DVPD_DV_TABLE is
+ 'Tables in the dv model';
+
 -- select * From dv_pipeline_description.DVPD_DV_MODEL_TABLE;
 
 

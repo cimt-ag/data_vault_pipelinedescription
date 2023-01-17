@@ -33,3 +33,7 @@ CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION_RAW (
 	exclude_from_diff_hash text NULL,
 	column_content_comment text NULL
 );
+
+
+comment on table dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION_RAW is
+ 'Fields and their mapping to tables of the pipeline. raw = exact copy from dvpd document';

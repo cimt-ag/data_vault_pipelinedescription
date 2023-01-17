@@ -17,9 +17,9 @@
 -- =====================================================================
 
 
--- DROP TABLE dv_pipeline_description.dvpd_pipeline_field_properties_raw;
+-- DROP TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_PROPERTIES_RAW;
 
-CREATE TABLE dv_pipeline_description.dvpd_pipeline_field_properties_raw (
+CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_PROPERTIES_RAW (
 	meta_inserted_at timestamp default now(),
 	pipeline text NULL,
 	field_name text NULL,
@@ -29,3 +29,6 @@ CREATE TABLE dv_pipeline_description.dvpd_pipeline_field_properties_raw (
 	needs_encryption boolean null,
 	field_comment text NULL
 );
+
+comment on table dv_pipeline_description.DVPD_PIPELINE_FIELD_PROPERTIES_RAW is
+ 'Fields of the pipeline and their basic properties. raw = exact copy from dvpd document';

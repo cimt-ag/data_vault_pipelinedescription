@@ -38,3 +38,6 @@ VALUES('hub', 1, 0, 0, 0),
 	  ('esat', 0, 0, 0, 1),
 	  ('ref', 0, 0, 0, 0)
 	 ;
+
+comment on table dv_pipeline_description.DVPD_STEREOTYPE_CHECK_MATRIX is
+ 'Declaration of mandatory parameters for every stereotype.';

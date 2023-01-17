@@ -24,3 +24,6 @@ CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_FIELD_GROUP_RAW (
 	table_name text NULL,
 	field_group text NULL
 );
+
+comment on table dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_FIELD_GROUP_RAW is
+ 'Field group array of every table of the pipeline. raw = exact copy from dvpd document';
