@@ -72,8 +72,8 @@ from only_in_reference
 );
 
 
-comment on view dv_pipeline_description.DVPD_ATMTST_ISSUE_PROCESS_COLUMN_MAPPING IS
-	'Shows all issues from automated testing of process_column_mapping, for pipelines, where reference data is available';
+comment on view dv_pipeline_description.XENC_ATMTST_ISSUE_PROCESS_COLUMN_MAPPING IS
+	'[Automated Testing/encryption]: Determine all issues about process_column_mapping of encryption columns'; 
 
 -- select * from dv_pipeline_description.DVPD_ATMTST_ISSUE_DV_MODEL_COLUMN ddmcc  order by 1,2,3,4,5;
 

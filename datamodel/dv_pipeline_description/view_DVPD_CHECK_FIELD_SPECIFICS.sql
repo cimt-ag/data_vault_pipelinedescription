@@ -17,15 +17,15 @@
 -- =====================================================================
 
 
--- drop view if exists dv_pipeline_description.DVPD_CHECK_FIELD_TARGET_TABLE cascade;
-create or replace view dv_pipeline_description.DVPD_CHECK_FIELD_TARGET_TABLE as
+-- drop view if exists dv_pipeline_description.DVPD_CHECK_FIELD_SPECIFICS cascade;
+create or replace view dv_pipeline_description.DVPD_CHECK_FIELD_SPECIFICS as
 
 with target_existence as (
 select
   sfm.pipeline_name
   ,'Field'::TEXT  object_type 
   ,sfm.field_name object_name
-  ,'DVPD_CHECK_FIELD_TARGET_TABLE'::text  check_ruleset
+  ,'DVPD_CHECK_FIELD_SPECIFICS'::text  check_ruleset
   ,case when pdt.table_name is null then 'Unknown target_table: '|| sfm.target_table   
     else 'ok' end  message
 from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm
@@ -69,20 +69,32 @@ select
   pipeline_name
   ,'column'::TEXT  object_type 
   ,target_table||'.'||target_column_name object_name
-  ,'DVPD_CHECK_FIELD_TARGET_TABLE'::text  check_ruleset
+  ,'DVPD_CHECK_FIELD_SPECIFICS'::text  check_ruleset
   ,case when constellation_count >1  then 'Inconsistent specifiation: '|| comparison_report   
     else 'ok' end  message
 from target_constellation_count
 )
+, field_type_declaration_test as (
+select -- field type declaration
+  dpfp.pipeline pipeline_name
+  ,'Field'::TEXT  object_type 
+  ,dpfp.field_name object_name
+  ,'DVPD_CHECK_FIELD_SPECIFICS'::text  check_ruleset
+  ,case when dpfp.field_type is null or length(trim(dpfp.field_type))<1 then 'field_type not declared' 
+    else 'ok' end  message
+from dv_pipeline_description.dvpd_pipeline_field_properties dpfp 
+)
 select * from target_existence
 union
 select * from target_specification_consistency
+union
+select * from field_type_declaration_test
 ;
 
-comment on view dv_pipeline_description.DVPD_CHECK_FIELD_TARGET_TABLE IS
-	'Checks for bad mapping of fields to targets (missing targets, inconsistent mappings to same target column)';
+comment on view dv_pipeline_description.DVPD_CHECK_FIELD_SPECIFICS IS
+	'Checks for bad fields properties (missing targets, inconsistent mappings to same target column, missing properties)';
 
--- select * from dv_pipeline_description.DVPD_CHECK_FIELD_TARGET_TABLE order by 1,2,3
+-- select * from dv_pipeline_description.DVPD_CHECK_FIELD_SPECIFICS order by 1,2,3
 
 
 

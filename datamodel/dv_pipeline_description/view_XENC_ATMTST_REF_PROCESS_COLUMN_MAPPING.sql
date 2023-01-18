@@ -40,4 +40,5 @@ from parsed_dvmodel_column
 
 );
  
- 
+ comment on view dv_pipeline_description.XENC_ATMTST_REF_PROCESS_COLUMN_MAPPING IS
+	'[Automated Testing/encryption]: Technical view to convert reference data from json array into a table (contains postgres json syntax)';

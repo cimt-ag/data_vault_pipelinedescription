@@ -111,6 +111,6 @@ order by pipeline_name
 ;
  
 comment on view dv_pipeline_description.DVPD_ATMTST_CATALOG IS
-	'Provide overview about available reference data used for automated test of dvpd implementation';
+	'[Automated Testing]: Overview about available reference data used for automated test of dvpd implementation';
  
 -- select * from dv_pipeline_description.DVPD_ATMTST_CATALOG ddmc  order by 1;

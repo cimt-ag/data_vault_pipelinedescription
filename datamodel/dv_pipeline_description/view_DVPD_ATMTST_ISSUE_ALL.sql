@@ -109,6 +109,6 @@ order by pipeline_name,issue_class ,issue_order
 );
  
 comment on view dv_pipeline_description.DVPD_ATMTST_ISSUE_ALL IS
-	'All issues currently open';
- 
+	'[Automated Testing]: All issues currently open';
+
 -- select * from dv_pipeline_description.DVPD_ATMTST_ISSUE_ALL;

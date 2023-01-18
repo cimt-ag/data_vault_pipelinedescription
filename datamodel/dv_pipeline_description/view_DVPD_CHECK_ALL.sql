@@ -20,7 +20,7 @@
 -- drop view if exists dv_pipeline_description.DVPD_CHECK_ALL cascade;
 create or replace view dv_pipeline_description.DVPD_CHECK_ALL as
 
-select * FROM dv_pipeline_description.dvpd_check_field_target_table
+select * FROM dv_pipeline_description.dvpd_check_field_specifics
 where message <>'ok'
 UNION
 select * FROM dv_pipeline_description.dvpd_check_model_relations

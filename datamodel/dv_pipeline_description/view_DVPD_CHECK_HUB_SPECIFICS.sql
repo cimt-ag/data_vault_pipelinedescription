@@ -37,7 +37,7 @@ select
  	,'Table'::TEXT  object_type 
  	, table_name  object_name 
  	,'DVPD_CHECK_HUB_SPECIFICS'::text  check_ruleset
-	, case when bk_count = 0 THEN 'No business key defined for the table'
+	, case when bk_count = 0 THEN 'No business key defined for the hub'
 		else 'ok' end :: text message
 from bk_count_for_tables
 union
@@ -56,12 +56,14 @@ select
  	,'Hub Key'::TEXT  object_type 
  	, hub_key_column_name object_name 
  	,'DVPD_CHECK_HUB_SPECIFICS'::text  check_ruleset
-	, case when hk_count > 1 THEN 'HK Name used for multiple hubs: '||table_list
+	, case when hk_count > 1 THEN 'Hub key name used for multiple hubs: '||table_list
 		else 'ok' end :: text message
 FROM hk_count);
 
 comment on view dv_pipeline_description.DVPD_CHECK_HUB_SPECIFICS IS
-	'Test for hub specific rules';
+	'Checks for hub specific rules (busniess key declared, Hash key name collision)';
+
+
 
 -- select * from dv_pipeline_description.DVPD_CHECK_HUB_SPECIFICS order by 1,2,3
 

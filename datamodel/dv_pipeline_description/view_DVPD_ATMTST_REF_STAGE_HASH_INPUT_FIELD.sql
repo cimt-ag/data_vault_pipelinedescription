@@ -38,3 +38,5 @@ from parsed_dvmodel_column
 );
  
  
+comment on view dv_pipeline_description.DVPD_ATMTST_REF_STAGE_HASH_INPUT_FIELD IS
+	'[Automated Testing]: Technical view to convert reference data from json array into a table (contains postgres json syntax)'; 

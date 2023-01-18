@@ -67,7 +67,7 @@ from only_in_reference
 
 
 comment on view dv_pipeline_description.XENC_ATMTST_ISSUE_PROCESS_PROCESS_FIELD_TO_ENCRYPTION_KEY_MAPPING IS
-	'Shows all issues from automated testing of field to encryption key mapping';
+	'[Automated Testing/encryption]: Determine all issues about field to encryption key mapping';
 
 -- select * from dv_pipeline_description.XENC_ATMTST_ISSUE_PROCESS_PROCESS_FIELD_TO_ENCRYPTION_KEY_MAPPING ddmcc  order by 1,2,3,4,5;
 

@@ -38,5 +38,8 @@ from parsed_dvmodel_column
 
 );
  
- 
+
+comment on view dv_pipeline_description.DVPD_ATMTST_REF_DV_MODEL_COLUMN IS
+	'[Automated Testing]: Determine all issues about dv_model_columns';
+
 -- select * from dv_pipeline_description.DVPD_ATMTST_REF_DV_MODEL_COLUMN ddmc  order by 1,2,3,4,5;

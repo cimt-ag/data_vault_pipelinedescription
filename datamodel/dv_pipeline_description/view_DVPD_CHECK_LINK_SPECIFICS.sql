@@ -36,12 +36,12 @@ select
  	,'Link Key'::TEXT  object_type 
  	, link_key_column_name object_name 
  	,'DVPD_CHECK_LINK_SPECIFICS'::text  check_ruleset
-	, case when lk_count > 1 THEN 'LK Name used for multiple links: '||table_list
+	, case when lk_count > 1 THEN 'Link key name used for multiple links: '||table_list
 		else 'ok' end :: text message
 FROM lk_count;
 
 comment on view dv_pipeline_description.DVPD_CHECK_LINK_SPECIFICS IS
-	'Test for link specific rules';
+	'Checks for  for link specific rules (Link key collisions)';
 
 -- select * from dv_pipeline_description.DVPD_CHECK_LINK_SPECIFICS order by 1,2,3
 

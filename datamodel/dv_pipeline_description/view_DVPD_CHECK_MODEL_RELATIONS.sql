@@ -78,6 +78,9 @@ union
 select * from model_profile_diagnostics
 ;
 
+comment on view dv_pipeline_description.DVPD_CHECK_MODEL_RELATIONS IS
+	'Checks for integrity of references in the model';
+
 -- select * from dv_pipeline_description.DVPD_CHECK_MODEL_RELATIONS order by 1,2,3
 
 
