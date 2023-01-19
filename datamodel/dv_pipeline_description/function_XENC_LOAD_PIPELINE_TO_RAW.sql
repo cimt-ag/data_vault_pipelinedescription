@@ -58,3 +58,7 @@ return true;
 
 end;
 $$;
+
+
+ comment on function dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW (profile_to_load varchar) is
+ 	'Helper function to convert and load encryption extenrion properties of the dvpd document into the relational tables';

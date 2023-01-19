@@ -46,3 +46,6 @@ return true;
 
 end;
 $$;
+
+ comment on function dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE (profile_to_load varchar) is
+ 	'Helper function to convert and load the dvpd model profile document into the relational tables';
