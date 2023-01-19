@@ -2,7 +2,7 @@ DVPD core elements describe here must be supported by any implementation in the 
 
 The syntax must and can be extended by properties, needed for project specific solutions (e.g. data_extraction modules, data encryption frameworks). Documentation for these properties must be provided for every module in a separate document.
 
-A DVPD is expressed with JSON syntax and contains the following Attributes(Keys):
+A DVPD is expressed with JSON syntax and contains the following attributes(Keys):
 
 # Root 
 
@@ -43,7 +43,7 @@ Object, describing all necessary properties to access the data source<br>
 <br>Array, describing every source field, its properties how to extract it from the source data format and how to map the data to the data vault model
 <br>→ see “fields”
 
-**data_vault_modell[]**
+**data_vault_model[]**
 (mandatory)
 <br>Array with objects, describing the data vault tables and relations
 <br>→ see “data_vault_modell”
@@ -92,9 +92,9 @@ subelement of root
 
 **field_comment**
 (optional)
-<br>Text that will be added as comment of the column in the stage data table
+<br>Text that will be added as comment of the column in the stage data table and probably in generated documentation
 
-**>fetch module specific keys<**
+**> fetch module specific keys <**
 <br> Depending of the data format and transport, there will be some more declarations necessary to identify the field in the source data. These properties can be added here. They must be documented in the fetch module documentation.
 
 The order of elements in the array should be used for parsing positional data (csv, excel etc)..
@@ -107,12 +107,12 @@ This array must contain at least one target description. Fields, that are mapped
 **table_name**
 (mandatory)
 <br>Name of the target table.(Must be defined in the data_vault_model section
-<br>*"rexmp_customer_hub" | "rgopd_ad_click_sat"
+<br>*"rexmp_customer_hub" | "rgopd_ad_click_sat"*
 
 **target_column_name**
 (optional)
 <br>Name of the column in the target table. If not defined, the field_name will be used
-<br>*"customer_number"
+<br>*"customer_number"*
 
 **target_column_type**
 (optional)
@@ -143,565 +143,205 @@ is rare but possible).
 <br>true = exclude the field from the calculation of the diff hash an therefore from the historization change detection
 
 **prio_in_diff_hash**
+(optional, default=0)
+<br>depending on the implementation the order of concatination of fields for the diff hash calculation is determined by the target_column name. This property provides more explicit control. Implicit ordering will still be applied to columns of same prio.  When columns are added to productive satellites this will allow  placing new columns behind already existing ones during concatination.
 
-optional, default=0
+**hash_cleansing_rules**
+(optional)
+<br>object containing properties to describe a cleansing of the data before it is used in the hash. 
+<br>→ see "hash_cleansing_rules"
 
-depending on the implementation the order of concatination of fields for the diff hash calculation is determined by the target_column name. This property provides more explicit control. Implicit ordering will still be applied to columns of same prio.  When columns are added to productive satellites it should allow to place new columns behind existing one during concatination.
+**column_content_comment**
+(optional, default=comment of the field)
+<br>comment, that will be added to the column in the data vault model. Default it the comment of the field
 
- 
+## data_vault_model[]
 
+**storage_component**
+(optional)
+<br>Identification of the storage, this part of the model is placed. If not defined, there is only one storage component Valid valued depend on the processing modules and the overall architecture.
+<br>*"main_dwh_db" | "big_data_storage"*
 
- 
-
-hash_cleansing_rules
-
-optional
-
-contains different properties to describe a cleansing of the data before it is used in the hash. 
-
-→ hash_cleansing_rules
-
-column_content_comment
-
-optional
-
-comment, that will be added to the column in the data vault model. Default it the comment of the field
-
- 
-
-data_vault_model[]
-json key
-
-rules
-
-function / description
-
-example
-
-storage_component
-
-optional
-
-Identification of the storage, this part of the model is placed. If not defined, there is on ly one storage component
-
-main_dwh_db
-
-big_data_storage
-
-schema_name
-
-mandatory
-
-Name of the database schema, the tables are located. (this may also be the “database name”, since different database engines, adress this differently)
+**schema_name**
+(mandatory)
+<br>Name of the database schema, the tables are located. (this may also be the “database name”, since different database engines, adress this differently)
 
 Especially for situations, where the schema name must also be used to provide dev/test/prod stages, it is recommended to declare parsable placeholders in the schema name. Those will be filled an runtime by the process, depending on the stage it runs in.
+<br>*"rvlt_accounting"*
 
-rvlt_accounting
+**tables[]**
+(mandatory)
+<br>list of all tables, located in the declared schema
 
-tables[]
+→ see tables
 
-mandatory
+### tables[]
 
-list of all tables, located in the declared schema
+**table_name**
+(mandatory)
+<br>Nname of the database table. 
+<br>*"raccn_account_hub"*
 
-->tables
+**stereotype**
+(mandatory)
+<br>Data Vault Stereotype of the table. Valid values are: hub, lnk, sat, msat, esat
+<br>Depending on the stereotype, different properties have to be provided. The stereotype controls the processing for the load. The class of a column, generated for a mapped field is derived on the stereotype of the table as follows:
 
-tables[]
-json key
+hub: mapped field is a business key except it is explicitly declared not to be (exclude_from_key_hash=true)
 
-rules
+lnk:  mapped field is a dependent child key except it is explicitly declared not to be (exclude_from_key_hash=true)
 
-function / description
+msat&sat:  mapped field is part of the satellite
 
-example
+esat: there must not be any mapping of fields to an esat
 
-table_name
+**table_content_comment**
+(optional)
+<br>Comment to add to the table in the database
 
-mandatory
+**storage_component**
+(optional, default=storage_component on schema level)
+<br>If the data vault tables are distributed over different storage engines (e.g. for keeping big data out of expensive database storage), this property can be used to identify the location.  Valid values are depending on the implementation
+<br>*"fast_bi_db" |"big_data_storage_gcp" |"big_data_storage_hadoop"*
 
-name of the database table. 
+**model_profile_name**
+(optional, default is model_profile_name declared on pipeline level)
+<br> Name of the model profile to be used. The model profile defines the names and types of data vault specific columns, declares the ruleset for hashing and more. Declartion on table level allows interconnection between different profiles in the same model
+<br> *"postgres_main"*
 
-raccn_account_hub
-
-stereotype
-
-mandatory
-
-Data Vault Stereotype of the table:
-
-hub,lnk,sat,msat,esat
-
+### "hub" specific properties
  
+**hub_key_column_name**
+(mandatory)
+<br>Name of the hub key in the table
+<br>*"hk_raccn_account"*
 
-table_content_comment
-
-optional
-
-Comment to add to the table in the database
-
- 
-
-storage_component
-
-optional
-
-If the data vault tables are distributed over different storage engines (e.g. for keeping big data out of expensive database storage), this property can be used to identify the location.  Valid values are depending on the implementation
-
-fast_bi_db
-
-big_data_storage_gcp
-
-bis_data_storage_hadoop
-
-model_profile_name
-
-optional, default is model_profile_name declared on pipeline level
-
-Name of the model profile to be used. The model profile defines the names and types of data vault specific columns, declares the ruleset for hashing and more.
-
-postgres_main
-
-<stereotype specific properties>
-
- 
-
-for details see next chapters
-
- 
-
-Stereotype “Hub”
-json key
-
-rules
-
-function / description
-
-example
-
-hub_key_column_name
-
-mandatory
-
-Name of the hub key in the table
-
-hk_raccn_account
-
-Stereotype “lnk”
+### "lnk" specific properties
 Depending on mapped fields and the properties this can be a 
+* **normal link** 
+* **Link with dependend child keys**: Defined by mapping  a field to the link table (without excluding it from the key)
+* **recursive / hierarchical link**: is defined by recursive_parents declaration
 
-normal link
+**link_key_column_name**
+(mandatory)
+<br>Name of the link key in the table
+<br>*"lk_raccn_account_department"*
 
-dlink (Link with dependend child key): Is defined by mapping  a field to the link table (without excluding it from the key). Depending on the mapped field, this can be a non historized link
+**link_parent_tables[]**
+(mandatory)
+<br>List of the table_names of all hubs, this link is connecting. The order of the tables in the list can be relevant to the hashing order of the link key (depends on processing engine and project conventions).  In case, the processing engine enforces its own order, it should issue a warning, when the final order differs from the declarated.
+*"[“raccn_account_hub”, “raccn_department_hub”]"*
 
-hierarchical link: is defined by link_hierarchical_parents declaration
+**recursive_parents[]**
+(optional)
 
-json key
-
-rules
-
-function / description
-
-example
-
-link_key_column_name
-
-mandatory
-
-Name of the link key in the table
-
-lk_raccn_account_department
-
-link_parent_tables[]
-
-mandatory
-
-List of the table_names of all hubs, this link is referring to. The order of the tables in the list can be relevant to the hashing order of the link key.  In case, the processing engine enforces its own order, it muss issue a warning, when the order final order differs from the declarated.
-
-[“raccn_account_hub”, “raccn_department_hub”]
-
-recursive_parents[]
-
-optional
-
-List of recursive parent table declarations (e.g. for hierarchical links or “same as” links). Only tables that are link_parent_tables can be addressed here. The order of the tables in the list is relevant to the hashing order of the link key.  In case, the processing engine enforces its own order, it muss issue a warning, when the order final order differs from the declarated. How recursive parent businesskeys are ordered in relation to link parent businesskey is a decision of the engine
+List of recursive parent table declarations (e.g. for hierarchical links or “same as” links). Only tables that are link_parent_tables can be addressed here. The order of the tables in the list is relevant to the hashing order of the link key.  In case, the processing engine enforces its own order, it should issue a warning, when the final order differs from the declarated. How recursive parent businesskeys are ordered in relation to link parent businesskey is a decision of the engine
 
 → recursive_parents
 
-is_link_without_sat
+**is_link_without_sat**
+(optional)
+<br>must be set to true, to avoid warnings for links without an esat or sat.
 
-optional
+**tracked_field_groups[]**
+(optional,only valid on links for is_link_without_sat=true)
+<br>list of field groups, this link will be processed for. The field groups must align with mappings of fields that are used as businesskey in the hubs, the link is referring
 
-must be set to true, to avoid warnings for links without an esat or sat
+### recursive_parents[]
 
- 
+**table_name**
+(mandatory, table must also be in link_parent_tables )
+<br>name of the link_parent_table, that is referenced again 
+*"raccn_department_hub"*
 
-tracked_field_groups[]
+**recursion_name**
+(mandatory)
+<bk>Name of the recursion. The name should be usable to extend the hub key column names, since in general the additional hub key columns in the the link will be generated by adding the recursion name. The name is referenced by the "recursion_name" property of a field, to declare the field to be used for this recursion relation.
+<br>*"master"|"parent"|"duplicate"*
 
-optional, 
+**field_group**
+(mandatory)
+<br>:warning: Might not be necessay :warning: 
+<br>field group defining fields for the business key columns of the hub, that have to be used for this relation
+<br>*"fg1,fg2"
 
-only valid for is_link_without_sat=true
+### “Satellite/multiactive satellite” specific properties
 
-list of field groups, this link will be processed for. The field groups must align with mappings of field that are used as businesskey in the hubs, the link is referring
+**satellite_parent_table**
+(mandatory)
+<br>Name of the hub/link table, this satellite is connected to
+*"raccn_account_hub"*
 
- 
+**is_multiactive**
+(optional, default=false)
+<br>when set to true, the declaration and processing for multiactive satellites will be applied (no primary key, awarenes of multiple active rows for change detection)
 
-Release 0-6-0
+**is_historized**
+(optional, default = true)
+<br>when set to true (default) meta data columns for historization enddating will be added to the table and loading mechanism will process enddating functions
 
-link_key_assemble_rule
+**diff_hash_column_name**
+(mandatory when is_historized=true or a "completion load pattern" is used)
+<br> Name of the colum that will contains the diff_hash (might be ommitted, when the implementation is not using a diff hash)
+<br>*"rh_account_p1_sat"*
 
- 
-
-optional
-
-default: “p/p-r/p-d/ea”
-
-Defines the rule, how to order the businesskeys for the link key concatenatenation. See section below for detailed specification 
-
- 
-
- 
-
-Release 0-6-0
-
-link_key_explicit_content_order[]
-
-optional
-
-must contain all relevant columns of parents and link
-
-Specifies directly the order of businesskeys and dependent child key columns for hashing. Disables a link_key_assemble_rule
-
- 
-
-recursive_parents[]
-json key
-
-rules
-
-function / description
-
-example
-
-table_name
-
-mandatory
-
-name of the link_parent_table, that is referenced again 
-
-raccn_department_hub
-
-recursion_name
-
-mandatory
-
-Name of the recursion (=.
-
-The name should be usable to extend the hub key column names, since in general the additional hub key columns in the the link will be generated
-
-master
-
-field_group
-
-mandatory
-
-:warning: Might not be necessay :warning: field group defining fields for the business key columns of the hub, that have to be used for this relation
-
-fg1,fg2
-
-Stereotype “Satellite”
-json key
-
-rules
-
-function / description
-
-example
-
-satellite_parent_table
-
-mandatory
-
-Name of the hub/link table, this satellite is connected to
-
-raccn_account_hub
-
-is_multiactive
-
-optional, default=false
-
-when set to true, the declaration and processing for multiactive satellites will be applied (no primary key, awarenes of multiple active rows for change detection)
-
- 
-
-is_historized
-
-optional, default = true
-
-whent set to true (default) meta data columns for historization will be added to the table and loading mechanism may process enddating functions
-
- 
-
-diff_hash_column_name
-
-mandatory (normally)
-
-Colum that contains the diff_hash (might be ommitted, when the implementation is not using a diff hash)
-
-rh_account_p1_sat
-
-driving_keys[]
-
-optional
-
-must refer to a parent_key or dependent_child_key in the parent table of the satellite
-
-List of column names of the parent link, that are used as driving keys, to end former relations
+**driving_keys[]**
+(optional,must refer to a parent_key or dependent_child_key in the parent table of the satellite)
+<br>List of column names of the parent link, that are used as driving keys, to end former relations.
 
 In general, the name must match the final name of the key column in the link. Especially in case of recursive relation, the method of creating the key name must be taken into account.
+<br>*"[“hk_raccn_account”]" | "[“hk_rerps_artice”,”year”,”month”]"
 
-[“hk_raccn_account”]
+**max_history_depth**
+(optional)
+<br> depending on the implementation this will define a maximum depth of history in the satellite. Recommended thresholdtypes are: max_versions, max_valid_before_age
 
-[“hk_rerps_artice”,”year”,”month”]
+### "Esat"  specific properties
 
-deletion_detection_rules[]
+**satellite_parent_table**
+(mandatory, parent must be a link)
+<br>Name of the link table, this satellite is connected to
+<br>*"raccn_account_department_lnk"*
 
-optional
+**tracked_field_groups**
+(optional)
+<br> list of field groups, this esat will be processed for. The field groups must align with mappings of field that are used as businesskey in the hubs, the link of the esat is referring
 
-Defines rulsets for a full data or partial data deletetion detection
+**driving_keys[]**
+(optional,must refer to a parent_key or dependent_child_key in the parent table of the satellite)
+<br>List of column names of the parent link, that are used as driving keys, to end former relations.
 
-→ deletion_detection_rules
+In general, the name must match the final name of the key column in the link. Especially in case of recursive relation, the method of creating the key name must be taken into account.
+<br>*"[“hk_raccn_account”]" | "[“hk_rerps_artice”,”year”,”month”]"
 
-very special features
+**max_history_depth**
+(optional)
+<br> depending on the implementation this will define a maximum depth of history in the satellite. Recommended thresholdtypes are: max_versions, max_valid_before_age
 
-content_enddate_columns[]
+### "ref"  specific properties
 
-optional
-
-List of column  pairs, where an addtional enddate processing should be applied (might be interesting, when modification dates of the source are relevant for queries)
-
+**is_historized**
+(optional, default= true)
+<br>Defines, if the table will be historized by providing an enddate and using a diff hash
  
+**diff_hash_column_name**
+(mandatory)
+<br>Colum that contains the diff_hash to determine the existence of the data constellation
+<br>*"rh_country_iso_ref"*
 
-max_history_depth
 
-optional
 
-depending on the implementation this will define a maximum depth of history in the satellite. Recommended thresholdtypes are: max_versions, max_valid_before_age
-
- 
-
-Stereotype Esat
-json key
-
-rules
-
-function / description
-
-example
-
-satellite_parent_table
-
-mandatory
-
-Name of the link table, this satellite is connected to
-
-raccn_account_department_lnk
-
-tracked_field_groups
-
-optional
-
-list of field groups, this link will be processed for. The field groups must align with mappings of field that are used as businesskey in the hubs, the link of the esat is referring
-
- 
-
-driving_keys[]
-
-optional
-
- 
-
-List of column names of the parent link, that are used as driving keys, to end former relations
-
-[“hk_raccn_account”]
-
-[“hk_rerps_artice”,”year”,”month”]
-
-deletion_detection_rules[]
-
-optional
-
-Defines rulsets for a full data or partial data deletetion detection
-
-→ deletion_detection_rules
-
-max_history_depth
-
-optional
-
-depending on the implementation this will define a maximum depth of history in the satellite. Recommended thresholdtypes are: max_versions, max_valid_before_age
-
- 
-
-Stereotype ref
-json key
-
-rules
-
-function / description
-
-example
-
-is_historized
-
-optional, default= true
-
-Defines, if the table will be historized by providing an enddate and using a diff hash
-
- 
-
-diff_hash_column_name
-
-nearly mandatory when historized
-
-Colum that contains the diff_hash (might be ommitted, when the implementation uses other methods, then a hash)
-
-rh_country_iso_ref
-
-deletion_detection
-json key
-
-rules
-
-function / description
-
-example
-
-phase
-
-mandatory
-
-Declares the pipeline phase, the deletion detection will be applied. All other attributes depend on the phase (check out “phase definition for pipelines”)
-“fetch” for the fetch phase
- “load” for the load phase 
-
-load
-
-<stereotype specific properties>
-
-depend on phase
-
-for details see next chapters
-
- 
-
-Phase “Fetch”
-Properties for the deletion detection in the fetch phase highly depend on the source interface and implementation of the fetching module. The following properties are only suggestions
-
-json key
-
-rules
-
-function / description
-
-example
-
-satellite_tables[]
-
-must be declared in the model
-
-Name of the satellite table
-
- 
-
-key_fields[]
-
-must be declared in fields[]. The fields must be mapped to businesskeys of a parent of the satellite
-
-Names of the fields, used to retrieve the list of still available keys in the source.  The modell mapping provides the necessary join relation to the satellite tables for determening the currently valid values in the vault.
-
-load
-
-Phase “load”
-When the deletion detection is applied during the load phase, the followin properies must/may be set 
-
-json key
-
-rules
-
-function / description
-
-example
-
-deletion_rules[]
-
-mandatory
-
-List of deletion rules, in case different satellites need different approaches
-
-→ “load” deletion_rules[] 
-
-“load” deletion_rules[]
-json key
-
-rules
-
-function / description
-
-example
-
-rule_comment
-
-optional
-
-Name or short description of the rule. Enables more readable logging of exection progress and errors.
-
-“All satellites of customer”
-
-tables[]
-
-mandatory
-
-only declared satellite table names allowed
-
-List of satellite table names, on wich to apply the deletion detection
-
-“rsfdl_cusmomer_p1_sat”,”rsfdl_customer_p2_sat”
-
-partitioning_fields[]
-
-optional
-
-only declared field names are allowed
-
-List of fields (and therefore vault columns), that restrict the range of data. Only vault rows that are related to the available values in theses fields in the stage, will be checked and deleted, should they are missing in the stage.
-
-“market_id”
-
-join_path[]
-
-optional
-
-must begin with table containing at least one partitioning field
-
-must contain all tables of the rule
-
-Describes the join path in the model to get from the partitioning key to the direct parent of the tables, where deletion detection should be applied. Links will be represented by their Esat/Sat. Only in case of non historized links, the link itself can be declared here.
-
- 
-
-To detect deletion of all contract conditions of the delivered customers
-
-“customer_hub”,”customer_contract_esat”,”contract_condition_esat”
-
-Hash concat order rule declaration
-For hub keys  and diff hashes
+# Hash concat order rule declaration
+## For hub keys  and diff hashes
 The order of the fields for concantenation during hashing can completly be controlled by using the prio_in_hash_key and prio_in_diff hash declaration in the target section.
 
 Whithout declaration the order will be alphabetical with the target column name.
 
 The priority attrbutes have a higher siginificanc then the column name. So defining a priority on every mapping gives full control.
 
-For Link keys
+## For Link keys
+*This is only a draft and not implemented yet*
+
 Participation of fields in link keys is derived from the data model relations. An explicit declaration of the order is not yet possible, but will be added for edge cases later.
 
 Until then, the main control over the order of hashing in the link key is by applying ordering rules.
@@ -709,3 +349,126 @@ Until then, the main control over the order of hashing in the link key is by app
 There are various possibilities how to order the businesskeys of the multiple hubs / hub relations before concantenating them for hashing. Even though, not all execution engines might support the whole bandwidth, it should be defined in a standardizes way. Engines should reject unsupported patterns.
 
 Since the hash rules are an essential part of the interface, the following declaration standard is defined
+
+    syntax: [Group1] -> [group 2] ->…
+
+    One Group consists of :  <source elements class>/<ordering rules>
+    
+    Source elements classes are: 
+			“p” - (normal) parent tables 
+			“r” - recursive parent tables 
+			“d” - dependent child key elements 
+    
+    The sequence of source elements in the same group is not relevant
+    
+    Ordering rules are: 
+			“a” alphabethical target columnname
+			“e” explicit priorities
+			“p” same order as in the parent table
+			“o” order in declaration array(only possible for separated “p” and “r” source)
+			“t” alphabetical target table name
+
+	The sequence of Ordering rules in the same group define the hierarchy of criteria
+	
+Examples:
+
+* "p:op -> r:op -> d:ea" 
+    * "p:op" all bk of parent tables, taking first all bk first from first table in the "parent_tables" array and so on. Sorting the bk of the same table like in the parent table
+    * "r:op" all bk of recursive parent tables, taking first all bk first from first table in the "recursive_tables" array and so on. Sorting the bk of the same table like in the parent table
+    * "d:ea" all dependent child key fields, ordered by priority and name
+* "prd/ta"
+	* Order fields by their source table name and field name. Dependent child key fields have the link tables itseld as table name
+
+# Open concepts
+There are some concepts open to be defined later. These will result in some upcoming syntax elements:
+
+## Hash assembly rules
+
+**"lnk" specific properties/ link_key_assemble_rule**
+(drafted option, default: “p/p-r/p-d/ea”)
+<br>Defines the rule, how to order the businesskeys for the link key concatenatenation. See section "Hash concat order rule declaration"  for detailed specification 
+
+**"lnk" specific properties/link_key_explicit_content_order[]**
+(optional, must contain all relevant columns of parents and link
+<br>Specifies directly the order of businesskeys and dependent child key columns for hashing. Disables a link_key_assemble_rule
+
+
+
+**content_enddate_columns[]**
+(optional)
+<br>List of column  pairs, where an addtional enddate processing should be applied (might be interesting, when modification dates of the source are relevant for queries)
+
+
+## Deletion Detection
+Deletion detection can be implemented in multiple ways. DVPD will support declaratoin for some basic methods by using the following properties in the deletion_detection object.
+
+**"sat" specific properties/deletion_detection_rules[]**
+(optional)
+<br>Defines rulsets for a full data or partial data deletetion detection
+
+→ deletion_detection_rules
+
+### deletion_detection 
+subelement of root 
+
+**phase**
+(mandatory)
+<br>Declares the pipeline phase, the deletion detection will be applied. All other attributes depend on the phase (check out “phase definition for pipelines” in the concept)
+* “fetch” for the fetch phase
+*  “load” for the load phase 
+
+### “Fetch” phase properties
+
+Properties for the deletion detection in the fetch phase depend highly on the source interface and implementation of the fetching module. The following properties are only suggestions
+
+**satellite_tables[]**
+(must be declared in the model)
+<br>Name of the satellite tables, where the deletion detection will be applied for
+
+**key_fields[]**
+(must be declared in fields[]. The fields must be mapped to businesskeys of a parent of the satellites)
+<br>Names of the fields, used to retrieve the list of still available keys in the source.  The modell mapping provides the necessary join relation to the satellite tables for determening the currently valid values in the vault.
+
+### “load” phase properties
+
+When the deletion detection is applied during the load phase, the followin properies must/may be set 
+
+**deletion_rules[]**
+(mandatory)
+<br>List of deletion rules, in case different satellites need different approaches
+
+→ “load” deletion_rules[] 
+
+### “load” deletion_rules[]
+
+**rule_comment**
+(optional)
+<br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
+<br>*“All satellites of customer”*
+
+**satellite_tables[]**
+(mandatory,only declared satellite table names allowed)
+<br>List of satellite table names, on wich to apply the deletion detection
+<br>“rsfdl_cusmomer_p1_sat”,”rsfdl_customer_p2_sat”
+
+**partitioning_fields[]**
+(optional,only declared field names are allowed)
+<br>List of fields (and therefore vault columns), that restrict the range of data. Only vault rows that are related to the available values in theses fields in the stage, will be checked and deleted, should they are missing in the stage.
+<br>*“market_id”*
+
+**join_path[]**
+(optional,must begin with table containing at least one partitioning field,must contain all tables of the rule)
+<br>Describes the join path in the model to get from the partitioning key to the direct parent of the tables, where deletion detection should be applied. Links will be represented by their Esat/Sat. Only in case of non historized links, the link itself can be declared here. Declaration of the esat is necessary, since links might have multiple esat/sat with different meanings.
+ 
+Example:
+
+    Model: customer_hub(custId)->customer_contract_lnk/esat->
+	             contract(contId)->contract_from_customer_p1_sat
+	
+	satellite_tables: contract_p1_sat
+	
+	partitioning_fields: custId
+	
+	join_path: customer_hub,customer_contract_esat
+	
+	This will delete all acitve contract_from_customer_p1_sat rows, where the customer id is in stage but not the contId(=Hub key of satellite)
