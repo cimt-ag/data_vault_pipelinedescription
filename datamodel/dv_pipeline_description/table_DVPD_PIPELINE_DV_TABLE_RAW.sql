@@ -21,17 +21,18 @@
 
 CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_RAW (
 	meta_inserted_at timestamp default now(),
-	pipeline_name text NULL,
-	schema_name text NULL,
-	table_name text NULL,
-	stereotype text NULL,
-	hub_key_column_name text NULL,
-	link_key_column_name text NULL,
-	diff_hash_column_name text NULL,
-	satellite_parent_table text NULL,
-	is_link_without_sat text NULL,
-	is_historized text NULL,
-	model_profile_name text NULL
+	pipeline_name varchar(255) NULL,
+	schema_name varchar(255) NULL,
+	table_name varchar(255) NULL,
+	stereotype varchar(255) NULL,
+	hub_key_column_name varchar(255) NULL,
+	link_key_column_name varchar(255) NULL,
+	diff_hash_column_name varchar(255) NULL,
+	satellite_parent_table varchar(255) NULL,
+	is_link_without_sat varchar(255) NULL,
+	is_historized varchar(255) NULL,
+	model_profile_name varchar(255) NULL,
+	table_content_comment varchar(3000) NULL
 );
 
 comment on table dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_RAW is

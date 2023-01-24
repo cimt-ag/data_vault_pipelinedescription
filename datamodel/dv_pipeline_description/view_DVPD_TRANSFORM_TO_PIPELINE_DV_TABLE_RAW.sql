@@ -39,6 +39,7 @@ pipeline_name
 , json_array_elements(tables)->>'is_link_without_sat' as is_link_without_sat
 , json_array_elements(tables)->>'is_historized' as is_historized 
 , json_array_elements(tables)->>'model_profile_name' as model_profile_name 
+, json_array_elements(tables)->>'table_content_comment' as table_content_comment
 from data_vault_schema_basics;
 
 comment on view dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_DV_TABLE_RAW is

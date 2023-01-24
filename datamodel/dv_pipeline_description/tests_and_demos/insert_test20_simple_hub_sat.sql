@@ -41,8 +41,9 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_20_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_20_aaa"},
-				{"table_name": "rtjj_20_aaa_p1_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_20_aaa_HUB","diff_hash_column_name": "RH_rtjj_20_aaa_P1_SAT"}
+				{"table_name": "rtjj_20_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_20_aaa","table_content_comment":"Hub aaa created for test20"},
+				{"table_name": "rtjj_20_aaa_p1_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_20_aaa_HUB"
+																			,"diff_hash_column_name": "RH_rtjj_20_aaa_P1_SAT","table_content_comment":"Satellite  created for test20"	}
 				]
 		}
 	]

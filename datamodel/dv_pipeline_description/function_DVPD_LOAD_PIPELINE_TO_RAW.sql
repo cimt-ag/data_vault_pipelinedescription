@@ -97,7 +97,8 @@ insert
 	satellite_parent_table,
 	is_link_without_sat,
 	is_historized,
-	model_profile_name)
+	model_profile_name,
+	table_content_comment)
 select
 	pipeline_name,
 	schema_name,
@@ -109,7 +110,8 @@ select
 	satellite_parent_table,
 	is_link_without_sat,
 	is_historized,
-	model_profile_name 
+	model_profile_name,
+	table_content_comment
 from
 	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_raw;
 

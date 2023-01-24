@@ -153,8 +153,8 @@ def main(file_to_deploy="#all#", file_to_stop=None, die_on_error=False, **kwargs
 
 
 if __name__ == '__main__':
-    #main(die_on_error=True)
+    main(die_on_error=True)
 
     #main(file_to_stop='00_dvpd_90_deploy_dvpd_automated_testing_base',die_on_error=True)
-    main(file_to_stop='00_dvpd_95_testcases_dvpd',die_on_error=True)
+    #main(file_to_stop='00_dvpd_95_testcases_dvpd',die_on_error=True)
 

@@ -2,7 +2,7 @@
 with target as (
 select distinct pipeline_name, 'stage_rvlt' as stage_schema_name, 's'||substring(pipeline_name,2) stage_table_name
 from dv_pipeline_description.dvpd_pipeline_DV_table
-where pipeline_name like 'test21%'
+where pipeline_name like 'test20%'
 ) /* */
 , model_profile as (select property_value load_date_column_name 
 from target tgt
@@ -61,6 +61,13 @@ select tbl.table_name , 31 block
 ,E'); 'script
 from target tgt
 join dv_pipeline_description.dvpd_pipeline_dv_table tbl on tbl.pipeline_name =tgt.pipeline_name
+union
+select tbl.table_name , 33 block
+,1 reverse_order
+,'COMMENT ON TABLE '||tbl.schema_name ||'.'||tbl.table_name   || ' IS '''|| table_content_comment || '''; 'script
+from target tgt
+join dv_pipeline_description.dvpd_pipeline_dv_table tbl on tbl.pipeline_name =tgt.pipeline_name
+where table_content_comment is not null
 union
 select tbl.table_name , 39 block
 ,1 reverse_order
