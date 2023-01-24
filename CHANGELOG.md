@@ -1,9 +1,21 @@
 # Release 0.5.4
-### features
-- Ordering of the stage table columns in the ddl, can now be adapted via configuration and more sorting
 
+### features
+- table comments are now added to DDL Scripts
+- Ordering of the stage table columns in the ddl, can now be adapted via configuration and more sorting
+- job instance framework added for deployment
+
+### bugfixes
+- existence of field_type declaration is checked now
+- existence of link parents is checked now
+- process step generator corrected (no more unecessary steps)
+
+### documentation
+- apache license added
+- documentation about the core syntax added
 
 # Release 0.5.3
+
 ### bugfixes
 - process plan for recursive link setting with field grouped esats is now correct
 
