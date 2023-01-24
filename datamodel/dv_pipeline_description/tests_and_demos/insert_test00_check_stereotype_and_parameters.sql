@@ -1,3 +1,21 @@
+-- =====================================================================
+-- Part of the Data Vault Pipeline Description Reference Implementation
+--
+-- Copyright 2023 Matthias Wegner mattywausb@gmail.com
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+-- =====================================================================
+
 
 DELETE FROM dv_pipeline_description.dvpd_dictionary where pipeline_name = 'test00_check_stereotype_and_parameters';
 INSERT INTO dv_pipeline_description.dvpd_dictionary
@@ -18,6 +36,8 @@ VALUES
 		      , {"field_name": "F4_BK_FFF_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_FFF_HUB"}]}
 		      , {"field_name": "F5_BK_GGG_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_GGG_HUB"}]}
 		      , {"field_name": "F6_DC_FFF_GGG_XXX_DLINK_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_FFF_GGG_XXX_DLNK_WITHOUT_LINK_KEY_COLUMN"}]}
+		      , {"field_name": "F7_XXX_FIELD_WITHOUT_TYPE", "targets": [{"table_name": "rtjj_00_FFF_GGG_XXX_DLNK_WITHOUT_LINK_KEY_COLUMN"}]}
+		      , {"field_name": "F8_XXX_FIELD_WITH_EMPTY_TYPE", 		"field_type": " ", "targets": [{"table_name": "rtjj_00_FFF_GGG_XXX_DLNK_WITHOUT_LINK_KEY_COLUMN"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

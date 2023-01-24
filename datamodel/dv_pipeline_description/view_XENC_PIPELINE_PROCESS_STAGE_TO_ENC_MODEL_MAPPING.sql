@@ -1,3 +1,22 @@
+-- =====================================================================
+-- Part of the Data Vault Pipeline Description Reference Implementation
+--
+-- Copyright 2023 Matthias Wegner mattywausb@gmail.com
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+-- =====================================================================
+
+
 --drop view if exists dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_ENC_MODEL_MAPPING cascade;
 
 create or replace view dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_ENC_MODEL_MAPPING as 
@@ -86,5 +105,8 @@ where (pdc.dv_column_class in ('key','xenc_bk_hash','xenc_bk_salted_hash', 'xenc
 		and pstdmmb.dv_column_class = 'diff_hash')
 --order by table_name ,column_block,column_name -- for debugging
 ;
+
+comment on view dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_ENC_MODEL_MAPPING is
+ '[Encryption Extention] Derived mapping of columns, that will be loaded to the encryption key store (ENC_MODEL)';
 
 -- select * from dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_ENC_MODEL_MAPPING order by pipeline,table_name,process_block;										

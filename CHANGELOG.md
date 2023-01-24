@@ -1,3 +1,29 @@
+# Release 0.5.4
+
+### features
+- table comments are now added to DDL Scripts
+- Ordering of the stage table columns in the ddl, can now be adapted via configuration and more sorting
+- job instance framework added for deployment
+
+### bugfixes
+- existence of field_type declaration is checked now
+- existence of link parents is checked now
+- process step generator corrected (no more unecessary steps)
+
+### documentation
+- apache license added
+- documentation about the core syntax added
+
+# Release 0.5.3
+
+### bugfixes
+- process plan for recursive link setting with field grouped esats is now correct
+
+### code refactoring
+- aligend deployment manager and jobless deployment to other project for better update compatibility
+- added job instance framework to jobless for better compatibility to other projects
+- renaming of jobless csv files list to allow copy paste into other projects 
+
 # Release 0.5.2
 - added "is_nullable" column to column result views (used for DDL Rendering)
 - added utility Script to render Create table statements (not yet for xenc staging)

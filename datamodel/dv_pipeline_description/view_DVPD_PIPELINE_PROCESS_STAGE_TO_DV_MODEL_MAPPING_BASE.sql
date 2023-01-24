@@ -1,3 +1,22 @@
+-- =====================================================================
+-- Part of the Data Vault Pipeline Description Reference Implementation
+--
+-- Copyright 2023 Matthias Wegner mattywausb@gmail.com
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+-- =====================================================================
+
+
 --drop view if exists dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE cascade;
 
 create or replace view dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE as 
@@ -88,7 +107,8 @@ select distinct
 	,ppp.stereotype 
 	,pdc.column_name 
 	,pdc.dv_column_class  
-	,case when pfte.field_name is not null then pfte.field_name 
+    -- ,case when pfte.field_name is not null then pdc.column_name  -- legacy generator compatible  (Stage = Target, will fail on multiple mappings to same target)
+	,case when pfte.field_name is not null then pfte.field_name   
 		  when process_block ='_A_' or is_implicit_suffix or ptapbc.non_general_process_count =0 then pdc.column_name 
 	  		 else pdc.column_name||process_block  
 	 end stage_column_name
@@ -118,5 +138,8 @@ left join dvpd_pipeline_field_target_expansion_with_implicit_recursion pfte on p
 --and ppp.pipeline like 'test50%'
 --order by table_name,process_block ,column_name 
 ;
+
+comment on view dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE is
+ 'processes specific mapping of fields to stage and target columns for every target table of a pipeline. (Base elements only) ';
 
 -- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE order by pipeline,table_name,process_block;										

@@ -2,7 +2,7 @@ mandantory,type,schema_name,name
 
 1,table,dv_pipeline_description,DVPD_STEREOTYPE_CHECK_MATRIX
 
-1,view,dv_pipeline_description,DVPD_CHECK_FIELD_TARGET_TABLE
+1,view,dv_pipeline_description,DVPD_CHECK_FIELD_SPECIFICS
 1,view,dv_pipeline_description,DVPD_CHECK_HUB_SPECIFICS
 1,view,dv_pipeline_description,DVPD_CHECK_LINK_SPECIFICS
 1,view,dv_pipeline_description,DVPD_CHECK_MODEL_RELATIONS

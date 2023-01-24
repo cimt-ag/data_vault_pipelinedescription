@@ -1,3 +1,21 @@
+#  =====================================================================
+#  Part of the Cimt Data Vault Python Framework
+#
+#  Copyright 2023 cimt ag
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+# limitations under the License.
+# =====================================================================
+
 # Module to connect to an external resource
 #
 # Resource: Postgresql database containing the major data warehouse tables and the metadata
@@ -30,7 +48,7 @@ INI_CONF_CONNECTION_TYPE_DICT = {'owner': {'user': 'owner_user', 'password': 'ow
                                  'mart_general': {'user': 'mart_general_user', 'password': 'mart_general_password'}}
 
 
-def pg_data_warehouse_get_connection(connection_type: DwhConnectionType):
+def pg_data_warehouse_getConnection(connection_type: DwhConnectionType):
     """Reads configuration for the resource from environment and returns a new connection"""
     database = None
     user = None

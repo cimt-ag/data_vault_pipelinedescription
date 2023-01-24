@@ -1,3 +1,22 @@
+-- =====================================================================
+-- Part of the Data Vault Pipeline Description Reference Implementation
+--
+-- Copyright 2023 Matthias Wegner mattywausb@gmail.com
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+-- =====================================================================
+
+
 -- drop view if exists dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN cascade;
 
 create or replace view dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN as 
@@ -13,7 +32,8 @@ select distinct
 from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte
 join dv_pipeline_description.dvpd_pipeline_dv_table pdt  on pdt.table_name =pfte.target_table 
 														and pdt.pipeline_name = pfte.pipeline_name 
-where field_group <> '_A_'
+where field_group <> '_A_'  
+and recursion_name='' --MWG 22020708
 union
 -- field groups declared in model
 select distinct
@@ -207,7 +227,7 @@ Select
   ftfgr_hub.pipeline_name 
   ,ftfgr_hub.table_name 
   ,ftfgr_hub.stereotype
-  ,ftfgr_hub.field_group
+  ,ftfgr_link.field_group
   ,ftfgr_hub.fg_rule 
   ,pdtlp.recursion_name 
 from final_table_field_group_relation ftfgr_hub 
@@ -216,7 +236,6 @@ join dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp on pdtlp.p
 															and pdtlp.is_recursive_relation
 join final_table_field_group_relation ftfgr_link on ftfgr_link.pipeline_name = ftfgr_hub.pipeline_name 
 												and ftfgr_link.table_name = pdtlp.table_name 
-												and ftfgr_link.field_group = ftfgr_hub.field_group 
 )
 -- >>>>> Final view <<<<
 select 
@@ -240,6 +259,10 @@ select
   ,field_group
   ,recursion_name
   ,fg_rule 
-from additional_recursive_hub_processes;
+from additional_recursive_hub_processes
+;
+
+comment on view dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN is
+ 'List of necessary processes (identified by the process_block) for every target table of a pipeline. ';		
 
 -- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN order by pipeline,table_name,process_block;										

@@ -1,3 +1,21 @@
+-- =====================================================================
+-- Part of the Data Vault Pipeline Description Reference Implementation
+--
+-- Copyright 2023 Matthias Wegner mattywausb@gmail.com
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+-- =====================================================================
+
 
 DELETE FROM dv_pipeline_description.dvpd_dictionary where pipeline_name = 'test01_check_model_relations';
 INSERT INTO dv_pipeline_description.dvpd_dictionary
@@ -24,9 +42,13 @@ VALUES
 			,	{"table_name": "rtjj_01_BBB_HUB",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_01_BBB_HUB"}
 			,	{"table_name": "rtjj_01_CCC_XXX_SAT_WITH_UNKNOWN_PARENT",	"stereotype": "sat","satellite_parent_table":"rtjj_01_CCC_XXX_UNKNOWN_HUB","diff_hash_column_name": "rh_rtjj_01_CCC_XXX_SAT_WITH_UNKNOWN_PARENT"}
 			,	{"table_name": "rtjj_01_AAA_CCC_XXX_LINK_WITH_UNKNOWN_PARENT", "stereotype": "lnk",	"link_key_column_name": "LK_rtjj_01_AAA_CCC_XXX_LINK_WITH_UNKNOWN_PARENT",
-																									"link_parent_tables":["rvlt_test_jj","rtjj_01_AAA_HUB","rtjj_01_CCC_XXX_UNKNOWN_HUB"]}
+																									"link_parent_tables":["rtjj_01_AAA_HUB","rtjj_01_CCC_XXX_UNKNOWN_HUB"]}
 			,	{"table_name": "rtjj_01_AAA_CCC_XXX_DLINK_WITH_UNKNOWN_PARENT", "stereotype": "lnk","link_key_column_name": "rtjj_01_AAA_CCC_XXX_DLINK_WITH_UNKNOWN_PARENT",
-																									"link_parent_tables":["rvlt_test_jj","rtjj_01_AAA_HUB","rtjj_01_CCC_XXX_UNKNOWN_HUB"]}
+																									"link_parent_tables":["rtjj_01_AAA_HUB","rtjj_01_CCC_XXX_UNKNOWN_HUB"]}
+			,	{"table_name": "rtjj_01_AAA_CCC_XXX_LINK_WITH_UNKNOWN_RECURSIVE_PARENT", "stereotype": "lnk","link_key_column_name": "rtjj_01_AAA_CCC_XXX_LINK_WITH_UNKNOWN_RECURSIVE_PARENT",
+																									"link_parent_tables":["rtjj_01_AAA_HUB"]
+																								,"recursive_parents": [ {"table_name":"rtjj_XXX_UNKNOWN_HUB"
+																										,"recursion_name": "PARENT"}]}
 			,	{"table_name": "rtjj_01_BBB_CCC_XXX_ESAT_WITH_UNKNOWN_PARENT", "stereotype": "esat","satellite_parent_table":"rtjj_01_CCC_XXX_UNKNOWN_HUB"}
 			,	{"table_name": "rtjj_01_AAA_EEE_DONT_USE_AS_PARENT",	"stereotype": "sat","satellite_parent_table":"rtjj_01_AAA_HUB","diff_hash_column_name": "rh_rtjj_01_AAA_EEE_DONT_USE_AS_PARENT"}
 			,	{"table_name": "rtjj_01_FFF_XXX_SAT_WITH_BAD_PARENT",	"stereotype": "sat","satellite_parent_table":"rtjj_01_AAA_EEE_DONT_USE_AS_PARENT","diff_hash_column_name": "rh_rtjj_01_FFF_XXX_SAT_WITH_BAD_PARENT"}
