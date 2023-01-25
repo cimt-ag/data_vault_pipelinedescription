@@ -37,7 +37,7 @@ pipeline_name
 , json_array_elements(tables)->>'diff_hash_column_name' as diff_hash_column_name
 , json_array_elements(tables)->>'satellite_parent_table' as satellite_parent_table
 , json_array_elements(tables)->>'is_link_without_sat' as is_link_without_sat
-, json_array_elements(tables)->>'is_historized' as is_historized 
+, json_array_elements(tables)->>'is_enddated' as is_enddated 
 , json_array_elements(tables)->>'model_profile_name' as model_profile_name 
 , json_array_elements(tables)->>'table_content_comment' as table_content_comment
 from data_vault_schema_basics;

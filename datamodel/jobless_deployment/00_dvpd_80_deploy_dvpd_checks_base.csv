@@ -7,6 +7,6 @@ mandantory,type,schema_name,name
 1,view,dv_pipeline_description,DVPD_CHECK_LINK_SPECIFICS
 1,view,dv_pipeline_description,DVPD_CHECK_MODEL_RELATIONS
 1,view,dv_pipeline_description,DVPD_CHECK_MODEL_STEREOTYPE_AND_PARAMETERS
-1,view,dv_pipeline_description,DVPD_CHECK_XSAT_SPECIFICS
+1,view,dv_pipeline_description,DVPD_CHECK_SAT_SPECIFICS
 
 

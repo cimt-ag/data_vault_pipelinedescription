@@ -277,13 +277,13 @@ List of recursive parent table declarations (e.g. for hierarchical links or “s
 (optional, default=false)
 <br>when set to true, the declaration and processing for multiactive satellites will be applied (no primary key, awarenes of multiple active rows for change detection)
 
-**is_historized**
-(optional, default = true)
-<br>when set to true (default) meta data columns for historization enddating will be added to the table and loading mechanism will process enddating functions
+**is_enddated**
+(optional, default depends on model profile)
+<br>when set to true (default) meta data columns for historization enddating will be added to the table and loading process will execute enddating functions
 
 **diff_hash_column_name**
-(mandatory when is_historized=true or a "completion load pattern" is used)
-<br> Name of the colum that will contains the diff_hash (might be ommitted, when the implementation is not using a diff hash)
+(might be ommitted, when the implementation is not using a diff hash)
+<br> Name of the colum that will contain the diff_hash 
 <br>*"rh_account_p1_sat"*
 
 **driving_keys[]**
@@ -315,14 +315,18 @@ In general, the name must match the final name of the key column in the link. Es
 In general, the name must match the final name of the key column in the link. Especially in case of recursive relation, the method of creating the key name must be taken into account.
 <br>*"[“hk_raccn_account”]" | "[“hk_rerps_artice”,”year”,”month”]"
 
+**is_enddated**
+(optional, default depends on model profile)
+<br>when set to true (default) meta data columns for historization enddating will be added to the table and loading process will execute enddating functions
+
 **max_history_depth**
 (optional)
 <br> depending on the implementation this will define a maximum depth of history in the satellite. Recommended thresholdtypes are: max_versions, max_valid_before_age
 
 ### "ref"  specific properties
 
-**is_historized**
-(optional, default= true)
+**is_enddated**
+(optional, default depends on model profile)
 <br>Defines, if the table will be historized by providing an enddate and using a diff hash
  
 **diff_hash_column_name**

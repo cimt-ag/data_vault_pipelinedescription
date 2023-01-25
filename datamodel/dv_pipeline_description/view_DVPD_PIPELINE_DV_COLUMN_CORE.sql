@@ -135,7 +135,7 @@ select -- keys of parents
    ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.model_profile_name =pdt .model_profile_name 
-			 								and (mpmcl.stereotype = pdt.stereotype or ( mpmcl.stereotype = 'xsat_hist' and pdt.is_historized ))
+			 								and (mpmcl.stereotype = pdt.stereotype or ( mpmcl.stereotype = 'xsat_hist' and pdt.is_enddated ))
  where pdt.stereotype in ('sat','esat','msat')
  union 
 select -- own key column
@@ -189,7 +189,7 @@ select -- own key column
    ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.model_profile_name =pdt .model_profile_name 
-			 								and( mpmcl.stereotype = 'ref' or ( mpmcl.stereotype = 'ref_hist' and pdt.is_historized ) )
+			 								and( mpmcl.stereotype = 'ref' or ( mpmcl.stereotype = 'ref_hist' and pdt.is_enddated ) )
  where pdt.stereotype in ('ref')
  union 
  select -- diff_hash_column
@@ -203,7 +203,7 @@ select -- own key column
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
  left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
  				and mp.property_name ='diff_hash_column_type' 
- where pdt.stereotype in ('ref') and pdt.is_historized 
+ where pdt.stereotype in ('ref') and pdt.is_enddated 
  union
  select -- content
  	pdt.pipeline_name 

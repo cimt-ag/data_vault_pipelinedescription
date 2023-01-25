@@ -161,7 +161,7 @@ where stereotype ='xenc_lnk-ek'
  join dv_pipeline_description.dvpd_pipeline_dv_table cpdt on cpdt.pipeline_name = extp.pipeline_name 
  														and cpdt.table_name = extp.xenc_content_table_name
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.model_profile_name =extp.model_profile_name 
- 														and (mpmcl.stereotype = extp.stereotype  or ( mpmcl.stereotype = 'xsat_hist' and cpdt.is_historized ))
+ 														and (mpmcl.stereotype = extp.stereotype  or ( mpmcl.stereotype = 'xsat_hist' and cpdt.is_enddated ))
  where extp.stereotype in ('xenc_sat-ek','xenc_msat-ek')
  union 
   select -- encryption key index column

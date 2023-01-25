@@ -41,7 +41,7 @@ VALUES
 		{"schema_name": "rvlt_xenc_data", 
 		 "tables": [
 				{"table_name": "rxecd_24_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rxecd_24_aaa"}
-				,{"table_name": "rxecd_24_aaa_sat",		"stereotype": "sat","is_historized":false,"satellite_parent_table": "rxecd_24_aaa_hub"}
+				,{"table_name": "rxecd_24_aaa_sat",		"stereotype": "sat","is_enddated":false,"satellite_parent_table": "rxecd_24_aaa_hub"}
 				]
 		}
 		,{"schema_name": "rvlt_xenc_keys", 

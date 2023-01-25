@@ -32,9 +32,11 @@ VALUES
 ,"key_for_null_ghost_record": 	  "0000000000000000000000000000"
 ,"key_for_missing_ghost_record": "FFFFFFFFFFFFFFFFFFFFFFFFFFFF"
 ,"far_future_timestamp" : "2299-12-30 00:00:00"
+,"diff_hash_required":"true"
 ,"diff_hash_column_type"	: "CHAR(28)"
 ,"diff_hash_function"			: "sha-1"
 ,"diff_hash_encoding"		: "BASE64"
+,"is_enddated_default"   :  "true"
 ,"load_date_column_name" : "META_INSERTED_AT"
 ,"load_date_column_type" : "TIMESTAMP"
 ,"load_enddate_column_name" : "META_VALID_BEFORE"
@@ -56,4 +58,4 @@ VALUES
 select dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE('_default');
 
 
---select object_json->>'model_profile_name' model_profile_name ,json_object_keys(object_json) property_name ,object_json->>json_object_keys(object_json) property_valuefrom dv_pipeline_description.dvpd_json_storage where object_name  = '_default' and object_class ='model_profile'
+--select object_json->>'model_profile_name' model_profile_name ,json_object_keys(object_json) property_name ,object_json->>json_object_keys(object_json) property_value from dv_pipeline_description.dvpd_json_storage where object_name  = '_default' and object_class ='model_profile'

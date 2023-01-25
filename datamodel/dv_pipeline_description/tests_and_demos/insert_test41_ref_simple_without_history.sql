@@ -37,7 +37,7 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_41_aaa_ref",		"stereotype": "ref","is_historized": "false"}
+				{"table_name": "rtjj_41_aaa_ref",		"stereotype": "ref","is_enddated": "false"}
 				]
 		}
 	]

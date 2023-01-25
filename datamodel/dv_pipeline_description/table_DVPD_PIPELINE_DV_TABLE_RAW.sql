@@ -30,7 +30,7 @@ CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_RAW (
 	diff_hash_column_name varchar(255) NULL,
 	satellite_parent_table varchar(255) NULL,
 	is_link_without_sat varchar(255) NULL,
-	is_historized varchar(255) NULL,
+	is_enddated varchar(255) NULL,
 	model_profile_name varchar(255) NULL,
 	table_content_comment varchar(3000) NULL
 );

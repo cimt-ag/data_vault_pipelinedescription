@@ -29,7 +29,7 @@ select distinct
 	,diff_hash_column_name
 	,satellite_parent_table 
 	,is_link_without_sat
-	,is_historized
+	,is_enddated
 from dv_pipeline_description.dvpd_pipeline_dv_table;
 
 

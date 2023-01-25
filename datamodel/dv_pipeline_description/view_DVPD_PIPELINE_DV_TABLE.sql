@@ -30,7 +30,7 @@ select
 , upper(diff_hash_column_name) as diff_hash_column_name
 , lower(satellite_parent_table) as satellite_parent_table
 , coalesce(is_link_without_sat::bool,false) as is_link_without_sat
-, coalesce(is_historized ::bool,true) as is_historized 
+, coalesce(is_enddated ::bool,true) as is_enddated 
 , lower(coalesce( pdt.model_profile_name,pp.model_profile_name )) model_profile_name
 , table_content_comment
 from dv_pipeline_description.dvpd_pipeline_dv_table_raw pdt

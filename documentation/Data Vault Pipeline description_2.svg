@@ -1466,7 +1466,7 @@ AIRUKH/neFNWAAAAAElFTkSuQmCC" height="16" preserveAspectRatio="none"
     /></g
     ><g text-rendering="geometricPrecision" shape-rendering="crispEdges" font-family="sans-serif" transform="translate(1272,1275)"
     ><text x="6" xml:space="preserve" y="15" clip-path="url(#clipPath29)" stroke="none"
-      >is_historized=yes</text
+      >is_enddated=yes</text
     ></g
     ><g fill="gray" text-rendering="optimizeSpeed" font-family="sans-serif" transform="translate(1272,1252)" stroke="gray"
     ><line y2="19" fill="none" x1="0" clip-path="url(#clipPath64)" x2="150" y1="19"
@@ -1690,7 +1690,7 @@ aAbb9uW7i4v5F23/AVBY9IYyILQ7AAAAAElFTkSuQmCC" height="16" preserveAspectRatio="n
     /></g
     ><g fill="rgb(0,102,153)" text-rendering="geometricPrecision" shape-rendering="crispEdges" font-family="sans-serif" transform="translate(1295,1022)" stroke="rgb(0,102,153)"
     ><text x="6" xml:space="preserve" y="15" clip-path="url(#clipPath56)" stroke="none"
-      >is_historized=true</text
+      >is_enddated=true</text
     ></g
     ><g fill="gray" text-rendering="optimizeSpeed" font-family="sans-serif" transform="translate(1295,999)" stroke="gray"
     ><line y2="19" fill="none" x1="0" clip-path="url(#clipPath100)" x2="152" y1="19"
