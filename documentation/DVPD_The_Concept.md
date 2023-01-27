@@ -28,7 +28,7 @@ DVPD will act as the full information base to aggregate and transport all the in
 - Monitor technical indicators about the Data Vault content (Referential coherence, history depth and anomalies)
 - Monitor business data quality (Nothing we would define in the DVPD)
 
-![Bild](./images/Grundidee_DVPD.drawio.png)
+![Fig1](./images/Grundidee_DVPD.drawio.png)
 
 By using the DVPD as central exchange and information media, the tools are more loosly coupled. Adding or exchaning tools is more easy. Also the DVPD can be managed as an artifact, that can be versioned and processed in  CI/CD workflows (Testing, deployment).
 
@@ -62,7 +62,7 @@ The Data Vault modelling and loading concept define are the major requirements a
 Beside the pure structural description of the Data Vault modell, the full loading process (or at least the coding of it) needs some more information, that has to be stored in the DVPD.
 To determine these requirements, the following overall phase structure of a loading process is assumed:
 
-!(images/General_pipeline_process.drawio.png)
+![Fig2](images/General_pipeline_process.drawio.png)
 
 The approach is not restricted to raw vault loading. Busieness Vault loading works the same by using the transformation/aggregation resultset as input for the staging step.
 
@@ -122,7 +122,45 @@ Sources with multiple columns targeting the same column in the data vault are an
 In [Data Mapping taxonomie](./data_mapping_taxonomie.md) the complete variety of theses mapping constellation is investigated. DVPD will support all constellations described.
 
 ## Definition of deletion detection processing
-The methods of detection deleted entities in the source, depend on the increment pattern. All methods reling on special retrieval and parsing of source data will need special implementations. Parameters for this depend on the execution module. For cases, where the deletion detecion can be applied by cross checking the currently staged data against the data vault content, a generic approach and set of parameters will be provided.
+The methods to detect deleted entities in the source, depends on the increment pattern. All methods reling on special retrieval and parsing of source data will need special implementations. Parameters for this depend on the execution module. For cases, where the deletion detecion can be applied by cross checking the currently staged data against the data vault content, a generic approach and set of parameters will be provided.
+
+# Design priciple
+- The DVPD should be selfdescribing for everybody familiar with Data Vault modelling and loading
+- The description is driven primarily by the source structure. Changes to the source during the development should be incorporated as simple as possible, while ensuring consistency over all tables an processes. To achieve this the data vault model will be described only on table level as far as possible.
+- The most common model constallations and field mappings should be described with the least effort. This is achieved by using proper default values for many options, so you can leave out these declaration in most cases.
+- It should be possible to implement plausibility checks on the DVPD
+- It must be maintainable with a text editor
+   - human readable and arrangable to support readablity
+   - Copy/paste friendly = structure prevents accidential copy of critical properties without thinking about the necessary changes
+- Nearly free from conventions according naming and structure in sources and targets
+   - Conventions can be enforced or applied by the toolchain (Modelling tool, Generators)
+   - Also not every tool in the design phase must support all necessary properties, as long as the DVPD is complete (contains all information) when it enters the Code Generation/Deployment/Execution phase.
+- Parsing should be possible with a wide range of existing tools/frameworks
+
+# Main Syntax structure
+
+One DVDP is represented by a single json document. The root element contains general properies of the pipeline with subobjects to keep the details about field, table model end more.
+
+![fig](./images/dvpd_object_model.drawio.png)
+
+The naming and description of all attributes in the structure is documented in [Reference of core syntax](./Reference_of_core_syntax_elements.md)
+
+# Design decisions
+
+- **Table names must be unique** over the full model regardless of spreading the model over multiple databases or database schemas. Beside of this to be a good practice for Data Vault models in general, this simplifies identfication of the tables in the various references in the DVDP and during the processing
+- Links, that relate multiple times to the same hub (Hierarchial Link, Same As Link) are defined as **recursive link**. Since this a rare constellation, some more complex annotations are acceptable.  (see chapter below) 
+- Mapping different fields from the source to the same table column in the target is achievd by using the **field group** (see chapter below)
+- Basic declarations about names and types of the technical columns, hashing rules, ghost records, far future date etc. will be provided in a separate **Model profile** document. The DVPD must reference the Model Profile with its name.
+- Configuration of the **Deletion Detection** is separated on purpose from the pure model definition to prevent accidential copy/paste errors. Also the inclusion of tables in the deletion detecion mechanics needs an explicit declaration. Deriving the tables would lead to complex investigations about the behaviour, when something goes not as expected
+
+## Annotation of recursive parents
+Specifcation of a recursive parent relation consist of multiple elements
+- In the **recursive_parents** array of the link, the hub (already defined as parent) must be declared again. This additional relation must be identified with a "recursion_name". 
+- The "recursion_name" should represent the kind of relation and be useable to generate the additional hub key in the link and the additional stage column. (This is the only element, where the name of a relation describing element of the dvpd will be used in a generated name of the final data vault data modell)
+- The mapping of fields, that contain the additional businesskeys, must be marked with the same "recursion_name". 
+- Also the Target_column name in the mapping of the "recursion busniess key fields" must be adapted to point to the correct business key column of the hub (probably the name of the fields keeping the main businiess key)
+
+## field groups	
 
 
 ## Essential best practices for Data Vault models
