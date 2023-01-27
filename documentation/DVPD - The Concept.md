@@ -28,7 +28,7 @@ DVPD will act as the full information base to aggregate and transport all the in
 - Monitor technical indicators about the Data Vault content (Referential coherence, history depth and anomalies)
 - Monitor business data quality (Nothing we would define in the DVPD)
 
-![Bild](./images/Grundidee DVPD.drawio.png)
+![Bild](./images/Grundidee_DVPD.drawio.png)
 
 By using the DVPD as central exchange and information media, the tools are more loosly coupled. Adding or exchaning tools is more easy. Also the DVPD can be managed as an artifact, that can be versioned and processed in  CI/CD workflows (Testing, deployment).
 
@@ -62,7 +62,7 @@ The Data Vault modelling and loading concept define are the major requirements a
 Beside the pure structural description of the Data Vault modell, the full loading process (or at least the coding of it) needs some more information, that has to be stored in the DVPD.
 To determine these requirements, the following overall phase structure of a loading process is assumed:
 
-!(images/General pipeline process.drawio.png)
+!(images/General_pipeline_process.drawio.png)
 
 The approach is not restricted to raw vault loading. Busieness Vault loading works the same by using the transformation/aggregation resultset as input for the staging step.
 
