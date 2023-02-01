@@ -175,10 +175,11 @@ The naming and description of all attributes in the structure is documented in [
 - Configuration of the **Deletion Detection** is separated on purpose from the pure model definition to prevent accidential copy/paste errors. Also the inclusion of tables in the deletion detecion mechanics needs an explicit declaration. Deriving the tables would lead to complex investigations about the behaviour, when something goes not as expected
 - JSON syntax
     - all objects and property names in DVPD are written in **lower case with underscores** (snake case)
-	- Identfication of DVPD objects(tables, fields etc) in the JSON text are expressed as attributes in the object. This simplifies parsing, since there is no need to list all objects first. Also temporary inconsistencies  in the identifcations, that might appear during the development are parsable. They will be catched later by QA checking
+	- For simple attributes and objects, key names are chosen in singular form. Only key to adress arrays are named in plural form
+	- Identfication of DVPD objects(tables, fields etc) in the JSON text are expressed as attributes or array elements in the JSON object. This simplifies parsing, since there is no need to parse object names to get content. It also allows well formed JSON documents with intended DVPD inconsistencies  during during the design process of a pipeline. These inconsistencies must be catched later by QA checking
 
 
-## Declaraion of recursive parents
+## Declaration of recursive parents
 Declaraion of a recursive parent relation consist of multiple elements
 - In the **recursive_parents** array of the link, the hub (already defined as parent) must be declared again. This additional relation must be identified with a **recursion_name**. 
 - The "recursion_name" should describe the kind of relation and be useable to generate the name of the  additional hub key in the link and the additional stage column. (This is the only element, where the name of a relation describing element of the dvpd will be used in a generated name of the *final data vault data modell*)
@@ -187,8 +188,8 @@ Declaraion of a recursive parent relation consist of multiple elements
 
 ## Field groups	
 Field groups are used to specify the mapping of multiple fields, that are targeting the same table columns.  
-- For every "field to target mapping", the participation of this mapping in one or more field groups can be declared using the **field_groups** array
-- Tables without content (links/esat) can be limited to specific field groups for their loading by declaring **tracked_field_groups**
+- For every "field to target mapping", the participation of this mapping in one or more field group can be declared using the **field_groups** array
+- Tables without content (links/esat) can be limited to processed only with keys of specific field groups by declaring **tracked_field_groups**
 - Mappings without a field group delclaraion belong to the implicit field group "_A_" and participate in all field groups declared on other mappings in the DVPD
 - A single field group must only contain a set of fields, that do not overlap in their targets.
 - Tables will be loaded for every field group they get related with. This is determined by
@@ -197,12 +198,54 @@ Field groups are used to specify the mapping of multiple fields, that are target
 	- Derived from the field groups, detected on connected satellites
 	- Derived from the field groups of the parent
 
+## Model Profile
+All **basic properties of the data vault model and loading**, are defined in a model profile.
+- Hashing properties
+    - methods for keys and diff hashes
+	- DB data types for the keys and diff hashes
+	- Constants for ghost records and missing values
+	- Separator to use in the concatenation
+- Time values for far future and far past
+- Names and types for meta data columns
+
+These definitions might change over time or between different technical platforms. Therefore multiple model profiles can be declared. To support high consistency over the whole system, model profiles are kept seperatly from the DVPD document. The DVPD must refer to at least one model profile. When necessary, the model profile can be declared for every table, to enable the mixing of different settings.
+
+All expected properties of the model profile are specifiend in [Model Profile reference](./reference_of_model_profile.md).
 
 
-## Essential best practices for Data Vault models
-Data Vault has no further rules about structuring and naming of the objects in the modell. So in general, the DVPD must be open to support any kind von naming. Nevertheless. there are some best practices, which are highly recommended to support orientation in the model. 
-- Have uniqe table names over the whole modell, regardless of spreading the model over multiple databases or database schemas
-- Have uniqe names for the key columns (hub key/link key), and use the same name on all tables that are related
+# Derivation of target model an processing
+DVPD minimizes the amount of declaraions to describe model and load processing, by focussing on the source data structure and the target table model. This section describes how all other assest are derived from this base.
+
+![derivation tree](./images/Ableitung.png)
+
+## Data Vault model tables ##
+The following elements are derived
+- data columns of a table = all mapped fields deduplicated on target_column_name which defaults to the field name. Data type is target_column_type, which defaults to the field type and must be the same for all fields mapped to this target_column_name.
+    - business key columns = columns mapped to a hub an not explicitly excluded from hash key
+	- dependend child key columns = columns mapped to a link and not explicitly excluded from hash key
+- Key column of satellites = Key column of its parent
+- Hub Key columns in link = Key columns of all parents + recursive parents. Hub Key column names for recursive parents are created by concatenating the orginale hub key column and the recursion name
+- meta data columns are created depending on the table stereotype 
+	- deletion flag will be added for satellites
+	- load enddate column will be added when "is_endated" is set to true
+	
+It is recommended to order the columns during table creation in a convinient arragement (e.g. Meta->key->parent_key in alphabetical order ->diff hash->data columns in alphabetical order ).
+
+## Process steps ##
+For every table to load, there will be at least one process step. Multiple steps are needed for loading multiple fields to the same Data Vault Table column. Steps are determined as follows:
+- For all tables with field mappings that are restriced to a field group, plan a step for every field group
+- Plan a normal and an extra load step for hubs, that are recursivly linked 
+- Plan specific load steps for  satellites, where the parent has a field group specific step
+- Plan specific load steps for links, where their childs have a specfic field group step
+- Plan specific load steps for hubs, where their childs have a specfic field group step
+- Plan general steps for all tables, that have no specific load step
+
+The following figure shows differen scenarios, that must be solved and should be covered by an test setupts for the DVPD implementation.
+
+
+
+
+
 
 	
 
