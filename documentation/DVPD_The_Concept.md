@@ -5,13 +5,24 @@ Creative Commons License [CC BÝ-ND 4.0](https://creativecommons.org/licenses/by
 
 # Introduction
 
-Most Data Warehouse Platforms have unique properties and implementations depending on available budget, technology, types of data, types of usecases. Therefore the variety of tools for analyzing, modelling and implementing Data Warehouses ist large and will not get smaller in the future.
+Most Data Warehouse Platforms have unique properties and implementations depending on available budget, technology, types of data, types of usecases. Therefore the variety of tools for analyzing, modelling and implementing Data Warehouses is large and will not get smaller in the future.
 
 Even though the data vault approach provides a hugh leap to unifiy, generalize and standardize the modelling and loading of data, the toolset to implement data vault is fragmented and has mostly no interoperability.
 
-At cimt ag we developed and adapted multiple variants of tools and frameworks to support the modelling and loading, depending on the needs and capabilities of our customers. Exchangebilty of our tools between different teams/projects was very limited. One major issue was the lack of a technology independent approach to describe the major asset, we always create: **The Data Vault Pipeline**
+At cimt ag we developed and adapted multiple variants of tools and frameworks to support the modelling and loading of Data Vault, depending on the needs and capabilities of our customers. Exchangebilty of our tools between different teams/projects was very limited. One major issue was the lack of an independent approach to describe the major asset, we always create: **The Data Vault Pipeline**
 
-This concept defines a data structure with all necessary information to generate/implement/execute a data vault loading process. The structure is independent from any technology/product. It can be produced, converted and consumed by any tool, that wants to support it. This will allow development of tools with excellent functional support for a specific step in the implementation process rather then to trying solve all problems of a data warehouse more at once (and therefore more or less bad).
+This concept defines a data structure with all necessary information to generate/implement/execute a data vault loading process. The structure is independent from any technology or product. It can be produced, converted and consumed by any tool, that wants to support it. This will enable development/adoption/integration/chaining of tools that focus on specific steps in the implementation process. Rather then trying to solve all problems in one tool (that either will be very expensive or might not support all steps of the implementation on the necessary level), there will be a more loosly coupled set of tools with exchangable components, depending on the individual requirements of the project.
+
+## Release 0.x
+
+Currently the concept is under development. Event though many elements are already tested, there can be some minor changes due to upcoming insights from the proof of concept implementation.
+The release number will be the first global indicator identify the compatibilty of a spefic toolset.
+
+## License
+This concept is published under the Creative Commons License CC BY-ND 4.0. 
+
+It allows reusers to copy and distribute the material in any medium or format in **unadapted form only**, and only so long as attribution is given to the creator. The license allows for commercial use.
+
 
 # DVPD as information base in the ecosystem of a data vault plattform
 DVPD will act as the full information base to aggregate and transport all the information, collected or used in the various tasks to design, implement and operate a data warehouse plattform:
@@ -28,7 +39,7 @@ DVPD will act as the full information base to aggregate and transport all the in
 - Monitor technical indicators about the Data Vault content (Referential coherence, history depth and anomalies)
 - Monitor business data quality (Nothing we would define in the DVPD)
 
-![Fig1](./images/Grundidee_DVPD.drawio.png)
+![Fig1](./images/dvpd_basic_idea.drawio.png)
 
 By using the DVPD as central exchange and information media, the tools are more loosly coupled. Adding or exchaning tools is more easy. Also the DVPD can be managed as an artifact, that can be versioned and processed in  CI/CD workflows (Testing, deployment).
 
@@ -76,7 +87,7 @@ A complete set of require combinations is specified seperatly in  [Data Mapping 
 Beside the pure structural description of the Data Vault modell and the source data, the full loading process (or at least the coding of it) needs some more information, that has to be stored in the DVPD.
 To determine these requirements, the following overall phase structure of a loading process is assumed:
 
-![Fig2](images/General_pipeline_process.drawio.png)
+![Fig2](images/general_dv_pipeline_process.drawio.png)
 
 ### Deletion detection
 Also not every kind of deletion detection can be described by a general set of parameters, the following common patterns must be supported
@@ -216,7 +227,7 @@ All expected properties of the model profile are specifiend in [Model Profile re
 # Derivation of target model an processing
 DVPD minimizes the amount of declaraions to describe model and load processing, by focussing on the source data structure and the target table model. This section describes how all other assest are derived from this base.
 
-![derivation tree](./images/Ableitung.png)
+![derivation tree](./images/structure_derivation.drawio.png)
 
 ## Data Vault model tables ##
 The following elements are derived
@@ -240,9 +251,9 @@ For every table to load, there will be at least one process step. Multiple steps
 - Plan specific load steps for hubs, where their childs have a specfic field group step
 - Plan general steps for all tables, that have no specific load step
 
-The following figure shows differen scenarios, that must be solved and should be covered by an test setupts for the DVPD implementation.
+The following figure shows differen scenarios, that must be solved and should be covered by a test setup for the DVPD implementation.
 
-
+![Fig1](./images/process_generation_scenarios.drawio.png)
 
 
 
