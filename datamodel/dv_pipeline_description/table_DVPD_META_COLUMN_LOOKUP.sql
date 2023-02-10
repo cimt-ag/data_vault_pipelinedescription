@@ -19,7 +19,7 @@
 -- drop table dv_pipeline_description.DVPD_META_COLUMN_LOOKUP cascade;
 
 Create table if not exists dv_pipeline_description.DVPD_META_COLUMN_LOOKUP (
-  meta_inserted_at TIMESTAMP DEFAULT NOW(),
+  meta_inserted_at TIMESTAMP DEFAULT current_timestamp,
   stereotype VARCHAR(20),
   meta_column_name VARCHAR(60),
   meta_column_type VARCHAR(60),

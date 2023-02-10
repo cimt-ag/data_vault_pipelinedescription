@@ -19,7 +19,7 @@
 -- DROP TABLE dv_pipeline_description.dvpd_pipeline_field_target_expansion_raw;
 
 CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION_RAW (
-	meta_inserted_at timestamp default now(),
+	meta_inserted_at timestamp default current_timestamp,
 	pipeline_name text NULL,
 	field_name text NULL,
 	target_table text NULL,

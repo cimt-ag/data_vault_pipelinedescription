@@ -21,10 +21,10 @@
 
 
 Create table if not exists dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION (
-  meta_inserted_at TIMESTAMP DEFAULT NOW(),
+  meta_inserted_at TIMESTAMP DEFAULT current_timestamp,
   dv_column_class VARCHAR(40),
   stereotype VARCHAR(40),
-  stage_column_block int4
+  stage_column_block int
   ); 
 
 COMMENT on TABLE dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION 

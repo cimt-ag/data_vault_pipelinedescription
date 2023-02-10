@@ -29,10 +29,10 @@ select
 	,coalesce(upper(field_group) ,'_A_') field_group
 	,upper(coalesce (target_column_type,field_type)) as target_column_type
 	,coalesce(to_number(prio_in_key_hash,'9'),0) as prio_in_key_hash
-	,coalesce(exclude_from_key_hash::bool,false) as exclude_from_key_hash
+	,coalesce(exclude_from_key_hash::boolean,false) as exclude_from_key_hash
 	,coalesce(to_number(prio_in_diff_hash,'9'),0) as prio_in_diff_hash
-	,coalesce(exclude_from_diff_hash::bool,false) as exclude_from_diff_hash
-	,coalesce(needs_encryption::bool,false) as needs_encryption
+	,coalesce(exclude_from_diff_hash::boolean,false) as exclude_from_diff_hash
+	,coalesce(needs_encryption::boolean,false) as needs_encryption
 	,field_comment
 	,coalesce (column_content_comment ,field_comment ) column_content_comment
 from dv_pipeline_description.dvpd_pipeline_field_target_expansion_raw pfter

@@ -20,7 +20,7 @@
 -- DROP TABLE dv_pipeline_description.dvpd_pipeline_properties_raw cascade;
 
 CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_PROPERTIES_RAW (
-	meta_inserted_at timestamp default now(),
+	meta_inserted_at timestamp default current_timestamp,
 	pipeline_name text not NULL,
 	dvpd_version text NULL,
 	pipeline_revision_tag text NULL,

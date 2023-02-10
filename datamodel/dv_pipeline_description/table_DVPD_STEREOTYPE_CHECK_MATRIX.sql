@@ -20,7 +20,7 @@
 -- drop table if exists dv_pipeline_description.DVPD_STEREOTYPE_CHECK_MATRIX cascade;
 
 Create table if not exists dv_pipeline_description.DVPD_STEREOTYPE_CHECK_MATRIX (
-  meta_inserted_at TIMESTAMP DEFAULT NOW(),
+  meta_inserted_at TIMESTAMP DEFAULT current_timestamp,
   stereotype VARCHAR(20),
   needs_hub_key_column_name int,
   needs_link_key_column_name int,

@@ -29,8 +29,8 @@ select
 , upper(link_key_column_name) as link_key_column_name
 , upper(diff_hash_column_name) as diff_hash_column_name
 , lower(satellite_parent_table) as satellite_parent_table
-, coalesce(is_link_without_sat::bool,false) as is_link_without_sat
-, coalesce(is_enddated ::bool,mp_is_endated_default.property_value ::bool) as is_enddated 
+, coalesce(is_link_without_sat::boolean,false) as is_link_without_sat
+, coalesce(is_enddated ::boolean,mp_is_endated_default.property_value ::boolean) as is_enddated 
 , lower(coalesce( pdt.model_profile_name,pp.model_profile_name )) model_profile_name
 , table_content_comment
 from dv_pipeline_description.dvpd_pipeline_dv_table_raw pdt
