@@ -16,14 +16,15 @@
 -- limitations under the License.
 -- =====================================================================
 
--- DROP TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_FIELD_GROUP_RAW;
+ -- drop table dv_pipeline_description.DVPD_JSON_STORAGE cascade;
 
-CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_DRIVING_KEY_RAW (
-	meta_inserted_at timestamp default current_timestamp(),
-	pipeline_name text NULL,
-	table_name text NULL,
-	driving_key text NULL
-);
-
-comment on table dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_DRIVING_KEY_RAW is
- 'List of driving keys of every (e)sat table. raw = exact copy from dvpd document';
+  create table dv_pipeline_description.DVPD_JSON_STORAGE (
+  meta_inserted_at TIMESTAMP DEFAULT current_timestamp,
+  object_class VARCHAR(100),
+  object_name VARCHAR(100),
+  object_json VARCHAR(160000),
+  PRIMARY KEY ( object_class, object_name )
+  );
+  
+ comment on table  dv_pipeline_description.DVPD_JSON_STORAGE is 
+ 'Json input texts for profiles (pipelines will be placed here in later releases)';
