@@ -14,7 +14,7 @@ where mp.property_name = 'load_date_column_name'
 /* Start of the union */
 select tbl.table_name , 5 block
 ,1 reverse_order
-,E'-- >>> begin of: table_'||tbl.table_name||'.sql <<<'  script
+,E'-- >>> begin of: table_'||tbl.table_name||'.sql in '||tbl.schema_name||' <<<'  script
 from target tgt
 join dv_pipeline_description.dvpd_pipeline_dv_table tbl on tbl.pipeline_name =tgt.pipeline_name
 union
@@ -112,7 +112,7 @@ union
 -- Stage section
 select stage_table_name , 50 block
 ,1 reverse_order
-,'-- >>> begin of: table_'||stage_table_name||'.sql <<<'  script
+,'-- >>> begin of: table_'||stage_table_name||'.sql in '||tgt.stage_schema_name ||' <<<'  script
 from target tgt
 union
 select stage_table_name table_name, 51 block

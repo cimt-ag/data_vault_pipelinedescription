@@ -35,6 +35,7 @@ comment on view dv_pipeline_description.DVPD_TRANSFORM_TO_MODEL_PROFILE is
  'technical helper view. needed by the transformation of the dvpd json into the relational model. Contains postgresql specific json syntax';
 
 /*
+truncate table dv_pipeline_description.DVPD_MODEL_PROFILE_RAW;
 insert into dv_pipeline_description.DVPD_MODEL_PROFILE_RAW (model_profile_name,property_name,property_value) 
 SELECT model_profile_name,property_name,property_value FROM dv_pipeline_description.DVPD_TRANSFORM_TO_MODEL_PROFILE
 */
