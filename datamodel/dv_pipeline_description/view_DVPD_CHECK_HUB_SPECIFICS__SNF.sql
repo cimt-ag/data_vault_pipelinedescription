@@ -17,84 +17,55 @@
 -- =====================================================================
 
 
--- drop view if exists dv_pipeline_description.DVPD_CHECK_FIELD_SPECIFICS cascade;
-create or replace view dv_pipeline_description.DVPD_CHECK_FIELD_SPECIFICS as
+-- drop view if exists dv_pipeline_description.DVPD_CHECK_HUB_SPECIFICS cascade;
+create or replace view dv_pipeline_description.DVPD_CHECK_HUB_SPECIFICS as
 
-with target_existence as (
-select
-  sfm.pipeline_name
-  ,'Field'::TEXT  object_type 
-  ,sfm.field_name object_name
-  ,'DVPD_CHECK_FIELD_SPECIFICS'::text  check_ruleset
-  ,case when pdt.table_name is null then 'Unknown target_table: '|| sfm.target_table   
-    else 'ok' end  message
-from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm
-left join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = sfm.pipeline_name 
-										and pdt.table_name = sfm.target_table 
-)
-, target_aggregation as (
+with bk_count_for_tables as (
 select 
-pipeline_name
-,target_table
-,target_column_name
-,target_column_type
-,prio_in_key_hash
-,exclude_from_key_hash
-,prio_in_diff_hash
-,exclude_from_diff_hash
-,needs_encryption 
-,array_to_string(array_agg( field_name),'|') field_list
-,array_to_string(array_agg(recursion_name),'|') recursion_list
-,array_to_string(array_agg(field_group),'|') field_group_list
-from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm
-group by 1,2,3,4,5,6,7,8,9
+	pdt.pipeline_name 
+	,pdt.table_name  
+	,count (sfm.field_name ) bk_count
+from dv_pipeline_description.dvpd_pipeline_dv_table pdt
+left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm ON pdt.table_name = lower(sfm.target_table  )
+			and sfm.pipeline_name = pdt.pipeline_name 
+			and not sfm.exclude_from_key_hash
+where pdt.stereotype ='hub'   
+group by 1,2
 )
-, target_constellation_count as (
 select 
-pipeline_name , target_table ,target_column_name
-,  array_to_string(array_agg(distinct field_list),'|')
-|| '[type:'||array_to_string(array_agg (distinct  target_column_type),'|')||'] '
-|| '[prio_in_key:'||array_to_string(array_agg (distinct cast(prio_in_key_hash as varchar)),'|')||'] '
-|| '[exclude from key:'||array_to_string(array_agg (distinct cast(exclude_from_key_hash as varchar)),'|')||'] '
-|| '[prio_in_diff_hash:'||array_to_string(array_agg (distinct cast(prio_in_diff_hash as varchar)),'|')||'] '
-|| '[exclude_from_diff_hash:'||array_to_string(array_agg (distinct cast(exclude_from_diff_hash as varchar)),'|')||'] '
-|| '[needs_encryption:'||array_to_string(array_agg (distinct cast(needs_encryption as varchar)),'|')||'] '
-		as comparison_report
-,count(1) constellation_count
-from target_aggregation 
-group by 1,2,3
-)
-, target_specification_consistency as ( 
-select
-  pipeline_name
-  ,'column'::TEXT  object_type 
-  ,target_table||'.'||target_column_name object_name
-  ,'DVPD_CHECK_FIELD_SPECIFICS'::text  check_ruleset
-  ,case when constellation_count >1  then 'Inconsistent specifiation: '|| comparison_report   
-    else 'ok' end  message
-from target_constellation_count
-)
-, field_type_declaration_test as (
-select -- field type declaration
-  dpfp.pipeline pipeline_name
-  ,'Field'::TEXT  object_type 
-  ,dpfp.field_name object_name
-  ,'DVPD_CHECK_FIELD_SPECIFICS'::text  check_ruleset
-  ,case when dpfp.field_type is null or length(trim(dpfp.field_type))<1 then 'field_type not declared' 
-    else 'ok' end  message
-from dv_pipeline_description.dvpd_pipeline_field_properties dpfp 
-)
-select * from target_existence
+	pipeline_name 
+ 	,'Table'::TEXT  object_type 
+ 	, table_name  object_name 
+ 	,'DVPD_CHECK_HUB_SPECIFICS'::text  check_ruleset
+	, case when bk_count = 0 THEN 'No business key defined for the hub'
+		else 'ok' end :: text message
+from bk_count_for_tables
 union
-select * from target_specification_consistency
-union
-select * from field_type_declaration_test
-;
+(with hk_count as (
+select 
+	pipeline_name 
+	,hub_key_column_name 
+	,count(1) hk_count
+	,array_to_string(array_agg(table_name ),', ') table_list 
+from dv_pipeline_description.dvpd_pipeline_dv_table pdt
+where stereotype = 'hub' and hub_key_column_name is not null
+group by 1,2
+)
+select 
+	pipeline_name 
+ 	,'Hub Key'::TEXT  object_type 
+ 	, hub_key_column_name object_name 
+ 	,'DVPD_CHECK_HUB_SPECIFICS'::text  check_ruleset
+	, case when hk_count > 1 THEN 'Hub key name used for multiple hubs: '||table_list
+		else 'ok' end :: text message
+FROM hk_count);
 
-comment on view dv_pipeline_description.DVPD_CHECK_FIELD_SPECIFICS IS
-	'Checks for bad fields properties (missing targets, inconsistent mappings to same target column, missing properties)';
+comment on view dv_pipeline_description.DVPD_CHECK_HUB_SPECIFICS IS
+	'Checks for hub specific rules (busniess key declared, Hash key name collision)';
 
--- select * from dv_pipeline_description.DVPD_CHECK_FIELD_SPECIFICS order by 1,2,3
+
+
+-- select * from dv_pipeline_description.DVPD_CHECK_HUB_SPECIFICS order by 1,2,3
 
 
 
