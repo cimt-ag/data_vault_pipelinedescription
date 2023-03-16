@@ -2,12 +2,21 @@
 
 Deletion detection by comparing data vault against the source data might become very expensive for large datasets or even impossible, when the source only delivers partitions of its data.
 
-Partitioned deletion detection can be more efficient or the only way to provide a correct image of the delivered data.
+Partitioned deletion detection will still provide a way store a correct image of the delivered data in such cases.
+
+The basic requirements for using a partitioned deletion detection are:
+- partitions are identified by values in fields, that are stored in the data vault model
+- the incoming extract of data contains all rows for all partitions, that are touched by the extract (or in pseudo sql language: The extract has always a complete set of rows for all values for SELECT DISTICT partitioning columns FROM extract)
 
 The procedure for a single satellite is as follows:
-- select all active "keys" from the satellite that belong to the partition (aka. partitioning columns are equal to the partition field in the source partition)
-- create deletion records for all "keys", that are missing in the source partition
-- do enddatiin#####
+- select all active "keys" from the satellite that belong to the partition (partitioning columns in the vault contain the values of the distict partitioning values in the stage)
+- create deletion records for all "keys", that are missing in the stage
+- apply enddating (when used)
+
+Selecting all active keys that belong to the partition can be a complex taskt, depending on the distribution of the partitioning columns in the data vault model.
+The following picture provides the 
+
+
 
 
 
