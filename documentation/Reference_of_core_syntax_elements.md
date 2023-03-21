@@ -453,7 +453,7 @@ When the deletion detection is applied during the load phase, the followin prope
 
 **satellite_tables[]**
 (mandatory,only declared satellite table names allowed)
-<br>List of satellite table names, on wich to apply the deletion detection
+<br>List of satellite table names, on wich to apply the deletion detection rule
 <br>“rsfdl_cusmomer_p1_sat”,”rsfdl_customer_p2_sat”
 
 **partitioning_fields[]**
@@ -462,18 +462,27 @@ When the deletion detection is applied during the load phase, the followin prope
 <br>*“market_id”*
 
 **join_path[]**
-(optional,must begin with table containing at least one partitioning field,must contain all tables of the rule)
-<br>Describes the join path in the model to get from the partitioning key to the direct parent of the tables, where deletion detection should be applied. Links will be represented by their Esat/Sat. Only in case of non historized links, the link itself can be declared here. Declaration of the esat is necessary, since links might have multiple esat/sat with different meanings.
- 
+(optional,must begin with table containing at least one partitioning fields and with the most distance to the defined satellite_tables)
+<br>Describes the join path in the model to get from the tables with partitioning fields to the tables to delete. Links can(and should) be represented by one of their Esat/Sat. This will imply  a check to only use the last valid releation of a link. If links are directly used, validity of the relation is not checked.
+The path must be linear (no branching) and end at the parent of the satellite(s) to delete.
+
+
 Example:
 
-    Model: customer_hub(custId)->customer_contract_lnk/esat->
-	             contract(contId)->contract_from_customer_p1_sat
+    Model: customer_hub(country,custId)->customer_contract_lnk/esat->
+	             contract_hub(contId)->contract_p1_sat + contract_p2_sat
 	
-	satellite_tables: contract_p1_sat
 	
-	partitioning_fields: custId
+	satellite_tables: [contract_p1_sat,contract_p2_sat]
+	
+	partitioning_fields: [country]
 	
 	join_path: customer_hub,customer_contract_esat
 	
-	This will delete all acitve contract_from_customer_p1_sat rows, where the customer id is in stage but not the contId(=Hub key of satellite)
+	This will delete all acitve contract_from_customer_p1_sat rows, where the country of the customer is in stage but not the contId(=Hub key of satellite = second hub key in link)
+	
+	
+**Deletion_key_sql**
+(optional, used for cases, that can't be described by partitioning_fields and joins_path, only appliable for one table per rule)
+<br> To enable more complex scenarios for deletion detection, a Select statement can be provided, that determines all keys, wich have to be deleted in the target table. The Engine will insert deletion records for all theses keys. (If by ELT or ETL depends on the engine)
+ 	
