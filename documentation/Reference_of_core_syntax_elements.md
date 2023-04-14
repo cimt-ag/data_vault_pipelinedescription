@@ -440,7 +440,7 @@ When the deletion detection is applied during the load phase, the followin prope
 
 **deletion_rules[]**
 (mandatory)
-<br>List of deletion rules, in case different satellites need different approaches
+<br>List of deletion rules, in case different satellites need different approaches. Order of the the rules in this array must be obeyed.
 
 → “load” deletion_rules[] 
 
@@ -451,38 +451,38 @@ When the deletion detection is applied during the load phase, the followin prope
 <br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
 <br>*“All satellites of customer”*
 
-**satellite_tables[]**
+**satellites_to_delete[]**
 (mandatory,only declared satellite table names allowed)
 <br>List of satellite table names, on wich to apply the deletion detection rule. The satellites must share the same parent
 <br>“rsfdl_cusmomer_p1_sat”,”rsfdl_customer_p2_sat”
 
 **partitioning_columns[]**
 (optional,only declared field names are allowed)
-<br>List of Columns (and therefore vault columns), that define the range of data where stage has a complete set of rows. Only vault rows that are related to the available values in theses fields in the stage, will be checked and deleted, should they are missing in the stage.
+<br>List of Columns (and therefore vault columns), that define the range of data where stage has a complete set of rows (this can be content or even table keys). Only active satellite rows that are related to the staged values in these fields, will be checked for deletion. If this property is not set, a complete dataset is assumed to be in the stage table.
 <br>*“market_id”*
 
-**additional_join_tables[]**
-(optional,must begin with table containing at least one partitioning fields and with the most distance to the defined satellite_tables)
-<br>Describes the join path in the model to get from the tables with partitioning fields to the tables to delete. Links can(and should) be represented by one of their Esat/Sat. This will imply  a check to only use the last valid releation of a link. If links are directly used, validity of the relation is not checked.
-The path must be linear (no branching) and end at the parent of the satellite(s) to delete.
-
+**join_path[]**
+(optional,must contain all tables need to be joined to reach the partitioning columns)
+<br>Describes the join path in the model to get from the tables to delete to the tables with partitioning fields. The path begins with the parent table of all listed satellites to delete. The path must not branch except when adding satellites to provide partitioning columns or restrict the validity of links. The path can skip unnecessary tables (e.g. hubs, of which no businesskey is partition criteria).
 
 Example:
 
-    Model: customer_hub(country,custId)->customer_contract_lnk/esat->
-	             contract_hub(contId)->contract_p1_sat + contract_p2_sat
+    Model: contract_p1_sat + contract_p2_sat -> contract_hub(contId)
+				<-customer_contract_lnk/esat->
+				customer_hub(country,custId)
 	
+	satellite_tables: \[contract_p1_sat,contract_p2_sat]
 	
-	satellite_tables: [contract_p1_sat,contract_p2_sat]
+	partitioning_fields: \[country]
 	
-	partitioning_fields: [country]
+	join_path: \[customer_contract_lnk,customer_contract_esat,customer_hub]
 	
-	join_path: customer_hub,customer_contract_esat
-	
-	This will delete all acitve contract_from_customer_p1_sat rows, where the country of the customer is in stage but not the contId(=Hub key of satellite = second hub key in link)
+	This will delete all acitve rows from contract_from_customer_p1_sat and contract_from_customer_p2_sat where the country of the customer is in stage but not the contId
+	(=Hub key of satellite = second hub key in link)
 	
 	
 **active_keys_of_partition_sql**
-(optional, used for cases, that can't be described by partitioning_fields and joins_path, only appliable for one table per rule)
-<br> To enable more complex scenarios for deletion detection, a Select statement can be provided, that determines all active keys of a satellite for a specific partitiont. The Engine will compare the set ainsert deletion records for all theses keys. (If by ELT or ETL depends on the engine)
+(optional, used for cases, that can't be described by partitioning_fields and joins_path, only appliable for a single sattellite to delete)
+<br> To solve more complex scenarios for deletion detection, a Select statement can be provided, that determines all active keys of a satellite for a specific partition. The engine will only compare the given set with the staged data and insert deletion records accordingly . (If by ELT or ETL depends on the engine)
+"join_path" and "partitioning_columns" must be empty.
  	
