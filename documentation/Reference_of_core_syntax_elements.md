@@ -453,15 +453,15 @@ When the deletion detection is applied during the load phase, the followin prope
 
 **satellite_tables[]**
 (mandatory,only declared satellite table names allowed)
-<br>List of satellite table names, on wich to apply the deletion detection rule
+<br>List of satellite table names, on wich to apply the deletion detection rule. The satellites must share the same parent
 <br>“rsfdl_cusmomer_p1_sat”,”rsfdl_customer_p2_sat”
 
-**partitioning_fields[]**
+**partitioning_columns[]**
 (optional,only declared field names are allowed)
-<br>List of fields (and therefore vault columns), that restrict the range of data. Only vault rows that are related to the available values in theses fields in the stage, will be checked and deleted, should they are missing in the stage.
+<br>List of Columns (and therefore vault columns), that define the range of data where stage has a complete set of rows. Only vault rows that are related to the available values in theses fields in the stage, will be checked and deleted, should they are missing in the stage.
 <br>*“market_id”*
 
-**join_path[]**
+**additional_join_tables[]**
 (optional,must begin with table containing at least one partitioning fields and with the most distance to the defined satellite_tables)
 <br>Describes the join path in the model to get from the tables with partitioning fields to the tables to delete. Links can(and should) be represented by one of their Esat/Sat. This will imply  a check to only use the last valid releation of a link. If links are directly used, validity of the relation is not checked.
 The path must be linear (no branching) and end at the parent of the satellite(s) to delete.
@@ -482,7 +482,7 @@ Example:
 	This will delete all acitve contract_from_customer_p1_sat rows, where the country of the customer is in stage but not the contId(=Hub key of satellite = second hub key in link)
 	
 	
-**Deletion_key_sql**
+**active_keys_of_partition_sql**
 (optional, used for cases, that can't be described by partitioning_fields and joins_path, only appliable for one table per rule)
-<br> To enable more complex scenarios for deletion detection, a Select statement can be provided, that determines all keys, wich have to be deleted in the target table. The Engine will insert deletion records for all theses keys. (If by ELT or ETL depends on the engine)
+<br> To enable more complex scenarios for deletion detection, a Select statement can be provided, that determines all active keys of a satellite for a specific partitiont. The Engine will compare the set ainsert deletion records for all theses keys. (If by ELT or ETL depends on the engine)
  	
