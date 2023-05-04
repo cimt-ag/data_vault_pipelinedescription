@@ -1,5 +1,5 @@
 # DVPD Core Element Syntax Reference
-DVPD core elements describe here must be supported by any implementation in the same way. If an implementation leaves out elements for simplicity, it should implement a check and warning message, to prevent false assumptions.
+DVPD core elements described here must be supported by any implementation in the same way. If an implementation leaves out elements for simplicity, it should implement a check and warning message, to prevent false assumptions.
 
 The syntax must and can be extended by properties, needed for project specific solutions (e.g. data_extraction modules, data encryption frameworks). Documentation for these properties must be provided for every module in a separate document.
 
@@ -9,7 +9,7 @@ A DVPD is expressed with JSON syntax and contains the following attributes(Keys)
 
 **dvpd_Version**
 (mandatory)<br>
-Used to allow checking of compatibility. Must be set to the first version, that supports the used core elements
+Used to allow checking of compatibility. Must be set to the first version, that supports the used core elements. Minor version changes are kept backwardscompatible in Keywords and structure. Major version changes might modify structure, keywords and functionality.
 <br>*"1.0"*
 
 **pipeline_name**
@@ -340,43 +340,26 @@ subelement of root
 
 Deletion detection can be implemented in multiple ways. DVPD will support declaration for some basic methods by using the following properties in the deletion_detection object.
 
-**phase**
-(mandatory)
-<br>Declares the pipeline phase, the deletion detection will be applied. All other attributes depend on the phase (check out “phase definition for pipelines” in the concept)
-* “fetch” for the fetch phase
-*  “load” for the load phase 
-
-**>phase specific properties<** 
-<br>Depending on the phase, the properties can vary.
-
-
-### “Fetch” phase properties
-
-Properties for the deletion detection in the fetch phase depend highly on the source interface and implementation of the fetching module. The following properties are recommended suggestions
 
 **procedure**
 (mandatory)
 <br>provides the selection from different kind of procedures. Suggested valid values are:
-- "key_comparison" : Retrieve all (or a partition of) keys from the source, compare vault to the keys and delete keys from the vault, that are not present any more
-- "deletion_event" : Convert explicit deletion event messages into a deletion record
-
-**satellite_tables[]**
-(mandatory, must be declared in the model)
-<br>Name of the satellite tables, where the deletion detection will be applied for
+- "key_comparison" : Retrieve all (or a partition of) keys from the source, compare vault to the keys and create&stage deletion records for keys, that are not present any more
+- "deletion_event_transformation" : Convert explicit deletion event messages into a deletion record that is staged
+- "stage_comparison" : The data retrieved and staged includes a complete set or partitions of the complete set. By comparing the whole vault against the stage, deletion records are created during the load from stage to the vault
 
 **key_fields[]**
-(must be declared in fields[]. The fields must be mapped to businesskeys of a parent of the satellites)
+(mandatory for "key_comparison", fields must be declared in fields[]. The fields must be mapped to businesskeys of a parent of the satellites)
 <br>Names of the fields, used to retrieve the list of still available keys in the source.  The modell mapping provides the necessary join relation to the satellite tables for determening the currently valid values in the vault.
-
-### “load” phase properties
-
-When the deletion detection is applied during the load phase, the following properies must/may be set 
 
 **deletion_rules[]**
 (mandatory)
 <br>List of deletion rules. The order of the the rules in this array must be obeyed.
 
 → deletion_rules[] 
+
+**> procedure specific properties <**
+For other procedures, then the defined above there might be other properties necessary. 
 
 #### deletion_rules[]
 
@@ -420,7 +403,8 @@ Example:
 <br> To solve more complex scenarios for deletion detection, a Select statement can be provided, that determines all active keys of a satellite for a specific partition. The engine will only compare the given set with the staged data and insert deletion records accordingly . (If by ELT or ETL depends on the engine)
 "join_path" and "partitioning_columns" must be empty.
  	
-
+**> procedure specific properties <**
+For other procedures, then the defined above there might be other properties to be declared in the deletion_rule. 
 
 
 # Open concepts
