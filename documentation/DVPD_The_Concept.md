@@ -1,7 +1,7 @@
 # Data Vault Pipeline Description - The Concept
 (C) Matthias Wegner, cimt ag
 
-Creative Commons License [CC BÝ-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)
+Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)
 
 # Introduction
 

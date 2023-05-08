@@ -1,0 +1,65 @@
+<mxfile host="app.diagrams.net" modified="2023-05-08T16:21:31.058Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="TG3u8BRhE9iTx6DPmlEB" version="21.2.4" type="device">
+  <diagram id="VI2MsYMRK6vsuSSOfXVB" name="Seite-1">
+    <mxGraphModel dx="1420" dy="765" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#FFFFFF" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="2" value="Layer 0" parent="0" />
+        <mxCell id="3" value="&lt;div style=&#39;width: 73.8px;height:auto;word-break: break-word;&#39;&gt;&lt;div align=&quot;center&quot;&gt;&lt;/div&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-weight: bold; font-size: 16px; color: #ffffff; line-height: 18.5px;&quot;&gt;A&lt;/span&gt;&lt;/div&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-weight: bold; font-size: 16px; color: #ffffff; line-height: 18.5px;&quot;&gt;(F1,F2)&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=ellipse;perimeter=ellipsePerimeter;shadow=0;strokeWidth=0;strokeColor=none;fillColor=#1c4587;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=7.6;spacingRight=6;whiteSpace=wrap;gliffyId=792;" parent="2" vertex="1">
+          <mxGeometry x="69" y="145" width="80" height="51" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="&lt;div style=&#39;width: 74.333336px;height:auto;word-break: break-word;&#39;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-size: 12px; font-family: Arial; line-height: 14px;&quot;&gt; A_sat&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;rounded=1;arcSize=15;absoluteArcSize=1;shadow=0;strokeWidth=1;fillColor=#ffe599;strokeColor=#000000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=7.3333335;spacingRight=6;whiteSpace=wrap;gliffyId=1204;" parent="2" vertex="1">
+          <mxGeometry x="69" y="90" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5" style="shape=filledEdge;strokeWidth=2;strokeColor=#000000;fillColor=none;startArrow=none;startFill=0;startSize=6;endArrow=none;endFill=0;endSize=6;rounded=1;gliffyId=1258;exitX=0.5;exitY=0.0;exitPerimeter=0;entryX=0.5;entryY=1.0;entryPerimeter=0;edgeStyle=orthogonalEdgeStyle;" parent="2" source="3" target="4" edge="1">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="109" y="145" />
+              <mxPoint x="109" y="136.6666259765625" />
+              <mxPoint x="109" y="128.3333740234375" />
+              <mxPoint x="109" y="120" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6" value="&lt;div style=&#39;width: 52.68px;height:auto;word-break: break-word;&#39;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;IDA_F1&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#333333;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=1.16;spacingRight=0;whiteSpace=wrap;gliffyId=1460;" parent="2" vertex="1">
+          <mxGeometry x="10.75" y="10" width="58" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="&lt;div style=&#39;width: 78.6px;height:auto;word-break: break-word;&#39;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;CONTENT_A&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#333333;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=1.7;spacingRight=0;whiteSpace=wrap;gliffyId=1463;" parent="2" vertex="1">
+          <mxGeometry x="127" y="10" width="85" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="&lt;div style=&#39;width: 52.68px;height:auto;word-break: break-word;&#39;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;IDA_F2&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#333333;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=1.16;spacingRight=0;whiteSpace=wrap;gliffyId=1467;" parent="2" vertex="1">
+          <mxGeometry x="69" y="10" width="58" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="9" style="shape=filledEdge;strokeWidth=2;strokeColor=#999999;fillColor=none;startArrow=none;startFill=0;startSize=6;endArrow=block;endFill=1;endSize=6;rounded=1;gliffyId=1474;edgeStyle=orthogonalEdgeStyle;" parent="2" source="6" target="3" edge="1">
+          <mxGeometry width="17" height="132" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="27.73780632019043" y="40" />
+              <mxPoint x="27.73780632019043" y="170.5" />
+              <mxPoint x="69" y="170.5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="10" style="shape=filledEdge;strokeWidth=2;strokeColor=#999999;fillColor=none;startArrow=none;startFill=0;startSize=6;endArrow=block;endFill=1;endSize=6;rounded=1;gliffyId=1476;edgeStyle=orthogonalEdgeStyle;" parent="2" source="8" target="3" edge="1">
+          <mxGeometry width="46" height="39" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="85.98779296875" y="40" />
+              <mxPoint x="85.98779296875" y="60" />
+              <mxPoint x="29" y="60" />
+              <mxPoint x="29" y="170.5" />
+              <mxPoint x="69" y="170.5" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="11" style="shape=filledEdge;strokeWidth=2;strokeColor=#999999;fillColor=none;startArrow=none;startFill=0;startSize=6;endArrow=block;endFill=1;endSize=6;rounded=1;gliffyId=1480;exitX=0.2928932309150696;exitY=1.0;exitPerimeter=0;entryX=0.5;entryY=0.0;entryPerimeter=0;edgeStyle=orthogonalEdgeStyle;" parent="2" source="7" target="4" edge="1">
+          <mxGeometry width="46" height="39" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="151.89593505859375" y="40" />
+              <mxPoint x="151.89593505859375" y="65" />
+              <mxPoint x="109" y="65" />
+              <mxPoint x="109" y="90" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

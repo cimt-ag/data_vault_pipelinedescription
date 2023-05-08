@@ -476,3 +476,6 @@ Examples:
 * "prd/ta"
 	* Order fields by their source table name and field name. Dependent child key fields have the link tables itseld as table name
 
+(C) Matthias Wegner, cimt ag
+
+Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)
