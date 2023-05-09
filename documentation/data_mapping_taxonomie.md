@@ -7,7 +7,7 @@ Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-
 ---------
 
 To create a toolset for loading data into a data vault model, we need to determine the completeness of the toolset. 
-While we often focus on the variety of source technologies and formats or the different data vault stereotypes we mostly forget about the requirements coming from the pure arrangement of data in the incoming data stream and how it must be distributed to the target model. 
+Beside adressing the variety of source technologies and formats and the different data vault stereotypes we also need to fulfill  the requirements coming from the pure arrangement of data in the incoming data stream and how it must be distributed to the target model. 
 Generic modelling and loading approaches need to be able to provide at least the most common patterns. Universal descriptions like Data Vault Pipeline Description Standard (DVPD) should be able to cover all aspects.
 
 In the follwing, the possible basic mapping patterns are described. 
@@ -16,9 +16,9 @@ In the follwing, the possible basic mapping patterns are described.
 # Definitions
 When describing the data we classify the elements as follows:
 
-**field:** smallest element of source data. Will always be processed as unity.
+**field:** smallest element of source data. Will always be processed as unity. Will be stored in one or multiple columns in the data vault.
 
-**source row:** the fixed structure of fields, containing the data of one or more business-objects and their relation in a single row. 
+**source row:** the fixed structure of fields, containing the data of one or more business-objects and their relation in a single row/unit. 
 
 **table/hub/sat/link:** a table in the data vault model
 
@@ -28,10 +28,10 @@ When describing the data we classify the elements as follows:
 
 **table key/hub key/link key:** The join key of data vault model tables
 
-**content:** Data that is not used for identification, and just stored in the data model)
+**content:** Data that is not used for identification, and just stored in the data model
 
-# Flat Structure Assumption
-Data can be complex in multiple ways, especially when it comes to hierarchical data or document formats . The following approach relies on the assumption that all data structures can be flattened by deriving a relational table model. Therefore the source data can always be preprocessed/projected into one or multiple flat tables. The upcoming models assumes, that the incoming data is delivered as /transformed into a table. This does not exclude loading of hierarchical data as long as it is stored in a single column and parsed later.
+# Flat Structure Transformation
+Data can be complex in multiple ways, especially when it comes to hierarchical data or document formats. The following approach uses the source data representation after its transformaion into a single relational table model(all data is organized in Rows, every row contains all fields). Hierarchical data formats might need multiple transformations(one for each array). In that case, each of these particular transformations will relate to one of the described patterns. 
 
 # Informationtypes of data
 To define the variety of mappings, it is necessary to clarify the types of information, represented by a field.
@@ -39,25 +39,28 @@ To define the variety of mappings, it is necessary to clarify the types of infor
 - Identification of an object
 - Attribution or Measure of an object
 - relation between objects (might be “self” relating, hierarchical)
-- Attribution or Measure of a relation
+- Attribution or Measure in a relation
 
 *Note: The data vault main stereotypes map to this classification as follows.  hub=object / link=relation / satellite=attribution.*
 
-*2nd Note: data that is stored in key columns of degenerated link is also an identification type, since it is needed to identify attributes, that are attached by the satellite*
+*2nd Note: data that is stored in dependent child key columns of a link is also an identification type, since it is needed to identify attributes, that are attached with the satellite*
 
 # Basic Taxonomy
 The basic taxonomy describes the following possibilities, how fields can be **part of the same row**
 
-- There must be one, but might be multiple sets of fields to describe objects of the same class (e.g. a child and its parent)
+- There must be at least one set of fields to describe the objects. 
+- There might be multiple sets of fields to describe objects of the same class (e.g. a child and its parent)
 - There might be multiple relations between the same partners corresponding to different roles/responsibilities in the relation (e.g. driver of a car and the owner of a car)
 
-### M1 Single main object only with content
+### M1 Single main object with content only
 The source row contains
 
-- 1 set of fields with the business key
-- 1 set of fields with content
+- 1 set of fields with the business key of object A
+- 1 set of fields with content of object A
 
 ![m1 mapping](./images/source_mapping_m1.drawio.png)
+
+Example source: Table with product data
 
 ### M1E1 Single main object with partner relation 
 The source row contains
@@ -68,6 +71,8 @@ The source row contains
 
 ![m1e1 mapping](./images/source_mapping_m1e1.drawio.png)
 
+Example source: Table with employee data including the current department he is working 
+
 ### M1En Single main object with multiple relations
 The source row contains
 
@@ -76,6 +81,8 @@ The source row contains
 - more then 1 set of fields with the business key of object B representing another or the same relation
 
 ![m1en mapping](./images/source_mapping_m1en.drawio.png)
+
+Example source: Table with contract data including the id of the person,that receives the delivery and the id of the person that pays the bill
 
 ### M1LS1 Single main object with content on single relation
 The source row contains
@@ -87,15 +94,19 @@ The source row contains
 
 ![m1ls1 mapping](./images/source_mapping_m1ls1.drawio.png)
 
+Example source: Table with billing data, the id of the sold object and the price it was sold
+
 ### M1LSn Single main object with content on multiple relations
 The source row contains
 
 - 1 set of fields with the business key of object A
 - 1 set of fields with content of object A
-- more then 1 set of fields with the business key of object B
-- more then 1 set of field with content about different relations of A and B
+- 2 or more sets of fields with the business key of object B
+- 2 or more sets of field with content about different relations of A and B
 
 ![m1lsn mapping](./images/source_mapping_m1lsn.drawio.png)
+
+Example source: Table with contract data including the id and current delivery rating of the person,that receives the delivery and the id and current credibilty rating of the person that pays the bill
 
 ### M1E1P1 Single main object and single partner object, both with content
 The source row contains
@@ -107,15 +118,19 @@ The source row contains
 
 ![m1e1p1 mapping](./images/source_mapping_m1e1p1.drawio.png)
 
+Example source: Table with data of manufactured items and the product+product description, the item belongs to
+
 ### M1EnP1 Single main object with multiple relations and content for one partner
 The source row contains
 
 - 1 set of fields with the business key of object A
 - 1 set of fields with content of object A
-- more then 1 set of fields with the business key of object B representing another or the same relation
+- 2 or more sets of fields with the business key of object B representing another or the same relation
 - 1 set of fields with content of object B for one specific set of business keys
 
 ![m1enp1 mapping](./images/source_mapping_m1enp1.drawio.png)
+
+Example source: Table with contract data including the id, name and current delivery rating of the person,that receives the delivery and the id and current credibilty rating of the person that pays the bill
 
 ### MR1 single main object with self relation
 The source row contains
@@ -125,6 +140,8 @@ The source row contains
 - 2nd set of fields with the business key of object A (may share some field of first set) 
 
 ![mr1 mapping](./images/source_mapping_mr1.drawio.png)
+
+Example source: Table with company data and the id of the company that owns this company
 
 
 ### Mn Multiple object sets 
@@ -138,7 +155,9 @@ The source row contains
 ![mn mapping](./images/source_mapping_mn.drawio.png)
 
 
-#Combination Matrix
+## Combination Matrix
+
+The following table shows all of the upper combinations in a comprehensive way.
 
 |business key fieldsets of object A(main object)|Content fieldsets of object A|business key fieldsets of object B(related object)|Content fieldsets of B|Content fieldsets for relation|Estimated ocurrence in regular projects|Covered by pattern|
 | :---: | :---: | :---: | :---: | :---: | :---: |
