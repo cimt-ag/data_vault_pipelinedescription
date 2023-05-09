@@ -139,9 +139,9 @@ is rare but possible).
 (optional, default=0)
 <br>This property provides explicit control over the order of concatination of fields for the key hash calculation. It will overrule the implicit ordering, that is defeinde by the implementation. Implicit ordering will still be applied to columns of same prio. 
 
-**exclude_from_diff_hash**
+**exclude_from_change_detection**
 (optional, default=false, only useful on mappings to historized satellites)
-<br>true = exclude the field from the calculation of the diff hash an therefore from the historization change detection
+<br>true = exclude the field from the change detection. Depending on the method of the target, this will modify the comparison SQL or the calculation of the diff hash.
 
 **prio_in_diff_hash**
 (optional, default=0)
@@ -277,9 +277,17 @@ List of recursive parent table declarations (e.g. for hierarchical links or “s
 (optional, default=false)
 <br>when set to true, the declaration and processing for multiactive satellites will be applied (no primary key, awarenes of multiple active rows for change detection)
 
+**insert_changes_only**
+(optional, default depends on model profile)
+<br>when set to true, incoming data is only added to the satellite if it differs from the latest version stored.
+
 **is_enddated**
 (optional, default depends on model profile)
 <br>when set to true (default) meta data columns for historization enddating will be added to the table and loading process will execute enddating functions
+
+**use_diff_hash**
+(mandatory)<br>
+When set to true (default is defined in model profile), data change is detected by calculation of a hash value ober all relevant columns and comparison of the hash value against the latest stored satellite row for every key.
 
 **diff_hash_column_name**
 (might be ommitted, when the implementation is not using a diff hash)
