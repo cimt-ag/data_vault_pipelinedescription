@@ -18,9 +18,11 @@ The following elements are provided:
 - Automatic test of the compiler logic
     - Load reference data about the expected results of the compiler
 	- compare compiler resultes with exoected results
-	- Testsets
+	- Testsets (in the directory datamodel/dv_pipeline_description/tests_and_demos)
 - Automatic deployment of compiler and automatic tests
 - cimt framework for job execution logging
+
+All database objects reside in the database **schema "dv_pipeline_description"**.
 
 # Installation Guide
 
@@ -58,13 +60,46 @@ This should list only a tests with number 99 (Test, that have issues on purpose)
 
 # Procedures
 
-## Compile a DVPD
+## Compile a DVPD and retrieve result
+* insert the DVPD document into the table dvpd_dictionary (Example statements can be found in the Testsets) - this migh result in a format error, when the DVDP  is no well formed json document
+* transform the DVDP document into the relational structure of the compiler by executing "select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('#name of the pipeline');"
+* Open the view "Check" - There should be no annotation for the new pipeline. If so, change your DVPD and reload it
+* The compilers **results are available in the following views** (you need to filter for your pipeline name):
+    * **dvpd_pipline_properties**: General properties of the pipeline (e.g. fetch and load module, name of the stage table)
+    * **dvpd_pipeline_field_properties**: List of the fields and all properties needed for parsing the fields
+    * **dvpd_pipeline_table** : Data Vault Tables and defined
+	* **dvpd_pipeline_column**: Columns (including type and other properties) of all data vault tables loaded by the pipeline
+	* **dvpd_pipeline_table_driving_key**: Names of the driving key columns for every satellite table 
+	* **dvpd_pipeline_process_stage_to_dv_model_mapping**: Mapping of fields to stage and to data vault columns for everey process of every table of the pipeline
+	* **dpvd_pipeline_stage_table_columns**: Stage table columns and their properties
+	* **dvpd_pipeline_hash_input_field**: For every hash column in the stage table, the list of fields to concatenate + attributes to establish an ordering
 
-## Add / Change DB objects, that belong to the implementation
+## Add objects to the implementation
+* Add a new script with an appropriate file name
+* Add SQL instructions to the script and test it
+* Add necessary test cases to the test case catalog
+* Add new script filename to the appropriate deployment list
+* Add filenames of new test to the appropriate deployment list
+* Delete object from the database and test the automatic deployment 
 
-## Add a new test case
+## Change objects of the implementation
+* Change definition of the object in the appropriate script
+* Test changes, and adapt/add test cases
+* run automatic deployment to deploy all objects that might have been removed by cascading drop operations
+* Check result of automated test
 
 ## Prepare a new release
+* Drop complete dv_pipeline_description schema from the database
+* run full automated deployment
+* Review content of the compliler check view: dvpd_check
+* Review content of dvpd_atmtst_catalog
+* Review content of dpvd_atmtst_issues
+
+# Implementation documentation
+
+## Database object hierarchy
+For better understanding about the dependencies of the objects in the implementation please check out this diagram: [Reference implementation object structure.drawio](./images/Reference_implementation_object_structure.drawio.png)
+
 
 # Licence and Credits
 
