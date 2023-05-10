@@ -9,7 +9,7 @@ A DVPD is expressed with JSON syntax and contains the following attributes(Keys)
 
 **dvpd_Version**
 (mandatory)<br>
-Used to allow checking of compatibility. Must be set to the first version, that supports the used core elements. Minor version changes are kept backwardscompatible in Keywords and structure. Major version changes might modify structure, keywords and functionality.
+Used to allow checking of compatibility. Must be set to the first version, that supports the used core elements. Minor version changes are kept backwardscompatible. Major version changes might modify structure, keywords and functionality.
 <br>*"1.0"*
 
 **pipeline_name**
@@ -483,6 +483,8 @@ Examples:
     * "d:ea" all dependent child key fields, ordered by priority and name
 * "prd/ta"
 	* Order fields by their source table name and field name. Dependent child key fields have the link tables itseld as table name
+
+# Licence and Credits
 
 (C) Matthias Wegner, cimt ag
 

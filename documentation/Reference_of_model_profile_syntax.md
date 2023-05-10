@@ -9,6 +9,11 @@ A DVPD model profile is expressed with JSON syntax and contains the following at
 
 ## core elements
 
+**dvpd_Version**
+(mandatory)<br>
+Used to allow checking of compatibility. Must be set to the first version, that supports the used core elements. Minor version changes are kept backwardscompatible. Major version changes might modify structure, keywords and functionality.
+<br>*"1.0"*
+
 **model_profile_name**
 (mandatory)<br>
 Identifies the profile. The name is referenced by the DVPD property "model_profile_name" an DVPD Level and/or table level.
