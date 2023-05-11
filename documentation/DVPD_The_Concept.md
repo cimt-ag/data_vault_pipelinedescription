@@ -1,7 +1,15 @@
 # Data Vault Pipeline Description - The Concept
+
+## Credits and license
+
 (C) Matthias Wegner, cimt ag
 
 Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)
+
+This concept is published under the Creative Commons License CC BY-ND 4.0. 
+
+It allows reusers to copy and distribute the material in any medium or format in **unadapted form only**, and only so long as **attribution is given to the creator**. The license allows for commercial use. So incoporating the concept into a commercial product is allowed. 
+
 
 # Introduction
 
@@ -21,12 +29,8 @@ Even though the overall approach of the concept is very simple, some parts might
 
 Currently the concept is under development. Even though many elements are already tested, there can be some minor changes due to upcoming insights from the proof of concept implementation. The major release number 0 indicates, that changes are not backward compatible.
 
-To provide a global indicator about compatibilty of a spefic toolset to the concept, the evolution of the DVPD will be structured by a release number. For the same major release number, tools should be backward compatible. (Tools supporting 1.4 must also support 1.3, 1.2 ... but not 2.0)
+To provide a global indicator about compatibilty of a spefic toolset to the concept, the evolution of the DVPD will be structured by a release number. For the same major release number, tools should be backward compatible. (Tools supporting 1.4 must also support 1.3, 1.2 ..., Tools supporting 2.x may not support 1.x)
 
-## License
-This concept is published under the Creative Commons License CC BY-ND 4.0. 
-
-It allows reusers to copy and distribute the material in any medium or format in **unadapted form only**, and only so long as **attribution is given to the creator**. The license allows for commercial use. So incoporating the concept into a commercial product is allowed. 
 
 
 # DVPD as information base in the ecosystem of a data vault plattform

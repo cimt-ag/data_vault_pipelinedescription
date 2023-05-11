@@ -1,5 +1,14 @@
 # DVPD model profile syntax Reference
-DVPD model profiel syntax must be supported by any implementation in the same way. If an implementation leaves out elements for simplicity, it should implement a check and warning message, to prevent false assumptions.
+
+
+## Credits and license
+(C) Matthias Wegner, cimt ag
+
+Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)
+
+# Overview
+
+DVPD model profiel syntax must be supported by any implementation in the same way. If an implementation leaves out elements for simplicity, it should implement a check and warning message, to prevent false expectations.
 
 The syntax must and can be extended by properties, needed for project specific solutions (e.g. data_extraction modules, data encryption frameworks). Documentation for these properties must be provided for every module in a separate document.
 
@@ -16,9 +25,9 @@ Used to allow checking of compatibility. Must be set to the first version, that 
 
 **model_profile_name**
 (mandatory)<br>
-Identifies the profile. The name is referenced by the DVPD property "model_profile_name" an DVPD Level and/or table level.
+Identifies the profile. The name is referenced by the DVPD property "model_profile_name" an DVPD level and/or table level.
  
-At least one model profile with the name "_default" must be declared in a project.
+At least one model profile with the name "_default" must be declared in a project. It will be applied to every DVPD, that omits the declaration of a model_profile.
 
 <br>*Example: "postgresql_with_enddating"*
 
@@ -27,7 +36,7 @@ At least one model profile with the name "_default" must be declared in a projec
 Database column type to be used for the key columns. This must be a valid SQL type for the database used.
 <br>*Example: CHAR(28)*
 
-**table_key_hash_function
+**table_key_hash_function**
 (mandatory)<br>
 Name of the hash function to use when hashing data vault table keys (hub keys, link keys). Valid names depend on the implementation of the staging. Recommended values are common lowercase names of the functions(md5, sha-1, sha-256) 
 <br>*Example: sha-1*
@@ -35,7 +44,7 @@ Name of the hash function to use when hashing data vault table keys (hub keys, l
 **table_key_hash_encoding**
 (mandatory)<br>
 Name of the method to encode the hash value. This can be "binary" (default) or any other method supported by the database and implementation of the staging.
-Recommended values are common lowercase names of encoding methods: (binary, hex, base64)
+Recommended values are common lowercase names of methods for encoding binary values: (binary, hex, base64)
 <br>*Example: base64*
 
 **hash_concatenation_seperator**
@@ -45,8 +54,13 @@ Character or string of characters to be used as seperator when concatinating fie
 
 **hash_timestamp_format_sqlstyle**
 (mandatory)<br>
-Format description for converting timestamp values into a string. The syntax follows the sql syntax.
+Format description for converting timestamp values into a string before hashing. The syntax follows the sql syntax.
 <br>*Example:YYYY-MM-DD HH24:MI:SS.US"
+
+**hash_decimal_separator**
+(optional)<br>
+Character to be used as decimal separator, when converting numbers with decimals into a string before hashing. Default is ".".
+<br>*Example: ."
 
 **hash_null_value_string**
 (mandatory)<br>
@@ -57,14 +71,31 @@ String to be used for hashing, when a field contains a NULL value.
 (mandatory)<br>
 Hash value to be used for the ghost record, that will be addressed when all business keys are null in a delivered source record (will happen in optional foreign key relations). The encoding of the value depends on the table_key_hash_encoding. 
 
-<br>*Example: "0000000000000000000000000001" *
-
+<br>*Example: "0000000000000000000000000001"*
 
 **key_for_missing_ghost_record**
 (mandatory)<br>
 Hash value to be used for the ghost record, that will be addressed when a business rule cannot find a relation. The encoding of the value depends on the table_key_hash_encoding. 
 
 <br>*Example:"FFFFFFFFFFFFFFFFFFFFFFFFFFFE"*
+
+**content_for_missing_string**
+(mandatory)<br>
+String value to be used in the missing ghost record für varchar columns. Columns must accept data with at least this length.
+
+<br>*Example:"#missing#" (9 Characters)*
+
+**content_for_missing_number**
+(mandatory)<br>
+Numeric value to be used in the missing ghost record for number columns. Columns must accept data with at least this length.
+
+<br>*Example:NULL*
+
+**content_for_missing_timestamp**
+(mandatory)<br>
+Timeatmp value to be used in the missing ghost record for timestamp columns. 
+
+<br>*Example: 1900-01-01 00:00:00*
 
 **use_diff_hash_default**
 (mandatory)<br>
@@ -86,19 +117,19 @@ Name of the hash function to use when hashing diff hashes. Valid names depend on
 **diff_hash_encoding**
 (mandatory)<br>
 Name of the method to encode the diff hash value. This can be "binary" (default) or any other method supported by the database and implementation of the staging.
-Recommended values are common lowercase names of encoding methods: (binary, hex, base64)
+Recommended values are common lowercase names of methods for encoding binary values: (binary, hex, base64)
 <br>*Example: base64*
 
 **is_enddated_default**
 (mandatory)<br>
-Determines if a enddate column will be added to the satellite and gets updated by the loading processing.
+Determines if a enddate column will be added to the satellite and gets updated by the loading processing. This can be overwritten via table specific properties.
 <br>*true"
 
 **far_future_timestamp**
 (mandatory, when enddating is used)<br>
 Timestamp to be used in the enddating column in new (not yet entdated) records.
 
-<br>*Example: 2299-12-30 00:00:00"
+<br>*Example: 2299-12-30 00:00:00*
 
 **load_enddate_column_name**
 (mandatory, when enddating is used)<br>
@@ -123,7 +154,7 @@ SQL datatype of the column, that keeps the insert timestamp of the current row.
 
 **deletion_flag_column_name**
 (mandatory)<br>
-Name of the column, that flags the current row to indicate, that the data for the business key is technically deleted/not existing in the source any more.
+Name of the column, wich marks the current row to indicate, that the data for the business key is technically deleted/not existing in the source any more.
 <br>*Example: META_IS_DELETED*
 
 **deletion_flag_column_type**
@@ -176,10 +207,6 @@ Name of the hash function to use when hashing diff for the encryption key tables
 **xenc_content_hash_encoding**
 (mandatory, when using the encryption extention)<br>
 Name of the method to encode the content hash value. This can be "binary" (default) or any other method supported by the database and implementation of the staging.
-Recommended values are common lowercase names of encoding methods: (binary, hex, base64)
+Recommended values are common lowercase names of methods for encoding binary values: (binary, hex, base64)
 <br>*BASE64*
 
-# Credits and copyright
-(C) Matthias Wegner, cimt ag
-
-Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)
