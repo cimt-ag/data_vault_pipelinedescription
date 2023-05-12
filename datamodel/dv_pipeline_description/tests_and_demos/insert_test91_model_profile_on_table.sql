@@ -62,7 +62,6 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
       ["rvlt_test_jj","rtjj_91_aaa_hub",8,"business_key","F1_BK_AAA_VARCHAR","VARCHAR(20)"],
       ["rvlt_test_jj","rtjj_91_aaa_hub",8,"business_key","F2_BK_AAA_DECIMAL","DECIMAL(20,0)"],
       ["rvlt_test_jj","rtjj_91_aaa_p1_sat",1,"meta","IA_T00","TIMESTAMP WITHOUT TIME ZONE"],
-      ["rvlt_test_jj","rtjj_91_aaa_p1_sat",1,"meta","ID_T00","integer"],
       ["rvlt_test_jj","rtjj_91_aaa_p1_sat",1,"meta","LI_T00","INT8"],
       ["rvlt_test_jj","rtjj_91_aaa_p1_sat",1,"meta","RS_T00","VARCHAR(100)"],
       ["rvlt_test_jj","rtjj_91_aaa_p1_sat",1,"meta","VB_T00","TIMESTAMP WITHOUT TIME ZONE"],

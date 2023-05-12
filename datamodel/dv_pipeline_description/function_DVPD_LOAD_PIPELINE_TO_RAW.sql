@@ -96,7 +96,9 @@ insert
 	diff_hash_column_name,
 	satellite_parent_table,
 	is_link_without_sat,
-	is_historized,
+	is_enddated,
+	has_deletion_flag,
+	uses_diff_hash,
 	model_profile_name,
 	table_content_comment)
 select
@@ -109,7 +111,9 @@ select
 	diff_hash_column_name,
 	satellite_parent_table,
 	is_link_without_sat,
-	is_historized,
+	is_enddated,
+	has_deletion_flag,
+	uses_diff_hash,
 	model_profile_name,
 	table_content_comment
 from

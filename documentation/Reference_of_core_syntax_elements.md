@@ -1,4 +1,5 @@
-DVPD core elements describe here must be supported by any implementation in the same way. If an implementation leaves out elements for simplicity, it should implement a check and warning message, to prevent false assumptions.
+# DVPD Core Element Syntax Reference
+DVPD core elements described here must be supported by any implementation in the same way. If an implementation leaves out elements for simplicity, it should implement a check and warning message, to prevent false assumptions.
 
 The syntax must and can be extended by properties, needed for project specific solutions (e.g. data_extraction modules, data encryption frameworks). Documentation for these properties must be provided for every module in a separate document.
 
@@ -8,7 +9,7 @@ A DVPD is expressed with JSON syntax and contains the following attributes(Keys)
 
 **dvpd_Version**
 (mandatory)<br>
-Used to allow checking of compatibility. Must be set to the first version, that supports the used core elements
+Used to allow checking of compatibility. Must be set to the first version, that supports the used core elements. Minor version changes are kept backwardscompatible. Major version changes might modify structure, keywords and functionality.
 <br>*"1.0"*
 
 **pipeline_name**
@@ -138,9 +139,9 @@ is rare but possible).
 (optional, default=0)
 <br>This property provides explicit control over the order of concatination of fields for the key hash calculation. It will overrule the implicit ordering, that is defeinde by the implementation. Implicit ordering will still be applied to columns of same prio. 
 
-**exclude_from_diff_hash**
+**exclude_from_change_detection**
 (optional, default=false, only useful on mappings to historized satellites)
-<br>true = exclude the field from the calculation of the diff hash an therefore from the historization change detection
+<br>true = exclude the field from the change detection. Depending on the method of the target, this will modify the comparison SQL or the calculation of the diff hash.
 
 **prio_in_diff_hash**
 (optional, default=0)
@@ -276,14 +277,27 @@ List of recursive parent table declarations (e.g. for hierarchical links or “s
 (optional, default=false)
 <br>when set to true, the declaration and processing for multiactive satellites will be applied (no primary key, awarenes of multiple active rows for change detection)
 
-**is_historized**
-(optional, default = true)
-<br>when set to true (default) meta data columns for historization enddating will be added to the table and loading mechanism will process enddating functions
+**insert_changes_only**
+(optional, default depends on model profile)
+<br>when set to true, incoming data is only added to the satellite if it differs from the latest version stored.
+
+**is_enddated**
+(optional, default depends on model profile)
+<br>when set to true (default) meta data columns for historization enddating will be added to the table and loading process will execute enddating functions
+
+**uses_diff_hash**
+(mandatory)<br>
+When set to true (default is defined in model profile), data change is detected by calculation of a hash value ober all relevant columns and comparison of the hash value against the latest stored satellite row for every key.
 
 **diff_hash_column_name**
-(mandatory when is_historized=true or a "completion load pattern" is used)
-<br> Name of the colum that will contains the diff_hash (might be ommitted, when the implementation is not using a diff hash)
+(might be ommitted, when the implementation is not using a diff hash)
+<br> Name of the colum that will contain the diff_hash 
 <br>*"rh_account_p1_sat"*
+
+**has_deletion_flag**
+(optional, default set by data model profile)<br>
+Determines if a deletion flag column will be added to the satellite.
+<br>*Example:true*
 
 **driving_keys[]**
 (optional,must refer to a parent_key or dependent_child_key in the parent table of the satellite)
@@ -314,14 +328,18 @@ In general, the name must match the final name of the key column in the link. Es
 In general, the name must match the final name of the key column in the link. Especially in case of recursive relation, the method of creating the key name must be taken into account.
 <br>*"[“hk_raccn_account”]" | "[“hk_rerps_artice”,”year”,”month”]"
 
+**is_enddated**
+(optional, default depends on model profile)
+<br>when set to true (default) meta data columns for historization enddating will be added to the table and loading process will execute enddating functions
+
 **max_history_depth**
 (optional)
 <br> depending on the implementation this will define a maximum depth of history in the satellite. Recommended thresholdtypes are: max_versions, max_valid_before_age
 
 ### "ref"  specific properties
 
-**is_historized**
-(optional, default= true)
+**is_enddated**
+(optional, default depends on model profile)
 <br>Defines, if the table will be historized by providing an enddate and using a diff hash
  
 **diff_hash_column_name**
@@ -330,16 +348,108 @@ In general, the name must match the final name of the key column in the link. Es
 <br>*"rh_country_iso_ref"*
 
 
+## deletion_detection 
+subelement of root 
 
-# Hash concat order rule declaration
-## For hub keys  and diff hashes
+Deletion detection can be implemented in multiple ways. DVPD will support declaration for some basic methods by using the following properties in the deletion_detection object.
+
+
+**procedure**
+(mandatory)
+<br>provides the selection from different kind of procedures. Suggested valid values are:
+- "key_comparison" : Retrieve all (or a partition of) keys from the source, compare vault to the keys and create&stage deletion records for keys, that are not present any more
+- "deletion_event_transformation" : Convert explicit deletion event messages into a deletion record that is staged
+- "stage_comparison" : The data retrieved and staged includes a complete set or partitions of the complete set. By comparing the whole vault against the stage, deletion records are created during the load from stage to the vault
+
+**key_fields[]**
+(mandatory for "key_comparison", fields must be declared in fields[]. The fields must be mapped to businesskeys of a parent of the satellites)
+<br>Names of the fields, used to retrieve the list of still available keys in the source.  The modell mapping provides the necessary join relation to the satellite tables for determening the currently valid values in the vault.
+
+**deletion_rules[]**
+(mandatory)
+<br>List of deletion rules. The order of the the rules in this array must be obeyed.
+
+→ deletion_rules[] 
+
+**> procedure specific properties <**
+For other procedures, then the defined above there might be other properties necessary. 
+
+#### deletion_rules[]
+
+**rule_comment**
+(optional)
+<br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
+<br>*“All satellites of customer”*
+
+**satellites_to_delete[]**
+(mandatory,only declared satellite table names allowed)
+<br>List of satellite table names, on which to apply the deletion detection rule. The satellites must share the same parent
+<br>“rsfdl_cusmomer_p1_sat”,”rsfdl_customer_p2_sat”
+
+**partitioning_columns[]**
+(optional,only declared field names are allowed)
+<br>List of Columns (and therefore vault columns), that define the range of data where stage has a complete set of rows (this can be content or even table keys). Only active satellite rows that are related to the staged values in these fields, will be checked for deletion. If this property is not set, a complete dataset is assumed to be in the stage table.
+<br>*“market_id”*
+
+**join_path[]**
+(optional,must contain all tables need to be joined to reach the partitioning columns)
+<br>Describes the join path in the model to get from the tables to delete to the tables with partitioning fields. The path begins with the parent table of all listed satellites to delete. The path must not branch except when adding satellites to provide partitioning columns or restrict the validity of links. The path can skip unnecessary tables (e.g. hubs, where businesskey is no partition criteria).
+
+Example:
+
+    Model: contract_p1_sat + contract_p2_sat -> contract_hub(contId)
+				<-customer_contract_lnk/esat->
+				customer_hub(country,custId)
+	
+	satellite_tables: \[contract_p1_sat,contract_p2_sat]
+	
+	partitioning_fields: \[country]
+	
+	join_path: \[customer_contract_lnk,customer_contract_esat,customer_hub]
+	
+	This will delete all acitve rows from contract_from_customer_p1_sat and contract_from_customer_p2_sat where the country of the customer is in stage but not the contId
+	(=Hub key of satellite = second hub key in link)
+	
+	
+**active_keys_of_partition_sql**
+(optional, used for cases, that can't be described by partitioning_fields and joins_path, only appliable for a single sattellite to delete)
+<br> To solve more complex scenarios for deletion detection, a Select statement can be provided, that determines all active keys of a satellite for a specific partition. The engine will only compare the given set with the staged data and insert deletion records accordingly . (If by ELT or ETL depends on the engine)
+"join_path" and "partitioning_columns" must be empty.
+ 	
+**> procedure specific properties <**
+For other procedures, then the defined above there might be other properties to be declared in the deletion_rule. 
+
+
+# Open concepts
+There are some concepts open to be defined later. These will result in some upcoming syntax elements:
+
+## Hash assembly rules
+
+**"lnk" specific properties/ link_key_assemble_rule**
+(drafted option, default: “p/p-r/p-d/ea”)
+<br>Defines the rule, how to order the businesskeys for the link key concatenatenation. See section "Hash concat order rule declaration"  for detailed specification 
+
+**"lnk" specific properties/link_key_explicit_content_order[]**
+(optional, must contain all relevant columns of parents and link
+<br>Specifies directly the order of businesskeys and dependent child key columns for hashing. Disables a link_key_assemble_rule
+
+
+
+**content_enddate_columns[]**
+(optional)
+<br>List of column  pairs, where an addtional enddate processing should be applied (might be interesting, when modification dates of the source are relevant for queries)
+
+
+## Hash concat order rule declaration
+
+### For hub keys  and diff hashes
 The order of the fields for concantenation during hashing can completly be controlled by using the prio_in_hash_key and prio_in_diff hash declaration in the target section.
 
 Whithout declaration the order will be alphabetical with the target column name.
 
-The priority attrbutes have a higher siginificanc then the column name. So defining a priority on every mapping gives full control.
+The priority attirbutes have a higher siginificance then the column name. So defining a priority on every mapping gives full control.
 
-## For Link keys
+### For Link keys
 *This is only a draft and not implemented yet*
 
 Participation of fields in link keys is derived from the data model relations. An explicit declaration of the order is not yet possible, but will be added for edge cases later.
@@ -379,96 +489,8 @@ Examples:
 * "prd/ta"
 	* Order fields by their source table name and field name. Dependent child key fields have the link tables itseld as table name
 
-# Open concepts
-There are some concepts open to be defined later. These will result in some upcoming syntax elements:
+# Licence and Credits
 
-## Hash assembly rules
+(C) Matthias Wegner, cimt ag
 
-**"lnk" specific properties/ link_key_assemble_rule**
-(drafted option, default: “p/p-r/p-d/ea”)
-<br>Defines the rule, how to order the businesskeys for the link key concatenatenation. See section "Hash concat order rule declaration"  for detailed specification 
-
-**"lnk" specific properties/link_key_explicit_content_order[]**
-(optional, must contain all relevant columns of parents and link
-<br>Specifies directly the order of businesskeys and dependent child key columns for hashing. Disables a link_key_assemble_rule
-
-
-
-**content_enddate_columns[]**
-(optional)
-<br>List of column  pairs, where an addtional enddate processing should be applied (might be interesting, when modification dates of the source are relevant for queries)
-
-
-## Deletion Detection
-Deletion detection can be implemented in multiple ways. DVPD will support declaratoin for some basic methods by using the following properties in the deletion_detection object.
-
-**"sat" specific properties/deletion_detection_rules[]**
-(optional)
-<br>Defines rulsets for a full data or partial data deletetion detection
-
-→ deletion_detection_rules
-
-### deletion_detection 
-subelement of root 
-
-**phase**
-(mandatory)
-<br>Declares the pipeline phase, the deletion detection will be applied. All other attributes depend on the phase (check out “phase definition for pipelines” in the concept)
-* “fetch” for the fetch phase
-*  “load” for the load phase 
-
-### “Fetch” phase properties
-
-Properties for the deletion detection in the fetch phase depend highly on the source interface and implementation of the fetching module. The following properties are only suggestions
-
-**satellite_tables[]**
-(must be declared in the model)
-<br>Name of the satellite tables, where the deletion detection will be applied for
-
-**key_fields[]**
-(must be declared in fields[]. The fields must be mapped to businesskeys of a parent of the satellites)
-<br>Names of the fields, used to retrieve the list of still available keys in the source.  The modell mapping provides the necessary join relation to the satellite tables for determening the currently valid values in the vault.
-
-### “load” phase properties
-
-When the deletion detection is applied during the load phase, the followin properies must/may be set 
-
-**deletion_rules[]**
-(mandatory)
-<br>List of deletion rules, in case different satellites need different approaches
-
-→ “load” deletion_rules[] 
-
-### “load” deletion_rules[]
-
-**rule_comment**
-(optional)
-<br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
-<br>*“All satellites of customer”*
-
-**satellite_tables[]**
-(mandatory,only declared satellite table names allowed)
-<br>List of satellite table names, on wich to apply the deletion detection
-<br>“rsfdl_cusmomer_p1_sat”,”rsfdl_customer_p2_sat”
-
-**partitioning_fields[]**
-(optional,only declared field names are allowed)
-<br>List of fields (and therefore vault columns), that restrict the range of data. Only vault rows that are related to the available values in theses fields in the stage, will be checked and deleted, should they are missing in the stage.
-<br>*“market_id”*
-
-**join_path[]**
-(optional,must begin with table containing at least one partitioning field,must contain all tables of the rule)
-<br>Describes the join path in the model to get from the partitioning key to the direct parent of the tables, where deletion detection should be applied. Links will be represented by their Esat/Sat. Only in case of non historized links, the link itself can be declared here. Declaration of the esat is necessary, since links might have multiple esat/sat with different meanings.
- 
-Example:
-
-    Model: customer_hub(custId)->customer_contract_lnk/esat->
-	             contract(contId)->contract_from_customer_p1_sat
-	
-	satellite_tables: contract_p1_sat
-	
-	partitioning_fields: custId
-	
-	join_path: customer_hub,customer_contract_esat
-	
-	This will delete all acitve contract_from_customer_p1_sat rows, where the customer id is in stage but not the contId(=Hub key of satellite)
+Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)

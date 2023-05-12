@@ -16,17 +16,15 @@
 -- limitations under the License.
 -- =====================================================================
 
-/*
- * must be executed as sysadmin (postgres) 
- * must be executed after establishing owner_dwh user
- */
+ -- drop table dv_pipeline_description.DVPD_JSON_STORAGE cascade;
 
-
-CREATE DATABASE "dwh"
-    WITH 
-    OWNER = owner_dwh
-    ENCODING = 'UTF8'
-    LC_COLLATE = 'German_Germany.1252'
-    LC_CTYPE = 'German_Germany.1252'
-    TABLESPACE = pg_default
-    CONNECTION LIMIT = -1;
+  create table dv_pipeline_description.DVPD_JSON_STORAGE (
+  meta_inserted_at TIMESTAMP DEFAULT current_timestamp,
+  object_class VARCHAR(100),
+  object_name VARCHAR(100),
+  object_json VARCHAR(160000),
+  PRIMARY KEY ( object_class, object_name )
+  );
+  
+ comment on table  dv_pipeline_description.DVPD_JSON_STORAGE is 
+ 'Json input texts for profiles (pipelines will be placed here in later releases)';

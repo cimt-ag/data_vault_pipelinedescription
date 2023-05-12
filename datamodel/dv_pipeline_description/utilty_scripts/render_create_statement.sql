@@ -2,7 +2,8 @@
 with target as (
 select distinct pipeline_name, 'stage_rvlt' as stage_schema_name, 's'||substring(pipeline_name,2) stage_table_name
 from dv_pipeline_description.dvpd_pipeline_DV_table
-where pipeline_name like 'test20%'
+--where pipeline_name like 'test20%'
+where pipeline_name like 'test61%'
 ) /* */
 , model_profile as (select property_value load_date_column_name 
 from target tgt
@@ -14,7 +15,7 @@ where mp.property_name = 'load_date_column_name'
 /* Start of the union */
 select tbl.table_name , 5 block
 ,1 reverse_order
-,E'-- >>> begin of: table_'||tbl.table_name||'.sql <<<'  script
+,'-- >>> begin of: table_'||tbl.table_name||'.sql in '||tbl.schema_name||' <<<'  script
 from target tgt
 join dv_pipeline_description.dvpd_pipeline_dv_table tbl on tbl.pipeline_name =tgt.pipeline_name
 union
@@ -38,7 +39,7 @@ join dv_pipeline_description.dvpd_pipeline_dv_table tbl on tbl.pipeline_name =tg
 union
 select table_name , 30 block
 ,reverse_order
-, E'  '|| column_name || E'     '
+, '  '|| column_name || '     '
  || column_type || '   ' 
  ||  column_constraint
  ||(case when reverse_order=1 then '' else ',' end) script
@@ -58,7 +59,7 @@ where dptt.pipeline_name in (select pipeline_name from target)
 union
 select tbl.table_name , 31 block
 ,1 reverse_order
-,E'); 'script
+,'); 'script
 from target tgt
 join dv_pipeline_description.dvpd_pipeline_dv_table tbl on tbl.pipeline_name =tgt.pipeline_name
 union
@@ -88,7 +89,7 @@ select distinct tbl.table_name , 41 block
 ,1 reverse_order
 	,'ALTER TABLE '||tbl.schema_name ||'.'||tbl.table_name   
 	|| ' ADD CONSTRAINT '|| tbl.table_name || '_PK '
-	|| ' PRIMARY KEY (' || coalesce (pdc.column_name  ) || ',' || mp.load_date_column_name||');' script
+	|| ' PRIMARY KEY (' || pdc.column_name  || ',' || mp.load_date_column_name||');' script
 from target tgt
 join dv_pipeline_description.dvpd_pipeline_dv_table tbl on tbl.pipeline_name =tgt.pipeline_name 
 join dv_pipeline_description.dvpd_pipeline_dv_column pdc  on pdc.pipeline_name =tgt.pipeline_name 
@@ -99,7 +100,7 @@ where tbl.stereotype in ('sat','esat') and tbl.table_name not like '%_csat'
 union
 select tbl.table_name , 48 block
 ,1 reverse_order
-,E'-- >>> end of: table_'||tbl.table_name||'.sql <<<'  script
+,'-- >>> end of: table_'||tbl.table_name||'.sql <<<'  script
 from target tgt
 join dv_pipeline_description.dvpd_pipeline_dv_table tbl on tbl.pipeline_name =tgt.pipeline_name
 union
@@ -112,7 +113,7 @@ union
 -- Stage section
 select stage_table_name , 50 block
 ,1 reverse_order
-,'-- >>> begin of: table_'||stage_table_name||'.sql <<<'  script
+,'-- >>> begin of: table_'||stage_table_name||'.sql in '||tgt.stage_schema_name ||' <<<'  script
 from target tgt
 union
 select stage_table_name table_name, 51 block
@@ -133,7 +134,7 @@ from target tgt
 union
 select stage_table_name table_name, 70 block
 ,reverse_order
-, E'  '|| column_name || E'      '
+, '  '|| column_name || '      '
  || column_type || column_constraint
  ||(case when reverse_order=1 then '' else ',' end) script
 from (
@@ -150,7 +151,7 @@ from (
 union
 select stage_table_name , 72 block
 ,1 reverse_order
-,E');'
+,');'
 from target tgt 
 union
 select stage_table_name , 79 block

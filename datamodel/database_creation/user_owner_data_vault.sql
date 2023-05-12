@@ -4,7 +4,7 @@
  * The result of the generator script has to be executed also 
  */
 
-CREATE USER owner_dwh WITH
+CREATE USER owner_data_vault WITH
   LOGIN
   NOSUPERUSER
   INHERIT
@@ -12,4 +12,4 @@ CREATE USER owner_dwh WITH
   NOCREATEROLE
   NOREPLICATION;
   
-alter user owner_dwh with password '#ownerdwh#'; -- <==== changepasssword before execution but dont save to git
+alter user owner_dwh with password '#ownerdatavault#'; -- <==== changepasssword before execution but dont save to git

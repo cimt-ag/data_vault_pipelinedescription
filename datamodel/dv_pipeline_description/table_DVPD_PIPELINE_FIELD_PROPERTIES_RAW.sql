@@ -20,11 +20,11 @@
 -- DROP TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_PROPERTIES_RAW;
 
 CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_PROPERTIES_RAW (
-	meta_inserted_at timestamp default now(),
+	meta_inserted_at timestamp default current_timestamp,
 	pipeline text NULL,
 	field_name text NULL,
 	field_type text NULL,
-	field_position int8 NULL,
+	field_position int NULL,
 	parsing_expression text NULL,
 	needs_encryption boolean null,
 	field_comment text NULL

@@ -37,8 +37,7 @@ VALUES('xenc_hub-ek', 'load_date_column_name', 'load_date_column_type'),
 	  ('xenc_msat-ek','load_process_id_column_name', 'load_process_id_column_type'),	
 	  ('xenc_ref-ek', 'load_process_id_column_name', 'load_process_id_column_type'),	
 	  ('_xenc_stg-ek', 'load_process_id_column_name', 'load_process_id_column_type'),	
-	  ('_xenc_stg-ek', 'deletion_flag_column_name', 'deletion_flag_column_type'),	
-	  ('xenc_msat-ek', 'load_enddate_column_name', 'load_enddate_column_type'),	
-	  ('xenc_msat-ek', 'deletion_flag_column_name', 'deletion_flag_column_type'),	
-	  ('xenc_ref_hist-ek', 'load_enddate_column_name', 'load_enddate_column_type')	
+	  --('xsat_hist', 'load_enddate_column_name', 'load_enddate_column_type'), part of core	
+	  ('xenc_ref_hist-ek', 'load_enddate_column_name', 'load_enddate_column_type'),	
+	  ('_xenc_stg-ek', 'deletion_flag_column_name', 'deletion_flag_column_type')	
 	 ;	

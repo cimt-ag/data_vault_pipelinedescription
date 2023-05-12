@@ -1,3 +1,8 @@
+# release 0.6.0
+
+### refactoring
+- renamed "is_historized" to "is_enddated", since this reflects the bevahiour much more preciuse. Providing diff hashes is another aspect an not bound to enddating
+
 # Release 0.5.4
 
 ### features

@@ -19,7 +19,7 @@
  -- drop table dv_pipeline_description.DVPD_JSON_STORAGE cascade;
 
   create table dv_pipeline_description.DVPD_JSON_STORAGE (
-  meta_inserted_at TIMESTAMP DEFAULT NOW(),
+  meta_inserted_at TIMESTAMP DEFAULT current_timestamp,
   object_class VARCHAR(100),
   object_name VARCHAR(100),
   object_json json,

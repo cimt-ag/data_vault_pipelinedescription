@@ -17,8 +17,8 @@
 -- =====================================================================
 
 
--- drop view if exists dv_pipeline_description.DVPD_CHECK_XSAT_SPECIFICS cascade;
-create or replace view dv_pipeline_description.DVPD_CHECK_XSAT_SPECIFICS as
+-- drop view if exists dv_pipeline_description.DVPD_CHECK_SAT_SPECIFICS cascade;
+create or replace view dv_pipeline_description.DVPD_CHECK_SAT_SPECIFICS as
 
 
 with no_columns_on_esat as (
@@ -26,7 +26,7 @@ with no_columns_on_esat as (
 		pdt.pipeline_name 
 	 	,'Field'::TEXT  object_type 
 	 	, sfm.field_name object_name 
-	 	,'DVPD_CHECK_XSAT_SPECIFICS'::text  check_ruleset
+	 	,'DVPD_CHECK_SAT_SPECIFICS'::text  check_ruleset
 		, 'a field cannot be mapped to an effecitivy satellite (esat)':: text message
 	from  dv_pipeline_description.dvpd_pipeline_dv_table pdt 
 	join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm ON pdt.table_name = lower(sfm.target_table  )
@@ -49,7 +49,7 @@ select
 	dkppast.pipeline_name 
  	,'Table'::TEXT  object_type 
  	, dkppast.table_name   object_name 
- 	,'DVPD_CHECK_XSAT_SPECIFICS'::text  check_ruleset
+ 	,'DVPD_CHECK_SAT_SPECIFICS'::text  check_ruleset
 	, case when dc.column_name is null then 'driving key "'||dkppast.driving_key ||'" does not exist in parent table':: text
 	   when dc.dv_column_class not in ('parent_key','dependent_child_key') then 'column "'||dkppast.driving_key ||'" is not a parent key or dependent child key'
 			else 'ok' end message
@@ -63,10 +63,10 @@ union
 select * from do_driving_keys_exist_in_parent ;
 
 
-comment on view dv_pipeline_description.DVPD_CHECK_XSAT_SPECIFICS IS
+comment on view dv_pipeline_description.DVPD_CHECK_SAT_SPECIFICS IS
 	'Test for satellite specific rules';
 
--- select * from dv_pipeline_description.DVPD_CHECK_XSAT_SPECIFICS order by 1,2,3
+-- select * from dv_pipeline_description.DVPD_CHECK_SAT_SPECIFICS order by 1,2,3
 
 
 
