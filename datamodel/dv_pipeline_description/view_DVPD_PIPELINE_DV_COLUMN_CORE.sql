@@ -135,7 +135,8 @@ select -- keys of parents
    ,false as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.model_profile_name =pdt .model_profile_name 
-			 								and (mpmcl.stereotype = pdt.stereotype or ( mpmcl.stereotype = 'xsat_hist' and pdt.is_enddated ))
+			 								and (mpmcl.stereotype = pdt.stereotype or ( mpmcl.stereotype = 'xsat_hist' and pdt.is_enddated )
+			 								or (mpmcl.stereotype = 'xsat_delflag' and pdt.has_deletion_flag))
  where pdt.stereotype in ('sat','esat','msat')
  union 
 select -- own key column

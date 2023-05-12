@@ -54,12 +54,13 @@ VALUES('hub', 'load_date_column_name', 'load_date_column_type'),
 	  ('ref', 'load_process_id_column_name', 'load_process_id_column_type'),	
 	  ('_stg', 'load_process_id_column_name', 'load_process_id_column_type'),	
 	  ('xsat_hist', 'load_enddate_column_name', 'load_enddate_column_type'),	
-	  ('sat', 'deletion_flag_column_name', 'deletion_flag_column_type'),	
+	  ('xsat_delflag', 'deletion_flag_column_name', 'deletion_flag_column_type'),	
+--	  ('sat', 'deletion_flag_column_name', 'deletion_flag_column_type'),	
 	  ('_stg', 'deletion_flag_column_name', 'deletion_flag_column_type'),	
-	  ('msat', 'load_enddate_column_name', 'load_enddate_column_type'),	
-	  ('msat', 'deletion_flag_column_name', 'deletion_flag_column_type'),	
-	  ('esat', 'load_enddate_column_name', 'load_enddate_column_type'),	
-	  ('esat', 'deletion_flag_column_name', 'deletion_flag_column_type'),	
+--	  ('msat', 'load_enddate_column_name', 'load_enddate_column_type'),	
+--	  ('msat', 'deletion_flag_column_name', 'deletion_flag_column_type'),	
+--	  ('esat', 'load_enddate_column_name', 'load_enddate_column_type'),	
+--	  ('esat', 'deletion_flag_column_name', 'deletion_flag_column_type'),	
 	  ('ref_hist', 'load_enddate_column_name', 'load_enddate_column_type')	
 	 ;
 

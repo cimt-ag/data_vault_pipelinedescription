@@ -32,7 +32,7 @@ from lib.configuration import configuration_load_ini
 from pathlib import Path
 
 global DEPLOY_SEVERITY
-DEPLOY_SEVERITY = 1
+DEPLOY_SEVERITY = 0
 
 
 def deploy_db_object(file_path, type, schema_name, name, mandantory):

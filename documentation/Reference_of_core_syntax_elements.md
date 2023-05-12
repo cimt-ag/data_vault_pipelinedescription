@@ -285,7 +285,7 @@ List of recursive parent table declarations (e.g. for hierarchical links or “s
 (optional, default depends on model profile)
 <br>when set to true (default) meta data columns for historization enddating will be added to the table and loading process will execute enddating functions
 
-**use_diff_hash**
+**uses_diff_hash**
 (mandatory)<br>
 When set to true (default is defined in model profile), data change is detected by calculation of a hash value ober all relevant columns and comparison of the hash value against the latest stored satellite row for every key.
 
@@ -293,6 +293,11 @@ When set to true (default is defined in model profile), data change is detected 
 (might be ommitted, when the implementation is not using a diff hash)
 <br> Name of the colum that will contain the diff_hash 
 <br>*"rh_account_p1_sat"*
+
+**has_deletion_flag**
+(optional, default set by data model profile)<br>
+Determines if a deletion flag column will be added to the satellite.
+<br>*Example:true*
 
 **driving_keys[]**
 (optional,must refer to a parent_key or dependent_child_key in the parent table of the satellite)

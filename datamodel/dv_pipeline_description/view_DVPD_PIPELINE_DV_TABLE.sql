@@ -20,10 +20,21 @@
 --drop view if exists dv_pipeline_description.DVPD_PIPELINE_DV_TABLE cascade;
 create or replace view dv_pipeline_description.DVPD_PIPELINE_DV_TABLE as 
 
+with profile_settings as (
+ select pdt.pipeline_name , 
+    pdt.table_name ,
+    lower(coalesce( pdt.model_profile_name,pp.model_profile_name )) model_profile_name ,
+    profile.property_name ,
+    profile.property_value
+ from dv_pipeline_description.dvpd_pipeline_dv_table_raw pdt
+ join dv_pipeline_description.dvpd_pipeline_properties pp on pp.pipeline_name =lower(pdt.pipeline_name )
+ left join dv_pipeline_description.dvpd_model_profile profile on profile.model_profile_name = lower(coalesce( pdt.model_profile_name,pp.model_profile_name ))
+ where property_name in ('is_enddated_default','has_deletion_flag_default','uses_diff_hash_default')
+ )
 select 
  lower(pdt.pipeline_name) as pipeline_name 
 , lower(schema_name) as schema_name
-, lower(table_name) as table_name
+, lower(pdt.table_name) as table_name
 , lower(stereotype) as stereotype
 , upper(hub_key_column_name)  as hub_key_column_name
 , upper(link_key_column_name) as link_key_column_name
@@ -31,12 +42,20 @@ select
 , lower(satellite_parent_table) as satellite_parent_table
 , coalesce(is_link_without_sat::boolean,false) as is_link_without_sat
 , coalesce(is_enddated ::boolean,mp_is_endated_default.property_value ::boolean) as is_enddated 
-, lower(coalesce( pdt.model_profile_name,pp.model_profile_name )) model_profile_name
+, coalesce(has_deletion_flag ::boolean,has_deletion_flag_default.property_value ::boolean) as has_deletion_flag 
+, coalesce(uses_diff_hash ::boolean,uses_diff_hash_default.property_value ::boolean) as uses_diff_hash
+, mp_is_endated_default. model_profile_name
 , table_content_comment
 from dv_pipeline_description.dvpd_pipeline_dv_table_raw pdt
-join dv_pipeline_description.dvpd_pipeline_properties pp on pp.pipeline_name =lower(pdt.pipeline_name )
-left join dv_pipeline_description.dvpd_model_profile mp_is_endated_default on mp_is_endated_default.model_profile_name = lower(coalesce( pdt.model_profile_name,pp.model_profile_name )) 
-													   and mp_is_endated_default.property_name ='is_enddated_default'
+left join profile_settings mp_is_endated_default on mp_is_endated_default.pipeline_name=pdt.pipeline_name  
+												and mp_is_endated_default.table_name=pdt.table_name 
+												and mp_is_endated_default.property_name ='is_enddated_default'
+left join profile_settings has_deletion_flag_default on has_deletion_flag_default.pipeline_name=pdt.pipeline_name  
+												and has_deletion_flag_default.table_name=pdt.table_name 
+												and has_deletion_flag_default.property_name ='has_deletion_flag_default'
+left join profile_settings uses_diff_hash_default on uses_diff_hash_default.pipeline_name=pdt.pipeline_name  
+												and uses_diff_hash_default.table_name=pdt.table_name 
+												and uses_diff_hash_default.property_name ='uses_diff_hash_default'
 ;
 
 comment on view dv_pipeline_description.DVPD_PIPELINE_DV_TABLE is

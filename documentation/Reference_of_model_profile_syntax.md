@@ -97,7 +97,7 @@ Timeatmp value to be used in the missing ghost record for timestamp columns.
 
 <br>*Example: 1900-01-01 00:00:00*
 
-**use_diff_hash_default**
+**uses_diff_hash_default**
 (mandatory)<br>
 Determines the default method to determine changes of data. When set to true, all historized satellites with content columns must declare a diff hash column. This can be overwritten via table specific properties.
 
@@ -151,6 +151,11 @@ Name of the column, that keeps the insert timestamp of the current row.
 (mandatory)<br>
 SQL datatype of the column, that keeps the insert timestamp of the current row.
 <br>*Example: TIMESTAMP"
+
+**has_deletion_flag_default**
+(mandatory)<br>
+Determines if a deletion flag column will be added to satellites by default.
+<br>*Example:true*
 
 **deletion_flag_column_name**
 (mandatory)<br>

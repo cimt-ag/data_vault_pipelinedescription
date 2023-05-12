@@ -97,6 +97,8 @@ insert
 	satellite_parent_table,
 	is_link_without_sat,
 	is_enddated,
+	has_deletion_flag,
+	uses_diff_hash,
 	model_profile_name,
 	table_content_comment)
 select
@@ -110,6 +112,8 @@ select
 	satellite_parent_table,
 	is_link_without_sat,
 	is_enddated,
+	has_deletion_flag,
+	uses_diff_hash,
 	model_profile_name,
 	table_content_comment
 from
