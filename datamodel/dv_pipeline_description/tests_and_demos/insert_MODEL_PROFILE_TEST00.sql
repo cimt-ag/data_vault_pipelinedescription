@@ -38,6 +38,7 @@ VALUES
 ,"diff_hash_encoding"		: "BASE64"
 ,"load_date_column_name" : "IA_T00"
 ,"load_date_column_type" : "TIMESTAMP WITHOUT TIME ZONE"
+,"is_enddated_default"   :  "true"
 ,"load_enddate_column_name" : "VB_T00"
 ,"load_enddate_column_type" : "TIMESTAMP WITHOUT TIME ZONE"
 ,"deletion_flag_column_name" : "ID_T00"

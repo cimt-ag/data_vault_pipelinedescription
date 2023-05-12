@@ -3,7 +3,7 @@ with target as (
 select distinct pipeline_name, 'stage_rvlt' as stage_schema_name, 's'||substring(pipeline_name,2) stage_table_name
 from dv_pipeline_description.dvpd_pipeline_DV_table
 --where pipeline_name like 'test20%'
-where pipeline_name = 'rvis_invoice_billing_method_p1'
+where pipeline_name like 'test61%'
 ) /* */
 , model_profile as (select property_value load_date_column_name 
 from target tgt
