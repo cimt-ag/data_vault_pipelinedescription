@@ -24,8 +24,22 @@ returns boolean
 language plpgsql    
 as 
 $$
-begin
+declare
+   update_persisted_elements varchar; 
+begin	
+
 	
+/* Dont do anything when compiler is disabled */	
+select property_value
+INTO update_persisted_elements
+FROM dv_pipeline_description.DVPD_COMPILER_SETTING
+where property_name='update_persisted_elements';
+	
+
+if (not(update_persisted_elements::bool)) then
+  return false;
+end if;
+
 	/* Load json scripts into relational raw model */
 truncate table dv_pipeline_description.dvpd_pipeline_field_target_expansion_raw;
 INSERT
@@ -191,6 +205,9 @@ select
 	driving_key
 from
 	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_driving_key_raw;
+
+
+REFRESH MATERIALIZED VIEW dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN;
 
 return true;
 

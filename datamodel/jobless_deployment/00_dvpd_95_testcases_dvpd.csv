@@ -1,5 +1,7 @@
 mandantory,type,schema_name,name
 
+0,data,dv_pipeline_description,COMPILER_SETTING_DISABLE_REFRESH
+
 0,testdata,dv_pipeline_description,MODEL_PROFILE_TEST00
 
 1,testdata,dv_pipeline_description,test00_check_stereotype_and_parameters
@@ -47,5 +49,8 @@ mandantory,type,schema_name,name
 1,testdata,dv_pipeline_description,test81_recursive_link_with_normal_satellite
 1,testdata,dv_pipeline_description,test90_model_profile_on_pipeline
 1,testdata,dv_pipeline_description,test91_model_profile_on_table
+
+0,data,dv_pipeline_description,COMPILER_SETTING_ENABLE_REFRESH
+
 1,testdata,dv_pipeline_description,test99_test_atmtst_issue_detection
 

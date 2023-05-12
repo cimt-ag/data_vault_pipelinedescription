@@ -1,4 +1,7 @@
 mandantory,type,schema_name,name
+
+0,data,dv_pipeline_description,COMPILER_SETTING_DISABLE_REFRESH
+
 1,testdata,dv_pipeline_description,xenc_test00_check_bad_properties
 1,testdata,dv_pipeline_description,xenc_test01_check_bad_reference
 1,testdata,dv_pipeline_description,xenc_test20_encrypt_on_sat
@@ -12,4 +15,7 @@ mandantory,type,schema_name,name
 1,testdata,dv_pipeline_description,xenc_test69_simple_hierarchy_with_encrypted_bk
 1,testdata,dv_pipeline_description,xenc_test70_hierarchy_and_fg_with_encrypted_bk
 1,testdata,dv_pipeline_description,xenc_test76_fg_enc_on_lsat_and_hub
+
+0,data,dv_pipeline_description,COMPILER_SETTING_ENABLE_REFRESH
+
 1,testdata,dv_pipeline_description,xenc_test99_issue_detection

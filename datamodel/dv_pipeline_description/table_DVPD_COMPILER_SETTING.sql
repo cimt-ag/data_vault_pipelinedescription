@@ -16,18 +16,19 @@
 -- limitations under the License.
 -- =====================================================================
 
+-- drop table dv_pipeline_description.DVPD_MODEL_PROFILE_RAW cascade;
 
---drop materialized view if exists dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN cascade;
-create materialized view dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN as (
+Create table if not exists dv_pipeline_description.DVPD_COMPILER_SETTING (
+  property_name VARCHAR(60),
+  property_value VARCHAR(60),
+  PRIMARY KEY(property_name)
+  ); 
 
-
-
- select * from dv_pipeline_description.dvpd_pipeline_dv_column_core
- union
- select * from dv_pipeline_description.xenc_pipeline_dv_column
+comment on table dv_pipeline_description.DVPD_COMPILER_SETTING is
+ 'Settings to organize the compiler behaviour';
  
-);
- 
-comment on materialized view dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN is
- 'All table columns of the pipeline'; 
--- select * from dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN ddmc  order by 1,2,3,4,5;
+INSERT INTO dv_pipeline_description.DVPD_COMPILER_SETTING (property_name, property_value)
+VALUES ('update_persisted_elements','false');
+
+-- update dv_pipeline_description.DVPD_COMPILER_SETTING set property_value='true' where property_name='update_persisted_elements';
+-- update dv_pipeline_description.DVPD_COMPILER_SETTING set property_value='false' where property_name='update_persisted_elements';
