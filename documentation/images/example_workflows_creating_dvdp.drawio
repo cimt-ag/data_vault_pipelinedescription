@@ -1,0 +1,128 @@
+<mxfile host="app.diagrams.net" modified="2023-05-17T17:03:17.744Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="DjgpRg9qEolekJ3oHDb-" version="21.3.2" type="device">
+  <diagram name="Seite-1" id="HqBW4fTeCPGUdDQ781vC">
+    <mxGraphModel dx="1358" dy="790" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-2" value="SQL script using data dictionary of source DB" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="190" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-3" target="XJ6b9KdQrqp1vy3ghaq9-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-3" value="DVPD" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#F3AC0C;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="210" y="400" width="440" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.518;entryY=0.071;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-5" target="XJ6b9KdQrqp1vy3ghaq9-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-5" value="Text Editor" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="385" y="190" width="105" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-10" value="data vault model" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.777;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;dashed=1;endArrow=open;endFill=0;" edge="1" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-6" target="XJ6b9KdQrqp1vy3ghaq9-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-6" value="Model Documentation" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=15;" vertex="1" parent="1">
+          <mxGeometry x="200" y="110" width="305" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-9" value="data vault model" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.298;entryY=0.98;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-8" target="XJ6b9KdQrqp1vy3ghaq9-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-8" value="Diagrams.net&lt;br&gt;(Drawing Tool)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="210" y="190" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-11" value="DVPD Compiler" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="390" width="105" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-14" value="Source Specification" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=13;" vertex="1" parent="1">
+          <mxGeometry x="530" y="110" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-15" value="properties of source" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;dashed=1;endArrow=open;endFill=0;entryX=1;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-14" target="XJ6b9KdQrqp1vy3ghaq9-5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="447" y="150" as="sourcePoint" />
+            <mxPoint x="448" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-16" value="Data Vault&amp;nbsp;Tables &amp;amp; Relations" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="430" y="295" width="120" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-17" value="Mapping of fields to model" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="430" y="270" width="120" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-18" value="Basic pipeline properties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="430" y="250" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-19" value="fields&amp;amp;types" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="60" y="230" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-21" value="Data Vault Model&lt;br style=&quot;font-size: 10px;&quot;&gt;Column properties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="430" y="320" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-36" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;edgeStyle=orthogonalEdgeStyle;" edge="1" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-22" target="XJ6b9KdQrqp1vy3ghaq9-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="120" y="420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-22" value="Fetch properties of fields" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="60" y="260" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-23" value="inkrement &amp;amp; deletion propterties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="430" y="350" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-25" value="Example A: nearly &quot;handmade&quot;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#BFBFBF;fontStyle=1;align=left;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="930" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-26" value="Example B: proprietary mapping tool" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#BFBFBF;fontStyle=1;align=left;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="40" y="480" width="930" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-27" value="Specification Excel Sheet" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=15;" vertex="1" parent="1">
+          <mxGeometry x="40" y="540" width="220" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-28" value="Transformation Tool&lt;br&gt;(glue code)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="600" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.286;entryY=0.05;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-44" target="XJ6b9KdQrqp1vy3ghaq9-38">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-29" value="Basic pipeline properties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="300" y="685" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-30" value="fields&amp;amp;types" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="70" y="650" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-31" target="XJ6b9KdQrqp1vy3ghaq9-38">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-31" value="Mapping of fields to model" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="70" y="765" width="120" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-32" value="Data Vault&amp;nbsp;Tables &amp;amp; Relations" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="70" y="680" width="120" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-33" value="Data Vault Model&lt;br style=&quot;font-size: 10px;&quot;&gt;Column properties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="660" y="692.5" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-37" value="Fetch properties of fields" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="70" y="735" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-38" value="DVPD" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#F3AC0C;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="230" y="790" width="440" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-40" value="Merge tool&lt;br&gt;(glue code)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="640" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-41" value="Text Editor" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="540" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-43" value="Pipeline properties" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=15;" vertex="1" parent="1">
+          <mxGeometry x="280" y="590" width="220" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-44" value="inkrement &amp;amp; deletion propterties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="300" y="705" width="120" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
