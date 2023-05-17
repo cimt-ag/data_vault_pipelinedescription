@@ -34,7 +34,6 @@ select property_value
 INTO update_persisted_elements
 FROM dv_pipeline_description.DVPD_COMPILER_SETTING
 where property_name='update_persisted_elements';
-	
 
 if (not(update_persisted_elements::bool)) then
   return false;
