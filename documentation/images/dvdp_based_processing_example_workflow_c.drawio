@@ -1,0 +1,136 @@
+<mxfile host="app.diagrams.net" modified="2023-05-25T15:56:55.005Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="bn0Wb2YwdBvvMs00rFJL" version="21.3.4" type="device">
+  <diagram name="Seite-1" id="HqBW4fTeCPGUdDQ781vC">
+    <mxGraphModel dx="1235" dy="669" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-188" value="Example C: Data Vault Tool input&amp;nbsp; generator" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#BFBFBF;fontStyle=1;align=left;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="40" y="40" width="1100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-189" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-190" target="SHAmAD_ecb-zwq3bcNpp-192" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-190" value="DVPD" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#F3AC0C;gradientColor=none;" parent="1" vertex="1">
+          <mxGeometry x="160" y="90" width="80" height="32.5" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-191" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-192" target="SHAmAD_ecb-zwq3bcNpp-193" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-192" value="DVPD Compiler" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="90" y="162.5" width="100" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-207" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-193" target="SHAmAD_ecb-zwq3bcNpp-206" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-193" value="Basic pipeline properties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="80" y="245" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-212" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-194" target="SHAmAD_ecb-zwq3bcNpp-206" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-194" value="inkrement &amp;amp; deletion propterties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="80" y="375" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-210" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-196" target="SHAmAD_ecb-zwq3bcNpp-206" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-196" value="structure of &lt;br&gt;data vault tables" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="80" y="315" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-197" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-198" target="SHAmAD_ecb-zwq3bcNpp-192" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-198" value="model profile" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#F3AC0C;gradientColor=none;size=24;" parent="1" vertex="1">
+          <mxGeometry x="40" y="92.5" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-211" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-200" target="SHAmAD_ecb-zwq3bcNpp-206" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-200" value="structure of &lt;br&gt;stage table" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="80" y="345" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-214" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-201" target="SHAmAD_ecb-zwq3bcNpp-206" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-201" value="process step specifc mapping of data" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="80" y="435" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-213" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-202" target="SHAmAD_ecb-zwq3bcNpp-206" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-202" value="Fetch properties of fields" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="80" y="405" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-215" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-203" target="SHAmAD_ecb-zwq3bcNpp-206" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-203" value="process step specific hash key assembly mapping" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="80" y="465" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-209" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-204" target="SHAmAD_ecb-zwq3bcNpp-206" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-204" value="Mapping of fields to model" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="80" y="290" width="120" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-208" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-205" target="SHAmAD_ecb-zwq3bcNpp-206" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-205" value="Data Vault&amp;nbsp;Tables &amp;amp; Relations" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="80" y="265" width="120" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-217" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-206" target="SHAmAD_ecb-zwq3bcNpp-216" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-206" value="DVPD to VaultLoadTool Converter&lt;br&gt;(glue code)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="275" y="313.1300000000001" width="105" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-219" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-216" target="SHAmAD_ecb-zwq3bcNpp-218" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-216" value="Importable&lt;br&gt;description for&lt;br&gt;VaultLoadTool" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=15;" parent="1" vertex="1">
+          <mxGeometry x="417.5" y="323.1300000000001" width="105" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-221" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-218" target="SHAmAD_ecb-zwq3bcNpp-220" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-218" value="VaultLoad Tool" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="570" y="296.25" width="140" height="103.75" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-220" value="Process&amp;nbsp; package" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;fontFamily=Helvetica;fontSize=11;verticalAlign=bottom;labelPosition=center;verticalLabelPosition=top;align=center;fillColor=#f8cecc;strokeColor=#b85450;dashed=1;" parent="1" vertex="1">
+          <mxGeometry x="805" y="282.5" width="180" height="82.5" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-228" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;strokeColor=#b85450;fontFamily=Helvetica;fontSize=10;fontColor=default;exitX=0.122;exitY=1.125;exitDx=0;exitDy=0;fillColor=#f8cecc;dashed=1;exitPerimeter=0;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-229" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="897" y="225.25" as="sourcePoint" />
+            <mxPoint x="669" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-229" value="Source" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="630" y="180" width="320" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-230" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;strokeColor=#b85450;fontFamily=Helvetica;fontSize=10;fontColor=default;entryX=0.145;entryY=0;entryDx=0;entryDy=4.35;entryPerimeter=0;fillColor=#f8cecc;dashed=1;" parent="1" target="SHAmAD_ecb-zwq3bcNpp-231" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="640" y="400" as="sourcePoint" />
+            <mxPoint x="901.25" y="402" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-231" value="Vault" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;rounded=0;strokeColor=#b85450;fontFamily=Helvetica;fontSize=12;fillColor=#f8cecc;" parent="1" vertex="1">
+          <mxGeometry x="580" y="453.5" width="400" height="53" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-234" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;strokeColor=#b85450;fontFamily=Helvetica;fontSize=10;fontColor=default;exitX=0.122;exitY=1.125;exitDx=0;exitDy=0;fillColor=#f8cecc;dashed=1;exitPerimeter=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="894.5" y="217.5" as="sourcePoint" />
+            <mxPoint x="894.5" y="282.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-235" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;strokeColor=#b85450;fontFamily=Helvetica;fontSize=10;fontColor=default;exitX=0.122;exitY=1.125;exitDx=0;exitDy=0;fillColor=#f8cecc;dashed=1;exitPerimeter=0;entryX=0.74;entryY=-0.028;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="SHAmAD_ecb-zwq3bcNpp-231" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="874.5" y="365" as="sourcePoint" />
+            <mxPoint x="874.5" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,101 @@
+<mxfile host="app.diagrams.net" modified="2023-05-25T15:52:56.014Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="zfBvyGnAiJN1hpzQyfLd" version="21.3.4" type="device">
+  <diagram name="Seite-1" id="HqBW4fTeCPGUdDQ781vC">
+    <mxGraphModel dx="1235" dy="726" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-2" value="SQL script using data dictionary of source DB" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="190" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-3" target="XJ6b9KdQrqp1vy3ghaq9-11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-3" value="DVPD" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#F3AC0C;gradientColor=none;" parent="1" vertex="1">
+          <mxGeometry x="210" y="400" width="440" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.518;entryY=0.071;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=classic;startFill=1;" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-5" target="XJ6b9KdQrqp1vy3ghaq9-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-5" value="Text Editor" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="385" y="190" width="105" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-10" value="data vault model" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.777;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;dashed=1;endArrow=open;endFill=0;entryX=0.25;entryY=0.1;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-6" target="SHAmAD_ecb-zwq3bcNpp-13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-6" value="Model Documentation" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=15;" parent="1" vertex="1">
+          <mxGeometry x="200" y="60" width="305" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-9" value="data vault model" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.298;entryY=0.98;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-8" target="XJ6b9KdQrqp1vy3ghaq9-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-8" value="Diagrams.net&lt;br&gt;(Drawing Tool)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="210" y="190" width="160" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-11" value="DVPD Compiler" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="800" y="390" width="105" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-14" value="Source Specification" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=13;" parent="1" vertex="1">
+          <mxGeometry x="570" y="60" width="170" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-15" value="properties of source" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;dashed=1;endArrow=open;endFill=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-14" target="SHAmAD_ecb-zwq3bcNpp-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="447" y="150" as="sourcePoint" />
+            <mxPoint x="448" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-16" value="Data Vault&amp;nbsp;Tables &amp;amp; Relations" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="430" y="295" width="120" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-17" value="Mapping of fields to model" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="430" y="270" width="120" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-18" value="Basic pipeline properties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="430" y="250" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-19" value="fields&amp;amp;types" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="60" y="230" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-21" value="Data Vault Model&lt;br style=&quot;font-size: 10px;&quot;&gt;Column properties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="430" y="320" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-36" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-22" target="XJ6b9KdQrqp1vy3ghaq9-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="120" y="420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-22" value="Fetch properties of fields" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="60" y="260" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-23" value="inkrement &amp;amp; deletion propterties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="430" y="350" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-25" value="Example A: nearly &quot;handmade&quot;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#BFBFBF;fontStyle=1;align=left;fontSize=16;" parent="1" vertex="1">
+          <mxGeometry x="40" y="20" width="930" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-21" style="edgeStyle=none;shape=connector;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=none;endFill=0;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-13" target="XJ6b9KdQrqp1vy3ghaq9-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-22" style="edgeStyle=orthogonalEdgeStyle;shape=connector;curved=1;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=none;endFill=0;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-13" target="XJ6b9KdQrqp1vy3ghaq9-8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-13" value="DWH Developer" style="shape=umlActor;verticalLabelPosition=middle;verticalAlign=middle;html=1;outlineConnect=0;fontFamily=Helvetica;fontSize=11;fontColor=default;labelPosition=right;align=left;" parent="1" vertex="1">
+          <mxGeometry x="440" y="130" width="20" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-20" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=open;endFill=0;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-16" target="SHAmAD_ecb-zwq3bcNpp-13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-16" value="Errors and Warnings" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=15;" parent="1" vertex="1">
+          <mxGeometry x="780" y="300" width="150" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-17" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=classic;" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-11" target="SHAmAD_ecb-zwq3bcNpp-16" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="928" y="818" as="sourcePoint" />
+            <mxPoint x="928" y="706" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
