@@ -21,7 +21,7 @@
 with target as (
 select distinct pipeline_name
 from dv_pipeline_description.dvpd_pipeline_DV_table
-where pipeline_name like 'test61%'
+where pipeline_name like 'test82%'
 ) /* */
 select 1 block
 ,1 reverse_order
