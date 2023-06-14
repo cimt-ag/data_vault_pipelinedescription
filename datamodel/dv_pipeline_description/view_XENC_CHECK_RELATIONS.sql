@@ -20,10 +20,10 @@
 -- drop view if exists dv_pipeline_description.XENC_CHECK_RELATIONS cascade;
 create or replace view dv_pipeline_description.XENC_CHECK_RELATIONS as
 
-with target_tables_with_encrypted_columns as (
+with table_names_with_encrypted_columns as (
 select  distinct 
 	pfte.pipeline_name 
-	, pfte.target_table table_name
+	, pfte.table_name table_name
 from dv_pipeline_description.dvpd_pipeline_field_properties pfp 
 join dv_pipeline_description.dvpd_pipeline_field_target_expansion pfte on pfte.pipeline_name =pfp.pipeline 
 																	and pfte.field_name = pfp.field_name 
@@ -42,7 +42,7 @@ select
 from dv_pipeline_description.xenc_pipeline_dv_table_properties_raw epdtp
 left join  dv_pipeline_description.dvpd_pipeline_dv_table cpdt on cpdt.pipeline_name = epdtp.pipeline_name  
 															 and cpdt.table_name = epdtp.xenc_content_table_name 
-left join target_tables_with_encrypted_columns  ttwec on ttwec.pipeline_name = epdtp.pipeline_name 
+left join table_names_with_encrypted_columns  ttwec on ttwec.pipeline_name = epdtp.pipeline_name 
 													 and ttwec.table_name = epdtp .xenc_content_table_name														 
 )
 , count_encryption_table_coverage as (
@@ -52,7 +52,7 @@ select
   ,count(1) coverage_count
   ,string_agg(epdtp.table_name,',') covering_table_names
 from dv_pipeline_description.xenc_pipeline_dv_table_properties_raw epdtp
-join target_tables_with_encrypted_columns  ttwec on ttwec.pipeline_name = epdtp.pipeline_name 
+join table_names_with_encrypted_columns  ttwec on ttwec.pipeline_name = epdtp.pipeline_name 
 													 and ttwec.table_name = epdtp .xenc_content_table_name
 group by 1,2													 
 )
@@ -66,7 +66,7 @@ select
   		when cetc.coverage_count > 1 then 'Table is covered by multiple encryption tables:'|| cetc.covering_table_names
     	else 'ok' 
     end  message
-from target_tables_with_encrypted_columns ttwec
+from table_names_with_encrypted_columns ttwec
 left join count_encryption_table_coverage  cetc on cetc.pipeline_name = ttwec.pipeline_name 
 												and cetc.table_name = ttwec .table_name 														 
 )

@@ -24,8 +24,21 @@ returns boolean
 language plpgsql    
 as 
 $$
-begin
+declare
+   update_persisted_elements varchar; 
+begin	
+
 	
+/* Dont do anything when compiler is disabled */	
+select property_value
+INTO update_persisted_elements
+FROM dv_pipeline_description.DVPD_COMPILER_SETTING
+where property_name='update_persisted_elements';
+
+if (not(update_persisted_elements::bool)) then
+  return false;
+end if;
+
 	/* Load json scripts into relational raw model */
 truncate table dv_pipeline_description.dvpd_pipeline_field_target_expansion_raw;
 INSERT
@@ -33,11 +46,11 @@ INSERT
 	dv_pipeline_description.dvpd_pipeline_field_target_expansion_raw
 (pipeline_name,
 	field_name,
-	target_table,
-	target_column_name,
+	table_name,
+	column_name,
 	field_group,
 	recursion_name,
-	target_column_type,
+	column_type,
 	prio_in_key_hash,
 	exclude_from_key_hash,
 	prio_in_diff_hash,
@@ -46,11 +59,11 @@ INSERT
 SELECT
 	pipeline_name,
 	field_name,
-	target_table,
-	target_column_name,
+	table_name,
+	column_name,
 	field_group,
 	recursion_name,
-	target_column_type,
+	column_type,
 	prio_in_key_hash,
 	exclude_from_key_hash,
 	prio_in_diff_hash,
@@ -90,7 +103,7 @@ insert
 (pipeline_name,
 	schema_name,
 	table_name,
-	stereotype,
+	table_stereotype,
 	hub_key_column_name,
 	link_key_column_name,
 	diff_hash_column_name,
@@ -105,7 +118,7 @@ select
 	pipeline_name,
 	schema_name,
 	table_name,
-	stereotype,
+	table_stereotype,
 	hub_key_column_name,
 	link_key_column_name,
 	diff_hash_column_name,
@@ -191,6 +204,28 @@ select
 	driving_key
 from
 	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_driving_key_raw;
+
+TRUNCATE TABLE dv_pipeline_description.dvpd_pipeline_stage_properties_raw;
+
+insert
+	into
+	dv_pipeline_description.dvpd_pipeline_stage_properties_raw
+( pipeline_name,
+	storage_component,
+	stage_schema,
+	stage_table_name)
+select
+	pipeline_name,
+	storage_component,
+	stage_schema,
+	stage_table_name
+from
+	dv_pipeline_description.dvpd_transform_to_pipeline_stage_properties_raw;
+
+
+
+
+REFRESH MATERIALIZED VIEW dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN;
 
 return true;
 

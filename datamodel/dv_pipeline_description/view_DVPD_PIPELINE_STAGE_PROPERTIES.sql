@@ -17,11 +17,20 @@
 -- =====================================================================
 
 
+--drop view if exists dv_pipeline_description.DVPD_PIPELINE_STAGE_PROPERTIES cascade;
+create or replace view dv_pipeline_description.DVPD_PIPELINE_STAGE_PROPERTIES as 
+
+SELECT
+	lower(dpspr.pipeline_name) pipeline_name
+	,storage_component
+	,lower(stage_schema) stage_schema 
+	,coalesce(lower(stage_table_name),lower(dpspr.pipeline_name)) stage_table_name
+FROM 
+	dv_pipeline_description.DVPD_PIPELINE_STAGE_PROPERTIES_RAW dpspr;
+
+comment on view dv_pipeline_description.DVPD_PIPELINE_STAGE_PROPERTIES is
+ 'stage table properties of the pipeline. (cleansed and normalized)';
 
 
--- DROP SCHEMA DV_PIPELINE_DESCRIPTION;
+--  select * from dv_pipeline_description.DVPD_PIPELINE_STAGE_PROPERTIES
 
-CREATE schema if not EXISTS DV_PROCESSING;
-
-COMMENT ON SCHEMA DV_PROCESSING
-  IS 'Functions and support views for processing data vault loads';

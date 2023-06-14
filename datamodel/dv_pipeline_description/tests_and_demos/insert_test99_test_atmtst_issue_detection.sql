@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test99_test_atmtst_issue_detection','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test99_test_atmtst_issue_detection",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
@@ -36,8 +37,8 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_99_AAA_HUB",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_99_AAA_HUB"}
-				,{"table_name": "rtjj_99_aaa_p1_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_99_AAA_HUB","diff_hash_column_name": "RH_rtjj_99_aaa_p1_sat"}
+				{"table_name": "rtjj_99_AAA_HUB",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_99_AAA_HUB"}
+				,{"table_name": "rtjj_99_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_99_AAA_HUB","diff_hash_column_name": "RH_rtjj_99_aaa_p1_sat"}
 				]
 		}
 	]

@@ -59,11 +59,11 @@ where is_recursive_relation
 , implicit_recursion_businesskey as (
 select 
 pfte.pipeline_name 
- ,target_table 
- ,target_column_name 
+ ,pfte.table_name 
+ ,column_name 
  ,count(1)
 from dv_pipeline_description.dvpd_pipeline_field_target_expansion pfte
-join hub_with_recursion_link hwrl on hwrl.table_name=pfte.target_table 
+join hub_with_recursion_link hwrl on hwrl.table_name=pfte.table_name 
 								 and hwrl.pipeline_name = pfte.pipeline_name 
 group by 1,2,3
 having count(1) = 1
@@ -71,22 +71,22 @@ having count(1) = 1
 ,implicit_recursion_businesskey_suffix_addon as (
 	select 
 	 irb.pipeline_name
-	 ,target_table 
-	 ,target_column_name 
+	 ,irb.table_name 
+	 ,column_name 
 	 ,recursion_name 
 	from implicit_recursion_businesskey irb
 	join (
 		select pipeline_name,table_name,recursion_name  from hub_with_recursion_link
 		union 
 		select pipeline_name,table_name,'' recursion_name from  hub_with_recursion_link
-	) suffix_row  on suffix_row.table_name = irb.target_table  
+	) suffix_row  on suffix_row.table_name = irb.table_name  
 				  and suffix_row .pipeline_name = irb.pipeline_name 
 )
 ,dvpd_pipeline_field_target_expansion_with_implicit_recursion as (
 select 
 	pfte.pipeline_name 
-	,pfte.target_table 
-	,pfte.target_column_name 
+	,pfte.table_name 
+	,pfte.column_name 
 	,field_group 
 	,coalesce (irbsa.recursion_name,pfte.recursion_name  ) recursion_name
 	,(irbsa.recursion_name is not null) is_implicit_suffix
@@ -97,16 +97,16 @@ select
 	,prio_in_diff_hash 
 from dv_pipeline_description.dvpd_pipeline_field_target_expansion pfte
 left join implicit_recursion_businesskey_suffix_addon irbsa on irbsa.pipeline_name = pfte.pipeline_name 
-									   and irbsa.target_table = pfte.target_table 
-									   and irbsa.target_column_name = pfte.target_column_name 
+									   and irbsa.table_name = pfte.table_name 
+									   and irbsa.column_name = pfte.column_name 
 )
 select distinct 
 	ppp.pipeline_name
 	,ppp.process_block 
 	,ppp.table_name
-	,ppp.stereotype 
+	,ppp.table_stereotype 
 	,pdc.column_name 
-	,pdc.dv_column_class  
+	,pdc.column_class  
     -- ,case when pfte.field_name is not null then pdc.column_name  -- legacy generator compatible  (Stage = Target, will fail on multiple mappings to same target)
 	,case when pfte.field_name is not null then pfte.field_name   
 		  when process_block ='_A_' or is_implicit_suffix or ptapbc.non_general_process_count =0 then pdc.column_name 
@@ -124,13 +124,13 @@ select distinct
 from dv_pipeline_description.dvpd_pipeline_process_plan ppp
 join dv_pipeline_description.dvpd_pipeline_dv_column pdc on pdc.pipeline_name =ppp.pipeline_name 
 												and pdc.table_name=ppp.table_name 
-												and pdc.dv_column_class not in ('meta')
+												and pdc.column_class not in ('meta')
 left join parent_table_keys_and_process_block_check ptapbc	 on ptapbc.pipeline_name = ppp.pipeline_name 
 														and ptapbc.table_name = ppp.table_name 
 														and ptapbc.parent_key_column_name = pdc.column_name 
 left join dvpd_pipeline_field_target_expansion_with_implicit_recursion pfte on pfte.pipeline_name =ppp.pipeline_name 
-																		and pfte.target_table =pdc.table_name 
-																		and pfte.target_column_name =pdc.column_name
+																		and pfte.table_name =pdc.table_name 
+																		and pfte.column_name =pdc.column_name
 																		and (pfte.field_group = ppp.field_group or pfte.field_group ='_A_')
 																		and pfte.recursion_name = ppp.recursion_name 
 	

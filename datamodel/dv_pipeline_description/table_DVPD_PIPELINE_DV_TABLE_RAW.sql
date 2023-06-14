@@ -24,7 +24,7 @@ CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_RAW (
 	pipeline_name varchar(255) NULL,
 	schema_name varchar(255) NULL,
 	table_name varchar(255) NULL,
-	stereotype varchar(255) NULL,
+	table_stereotype varchar(255) NULL,
 	hub_key_column_name varchar(255) NULL,
 	link_key_column_name varchar(255) NULL,
 	diff_hash_column_name varchar(255) NULL,

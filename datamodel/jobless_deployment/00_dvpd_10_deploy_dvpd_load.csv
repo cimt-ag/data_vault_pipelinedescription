@@ -8,6 +8,7 @@ mandantory,type,schema_name,name
 1,view,dv_pipeline_description,DVPD_TRANSFORM_TO_PIPELINE_FIELD_PROPERTIES_RAW
 1,view,dv_pipeline_description,DVPD_TRANSFORM_TO_PIPELINE_FIELD_TARGET_EXPANSION_RAW
 1,view,dv_pipeline_description,DVPD_TRANSFORM_TO_PIPELINE_PROPERTIES_RAW
+1,view,dv_pipeline_description,DVPD_TRANSFORM_TO_PIPELINE_STAGE_PROPERTIES_RAW
 1,view,dv_pipeline_description,DVPD_TRANSFORM_TO_MODEL_PROFILE
 
 

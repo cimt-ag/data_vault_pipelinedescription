@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test04_check_hub_specifics','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test04_check_hub_specifics",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
@@ -36,9 +37,9 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_04_aaa_xxx_no_bk_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_04_aaa"}
-				,{"table_name": "rtjj_04_bbb_xxx_same_hk_hub",		"stereotype": "hub","hub_key_column_name": "HK_XXX_SAME_HK"}
-				,{"table_name": "rtjj_04_ccc_xxx_same_hk_hub",		"stereotype": "hub","hub_key_column_name": "HK_XXX_SAME_HK"}
+				{"table_name": "rtjj_04_aaa_xxx_no_bk_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_04_aaa"}
+				,{"table_name": "rtjj_04_bbb_xxx_same_hk_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_XXX_SAME_HK"}
+				,{"table_name": "rtjj_04_ccc_xxx_same_hk_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_XXX_SAME_HK"}
 				]
 		}
 	]

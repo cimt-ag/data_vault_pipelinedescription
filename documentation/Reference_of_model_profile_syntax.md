@@ -8,7 +8,7 @@ Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-
 
 # Overview
 
-DVPD model profiel syntax must be supported by any implementation in the same way. If an implementation leaves out elements for simplicity, it should implement a check and warning message, to prevent false expectations.
+DVPD model profile syntax must be supported by any implementation in the same way. If an implementation leaves out elements for simplicity, it should implement a check and warning message, to prevent false expectations.
 
 The syntax must and can be extended by properties, needed for project specific solutions (e.g. data_extraction modules, data encryption frameworks). Documentation for these properties must be provided for every module in a separate document.
 

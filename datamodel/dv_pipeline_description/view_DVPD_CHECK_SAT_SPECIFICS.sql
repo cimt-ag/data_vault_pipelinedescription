@@ -29,9 +29,9 @@ with no_columns_on_esat as (
 	 	,'DVPD_CHECK_SAT_SPECIFICS'::text  check_ruleset
 		, 'a field cannot be mapped to an effecitivy satellite (esat)':: text message
 	from  dv_pipeline_description.dvpd_pipeline_dv_table pdt 
-	join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm ON pdt.table_name = lower(sfm.target_table  )
+	join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm ON pdt.table_name = lower(sfm.table_name  )
 				and sfm.pipeline_name = pdt.pipeline_name 
-	where pdt.stereotype ='esat'
+	where pdt.table_stereotype ='esat'
 )
 ,driving_key_per_pipeline_and_sat_table as (
 	select 
@@ -42,7 +42,7 @@ with no_columns_on_esat as (
 	from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
 	join dv_pipeline_description.dvpd_pipeline_dv_table_driving_key pdtdk on pdtdk.pipeline_name =pdt.pipeline_name 
 																		 and pdtdk.table_name =pdt.table_name 
-	where stereotype in ('sat','esat','msat')
+	where table_stereotype in ('sat','esat','msat')
 )
 ,do_driving_keys_exist_in_parent as (
 select 
@@ -51,7 +51,7 @@ select
  	, dkppast.table_name   object_name 
  	,'DVPD_CHECK_SAT_SPECIFICS'::text  check_ruleset
 	, case when dc.column_name is null then 'driving key "'||dkppast.driving_key ||'" does not exist in parent table':: text
-	   when dc.dv_column_class not in ('parent_key','dependent_child_key') then 'column "'||dkppast.driving_key ||'" is not a parent key or dependent child key'
+	   when dc.column_class not in ('parent_key','dependent_child_key') then 'column "'||dkppast.driving_key ||'" is not a parent key or dependent child key'
 			else 'ok' end message
 from driving_key_per_pipeline_and_sat_table dkppast 
 left join dv_pipeline_description.dvpd_pipeline_dv_column dc ON dc.pipeline_name =dkppast.pipeline_name 

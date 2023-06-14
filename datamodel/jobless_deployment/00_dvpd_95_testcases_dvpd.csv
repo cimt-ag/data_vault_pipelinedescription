@@ -1,5 +1,7 @@
 mandantory,type,schema_name,name
 
+0,data,dv_pipeline_description,COMPILER_SETTING_DISABLE_REFRESH
+
 0,testdata,dv_pipeline_description,MODEL_PROFILE_TEST00
 
 1,testdata,dv_pipeline_description,test00_check_stereotype_and_parameters
@@ -10,6 +12,7 @@ mandantory,type,schema_name,name
 1,testdata,dv_pipeline_description,test05_check_link_specifics
 1,testdata,dv_pipeline_description,test09_check_no_common_field_groups_on_linked_hubs
 1,testdata,dv_pipeline_description,test10_bad_model_profile_name
+1,testdata,dv_pipeline_description,test11_stage_schema_missing
 1,testdata,dv_pipeline_description,test15_sat_without_diff_hash
 
 
@@ -45,7 +48,11 @@ mandantory,type,schema_name,name
 1,testdata,dv_pipeline_description,test71_fg_drive_scenario_11
 1,testdata,dv_pipeline_description,test80_recursive_link_with_common_bk_field
 1,testdata,dv_pipeline_description,test81_recursive_link_with_normal_satellite
+1,testdata,dv_pipeline_description,test82_double_recursion_and_link
 1,testdata,dv_pipeline_description,test90_model_profile_on_pipeline
 1,testdata,dv_pipeline_description,test91_model_profile_on_table
+
+0,data,dv_pipeline_description,COMPILER_SETTING_ENABLE_REFRESH
+
 1,testdata,dv_pipeline_description,test99_test_atmtst_issue_detection
 

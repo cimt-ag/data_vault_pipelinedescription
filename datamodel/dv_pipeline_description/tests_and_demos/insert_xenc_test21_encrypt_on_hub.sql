@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('xenc_test21_encrypt_on_hub','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "xenc_test21_encrypt_on_hub",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
@@ -42,16 +43,16 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_xenc_data", 
 		 "tables": [
-				{"table_name": "rxecd_21_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rxecd_21_aaa"}
-				,{"table_name": "rxecd_21_aaa_sat",		"stereotype": "sat","satellite_parent_table": "rxecd_21_aaa_hub","diff_hash_column_name": "RH_rxecd_21_aaa_sat"}
-				,{"table_name": "rxecd_21_bbb_hub",		"stereotype": "hub","hub_key_column_name": "HK_rxecd_21_bbb"}
-				,{"table_name": "rxecd_21_aaa_bbb_lnk",	"stereotype": "lnk","link_key_column_name": "LK_rxecd_21_aaa_bbb",
+				{"table_name": "rxecd_21_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_21_aaa"}
+				,{"table_name": "rxecd_21_aaa_sat",		"table_stereotype": "sat","satellite_parent_table": "rxecd_21_aaa_hub","diff_hash_column_name": "RH_rxecd_21_aaa_sat"}
+				,{"table_name": "rxecd_21_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_21_bbb"}
+				,{"table_name": "rxecd_21_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rxecd_21_aaa_bbb",
 																			"link_parent_tables": ["rxecd_21_aaa_hub","rxecd_21_bbb_hub"]}
 				]
 		}
 		,{"schema_name": "rvlt_xenc_keys", 
 		 "tables": [
-				{"table_name": "rxeck_21_aaa_hub_ek",		"stereotype": "xenc_hub-ek", "xenc_content_table_name":"rxecd_21_aaa_hub"}
+				{"table_name": "rxeck_21_aaa_hub_ek",		"table_stereotype": "xenc_hub-ek", "xenc_content_table_name":"rxecd_21_aaa_hub"}
 				]
 		}
 	]

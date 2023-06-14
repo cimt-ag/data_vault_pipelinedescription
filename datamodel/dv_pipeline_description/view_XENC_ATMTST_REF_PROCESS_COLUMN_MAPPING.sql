@@ -32,7 +32,7 @@ select
 	,table_row->>1 process_block
 	,table_row->>2 column_name
 	,table_row->>3 column_type
-	,table_row->>4 dv_column_class
+	,table_row->>4 column_class
 	,table_row->>5 stage_column_name
 	,table_row->>6 content_stage_hash_column
 	,table_row->>7 content_table_name

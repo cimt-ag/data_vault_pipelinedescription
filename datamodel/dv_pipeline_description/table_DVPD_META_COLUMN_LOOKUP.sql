@@ -20,18 +20,18 @@
 
 Create table if not exists dv_pipeline_description.DVPD_META_COLUMN_LOOKUP (
   meta_inserted_at TIMESTAMP DEFAULT current_timestamp,
-  stereotype VARCHAR(20),
+  table_stereotype VARCHAR(20),
   meta_column_name VARCHAR(60),
   meta_column_type VARCHAR(60),
-  PRIMARY KEY(stereotype,meta_column_name)
+  PRIMARY KEY(table_stereotype,meta_column_name)
   ); 
  
 comment on table dv_pipeline_description.DVPD_META_COLUMN_LOOKUP is 
-	'Definition of the meta columns needed for every data vault table stereotype';
+	'Definition of the meta columns needed for every data vault table table_stereotype';
 
 TRUNCATE TABLE dv_pipeline_description.dvpd_meta_column_lookup;
 INSERT INTO dv_pipeline_description.dvpd_meta_column_lookup
-(stereotype, meta_column_name, meta_column_type)
+(table_stereotype, meta_column_name, meta_column_type)
 VALUES('hub', 'load_date_column_name', 'load_date_column_type'),
 	  ('sat', 'load_date_column_name', 'load_date_column_type'),	
 	  ('lnk', 'load_date_column_name', 'load_date_column_type'),	

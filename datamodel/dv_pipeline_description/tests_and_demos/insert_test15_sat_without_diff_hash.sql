@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test15_sat_without_diff_hash','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test15_sat_without_diff_hash",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
@@ -36,8 +37,8 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_15_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_15_aaa"},
-				{"table_name": "rtjj_15_aaa_p1_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_15_aaa_HUB"}
+				{"table_name": "rtjj_15_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_15_aaa"},
+				{"table_name": "rtjj_15_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_15_aaa_HUB"}
 				]
 		}
 	]

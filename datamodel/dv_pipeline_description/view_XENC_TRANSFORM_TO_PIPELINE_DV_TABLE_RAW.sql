@@ -30,7 +30,7 @@ json_parsing as (
 select
 pipeline_name
 , json_array_elements(tables)->>'table_name'  as table_name
-, json_array_elements(tables)->>'stereotype'  as stereotype
+, json_array_elements(tables)->>'table_stereotype'  as table_stereotype
 , json_array_elements(tables)->>'xenc_content_hash_column_name' as xenc_content_hash_column_name
 , json_array_elements(tables)->>'xenc_content_salted_hash_column_name' as xenc_content_salted_hash_column_name
 , json_array_elements(tables)->>'xenc_content_table_name' as xenc_content_table_name
@@ -40,7 +40,7 @@ pipeline_name
 from data_vault_schema_basics
 )
 select * from json_parsing  -- everything delared as xenc and tables using xenc properties
-where stereotype like 'xenc%' or xenc_encryption_key_index_column_name is not null;
+where table_stereotype like 'xenc%' or xenc_encryption_key_index_column_name is not null;
 
 comment on view dv_pipeline_description.XENC_TRANSFORM_TO_PIPELINE_DV_TABLE_PROPERTIES_RAW is
  'technical helper view. needed by the transformation of the dvpd json into the relational model. Contains postgresql specific json syntax';

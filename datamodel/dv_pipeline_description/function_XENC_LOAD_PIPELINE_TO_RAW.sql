@@ -24,7 +24,20 @@ returns boolean
 language plpgsql    
 as 
 $$
+declare
+   update_persisted_elements varchar; 
 begin
+	
+/* Dont do anything when compiler is disabled */	
+select property_value
+INTO update_persisted_elements
+FROM dv_pipeline_description.DVPD_COMPILER_SETTING
+where property_name='update_persisted_elements';
+
+if (not(update_persisted_elements::bool)) then
+  return false;
+end if;
+
 	
 	/* Load json scripts into relational raw model */
 truncate table dv_pipeline_description.xenc_pipeline_dv_table_properties_raw ;
@@ -53,6 +66,7 @@ select
 from
 	dv_pipeline_description.xenc_transform_to_pipeline_dv_table_properties_raw;
 
+REFRESH MATERIALIZED VIEW dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN;
 
 return true;
 

@@ -54,6 +54,11 @@ Object, describing all necessary properties to access the data source<br>
 <br>Object for declaring all necessary paramenter for deletion detection processes
 <br>→ see “deletion_detection”
 
+**stage_properties[]**
+(mandatory)
+<br>Array with stage table declarations
+<br>→ see "stage_properties[]”
+
 
 ## data_extraction 
 subelement of root 
@@ -107,17 +112,17 @@ This array must contain at least one target description. Fields, that are mapped
 
 **table_name**
 (mandatory)
-<br>Name of the target table.(Must be defined in the data_vault_model section
+<br>Name of the data vault table.(Must be defined in the data_vault_model section
 <br>*"rexmp_customer_hub" | "rgopd_ad_click_sat"*
 
-**target_column_name**
+**column_name**
 (optional)
-<br>Name of the column in the target table. If not defined, the field_name will be used
+<br>Name of the column in the data vault table. If not defined, the field_name will be used.
 <br>*"customer_number"*
 
-**target_column_type**
+**column_type**
 (optional)
-<br>Datatype of the target column in the database. Must be a valid Database type. If not defined, the technical_type of the field will be used
+<br>Datatype of the column in the data vault table. Must be a valid type of the platform database. If not defined, the technical_type of the field will be used
 <br>*"VARCHAR(200)"*
 
 **recursion_name**
@@ -183,7 +188,7 @@ Especially for situations, where the schema name must also be used to provide de
 <br>Nname of the database table. 
 <br>*"raccn_account_hub"*
 
-**stereotype**
+**table_stereotype**
 (mandatory)
 <br>Data Vault Stereotype of the table. Valid values are: hub, lnk, sat, msat, esat
 <br>Depending on the stereotype, different properties have to be provided. The stereotype controls the processing for the load. The class of a column, generated for a mapped field is derived on the stereotype of the table as follows:
@@ -418,6 +423,25 @@ Example:
  	
 **> procedure specific properties <**
 For other procedures, then the defined above there might be other properties to be declared in the deletion_rule. 
+
+## stage_properties[]
+Contains the declaration of the stage table locations. In general the will be only one. In case of a distributed model, the stage table can be placed on every target. 
+
+**storage_component**
+(optional)
+<br>Identification of the storage, this staging table is placed. If not defined, there is only one storage component. Valid values depend on the processing modules and the overall architecture.
+<br>*"main_dwh_db" | "big_data_storage"*
+
+**stage_schema** 
+(mandatory)
+<br>Name of the schema the stage table is placed in. 
+<br>*"stage_rvlt" 
+
+**stage_table_name** 
+(optional)
+<br>Name of the stage table. Default is the name of the pipeline.
+<br>*"srvlt_crm_person_p1"
+
 
 
 # Open concepts

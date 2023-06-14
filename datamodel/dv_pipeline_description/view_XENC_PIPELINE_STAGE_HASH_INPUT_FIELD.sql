@@ -26,7 +26,7 @@ select distinct
 	eppstemm.pipeline_name,
 	eppstemm.process_block,
 	eppstemm.stage_column_name,
-	eppstemm.dv_column_class ,
+	eppstemm.column_class ,
 	field_name,
 	field_group,
 	prio_in_key_hash,

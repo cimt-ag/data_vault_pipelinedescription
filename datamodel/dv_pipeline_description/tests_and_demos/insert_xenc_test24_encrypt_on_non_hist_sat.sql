@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('xenc_test24_encrypt_on_non_hist_sat','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "xenc_test24_encrypt_on_non_hist_sat",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
@@ -40,13 +41,13 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_xenc_data", 
 		 "tables": [
-				{"table_name": "rxecd_24_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rxecd_24_aaa"}
-				,{"table_name": "rxecd_24_aaa_sat",		"stereotype": "sat","satellite_parent_table": "rxecd_24_aaa_hub", "is_enddated":false,"has_deletion_flag":false}
+				{"table_name": "rxecd_24_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_24_aaa"}
+				,{"table_name": "rxecd_24_aaa_sat",		"table_stereotype": "sat","satellite_parent_table": "rxecd_24_aaa_hub", "is_enddated":false,"has_deletion_flag":false}
 				]
 		}
 		,{"schema_name": "rvlt_xenc_keys", 
 		 "tables": [
-				{"table_name": "rxeck_24_aaa_sat_ek",	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_24_aaa_sat", "has_deletion_flag":false}
+				{"table_name": "rxeck_24_aaa_sat_ek",	"table_stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_24_aaa_sat", "has_deletion_flag":false}
 				]
 		}
 	]

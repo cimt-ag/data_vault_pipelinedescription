@@ -21,7 +21,7 @@
 with target as (
 select distinct pipeline_name
 from dv_pipeline_description.dvpd_pipeline_DV_table
-where pipeline_name like 'test61%'
+where pipeline_name like 'test82%'
 ) /* */
 select 1 block
 ,1 reverse_order
@@ -53,7 +53,7 @@ select 11 block
  || schema_name  || '","'
  || table_name || '",'
  || column_block || ',"'
- || dv_column_class || '","'
+ || column_class || '","'
  || column_name || '","'
  || column_type || '"]'
  ||(case when reverse_order=1 then '' else ',' end)
@@ -63,12 +63,12 @@ from (
 	, dptt.schema_name  
 	, dmc.table_name 
 	,coalesce(dmc.column_block,-1) column_block
-	,coalesce(dmc.dv_column_class,'') dv_column_class
+	,coalesce(dmc.column_class,'') column_class
 	,coalesce(dmc.column_name,'')  column_name
 	,coalesce(dmc.column_type,'')  column_type
 	from dv_pipeline_description.dvpd_pipeline_dv_table dptt  
 	join dv_pipeline_description.dvpd_pipeline_dv_column dmc  on  dmc.table_name =dptt.table_name 
-	   													--and dmc.dv_column_class  <> 'meta'	
+	   													--and dmc.column_class  <> 'meta'	
 	   													and dmc.pipeline_name =dptt.pipeline_name 
 where dptt.pipeline_name in (select pipeline_name from target) 
 ) the_data
@@ -100,7 +100,7 @@ from (
 	,stage_column_name
 	,field_name 
 	from dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping								
-	where  dv_column_class not in ('meta')
+	where  column_class not in ('meta')
 	and  pipeline_name in (select pipeline_name from target) 
 	) the_data
 union
@@ -184,7 +184,7 @@ select 61 block
  || process_block  || '","'
  || column_name || '","'
  || column_type || '","'
- || dv_column_class || '","'
+ || column_class || '","'
  || stage_column_name || '",'
  || coalesce('"'||content_stage_hash_column||'"','null') ||','
  || coalesce('"'||content_table_name||'"','null') || ']'
@@ -196,12 +196,12 @@ from (
 	,process_block 
 	,column_name 
 	,column_type
-	,dv_column_class 
+	,column_class 
 	,stage_column_name
 	,content_stage_hash_column
 	,content_table_name
 	from dv_pipeline_description.xenc_pipeline_process_stage_to_enc_model_mapping								
-	where  dv_column_class not in ('meta')
+	where  column_class not in ('meta')
 	and  pipeline_name in (select pipeline_name from target) 
 	) the_data
 	union

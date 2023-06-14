@@ -1,4 +1,0 @@
-mandantory,type,schema_name,name
-
-1,table,dv_processing,DVPC_META_COLUMN_CONTENT
-1,function,dv_processing,DVPC_GENERATE_HUB_INSERT

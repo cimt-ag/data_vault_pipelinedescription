@@ -41,7 +41,7 @@ join dv_pipeline_description.xenc_pipeline_process_stage_to_enc_model_mapping ps
 															on pstemm.pipeline_name =ppstdmmb.pipeline_name 
 															and pstemm.table_name = pdtp .table_name 
 															and pstemm.process_block = ppstdmmb.process_block 
-															and pstemm.dv_column_class ='xenc_encryption_key'													
+															and pstemm.column_class ='xenc_encryption_key'													
 )
 Select -- final view with extended stage column name
 	pipeline_name 

@@ -23,7 +23,7 @@ create or replace view dv_pipeline_description.DVPD_ATMTST_ISSUE_DV_MODEL_COLUMN
 with 
 pipelines_with_atmtst_data as (
 select pipeline_name
-, sum(case when dv_column_class = 'meta' then 1 else 0 end) ref_meta_count
+, sum(case when column_class = 'meta' then 1 else 0 end) ref_meta_count
 from dv_pipeline_description.dvpd_atmtst_ref_dv_model_column
 group by pipeline_name
 )
@@ -33,12 +33,12 @@ select
  ,pdt.schema_name 
  ,pdc.table_name 
  ,pdc.column_block 
- ,pdc.dv_column_class 
+ ,pdc.column_class 
  ,pdc.column_name 
  ,pdc.column_type 
 from  pipelines_with_atmtst_data pwad
 join dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN pdc  on  pdc.pipeline_name =pwad.pipeline_name 
-   													and (pdc.dv_column_class  <> 'meta' or 	ref_meta_count>0) -- ignore meta columns in result when no meta column is in reference
+   													and (pdc.column_class  <> 'meta' or 	ref_meta_count>0) -- ignore meta columns in result when no meta column is in reference
 join dv_pipeline_description.dvpd_pipeline_dv_table pdt  on pdt.pipeline_name =  pwad.pipeline_name 
 													and pdt.table_name = pdc.table_name 
 )   													
@@ -48,7 +48,7 @@ select
  ,schema_name
  ,table_name 
  ,column_block 
- ,dv_column_class 
+ ,column_class 
  ,column_name 
  ,column_type 
 from dv_pipeline_description.dvpd_atmtst_ref_dv_model_column

@@ -42,7 +42,7 @@ VALUES
 ,"is_enddated_default"   :  "true"
 ,"load_enddate_column_name" : "VB_T00"
 ,"load_enddate_column_type" : "TIMESTAMP WITHOUT TIME ZONE"
-,"has_deletion_flag_default": "true"
+,"has_deletion_flag_default": "false"
 ,"deletion_flag_column_name" : "ID_T00"
 ,"deletion_flag_column_type" : "integer"
 ,"record_source_column_name" : "RS_T00"

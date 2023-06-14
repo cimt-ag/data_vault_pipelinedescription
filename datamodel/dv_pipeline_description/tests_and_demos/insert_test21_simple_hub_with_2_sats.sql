@@ -23,8 +23,10 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test21_simple_hub_with_2_sats','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test21_simple_hub_with_2_sats",
 	"record_source_name_expression": "dvpd implementation test",
+	"stage_properties" : [{"storage_component":"PostgresDWH","stage_schema":"stage_rvlt"}],
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
@@ -42,9 +44,9 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_21_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_21_aaa"}
-				,{"table_name": "rtjj_21_aaa_p1_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_21_aaa_HUB","diff_hash_column_name": "RH_rtjj_21_aaa_P1_SAT"}
-				,{"table_name": "rtjj_21_aaa_p2_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_21_aaa_HUB","diff_hash_column_name": "RH_rtjj_21_aaa_P2_SAT"}
+				{"table_name": "rtjj_21_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_21_aaa"}
+				,{"table_name": "rtjj_21_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_21_aaa_HUB","diff_hash_column_name": "RH_rtjj_21_aaa_P1_SAT"}
+				,{"table_name": "rtjj_21_aaa_p2_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_21_aaa_HUB","diff_hash_column_name": "RH_rtjj_21_aaa_P2_SAT"}
 				]
 		}
 	]

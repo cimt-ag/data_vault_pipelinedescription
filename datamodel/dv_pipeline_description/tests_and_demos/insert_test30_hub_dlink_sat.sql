@@ -22,6 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test30_hub_dlink_sat','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test30_hub_dlink_sat",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
@@ -37,10 +38,10 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_30_aaa_hub",		"stereotype": "hub",			"hub_key_column_name": "HK_rtjj_30_aaa"},
-				{"table_name": "rtjj_30_aaa_ddd_dlnk",		"stereotype": "lnk",	"link_key_column_name": "LK_rtjj_30_aaa_ddd",
+				{"table_name": "rtjj_30_aaa_hub",		"table_stereotype": "hub",			"hub_key_column_name": "HK_rtjj_30_aaa"},
+				{"table_name": "rtjj_30_aaa_ddd_dlnk",		"table_stereotype": "lnk",	"link_key_column_name": "LK_rtjj_30_aaa_ddd",
 																 				"link_parent_tables":["rtjj_30_aaa_hub"]},
-				{"table_name": "rtjj_30_aaa_ddd_p1_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_30_aaa_ddd_dlnk","diff_hash_column_name": "RH_rtjj_30_aaa_ddd_p1_sat"}
+				{"table_name": "rtjj_30_aaa_ddd_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_30_aaa_ddd_dlnk","diff_hash_column_name": "RH_rtjj_30_aaa_ddd_p1_sat"}
 				]
 		}
 	]

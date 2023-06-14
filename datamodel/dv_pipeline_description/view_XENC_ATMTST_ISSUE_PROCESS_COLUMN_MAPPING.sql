@@ -32,13 +32,13 @@ select
 	,process_block 
 	,column_name 
 	,column_type 
-	,dv_column_class 
+	,column_class 
 	,stage_column_name
 	,content_stage_hash_column
 	,content_table_name
 from  pipelines_with_atmtst_data pwad
 join dv_pipeline_description.xenc_pipeline_process_stage_to_enc_model_mapping ppstdmmc on ppstdmmc.pipeline_name  =pwad.pipeline_name 
-where dv_column_class <>'meta'
+where column_class <>'meta'
 )   													
 , reference_data as ( 
 select 
@@ -47,7 +47,7 @@ select
 	,process_block 
 	,column_name 
 	,column_type 
-	,dv_column_class 
+	,column_class 
 	,stage_column_name
 	,content_stage_hash_column
 	,content_table_name

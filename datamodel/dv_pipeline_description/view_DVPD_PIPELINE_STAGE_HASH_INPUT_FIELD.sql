@@ -29,11 +29,11 @@ with target_hash_columns as (
 		,recursion_name 
 		,stage_column_name 
 		,table_name 
-		,stereotype
+		,table_stereotype
 		,column_name 
-		,dv_column_class 
+		,column_class 
 	from dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm_key
-	where dv_column_class in ('key','diff_hash')
+	where column_class in ('key','diff_hash')
 )
 , fields_for_link_key_hashes as (
 select distinct
@@ -58,7 +58,7 @@ join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping pps
 					and ppstdmm.recursion_name =dmhic.content_recursion_name 
 					and ppstdmm.table_name = dmhic.content_table 
 					and ppstdmm.column_name = dmhic.content_column 
-where thc.stereotype  ='lnk' 
+where thc.table_stereotype  ='lnk' 
 )
 , fields_for_not_link_key_hashes as (
 select distinct
@@ -84,7 +84,7 @@ join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping pps
 					and ppstdmm.table_name = dmhic.content_table 
 					and ppstdmm.column_name = dmhic.content_column 
 					and ppstdmm.process_block = thc.process_block     
-where thc.stereotype  !='lnk' 
+where thc.table_stereotype  !='lnk' 
 )
 select 
  pipeline_name 

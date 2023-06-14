@@ -35,7 +35,7 @@ select
  lower(pdt.pipeline_name) as pipeline_name 
 , lower(schema_name) as schema_name
 , lower(pdt.table_name) as table_name
-, lower(stereotype) as stereotype
+, lower(table_stereotype) as table_stereotype
 , upper(hub_key_column_name)  as hub_key_column_name
 , upper(link_key_column_name) as link_key_column_name
 , upper(diff_hash_column_name) as diff_hash_column_name

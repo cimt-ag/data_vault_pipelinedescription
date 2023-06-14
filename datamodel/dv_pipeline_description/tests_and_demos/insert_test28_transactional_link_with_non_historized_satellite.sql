@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test28_transactional_link_with_non_historized_satellite','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test28_transactional_link_with_non_historized_satellite",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
@@ -35,16 +36,16 @@ VALUES
 		 	  ,{"field_name": "F3_AAA_SP1_VARCHAR",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_28_aaa_bbb_sat"}]}
 			  ,{"field_name": "F4_AAA_SP1_DECIMAL",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_28_aaa_bbb_sat"}]}
 			  ,{"field_name": "F5__FIELD_NAME",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_28_aaa_bbb_sat",
-																									 "target_column_name":"F5_AAA_SP1_VARCHAR"}]}
+																									 "column_name":"F5_AAA_SP1_VARCHAR"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_28_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_28_aaa"}
-				,{"table_name": "rtjj_28_bbb_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_28_bbb"}
-				,{"table_name": "rtjj_28_aaa_bbb_lnk",	"stereotype": "lnk","link_key_column_name": "LK_rtjj_28_aaa_bbb",
+				{"table_name": "rtjj_28_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_28_aaa"}
+				,{"table_name": "rtjj_28_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_28_bbb"}
+				,{"table_name": "rtjj_28_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_28_aaa_bbb",
 																				"link_parent_tables": ["rtjj_28_aaa_hub","rtjj_28_bbb_hub"]}
-				,{"table_name": "rtjj_28_aaa_bbb_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_28_aaa_bbb_lnk","is_enddated": false, "has_deletion_flag":false}
+				,{"table_name": "rtjj_28_aaa_bbb_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_28_aaa_bbb_lnk","is_enddated": false, "has_deletion_flag":false}
 				]
 		}
 	]

@@ -23,15 +23,16 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test81_recursive_link_with_normal_satellite','{
  	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
  	"pipeline_name": "test81_recursive_link_with_normal_satellite",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
  	"fields": [
 			   {"field_name": "F1_BK_AAA_ORIGIN", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_hub"
-																					,"target_column_name": "BK_AAA"}]}		 	  
+																					,"column_name": "BK_AAA"}]}		 	  
 		      ,{"field_name": "F2_BK_AAA_RECURSE1", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_hub"
-																					,"target_column_name": "BK_AAA"
+																					,"column_name": "BK_AAA"
 																					,"recursion_name": "RCS1"}]}
 			  ,{"field_name": "F3_AAA_RECU_CONTENT", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_RECU_sat"}]}		  
 			  ,{"field_name": "F4_AAA_RECU_CONTENT2", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_81_aaa_RECU_sat"}]}		  
@@ -39,12 +40,12 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_81_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_81_aaa"}
-				,{"table_name": "rtjj_81_aaa_RECU_lnk",	"stereotype": "lnk" ,"link_key_column_name": "LK_rtjj_81_aaa_RECU"
+				{"table_name": "rtjj_81_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_81_aaa"}
+				,{"table_name": "rtjj_81_aaa_RECU_lnk",	"table_stereotype": "lnk" ,"link_key_column_name": "LK_rtjj_81_aaa_RECU"
 																			,"link_parent_tables": ["rtjj_81_aaa_hub"]
 																			,"recursive_parents": [ {"table_name":"rtjj_81_aaa_hub"
 																										,"recursion_name": "RCS1"}]}
-				,{"table_name": "rtjj_81_aaa_RECU_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_81_aaa_RECU_lnk","diff_hash_column_name":"rh_rtjj_81_aaa_RECU_sat"}
+				,{"table_name": "rtjj_81_aaa_RECU_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_81_aaa_RECU_lnk","diff_hash_column_name":"rh_rtjj_81_aaa_RECU_sat"}
 				]
 		}
  ]

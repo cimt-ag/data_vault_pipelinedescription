@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('xenc_test76_fg_enc_on_lsat_and_hub','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "xenc_test76_fg_enc_on_lsat_and_hub",
 	"purpose":"Test dvpd transformation for multilayered field groups",
 	"record_source_name_expression": "knuppisoft.artikel",
@@ -31,34 +32,34 @@ VALUES
 	},
 	"fields": [
 		      {"field_name": "F1_BK_AAA_L1", 		"field_type": "Varchar(20)", "needs_encryption":true,	"targets": [{"table_name": "rxecd_76_aaa_hub"
-																					,"target_column_name": "BK_AAA_EC"
+																					,"column_name": "BK_AAA_EC"
 																				 	,"field_groups":["fg1"]}]}
 		      ,{"field_name": "F2_BK_AAA_L2", 		"field_type": "Varchar(20)", "needs_encryption":true,	"targets": [{"table_name": "rxecd_76_aaa_hub"
-																					,"target_column_name": "BK_AAA_EC"
+																					,"column_name": "BK_AAA_EC"
 																				 	,"field_groups":["fg2"]}]}		 	  
 		      ,{"field_name": "F3_BK_BBB", 		"field_type": "Varchar(20)",  "needs_encryption":true,	"targets": [{"table_name": "rxecd_76_bbb_hub"}]}		 
 		      ,{"field_name": "F4_AAA_BBB_S1_COLA_L1","field_type": "Varchar(20)", "needs_encryption":true
-											,	"targets": [{"table_name": "rxecd_76_aaa_bbb_sat","target_column_name": "F4_AAA_BBB_S1_COLA_EC","field_groups":["fg1"]}]}		 
+											,	"targets": [{"table_name": "rxecd_76_aaa_bbb_sat","column_name": "F4_AAA_BBB_S1_COLA_EC","field_groups":["fg1"]}]}		 
 		      ,{"field_name": "F4_AAA_BBB_S1_COLA_L2","field_type": "Varchar(20)", "needs_encryption":true
-											,	"targets": [{"table_name": "rxecd_76_aaa_bbb_sat","target_column_name": "F4_AAA_BBB_S1_COLA_EC","field_groups":["fg2"]}]}		 
+											,	"targets": [{"table_name": "rxecd_76_aaa_bbb_sat","column_name": "F4_AAA_BBB_S1_COLA_EC","field_groups":["fg2"]}]}		 
 		      ,{"field_name": "F5_AAA_BBB_S1_COLB","field_type": "Varchar(20)",	"targets": [{"table_name": "rxecd_76_aaa_bbb_sat","field_groups":["fg1"]}]}		 		 
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_xenc_data", 
 		 "tables": [
-				{"table_name": "rxecd_76_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rxecd_76_aaa"}
-				,{"table_name": "rxecd_76_aaa_bbb_lnk",	"stereotype": "lnk","link_key_column_name": "LK_rxecd_76_aaa_bbb",
+				{"table_name": "rxecd_76_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_76_aaa"}
+				,{"table_name": "rxecd_76_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rxecd_76_aaa_bbb",
 																				"link_parent_tables": ["rxecd_76_aaa_hub","rxecd_76_bbb_hub"]}
-				,{"table_name": "rxecd_76_aaa_bbb_sat",	"stereotype": "sat","satellite_parent_table": "rxecd_76_aaa_bbb_lnk"
+				,{"table_name": "rxecd_76_aaa_bbb_sat",	"table_stereotype": "sat","satellite_parent_table": "rxecd_76_aaa_bbb_lnk"
 																				,"diff_hash_column_name": "RH_rxecd_76_aaa_bbb_sat"}
-				,{"table_name": "rxecd_76_bbb_hub",		"stereotype": "hub","hub_key_column_name": "HK_rxecd_76_bbb"}
+				,{"table_name": "rxecd_76_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_76_bbb"}
 				]
 		}
 	,{"schema_name": "rvlt_xenc_keys", 
 		 "tables": [
-				{"table_name": "rxeck_76_aaa_hub_ek",	"stereotype": "xenc_hub-ek", "xenc_content_table_name":"rxecd_76_aaa_hub"}
-				,{"table_name": "rxeck_76_aaa_bbb_sat_ek",	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_76_aaa_bbb_sat"}
-				,{"table_name": "rxeck_76_bbb_hub_ek",	"stereotype": "xenc_hub-ek", "xenc_content_table_name":"rxecd_76_bbb_hub"}
+				{"table_name": "rxeck_76_aaa_hub_ek",	"table_stereotype": "xenc_hub-ek", "xenc_content_table_name":"rxecd_76_aaa_hub"}
+				,{"table_name": "rxeck_76_aaa_bbb_sat_ek",	"table_stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_76_aaa_bbb_sat"}
+				,{"table_name": "rxeck_76_bbb_hub_ek",	"table_stereotype": "xenc_hub-ek", "xenc_content_table_name":"rxecd_76_bbb_hub"}
 				]
 		}
 	]

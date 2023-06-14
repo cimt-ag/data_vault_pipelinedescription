@@ -26,18 +26,18 @@ select
   ,'Field'::TEXT  object_type 
   ,sfm.field_name object_name
   ,'DVPD_CHECK_FIELD_SPECIFICS'::text  check_ruleset
-  ,case when pdt.table_name is null then 'Unknown target_table: '|| sfm.target_table   
+  ,case when pdt.table_name is null then 'Unknown table_name: '|| sfm.table_name   
     else 'ok' end  message
 from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm
 left join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = sfm.pipeline_name 
-										and pdt.table_name = sfm.target_table 
+										and pdt.table_name = sfm.table_name 
 )
 , target_aggregation as (
 select 
 pipeline_name
-,target_table
-,target_column_name
-,target_column_type
+,table_name
+,column_name
+,column_type
 ,prio_in_key_hash
 ,exclude_from_key_hash
 ,prio_in_diff_hash
@@ -51,9 +51,9 @@ group by 1,2,3,4,5,6,7,8,9
 )
 , target_constellation_count as (
 select 
-pipeline_name , target_table ,target_column_name
+pipeline_name , table_name ,column_name
 ,  array_to_string(array_agg(distinct field_list),'|')
-|| '[type:'||array_to_string(array_agg (distinct  target_column_type),'|')||'] '
+|| '[type:'||array_to_string(array_agg (distinct  column_type),'|')||'] '
 || '[prio_in_key:'||array_to_string(array_agg (distinct cast(prio_in_key_hash as varchar)),'|')||'] '
 || '[exclude from key:'||array_to_string(array_agg (distinct cast(exclude_from_key_hash as varchar)),'|')||'] '
 || '[prio_in_diff_hash:'||array_to_string(array_agg (distinct cast(prio_in_diff_hash as varchar)),'|')||'] '
@@ -68,7 +68,7 @@ group by 1,2,3
 select
   pipeline_name
   ,'column'::TEXT  object_type 
-  ,target_table||'.'||target_column_name object_name
+  ,table_name||'.'||column_name object_name
   ,'DVPD_CHECK_FIELD_SPECIFICS'::text  check_ruleset
   ,case when constellation_count >1  then 'Inconsistent specifiation: '|| comparison_report   
     else 'ok' end  message

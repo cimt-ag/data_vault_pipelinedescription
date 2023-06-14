@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test63_fg_drive_scenario_3','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test63_fg_drive_scenario_3",
 	"purpose":"Test dvpd transformation for multilayered field groups",
 	"record_source_name_expression": "knuppisoft.artikel",
@@ -31,21 +32,21 @@ VALUES
 	},
 	"fields": [
 		      {"field_name": "F1_BK_AAA_L1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_63_aaa_hub"
-																					,"target_column_name": "BK_AAA"
+																					,"column_name": "BK_AAA"
 																				 	,"field_groups":["fg1"]}]}
 		      ,{"field_name": "F2_BK_AAA_L2", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_63_aaa_hub"
-																					,"target_column_name": "BK_AAA"
+																					,"column_name": "BK_AAA"
 																				 	,"field_groups":["fg2"]}]}		 	  
 		      ,{"field_name": "F3_BK_BBB", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_63_bbb_hub"}]}		 
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_63_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_63_aaa"}
-				,{"table_name": "rtjj_63_aaa_bbb_lnk",	"stereotype": "lnk"	,"link_key_column_name": "LK_rtjj_63_aaa_bbb"
+				{"table_name": "rtjj_63_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_63_aaa"}
+				,{"table_name": "rtjj_63_aaa_bbb_lnk",	"table_stereotype": "lnk"	,"link_key_column_name": "LK_rtjj_63_aaa_bbb"
 																			,"link_parent_tables": ["rtjj_63_aaa_hub","rtjj_63_bbb_hub"]
 																			,"tracked_field_groups": ["fg1"]}
-				,{"table_name": "rtjj_63_bbb_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_63_bbb"}
+				,{"table_name": "rtjj_63_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_63_bbb"}
 				]
 		}
 	]

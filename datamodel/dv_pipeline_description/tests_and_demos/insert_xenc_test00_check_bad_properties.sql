@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('xenc_test00_bad_properties','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "xenc_test00_bad_properties",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
@@ -38,15 +39,15 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_xenc_data", 
 		 "tables": [
-				{"table_name": "rxecd_00_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rxecd_00_aaa"}
-				,{"table_name": "rxecd_00_aaa_sat",		"stereotype": "sat","satellite_parent_table": "rxecd_00_aaa_hub","diff_hash_column_name": "RH_rxecd_00_aaa_sat"}
+				{"table_name": "rxecd_00_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_00_aaa"}
+				,{"table_name": "rxecd_00_aaa_sat",		"table_stereotype": "sat","satellite_parent_table": "rxecd_00_aaa_hub","diff_hash_column_name": "RH_rxecd_00_aaa_sat"}
 				]
 		}
 		,{"schema_name": "rvlt_xenc_keys", 
 		 "tables": [
-				{"table_name": "rxecd_00_content_not_declared_ek",	"stereotype": "xenc_sat-ek"}
-				,{"table_name": "rxecd_00_bad_stereotype",	"stereotype": "xenc_baaad"}
-				,{	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_xxxnot_existingxxx"}
+				{"table_name": "rxecd_00_content_not_declared_ek",	"table_stereotype": "xenc_sat-ek"}
+				,{"table_name": "rxecd_00_bad_stereotype",	"table_stereotype": "xenc_baaad"}
+				,{	"table_stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_xxxnot_existingxxx"}
 				]
 		}
 	]

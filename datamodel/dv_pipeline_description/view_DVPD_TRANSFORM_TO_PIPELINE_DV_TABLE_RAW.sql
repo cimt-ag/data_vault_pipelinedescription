@@ -31,7 +31,7 @@ select
 pipeline_name
 , schema_name
 , json_array_elements(tables)->>'table_name'  as table_name
-, json_array_elements(tables)->>'stereotype' as stereotype
+, json_array_elements(tables)->>'table_stereotype' as table_stereotype
 , json_array_elements(tables)->>'hub_key_column_name' as hub_key_column_name
 , json_array_elements(tables)->>'link_key_column_name' as link_key_column_name
 , json_array_elements(tables)->>'diff_hash_column_name' as diff_hash_column_name

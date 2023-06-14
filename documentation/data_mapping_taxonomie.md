@@ -159,15 +159,16 @@ The source row contains
 
 The following table shows all of the upper combinations in a comprehensive way.
 
-|business key fieldsets of object A(main object)|Content fieldsets of object A|business key fieldsets of object B(related object)|Content fieldsets of B|Content fieldsets for relation|Estimated ocurrence in regular projects|Covered by pattern|
-| :---: | :---: | :---: | :---: | :---: | :---: |
-|1|1|0|0|0|15%|M1 |
-|1|1|1|0|0|55%|M1E1 |
-|1|1|1|0|1|10%|M1LS1|
-|1|1|1|1|0|20%|M1E1P1|
-|1|1|1|1|1|<1%|M1LS1+M1E1P1|
-|1|1|2+|0|0|2%|M1En |
-|1|1|2+|0|same as ident of B|<1%|M1LSn|
-|1|1|2+|1|0|<1%|M1EnP1|
-|2+|1|0|0|0|2%|MR1 |
-|2+|same as ident of A|0|0|0|<1%|Mn|
+| business key fieldsets of object A(main object) | Content fieldsets of object A| business key fieldsets of object B(related object) | Content fieldsets of B|Content fieldsets for relation | Estimated ocurrence in regular projects | Covered by pattern |
+| :----: | :----: | :----: | :----: | :----: | :----: | ---- |
+| 1 | 1 | 0 | 0 | 0 | 15% | M1 |
+| 1 |1|1|0|0|55%|M1E1 |
+| 1 |1|1|0|1|10%|M1LS1|
+| 1 |1|1|1|0|20%|M1E1P1|
+| 1 |1|1|1|1|<1%|M1LS1+M1E1P1|
+| 1 |1|2+|0|0|2%|M1En |
+| 1 |1|2+|0|same as ident of B|<1%|M1LSn|
+| 1 |1|2+|1|0|<1%|M1EnP1|
+| 2+ |1|0|0|0|2%|MR1 |
+| 2+ |same as ident of A|0|0|0|<1%|Mn|
+

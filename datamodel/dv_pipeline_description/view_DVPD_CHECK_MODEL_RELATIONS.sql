@@ -49,7 +49,7 @@ select
   ,apr.table_name object_name
   ,'DVPD_CHECK_MODEL_RELATIONS'::text  check_ruleset
   ,case when pdt.table_name is null then 'Unknown parent_table: '|| apr.parent_table  
-  		 when pdt.stereotype not in ('hub','lnk') then 'Parent table :'|| apr.parent_table || ' is not a hub or link'
+  		 when pdt.table_stereotype not in ('hub','lnk') then 'Parent table :'|| apr.parent_table || ' is not a hub or link'
     	else 'ok' 
     end  message
 from all_parent_relations apr
