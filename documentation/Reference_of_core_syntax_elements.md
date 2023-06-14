@@ -193,13 +193,13 @@ Especially for situations, where the schema name must also be used to provide de
 <br>Data Vault Stereotype of the table. Valid values are: hub, lnk, sat, msat, esat
 <br>Depending on the stereotype, different properties have to be provided. The stereotype controls the processing for the load. The class of a column, generated for a mapped field is derived on the stereotype of the table as follows:
 
-hub: mapped field is a business key except it is explicitly declared not to be (exclude_from_key_hash=true)
+**hub**: mapped field is a business key except it is explicitly declared not to be (exclude_from_key_hash=true)
 
-lnk:  mapped field is a dependent child key except it is explicitly declared not to be (exclude_from_key_hash=true)
+**lnk**: mapped field is a dependent child key except it is explicitly declared not to be (exclude_from_key_hash=true)
 
-msat&sat:  mapped field is part of the satellite
+**sat**: mapped field is part of the satellite
 
-esat: there must not be any mapping of fields to an esat
+Satellites without any mapped content column are allowed but must have a link as parent  (effectivity satellites). 
 
 **table_content_comment**
 (optional)
@@ -284,15 +284,15 @@ List of recursive parent table declarations (e.g. for hierarchical links or “s
 
 **insert_changes_only**
 (optional, default depends on model profile)
-<br>when set to true, incoming data is only added to the satellite if it differs from the latest version stored.
+<br>when set to true, incoming data is only added to the satellite when it differs from the latest version stored.
 
 **is_enddated**
 (optional, default depends on model profile)
 <br>when set to true (default) meta data columns for historization enddating will be added to the table and loading process will execute enddating functions
 
 **uses_diff_hash**
-(mandatory)<br>
-When set to true (default is defined in model profile), data change is detected by calculation of a hash value ober all relevant columns and comparison of the hash value against the latest stored satellite row for every key.
+(optional, default depends on model profile))<br>
+When set to true, data change is detected by calculation of a hash value ober all relevant columns and comparison of the hash value against the latest stored satellite row for every key.
 
 **diff_hash_column_name**
 (might be ommitted, when the implementation is not using a diff hash)

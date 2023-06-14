@@ -53,7 +53,7 @@ VALUES
 																			,"link_parent_tables": ["rxecd_70_aaa_hub"]
 																			,"recursive_parents": [ {"table_name":"rxecd_70_aaa_hub"
 																										,"recursion_name": "HRCHY1"}]}
-				,{"table_name": "rxecd_70_aaa_hierarchy_esat",	"table_stereotype": "esat","satellite_parent_table": "rxecd_70_aaa_hierarchy_hlnk"
+				,{"table_name": "rxecd_70_aaa_hierarchy_esat",	"table_stereotype": "sat","satellite_parent_table": "rxecd_70_aaa_hierarchy_hlnk"
 																				 ,"tracked_field_groups":["fg1"]}
 
 				]

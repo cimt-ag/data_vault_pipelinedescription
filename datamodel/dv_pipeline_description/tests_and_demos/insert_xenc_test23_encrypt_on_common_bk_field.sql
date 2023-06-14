@@ -48,7 +48,7 @@ VALUES
 				,{"table_name": "rxecd_23_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_23_bbb"}
 				,{"table_name": "rxecd_23_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rxecd_23_aaa_bbb",
 																			"link_parent_tables": ["rxecd_23_aaa_hub","rxecd_23_bbb_hub"]}
-				,{"table_name": "rxecd_23_aaa_bbb_esat",	"table_stereotype": "esat","satellite_parent_table": "rxecd_23_aaa_bbb_lnk"}
+				,{"table_name": "rxecd_23_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rxecd_23_aaa_bbb_lnk"}
 				]
 		}
 		,{"schema_name": "rvlt_xenc_keys", 

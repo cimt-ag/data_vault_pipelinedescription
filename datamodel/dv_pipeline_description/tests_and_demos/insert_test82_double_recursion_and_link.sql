@@ -49,12 +49,12 @@ VALUES
 													,"link_parent_tables": ["rtjj_82_aaa_hub"]
 													,"recursive_parents": [ {"table_name":"rtjj_82_aaa_hub","recursion_name": "RECU1"}
 																			,{"table_name":"rtjj_82_aaa_hub","recursion_name": "RECU2"}]}
-				,{"table_name": "rtjj_82_aaa_hierarchy_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_82_aaa_hierarchy_hlnk"}
+				,{"table_name": "rtjj_82_aaa_hierarchy_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_82_aaa_hierarchy_hlnk"}
 				,{"table_name": "rtjj_82_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_82_bbb"}
 				,{"table_name": "rtjj_82_bbb_aaa_lnk",		"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_82_bbb_aaa"
 																	,"link_parent_tables": ["rtjj_82_bbb_hub","rtjj_82_aaa_hub"]}
 
-				,{"table_name": "rtjj_82_bbb_aaa_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_82_bbb_aaa_lnk"}
+				,{"table_name": "rtjj_82_bbb_aaa_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_82_bbb_aaa_lnk"}
 				]
 		}
 	]

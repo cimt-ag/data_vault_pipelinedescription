@@ -137,7 +137,7 @@ select -- keys of parents
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.model_profile_name =pdt .model_profile_name 
 			 								and (mpmcl.table_stereotype = pdt.table_stereotype or ( mpmcl.table_stereotype = 'xsat_hist' and pdt.is_enddated )
 			 								or (mpmcl.table_stereotype = 'xsat_delflag' and pdt.has_deletion_flag))
- where pdt.table_stereotype in ('sat','esat','msat')
+ where pdt.table_stereotype in ('sat','msat')
  union 
 select -- own key column
  	pdt.pipeline_name 
@@ -164,7 +164,7 @@ select -- own key column
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
  left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
  				and mp.property_name ='diff_hash_column_type'  
- where pdt.table_stereotype in ('sat','msat') and pdt.diff_hash_column_name is not null
+ where pdt.table_stereotype in ('sat','msat') and pdt.diff_hash_column_name is not null and not is_effectivity_sat 
  union
  select -- content
  	pdt.pipeline_name 
@@ -177,7 +177,7 @@ select -- own key column
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
  left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte on pfte.pipeline_name = pdt.pipeline_name 
  							and pfte.table_name = pdt.table_name 
- where pdt.table_stereotype in ('sat','msat')
+ where pdt.table_stereotype in ('sat','msat') and not is_effectivity_sat 
  )
  ,ref_columns as (-- <<<<<<<<<<<<<<<<<<<<<<<<< REF
  select -- meta columns

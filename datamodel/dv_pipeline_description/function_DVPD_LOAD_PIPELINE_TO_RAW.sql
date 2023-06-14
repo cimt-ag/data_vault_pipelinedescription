@@ -224,6 +224,7 @@ from
 
 
 
+REFRESH MATERIALIZED VIEW dv_pipeline_description.DVPD_PIPELINE_DV_TABLE;
 
 REFRESH MATERIALIZED VIEW dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN;
 

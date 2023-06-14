@@ -50,7 +50,7 @@ VALUES
 																			,"link_parent_tables": ["rtjj_70_aaa_hub"]
 																			,"recursive_parents": [ {"table_name":"rtjj_70_aaa_hub"
 																										,"recursion_name": "HRCHY1"}]}
-				,{"table_name": "rtjj_70_aaa_hierarchy_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_70_aaa_hierarchy_hlnk"
+				,{"table_name": "rtjj_70_aaa_hierarchy_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_70_aaa_hierarchy_hlnk"
 																				 ,"tracked_field_groups":["fg1"]}
 
 				]

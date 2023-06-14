@@ -45,7 +45,7 @@ VALUES
 																			,"link_parent_tables": ["rtjj_80_aaa_hub"]
 																			,"recursive_parents": [ {"table_name":"rtjj_80_aaa_hub"
 																										,"recursion_name": "RCS1"}]}
-				,{"table_name": "rtjj_80_aaa_recu_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_80_aaa_recu_lnk"}
+				,{"table_name": "rtjj_80_aaa_recu_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_80_aaa_recu_lnk"}
 
 				]
 		}

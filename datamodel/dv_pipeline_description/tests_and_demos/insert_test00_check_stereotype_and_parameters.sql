@@ -52,7 +52,7 @@ VALUES
 			,	{"table_name": "rtjj_00_FFF_GGG_XXX_LNK_WITHOUT_LINK_KEY_COLUMN", "table_stereotype": "lnk","link_parent_tables":["rvlt_test_jj","rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
 			,	{"table_name": "rtjj_00_FFF_GGG_XXX_DLNK_WITHOUT_LINK_KEY_COLUMN", "table_stereotype": "lnk","link_parent_tables":["rvlt_test_jj","rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
 			,	{"table_name": "rtjj_00_FFF_GGG_LNK", "table_stereotype": "lnk","link_key_column_name": "LK_rtjj_00_FFF_GGG","link_parent_tables":["rvlt_test_jj","rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
-			,	{"table_name": "rtjj_00_FFF_GGG_XXX_ESAT_WITHOUT_PARENT", "table_stereotype": "esat"}
+			,	{"table_name": "rtjj_00_FFF_GGG_XXX_ESAT_WITHOUT_PARENT", "table_stereotype": "sat"}
 				]
 		}
 	]

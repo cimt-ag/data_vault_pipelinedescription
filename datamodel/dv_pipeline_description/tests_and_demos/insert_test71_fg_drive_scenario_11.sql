@@ -54,9 +54,9 @@ VALUES
 																			,"link_parent_tables": ["rtjj_71_aaa_hub"]
 																			,"recursive_parents": [ {"table_name":"rtjj_71_aaa_hub"
 																										,"recursion_name": "RRRR"}]}
-				,{"table_name": "rtjj_71_aaa_rec1_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_71_aaa_recursion_hlnk"
+				,{"table_name": "rtjj_71_aaa_rec1_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_71_aaa_recursion_hlnk"
 																				 ,"tracked_field_groups":["fg1"]}
-				,{"table_name": "rtjj_71_aaa_rec2_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_71_aaa_recursion_hlnk"
+				,{"table_name": "rtjj_71_aaa_rec2_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_71_aaa_recursion_hlnk"
 																				 ,"tracked_field_groups":["fg2"]}
 
 				]

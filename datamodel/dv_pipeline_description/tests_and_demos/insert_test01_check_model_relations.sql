@@ -50,7 +50,7 @@ VALUES
 																									"link_parent_tables":["rtjj_01_AAA_HUB"]
 																								,"recursive_parents": [ {"table_name":"rtjj_XXX_UNKNOWN_HUB"
 																										,"recursion_name": "PARENT"}]}
-			,	{"table_name": "rtjj_01_BBB_CCC_XXX_ESAT_WITH_UNKNOWN_PARENT", "table_stereotype": "esat","satellite_parent_table":"rtjj_01_CCC_XXX_UNKNOWN_HUB"}
+			,	{"table_name": "rtjj_01_BBB_CCC_XXX_ESAT_WITH_UNKNOWN_PARENT", "table_stereotype": "sat","satellite_parent_table":"rtjj_01_CCC_XXX_UNKNOWN_HUB"}
 			,	{"table_name": "rtjj_01_AAA_EEE_DONT_USE_AS_PARENT",	"table_stereotype": "sat","satellite_parent_table":"rtjj_01_AAA_HUB","diff_hash_column_name": "rh_rtjj_01_AAA_EEE_DONT_USE_AS_PARENT"}
 			,	{"table_name": "rtjj_01_FFF_XXX_SAT_WITH_BAD_PARENT",	"table_stereotype": "sat","satellite_parent_table":"rtjj_01_AAA_EEE_DONT_USE_AS_PARENT","diff_hash_column_name": "rh_rtjj_01_FFF_XXX_SAT_WITH_BAD_PARENT"}
 				]

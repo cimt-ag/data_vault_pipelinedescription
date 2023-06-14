@@ -46,7 +46,7 @@ VALUES
 				,"rtkk_22a_bbb_hub": 	{"table_stereotype": "hub","schema_name": "rvlt_test_kk","hub_key_column_name": "HK_rtkk_22a_bbb"}
 				,"rtjj_22a_aaa_bbb_lnk":{"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_22a_aaa_bbb",
 																				"link_parent_tables": ["rtjj_22a_aaa_hub","rtkk_22a_bbb_hub"]}
-				,"rtjj_22a_aaa_bbb_esat":{"table_stereotype": "esat","satellite_parent_table": "rtjj_22a_aaa_bbb_lnk"}
+				,"rtjj_22a_aaa_bbb_esat":{"table_stereotype": "sat","satellite_parent_table": "rtjj_22a_aaa_bbb_lnk"}
 	}
 }
 ');

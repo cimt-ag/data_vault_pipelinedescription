@@ -66,7 +66,11 @@ select
 from
 	dv_pipeline_description.xenc_transform_to_pipeline_dv_table_properties_raw;
 
+
+REFRESH MATERIALIZED VIEW dv_pipeline_description.DVPD_PIPELINE_DV_TABLE;
+
 REFRESH MATERIALIZED VIEW dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN;
+
 
 return true;
 

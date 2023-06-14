@@ -46,7 +46,7 @@ VALUES
 				,{"table_name": "rtjj_27_ccc_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_27_ccc"}
 				,{"table_name": "rtjj_27_aaa_bbb_ccc_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_27_aaa_bbb_ccc",
 																				"link_parent_tables": ["rtjj_27_aaa_hub","rtjj_27_bbb_hub","rtjj_27_ccc_hub"]}
-				,{"table_name": "rtjj_27_aaa_bbb_ccc_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_27_aaa_bbb_ccc_lnk"}
+				,{"table_name": "rtjj_27_aaa_bbb_ccc_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_27_aaa_bbb_ccc_lnk"}
 				]
 		}
 	]

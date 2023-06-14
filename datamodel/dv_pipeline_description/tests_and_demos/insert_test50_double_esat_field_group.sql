@@ -66,10 +66,10 @@ VALUES('test50_double_esat_field_group', '{
  				,{"table_name": "rtjj_50_aaa_p1_sat","table_stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_hub","diff_hash_column_name": "RH_rtjj_50_aaa_p1_sat"}
 				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_lnk","table_stereotype": "lnk","link_key_column_name": "LK_rtjj_50_aaa_rtjkk_bbb"
 																	,	"link_parent_tables": ["rtjj_50_aaa_hub","rtkk_50_bbb_hub"]}
-				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g1_esat","table_stereotype": "esat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
+				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g1_esat","table_stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
 																		"tracked_field_groups": ["fg1"],
 																		"driving_hub_keys": ["HK_rtjj_50_aaa"]}
-				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g2_esat","table_stereotype": "esat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
+				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g2_esat","table_stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
 																		"tracked_field_groups": ["fg2"],
 																		"driving_hub_keys": ["HK_rtjj_50_aaa"]}
 			]
