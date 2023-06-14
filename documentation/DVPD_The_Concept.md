@@ -241,39 +241,48 @@ The declaration of the deletion detection depends on the method.
 	- parameters for most common partioned deletion detection (linear join pathes only)
 	- SELECT statement providing all satellite keys that need to be deleted(allows any kind of complexity/ruleset)
 
-For a deep insight about the variations, when trying to define a more general approach without SQL, check out the [partition_deletion_detection_catalog](./partition_deletion_detection_catalog.md).
+For a more insights about the variations, when trying to define a more general approach without SQL, check out the [partition_deletion_detection_catalog](./partition_deletion_detection_catalog.md).
 
 
 ## Model Profile
 All **basic properties of the data vault model and loading**, are defined in a model profile.
 - Hashing properties
     - methods for keys and diff hashes
-	- DB data types for the keys and diff hashes
+	- DB column data types for the keys and diff hashes
 	- Constants for ghost records and missing values
-	- Separator to use in the concatenation
+	- Separator to use in the hash concatenation
 - Time values for far future and far past
 - Names and types for meta data columns
 - Defaults about
-	- Enddating
-	- Historization
+	- Enddating in satellites
+	- Historization in satelllites
 
-These definitions might change over time or between different technical platforms. Therefore different model profiles can be declared. To support high consistency over all DVPD, model profiles are kept seperatly from the DVPD document. The DVPD must refer to at least one model profile. When necessary, the model profile can be declared for every table (multiplatform pipeline, load old/new style in same DVPD) 
+These definitions might change over time or between different technical platforms. Therefore different model profiles can be declared. To support high consistency over all DVPD, model profiles are kept seperatly from the DVPD document. The DVPD must refer to at least one model profile, that will be applied to all tables in the DVDP. To allow mixing of concepts, the model profile can be declared at every table (multiplatform pipeline, load old/new style in same DVPD) 
 
 All expected properties of the model profile are specifiend in [Model Profile reference](./reference_of_model_profile.md).
 
 
-# Derivation of target model and processing
-DVPD minimizes the amount of declarations to describe model and load processing, by focussing on the source data structure and the target table model. This section describes how all other properties and assest are derived from this base. Complience with these rules is essential for interoperability of different tools.
+# Derivation rules for the target model and processing
+DVPD minimizes the amount of declarations to describe model and load processing, by focussing on the source data structure and the target table model. This section describes how all other properties and assest, that are needed for processing, are derived from this base. That are:
+- complete column list for every data vault table
+- complete column list of a stage table
+- list of loading processes for every data vault table
+- mapping of the fields to the stage columns and data vault columns for every process
+- mapping of hash columns from stage to  data vault columns for every process
+- list of fields, to be used vor every hash columns
+This derivation is implemented in the DVDP Compiler. Complience with these rules is essential for interoperability of different tools.
+
+The following diagram explains the main dependencies, how elements are derived.
 
 ![derivation tree](./images/structure_derivation.drawio.png)
 
 ## Data Vault model tables ##
 The following elements are derived
-- data columns of a table = all mapped fields deduplicated on target_column_name which defaults to the field name. Data type is target_column_type, which defaults to the field type and must be the same for all fields mapped to this target_column_name.
-    - business key columns = fields mapped to a hub and not explicitly excluded from hash key
-	- dependend child key columns = fields mapped to a link and not explicitly excluded from hash key
+- columns of a table = all mapped fields deduplicated on target_column_name (default=the field name). Data type is target_column_type (default=field type)and must be the same for all fields mapped to this target_column_name.
+- business key columns = fields mapped to a hub and not explicitly excluded from hash key
+- dependend child key columns = fields mapped to a link and not explicitly excluded from hash key
 - Key column of satellites = Key column of its parent
-- Hub Key columns in link = Key columns of all parents + recursive parents. Hub Key column names for recursive parents are created by concatenating the orginal hub key column and the recursion name
+- Hub Key columns in link = Key columns of all parents + recursive parents. Hub Key column names for recursive parents are created by concatenating the orginal hub key column name and the recursion name
 - meta data columns are created depending on the table stereotype 
 	- deletion flag will be added for satellites
 	- load enddate column will be added when "is_endated" is set to true
@@ -282,8 +291,8 @@ It is recommended to group and order the columns during table creation in a conv
 
 ## Process steps ##
 For every table to load, there will be at least one process step. Multiple steps are needed for loading multiple fields to the same Data Vault Table column. Steps are determined as follows:
-- For all tables with field mappings that are restriced to a field group, plan a step for every field group, the table belongs
-- Plan a normal load step for hubs 
+- For all tables with field mappings that are restriced to a field group, plan a step for every field group, the table belongs to
+- Plan a normal load step for hubs #?#
 - For every recursive link to a hub, plan an extra load step for the hub
 - For all tables, that now don't have a field group specific process:
 	- Plan specific load steps for links, where their childs have a specfic field group step
@@ -295,23 +304,35 @@ The following figure shows different scenarios, that must be solved and should b
 
 ![Fig1](./images/process_generation_scenarios.drawio.png)
 
-## Stage table hash columns ##
-Stage table hash columns are generated by taking all hash columns of the target model and adding process step specific hash columns for target tables with multiple processes.
+## Process specific mapping of fields to stage and data vault table ##
+For every process of a target table
+- map all fields of the target, belonging to the field group or recursion of the process
+- map all fields, belongin to target, without any field group or recursion declaration
+
+## Process specific creation and mapping of hash values from stage and data vault mapping
+For every process and hash column of a target table
+- When the process is not created from a field group or recustion declaration, the hash column of the target table will be part of the stage table and mapped accordingly
+- When the process is created from a field group or recursion declaration,  a hash column with a name, derived from the target hash column name concantinated with the field group/recursion name, will be added to stage and mapped accordingly 
 
 ## Hash value field list ##
 For every stage table hash column there will be a specific combination of fields to be used depending on the step, the hash column is provided for.
+The list of field is determined as follows:
 
-####
+For every hash colunm in the model
+- list all data vault columns, that have to be used for the hash
+- get the process specific source field for the data vault column from the process specific mapping
 
-## Partitioned deletion detection dataset query##
+# Final Words
+As with the Data Vault method itself, this concept can become the backbone of your Data Vault implementation tool chain. Feel free to use it for your needs.
 
-This is 
+When you currently **create a Data Warehouse Platform**, the flexibility of the DVDP approach allows you to postpone tool descicions after your first use case implementations. This shortens the time and effort for your first results and allows you to gather more project specific requirements. The selection of products, that will be integrated into your Workflow can then be done with more confidence about your needs.
 
- SELECT statement providing all active satellite keys
+**Data Warehouse Consultants** using DVPD as backbone, are able to collect and extend their protfolio of tools for the Data Warehouse implementation, while having a method to maintain collaboration between all these elements. This allows a more customer specific selection of tools including an already prepared way to adapt to products demanded by the customer.
 
-	
+**Data Warehouse Toolprovider** supporting the DVPD in their product, can profit, by focussing their tool to support the implementation steps, they have a unique expertise and excellence. By using DVPD as target, source or intermediate artifact, your product is combinable with other excellent tools and be attractive to more project settings.
 
 # Glossary
+
 
 **Business key**<br>
 One or multiple ->fields containing data that identifies a business object
@@ -319,12 +340,23 @@ One or multiple ->fields containing data that identifies a business object
 **Column**<br>
 A column in a table of the data vault model
 
+**Dependend child key**
+Dependend child key columns are columns in a link table, that are included in the calculation of the link key.
+
 **DVPD = Data Vault Pipeline Description**<br>
 Data Vault Pipeline Description - JSON document, describing one parsing and loading process in the specified JSON notation	
 
 **Field**<br>
 Smallest addressable element in the source data. Will always be processed as a unit. 
 
+**Hub key**
+The key column of a hub, calculated by hashing all business keys of a hub.
+
+**Key column**
+In the data vault model, the key columns are the relation columns to join data vault hubs, links and satellites. They contain a hash value, calculated from the business keys of the hub or all hubs and dependend child keys involved 
+
+**Link key**
+The key column of a link, calculated by hashing all business key of the related hubs and dependend child key columns of the link(when existing).
  
 
 
