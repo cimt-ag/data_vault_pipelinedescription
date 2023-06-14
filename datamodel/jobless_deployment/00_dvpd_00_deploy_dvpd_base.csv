@@ -16,9 +16,11 @@ mandantory,type,schema_name,name
 1,table,dv_pipeline_description,DVPD_PIPELINE_FIELD_PROPERTIES_RAW
 1,table,dv_pipeline_description,DVPD_PIPELINE_FIELD_TARGET_EXPANSION_RAW
 1,table,dv_pipeline_description,DVPD_PIPELINE_PROPERTIES_RAW
+1,table,dv_pipeline_description,DVPD_PIPELINE_STAGE_PROPERTIES_RAW
 
 
 1,view,dv_pipeline_description,DVPD_PIPELINE_PROPERTIES
+1,view,dv_pipeline_description,DVPD_PIPELINE_STAGE_PROPERTIES
 1,view,dv_pipeline_description,DVPD_PIPELINE_FIELD_TARGET_EXPANSION
 1,view,dv_pipeline_description,DVPD_PIPELINE_FIELD_PROPERTIES
 1,view,dv_pipeline_description,DVPD_PIPELINE_DV_TABLE

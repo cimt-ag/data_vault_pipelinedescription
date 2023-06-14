@@ -38,6 +38,9 @@ UNION
 select * FROM dv_pipeline_description.dvpd_check_link_specifics  
 where message <>'ok'
 union
+select * FROM dv_pipeline_description.dvpd_check_stage_specifics dcss  
+where message <>'ok'
+union
 select * FROM dv_pipeline_description.xenc_check_properties 
 where message <>'ok'
 union

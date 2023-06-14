@@ -25,6 +25,7 @@ VALUES
 	"dvpd_version": "1.0",
 	"pipeline_name": "test21_simple_hub_with_2_sats",
 	"record_source_name_expression": "dvpd implementation test",
+	"stage_properties" : [{"storage_component":"PostgresDWH","stage_schema":"stage_rvlt"}],
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
 	},

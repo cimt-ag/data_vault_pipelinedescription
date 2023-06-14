@@ -54,6 +54,11 @@ Object, describing all necessary properties to access the data source<br>
 <br>Object for declaring all necessary paramenter for deletion detection processes
 <br>→ see “deletion_detection”
 
+**stage_properties[]**
+(mandatory)
+<br>Array with stage table declarations
+<br>→ see "stage_properties[]”
+
 
 ## data_extraction 
 subelement of root 
@@ -418,6 +423,25 @@ Example:
  	
 **> procedure specific properties <**
 For other procedures, then the defined above there might be other properties to be declared in the deletion_rule. 
+
+## stage_properties[]
+Contains the declaration of the stage table locations. In general the will be only one. In case of a distributed model, the stage table can be placed on every target. 
+
+**storage_component**
+(optional)
+<br>Identification of the storage, this staging table is placed. If not defined, there is only one storage component. Valid values depend on the processing modules and the overall architecture.
+<br>*"main_dwh_db" | "big_data_storage"*
+
+**stage_schema** 
+(mandatory)
+<br>Name of the schema the stage table is placed in. 
+<br>*"stage_rvlt" 
+
+**stage_table_name** 
+(optional)
+<br>Name of the stage table. Default is the name of the pipeline.
+<br>*"srvlt_crm_person_p1"
+
 
 
 # Open concepts
