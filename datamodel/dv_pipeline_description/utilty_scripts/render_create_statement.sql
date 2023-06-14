@@ -1,9 +1,10 @@
 /* render DDL statements for a pipeline */
 with target as (
-select distinct pipeline_name, 'stage_rvlt' as stage_schema_name, 's'||substring(pipeline_name,2) stage_table_name
-from dv_pipeline_description.dvpd_pipeline_DV_table
+select distinct dpdt.pipeline_name, dpsp.stage_schema stage_schema_name, stage_table_name
+from dv_pipeline_description.dvpd_pipeline_DV_table dpdt
+join dv_pipeline_description.dvpd_pipeline_stage_properties dpsp on dpsp.pipeline_name =dpdt.pipeline_name 
 --where pipeline_name like 'test20%'
-where pipeline_name like 'test61%'
+where dpdt.pipeline_name like 'test61%'
 ) /* */
 , model_profile as (select property_value load_date_column_name 
 from target tgt

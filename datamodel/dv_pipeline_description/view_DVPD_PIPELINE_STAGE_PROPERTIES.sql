@@ -31,6 +31,6 @@ FROM
 comment on view dv_pipeline_description.DVPD_PIPELINE_STAGE_PROPERTIES is
  'stage table properties of the pipeline. (cleansed and normalized)';
 
-/*
-  select * from dv_pipeline_description.DVPD_PIPELINE_STAGE_PROPERTIES
-  */
+
+--  select * from dv_pipeline_description.DVPD_PIPELINE_STAGE_PROPERTIES
+

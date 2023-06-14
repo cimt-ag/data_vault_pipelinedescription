@@ -1,5 +1,12 @@
 # release 0.6.0
 
+### features
+- stage schema must be declared now im stage_properties clause
+- stage table name can be declared now in stage_properties clause, default is the name of the pipeline
+- schem name and table are used in the DDL Generator utility script
+
+ATTENTION: You need to declare stage_properties with a stage_schema or will get a check error 
+
 ### refactoring
 - renamed "is_historized" to "is_enddated", since this reflects the bevahiour much more preciuse. Providing diff hashes is another aspect an not bound to enddating
 

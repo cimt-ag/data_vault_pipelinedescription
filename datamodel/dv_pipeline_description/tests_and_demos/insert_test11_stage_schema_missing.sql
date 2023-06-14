@@ -50,6 +50,6 @@ VALUES
 ');
 select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test11_stage_schema_missing');
 
-/*
- * select * from dv_pipeline_description.dvpd_check_all where pipeline_name='test11_stage_schema_missing'
- */
+
+-- select * from dv_pipeline_description.dvpd_check_all where pipeline_name='test11_stage_schema_missing'
+

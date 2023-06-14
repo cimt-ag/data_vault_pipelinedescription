@@ -12,6 +12,7 @@ mandantory,type,schema_name,name
 1,testdata,dv_pipeline_description,test05_check_link_specifics
 1,testdata,dv_pipeline_description,test09_check_no_common_field_groups_on_linked_hubs
 1,testdata,dv_pipeline_description,test10_bad_model_profile_name
+1,testdata,dv_pipeline_description,test11_stage_schema_missing
 1,testdata,dv_pipeline_description,test15_sat_without_diff_hash
 
 
