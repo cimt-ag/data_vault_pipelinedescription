@@ -24,7 +24,7 @@ create or replace view dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_EN
 with expanded_xenc_table_properties as (
 select epdtp.pipeline_name
 	,epdtp.table_name
-	,pdt.stereotype
+	,pdt.table_stereotype
 	,ppp.process_block 
 	,epdtp.xenc_content_hash_column_name
 	,epdtp.xenc_content_salted_hash_column_name
@@ -40,7 +40,7 @@ join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = e
 														and pdt.table_name = epdtp .table_name
 join dv_pipeline_description.dvpd_pipeline_process_plan ppp on ppp.pipeline_name =epdtp.pipeline_name 
 														    and ppp.table_name = epdtp.xenc_content_table_name 
-where pdt.stereotype like 'xenc%'
+where pdt.table_stereotype like 'xenc%'
 --and epdtp.pipeline_name like 'xenc%22%' -- for debugging
 )
 select -- columns with same name in every process block
@@ -51,13 +51,13 @@ select -- columns with same name in every process block
  ,pdc.column_name stage_column_name 
  ,pdc.column_type 
  ,pdc.column_block 
- ,dv_column_class
+ ,column_class
  ,null content_stage_hash_column
  ,null content_table_name
 from dv_pipeline_description.dvpd_pipeline_dv_column pdc
 join expanded_xenc_table_properties extp on extp.pipeline_name = pdc.pipeline_name  
 										and extp.table_name = pdc.table_name 
-where dv_column_class  in ('meta','xenc_encryption_key_index')
+where column_class  in ('meta','xenc_encryption_key_index')
 union
 select -- encryption key columns for every process_block 
  pdc.pipeline_name 
@@ -69,13 +69,13 @@ select -- encryption key columns for every process_block
  	  end  as stage_column_name
   ,pdc.column_type 
  ,pdc.column_block 
- ,pdc.dv_column_class
+ ,pdc.column_class
  ,null  content_stage_hash_column
  ,null content_table_name
 from dv_pipeline_description.dvpd_pipeline_dv_column pdc
 join expanded_xenc_table_properties extp on extp.pipeline_name = pdc.pipeline_name  
 										and extp.table_name = pdc.table_name
-where (pdc.dv_column_class in ('xenc_encryption_key'))										
+where (pdc.column_class in ('xenc_encryption_key'))										
 union 
 select -- encryption table columns referring to process block specific hash columns
  pdc.pipeline_name 
@@ -87,7 +87,7 @@ select -- encryption table columns referring to process block specific hash colu
  	  end  as stage_column_name
   ,pdc.column_type 
  ,pdc.column_block 
- ,pdc.dv_column_class
+ ,pdc.column_class
  ,pstdmmb.stage_column_name  content_stage_hash_column
  ,extp.xenc_content_table_name content_table_name
 from dv_pipeline_description.dvpd_pipeline_dv_column pdc
@@ -97,12 +97,12 @@ left join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mappin
 										on pstdmmb.pipeline_name = pdc.pipeline_name 
 										and pstdmmb.table_name = extp.xenc_content_table_name 
 										and pstdmmb.process_block = extp.process_block 
-where (pdc.dv_column_class in ('key','xenc_bk_hash','xenc_bk_salted_hash', 'xenc_dc_hash','xenc_dc_salted_hash')
-		and ((pstdmmb.stereotype in ('hub','lnk') and  pstdmmb.dv_column_class = 'key') 
-				or (pstdmmb.stereotype not in ('hub','lnk') and  pstdmmb.dv_column_class = 'parent_key')))
+where (pdc.column_class in ('key','xenc_bk_hash','xenc_bk_salted_hash', 'xenc_dc_hash','xenc_dc_salted_hash')
+		and ((pstdmmb.table_stereotype in ('hub','lnk') and  pstdmmb.column_class = 'key') 
+				or (pstdmmb.table_stereotype not in ('hub','lnk') and  pstdmmb.column_class = 'parent_key')))
 		or 
-		(pdc.dv_column_class in ('diff_hash')
-		and pstdmmb.dv_column_class = 'diff_hash')
+		(pdc.column_class in ('diff_hash')
+		and pstdmmb.column_class = 'diff_hash')
 --order by table_name ,column_block,column_name -- for debugging
 ;
 

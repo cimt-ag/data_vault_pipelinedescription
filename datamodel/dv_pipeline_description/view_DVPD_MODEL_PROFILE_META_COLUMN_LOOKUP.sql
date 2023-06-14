@@ -22,7 +22,7 @@
 Create materialized view dv_pipeline_description.dvpd_model_profile_meta_column_lookup as 
 	
 select mp_n.model_profile_name 
-,stereotype 
+,table_stereotype 
 , mp_n.property_value meta_column_name 
 , mp_t.property_value meta_column_type 
 from dv_pipeline_description.dvpd_meta_column_lookup mcl
@@ -33,6 +33,6 @@ join dv_pipeline_description.dvpd_model_profile mp_t on mp_t.property_name =mcl.
 
 
 comment on materialized view dv_pipeline_description.dvpd_model_profile_meta_column_lookup is
- 'Profile specific naming and type of the meta columns needed for every data vault table stereotype';
+ 'Profile specific naming and type of the meta columns needed for every data vault table table_stereotype';
 
 -- select * from dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP;

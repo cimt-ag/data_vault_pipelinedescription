@@ -31,7 +31,7 @@ select
 	,table_row->>0 schema_name
 	,table_row->>1 table_name
 	,(table_row->>2) :: int column_block
-	,table_row->>3 dv_column_class
+	,table_row->>3 column_class
 	,table_row->>4 column_name
 	,table_row->>5 column_type
 from parsed_dvmodel_column 

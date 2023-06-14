@@ -35,16 +35,16 @@ select distinct
 	,stage_column_name
 	,column_type 
 	,false is_meta
-	,(ppstdmm.dv_column_class  in ('content','business_key','content_untracked')) is_nullable
+	,(ppstdmm.column_class  in ('content','business_key','content_untracked')) is_nullable
 	,field_name
 	,field_type
 	,needs_encryption
 	,min(coalesce(cbc.stage_column_block,999)) column_block
-	,min(table_name) min_target_table
+	,min(table_name) min_table_name
 	,min(column_name) min_column_name
 from  dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm
-left join dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION cbc on cbc.dv_column_class = ppstdmm.dv_column_class 
-																and (cbc.stereotype =  ppstdmm.stereotype  or cbc.stereotype is null)
+left join dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION cbc on cbc.column_class = ppstdmm.column_class 
+																and (cbc.table_stereotype =  ppstdmm.table_stereotype  or cbc.table_stereotype is null)
 group by 1,2,3,4,5,6,7,8
 union 
 select
@@ -57,15 +57,15 @@ select
 	,null field_type 
 	,false needs_encryption 
 	, 1 as column_block
-	,'-' min_target_table
+	,'-' min_table_name
 	,'-' min_column_name
 from pipelines pp
 left join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl 
 										on mpmcl.model_profile_name = pp.model_profile_name 
-										and mpmcl.stereotype ='_stg' ;
+										and mpmcl.table_stereotype ='_stg' ;
 
 comment on view dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN is
  'list of columns, that need to be in the stage table of the pipeline.';
 									
 									
--- select * from dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN order by pipeline_name,column_block,min_dv_column_class,min_target_table,min_column_name,stage_column_name									
+-- select * from dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN order by pipeline_name,column_block,min_column_class,min_table_name,min_column_name,stage_column_name									

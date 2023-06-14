@@ -3,12 +3,19 @@
 ### features
 - stage schema must be declared now im stage_properties clause
 - stage table name can be declared now in stage_properties clause, default is the name of the pipeline
-- schem name and table are used in the DDL Generator utility script
+- schema name and table are used in the DDL Generator utility script
 
 ATTENTION: You need to declare stage_properties with a stage_schema or will get a check error 
 
-### refactoring
-- renamed "is_historized" to "is_enddated", since this reflects the bevahiour much more preciuse. Providing diff hashes is another aspect an not bound to enddating
+### DVPD syntax changes
+- renamed "is_historized" to "is_enddated", since this reflects the behaviour much more precise. Providing diff hashes is another aspect an not bound to enddating
+- renamed "target_column_name" to "column_name", following the naming concept, addressing the data vault objects as tables and columns 
+- renamed "target_column_type" to "column_type", following the naming concept, addressing the data vault objects as tables and columns 
+- renamed "stereotype" to "table_stereotype", for more clearance
+
+### refactoring in compiler and resultset  
+- renamed "target_table" to "table_name" (only relevant in compiler implementation and result tables)
+- renamed "dv_column_class" to "column_class" (only relevant in compiler implementation and result tables)
 
 # Release 0.5.4
 

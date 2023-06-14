@@ -32,20 +32,20 @@ VALUES
  
 	"fields": [
 		      {"field_name": "F1_BK_AAA", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_69_aaa_hub"
-																					,"target_column_name": "BK_AAA"}]}
+																					,"column_name": "BK_AAA"}]}
 		      ,{"field_name": "F2_BK_AAA_H1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_69_aaa_hub"
-																					,"target_column_name": "BK_AAA"
+																					,"column_name": "BK_AAA"
 																					,"recursion_name": "HRCHY1"}]}		  
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_69_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_69_aaa"}
-				,{"table_name": "rtjj_69_aaa_hierarchy_hlnk",	"stereotype": "lnk" ,"link_key_column_name": "LK_rtjj_69_aaa_hierarchy"
+				{"table_name": "rtjj_69_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_69_aaa"}
+				,{"table_name": "rtjj_69_aaa_hierarchy_hlnk",	"table_stereotype": "lnk" ,"link_key_column_name": "LK_rtjj_69_aaa_hierarchy"
 																			,"link_parent_tables": ["rtjj_69_aaa_hub"]
 																			,"recursive_parents": [ {"table_name":"rtjj_69_aaa_hub"
 																										,"recursion_name": "HRCHY1"}]}
-				,{"table_name": "rtjj_69_aaa_hierarchy_esat",	"stereotype": "esat","satellite_parent_table": "rtjj_69_aaa_hierarchy_hlnk"
+				,{"table_name": "rtjj_69_aaa_hierarchy_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_69_aaa_hierarchy_hlnk"
 																				,"driving_keys": ["HK_rtjj_69_aaa_HRCHY1"]}
 
 				]

@@ -44,9 +44,9 @@ select distinct
 	,sfm.needs_encryption 
 from dv_pipeline_description.dvpd_pipeline_leaf_and_process_table plap 
 join dv_pipeline_description.dvpd_dv_model_column mc on mc.table_name = plap.table_to_process 
-													 and mc.dv_column_class not in ('meta')
-left join dv_pipeline_description.dvpd_source_field_mapping sfm on sfm.target_table = plap.table_to_process 	
-														  and sfm.target_column_name =mc.column_name 
+													 and mc.column_class not in ('meta')
+left join dv_pipeline_description.dvpd_source_field_mapping sfm on sfm.table_name = plap.table_to_process 	
+														  and sfm.column_name =mc.column_name 
 order by pipeline,mc.column_block ,2 
 														  
 
@@ -67,15 +67,15 @@ with field_groups_of_pipeline as (
 	from dv_pipeline_description.dvpd_source_field_mapping dfm
 )
 --, explicit_fieldsets as(
-select fgop.pipeline,fgop.field_group,dfm2.field_group source_group,target_table ,target_column_name ,field_name 
+select fgop.pipeline,fgop.field_group,dfm2.field_group source_group,table_name ,column_name ,field_name 
 from dv_pipeline_description.dvpd_source_field_mapping dfm2 
 join field_groups_of_pipeline fgop on fgop.pipeline=dfm2.pipeline and (
 									fgop.field_group = dfm2.field_group 
 									 or dfm2.field_group ='##all##')
-order by pipeline ,fgop.field_group 	,target_table ,field_name 								 
+order by pipeline ,fgop.field_group 	,table_name ,field_name 								 
 
 )
-select pipeline ,target_table ,target_column_name 
+select pipeline ,table_name ,column_name 
 ,count(distinct field_group ) field_group_count
 ,count(distinct field_name ) field_name_count
 from explicit_fieldsets
@@ -87,13 +87,13 @@ with link_parent_hubs as (
 		,table_name as link_table_name
 		,json_array_elements_text(link_parent_tables) as hub_table_name 
 	from dvpd_dv_model_table 
-	where stereotype ='link'
+	where table_stereotype ='link'
 ) -- link_parent_business_keys
 select lph.pipeline ,link_table_name,hub_table_name,ddmc.column_name 
 from link_parent_hubs lph 
 join dvpd_dv_model_column ddmc on ddmc.pipeline = lph.pipeline
 							  and ddmc.table_name = lph.hub_table_name
-							  and ddmc.dv_column_class = 'business_key'
+							  and ddmc.column_class = 'business_key'
    
 											 )
 											 
@@ -102,12 +102,12 @@ join dvpd_dv_model_column ddmc on ddmc.pipeline = lph.pipeline
 with target_leafs as (
 	select distinct 
 		pipeline 
-		,target_table as table_name
-		,target_table as leaf_table
+		,table_name as table_name
+		,table_name as leaf_table
 		from (
 			select  distinct
 			pipeline,
-			 target_table
+			 table_name
 			from dv_pipeline_description.dvpd_field_mapping dfm  
 		) direct_mapped_tables
 )

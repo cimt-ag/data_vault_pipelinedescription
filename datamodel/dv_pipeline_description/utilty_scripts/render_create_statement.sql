@@ -84,7 +84,7 @@ select tbl.table_name , 40 block
 	|| ' PRIMARY KEY (' || coalesce (tbl.hub_key_column_name,tbl.link_key_column_name )|| ');' script
 from target tgt
 join dv_pipeline_description.dvpd_pipeline_dv_table tbl on tbl.pipeline_name =tgt.pipeline_name 
-where tbl.stereotype in ('hub','lnk')
+where tbl.table_stereotype in ('hub','lnk')
 union
 select distinct tbl.table_name , 41 block
 ,1 reverse_order
@@ -95,9 +95,9 @@ from target tgt
 join dv_pipeline_description.dvpd_pipeline_dv_table tbl on tbl.pipeline_name =tgt.pipeline_name 
 join dv_pipeline_description.dvpd_pipeline_dv_column pdc  on pdc.pipeline_name =tgt.pipeline_name 
 													and pdc.table_name = tbl.table_name 
-													and pdc.dv_column_class ='parent_key'
+													and pdc.column_class ='parent_key'
 join model_profile mp on 1=1
-where tbl.stereotype in ('sat','esat') and tbl.table_name not like '%_csat'
+where tbl.table_stereotype in ('sat','esat') and tbl.table_name not like '%_csat'
 union
 select tbl.table_name , 48 block
 ,1 reverse_order
@@ -140,7 +140,7 @@ select stage_table_name table_name, 70 block
  ||(case when reverse_order=1 then '' else ',' end) script
 from (
 	select 
-	rank () OVER (partition by stc.pipeline_name order by  column_block desc,min_target_table desc ,min_column_name desc ,stage_column_name desc	 ) reverse_order
+	rank () OVER (partition by stc.pipeline_name order by  column_block desc,min_table_name desc ,min_column_name desc ,stage_column_name desc	 ) reverse_order
 	, stage_table_name  
 	,coalesce(stc.column_block ,-1) column_block
 	,coalesce(stc.stage_column_name ,'')  column_name

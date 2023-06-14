@@ -25,9 +25,9 @@ create or replace view dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_DV
 select 	base .pipeline_name,
 	base .process_block,
 	base .table_name,
-	base .stereotype,
+	base .table_stereotype,
 	base .column_name,
-	base .dv_column_class,
+	base .column_class,
 	base .stage_column_name,
 	base .column_type,
 	base .column_block,
@@ -39,16 +39,16 @@ select 	base .pipeline_name,
 	base .prio_in_key_hash,
 	base .prio_in_diff_hash
 from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE	base																	
-where dv_column_class like 'xenc_%'	and stereotype in ('sat','msat')
+where column_class like 'xenc_%'	and table_stereotype in ('sat','msat')
 union
 -- additional stage columns for encrypted fields, that are distributed to more then one table
 select
 	base .pipeline_name,
 	base .process_block,
 	base .table_name,
-	base .stereotype,
+	base .table_stereotype,
 	base .column_name,
-	base .dv_column_class,
+	base .column_class,
 	xenc .content_stage_column_name  stage_column_name,
 	base .column_type,
 	base .column_block,

@@ -16,9 +16,9 @@
 -- limitations under the License.
 -- =====================================================================
 
-DELETE FROM dv_pipeline_description.dvpd_meta_column_lookup where stereotype like '%xenc%';	
+DELETE FROM dv_pipeline_description.dvpd_meta_column_lookup where table_stereotype like '%xenc%';	
 INSERT INTO dv_pipeline_description.dvpd_meta_column_lookup
-(stereotype, meta_column_name, meta_column_type)
+(table_stereotype, meta_column_name, meta_column_type)
 VALUES('xenc_hub-ek', 'load_date_column_name', 'load_date_column_type'),
 	  ('xenc_sat-ek', 'load_date_column_name', 'load_date_column_type'),
 	  ('xenc_lnk-ek', 'load_date_column_name', 'load_date_column_type'),

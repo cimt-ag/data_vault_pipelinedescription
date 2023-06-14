@@ -30,22 +30,22 @@ VALUES
 	},
  	"fields": [
 		      {"field_name": "F1_BK_AAA_COMMON", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
-																					,"target_column_name": "BK_AAA_CM"}]}
+																					,"column_name": "BK_AAA_CM"}]}
 		      ,{"field_name": "F2_BK_AAA_ORIGIN", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
-																					,"target_column_name": "BK_AAA_SPLIT"}]}		 	  
+																					,"column_name": "BK_AAA_SPLIT"}]}		 	  
 		      ,{"field_name": "F3_BK_AAA_RECURSE1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
-																					,"target_column_name": "BK_AAA_SPLIT"
+																					,"column_name": "BK_AAA_SPLIT"
 																					,"recursion_name": "RCS1"}]}		  
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_80_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_80_aaa"}
-				,{"table_name": "rtjj_80_aaa_recu_lnk",	"stereotype": "lnk" ,"link_key_column_name": "LK_rtjj_80_aaa_recu"
+				{"table_name": "rtjj_80_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_80_aaa"}
+				,{"table_name": "rtjj_80_aaa_recu_lnk",	"table_stereotype": "lnk" ,"link_key_column_name": "LK_rtjj_80_aaa_recu"
 																			,"link_parent_tables": ["rtjj_80_aaa_hub"]
 																			,"recursive_parents": [ {"table_name":"rtjj_80_aaa_hub"
 																										,"recursion_name": "RCS1"}]}
-				,{"table_name": "rtjj_80_aaa_recu_esat",	"stereotype": "esat","satellite_parent_table": "rtjj_80_aaa_recu_lnk"}
+				,{"table_name": "rtjj_80_aaa_recu_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_80_aaa_recu_lnk"}
 
 				]
 		}

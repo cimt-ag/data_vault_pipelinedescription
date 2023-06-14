@@ -21,7 +21,7 @@
 
 Create table if not exists dv_pipeline_description.DVPD_STEREOTYPE_CHECK_MATRIX (
   meta_inserted_at TIMESTAMP DEFAULT current_timestamp,
-  stereotype VARCHAR(20),
+  table_stereotype VARCHAR(20),
   needs_hub_key_column_name int,
   needs_link_key_column_name int,
   needs_sattelite_parent_table int,
@@ -30,7 +30,7 @@ Create table if not exists dv_pipeline_description.DVPD_STEREOTYPE_CHECK_MATRIX 
 
 TRUNCATE TABLE dv_pipeline_description.DVPD_STEREOTYPE_CHECK_MATRIX;
 INSERT INTO dv_pipeline_description.DVPD_STEREOTYPE_CHECK_MATRIX
-(stereotype, needs_hub_key_column_name, needs_link_key_column_name, needs_link_parent_tables, needs_sattelite_parent_table)
+(table_stereotype, needs_hub_key_column_name, needs_link_key_column_name, needs_link_parent_tables, needs_sattelite_parent_table)
 VALUES('hub', 1, 0, 0, 0),
 	  ('lnk', 0, 1, 1, 0),	
 	  ('sat', 0, 0, 0, 1),	
@@ -40,4 +40,4 @@ VALUES('hub', 1, 0, 0, 0),
 	 ;
 
 comment on table dv_pipeline_description.DVPD_STEREOTYPE_CHECK_MATRIX is
- 'Declaration of mandatory parameters for every stereotype.';
+ 'Declaration of mandatory parameters for every table_stereotype.';

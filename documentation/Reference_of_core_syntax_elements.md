@@ -112,17 +112,17 @@ This array must contain at least one target description. Fields, that are mapped
 
 **table_name**
 (mandatory)
-<br>Name of the target table.(Must be defined in the data_vault_model section
+<br>Name of the data vault table.(Must be defined in the data_vault_model section
 <br>*"rexmp_customer_hub" | "rgopd_ad_click_sat"*
 
-**target_column_name**
+**column_name**
 (optional)
-<br>Name of the column in the target table. If not defined, the field_name will be used
+<br>Name of the column in the data vault table. If not defined, the field_name will be used.
 <br>*"customer_number"*
 
-**target_column_type**
+**column_type**
 (optional)
-<br>Datatype of the target column in the database. Must be a valid Database type. If not defined, the technical_type of the field will be used
+<br>Datatype of the column in the data vault table. Must be a valid type of the platform database. If not defined, the technical_type of the field will be used
 <br>*"VARCHAR(200)"*
 
 **recursion_name**
@@ -188,7 +188,7 @@ Especially for situations, where the schema name must also be used to provide de
 <br>Nname of the database table. 
 <br>*"raccn_account_hub"*
 
-**stereotype**
+**table_stereotype**
 (mandatory)
 <br>Data Vault Stereotype of the table. Valid values are: hub, lnk, sat, msat, esat
 <br>Depending on the stereotype, different properties have to be provided. The stereotype controls the processing for the load. The class of a column, generated for a mapped field is derived on the stereotype of the table as follows:

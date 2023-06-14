@@ -23,7 +23,7 @@ create or replace view dv_pipeline_description.DVPD_DV_TABLE as
 select distinct 
 	schema_name
 	,table_name
-	,stereotype
+	,table_stereotype
 	,hub_key_column_name
 	,link_key_column_name
 	,diff_hash_column_name

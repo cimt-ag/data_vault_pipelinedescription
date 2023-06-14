@@ -37,8 +37,8 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_15_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_15_aaa"},
-				{"table_name": "rtjj_15_aaa_p1_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_15_aaa_HUB"}
+				{"table_name": "rtjj_15_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_15_aaa"},
+				{"table_name": "rtjj_15_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_15_aaa_HUB"}
 				]
 		}
 	]

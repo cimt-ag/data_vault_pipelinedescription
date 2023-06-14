@@ -27,7 +27,7 @@ select
 	,coalesce(schema_name || '.','') ||
 	 coalesce(table_name,'#missing#') ||' | ' ||
 	 coalesce(column_block,-1) || ' | ' ||
-	 coalesce(dv_column_class,'#missing#') || ' | ' ||
+	 coalesce(column_class,'#missing#') || ' | ' ||
 	 coalesce(column_name,'#missing#') || ' | ' ||
 	 coalesce(column_type,'#missing#') result_string
 	,atmtst_issue_message
@@ -84,7 +84,7 @@ select
 		coalesce (process_block,'#missing#') || ' | ' ||
 		coalesce (column_name,'#missing#') || ' | ' ||
 		coalesce (column_type,'#missing#') || ' | ' ||
-		coalesce (dv_column_class,'#missing#') || ' | ' ||
+		coalesce (column_class,'#missing#') || ' | ' ||
 		coalesce (stage_column_name,'#missing#') || ' | ' ||
 		coalesce (content_stage_hash_column,'') || ' | ' ||
 		coalesce (content_table_name,'') result_string

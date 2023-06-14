@@ -43,16 +43,16 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_00_AAA_XXX_BAD_STEREOTYPE",		"stereotype": "xx","hub_key_column_name": "HK_rtjj_00_AAA_XXX_BAD_STEREOTYPE"}
-			,	{"table_name": "rtjj_00_BBB_XXX_HUB_WITHOUT_HUB_KEY_COLUMN",		"stereotype": "hub"}
-			,	{"table_name": "rtjj_00_CCC_XXX_SAT_WITHOUT_PARENT_DECLARATION",	"stereotype": "sat","diff_hash_column_name": "rtjj_00_XX_SAT_WITHOUT_PARENT"}
-			,	{"table_name": "rtjj_00_DDD_EEE_XXX_LNK_WITHOUT_PARENT_DECLARATION", "stereotype": "lnk","link_key_column_name": "LK_rtjj_00_DDD_EEE_XXX_LINK_WITHOUT_PARENT_DECLARATION"}
-			,	{"table_name": "rtjj_00_FFF_HUB",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_00_FFF_HUB"}
-			,	{"table_name": "rtjj_00_GGG_HUB",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_00_GGG_HUB"}
-			,	{"table_name": "rtjj_00_FFF_GGG_XXX_LNK_WITHOUT_LINK_KEY_COLUMN", "stereotype": "lnk","link_parent_tables":["rvlt_test_jj","rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
-			,	{"table_name": "rtjj_00_FFF_GGG_XXX_DLNK_WITHOUT_LINK_KEY_COLUMN", "stereotype": "lnk","link_parent_tables":["rvlt_test_jj","rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
-			,	{"table_name": "rtjj_00_FFF_GGG_LNK", "stereotype": "lnk","link_key_column_name": "LK_rtjj_00_FFF_GGG","link_parent_tables":["rvlt_test_jj","rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
-			,	{"table_name": "rtjj_00_FFF_GGG_XXX_ESAT_WITHOUT_PARENT", "stereotype": "esat"}
+				{"table_name": "rtjj_00_AAA_XXX_BAD_STEREOTYPE",		"table_stereotype": "xx","hub_key_column_name": "HK_rtjj_00_AAA_XXX_BAD_STEREOTYPE"}
+			,	{"table_name": "rtjj_00_BBB_XXX_HUB_WITHOUT_HUB_KEY_COLUMN",		"table_stereotype": "hub"}
+			,	{"table_name": "rtjj_00_CCC_XXX_SAT_WITHOUT_PARENT_DECLARATION",	"table_stereotype": "sat","diff_hash_column_name": "rtjj_00_XX_SAT_WITHOUT_PARENT"}
+			,	{"table_name": "rtjj_00_DDD_EEE_XXX_LNK_WITHOUT_PARENT_DECLARATION", "table_stereotype": "lnk","link_key_column_name": "LK_rtjj_00_DDD_EEE_XXX_LINK_WITHOUT_PARENT_DECLARATION"}
+			,	{"table_name": "rtjj_00_FFF_HUB",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_00_FFF_HUB"}
+			,	{"table_name": "rtjj_00_GGG_HUB",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_00_GGG_HUB"}
+			,	{"table_name": "rtjj_00_FFF_GGG_XXX_LNK_WITHOUT_LINK_KEY_COLUMN", "table_stereotype": "lnk","link_parent_tables":["rvlt_test_jj","rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
+			,	{"table_name": "rtjj_00_FFF_GGG_XXX_DLNK_WITHOUT_LINK_KEY_COLUMN", "table_stereotype": "lnk","link_parent_tables":["rvlt_test_jj","rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
+			,	{"table_name": "rtjj_00_FFF_GGG_LNK", "table_stereotype": "lnk","link_key_column_name": "LK_rtjj_00_FFF_GGG","link_parent_tables":["rvlt_test_jj","rtjj_00_FFF_HUB","rtjj_00_GGG_HUB"]}
+			,	{"table_name": "rtjj_00_FFF_GGG_XXX_ESAT_WITHOUT_PARENT", "table_stereotype": "esat"}
 				]
 		}
 	]

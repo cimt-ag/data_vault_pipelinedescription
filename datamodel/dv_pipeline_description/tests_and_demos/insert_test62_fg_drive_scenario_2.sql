@@ -32,10 +32,10 @@ VALUES
 	},
 	"fields": [
 		      {"field_name": "F1_BK_AAA_L1", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_62_aaa_hub"
-																					,"target_column_name": "BK_AAA"
+																					,"column_name": "BK_AAA"
 																				 	,"field_groups":["fg1"]}]}
 		      ,{"field_name": "F2_BK_AAA_L2", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_62_aaa_hub"
-																					,"target_column_name": "BK_AAA"
+																					,"column_name": "BK_AAA"
 																				 	,"field_groups":["fg2"]}]}		 	  
 		      ,{"field_name": "F3_AAA_S1_COLA","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_62_aaa_p1_sat"}]}		 
 		      ,{"field_name": "F4_AAA_S1_COLB","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_62_aaa_p1_sat"}]}		 
@@ -43,8 +43,8 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_62_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_62_aaa"}
-				,{"table_name": "rtjj_62_aaa_p1_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_62_aaa_hub"
+				{"table_name": "rtjj_62_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_62_aaa"}
+				,{"table_name": "rtjj_62_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_62_aaa_hub"
 																			,"diff_hash_column_name": "RH_rtjj_62_aaa_p1_sat"}
 				]
 		}

@@ -40,15 +40,15 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_03_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_03_aaa"}
-				,{"table_name": "rtjj_03_aaa_p1_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_03_aaa_HUB","diff_hash_column_name": "RH_rtjj_03_aaa_P1_SAT"}
-				,{"table_name": "rtjj_03_bbb_hub",		"stereotype": "hub","hub_key_column_name": "HK_rtjj_03_bbb"}
-				,{"table_name": "rtjj_03_aaa_bbb_lnk",	"stereotype": "lnk","link_key_column_name": "LK_rtjj_03_aaa_bbb",
+				{"table_name": "rtjj_03_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_03_aaa"}
+				,{"table_name": "rtjj_03_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_03_aaa_HUB","diff_hash_column_name": "RH_rtjj_03_aaa_P1_SAT"}
+				,{"table_name": "rtjj_03_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_03_bbb"}
+				,{"table_name": "rtjj_03_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_03_aaa_bbb",
 																				"link_parent_tables": ["rtjj_03_aaa_hub","rtjj_03_bbb_hub"]}
-				,{"table_name": "rtjj_03_aaa_bbb_p1_esat",	"stereotype": "esat","satellite_parent_table": "rtjj_03_aaa_bbb_lnk"}
-				,{"table_name": "rtjj_03_aaa_bbb_p2_esat",	"stereotype": "esat","satellite_parent_table": "rtjj_03_aaa_bbb_lnk"
+				,{"table_name": "rtjj_03_aaa_bbb_p1_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_03_aaa_bbb_lnk"}
+				,{"table_name": "rtjj_03_aaa_bbb_p2_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_03_aaa_bbb_lnk"
 																				 ,"driving_keys": ["HK_XXX_NOT_IN_LINK_XXX"]}	
-				,{"table_name": "rtjj_03_aaa_p2_sat",	"stereotype": "sat","satellite_parent_table": "rtjj_03_aaa_HUB","diff_hash_column_name": "RH_rtjj_03_aaa_P1_SAT"
+				,{"table_name": "rtjj_03_aaa_p2_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_03_aaa_HUB","diff_hash_column_name": "RH_rtjj_03_aaa_P1_SAT"
 																	,"driving_keys": ["HK_rtjj_03_aaa"]}
 				]
 		}

@@ -43,17 +43,17 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_xenc_data", 
 		 "tables": [
-				{"table_name": "rxecd_01_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rxecd_01_aaa"}
-				,{"table_name": "rxecd_01_aaa_no_encrpytion_sat",		"stereotype": "sat","satellite_parent_table": "rxecd_01_aaa_hub","diff_hash_column_name": "RH_rxecd_01_aaa_no_encrpytion_sat"}
-				,{"table_name": "rxecd_01_aaa_p2_sat",		"stereotype": "sat","satellite_parent_table": "rxecd_01_aaa_hub","diff_hash_column_name": "RH_rxecd_01_aaa_p2_sat"}
+				{"table_name": "rxecd_01_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_01_aaa"}
+				,{"table_name": "rxecd_01_aaa_no_encrpytion_sat",		"table_stereotype": "sat","satellite_parent_table": "rxecd_01_aaa_hub","diff_hash_column_name": "RH_rxecd_01_aaa_no_encrpytion_sat"}
+				,{"table_name": "rxecd_01_aaa_p2_sat",		"table_stereotype": "sat","satellite_parent_table": "rxecd_01_aaa_hub","diff_hash_column_name": "RH_rxecd_01_aaa_p2_sat"}
 				]
 		}
 		,{"schema_name": "rvlt_xenc_keys", 
 		 "tables": [
-				{"table_name": "rxeck_01_bad_reference_ek",	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_xxxnot_existingxxx"}
-				,{"table_name": "rxeck_01_no_encryption_ref_ek",	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_01_aaa_no_encrpytion_sat"}
-				,{"table_name": "rxeck_01_1of2_ek",	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_01_aaa_p2_sat"}
-				,{"table_name": "rxeck_01_2of2_ek",	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_01_aaa_p2_sat"}
+				{"table_name": "rxeck_01_bad_reference_ek",	"table_stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_xxxnot_existingxxx"}
+				,{"table_name": "rxeck_01_no_encryption_ref_ek",	"table_stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_01_aaa_no_encrpytion_sat"}
+				,{"table_name": "rxeck_01_1of2_ek",	"table_stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_01_aaa_p2_sat"}
+				,{"table_name": "rxeck_01_2of2_ek",	"table_stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_01_aaa_p2_sat"}
 				]
 		}
 	]

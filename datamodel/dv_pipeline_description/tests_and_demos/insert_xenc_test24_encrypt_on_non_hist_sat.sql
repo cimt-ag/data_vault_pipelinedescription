@@ -41,13 +41,13 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_xenc_data", 
 		 "tables": [
-				{"table_name": "rxecd_24_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rxecd_24_aaa"}
-				,{"table_name": "rxecd_24_aaa_sat",		"stereotype": "sat","satellite_parent_table": "rxecd_24_aaa_hub", "is_enddated":false,"has_deletion_flag":false}
+				{"table_name": "rxecd_24_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_24_aaa"}
+				,{"table_name": "rxecd_24_aaa_sat",		"table_stereotype": "sat","satellite_parent_table": "rxecd_24_aaa_hub", "is_enddated":false,"has_deletion_flag":false}
 				]
 		}
 		,{"schema_name": "rvlt_xenc_keys", 
 		 "tables": [
-				{"table_name": "rxeck_24_aaa_sat_ek",	"stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_24_aaa_sat", "has_deletion_flag":false}
+				{"table_name": "rxeck_24_aaa_sat_ek",	"table_stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_24_aaa_sat", "has_deletion_flag":false}
 				]
 		}
 	]

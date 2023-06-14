@@ -33,34 +33,34 @@ VALUES
 	"fields": [
 		      {"field_name": "F1_BK_AAA_L1", 		"field_type": "Varchar(20)",	"needs_encryption":true
 																					,"targets": [{"table_name": "rxecd_70_aaa_hub"
-																					,"target_column_name": "BK_AAA"
+																					,"column_name": "BK_AAA"
 																				 	,"field_groups":["fg1"]}]}
 		      ,{"field_name": "F2_BK_AAA_L2", 		"field_type": "Varchar(20)",	"needs_encryption":true
 																					,	"targets": [{"table_name": "rxecd_70_aaa_hub"
-																					,"target_column_name": "BK_AAA"
+																					,"column_name": "BK_AAA"
 																				 	,"field_groups":["fg2"]}]}		 	  
 		      ,{"field_name": "F3_BK_AAA_H1_L1", 		"field_type": "Varchar(20)",	"needs_encryption":true
 																					,	"targets": [{"table_name": "rxecd_70_aaa_hub"
-																					,"target_column_name": "BK_AAA"
+																					,"column_name": "BK_AAA"
 																				 	,"field_groups":["fg1"]
 																					,"recursion_name": "HRCHY1"}]}		  
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_xenc_data", 
 		 "tables": [
-				{"table_name": "rxecd_70_aaa_hub",		"stereotype": "hub","hub_key_column_name": "HK_rxecd_70_aaa"}
-				,{"table_name": "rxecd_70_aaa_hierarchy_hlnk",	"stereotype": "lnk" ,"link_key_column_name": "LK_rxecd_70_aaa_hierarchy"
+				{"table_name": "rxecd_70_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_70_aaa"}
+				,{"table_name": "rxecd_70_aaa_hierarchy_hlnk",	"table_stereotype": "lnk" ,"link_key_column_name": "LK_rxecd_70_aaa_hierarchy"
 																			,"link_parent_tables": ["rxecd_70_aaa_hub"]
 																			,"recursive_parents": [ {"table_name":"rxecd_70_aaa_hub"
 																										,"recursion_name": "HRCHY1"}]}
-				,{"table_name": "rxecd_70_aaa_hierarchy_esat",	"stereotype": "esat","satellite_parent_table": "rxecd_70_aaa_hierarchy_hlnk"
+				,{"table_name": "rxecd_70_aaa_hierarchy_esat",	"table_stereotype": "esat","satellite_parent_table": "rxecd_70_aaa_hierarchy_hlnk"
 																				 ,"tracked_field_groups":["fg1"]}
 
 				]
 		}
 		,{"schema_name": "rvlt_xenc_keys", 
 		 "tables": [
-				{"table_name": "rxeck_70_aaa_hub_ek",	"stereotype": "xenc_hub-ek", "xenc_content_table_name":"rxecd_70_aaa_hub"}
+				{"table_name": "rxeck_70_aaa_hub_ek",	"table_stereotype": "xenc_hub-ek", "xenc_content_table_name":"rxecd_70_aaa_hub"}
 				]
 		}
  ]

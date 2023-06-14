@@ -35,7 +35,7 @@ VALUES('test50_double_esat_field_group', '{
 									        {"table_name": "rtkk_50_bbb_hub"}]}
 
  		,{"field_name": "F2_BK_AAA_FIELDNAME",	"field_type": "Decimal(10,0)", "field_position": "2","uniqueness_groups": ["key"],
-								"targets": [{"table_name": "rtjj_50_aaa_hub","target_column_name": "F2_BK_AAA_2"}]}
+								"targets": [{"table_name": "rtjj_50_aaa_hub","column_name": "F2_BK_AAA_2"}]}
 
 		,{"field_name": "F3_AAA_SP1",	"field_type": "Varchar(20)",	"field_position": "6",
 								"targets": [{"table_name": "rtjj_50_aaa_p1_sat"}]}
@@ -50,10 +50,10 @@ VALUES('test50_double_esat_field_group', '{
 								"targets": [{"table_name": "rtjj_50_aaa_p1_sat","exclude_from_diff_hash": "true"}]}
 
 		,{"field_name": "F7_BK_BBB_2_L1",		"field_type": "DECIMAL(10,0)", "field_position": "3",
-								"targets": [{"table_name": "rtkk_50_bbb_hub","target_column_name": "F7_BK_BBB_2","field_groups": ["fg1"]}]}
+								"targets": [{"table_name": "rtkk_50_bbb_hub","column_name": "F7_BK_BBB_2","field_groups": ["fg1"]}]}
 
 		,{"field_name": "F8_BK_BBB_2_L2",	"field_type": "DECIMAL(10,0)",	"field_position": "4",
-								"targets": [{"table_name": "rtkk_50_bbb_hub","target_column_name": "F7_BK_BBB_2","field_groups": ["fg2"]}]}
+								"targets": [{"table_name": "rtkk_50_bbb_hub","column_name": "F7_BK_BBB_2","field_groups": ["fg2"]}]}
 
 		,{"field_name": "F9_BBB_SP1_L1",		"field_type": "VARCHAR(200)", "field_position": "5",
 								"targets": [{"table_name": "rtkk_50_bbb_p1_sat","field_groups": ["fg1"]}]}
@@ -62,22 +62,22 @@ VALUES('test50_double_esat_field_group', '{
 	"data_vault_model": [{
 		"schema_name": "rvlt_test_jj",
 			"tables": [
-				{"table_name": "rtjj_50_aaa_hub",	"stereotype": "hub","hub_key_column_name": "HK_rtjj_50_aaa"}
- 				,{"table_name": "rtjj_50_aaa_p1_sat","stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_hub","diff_hash_column_name": "RH_rtjj_50_aaa_p1_sat"}
-				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_lnk","stereotype": "lnk","link_key_column_name": "LK_rtjj_50_aaa_rtjkk_bbb"
+				{"table_name": "rtjj_50_aaa_hub",	"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_50_aaa"}
+ 				,{"table_name": "rtjj_50_aaa_p1_sat","table_stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_hub","diff_hash_column_name": "RH_rtjj_50_aaa_p1_sat"}
+				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_lnk","table_stereotype": "lnk","link_key_column_name": "LK_rtjj_50_aaa_rtjkk_bbb"
 																	,	"link_parent_tables": ["rtjj_50_aaa_hub","rtkk_50_bbb_hub"]}
-				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g1_esat","stereotype": "esat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
+				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g1_esat","table_stereotype": "esat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
 																		"tracked_field_groups": ["fg1"],
 																		"driving_hub_keys": ["HK_rtjj_50_aaa"]}
-				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g2_esat","stereotype": "esat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
+				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g2_esat","table_stereotype": "esat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
 																		"tracked_field_groups": ["fg2"],
 																		"driving_hub_keys": ["HK_rtjj_50_aaa"]}
 			]
 		},
 		{"schema_name": "rvlt_test_kk",
 			"tables": [
-				{"table_name": "rtkk_50_bbb_hub",		 "stereotype": "hub","hub_key_column_name": "HK_rtkk_50_bbb","tracked_field_groups": ["fg1","fg2"]}
-				,{"table_name": "rtkk_50_bbb_p1_sat",	 "stereotype": "sat","satellite_parent_table": "rtkk_50_bbb_hub"
+				{"table_name": "rtkk_50_bbb_hub",		 "table_stereotype": "hub","hub_key_column_name": "HK_rtkk_50_bbb","tracked_field_groups": ["fg1","fg2"]}
+				,{"table_name": "rtkk_50_bbb_p1_sat",	 "table_stereotype": "sat","satellite_parent_table": "rtkk_50_bbb_hub"
 																		,"diff_hash_column_name": "rh_rtkk_50_bbb_p1_sat"}
 			]
 		}

@@ -26,10 +26,10 @@ select
 	,pdt.table_name  
 	,count (sfm.field_name ) bk_count
 from dv_pipeline_description.dvpd_pipeline_dv_table pdt
-left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm ON pdt.table_name = lower(sfm.target_table  )
+left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm ON pdt.table_name = lower(sfm.table_name  )
 			and sfm.pipeline_name = pdt.pipeline_name 
 			and not sfm.exclude_from_key_hash
-where pdt.stereotype ='hub'   
+where pdt.table_stereotype ='hub'   
 group by 1,2
 )
 select 
@@ -48,7 +48,7 @@ select
 	,count(1) hk_count
 	,string_agg(table_name ,', ') table_list 
 from dv_pipeline_description.dvpd_pipeline_dv_table pdt
-where stereotype = 'hub' and hub_key_column_name is not null
+where table_stereotype = 'hub' and hub_key_column_name is not null
 group by 1,2
 )
 select 

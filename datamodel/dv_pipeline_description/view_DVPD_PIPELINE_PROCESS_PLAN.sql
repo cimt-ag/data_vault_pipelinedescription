@@ -26,11 +26,11 @@ with tables_with_explicit_field_group as (
 select distinct 
 	pdt.pipeline_name
 	,pdt.table_name
-	,pdt.stereotype 
+	,pdt.table_stereotype 
 	,field_group
 	,'explicit' fg_rule
 from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte
-join dv_pipeline_description.dvpd_pipeline_dv_table pdt  on pdt.table_name =pfte.target_table 
+join dv_pipeline_description.dvpd_pipeline_dv_table pdt  on pdt.table_name =pfte.table_name 
 														and pdt.pipeline_name = pfte.pipeline_name 
 where field_group <> '_A_'  
 and recursion_name='' --MWG 22020708
@@ -39,7 +39,7 @@ union
 select distinct
 	pdt.pipeline_name 
 	,pdt.table_name 
-	,pdt.stereotype 
+	,pdt.table_stereotype 
 	,upper(field_group) field_group
 	,'explicit' fg_rule
 from dv_pipeline_description.dvpd_pipeline_dv_table pdt
@@ -50,7 +50,7 @@ join dv_pipeline_description.dvpd_pipeline_dv_table_field_group_raw tfgr on tfgr
 select distinct 
 	pdt.pipeline_name 
 	,pdt.table_name
-	,pdt.stereotype 
+	,pdt.table_stereotype 
 from dv_pipeline_description.dvpd_pipeline_dv_table pdt
 left join tables_with_explicit_field_group twepb on twepb.pipeline_name  =pdt.pipeline_name 
 												   and twepb.table_name = pdt.table_name 
@@ -60,7 +60,7 @@ where twepb.table_name is null
 select 
 	twogb.pipeline_name 
 	,twogb.table_name
-	,twogb.stereotype 
+	,twogb.table_stereotype 
 	,twepb.field_group 
 	,'restrict by sat'::text fg_rule
 from tables_without_explicit_field_group  twogb
@@ -68,25 +68,25 @@ join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = t
 																and pdt.satellite_parent_table = twogb.table_name 
 join tables_with_explicit_field_group twepb on twepb.pipeline_name = twogb.pipeline_name 
 											 and twepb.table_name = pdt.table_name 
-											 and twepb.stereotype in ('msat','esat','sat')
-where twogb.stereotype = 'lnk'
+											 and twepb.table_stereotype in ('msat','esat','sat')
+where twogb.table_stereotype = 'lnk'
 )
 ,links_not_restricted_by_satellite as (
 select 	pipeline_name
 	,table_name
-	,stereotype  
+	,table_stereotype  
 from tables_without_explicit_field_group
-where stereotype = 'lnk'
+where table_stereotype = 'lnk'
 except 
 select pipeline_name 
 	,table_name
-	,stereotype
+	,table_stereotype
 from links_restricted_by_satellite 
 )
 ,links_relevant_to_determine_hub_field_groups as (
 select 	lnrbs.pipeline_name
 	,lnrbs.table_name
-	,lnrbs.stereotype
+	,lnrbs.table_stereotype
 	,pdtlp.link_parent_table 
 	,twepb.field_group 
 from links_not_restricted_by_satellite lnrbs
@@ -121,7 +121,7 @@ group by table_name
 select 
   lpcphf.pipeline_name 
   ,lpcphf.table_name 
-  ,'lnk'::text stereotype
+  ,'lnk'::text table_stereotype
   ,lpcphf.field_group 
   ,'restricted by hub'::text fg_rule
 from link_parent_count_per_hub_fg lpcphf
@@ -134,15 +134,15 @@ where fg_driven_hub_count+coalesce (free_hub_count,0) = parent_count
 select 
   pipeline_name
   ,table_name 
-  ,stereotype
+  ,table_stereotype
   ,field_group
 from  tables_with_explicit_field_group
-where stereotype ='hub'
+where table_stereotype ='hub'
 union 
 select 
   pipeline_name 
   ,table_name 
-  ,stereotype
+  ,table_stereotype
   ,field_group
 from  links_restricted_by_hub_field_groups
 )
@@ -150,7 +150,7 @@ from  links_restricted_by_hub_field_groups
 select 
 	twoefg.pipeline_name 
 	,twoefg.table_name 
-	,twoefg.stereotype 
+	,twoefg.table_stereotype 
 	,hlpsfos.field_group 
     ,'restricted by parent'::text fg_rule
 from hub_links_probably_driving_fg_of_satellite  hlpsfos 
@@ -163,7 +163,7 @@ join tables_without_explicit_field_group twoefg on twoefg.pipeline_name = hlpsfo
 select 
   pipeline_name 
   ,table_name 
-  ,stereotype
+  ,table_stereotype
   ,field_group
   ,fg_rule 
 from tables_with_explicit_field_group
@@ -171,7 +171,7 @@ union
 select 
   pipeline_name 
   ,table_name 
-  ,stereotype
+  ,table_stereotype
   ,field_group
   ,fg_rule 
 from links_restricted_by_satellite
@@ -179,7 +179,7 @@ union
 select 
   pipeline_name 
   ,table_name 
-  ,stereotype
+  ,table_stereotype
   ,field_group
   ,fg_rule 
 from links_restricted_by_hub_field_groups
@@ -187,7 +187,7 @@ union
 select 
   pipeline_name 
   ,table_name 
-  ,stereotype
+  ,table_stereotype
   ,field_group
   ,fg_rule 
 from sats_driven_by_fg_of_parent
@@ -196,20 +196,20 @@ from sats_driven_by_fg_of_parent
 Select 
   pipeline_name 
   ,table_name 
-  ,stereotype
+  ,table_stereotype
 from tables_without_explicit_field_group
 except 
 Select distinct
   pipeline_name 
   ,table_name 
-  ,stereotype
+  ,table_stereotype
 from tables_restricted_to_field_group
 )
 , final_table_field_group_relation as (
 select 
   pipeline_name 
   ,table_name 
-  ,stereotype
+  ,table_stereotype
   ,'_A_' field_group
   ,'no field group' fg_rule 
 from tables_without_field_group
@@ -217,7 +217,7 @@ union
 select 
   pipeline_name 
   ,table_name 
-  ,stereotype
+  ,table_stereotype
   ,field_group
   ,fg_rule 
 from tables_restricted_to_field_group
@@ -226,7 +226,7 @@ from tables_restricted_to_field_group
 Select 
   ftfgr_hub.pipeline_name 
   ,ftfgr_hub.table_name 
-  ,ftfgr_hub.stereotype
+  ,ftfgr_hub.table_stereotype
   ,ftfgr_link.field_group
   ,ftfgr_hub.fg_rule 
   ,pdtlp.recursion_name 
@@ -241,7 +241,7 @@ join final_table_field_group_relation ftfgr_link on ftfgr_link.pipeline_name = f
 select 
   pipeline_name  
   ,table_name 
-  ,stereotype
+  ,table_stereotype
   ,case when field_group <> '_A_' then '_'||field_group
   		else field_group 
 	end as process_block 
@@ -253,7 +253,7 @@ union
 select
   pipeline_name 
   ,table_name 
-  ,stereotype
+  ,table_stereotype
   ,case when field_group='_A_' then '_'||recursion_name 
   	  else  '_'||recursion_name||'_'||field_group end     as process_block
   ,field_group

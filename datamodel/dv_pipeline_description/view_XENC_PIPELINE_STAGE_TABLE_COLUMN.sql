@@ -31,7 +31,7 @@ from dv_pipeline_description.xenc_pipeline_dv_table_properties epdtp
 join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = epdtp.pipeline_name 
 														and pdt.table_name = epdtp .table_name 
 left join pipeline_model_profile pmp on pmp.pipeline_name= epdtp.pipeline_name 
-where stereotype like 'xenc%'
+where table_stereotype like 'xenc%'
 )
 select distinct 
 	pipeline_name 
@@ -42,7 +42,7 @@ select distinct
 	,content_stage_hash_column
 	,content_table_name
 from  dv_pipeline_description.xenc_pipeline_process_stage_to_enc_model_mapping
-where dv_column_class not in ('meta')
+where column_class not in ('meta')
 group by 1,2,3,5,6,7
 union 
 select
@@ -56,7 +56,7 @@ select
 from pipelines pp
 left join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl 
 										on mpmcl.model_profile_name = pp.model_profile_name
-									and mpmcl.stereotype ='_xenc_stg-ek' ;
+									and mpmcl.table_stereotype ='_xenc_stg-ek' ;
 
 
 comment on view dv_pipeline_description.XENC_PIPELINE_STAGE_TABLE_COLUMN is

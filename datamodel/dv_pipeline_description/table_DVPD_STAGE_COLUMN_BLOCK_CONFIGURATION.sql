@@ -22,8 +22,8 @@
 
 Create table if not exists dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION (
   meta_inserted_at TIMESTAMP DEFAULT current_timestamp,
-  dv_column_class VARCHAR(40),
-  stereotype VARCHAR(40),
+  column_class VARCHAR(40),
+  table_stereotype VARCHAR(40),
   stage_column_block int
   ); 
 
@@ -34,7 +34,7 @@ COMMENT on TABLE dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION
 TRUNCATE TABLE dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION;
 
 INSERT INTO dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION
-( dv_column_class, stereotype,stage_column_block)
+( column_class, table_stereotype,stage_column_block)
 VALUES
 	  ('key','hub', 10),
 	  ('parent_key','lnk', 11),	
@@ -55,7 +55,7 @@ VALUES
 TRUNCATE TABLE dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION;
 
 INSERT INTO dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION
-( dv_column_class, stereotype,stage_column_block)
+( column_class, table_stereotype,stage_column_block)
 VALUES
 
 	  ('key','hub', 2),

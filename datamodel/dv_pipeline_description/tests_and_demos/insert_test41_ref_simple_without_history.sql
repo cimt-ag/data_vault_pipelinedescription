@@ -32,13 +32,13 @@ VALUES
 		      {"field_name": "F1_AAA_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_41_aaa_ref"}]},
 		 	  {"field_name": "F2_BBB_DECIMAL",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_41_aaa_ref"}]},
 		 	  {"field_name": "F3_CCC_FIELDNAME_DATE",		"field_type": "DATE",			"targets": [{"table_name": "rtjj_41_aaa_ref"
-																											,"target_column_name":"F3_CCC_DATE"}]},
+																											,"column_name":"F3_CCC_DATE"}]},
 			  {"field_name": "F4_DDD_NOT_IN_RH__DECIMAL",		"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_41_aaa_ref","exclude_from_diff_hash": "true"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
-				{"table_name": "rtjj_41_aaa_ref",		"stereotype": "ref","is_enddated": "false"}
+				{"table_name": "rtjj_41_aaa_ref",		"table_stereotype": "ref","is_enddated": "false"}
 				]
 		}
 	]

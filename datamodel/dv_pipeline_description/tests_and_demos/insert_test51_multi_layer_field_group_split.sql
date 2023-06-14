@@ -34,35 +34,35 @@ VALUES
 		      {"field_name": "MANDANT", 	"field_type": "VARCHAR(20)",	
 											"targets": [{"table_name": "rtsta_51_fahrzeug_hub"}]},
 		 	  {"field_name": "FZG_TY_1_U_2",	"field_type": "VARCHAR(20)",
-												"targets": [{"table_name": "rtsta_51_fahrzeug_hub", "target_column_name": "FAHRZEUG_TYP",
+												"targets": [{"table_name": "rtsta_51_fahrzeug_hub", "column_name": "FAHRZEUG_TYP",
 						     					"field_groups":["fzg1","fzg2"]}] },
 		 	  {"field_name": "FZG_TY_3",	"field_type": "VARCHAR(20)",	
-											"targets": [{"table_name": "rtsta_51_fahrzeug_hub","target_column_name": "FAHRZEUG_TYP",
+											"targets": [{"table_name": "rtsta_51_fahrzeug_hub","column_name": "FAHRZEUG_TYP",
 												 	"field_groups":["fzg3"]}]},
 		 	  {"field_name": "KENN_1",	"field_type": "VARCHAR(2)",	
-											"targets": [{"table_name": "rtsta_51_fahrzeug_hub","target_column_name": "FAHRZEUG_KENNUNG",
+											"targets": [{"table_name": "rtsta_51_fahrzeug_hub","column_name": "FAHRZEUG_KENNUNG",
 											"field_groups":["fzg1"]}]},
 		 	  {"field_name": "KENN_2",	"field_type": "VARCHAR(2)",	
-											"targets": [{"table_name": "rtsta_51_fahrzeug_hub","target_column_name": "FAHRZEUG_KENNUNG",
+											"targets": [{"table_name": "rtsta_51_fahrzeug_hub","column_name": "FAHRZEUG_KENNUNG",
 										    "field_groups":["fzg2"]}]},
 		 	  {"field_name": "KENN_3",	"field_type": "VARCHAR(2)",	
-										"targets": [{"table_name": "rtsta_51_fahrzeug_hub","target_column_name": "FAHRZEUG_KENNUNG",
+										"targets": [{"table_name": "rtsta_51_fahrzeug_hub","column_name": "FAHRZEUG_KENNUNG",
 											 "field_groups":["fzg3"]}]},
 		 	  {"field_name": "MARKE_1",		"field_type": "VARCHAR(200)",	
-										"targets": [{"table_name": "rtsta_51_fahrzeug_p1_sat","target_column_name": "MARKE",
+										"targets": [{"table_name": "rtsta_51_fahrzeug_p1_sat","column_name": "MARKE",
 										"field_groups":["fzg1"]}]},
 		 	  {"field_name": "MARKE_2",		"field_type": "VARCHAR(200)",	
-										"targets": [{"table_name": "rtsta_51_fahrzeug_p1_sat","target_column_name": "MARKE",
+										"targets": [{"table_name": "rtsta_51_fahrzeug_p1_sat","column_name": "MARKE",
 										 "field_groups":["fzg2"]}]},
 		 	  {"field_name": "MARKE_3",		"field_type": "VARCHAR(200)",	
-										"targets": [{"table_name": "rtsta_51_fahrzeug_p1_sat","target_column_name": "MARKE",
+										"targets": [{"table_name": "rtsta_51_fahrzeug_p1_sat","column_name": "MARKE",
 										 "field_groups":["fzg3"]}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_a", 
 		 "tables": [
-				{"table_name": "rtsta_51_fahrzeug_hub",		"stereotype": "hub","hub_key_column_name": "HK_RTSTB_FAHRZEUG"},
-				{"table_name": "rtsta_51_fahrzeug_p1_sat",	"stereotype": "sat","satellite_parent_table": "rtsta_51_fahrzeug_hub","diff_hash_column_name": "RH_rtsta_51_FAHRZEUG_P1_SAT"}
+				{"table_name": "rtsta_51_fahrzeug_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_RTSTB_FAHRZEUG"},
+				{"table_name": "rtsta_51_fahrzeug_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtsta_51_fahrzeug_hub","diff_hash_column_name": "RH_rtsta_51_FAHRZEUG_P1_SAT"}
 				]
 		}
 	]

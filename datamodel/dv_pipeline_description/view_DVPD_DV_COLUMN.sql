@@ -24,7 +24,7 @@ SELECT
 	DISTINCT
 	table_name,
 	column_block,
-	dv_column_class,
+	column_class,
 	column_name,
 	column_type
 FROM
