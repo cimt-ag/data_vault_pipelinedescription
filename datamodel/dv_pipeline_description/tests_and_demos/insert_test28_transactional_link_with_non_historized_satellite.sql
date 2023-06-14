@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test28_transactional_link_with_non_historized_satellite','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test28_transactional_link_with_non_historized_satellite",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {

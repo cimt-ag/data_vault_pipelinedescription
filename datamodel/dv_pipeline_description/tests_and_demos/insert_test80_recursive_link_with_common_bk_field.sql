@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test80_recursive_link_with_common_bk_field','{
  	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
  	"pipeline_name": "test80_recursive_link_with_common_bk_field",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"

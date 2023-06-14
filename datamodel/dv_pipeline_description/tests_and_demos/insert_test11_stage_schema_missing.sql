@@ -17,19 +17,17 @@
 -- =====================================================================
 
 
-DELETE FROM dv_pipeline_description.dvpd_dictionary where pipeline_name = 'test10_bad_model_profile_name';
+DELETE FROM dv_pipeline_description.dvpd_dictionary where pipeline_name = 'test11_stage_schema_missing';
 INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
-('test10_bad_model_profile_name','{
+('test11_stage_schema_missing','{
 	"dvpd_version": "1.0",
-	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "test10_bad_model_profile_name",
+	"pipeline_name": "test11_stage_schema_missing",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
-	"model_profile_name":"XXBAD_PROFILE_NAMEXX",
 
 	"fields": [
 		      {"field_name": "F1_BK_AAA_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_10_aaa_hub"}]},
@@ -50,4 +48,8 @@ VALUES
 	]
 }
 ');
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test10_bad_model_profile_name');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test11_stage_schema_missing');
+
+/*
+ * select * from dv_pipeline_description.dvpd_check_all where pipeline_name='test11_stage_schema_missing'
+ */

@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('rgopd_keyword_click_report_p1','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "rgopd_keyword_click_report_p1",
 	"record_source_name_expression": ">>is hardcoded in stage function<<",
 	"data_extraction": {

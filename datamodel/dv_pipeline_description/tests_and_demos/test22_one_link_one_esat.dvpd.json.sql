@@ -1,5 +1,6 @@
 {
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test22_one_link_one_esat",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {

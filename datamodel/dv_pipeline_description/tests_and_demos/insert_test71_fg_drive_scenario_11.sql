@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test71_fg_drive_scenario_11','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test71_fg_drive_scenario_11",
 	"record_source_name_expression":"dvpd implementation test",
 	"data_extraction": {

@@ -22,6 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test32_hub_dlink_sat_driving_key','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test32_hub_dlink_sat_driving_key",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {

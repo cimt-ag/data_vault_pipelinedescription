@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test21_simple_hub_with_2_sats','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test21_simple_hub_with_2_sats",
 	"record_source_name_expression": "dvpd implementation test",
 	"stage_properties" : [{"storage_component":"PostgresDWH","stage_schema":"stage_rvlt"}],

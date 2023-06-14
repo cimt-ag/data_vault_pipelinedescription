@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test03_check_xsat_specifics','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test03_check_xsat_specifics",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {

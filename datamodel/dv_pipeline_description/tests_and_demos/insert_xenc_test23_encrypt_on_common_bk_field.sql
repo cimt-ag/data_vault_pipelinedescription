@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('xenc_test23_encrypt_on_common_bk_field','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "xenc_test23_encrypt_on_common_bk_field",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {

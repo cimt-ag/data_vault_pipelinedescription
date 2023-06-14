@@ -22,6 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES('test50_double_esat_field_group', '{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test50_double_esat_field_group",
 	"record_source_name_expression":"dvpd implementation test",
 	"data_extraction": {

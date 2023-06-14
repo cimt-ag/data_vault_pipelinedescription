@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('xenc_test70_hierarchy_and_fg_with_encrypted_bk','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "xenc_test70_hierarchy_and_fg_with_encrypted_bk",
 	"record_source_name_expression":"dvpd implementation test",
 	"data_extraction": {

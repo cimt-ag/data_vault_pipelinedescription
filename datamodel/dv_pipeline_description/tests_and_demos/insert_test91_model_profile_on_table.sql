@@ -23,6 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('test91_model_profile_on_table','{
 	"dvpd_version": "1.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test91_model_profile_on_table",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
