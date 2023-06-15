@@ -39,7 +39,7 @@ select 	base .pipeline_name,
 	base .prio_in_key_hash,
 	base .prio_in_diff_hash
 from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE	base																	
-where column_class like 'xenc_%'	and table_stereotype in ('sat','msat')
+where column_class like 'xenc_%'	and table_stereotype in ('sat')
 union
 -- additional stage columns for encrypted fields, that are distributed to more then one table
 select

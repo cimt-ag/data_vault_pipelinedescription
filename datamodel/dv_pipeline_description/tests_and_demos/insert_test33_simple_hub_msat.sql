@@ -43,8 +43,9 @@ VALUES
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
 				{"table_name": "rtjj_33_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_33_aaa"},
-				{"table_name": "rtjj_33_aaa_p1_msat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_33_aaa_HUB"
-															,"is_multiactive":true,"diff_hash_column_name": "gH_rtjj_33_aaa_p1_msat"}
+				{"table_name": "rtjj_33_aaa_p1_msat",	"table_stereotype": "sat","is_multiactive":true
+															,"satellite_parent_table": "rtjj_33_aaa_HUB"
+															,"diff_hash_column_name": "gH_rtjj_33_aaa_p1_msat"}
 				]
 		}
 	]

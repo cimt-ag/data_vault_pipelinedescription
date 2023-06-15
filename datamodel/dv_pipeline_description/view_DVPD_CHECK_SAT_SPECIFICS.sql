@@ -42,7 +42,7 @@ with esat_must_have_link_parent as (
 	from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
 	join dv_pipeline_description.dvpd_pipeline_dv_table_driving_key pdtdk on pdtdk.pipeline_name =pdt.pipeline_name 
 																		 and pdtdk.table_name =pdt.table_name 
-	where table_stereotype in ('sat','esat','msat')
+	where table_stereotype in ('sat')
 )
 ,do_driving_keys_exist_in_parent as (
 select 

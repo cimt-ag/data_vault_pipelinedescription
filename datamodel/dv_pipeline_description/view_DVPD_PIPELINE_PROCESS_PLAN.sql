@@ -68,7 +68,7 @@ join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = t
 																and pdt.satellite_parent_table = twogb.table_name 
 join tables_with_explicit_field_group twepb on twepb.pipeline_name = twogb.pipeline_name 
 											 and twepb.table_name = pdt.table_name 
-											 and twepb.table_stereotype in ('msat','esat','sat')
+											 and twepb.table_stereotype in ('sat')
 where twogb.table_stereotype = 'lnk'
 )
 ,links_not_restricted_by_satellite as (
