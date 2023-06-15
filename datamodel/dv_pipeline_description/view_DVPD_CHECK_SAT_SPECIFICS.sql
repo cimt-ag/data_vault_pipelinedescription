@@ -58,9 +58,22 @@ left join dv_pipeline_description.dvpd_pipeline_dv_column dc ON dc.pipeline_name
 															and dc.table_name = dkppast.satellite_parent_table
 															and dc.column_name =dkppast.driving_key 
 ) 
+,parameter_dependencies as (
+select 
+	pdt.pipeline_name 
+ 	,'Table'::TEXT  object_type 
+ 	, pdt.table_name   object_name 
+ 	,'DVPD_CHECK_SAT_SPECIFICS'::text  check_ruleset
+	, case when pdt.uses_diff_hash and not is_effectivity_sat and insert_changes_only and diff_hash_column_name is null then  'diff_hash_column_name needs to be declared'
+			else 'ok' end message
+	from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
+	where table_stereotype ='sat'
+) 
 select * from esat_must_have_link_parent
 union
-select * from do_driving_keys_exist_in_parent ;
+select * from do_driving_keys_exist_in_parent
+union
+select * from parameter_dependencies;
 
 
 comment on view dv_pipeline_description.DVPD_CHECK_SAT_SPECIFICS IS

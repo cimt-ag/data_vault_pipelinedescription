@@ -32,6 +32,7 @@ VALUES
 ,"key_for_null_ghost_record": 	  "0000000000000000000000000000"
 ,"key_for_missing_ghost_record": "FFFFFFFFFFFFFFFFFFFFFFFFFFFF"
 ,"far_future_timestamp" : "2299-12-30 00:00:00"
+,"insert_changes_only_default":"true"
 ,"uses_diff_hash_default":"true"
 ,"diff_hash_column_type"	: "CHAR(28)"
 ,"diff_hash_function"			: "sha-1"

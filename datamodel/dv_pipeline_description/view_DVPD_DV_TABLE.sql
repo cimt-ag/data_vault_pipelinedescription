@@ -30,6 +30,9 @@ select distinct
 	,satellite_parent_table 
 	,is_link_without_sat
 	,is_enddated
+	,has_deletion_flag
+	,uses_diff_hash
+	,is_effectivity_sat
 from dv_pipeline_description.dvpd_pipeline_dv_table;
 
 

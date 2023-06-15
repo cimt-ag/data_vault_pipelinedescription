@@ -112,6 +112,7 @@ insert
 	is_enddated,
 	has_deletion_flag,
 	uses_diff_hash,
+	insert_changes_only,
 	model_profile_name,
 	table_content_comment)
 select
@@ -127,6 +128,7 @@ select
 	is_enddated,
 	has_deletion_flag,
 	uses_diff_hash,
+	insert_changes_only,
 	model_profile_name,
 	table_content_comment
 from

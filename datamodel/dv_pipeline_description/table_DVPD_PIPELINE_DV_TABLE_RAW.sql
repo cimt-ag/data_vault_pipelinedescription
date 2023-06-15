@@ -33,6 +33,8 @@ CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_RAW (
 	is_enddated varchar(255) NULL,
 	has_deletion_flag varchar(255) NULL,
 	uses_diff_hash varchar(255) NULL,
+	insert_changes_only varchar(255) NULL,
+	db_table_name varchar(255) NULL,
 	model_profile_name varchar(255) NULL,
 	table_content_comment varchar(3000) NULL
 );

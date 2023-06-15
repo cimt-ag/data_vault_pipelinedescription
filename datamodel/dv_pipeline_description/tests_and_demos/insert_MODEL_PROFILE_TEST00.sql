@@ -16,7 +16,6 @@
 -- limitations under the License.
 -- =====================================================================
 
-
 DELETE FROM dv_pipeline_description.dvpd_json_storage where object_name  = 'TEST00' and object_class ='model_profile';
 
 INSERT INTO dv_pipeline_description.dvpd_json_storage 
@@ -33,13 +32,14 @@ VALUES
 ,"key_for_null_ghost_record": 	  "T00_0000"
 ,"key_for_missing_ghost_record": "T00_FFFF"
 ,"far_future_timestamp" : "2400-01-01 00:00:01"
+,"insert_changes_only_default":"true"
 ,"uses_diff_hash_default":"true"
 ,"diff_hash_column_type"	: "VARCHAR(100)"
 ,"diff_hash_function"			: "sha-1"
 ,"diff_hash_encoding"		: "BASE64"
+,"is_enddated_default"   :  "true"
 ,"load_date_column_name" : "IA_T00"
 ,"load_date_column_type" : "TIMESTAMP WITHOUT TIME ZONE"
-,"is_enddated_default"   :  "true"
 ,"load_enddate_column_name" : "VB_T00"
 ,"load_enddate_column_type" : "TIMESTAMP WITHOUT TIME ZONE"
 ,"has_deletion_flag_default": "false"

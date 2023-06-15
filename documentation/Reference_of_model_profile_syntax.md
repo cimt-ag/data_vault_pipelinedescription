@@ -97,9 +97,13 @@ Timeatmp value to be used in the missing ghost record for timestamp columns.
 
 <br>*Example: 1900-01-01 00:00:00*
 
+**insert_changes_only_default**
+(mandatory)<br>
+Determines the default behaviour of satellite loading. when set to true, incoming data is only added to the satellite when it differs from the latest version stored. (normal Data Vault principle). This can be overruled via table specific settings. 
+
 **uses_diff_hash_default**
 (mandatory)<br>
-Determines the default method to determine changes of data. When set to true, all historized satellites with content columns must declare a diff hash column. This can be overwritten via table specific properties.
+Determines the default method to determine changes of data. When set to true, all historized satellites with content columns must declare a diff hash column. This can be overruled via table specific settings.
 
 <br>*Example: true*
 

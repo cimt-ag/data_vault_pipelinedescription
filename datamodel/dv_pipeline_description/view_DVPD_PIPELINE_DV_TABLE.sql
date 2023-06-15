@@ -17,7 +17,7 @@
 -- =====================================================================
 
 
---drop view if exists dv_pipeline_description.DVPD_PIPELINE_DV_TABLE cascade;
+-- drop materialized view if exists dv_pipeline_description.DVPD_PIPELINE_DV_TABLE cascade;
 create materialized view dv_pipeline_description.DVPD_PIPELINE_DV_TABLE as 
 
 with profile_settings as (
@@ -29,7 +29,7 @@ with profile_settings as (
 	 from dv_pipeline_description.dvpd_pipeline_dv_table_raw pdt
 	 join dv_pipeline_description.dvpd_pipeline_properties pp on pp.pipeline_name =lower(pdt.pipeline_name )
 	 left join dv_pipeline_description.dvpd_model_profile profile on profile.model_profile_name = lower(coalesce( pdt.model_profile_name,pp.model_profile_name ))
-	 where property_name in ('is_enddated_default','has_deletion_flag_default','uses_diff_hash_default')
+	 where property_name in ('is_enddated_default','has_deletion_flag_default','uses_diff_hash_default','insert_changes_only_default')
  )
  , column_count as (
 	 select  dpdtr.pipeline_name
@@ -53,6 +53,7 @@ select
 , coalesce(is_enddated ::boolean,mp_is_endated_default.property_value ::boolean) as is_enddated 
 , coalesce(has_deletion_flag ::boolean,has_deletion_flag_default.property_value ::boolean) as has_deletion_flag 
 , coalesce(uses_diff_hash ::boolean,uses_diff_hash_default.property_value ::boolean) as uses_diff_hash
+, coalesce(insert_changes_only ::boolean,insert_changes_only_default.property_value ::boolean) as insert_changes_only
 , case when table_stereotype = 'sat' and column_count=0 then true 
 	   when table_stereotype = 'sat' and column_count>0 then false 
 	   else null 															end   	is_effectivity_sat
@@ -70,6 +71,9 @@ left join profile_settings has_deletion_flag_default on has_deletion_flag_defaul
 left join profile_settings uses_diff_hash_default on uses_diff_hash_default.pipeline_name=pdt.pipeline_name  
 												and uses_diff_hash_default.table_name=pdt.table_name 
 												and uses_diff_hash_default.property_name ='uses_diff_hash_default'
+left join profile_settings insert_changes_only_default on insert_changes_only_default.pipeline_name=pdt.pipeline_name  
+												and insert_changes_only_default.table_name=pdt.table_name 
+												and insert_changes_only_default.property_name ='insert_changes_only_default'
 ;
 
 comment on materialized  view dv_pipeline_description.DVPD_PIPELINE_DV_TABLE is
