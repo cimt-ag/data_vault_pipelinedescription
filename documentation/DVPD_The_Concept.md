@@ -52,22 +52,24 @@ DVPD will act as the full information base to provide and transport all the info
 
 By using the DVPD as central exchange and information media, the tools are more loosly coupled. Adding or exchaning tools is more easy. Also the DVPD can be managed as an artifact, that can be versioned and processed in  CI/CD workflows (Testing, deployment).
 
-## Description + Derivation
+## Description + Derivation = instruction
 The design of DVPD focusses on the **description** of all elements, that are **not obvious** by applying the data vault methodology.
 Also the design allows to use only minimal declarations, when sticking to some established best practices.
 
-Information, that can be derived from the minimal declaration by following the data vault method or best praciteces, is added by a DVDP compiler. The derivation rules are also specified in this concept.
+Informations, that can be derived from the minimal declaration by following the data vault method and best practices, is added by a DVDP compiler. The derivation rules are also specified in this concept.
+
+The derived informations will be provided in a Data Vault Pipeline Instruction (DVPI) Document. (DVPI is currently under development. Until its specification, the Information must be retreived from the tables, provided in the database of the compiler )
 
 # Requirements
 In this chapter, we define the requirements for the DVPD to fullfill.
 
-## Data Vault is the base
+## Data Vault modelling standard is the base
 The Data Vault modelling and loading concept define the major requirements about the necessary information, DVPD has to provide. The following Data Vault rules are taken into account, during the design:
 - Data Vault Models consist of 4 major table stereotypes
     - **Hub Tables**: Keep the identification of the data objects by storing their business key columns. It is possible (but not recommended) to put additional data columns in a hub, that have no impact to the identification.
 	- **Link Tables**: Represent the relations between data objects. Sometimes the link table might have additional columns(dependent child keys) to provide extra identificational data  for the relation. As like in hubs,it is also possible (but not recommended) to put additional data columns in a link, that have no impact on the identification.
-	- **Satellite Table**: Store the attributes of data objects or relations. The data is generally historized to provide former states of the data.  Depending on the source, a sattelite might contain multiple rows for the same object (multiactive sattelite). For data that will change over time or gets deleted later, the satellites are the only information source about the existence of objects and relations over time.
-	- **Reference Table**: Store simple value lookup tables to expand or translate "codes". This is also often historized to provide previous states
+	- **Satellite Tables**: Store the attributes of data objects or relations. The data is generally historized to provide former states of the data.  Depending on the source, a sattelite might contain multiple rows for the same object (multiactive sattelite). For data that will change over time or gets deleted later, the satellites are the only information source about the existence of objects and relations over time.
+	- **Reference Tables**: Store simple value lookup tables to expand or translate "codes" or "names". This is also often historized to provide previous states
 - Releations between Hub - Link -Sat Tables are implemented with single artificial key columns (Hub Keys, Link Keys).  The key values are determined by hashing the concatenated busineskeys/dependent child keys. To achieve consistent hash values for the same key column over different sources, there must be rules and properties for ordering of the columns
 - Relations between the stereotypes can only be the following
 	- Hubs don't have any releation information by themself. They only provide the Hub Key together with the business key attributes

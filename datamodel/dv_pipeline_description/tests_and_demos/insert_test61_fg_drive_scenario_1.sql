@@ -22,7 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test61_fg_drive_scenario_1','{
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test61_fg_drive_scenario_1",
 	"purpose":"Test dvpd transformation for multilayered field groups",

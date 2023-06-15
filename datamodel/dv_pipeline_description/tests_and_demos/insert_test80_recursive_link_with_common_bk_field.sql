@@ -22,7 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test80_recursive_link_with_common_bk_field','{
- 	"dvpd_version": "1.0",
+ 	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
  	"pipeline_name": "test80_recursive_link_with_common_bk_field",
 	"data_extraction": {

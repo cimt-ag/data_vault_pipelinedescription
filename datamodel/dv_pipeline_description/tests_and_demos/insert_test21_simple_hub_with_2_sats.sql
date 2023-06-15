@@ -22,7 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test21_simple_hub_with_2_sats','{
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test21_simple_hub_with_2_sats",
 	"record_source_name_expression": "dvpd implementation test",

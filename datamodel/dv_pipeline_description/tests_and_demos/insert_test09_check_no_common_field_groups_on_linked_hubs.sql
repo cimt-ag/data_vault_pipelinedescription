@@ -22,7 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test09_check_no_common_field_groups_on_linked_hubs','{
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test09_check_no_common_field_groups_on_linked_hubs",
 	"purpose":"Test dvpd transformation for multilayered field groups",
