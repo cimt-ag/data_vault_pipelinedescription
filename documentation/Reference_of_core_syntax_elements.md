@@ -286,12 +286,12 @@ List of recursive parent table declarations (e.g. for hierarchical links or “s
 (optional, default depends on model profile)
 <br>defines the criteria that have to be met, for inserting from stage into the satellite. Valid settings are:
 - key = the key (hub key, link key) is not already in the satellite
-- values = the value combination of the relevant columns or the diff hash are not already in the satellite
-- actual = the value combinateion of the relevant columns or the diff hash are not equal to a current row in the satellite
-- key+value = comparison of values is reduced to the key
-- key+actual = comparison of current values is reduced to the key (this is the main mode of data vault satellites)
+- diff = the value combination of the relevant compare columns or the diff hash are not already in the satellite
+- current = the value combination of the relevant compare columns or the diff hash are not equal to a current row in the satellite
+- key+diff = comparison is done by key
+- key+current = comparison of current values is reduced to the key (this is the main mode of data vault satellites)
 
-The settings "key", "actual" and "key+actual" should be supported by every implementation. The setting "key" might remove a declared diff hash column, or at least will leave out the check for a diff_hash even, when uses_diff_hash is true. 
+The settings "key", "current" and "key+current" should be supported by every implementation, since they belong to the core of data vault. The setting "key" might remove a declared diff hash column, or at least will leave out the check for a diff_hash even, when uses_diff_hash is true. 
 
 **is_enddated**
 (optional, default depends on model profile)
@@ -382,7 +382,7 @@ For other procedures there might be other properties necessary.
 <br>Describes the join path in the model to get from the tables to delete to the tables with partitioning fields. The path begins with the parent table of all listed satellites to delete. The path must not branch except when adding satellites to provide partitioning columns or restrict the validity of links. The path can skip unnecessary tables (e.g. hubs, where businesskey is not a partition criteria).
 
 Example:
-
+```
     Model: contract_p1_sat + contract_p2_sat -> contract_hub(contId)
 				<-customer_contract_lnk/esat->
 				customer_hub(country,custId)
@@ -395,7 +395,7 @@ Example:
 	
 	This will delete all acitve rows from contract_from_customer_p1_sat and contract_from_customer_p2_sat where the country of the customer is in stage but not the contId
 	(=Hub key of satellite = second hub key in link)
-	
+```
 	
 **active_keys_of_partition_sql**
 (optional, used for cases, that can't be described by partitioning_fields and joins_path, only appliable for a single sattellite to delete)

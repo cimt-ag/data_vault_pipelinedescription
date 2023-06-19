@@ -4,8 +4,8 @@
 - stage schema must be declared now im stage_properties clause
 - stage table name can be declared now in stage_properties clause, default is the name of the pipeline
 - schema name and table are used in the DDL Generator utility script
-- if satellite insert only changes can now be switched with **insert_changes_only** at the table and insert_changes_only_default in the model_profile
 - if the change detection uses a diff hash can not be switched with **uses_diff_hash** at the table and uses_diff_hash_default in the model profile
+- #insert_criteria#
 
 ATTENTION: You need to declare stage_properties with a stage_schema or will get a check error 
 

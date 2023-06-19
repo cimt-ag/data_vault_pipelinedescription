@@ -47,11 +47,11 @@ VALUES
 				{"table_name": "rtjj_34_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_34_aaa"}
 				,{"table_name": "rtjj_34_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_34_aaa_HUB"
 															,"uses_diff_hash": "false", "diff_hash_column_name": "XX_THIS_SHOULD_NOT_APPEAR_XX"}
-				,{"table_name": "rtjj_34_aaa_p2_tsat",	"table_stereotype": "sat","insert_changes_only":"false"
+				,{"table_name": "rtjj_34_aaa_p2_tsat",	"table_stereotype": "sat","insert_criteria":"key"
 														,"satellite_parent_table": "rtjj_34_aaa_HUB","diff_hash_column_name": "XX_THIS_SHOULD_NOT_APPEAR_XX"}
 				,{"table_name": "rtjj_34_aaa_p3_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_34_aaa_HUB"
 															,"uses_diff_hash": "false"}
-				,{"table_name": "rtjj_34_aaa_p4_tsat",	"table_stereotype": "sat","insert_changes_only":"false"
+				,{"table_name": "rtjj_34_aaa_p4_tsat",	"table_stereotype": "sat","insert_criteria":"key"
 														,"satellite_parent_table": "rtjj_34_aaa_HUB"}
 				]
 		}
