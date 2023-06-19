@@ -271,7 +271,7 @@ List of recursive parent table declarations (e.g. for hierarchical links or “s
 <br>field group defining fields for the business key columns of the hub, that have to be used for this relation
 <br>*"fg1,fg2"
 
-### “Satellite/multiactive satellite” specific properties
+### Satellite specific properties
 
 **satellite_parent_table**
 (mandatory)
@@ -315,31 +315,6 @@ In general, the name must match the final name of the key column in the link. Es
 (optional)
 <br> depending on the implementation this will define a maximum depth of history in the satellite. Recommended thresholdtypes are: max_versions, max_valid_before_age
 
-### "Esat"  specific properties
-
-**satellite_parent_table**
-(mandatory, parent must be a link)
-<br>Name of the link table, this satellite is connected to
-<br>*"raccn_account_department_lnk"*
-
-**tracked_field_groups**
-(optional)
-<br> list of field groups, this esat will be processed for. The field groups must align with mappings of field that are used as businesskey in the hubs, the link of the esat is referring
-
-**driving_keys[]**
-(optional,must refer to a parent_key or dependent_child_key in the parent table of the satellite)
-<br>List of column names of the parent link, that are used as driving keys, to end former relations.
-
-In general, the name must match the final name of the key column in the link. Especially in case of recursive relation, the method of creating the key name must be taken into account.
-<br>*"[“hk_raccn_account”]" | "[“hk_rerps_artice”,”year”,”month”]"
-
-**is_enddated**
-(optional, default depends on model profile)
-<br>when set to true (default) meta data columns for historization enddating will be added to the table and loading process will execute enddating functions
-
-**max_history_depth**
-(optional)
-<br> depending on the implementation this will define a maximum depth of history in the satellite. Recommended thresholdtypes are: max_versions, max_valid_before_age
 
 ### "ref"  specific properties
 
