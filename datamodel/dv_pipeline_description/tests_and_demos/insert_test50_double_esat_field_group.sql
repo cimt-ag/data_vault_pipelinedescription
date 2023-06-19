@@ -68,10 +68,10 @@ VALUES('test50_double_esat_field_group', '{
 																	,	"link_parent_tables": ["rtjj_50_aaa_hub","rtkk_50_bbb_hub"]}
 				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g1_esat","table_stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
 																		"tracked_field_groups": ["fg1"],
-																		"driving_hub_keys": ["HK_rtjj_50_aaa"]}
+																		"driving_keys": ["HK_rtjj_50_aaa"]}
 				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g2_esat","table_stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
 																		"tracked_field_groups": ["fg2"],
-																		"driving_hub_keys": ["HK_rtjj_50_aaa"]}
+																		"driving_keys": ["HK_rtjj_50_aaa"]}
 			]
 		},
 		{"schema_name": "rvlt_test_kk",
