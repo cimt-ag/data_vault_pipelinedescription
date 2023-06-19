@@ -97,13 +97,21 @@ Timeatmp value to be used in the missing ghost record for timestamp columns.
 
 <br>*Example: 1900-01-01 00:00:00*
 
-**insert_changes_only_default**
+**insert_criteria_default**
 (mandatory)<br>
-Determines the default behaviour of satellite loading. when set to true, incoming data is only added to the satellite when it differs from the latest version stored. (normal Data Vault principle). This can be overruled via table specific settings. 
+Determines the default behaviour of satellite loading. 
+Valid settings are:
+- key = the key (hub key, link key) is not already in the satellite
+- values = the value combination of the relevant columns or the diff hash are not already in the satellite
+- actual = the value combinateion of the relevant columns or the diff hash are not equal to a current row in the satellite
+- key+value = comparison of values is reduced to the key
+- key+actual = comparison of current values is reduced to the key (this is the main mode of data vault satellites)
+
+The settings "key", "actual" and "key+actual" should be supported by every implementation. The setting "key" might remove a declared diff hash column, or at least will leave out the check for a diff_hash even, when uses_diff_hash is true. 
 
 **uses_diff_hash_default**
 (mandatory)<br>
-Determines the default method to determine changes of data. When set to true, all historized satellites with content columns must declare a diff hash column. This can be overruled via table specific settings.
+Determines the default method to determine changes of data. When set to true, all historized satellites with content columns must declare a diff hash column. This can be overruled via table specific settings. 
 
 <br>*Example: true*
 

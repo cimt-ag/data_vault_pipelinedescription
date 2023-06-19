@@ -219,7 +219,7 @@ Satellites without any mapped content column are allowed but must have a link as
  
 **hub_key_column_name**
 (mandatory)
-<br>Name of the hub key in the table
+<br>Name of the hub key in the table. (Currently this name must be unique over all tables in the declared model. Future versions will extend the syntax to allow the same name in different tables)
 <br>*"hk_raccn_account"*
 
 ### "lnk" specific properties
@@ -271,7 +271,7 @@ List of recursive parent table declarations (e.g. for hierarchical links or “s
 <br>field group defining fields for the business key columns of the hub, that have to be used for this relation
 <br>*"fg1,fg2"
 
-### Satellite specific properties
+### "sat" specific properties
 
 **satellite_parent_table**
 (mandatory)
@@ -282,9 +282,16 @@ List of recursive parent table declarations (e.g. for hierarchical links or “s
 (optional, default=false)
 <br>when set to true, the declaration and processing for multiactive satellites will be applied (no primary key, awarenes of multiple active rows for change detection)
 
-**insert_changes_only**
+**insert_criteria**
 (optional, default depends on model profile)
-<br>when set to true, incoming data is only added to the satellite when it differs from the latest version stored.
+<br>defines the criteria that have to be met, for inserting from stage into the satellite. Valid settings are:
+- key = the key (hub key, link key) is not already in the satellite
+- values = the value combination of the relevant columns or the diff hash are not already in the satellite
+- actual = the value combinateion of the relevant columns or the diff hash are not equal to a current row in the satellite
+- key+value = comparison of values is reduced to the key
+- key+actual = comparison of current values is reduced to the key (this is the main mode of data vault satellites)
+
+The settings "key", "actual" and "key+actual" should be supported by every implementation. The setting "key" might remove a declared diff hash column, or at least will leave out the check for a diff_hash even, when uses_diff_hash is true. 
 
 **is_enddated**
 (optional, default depends on model profile)
@@ -296,7 +303,7 @@ When set to true, data change is detected by calculation of a hash value ober al
 
 **diff_hash_column_name**
 (might be ommitted, when the implementation is not using a diff hash)
-<br> Name of the colum that will contain the diff_hash 
+<br> Name of the column that will contain the diff_hash. (Currently this name must be unique in the declared model. Future versions will extend the syntax to allow the same name in different tables)
 <br>*"rh_account_p1_sat"*
 
 **has_deletion_flag**
@@ -305,10 +312,10 @@ Determines if a deletion flag column will be added to the satellite.
 <br>*Example:true*
 
 **driving_keys[]**
-(optional,must refer to a parent_key or dependent_child_key in the parent table of the satellite)
-<br>List of column names of the parent link, that are used as driving keys, to end former relations.
+(optional,must refer to a parent_key or dependent_child_key in the parent link table of the satellite)
+<br>List of column names of the parent link, that are used as driving keys, to end former relations. 
 
-In general, the name must match the final name of the key column in the link. Especially in case of recursive relation, the method of creating the key name must be taken into account.
+In general, the name must match the final name of a hub key column in the link. Especially in case of recursive relation, the method of creating the key name must be taken into account.
 <br>*"[“hk_raccn_account”]" | "[“hk_rerps_artice”,”year”,”month”]"
 
 **max_history_depth**
@@ -333,7 +340,6 @@ subelement of root
 
 Deletion detection can be implemented in multiple ways. DVPD will support declaration for some basic methods by using the following properties in the deletion_detection object.
 
-
 **procedure**
 (mandatory)
 <br>provides the selection from different kind of procedures. Suggested valid values are:
@@ -352,7 +358,7 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 → deletion_rules[] 
 
 **> procedure specific properties <**
-For other procedures, then the defined above there might be other properties necessary. 
+For other procedures there might be other properties necessary. 
 
 #### deletion_rules[]
 
@@ -363,17 +369,17 @@ For other procedures, then the defined above there might be other properties nec
 
 **satellites_to_delete[]**
 (mandatory,only declared satellite table names allowed)
-<br>List of satellite table names, on which to apply the deletion detection rule. The satellites must share the same parent
+<br>List of satellite table names, on which to apply the deletion detection rule. The satellites must share the same parent. To delete from satellites of different parents, you need to declare multiple deletion rules.
 <br>“rsfdl_cusmomer_p1_sat”,”rsfdl_customer_p2_sat”
 
 **partitioning_columns[]**
 (optional,only declared field names are allowed)
-<br>List of Columns (and therefore vault columns), that define the range of data where stage has a complete set of rows (this can be content or even table keys). Only active satellite rows that are related to the staged values in these fields, will be checked for deletion. If this property is not set, a complete dataset is assumed to be in the stage table.
+<br>List of fields (and therefore vault columns), that define the range of data where stage has a complete set of rows (this can be content or even table keys). Only active satellite rows that are related to the staged values in these fields, will be checked for deletion. If this property is not set, a complete dataset is assumed to be in the stage table.
 <br>*“market_id”*
 
 **join_path[]**
-(optional,must contain all tables need to be joined to reach the partitioning columns)
-<br>Describes the join path in the model to get from the tables to delete to the tables with partitioning fields. The path begins with the parent table of all listed satellites to delete. The path must not branch except when adding satellites to provide partitioning columns or restrict the validity of links. The path can skip unnecessary tables (e.g. hubs, where businesskey is no partition criteria).
+(optional,must contain all tables needed to be joined to reach the partitioning columns)
+<br>Describes the join path in the model to get from the tables to delete to the tables with partitioning fields. The path begins with the parent table of all listed satellites to delete. The path must not branch except when adding satellites to provide partitioning columns or restrict the validity of links. The path can skip unnecessary tables (e.g. hubs, where businesskey is not a partition criteria).
 
 Example:
 
@@ -393,14 +399,14 @@ Example:
 	
 **active_keys_of_partition_sql**
 (optional, used for cases, that can't be described by partitioning_fields and joins_path, only appliable for a single sattellite to delete)
-<br> To solve more complex scenarios for deletion detection, a Select statement can be provided, that determines all active keys of a satellite for a specific partition. The engine will only compare the given set with the staged data and insert deletion records accordingly . (If by ELT or ETL depends on the engine)
-"join_path" and "partitioning_columns" must be empty.
+<br> To solve more complex scenarios for deletion detection, a select statement can be provided, that determines all active keys of a satellite for a specific partition. The engine will only compare the given set with the staged data and insert deletion records accordingly . (If by ELT or ETL depends on the engine)
+The DVPD properties "join_path" and "partitioning_columns" must be empty.
  	
 **> procedure specific properties <**
 For other procedures, then the defined above there might be other properties to be declared in the deletion_rule. 
 
 ## stage_properties[]
-Contains the declaration of the stage table locations. In general the will be only one. In case of a distributed model, the stage table can be placed on every target. 
+Contains the declaration of the stage table locations. In common scenarios there will be only one. In case of a distributed model using ELT from stage to vault, the stage table can be placed on every target. 
 
 **storage_component**
 (optional)
@@ -416,6 +422,181 @@ Contains the declaration of the stage table locations. In general the will be on
 (optional)
 <br>Name of the stage table. Default is the name of the pipeline.
 <br>*"srvlt_crm_person_p1"
+
+# Data Vault stereo type coverage and examples
+The following examples provides a field and model DVPD declaration for all common data vault stereotypes and their variations. To be easy understandable, the examples use simplified table and column names that don't follow all best practices.
+
+Some properties of the DVPD can be declared on the level of the **model profile**.  All examples refer to the following, most common, profile settings:
+```json
+{	"insert_criteria": "key+actual",
+	"uses_diff_hash_default": true,
+	"is_enddated_default": true,
+	"has_deletion_flag_default": true
+}
+```
+
+## Hub tables
+### Hub with a single column business key
+```json
+"fields": [
+		      {"field_name": "CUSTOMER_ID",  "field_type": "Varchar(20)", "targets": [{"table_name": "customer_hub"}]}
+	],
+"tables": [
+		      {"table_name": "customer_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_CUSTOMER"}
+		]
+```
+
+### Hub with a composite business key
+```json
+"fields": [
+		      {"field_name": "WEBSHOP_ID",  "field_type": "integer", "targets": [{"table_name": "customer_hub"}]},
+		      {"field_name": "CUSTOMER_ID",  "field_type": "Varchar(20)", "targets": [{"table_name": "customer_hub"}]}
+	],
+"tables": [
+		      {"table_name": "customer_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_CUSTOMER"},
+		]
+```
+## Link tables
+### Link connecting two hubs
+```json
+"fields": [
+		      {"field_name": "ORDER_ID",  "field_type": "integer", "targets": [{"table_name": "order_hub"}]},
+		      {"field_name": "CUSTOMER_ID",  "field_type": "Varchar(20)", "targets": [{"table_name": "customer_hub"}]}
+	],
+"tables": [
+			  {"table_name": "order_customer_link", "table_stereotype": "lnk",  "link_parent_tables": ["order_hub","customer_hub"]},
+
+		      {"table_name": "order_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_ORDER"},
+		      {"table_name": "customer_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_CUSTOMER"}
+		]
+```
+### Link with dependent child key columns
+Dependend child keys are declared by mapping fields to link tables.
+```json
+"fields": [
+		      {"field_name": "WEBSHOP_ID",  "field_type": "integer", "targets": [{"table_name": "webshop_hub"}]},
+		      {"field_name": "PRODUCT_ID",  "field_type": "integer", "targets": [{"table_name": "product_hub"}]},
+		      {"field_name": "SELLING_MONTH",  "field_type": "integer", "targets": [{"table_name": "webshop_sale_report_link"}]},
+		      {"field_name": "SELLING_YEAR",  "field_type": "integer", "targets": [{"table_name": "webshop_sale_report_link"}]},
+			  {...}
+	],
+"tables": [
+			  {"table_name": "webshop_sale_report_link", "table_stereotype": "lnk",  "link_parent_tables": ["webshop_hub","product_hub"]},
+
+		      {"table_name": "webshop_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_WEBSHOP"},
+		      {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
+		]
+```
+
+### Same As Link
+The source for a "same as" Link contains the business key of the main object and the business key of its duplicate. The following example "deduplicates" products.
+```json
+"fields": [
+		      {"field_name": "PRODUCT_ID",  "field_type": "integer", "targets": [{"table_name": "product_hub"}]},
+		      {"field_name": "SAME_PRODUCT_ID",  "field_type": "integer", "targets": [{"table_name": "product_hub", "column_name":"PRODUCT_ID"
+			  																	,"recursion_name": "DUPLICATE"}]},
+	],
+"tables": [
+			  {"table_name": "product_duplicate_saslink", "table_stereotype": "lnk",  "link_parent_tables": ["product_hub"],
+			  																		"recursive_parents": [ {"table_name":"product_hub"
+																										,"recursion_name": "DUPLICATE"}]}},
+
+		      {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
+		]
+```
+
+### hierachical link
+This is an example of a product hierarchy.
+```json
+"fields": [
+		      {"field_name": "PART_ID",  "field_type": "integer", "targets": [{"table_name": "product_hub"}]},
+		      {"field_name": "CONTAINING_PART_ID",  "field_type": "integer", "targets": [{"table_name": "product_hub", "column_name":"PART_ID"
+			  																	,"recursion_name": "CONTAINED_BY"}]},
+	],
+"tables": [
+			  {"table_name": "product_containment_hlink", "table_stereotype": "lnk",  "link_parent_tables": ["product_hub"],
+			  																		"recursive_parents": [ {"table_name":"product_hub"
+																										,"recursion_name": "CONTAINED_BY"}]}},
+
+		      {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
+		]
+```
+
+### non historized link
+This is an example of a product hierarchy.
+```json
+"fields": [
+		      {"field_name": "ACCOUNT_NO",  "field_type": "integer", "targets": [{"table_name": "account_hub"}]},
+		      {"field_name": "ACCOUNTANT_ID",  "field_type": "varchar(20)", "targets": [{"table_name": "accountant_hub"}]},
+		      {"field_name": "BOOKING_ID",  "field_type": "varchar(22)", "targets": [{"table_name": "product_hub"}]},
+		      {"field_name": "BOOKING_TIME",  "field_type": "varchar(22)", "targets": [{"table_name": "product_hub"}]},
+			  {"field_name": "AMOUNT",  "field_type": "decimal(12,2)", "targets": [{"table_name": "product_hub"}]},
+
+	],
+"tables": [
+			  {"table_name": "account_booking_tlink", "table_stereotype": "lnk",  "link_parent_tables": ["account_hub","accountant_hub"]},
+		      {"table_name": "account_booking_tlinksat", "table_stereotype": "sat",  "satellite_parten_table": "account_booking_tlink"
+			  													,"is_enddated": false, "has_deletion_flag":false,"insert_criteria":"key"}
+
+		      {"table_name": "account_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_ACCOUNT"},
+		      {"table_name": "accountant_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_ACCOUNTANT"}
+		]
+```
+
+## Satellite tables
+
+### Normal Satellite on a hub
+```json
+"fields": [
+		      {"field_name": "PRODUCT_ID",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_hub"}]}
+		      {"field_name": "NAME",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_sat"}]}
+		      {"field_name": "CLASS",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_sat"}]}
+	],
+"tables": [
+		      {"table_name": "product_sat", "table_stereotype": "sat",  "satellite_parten_table": "product_hub",
+			  													"diff_hash_column_name": "DIFF_PRODUCT_SAT"},
+
+			  {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
+
+		]
+```
+### Splitting data to multiple satellites on a hub
+```json
+"fields": [
+		      {"field_name": "PRODUCT_ID",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_hub"}]}
+		      {"field_name": "NAME",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_slow_sat"}]}
+		      {"field_name": "CLASS",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_slow_sat"}]}
+		      {"field_name": "PRICE",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_fast_sat"}]}
+		      {"field_name": "PRIORITY",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_fast_sat"}]}
+	],
+"tables": [
+		      {"table_name": "product_slow_sat", "table_stereotype": "sat",  "satellite_parten_table": "customer_hub",
+			  													"diff_hash_column_name": "DIFF_PRODUCT_SLOW_SAT"}
+		      {"table_name": "product_fast_sat", "table_stereotype": "sat",  "satellite_parten_table": "customer_hub",
+			  													"diff_hash_column_name": "DIFF_PRODUCT_FAST_SAT"},
+
+			  {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
+
+		]
+```
+### Satellite on a link, with a driving key declaration
+```json
+"fields": [
+		      {"field_name": "ORDER_ID",  "field_type": "integer", "targets": [{"table_name": "order_hub"}]},
+		      {"field_name": "PRODUCT_ID",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_hub"}]},
+			  {"field_name": "PRICE",  "field_type": "DECIMAL(16,2)", "targets": [{"table_name": "order_product_sale_sat"}]},
+			  {"field_name": "QUANTITY",  "field_type": "DECIMAL(8,0)", "targets": [{"table_name": "order_product_sale_sat"}]},
+	],
+"tables": [
+			  {"table_name": "order_product_sale_sat", "table_stereotype": "sat",   "satellite_parten_table": "order_product_link",
+			  													"driving_keys": ["HK_ORDER"],
+																"diff_hash_column_name": "DIFF_ORDER_PRODUCT_SALES_SAT",},
+			
+			  {"table_name": "order_product_link", "table_stereotype": "lnk",  "link_parent_tables": ["order_hub","product_hub"]},
+		      {"table_name": "order_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_ORDER"},
+		      {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
+		]
+```
 
 
 
