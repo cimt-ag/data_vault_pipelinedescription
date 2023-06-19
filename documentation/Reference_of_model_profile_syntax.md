@@ -106,8 +106,9 @@ Valid settings are:
 - current = the value combination of the relevant compare columns or the diff hash are not equal to a current row in the satellite
 - key+diff = comparison is done by key
 - key+current = comparison of current values is reduced to the key (this is the main mode of data vault satellites)
+- none = data will always be inserted (preventing duplication by repeated loads must be solved by load orchestration)
 
-The settings "key", "current" and "key+current" should be supported by every implementation, since they belong to the core of data vault. The setting "key" might remove a declared diff hash column, or at least will leave out the check for a diff_hash even, when uses_diff_hash is true. 
+The settings "key", "current" and "key+current" should be supported by every implementation, since they belong to the core of data vault. The settings "key" and "none" might remove a declared diff hash column, or at least will leave out the check for a diff_hash even, when uses_diff_hash is true. 
 
 **uses_diff_hash_default**
 (mandatory)<br>

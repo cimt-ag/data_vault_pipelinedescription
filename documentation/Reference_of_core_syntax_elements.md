@@ -290,8 +290,9 @@ List of recursive parent table declarations (e.g. for hierarchical links or “s
 - current = the value combination of the relevant compare columns or the diff hash are not equal to a current row in the satellite
 - key+diff = comparison is done by key
 - key+current = comparison of current values is reduced to the key (this is the main mode of data vault satellites)
+- none = data will always be inserted (preventing duplication by repeated loads must be solved by load orchestration)
 
-The settings "key", "current" and "key+current" should be supported by every implementation, since they belong to the core of data vault. The setting "key" might remove a declared diff hash column, or at least will leave out the check for a diff_hash even, when uses_diff_hash is true. 
+The settings "key", "current" and "key+current" should be supported by every implementation, since they belong to the core of data vault. The settings "key" and "none" might remove a declared diff hash column, or at least will leave out the check for a diff_hash even, when uses_diff_hash is true. 
 
 **is_enddated**
 (optional, default depends on model profile)
@@ -523,7 +524,6 @@ This is an example of a product hierarchy.
 ```
 
 ### non historized link
-This is an example of a product hierarchy.
 ```json
 "fields": [
 		      {"field_name": "ACCOUNT_NO",  "field_type": "integer", "targets": [{"table_name": "account_hub"}]},
@@ -535,13 +535,15 @@ This is an example of a product hierarchy.
 	],
 "tables": [
 			  {"table_name": "account_booking_tlink", "table_stereotype": "lnk",  "link_parent_tables": ["account_hub","accountant_hub"]},
-		      {"table_name": "account_booking_tlinksat", "table_stereotype": "sat",  "satellite_parten_table": "account_booking_tlink"
+		      {"table_name": "account_booking_tlinksat", "table_stereotype": "sat",  "satellite_parent_table": "account_booking_tlink"
 			  													,"is_enddated": false, "has_deletion_flag":false,"insert_criteria":"key"}
 
 		      {"table_name": "account_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_ACCOUNT"},
 		      {"table_name": "accountant_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_ACCOUNTANT"}
 		]
 ```
+### exploration link
+An exploration link is declared like any other link by declaring the hubs, that are connected by the link and the link itself. The main difference to normal links comes from the sourcing of the business keys, that will be selected from the raw vault. (a drirective to take  hub key values from the source dataset instead of recalculating it, will be added in later versions)
 
 ## Satellite tables
 
@@ -553,7 +555,7 @@ This is an example of a product hierarchy.
 		      {"field_name": "CLASS",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_sat"}]}
 	],
 "tables": [
-		      {"table_name": "product_sat", "table_stereotype": "sat",  "satellite_parten_table": "product_hub",
+		      {"table_name": "product_sat", "table_stereotype": "sat",  "satellite_parent_table": "product_hub",
 			  													"diff_hash_column_name": "DIFF_PRODUCT_SAT"},
 
 			  {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
@@ -570,9 +572,9 @@ This is an example of a product hierarchy.
 		      {"field_name": "PRIORITY",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_fast_sat"}]}
 	],
 "tables": [
-		      {"table_name": "product_slow_sat", "table_stereotype": "sat",  "satellite_parten_table": "customer_hub",
+		      {"table_name": "product_slow_sat", "table_stereotype": "sat",  "satellite_parent_table": "customer_hub",
 			  													"diff_hash_column_name": "DIFF_PRODUCT_SLOW_SAT"}
-		      {"table_name": "product_fast_sat", "table_stereotype": "sat",  "satellite_parten_table": "customer_hub",
+		      {"table_name": "product_fast_sat", "table_stereotype": "sat",  "satellite_parent_table": "customer_hub",
 			  													"diff_hash_column_name": "DIFF_PRODUCT_FAST_SAT"},
 
 			  {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
@@ -588,7 +590,7 @@ This is an example of a product hierarchy.
 			  {"field_name": "QUANTITY",  "field_type": "DECIMAL(8,0)", "targets": [{"table_name": "order_product_sale_sat"}]},
 	],
 "tables": [
-			  {"table_name": "order_product_sale_sat", "table_stereotype": "sat",   "satellite_parten_table": "order_product_link",
+			  {"table_name": "order_product_sale_sat", "table_stereotype": "sat",   "satellite_parent_table": "order_product_link",
 			  													"driving_keys": ["HK_ORDER"],
 																"diff_hash_column_name": "DIFF_ORDER_PRODUCT_SALES_SAT",},
 			
@@ -598,6 +600,54 @@ This is an example of a product hierarchy.
 		]
 ```
 
+### Multi-Active Satellite
+```json
+"fields": [
+		      {"field_name": "PRODUCT_ID",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_hub"}]}
+		      {"field_name": "CATEGORY",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_msat"}]}
+		      {"field_name": "WEIGHT",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_msat"}]}
+	],
+"tables": [
+		      {"table_name": "product_msat", "table_stereotype": "sat",  "is_multiactive":"true", "satellite_parent_table": "product_hub",
+			  													"diff_hash_column_name": "DIFF_PRODUCT_MSAT"},
+
+			  {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
+
+		]
+```
+
+### Tracking Satellite 1
+In this example, the CDC information contains a change timestamp from the source system. This is used prevent reloading CDC information, already received. We skip the creation of a diff hash, since the data is very small.
+```json
+"fields": [
+		      {"field_name": "PRODUCT_ID",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_hub"}]}
+		      {"field_name": "CHANGE_TIMESTAMP",  "field_type": "timestamp", "targets": [{"table_name": "product_tracksat"}]}
+		      {"field_name": "OPERATION",  "field_type": "Varchar(3)", "targets": [{"table_name": "product_tracksat"}]}
+	],
+"tables": [
+		      {"table_name": "product_tracksat", "table_stereotype": "sat",  "satellite_parent_table": "product_hub",
+			  													"uses_diff_hash":"false"},
+
+			  {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
+
+		]
+```
+
+### Tracking satellite 2
+In this example, the CDC information contains no data about the sequence of events. Duplication of data by reloading the same events must be prevented by orchestration.
+```json
+"fields": [
+		      {"field_name": "PRODUCT_ID",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_hub"}]}
+		      {"field_name": "OPERATION",  "field_type": "Varchar(3)", "targets": [{"table_name": "product_tracksat"}]}
+	],
+"tables": [
+		      {"table_name": "product_tracksat", "table_stereotype": "sat",  "satellite_parent_table": "product_hub",
+			  													"insert_criteria":"none"},
+
+			  {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
+
+		]
+```
 
 
 # Open concepts
