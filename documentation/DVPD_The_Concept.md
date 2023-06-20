@@ -180,6 +180,7 @@ Every field must be mapped to one or more tables in the data vault model. This w
 The methods to detect deleted entities in the source, depends on the increment pattern. All methods relyng on special retrieval and parsing of source data will need special implementations. Parameters for this depend on the execution module. For cases, where the deletion detecion can be applied by cross checking the currently staged data against the data vault content, a generic approach and set of parameters will be provided.
 
 # Design priciple
+- It is **not** the purpose of DVPD to **enforce** Data Vault standard **but** to **support** it. 
 - The DVPD should be selfexplaining for everybody familiar with Data Vault modelling and loading
 - The description is driven primarily by the source structure. Changes to the source during the development should be easy to apply, while ensuring consistency over all tables and processes. To achieve this the data vault model will be described only on table level as long as possible.
 - The most common model constallations and field mappings should be described with the least effort. This is achieved by using proper default values for many options, so you can leave out these declarations in most cases.

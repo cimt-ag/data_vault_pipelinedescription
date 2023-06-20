@@ -102,9 +102,9 @@ Timeatmp value to be used in the missing ghost record for timestamp columns.
 Determines the default behaviour of satellite loading. 
 Valid settings are:
 - key = the key (hub key, link key) is not already in the satellite
-- diff = the value combination of the relevant compare columns or the diff hash are not already in the satellite
+- data = the value combination of the relevant compare columns or the diff hash are not already in the satellite
 - current = the value combination of the relevant compare columns or the diff hash are not equal to a current row in the satellite
-- key+diff = comparison is done by key
+- key+data = comparison of data is done by key
 - key+current = comparison of current values is reduced to the key (this is the main mode of data vault satellites)
 - none = data will always be inserted (preventing duplication by repeated loads must be solved by load orchestration)
 

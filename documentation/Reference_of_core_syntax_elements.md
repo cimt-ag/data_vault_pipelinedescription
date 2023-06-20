@@ -91,6 +91,11 @@ subelement of root
 <br>When set to true, the data will be encrypted, according to the underlying concept for data protection
 (This is the only standardized core element regarding encryption. All other properties are defined by the specific method of encryption)
 
+**is_partitioning**
+(optional, default=false)
+<br>*will be implemented in later version*
+<br>Declares this field to be an identifier of a completly delivered data set. This is used to constrain deletion detection operations to specific parts of the data.
+
 **targets[]**
 (mandatory)
 <br>Array, defining all taret tables, this field will be mapped to
@@ -160,6 +165,7 @@ is rare but possible).
 **column_content_comment**
 (optional, default=comment of the field)
 <br>comment, that will be added to the column in the data vault model. Default it the comment of the field
+
 
 ## data_vault_model[]
 
@@ -286,9 +292,9 @@ List of recursive parent table declarations (e.g. for hierarchical links or “s
 (optional, default depends on model profile)
 <br>defines the criteria that have to be met, for inserting from stage into the satellite. Valid settings are:
 - key = the key (hub key, link key) is not already in the satellite
-- diff = the value combination of the relevant compare columns or the diff hash are not already in the satellite
+- data = the value combination of the relevant compare columns or the diff hash are not already in the satellite
 - current = the value combination of the relevant compare columns or the diff hash are not equal to a current row in the satellite
-- key+diff = comparison is done by key
+- key+data = comparison is reduced to the key
 - key+current = comparison of current values is reduced to the key (this is the main mode of data vault satellites)
 - none = data will always be inserted (preventing duplication by repeated loads must be solved by load orchestration)
 
@@ -319,21 +325,47 @@ Determines if a deletion flag column will be added to the satellite.
 In general, the name must match the final name of a hub key column in the link. Especially in case of recursive relation, the method of creating the key name must be taken into account.
 <br>*"[“hk_raccn_account”]" | "[“hk_rerps_artice”,”year”,”month”]"
 
-**max_history_depth**
+**history_depth_limit**
 (optional)
-<br> depending on the implementation this will define a maximum depth of history in the satellite. Recommended thresholdtypes are: max_versions, max_valid_before_age
+<br>*announced for upcoming version*
+<br> defines a maximum depth of history in the satellite in days. No declaration or nagative values are treated as "no limit". When the satellite is loaded, all rows, that are beyond the given threshhold, are deleted. 
 
+**history_depth_criteria**
+(mandatory when history_depth_limit is set)
+<br>*announced for upcoming version*
+<br> Defines the criteria to determine the history depth
+- versions : the number of versions for every key is limited to the given threshhold.
+- enddate_days : the number of days the enddate is behind the current day
 
 ### "ref"  specific properties
 
+
+
 **is_enddated**
 (optional, default depends on model profile)
-<br>Defines, if the table will be historized by providing an enddate and using a diff hash
- 
+<br>Defines, if the reference table will be historized by providing an enddate
+
+**uses_diff_hash**
+(optional, default depends on model profile)<br>
+When set to true, data change is detected by calculation of a hash value ober all relevant columns and comparison of the hash value against the latest stored satellite row for every key.
+
 **diff_hash_column_name**
 (mandatory)
 <br>Colum that contains the diff_hash to determine the existence of the data constellation
 <br>*"rh_country_iso_ref"*
+
+
+**history_depth_limit**
+(optional)
+<br>*announced for upcoming version*
+<br> defines a maximum depth of history in the satellite in days. No declaration or nagative values are treated as "no limit". When the satellite is loaded, all rows, that are beyond the given threshhold, are deleted. 
+
+**history_depth_criteria**
+(mandatory when history_depth_limit is set)
+<br>*announced for upcoming version*
+<br> Defines the criteria to determine the history depth
+- versions : the number of versions for every key is limited to the given threshhold.
+- enddate_days : the number of days the enddate is behind the current day
 
 
 ## deletion_detection 
@@ -372,11 +404,6 @@ For other procedures there might be other properties necessary.
 (mandatory,only declared satellite table names allowed)
 <br>List of satellite table names, on which to apply the deletion detection rule. The satellites must share the same parent. To delete from satellites of different parents, you need to declare multiple deletion rules.
 <br>“rsfdl_cusmomer_p1_sat”,”rsfdl_customer_p2_sat”
-
-**partitioning_columns[]**
-(optional,only declared field names are allowed)
-<br>List of fields (and therefore vault columns), that define the range of data where stage has a complete set of rows (this can be content or even table keys). Only active satellite rows that are related to the staged values in these fields, will be checked for deletion. If this property is not set, a complete dataset is assumed to be in the stage table.
-<br>*“market_id”*
 
 **join_path[]**
 (optional,must contain all tables needed to be joined to reach the partitioning columns)
@@ -648,6 +675,95 @@ In this example, the CDC information contains no data about the sequence of even
 
 		]
 ```
+
+### Effectivity satellite on a link
+An effectivity satellite is a sattellite on a link without any field mappings. The compiler will detect this and provide this assumption in the is_effectivity_sat table attribute.
+```json
+"fields": [
+		      {"field_name": "ORDER_ID",  "field_type": "integer", "targets": [{"table_name": "order_hub"}]},
+		      {"field_name": "PRODUCT_ID",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_hub"}]},
+	],
+"tables": [
+			  {"table_name": "order_product_sale_esat", "table_stereotype": "sat",   "satellite_parent_table": "order_product_link",
+			  													"driving_keys": ["HK_ORDER"]},
+			
+			  {"table_name": "order_product_link", "table_stereotype": "lnk",  "link_parent_tables": ["order_hub","product_hub"]},
+		      {"table_name": "order_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_ORDER"},
+		      {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
+		]
+```
+
+### Normalized record tracking satellites
+Record tracking information must be inserted every time we get it
+```json
+"fields": [
+		      {"field_name": "PRODUCT_ID",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_hub"}]}
+		      {"field_name": "APPERANCE",  "field_type": "integer", "targets": [{"table_name": "product_rectracksat"}]}
+	],
+"tables": [
+		      {"table_name": "product_rectracksat", "table_stereotype": "sat",  "satellite_parent_table": "product_hub",
+			  													"insert_criteria":"none"},
+
+			  {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
+
+		]
+```
+
+
+### Normalized record tracking satellites keeping only last record
+Record tracking information must be inserted every time we get it but previous recordings are removed to keep the table small.
+```json
+"fields": [
+		      {"field_name": "PRODUCT_ID",  "field_type": "Varchar(20)", "targets": [{"table_name": "product_hub"}]}
+		      {"field_name": "APPERANCE",  "field_type": "integer", "targets": [{"table_name": "product_rectracksat"}]}
+	],
+"tables": [
+		      {"table_name": "product_rectracksat", "table_stereotype": "sat",  "satellite_parent_table": "product_hub",
+			  													"insert_criteria":"none","history_depth_criteria":"versions","history_depth_limit":0},
+
+			  {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
+
+		]
+```
+
+## "ref" tables
+
+
+### "ref" historized
+```json
+"fields": [
+		      {"field_name": "ISO_3166_ALPHA_2",  "field_type": "Varchar(2)", "targets": [{"table_name": "country_code_ref"}]}
+		      {"field_name": "ISO_3166_ALPHA_3",  "field_type": "Varchar(3)", "targets": [{"table_name": "country_code_ref"}]}
+		      {"field_name": "ISO_3166_NUMERIC",  "field_type": "Varchar(3)", "targets": [{"table_name": "country_code_ref"}]}
+	],
+"tables": [
+		      {"table_name": "country_code_ref", "table_stereotype": "ref"},
+		]
+```
+
+
+### "ref" not historized 
+```json
+"fields": [
+		      {"field_name": "ISO_3166_ALPHA_2",  "field_type": "Varchar(2)", "targets": [{"table_name": "country_code_ref"}]}
+		      {"field_name": "ISO_3166_ALPHA_3",  "field_type": "Varchar(2)", "targets": [{"table_name": "country_code_ref"}]}
+		      {"field_name": "ISO_3166_NUMERIC",  "field_type": "Varchar(3)", "targets": [{"table_name": "country_code_ref"}]}
+	],
+"tables": [
+		      {"table_name": "country_code_ref", "table_stereotype": "ref","is_enddated": "false"},
+		]
+```
+
+
+## Snapshot tables
+*The syntax for snapshot tables (point in time tables, bridge tables) will be added in future versions. From the current perspective this will be a new stereotype "snapshot" with properties to declare the participating links and satellites, the definition of the source for the timeline, the management of the time windoe and granularity and the structural assets (naming of the  columns, columnset for every connected asset (loaddate, key, flag))*
+
+### Point in time tables
+*to be defined later*
+
+### Bridge tables
+*to be defined later*
+
 
 
 # Open concepts
