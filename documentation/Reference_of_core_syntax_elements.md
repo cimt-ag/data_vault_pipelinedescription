@@ -135,8 +135,25 @@ This array must contain at least one target description. Fields, that are mapped
 <br>Datatype of the column in the data vault table. Must be a valid type of the platform database. If not defined, the technical_type of the field will be used
 <br>*"VARCHAR(200)"*
 
+**prio_for_column_position**
+(optional, default is 50000)
+<br>*will be implemented later*
+<br>Defines the position of the column in the table declaration. Columns of the same prio will be orderd alphabetically by the column name.
+
+**prio_for_row_order**
+(optional, default is 50000)
+<br>*will be implemented later*
+<br>Defines the position of the column, when ordering rows for calculation of the group hash for multiactive satellite loading. Columns of the same prio will be ordered alphabetically by the column name. 
+The high default value sets all columns without any declaration at the end of the list.
+
+**row_order_direction**
+(optional, default=ASC)
+<br>*will be implemented later*
+<br>Defines the direction of the order of content of this column, for calculation of the group hash for multiactive satellite loading. Possible values are "ASC" and "DESC".
+
 **recursion_name**
 (optional, only useful for business key fields, must be defined on a link, that is referring its hub as recursive_parent)
+<br>*will be refactored to relation_name*
 <br>Declares this mapping to be used in a recursive reference.
 The name must be defined in a ***recursive_parent*** relation of a the link table.
 
@@ -409,9 +426,9 @@ For other procedures there might be other properties necessary.
 <br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
 <br>*“All satellites of customer”*
 
-**satellites_to_delete[]**
-(mandatory,only declared satellite table names allowed)
-<br>List of satellite table names, on which to apply the deletion detection rule. The satellites must share the same parent. To delete from satellites of different parents, you need to declare multiple deletion rules.
+**tables_to_cleanup[]**
+(mandatory,only declared table names allowed)
+<br>List of table names, on which to apply the deletion detection rule. Multiple entries are only allowed for satellites of the same parent. To delete from hubs, links or satellites of different parents, you need to declare multiple deletion rules.
 <br>“rsfdl_cusmomer_p1_sat”,”rsfdl_customer_p2_sat”
 
 **join_path[]**
