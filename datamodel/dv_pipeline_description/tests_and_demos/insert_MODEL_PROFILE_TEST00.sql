@@ -32,7 +32,7 @@ VALUES
 ,"key_for_null_ghost_record": 	  "T00_0000"
 ,"key_for_missing_ghost_record": "T00_FFFF"
 ,"far_future_timestamp" : "2400-01-01 00:00:01"
-,"insert_criteria_default":"key+current"
+,"compare_criteria_default":"key+current"
 ,"uses_diff_hash_default":"true"
 ,"diff_hash_column_type"	: "VARCHAR(100)"
 ,"diff_hash_function"			: "sha-1"

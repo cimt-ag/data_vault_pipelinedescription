@@ -64,8 +64,12 @@ select
  	,'Table'::TEXT  object_type 
  	, pdt.table_name   object_name 
  	,'DVPD_CHECK_SAT_SPECIFICS'::text  check_ruleset
-	, case when pdt.uses_diff_hash and not is_effectivity_sat and insert_criteria not in('key') and diff_hash_column_name is null then  'diff_hash_column_name needs to be declared'
-			else 'ok' end message
+	, case when pdt.uses_diff_hash 
+	        and not is_effectivity_sat
+	        and compare_criteria not in('key','none') 
+	        and diff_hash_column_name is null 
+	        		then  'diff_hash_column_name needs to be declared'
+					else 'ok' end message
 	from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
 	where table_stereotype ='sat'
 ) 

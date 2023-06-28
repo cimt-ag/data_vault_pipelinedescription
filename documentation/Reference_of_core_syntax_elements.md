@@ -317,7 +317,7 @@ List of recursive parent table declarations (e.g. for hierarchical links or “s
 (optional, default=false)
 <br>when set to true, the declaration and processing for multiactive satellites will be applied (no primary key, awarenes of multiple active rows for change detection)
 
-**insert_criteria**
+**compare_criteria**
 (optional, default depends on model profile)
 <br>defines the criteria that have to be met, for inserting from stage into the satellite. Valid settings are:
 - key = the key (hub key, link key) is not already in the satellite
@@ -327,7 +327,9 @@ List of recursive parent table declarations (e.g. for hierarchical links or “s
 - key+current = comparison of current values is reduced to the key (this is the main mode of data vault satellites)
 - none = data will always be inserted (preventing duplication by repeated loads must be solved by load orchestration)
 
-The settings "key", "current" and "key+current" should be supported by every implementation, since they belong to the core of data vault. The settings "key" and "none" might remove a declared diff hash column, or at least will leave out the check for a diff_hash even, when uses_diff_hash is true. 
+The settings "key", "current" and "key+current" should be supported by every implementation, since they belong to the core of data vault. The settings "key" and "none" might remove a declared diff hash column, or at least will leave out the check for a diff_hash even, when uses_diff_hash is true.
+
+The settings "key" and "none" make the setting of diff_hash_column_name optional 
 
 **is_enddated**
 (optional, default depends on model profile)
@@ -338,8 +340,10 @@ The settings "key", "current" and "key+current" should be supported by every imp
 When set to true, data change is detected by calculation of a hash value ober all relevant columns and comparison of the hash value against the latest stored satellite row for every key.
 
 **diff_hash_column_name**
-(might be ommitted, when the implementation is not using a diff hash)
-<br> Name of the column that will contain the diff_hash. (Currently this name must be unique in the declared model. Future versions will extend the syntax to allow the same name in different tables)
+(depending on uses_diff_hash setting and compare_criteria)
+<br> Name of the column that will contain the diff_hash. (Currently this name must be unique in the declared model since all diff hash columns will be part of the stage table. Future versions will extend the syntax to allow the same physical name in different tables of pipeline model)
+
+This must be set, when uses_diff_hash is true and compare_criteria is not "key" or "none". The diff hash will be put in the table for any compare_criteria setting, when declared.
 <br>*"rh_account_p1_sat"*
 
 **has_deletion_flag**

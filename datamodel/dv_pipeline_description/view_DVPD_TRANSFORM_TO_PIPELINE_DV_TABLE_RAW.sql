@@ -42,7 +42,7 @@ pipeline_name
 , json_array_elements(tables)->>'table_content_comment' as table_content_comment
 , json_array_elements(tables)->>'has_deletion_flag' as has_deletion_flag
 , json_array_elements(tables)->>'uses_diff_hash' as uses_diff_hash
-, json_array_elements(tables)->>'insert_criteria' as insert_criteria
+, json_array_elements(tables)->>'compare_criteria' as compare_criteria
 from data_vault_schema_basics;
 
 comment on view dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_DV_TABLE_RAW is

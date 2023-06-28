@@ -5,7 +5,7 @@
 - stage table name can be declared now in stage_properties clause, default is the name of the pipeline
 - schema name and table are used in the DDL Generator utility script
 - if the change detection uses a diff hash can not be switched with **uses_diff_hash** at the table and uses_diff_hash_default in the model profile
-- #insert_criteria#
+- new table property "compare_critera" and model profile property "compare_criteria_default", defines what should be compared before satellite insert
 
 ATTENTION: You need to declare stage_properties with a stage_schema or will get a check error 
 
