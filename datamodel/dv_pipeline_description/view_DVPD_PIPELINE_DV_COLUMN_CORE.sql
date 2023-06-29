@@ -170,7 +170,7 @@ select -- own key column
  	pdt.pipeline_name 
    ,pdt.table_name
    ,8 as column_block
-   ,case when pfte.exclude_from_diff_hash then 'content_untracked' else 'content' end as column_class
+   ,case when pfte.exclude_from_change_detection then 'content_untracked' else 'content' end as column_class
    ,pfte.column_name  as column_name
    ,pfte.column_type 
    ,true as is_nullable
@@ -210,7 +210,7 @@ select -- own key column
  	pdt.pipeline_name 
    ,pdt.table_name
    ,8 as column_block
-   ,case when pfte.exclude_from_diff_hash then 'content_untracked' else 'content' end as column_class
+   ,case when pfte.exclude_from_change_detection then 'content_untracked' else 'content' end as column_class
    ,pfte.column_name  as column_name
    ,pfte.column_type 
    ,true as is_nullable

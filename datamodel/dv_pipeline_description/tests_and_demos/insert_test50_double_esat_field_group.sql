@@ -47,7 +47,7 @@ VALUES('test50_double_esat_field_group', '{
 								"targets": [{"table_name": "rtjj_50_aaa_p1_sat"}]}
 
 		,{"field_name": "F6_AAA_SP1_EXCLUDED_FROM_DIFF",	"field_type": "TIMESTAMP",		"field_position": "9",	
-								"targets": [{"table_name": "rtjj_50_aaa_p1_sat","exclude_from_diff_hash": "true"}]}
+								"targets": [{"table_name": "rtjj_50_aaa_p1_sat","exclude_from_change_detection": "true"}]}
 
 		,{"field_name": "F7_BK_BBB_2_L1",		"field_type": "DECIMAL(10,0)", "field_position": "3",
 								"targets": [{"table_name": "rtkk_50_bbb_hub","column_name": "F7_BK_BBB_2","field_groups": ["fg1"]}]}

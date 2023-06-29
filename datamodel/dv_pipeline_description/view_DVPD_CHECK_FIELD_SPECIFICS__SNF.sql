@@ -41,7 +41,7 @@ pipeline_name
 ,prio_in_key_hash
 ,exclude_from_key_hash
 ,prio_in_diff_hash
-,exclude_from_diff_hash
+,exclude_from_change_detection
 ,needs_encryption 
 ,array_to_string(array_agg( field_name),'|') field_list
 ,array_to_string(array_agg(recursion_name),'|') recursion_list
@@ -57,7 +57,7 @@ pipeline_name , table_name ,column_name
 || '[prio_in_key:'||array_to_string(array_agg (distinct cast(prio_in_key_hash as varchar)),'|')||'] '
 || '[exclude from key:'||array_to_string(array_agg (distinct cast(exclude_from_key_hash as varchar)),'|')||'] '
 || '[prio_in_diff_hash:'||array_to_string(array_agg (distinct cast(prio_in_diff_hash as varchar)),'|')||'] '
-|| '[exclude_from_diff_hash:'||array_to_string(array_agg (distinct cast(exclude_from_diff_hash as varchar)),'|')||'] '
+|| '[exclude_from_change_detection:'||array_to_string(array_agg (distinct cast(exclude_from_change_detection as varchar)),'|')||'] '
 || '[needs_encryption:'||array_to_string(array_agg (distinct cast(needs_encryption as varchar)),'|')||'] '
 		as comparison_report
 ,count(1) constellation_count

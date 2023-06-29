@@ -37,7 +37,7 @@ VALUES
 		 	  {"field_name": "F3_AAA_SP1_VARCHAR",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_21_aaa_p1_sat"}]},
 			  {"field_name": "F4_AAA_SP2_DECIMAL",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_21_aaa_p2_sat"}]},
 			  {"field_name": "F5_AAA_SP1_AND_SP2_DECIMAL",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_21_aaa_p1_sat"},{"table_name": "rtjj_21_aaa_p2_sat"}]},
-			  {"field_name": "F6_AAA_SP1_TIMESTAMP_XRH",	"field_type": "TIMESTAMP",		"targets": [{"table_name": "rtjj_21_aaa_p1_sat","exclude_from_diff_hash": "true"}]},
+			  {"field_name": "F6_AAA_SP1_TIMESTAMP_XRH",	"field_type": "TIMESTAMP",		"targets": [{"table_name": "rtjj_21_aaa_p1_sat","exclude_from_change_detection": "true"}]},
 		 	  {"field_name": "F7_AAA_SP2_VARCHAR",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_21_aaa_p2_sat"}]},
 			  {"field_name": "F8_AAA_SP1_DECIMAL",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_21_aaa_p1_sat"}]}
 			 ],

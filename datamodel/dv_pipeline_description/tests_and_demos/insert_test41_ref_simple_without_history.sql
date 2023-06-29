@@ -33,7 +33,7 @@ VALUES
 		 	  {"field_name": "F2_BBB_DECIMAL",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_41_aaa_ref"}]},
 		 	  {"field_name": "F3_CCC_FIELDNAME_DATE",		"field_type": "DATE",			"targets": [{"table_name": "rtjj_41_aaa_ref"
 																											,"column_name":"F3_CCC_DATE"}]},
-			  {"field_name": "F4_DDD_NOT_IN_RH__DECIMAL",		"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_41_aaa_ref","exclude_from_diff_hash": "true"}]}
+			  {"field_name": "F4_DDD_NOT_IN_RH__DECIMAL",		"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_41_aaa_ref","exclude_from_change_detection": "true"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
