@@ -32,7 +32,7 @@ VALUES
 	"fields": [
 		      {"field_name": "key", 			"field_type": "Varchar(200)",	"targets": [{"table_name": "rgopd_keyword_hub","column_name": "keyword_id"}]},
 		      {"field_name": "date", 			"field_type": "date",			"targets": [{"table_name": "rgopd_keyword_click_report_dlnk"}]},
-		 	  {"field_name": "json_object",		"field_type": "json",			"targets": [{"table_name": "rgopd_keyword_click_report_p1_sat","exclude_from_diff_hash": "true"}]},
+		 	  {"field_name": "json_object",		"field_type": "json",			"targets": [{"table_name": "rgopd_keyword_click_report_p1_sat","exclude_from_change_detection": "true"}]},
 		 	  {"field_name": "json_object_sorted","field_type": "json",			"targets": [{"table_name": "rgopd_keyword_click_report_p1_sat"}]}
 			 ],
 	"data_vault_model": [

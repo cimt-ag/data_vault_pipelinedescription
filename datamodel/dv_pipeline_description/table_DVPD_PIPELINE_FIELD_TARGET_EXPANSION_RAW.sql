@@ -30,7 +30,7 @@ CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION_RAW (
 	prio_in_key_hash text NULL,
 	exclude_from_key_hash text NULL,
 	prio_in_diff_hash text NULL,
-	exclude_from_diff_hash text NULL,
+	exclude_from_change_detection text NULL,
 	column_content_comment text NULL
 );
 

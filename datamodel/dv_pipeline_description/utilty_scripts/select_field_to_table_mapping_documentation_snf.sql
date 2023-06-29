@@ -4,7 +4,7 @@ select pipeline_name ,field_name
 	,field_type
 	,table_name
 	,case when field_name <> column_name then '.['||column_name ||'] ' else '' end extra_target_name
-	,case when exclude_from_diff_hash then '(not in diff hash)' else '' end diff_hash_text 
+	,case when exclude_from_change_detection then '(not in diff hash)' else '' end diff_hash_text 
 	,case when exclude_from_key_hash then '(in in key hash)' else '' end key_hash_text
 	,case when field_group <> '_A_' then '(fieldgroup: '||field_group||')' else '' end field_group_text 
 	from dv_pipeline_description.dvpd_pipeline_field_target_expansion

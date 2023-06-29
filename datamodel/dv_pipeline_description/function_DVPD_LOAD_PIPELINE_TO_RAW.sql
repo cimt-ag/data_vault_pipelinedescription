@@ -54,7 +54,7 @@ INSERT
 	prio_in_key_hash,
 	exclude_from_key_hash,
 	prio_in_diff_hash,
-	exclude_from_diff_hash,
+	exclude_from_change_detection,
 	column_content_comment)
 SELECT
 	pipeline_name,
@@ -67,7 +67,7 @@ SELECT
 	prio_in_key_hash,
 	exclude_from_key_hash,
 	prio_in_diff_hash,
-	exclude_from_diff_hash,
+	exclude_from_change_detection,
 	column_content_comment
 FROM
 	dv_pipeline_description.dvpd_transform_to_pipeline_field_target_expansion_raw;

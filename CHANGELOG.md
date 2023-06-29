@@ -14,9 +14,10 @@ ATTENTION: You need to declare stage_properties with a stage_schema or will get 
 - renamed "target_column_name" to "column_name", following the naming concept, addressing the data vault objects as tables and columns 
 - renamed "target_column_type" to "column_type", following the naming concept, addressing the data vault objects as tables and columns 
 - renamed "stereotype" to "table_stereotype", for more clearance
+- renamed "exclude_from_diff_hash" to "exclude_from_change_detection" to respect variety in change detection methods (diff hash is only the recommended one)
+
 - removed "esat" stereotype. Effectivity satellites are declared as sat having 0 mappings. They are only allowed on link parents.
 - removed "msat" stereotype. Multiactive satellites are declared as sat with "is_multiactive":true 
-
 
 ### refactoring in compiler and resultset  
 - renamed "target_table" to "table_name" (only relevant in compiler implementation and result tables)
