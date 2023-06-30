@@ -33,20 +33,21 @@ When describing the data we classify the elements as follows:
 
 # Property of the source data
 
-## Tabelarized + Normalized
+## Tabularized
 Data can be complex in multiple ways, especially when it comes
-to hierarchical data or document formats. The following approach uses
-the source data representation after its transformaion into a single relational
-table model(all data is organized in Rows, every row contains all fields).
+to hierarchical data or document formats. The following approach requires
+the source data representation to be tabularized(all data is organized in Rows, every row contains all fields).
 Hierarchical data formats might need multiple transformations(one for each array).
 
-Also data might not be fully normalized. 
-This is given when there are fields, that target the same 
-data vault columns **without** a different relational context. 
-(e.g. a row with (PersonID1, Name1, PersonID2, Name2) or (Airportid,Runway1Length, Runway2Lenght)).
-This kind of incoming datasets need to be normalized when extracting the, creating appropriate multiple rows.
 
-# Informationtypes of data
+## Normalized
+Tabularized data might not be fully normalized. 
+This is given when there are table fields, that target the same 
+data vault columns in the same relational context. 
+(e.g. a row with (PersonID1, Name1, PersonID2, Name2) or (Airportid ,Runway1Length, Runway2Lenght)).
+This kind of incoming datasets need to be normalized when extracting the data.
+
+## Informationtypes of data
 To define the variety of mappings, it is necessary to clarify the types of information, represented by a field.
 
 - Identification of an object
@@ -54,68 +55,175 @@ To define the variety of mappings, it is necessary to clarify the types of infor
 - relation between objects (might be “self” relating, hierarchical)
 - Attribution or Measure in a relation
 
-*Note: The data vault main stereotypes map to this classification as follows.  hub=object / link=relation / satellite=attribution.*
+*Note: The data vault main stereotypes map to this classification as follows.
+hub=object / link=relation / satellite=attribution.*
 
-*2nd Note: data that is stored in dependent child key columns of a link is also an identification type, since it is needed to identify attributes, that are attached with the satellite*
+*2nd Note: data that is stored in dependent child key columns
+of a link counts also as identification, since it is needed to address 
+attributes, that are attached by the satellite*
+
+# Model topologies 
+
+This section identifies the data vault model topologies, that have different properties
+regarding field mapping variations.
+The topologies will be used later describe the different mapping scenarions. 
+
+## Simple relations
+
+As long, as there are no fields mapped to the same data vault column, 
+the mapping stays simple, regardless of the complexity of the model topology.
+For every table there is only one set of fields, that has to be used 
+for hashing and loading. 
+
+The following example will be used as base to work out the possible mapping variations.
+It is designed to embed the most common simple models as a subset. By proving the 
+completenes for this model, the coverage of DVDP of all simple models is shown.
+
+![topo_simple.png](./images/mapping_relations/topo_simple.png)
+
+## Multi relations to same hub 
+For sources that provide multiple relations to the same object in their data, the 
+data vault model must provide a proper structure.  
+The following approaches are commonly applied to represent multiple relations
+- hub keys to the same hub in a link for every kind of relation
+- dedicated links for to the hub for every kind of relation
+- a single link but dedicated effectivity satellites for every kind of relation
+
+These approaches can also be mixed up (on purpose or due to legacy). 
+
+*side note: When the relation type is declared in the data(not by the field structure),
+this is a simple relation from the perspective of the data vault. 
+The relation type is then stored in a satellite of the link.*
+
+The models are created with 3 
+relations to the same hub, even though this is a seldom constellation. 
+This is necessary to prove completeness of the DVDP Syntax. Only with
+3 Elements or more, it is possible to create subsets greater then 1 element.
+
+Satellites are ommited in the diagram for simplicity.
+There can be satellites on every hub and the effectivite satellites can 
+be replaced by normal satellites, adding more content to the pure relation information.
+
+### Multiple hub keys in link to the same hub (R)
+This approach keeps the provided unit of work together but needs complete refactoring 
+when another relation type needs to be added (See also the discussion of the concept
+in chapter 4.4.4 of the Data Vault 2.0 Book of Dan Linstedt)
+- The link contains a hub key for every relation type to the hub
+- The hub keys must be named properly to explain the kind of relation, they represent
+- Depending on the meaning, one relation might be the "main" object. This relation
+might use the original hub key column name from the hub. Hierarchical links are
+a common example for this situation.
+- to calculate the link key, all business keys for the multie
+referenced hub have to be assembled
+- Link and Esat must be loaded once. 
+- The multi referenced hub needs a load pass for every reference
+
+![topo_multi_relate.png](images%2Fmapping_relations%2Ftopo_multi_relate.png)
+
+### Dedicated link tables for every relation (L)
+This approach is extendable without any impact to existing structures but might suffer
+from breaking the unit of work, and creating "phantom relations".(See also the discussion of the concept
+in chapter 4.4.4 of the Data Vault 2.0 Book of Dan Linstedt)
+- the link key calculation only uses the business key fields for their specific relation
+- every link contains one hub key for each linked hub
+- every Link and Esat must be loaded once. 
+- The multi referenced hub needs a load pass for every reference
+
+![topo_multi_link.png](images%2Fmapping_relations%2Ftopo_multi_link.png)
+
+### Single link table with relation specific effectivity satellites (E)
+This method reduced the number of link tables , without loosing the flexibility 
+of the multi link approach.  It suffers from the same "phanton relation" issue.  
+- the link only contains one reference to each hub
+- for every relation, there must be a separate the link key calculation only using
+the business key fields for a specific relation
+- every Esat must be loaded once 
+- The link and the multi referenced hub needs a load pass for every reference
+
+![topo_multi_esat.png](images%2Fmapping_relations%2Ftopo_multi_esat.png)
+
+### Mix of multi related link and normal link (R+L) 
+This model is a combinational edge case to challange the ablities of the
+DVPD syntax and compiler. It might occur through model legacy.
+
+![topo_mix_relation_simple_link.png](images%2Fmapping_relations%2Ftopo_mix_relation_simple_link.png)
 
 
-# Scenario combinatotions
-Scenarios are described from the perspective of the hub, of the major object loaded. 
+### Relation specific effectivity satellites + parallel link (E+L)
+This model is a combinational edge case to challange the ablities of the
+DVPD syntax and compiler. It might occur through model legacy.
 
-The model structure variations depend on:
-- satellites with data on the major hub (0-2)
-- number of partner hubs
-     - linked individually to the major object hub (P1-P2)
-     - linked together to the major object hub (T2)
-- Link with dependent child key (D)
-- satellites with data on links (Sl)
-- effectivity satellite on link (E)
-- satellites with data on partner hubs (Sh)
-- modelling approach for multiple relations to the same hub 
-    - multiple relations in the link (Rn)
-    - multiple links (and effectivity satellites) (Ln)
-    - multiple effectivity satellites on the same link (En)
-- recursive link to the major object (C)
+![topo_mix_esat_simple_link.png](images%2Fmapping_relations%2Ftopo_mix_esat_simple_link.png)
 
-For fields in the source row, we can identify different mapping constellations
-- all fields are mapped to one or more exclusive targets 
-- some fields share target columns due to different relations to the same partner
-- some fields with exclusive targets are only valid for specific relations (VS)
-- some fields share target columns due to lack of normalization in the source.
-This can be ignored in the mapping variations, since it should be eliminated by generating multiple rows during extraction and staging. Nevertheless DVPD needs a declaration for normalization to instruct the process to do so. 
-    
-## Notation and calatog
-    <Hub and Hub satellite specification>-<link&sat for partner 1>-<link&sat for partner 2>
-```
-HS
-HS2
-HS-E-H
-HS-DE-H
-HS-S-H
-HS-S-HS
+### Relation specific effectivity satellites + parallel link with 3rd hub (E+3)
+This model is used to create an edge case for mapping combinations of attributes 
+needed for the BBB_HUB.
 
-HS-2RE-H
-HS-2E-H
-HS-2LE-H
+![topo_mix_esat_combo_link.png](images%2Fmapping_relations%2Ftopo_mix_esat_combo_link.png)
 
-HS-2RE-HS
-HS-2RE-HSVs
+## Out of scope edge cases
+To keep the syntax of DVPD within a manageable complexity, some edge cases will be 
+placed out of scope, since they are far from expected model requirements and can be
+solved by other designs.
+
+### mixing esat and multi referecence
+Mixing different approaches at the same link is not supported. In the example 
+two relations are expressed with two references to the hub and then are "multiplied"
+by two more relation types represented by esat. This makes no sense in the combination, 
+at least not under the constraint, that we always only load a single tabularized source  
+data structure.
+
+It might be an expression of the following:
+- all 4 relations are a unit of work
+- pairs of 2 relations are a unit of work and are modelled seperatly
+
+![topo_mix_relation_esat.png](images%2Fmapping_relations%2Ftopo_mix_relation_esat.png)
+
+# Relation participation
+## Participation of fields
+When mapping fields to a multi related model, there are the following possibilites 
+how a field will contribute or participate 
+to the modelled relations:
+- to one or a subset of specific relations
+- to all relations
+
+Participation to a relation must be declared at every table mapping of the field.
+If not declared, a field is considerd to participate only on the "main"(unnamed) relation.
+To declare the participation on a subset, that contains the "main"(unnamed) relation
+the syntax provides the reserved relation name "/".
+A shortcut to participate to all relations will be added to the syntax: "*".
+
+## Participation of hubs
+Hubs participate to all relations that are addressed by the fields mapped to the 
+business keys.
+This rule also contains the simple case, since fields belong to the 
+main"(unnamed) relation without any declaration.
+For every incoming relation name, there should be a matching relation name at the hub.
+Else there might be a loss of data, since specific business keys might not be
+saved. The DVPD Compiler should check this constraint. Processing relation names
+that are not incoming, might create unnecessary records but will not harm consistency.
+
+## Participation of links
+How to determine the participation of link on relations 
+depends on the modelling approach. Therefore it contains a more complex ruleset:
+- when having explicit declarations in the parent mapping, links are restriced to that list
+- without an explicit declaration, links collect every relation name, found in the hubs
+- 
+links  Links participate to all relations that are declared
+
+## Syntax consistency rules
+In the mapping of a field to a...
+- **hub** the relation names, must be known from parent reference of a link 
+- **link** the relation name, must be known in a parent reference to a hub
+- **sat** the relation name, must be known in a parent reference to a hub,
+when the link declares reference names. For links without reference name declarations,
+the name 
+
+Fields mapped to a link 
+ 
 
 
-HS-2S-HSVs
-HS-ES-HSVs
-
-1P2ShVS-R2E-E
-1T2-E
-1T2VS-E
-1T2ShVS-E
-1T2ShVS-R2E
-
-Recursive
-1VS-C
-
-
-```
+____
 
 # Taxonomy 
 

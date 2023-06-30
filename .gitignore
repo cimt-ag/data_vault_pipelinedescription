@@ -3,3 +3,4 @@ datamodel/Scripts/
 .idea/
 config/
 lib/__pycache__/
+*.bkp
