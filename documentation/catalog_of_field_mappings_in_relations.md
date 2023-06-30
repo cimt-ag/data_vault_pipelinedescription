@@ -1,4 +1,4 @@
-Data Vault - Source Data Mapping Taxonomy
+Data Vault - Catalog of field mappings in relations
 ==============================
 (C) Matthias Wegner, cimt ag
 
@@ -8,19 +8,11 @@ Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-
 
 To create a toolset for loading data into a data vault model, we need to
 determine the completeness of the toolset. 
-One aspect of variety is the different possibilites how the source fields are mapped,
-when multiple relations
-Beside adressing the variety of source technologies and formats
-and the different data vault stereotypes we also need to fulfill 
-the requirements coming from the arrangement of data in the incoming
-data set and how it must be distributed to the target model. 
-Generic modelling and loading approaches need to be able to provide at 
-least the most common patterns. Universal descriptions like Data Vault 
-Pipeline Description Standard (DVPD) should be able to cover all aspects.
-
-This investigation tries to provide a nearly complete list of 
-all possibile mapping patterns. 
-
+This article investigates the different possibilites how the source fields are mapped,
+when multiple relations to the same hub are delivered in one row. Example to this
+requirement are:
+- order, referring the customer in different roles (delivery and invoice).
+- flight, referring the start and destination airport
 
 # Definitions
 When describing the data we classify the elements as follows:
@@ -39,8 +31,20 @@ When describing the data we classify the elements as follows:
 
 **content:** Data that is not used for identification, and just stored in the data model
 
-# Flat Structure Transformation
-Data can be complex in multiple ways, especially when it comes to hierarchical data or document formats. The following approach uses the source data representation after its transformaion into a single relational table model(all data is organized in Rows, every row contains all fields). Hierarchical data formats might need multiple transformations(one for each array). In that case, each of these particular transformations will relate to one of the described patterns. 
+# Property of the source data
+
+## Tabelarized + Normalized
+Data can be complex in multiple ways, especially when it comes
+to hierarchical data or document formats. The following approach uses
+the source data representation after its transformaion into a single relational
+table model(all data is organized in Rows, every row contains all fields).
+Hierarchical data formats might need multiple transformations(one for each array).
+
+Also data might not be fully normalized. 
+This is given when there are fields, that target the same 
+data vault columns **without** a different relational context. 
+(e.g. a row with (PersonID1, Name1, PersonID2, Name2) or (Airportid,Runway1Length, Runway2Lenght)).
+This kind of incoming datasets need to be normalized when extracting the, creating appropriate multiple rows.
 
 # Informationtypes of data
 To define the variety of mappings, it is necessary to clarify the types of information, represented by a field.

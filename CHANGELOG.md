@@ -10,7 +10,10 @@
 ATTENTION: You need to declare stage_properties with a stage_schema or will get a check error 
 
 ### DVPD syntax changes
-- renamed "is_historized" to "is_enddated", since this reflects the behaviour much more precise. Providing diff hashes is another aspect an not bound to enddating
+- refactored syntax for multiple references on same hub. See syntax reference for data_vault_model/tables/link_parent_tables/ 
+<br>Integrated the recursive_parenst syntax into the link_parent_tables, since not all multiple relations of hubs are a result of recursion 
+
+- renamed "is_historized" to "is_enddated", since this reflects the behaviour much more precise. Providing diff hashes is another aspect and not bound to enddating
 - renamed "target_column_name" to "column_name", following the naming concept, addressing the data vault objects as tables and columns 
 - renamed "target_column_type" to "column_type", following the naming concept, addressing the data vault objects as tables and columns 
 - renamed "stereotype" to "table_stereotype", for more clearance
@@ -47,7 +50,7 @@ ATTENTION: You need to declare stage_properties with a stage_schema or will get 
 ### code refactoring
 - aligend deployment manager and jobless deployment to other project for better update compatibility
 - added job instance framework to jobless for better compatibility to other projects
-- renaming of jobless csv files list to allow copy paste into other projects 
+- renaming of jobless csv files list to allow copy &paste into other projects 
 
 # Release 0.5.2
 - added "is_nullable" column to column result views (used for DDL Rendering)

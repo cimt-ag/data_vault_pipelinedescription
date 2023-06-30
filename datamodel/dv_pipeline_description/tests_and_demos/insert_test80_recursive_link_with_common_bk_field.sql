@@ -16,7 +16,6 @@
 -- limitations under the License.
 -- =====================================================================
 
-/* insert Testcase 1*/
 DELETE FROM dv_pipeline_description.dvpd_dictionary where pipeline_name = 'test80_recursive_link_with_common_bk_field';
 INSERT INTO dv_pipeline_description.dvpd_dictionary 
 (pipeline_name, dvpd_json)
@@ -30,12 +29,12 @@ VALUES
 	},
  	"fields": [
 		      {"field_name": "F1_BK_AAA_COMMON", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
-																					,"column_name": "BK_AAA_CM"}]}
+																					,"column_name": "BK_AAA_CM","relation_name": "*"}]}
 		      ,{"field_name": "F2_BK_AAA_ORIGIN", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
 																					,"column_name": "BK_AAA_SPLIT"}]}		 	  
 		      ,{"field_name": "F3_BK_AAA_RECURSE1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
 																					,"column_name": "BK_AAA_SPLIT"
-																					,"recursion_name": "RCS1"}]}		  
+																					,"relation_name": "RCS1"}]}		  
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
@@ -44,7 +43,7 @@ VALUES
 				,{"table_name": "rtjj_80_aaa_recu_lnk",	"table_stereotype": "lnk" ,"link_key_column_name": "LK_rtjj_80_aaa_recu"
 																			,"link_parent_tables": ["rtjj_80_aaa_hub"]
 																			,"recursive_parents": [ {"table_name":"rtjj_80_aaa_hub"
-																										,"recursion_name": "RCS1"}]}
+																										,"relation_name": "RCS1"}]}
 				,{"table_name": "rtjj_80_aaa_recu_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_80_aaa_recu_lnk"}
 
 				]
