@@ -180,6 +180,29 @@ It might be an expression of the following:
 ![topo_mix_relation_esat.png](images%2Fmapping_relations%2Ftopo_mix_relation_esat.png)
 
 # Relation participation
+
+## Observerations and conclusions
+
+1-Multiple relations are only possible with multiple sets of business keys field for the hub, they refer.
+<br>2-From 1. -> every kind of multi relation to a hub needs business key field mappings, that are restricted to a relation
+<br>3-hubs need to be loaded for every relation declared
+<br>4-a link with multiple relations to the same hub, needs relation specific columns
+<br>5-a link with multiple relations to the same hub, can only have satellites
+that contribute to the relation set, provided in the link.
+<br>7-effectivity satellites need to declare the relation they track
+<br>8-satellites on links contribute to every relations, they have a field mapping
+for 
+<br>6-a link has to be loaded for every relation its satellites contribute to 
+<br>9-links can only contribute to relations, that are declared in the  hubs they connect
+<br>10-link satellites can only contribute to relations, the link can 
+contribute in their parent
+<br>11-Different dependent child keys for different relations can only be modeled with
+relation specific links or relation specific satellites. (If only the dependend child key
+appears multiple times in the source data set, this must be solveld by normalizing the 
+data)
+
+![relation_conclusions.png](images%2Fmapping_relations%2Frelation_conclusions.png)
+
 ## Participation of fields
 When mapping fields to a multi related model, there are the following possibilites 
 how a field will contribute or participate 
@@ -191,17 +214,21 @@ Participation to a relation must be declared at every table mapping of the field
 If not declared, a field is considerd to participate only on the "main"(unnamed) relation.
 To declare the participation on a subset, that contains the "main"(unnamed) relation
 the syntax provides the reserved relation name "/".
-A shortcut to participate to all relations will be added to the syntax: "*".
+A shortcut to participate to all relations is available with the syntax: "*".
+
 
 ## Participation of hubs
-Hubs participate to all relations that are addressed by the fields mapped to the 
+Hubs participate to all relations that contain a full set of fields mapped to the 
 business keys.
-This rule also contains the simple case, since fields belong to the 
-main"(unnamed) relation without any declaration.
-For every incoming relation name, there should be a matching relation name at the hub.
-Else there might be a loss of data, since specific business keys might not be
-saved. The DVPD Compiler should check this constraint. Processing relation names
-that are not incoming, might create unnecessary records but will not harm consistency.
+
+- The full set of business keys is determined by the largest mapped set of all relations.
+- relations with different or incomplete column outcome will fail the consistency check
+- relations without any contribution by a link/link satellite will trigger a warning
+since there might be unnecessary data loaded.
+
+This concept include the simple case, since fields without any relation declaration  belong to the 
+main"(unnamed) relation .
+
 
 ## Participation of links
 How to determine the participation of link on relations 
