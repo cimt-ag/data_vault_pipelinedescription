@@ -25,7 +25,9 @@ When describing the data we classify the elements as follows:
 
 **column:** a column in a table of the data vault model
 
-**business key:** data, used to identify business objects
+**business key (bk):** data, used to identify business objects
+
+**dependent child key (dc):** data, containing relation attributes
 
 **table key/hub key/link key:** The join key of data vault model tables
 
@@ -201,50 +203,90 @@ relation specific links or relation specific satellites. (If only the dependend 
 appears multiple times in the source data set, this must be solveld by normalizing the 
 data)
 
-![relation_conclusions.png](images%2Fmapping_relations%2Frelation_conclusions.png)
+![relation_conclusions.png](./images%2Fmapping_relations%2Frelation_conclusions.png)
 
 ## Participation of fields
 When mapping fields to a multi related model, there are the following possibilites 
 how a field will contribute or participate 
 to the modelled relations:
-- to one or a subset of specific relations
-- to all relations
+- to one (1) or a subset of specific relations (+)
+- to all relations (*)
+
+Depending on the function of the data, the field might be mapped to one or multiple
+model tables that are maybe of different stereotypes. Therefore the field
+can contain 
+- part of a business key
+- a dependent child key 
+- part of a hubs satellite data
+- part of a links satellite data
+ 
 
 Participation to a relation must be declared at every table mapping of the field.
 If not declared, a field is considerd to participate only on the "main"(unnamed) relation.
 To declare the participation on a subset, that contains the "main"(unnamed) relation
 the syntax provides the reserved relation name "/".
-A shortcut to participate to all relations is available with the syntax: "*".
-
+A shortcut to participate in all relations of the target is available with the syntax: "*".
 
 ## Participation of hubs
 Hubs participate to all relations that contain a full set of fields mapped to the 
 business keys.
 
-- The full set of business keys is determined by the largest mapped set of all relations.
+- The full set of business keys is determined by the relation with the most business key columns.
 - relations with different or incomplete column outcome will fail the consistency check
-- relations without any contribution by a link/link satellite will trigger a warning
+- relations without any contribution by a connected link/link satellite will trigger a warning
 since there might be unnecessary data loaded.
 
-This concept include the simple case, since fields without any relation declaration  belong to the 
-main"(unnamed) relation .
+These rules cover also the simple case without any extra relations, 
+since fields without any relation declaration  belong to the 
+"main"(unnamed) relation .
+
+## Participation of links with explicit relation mapping
+These links have at least on explicit relation declaration to a hub.
+- they participate only in the relations, that are represented by the connections
+- the hubs, targeted with an explicit relation must participate at the relation
+- if a hub is referenced more then once, the hub key names in the link must be adapted
+    - names for the main(unnamed) reference will stick to the name in the hub 
+- Undeclared relations in the link belong to a "main" relation, so theses hubs must
+ participate to the main(unnamed) relation
+- Satellites on the link are not allowed to declare a relation
+
+## Participation of simple links
+These links have no explicit relation declaration to a hub. 
+- tese links participate to all relations that are
+    - are declared at their satellites
+    - are declared at the mapping of their dependent child keys
+ - all relations, the link contributes must be covered by at 
+least one hub, the link is connecting
+  
+This also covers the simple common model use case, since without declaration
+a sattelite contributes to the main(unnamed) relation.
 
 
-## Participation of links
-How to determine the participation of link on relations 
-depends on the modelling approach. Therefore it contains a more complex ruleset:
-- when having explicit declarations in the parent mapping, links are restriced to that list
-- without an explicit declaration, links collect every relation name, found in the hubs
-- 
-links  Links participate to all relations that are declared
+## Participation of satellites
+Satellites contribute all relations that contain a full set of fields, 
+mapped with relation declaration to the satellite.
 
-## Syntax consistency rules
-In the mapping of a field to a...
-- **hub** the relation names, must be known from parent reference of a link 
-- **link** the relation name, must be known in a parent reference to a hub
-- **sat** the relation name, must be known in a parent reference to a hub,
-when the link declares reference names. For links without reference name declarations,
-the name 
+- The full set of satellite columns is determined from the relation with the most columns.
+- relations with different column outcome will fail the consistency check
+- all relations, the satellites contributes must be covered by the parent
+
+The simple common model use case is covered by participating on the
+main(unnamed) relation when without any declaration.
+
+## Participation of effectivity satellites
+Effectivity satellites contribute to the relation of their parent link. In
+case of a link, that collects multiple relations (see Modell pattern "E" above), a
+declaration of the relation is needed and allowed at the satellite.
+
+- the relations, the satellites contributes must be covered by the parent link
+
+The simple common model use case is covered by participating in the relation of the link.
+
+# Catalog of field mappings
+
+
+
+ 
 
 Fields mapped to a link 
  
