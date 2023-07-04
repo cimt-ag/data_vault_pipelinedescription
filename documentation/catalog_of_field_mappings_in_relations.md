@@ -209,16 +209,16 @@ data)
 When mapping fields to a multi related model, there are the following possibilites 
 how a field will contribute or participate 
 to the modelled relations:
-- to one (1) or a subset of specific relations (+)
+- to one (-) or a subset of specific relations (+)
 - to all relations (*)
 
 Depending on the function of the data, the field might be mapped to one or multiple
 model tables that are maybe of different stereotypes. Therefore the field
 can contain 
-- part of a business key
-- a dependent child key 
-- part of a hubs satellite data
-- part of a links satellite data
+- part of a business key (bk)
+- a dependent child key   (dc)
+- part of a hubs satellite data (hsd)
+- part of a links satellite data (lsd)
  
 
 Participation to a relation must be declared at every table mapping of the field.
@@ -283,7 +283,25 @@ declaration of the relation is needed and allowed at the satellite.
 The simple common model use case is covered by participating in the relation of the link.
 
 # Catalog of field mappings
+The following table lists combinations of field mappings and models as an orientation.
 
+- **Model**: Short notatiopn of the model by just specifing the links and the number or
+references when > 1 followed by the approach (R/L/E).  
+    - AB2E = Link from A to B with 2 references to B, modeled as effectivity satellites
+    - AA2R = Link from A to A 
+    - AB3R+ABC = Link from A to B with 3 references to C + Link to A,B,C
+    - AB3L = 3 separate Links from A to B
+- **FieldD**: The data content of a field, that is regulated in multiple partitions
+follwed by the number of target tables, followed by the coverage of relation ,(bk,dc,hsd, lsd
+separated by "," for multiple use of same field, separated by " &" for different fields)
+    - BK1- = Business key in one table used for one relation
+    - BK2+ & 1
+- **Test**: Number of the test case, that will cover this setting (set *italic* when not
+implemented yet, set to "-" when his combination is not possible, embedded in > < 
+when this contains other combinations and drives a test case)
+ 
+
+| Model | Relation
 
 
  
