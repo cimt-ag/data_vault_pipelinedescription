@@ -27,7 +27,7 @@ from dv_pipeline_description.dvpd_pipeline_dv_table
 )
 , pipelines AS(
 select distinct pp.pipeline_name ,pmp.model_profile_name
-from dv_pipeline_description.dvpd_pipeline_properties_raw pp
+from dv_pipeline_description.dvpd_pipeline_properties pp
 left join pipeline_model_profile pmp on pmp.pipeline_name= pp.pipeline_name 
 )
 select distinct 
