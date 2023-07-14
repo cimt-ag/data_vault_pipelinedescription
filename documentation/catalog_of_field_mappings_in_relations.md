@@ -41,18 +41,10 @@ to hierarchical data or document formats. The following approach requires
 the source data representation to be tabularized(all data is organized in Rows, every row contains all fields).
 Hierarchical data formats might need multiple transformations(one for each array).
 
-
-## Normalized
-Tabularized data might not be fully normalized. 
-This is given when there are table fields, that target the same 
-data vault columns in the same relational context. 
-(e.g. a row with (PersonID1, Name1, PersonID2, Name2) or (Airportid ,Runway1Length, Runway2Lenght)).
-This kind of incoming datasets need to be normalized when extracting the data.
-
-## Informationtypes of data
+## Information types of data
 To define the variety of mappings, it is necessary to clarify the types of information, represented by a field.
 
-- Identification of an object
+- Identification of an object (business key, dependent child key)
 - Attribution or Measure of an object
 - relation between objects (might be “self” relating, hierarchical)
 - Attribution or Measure in a relation
@@ -64,8 +56,33 @@ hub=object / link=relation / satellite=attribution.*
 of a link counts also as identification, since it is needed to address 
 attributes, that are attached by the satellite*
 
-# Model topologies 
+## Properties of relation data
+Relation data always must contain the busniess key columns of all participants. 
+Data sets with multiple relations to the same object must contain multiple instances of 
+the business key fields. It might (but must not) contain multiple instances of content data fields.
 
+There are two flavours for relations in the source data.
+- **Business object relation**, is the obvious flavour, covering any relation between busniess objects or 
+self relation of hierarchies
+- **data delivery relation**, is the result when multiple objects are delivered in the same data row, but 
+without any known business relation meaning
+
+Data delivery relations might be misread as a lack of normalization in the source data. But as the 
+words "without any known" indicate, it might just be a lack of knowledge about a hidden meaning.
+
+DVDP expresses both relation flavours with the same syntax, but allows target models, that will not  
+preserve the relation. 
+
+## Denormalized data
+When source data contains multiple fields, which target the same satellite columns without any
+different business keys, this might look like denormalized data and trigger the desire to normalize it into a 
+multiactive satellite. 
+
+Data vault highly recommends to keep the denormalized structure in the raw vault to allow full auditibility. 
+That's why DVPD core will not support any explicit syntax that allows denormalization in the 
+load phase.
+
+# Model topologies 
 This section identifies the data vault model topologies, that have different properties
 regarding field mapping variations.
 The topologies will be used later describe the different mapping scenarions. 
@@ -86,24 +103,26 @@ completenes for this model, the coverage of DVDP of all simple models is shown.
 ## Multi relations to same hub 
 For sources that provide multiple relations to the same object in their data, the 
 data vault model must provide a proper structure.  
-The following approaches are commonly applied to represent multiple relations
-- hub keys to the same hub in a link for every kind of relation
-- dedicated links for to the hub for every kind of relation
+The following approaches are available to represent multiple relations
+- a single link with multiple hub keys of the same hub. One for every kind of relation
+- dedicated links to the hub for every kind of relation
 - a single link but dedicated effectivity satellites for every kind of relation
+- a single link with a dependent child key,declaring the relation type
+- a single link with a satellite, that contains a column to store the relation type 
 
 These approaches can also be mixed up (on purpose or due to legacy). 
 
 *side note: When the relation type is declared in the data(not by the field structure),
 this is a simple relation from the perspective of the data vault. 
-The relation type is then stored in a satellite of the link.*
+The relation type is then stored in a dependent child key or a satellite of the link.*
 
 The models are created with 3 
-relations to the same hub, even though this is a seldom constellation. 
+relations to the same hub, even though this is a rare constellation. 
 This is necessary to prove completeness of the DVDP Syntax. Only with
-3 Elements or more, it is possible to create subsets greater then 1 element.
+3 Elements or more, it is possible to have subsets greater than 1 element.
 
-Satellites are ommited in the diagram for simplicity.
-There can be satellites on every hub and the effectivite satellites can 
+Satellites are omitted in the diagram for simplicity.
+There can be satellites on every hub and the effective satellites can 
 be replaced by normal satellites, adding more content to the pure relation information.
 
 ### Multiple hub keys in link to the same hub (R)
@@ -143,6 +162,36 @@ the business key fields for a specific relation
 - The link and the multi referenced hub needs a load pass for every reference
 
 ![topo_multi_esat.png](images%2Fmapping_relations%2Ftopo_multi_esat.png)
+
+
+### Single link table with a dependent child key declaring the relation type (D)
+This method has the least number of tables and allows extention of relations 
+without any structure modification. It even can be extented without change
+of running pipelines, by just adding a new one for the new releations. On the Downside
+it hides the different kind of relations in the data, instead of communicating
+it through model elements.
+- the link only contains one reference to each hub
+- for every relation, there will be a separate the link key calculation only using
+the business key fields for a specific relation and the relation specific value in the
+dependent child key
+- the Esat must be loaded once, since all relations result in different link keys 
+- The multi referenced hub needs a load pass for every reference
+
+![topo_multi_esat.png](images%2Fmapping_relations%2Ftopo_dlink.png)
+
+### Single link table with a multiactive satellite, that contains a column to store the relation type (S)
+
+This method has the least number of tables and allows extention of relations 
+without any structure modification. It can't be extented without change
+of to the serving pipelines, due to the loading procedure for multiactive satellites and 
+hides the different kind of relations in the data, instead of communicating
+it through model elements. DVPD will allow it, although it should not be used. 
+- the link only contains one reference to each hub
+- there will be only one link key for all relations of the connected hubs
+- the msat must be loaded once 
+- The multi referenced hub needs a load pass for every reference
+
+![topo_multi_esat.png](images%2Fmapping_relations%2Ftopo_dlink.png)
 
 ### Mix of multi related link and normal link (R+L) 
 This model is a combinational edge case to challange the ablities of the
