@@ -129,7 +129,7 @@ be replaced by normal satellites, for adding more content to the pure relation i
 ### Multiple hub keys in link to the same hub (R)
 This approach keeps the provided unit of work together but needs complete refactoring 
 when another relation type needs to be added (See also the discussion of the concept
-in chapter 4.4.4 of the Data Vault 2.0 Book of Dan Linstedt)
+in chapter 4.4.4 of the Data Vault 2.0 Book of Dan Linstedt). It uses the minimal amount of tables
 - The link contains a hub key for every relation type to the hub
 - The hub keys must be named properly to explain the kind of relation, they represent
 - Depending on the meaning, one relation might be the "main" object. This relation
@@ -166,7 +166,7 @@ the business key fields for a specific relation
 
 
 ### Single link table with a dependent child key declaring the relation type (D)
-This method has the least number of tables and allows extention of relations 
+This method uses the minimal amount of tables and allows extention of relations 
 without any structure modification. It even can be extented without change
 of running pipelines, by just adding a new one for the new releations. On the downside
 it hides the different kind of relations in the data, instead of communicating
@@ -175,25 +175,11 @@ it through model elements.
 - for every relation, there will be a separate link key calculation only using
 the business key fields for a specific relation and the relation specific value in the
 dependent child key
-- the Esat must be loaded once, since all relations result in different link keys 
-- The multi referenced hub needs a load pass for every reference
+- Link, esat and the multi referenced hub need a load pass for every reference
 
 ![topo_multi_esat.png](images%2Fmapping_relations%2Ftopo_dlink.png)
 
-### Single link table with a multiactive satellite, that contains a column to store the relation type (S)
 
-This method has the least number of tables and allows extention of relations 
-without any structure modification. It can't be extented without change
-of to the serving pipelines, due to the loading procedure for multiactive satellites and 
-hides the different kind of relations in the data, instead of communicating
-it through model elements. DVPD will allow it, although it should not be used to 
-preserve relations derived from the source row structure. 
-- the link only contains one reference to each hub
-- there will be only one link key for all relations of the connected hubs
-- the msat must be loaded once 
-- The multi referenced hub needs a load pass for every reference
-
-![topo_multi_esat.png](images%2Fmapping_relations%2Ftopo_dlink.png)
 
 ### Mix of multi related link and normal link (R+L) 
 This model is a combinational edge case to challange the ablities of the
@@ -218,6 +204,13 @@ needed for the BBB_HUB.
 To keep the syntax of DVPD within a manageable complexity, some edge cases will be 
 placed out of scope, since they are far from expected model requirements and can be
 solved by other designs.
+
+### Single link table with a multiactive satellite, that contains a column to store the relation type 
+
+Although completly valid for relation type information, that is contained in the data, it can't be used for relation declaraton inbetween objects of the same row, since it would need the 
+creation of additional staging rows to ffed the multiactive satellite. Creating new rows during staging has a high risk of duplicating data or generate data, that was not in the source. Also the disadvantage of hiding relations in the data is the same as for the dependent child key approach.
+
+![topo_multi_esat.png](images%2Fmapping_relations%2Ftopo_rsat.png)
 
 ### mixing esat and multi referecence
 Mixing different approaches at the same link is not supported. In the example 
@@ -346,22 +339,40 @@ define the test set, a DVPD compiler must solve.
     - AB3CR+ABC = Link from A to B and C with 3 references to C + Link to A,B,C
     - A3BL = 3 separate Links from A to B
 - **Field setting**: Short notation of the content constellation to map.<br>
-\<content type (bk,dc,hsd,lsd)>\<relation participation (+,~,*)>\<number of target tables> \[& <next field in same notation...>] <br>
+\<content type (bk,dc,hs,ls)>\<relation participation (+,~,*)>\<number of target tables> \[& <next field in same notation...>] <br>
     - BK1+ = Business key in one table used for one relation
     - BK2* & BK1+ & hsd1+ = Business key in 2 tables for all relations and business key in one table single relations an hub sattelite content in 1 table and one relation
     - BK1~ + lsd1~ = Business key in 1 table and link satellite content in more then one but not all relations
 - **Test**: Number of the test case, that will cover this setting (set *italic* when not
-implemented yet, set to "-" when his combination is not possible, embedded in > < 
-when this contains other combinations and drives a test case)
+implemented yet, set to "-" when his combination is not possible)
  
 | Model |              A3BR | A3BL | A3BE | A3BD | 3AR  | 
 | ---                 | --- | ---  | ---  | ---  | ---  | 
 | field setting       |     |      |      |      |      | 
-| BK1+                |  ?  |  ?   |  ?   |  ?   |  ?   | 
-| BK1~ & BK1+         |  ?  |  ?   |  ?   |  ?   |  ?   | 
-| BK1* & BK1+         |  ?  |  ?   |  ?   |  ?   |  ?   | 
-| BK2*                |  ?  |  ?   |  ?   |  ?   |  ?   | 
-| BK2* & BK1+         |  ?  |  ?   |  ?   |  ?   |  ?   | 
-| BK2* & BK1~ & BK1+  |  ?  |  ?   |  ?   |  ?   |  ?   | 
-| BK2* & BK1* & BK1+  |  ?  |  ?   |  ?   |  ?   |  ?   | 
-
+| BK1+                |*201*|*301* |*401* |*501* |*601* | 
+| BK1~                |*202*|*302* |*402* |*502* |  -   | 
+| BK1*                |*203*|*303* |*403* |*503* |*603* | 
+| BK2+                |*211*|*311* |*411* |*511* |  -   | 
+| BK2~                |*212*|*312* |*412* |*512* |  -   | 
+| BK2*                |*213*|*313* |*413* |*513* |  -   | 
+| BK2* & BK1+         |*215*|*315* |*415* |*515* |  -   | 
+| BK2* & BK1~         |*216*|*316* |*416* |*516* |  -   | 
+| BK2* & BK1*         |*217*|*317* |*417* |*517* |  -   | 
+| BK1+ & HS1+         |*221*|*321* |*421* |*521* |*621* | 
+| BK1+ & HS1~         |*222*|*322* |*422* |*522* |  -   | 
+| BK1+ & HS1*         |*223*|*323* |*423* |*523* |*623* | 
+| BK1~ & HS1+         |*224*|*324* |*424* |*524* |  -   | 
+| BK1~ & HS1~         |*225*|*325* |*425* |*525* |  -   | 
+| BK1~ & HS1*         |*226*|*326* |*426* |*526* |  -   | 
+| BK1* & HS1+         |*227*|*327* |*427* |*527* |*627* | 
+| BK1* & HS1~         |*228*|*328* |*428* |*528* |  -   | 
+| BK1* & HS1*         |*229*|*329* |*429* |*529* |*629* | 
+| BK1+ & LS1+         |*231*|*331* |*431* |*531* |*631* | 
+| BK1+ & LS1~         |*232*|*332* |*432* |*532* |  -   | 
+| BK1+ & LS1*         |*233*|*333* |*433* |*533* |*633* | 
+| BK1~ & LS1+         |*234*|*334* |*434* |*534* |  -   |
+| BK1~ & LS1~         |*235*|*335* |*435* |*535* |  -   |
+| BK1~ & LS1*         |*236*|*336* |*436* |*536* |  -   |
+| BK1* & LS1+         |*237*|*337* |*437* |*537* |*637* |
+| BK1* & LS1~         |*238*|*338* |*438* |*538* |  -   |
+| BK1* & LS1*         |*239*|*339* |*439* |*539* |*639* |
