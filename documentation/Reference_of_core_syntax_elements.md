@@ -98,7 +98,7 @@ Transforming incoming data should be expressed in other properties.
 
 It is recommended to use the "${value name}" syntax for this purpose (e.g. "${CURRENT_DATE}").
 
-The following constants are provided in the core syntax
+The following constants are defined by the core syntax
 
 |       constant        | content                                 |
 |:---------------------:|:----------------------------------------|

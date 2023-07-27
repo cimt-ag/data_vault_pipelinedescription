@@ -42,12 +42,14 @@ the source data representation to be tabularized(all data is organized in Rows, 
 Hierarchical data formats might need multiple transformations(one for each array).
 
 ## Information types of data
-To define the variety of mappings, it is necessary to clarify the types of information, represented by a field.
+To define the variety of mappings, it is necessary to clarify the types of information, 
+represented by a source field.
 
-- Identification of an object (business key, dependent child key)
-- Attribution or Measure of an object
-- relation between objects (might be “self” relating, hierarchical)
+- (Part of) the identification of an object 
+- Attribution or Measure of an object 
 - Attribution or Measure in a relation
+
+Relations are expressed by having identifications of different objects in the same row.
 
 *Note: The data vault main stereotypes map to this classification as follows.
 hub=object / link=relation / satellite=attribution.*
@@ -62,9 +64,9 @@ Data sets with multiple relations to the same object must contain multiple insta
 the business key fields. It might (but must not) contain multiple instances of content data fields.
 
 There are two flavours for relations in the source data.
-- **Business object relation**, is the obvious flavour, covering any relation between busniess objects or 
-self relation of hierarchies
-- **data delivery relation**, is the result when multiple objects are delivered in the same data row, but 
+- **Business object relation**, is the obvious flavour, covering any relation between businiess objects or 
+self relation in hierarchies
+- **data delivery relation**, expresses the circumstance that  multiple objects are delivered in the same data row, but 
 without any known business relation meaning
 
 Data delivery relations might be misread as a lack of normalization in the source data. But as the 
@@ -95,8 +97,7 @@ For every table there is only one set of fields, that has to be used
 for hashing and loading. 
 
 The following example will be used as base to work out the possible mapping variations.
-It is designed to embed the most common simple models as a subset. By proving the 
-completenes for this model, the coverage of DVDP of all simple models is shown.
+It is designed to embed the most common simple models as a subset. By being capable to define this model with DVPD, the coverage of all subsets is also proved.
 
 ![topo_simple.png](./images/mapping_relations/topo_simple.png)
 
@@ -108,22 +109,22 @@ The following approaches are available to represent multiple relations
 - dedicated links to the hub for every kind of relation
 - a single link but dedicated effectivity satellites for every kind of relation
 - a single link with a dependent child key,declaring the relation type
-- a single link with a satellite, that contains a column to store the relation type 
+- a single link with a multi active satellite, that contains a column to store the currenty valid relation types (not recommended)
 
-These approaches can also be mixed up (on purpose or due to legacy). 
+These approaches can also be mixed up, wicht might happen on purpose or due to legacy. 
 
 *side note: When the relation type is declared in the data(not by the field structure),
 this is a simple relation from the perspective of the data vault. 
 The relation type is then stored in a dependent child key or a satellite of the link.*
 
-The models are created with 3 
+The example models in the investigation are created with 3 
 relations to the same hub, even though this is a rare constellation. 
-This is necessary to prove completeness of the DVDP Syntax. Only with
-3 Elements or more, it is possible to have subsets greater than 1 element.
+This is necessary to prove completeness of the DVDP syntax. Only with
+3 Elements or more, it is possible to create subsets with more than 1 element.
 
 Satellites are omitted in the diagram for simplicity.
 There can be satellites on every hub and the effective satellites can 
-be replaced by normal satellites, adding more content to the pure relation information.
+be replaced by normal satellites, for adding more content to the pure relation information.
 
 ### Multiple hub keys in link to the same hub (R)
 This approach keeps the provided unit of work together but needs complete refactoring 
@@ -167,11 +168,11 @@ the business key fields for a specific relation
 ### Single link table with a dependent child key declaring the relation type (D)
 This method has the least number of tables and allows extention of relations 
 without any structure modification. It even can be extented without change
-of running pipelines, by just adding a new one for the new releations. On the Downside
+of running pipelines, by just adding a new one for the new releations. On the downside
 it hides the different kind of relations in the data, instead of communicating
 it through model elements.
 - the link only contains one reference to each hub
-- for every relation, there will be a separate the link key calculation only using
+- for every relation, there will be a separate link key calculation only using
 the business key fields for a specific relation and the relation specific value in the
 dependent child key
 - the Esat must be loaded once, since all relations result in different link keys 
@@ -185,7 +186,8 @@ This method has the least number of tables and allows extention of relations
 without any structure modification. It can't be extented without change
 of to the serving pipelines, due to the loading procedure for multiactive satellites and 
 hides the different kind of relations in the data, instead of communicating
-it through model elements. DVPD will allow it, although it should not be used. 
+it through model elements. DVPD will allow it, although it should not be used to 
+preserve relations derived from the source row structure. 
 - the link only contains one reference to each hub
 - there will be only one link key for all relations of the connected hubs
 - the msat must be loaded once 
@@ -230,24 +232,27 @@ It might be an expression of the following:
 
 ![topo_mix_relation_esat.png](images%2Fmapping_relations%2Ftopo_mix_relation_esat.png)
 
+The same information can be modeled either with a link, having 4 relations to the same 
+hub, or by modelling two links, keeping the pairs.
+
 # Relation participation
 
 ## Observerations and conclusions
 
 1-Multiple relations are only possible with multiple sets of business keys field for the hub, they refer.
 <br>2-From 1. -> every kind of multi relation to a hub needs business key field mappings, that are restricted to a relation
-<br>3-hubs need to be loaded for every relation declared
-<br>4-a link with multiple relations to the same hub, needs relation specific columns
-<br>5-a link with multiple relations to the same hub, can only have satellites
+<br>3-hubs need to be loaded for every relation declared by their business key mappings
+<br>4-links can only contribute to relations, that are declared in the  hubs they connect
+<br>5-a link with multiple references to the same hub, need relation specific columns
+<br>6-a link with multiple references to the same hub, can only have satellites
 that contribute to the relation set, provided in the link.
-<br>7-effectivity satellites need to declare the relation they track
-<br>8-satellites on links contribute to every relations, they have a field mapping
+<br>7-satellites on links contribute to every relations, they have a field mapping
 for 
-<br>6-a link has to be loaded for every relation its satellites contribute to 
-<br>9-links can only contribute to relations, that are declared in the  hubs they connect
-<br>10-link satellites can only contribute to relations, the link can 
-contribute in their parent
-<br>11-Different dependent child keys for different relations can only be modeled with
+<br>8-effectivity satellites need to declare the relation they track, due to the lack
+of a field, that would declare it
+<br>9-link satellites can only contribute to relations, the link can 
+contribute according to its parents
+<br>10-Different dependent child keys for different relations can only be modeled with
 relation specific links or relation specific satellites. (If only the dependend child key
 appears multiple times in the source data set, this must be solveld by normalizing the 
 data)
@@ -258,7 +263,7 @@ data)
 When mapping fields to a multi related model, there are the following possibilites 
 how a field will contribute or participate 
 to the modelled relations:
-- to one (-) or a subset of specific relations (+)
+- to one (+) or a subset of specific relations (~)
 - to all relations (*)
 
 Depending on the function of the data, the field might be mapped to one or multiple
@@ -269,7 +274,6 @@ can contain
 - part of a hubs satellite data (hsd)
 - part of a links satellite data (lsd)
  
-
 Participation to a relation must be declared at every table mapping of the field.
 If not declared, a field is considerd to participate only on the "main"(unnamed) relation.
 To declare the participation on a subset, that contains the "main"(unnamed) relation
@@ -285,23 +289,24 @@ business keys.
 - relations without any contribution by a connected link/link satellite will trigger a warning
 since there might be unnecessary data loaded.
 
-These rules cover also the simple case without any extra relations, 
+These rules cover the "simple case" (no extra relations), 
 since fields without any relation declaration  belong to the 
 "main"(unnamed) relation .
 
 ## Participation of links with explicit relation mapping
-These links have at least on explicit relation declaration to a hub.
+These links have at least on explicit relation declaration in the hub mapping.
 - they participate only in the relations, that are represented by the connections
-- the hubs, targeted with an explicit relation must participate at the relation
+- the hubs, targeted with an explicit relation must participate at the same relations
 - if a hub is referenced more then once, the hub key names in the link must be adapted
     - names for the main(unnamed) reference will stick to the name in the hub 
+    - names for the named references must be declared or will be extended by a hard role (mostly the concatenation of hub key name and relation name)
 - Undeclared relations in the link belong to a "main" relation, so theses hubs must
  participate to the main(unnamed) relation
 - Satellites on the link are not allowed to declare a relation
 
 ## Participation of simple links
-These links have no explicit relation declaration to a hub. 
-- tese links participate to all relations that are
+These links have no explicit relation declaration to a hub (an therefora only one reference columnt for every hub). 
+- these links participate to all relations that are
     - are declared at their satellites
     - are declared at the mapping of their dependent child keys
  - all relations, the link contributes must be covered by at 
@@ -312,7 +317,7 @@ a sattelite contributes to the main(unnamed) relation.
 
 
 ## Participation of satellites
-Satellites contribute all relations that contain a full set of fields, 
+Satellites contribute to all relations that contain a full set of fields, 
 mapped with relation declaration to the satellite.
 
 - The full set of satellite columns is determined from the relation with the most columns.
@@ -332,204 +337,31 @@ declaration of the relation is needed and allowed at the satellite.
 The simple common model use case is covered by participating in the relation of the link.
 
 # Catalog of field mappings
-The following table lists combinations of field mappings and models as an orientation.
+The following table lists combinations of field mappings and models as an orientation and to 
+define the test set, a DVPD compiler must solve.
 
-- **Model**: Short notatiopn of the model by just specifing the links and the number or
-references when > 1 followed by the approach (R/L/E).  
-    - AB2E = Link from A to B with 2 references to B, modeled as effectivity satellites
-    - AA2R = Link from A to A 
-    - AB3R+ABC = Link from A to B with 3 references to C + Link to A,B,C
-    - AB3L = 3 separate Links from A to B
-- **FieldD**: The data content of a field, that is regulated in multiple partitions
-follwed by the number of target tables, followed by the coverage of relation ,(bk,dc,hsd, lsd
-separated by "," for multiple use of same field, separated by " &" for different fields)
-    - BK1- = Business key in one table used for one relation
-    - BK2+ & 1
+- **Model**: Short notation of the model by just specifing the links with<br> \<multiplicity>\<Hub>\[\<multiplicity>\<hub>]...\<approach(RLEDS)> + ....  <br>(multiplicity os only provided when greater then 1)
+    - A2BE = Link from A to B with 2 references to B, modeled as effectivity satellites
+    - 3AR = Link with 2 references from A to A 
+    - AB3CR+ABC = Link from A to B and C with 3 references to C + Link to A,B,C
+    - A3BL = 3 separate Links from A to B
+- **Field setting**: Short notation of the content constellation to map.<br>
+\<content type (bk,dc,hsd,lsd)>\<relation participation (+,~,*)>\<number of target tables> \[& <next field in same notation...>] <br>
+    - BK1+ = Business key in one table used for one relation
+    - BK2* & BK1+ & hsd1+ = Business key in 2 tables for all relations and business key in one table single relations an hub sattelite content in 1 table and one relation
+    - BK1~ + lsd1~ = Business key in 1 table and link satellite content in more then one but not all relations
 - **Test**: Number of the test case, that will cover this setting (set *italic* when not
 implemented yet, set to "-" when his combination is not possible, embedded in > < 
 when this contains other combinations and drives a test case)
  
-
-| Model | Relation
-
-
- 
-
-Fields mapped to a link 
- 
-
-
-____
-
-# Taxonomy 
-
-## Single relation scenarios
-
-### (1) M1 Single main object with content only 
-The source row contains
-
-- 1 set of fields with the business key of object A
-- 1 set of fields with content of object A
-
-![m1 mapping](./images/source_mapping_m1.drawio.png)
-
-Example source: Table with product data
-
-### (2) Single main object with content divided to two satellites
-
-The source row contains
-
-- 1 set of fields with the business key of object A
-- 1 set of fields with content of object A, some for sat1 , some for sat2 and
-somefor both
-
-![fig pending](./images/figure_pending.drawio.png)
-
-
-### (1P1-E) M1E1 Single main object with partner relation 
-The source row contains
-
-- 1 set of fields with the business key of object A
-- 1 set of fields with content of object A
-- 1 set of fields with the business key of object B
-
-![m1e1 mapping](./images/source_mapping_m1e1.drawio.png)
-
-Example source: Table with employee data including the current department he is working
-
-### (1P1Sh-E)M1E1P1 Single main object and single partner object,both with content
-The source row contains
-
-- 1 set of fields with the business key of object A
-- 1 set of fields with content of object A
-- 1 set of fields with the business key of object B
-- 1 set of fields with content of object B
-
-![m1e1p1 mapping](./images/source_mapping_m1e1p1.drawio.png)
-
-Example source: Table with data of manufactured items and the product+product description, the item belongs to
-
-### (1P1-Sl) M1LS1 Single main object with content on single relation
-The source row contains
-
-- 1 set of fields with the business key of object A
-- 1 set of fields with content of object A
-- 1 set of fields with the business key of object B
-- 1 set of field with content about relation of A and B
-
-![m1ls1 mapping](./images/source_mapping_m1ls1.drawio.png)
-
-### (1P1-DE) M1En Single main object with dependend child key relation
-The source row contains
-
-- 1 set of fields with the business key of object A
-- 1 set of fields with content of object A
-- more then 1 set of fields with the business key of object B representing another or the same relation
-
-![fig pending](./images/figure_pending.drawio.png)
-
-
-
-## Multiple relations between 2 hubs
-
-### Single main object with multiple relations, separated businieskeys
-The source row contains
-
-- 1 set of fields with the business key of object A
-- 1 set of fields with content of object A
-- 2 set of fields with the business key of object B representing 
-different relations
-
-Example source: Table with contract data including the id of the person,that receives the delivery and the id of the person that pays the bill
-
-#### (1P1-R2E) Modeled with multiple relations from 1 link
-
-![fig pending](./images/figure_pending.drawio.png)
-
-#### (1P1-E2) Modeled with 2 effectivity satellites
-
-![m1en mapping](./images/source_mapping_m1en.drawio.png)
-
-#### (1P1-E2) Modeled with 2 links and
-
-![m1en mapping](./images/source_mapping_m1en.drawio.png)
-
-###  (1P1-Sl2) M1LSn Single main object with content on multiple relations
-The source row contains
-
-- 1 set of fields with the business key of object A
-- 1 set of fields with content of object A
-- 2 sets of fields with the business key of object B representing 
-different relations
-- 2 sets of field with content about different the relations of A and B
-
-![m1lsn mapping](./images/source_mapping_m1lsn.drawio.png)
-
-Example source: Table with contract data including the id and current delivery rating of the person,that receives the delivery and the id and current credibilty rating of the person that pays the bill
-
-### M1E1P1 Single main object and single partner object, both with content
-The source row contains
-
-- 1 set of fields with the business key of object A
-- 1 set of fields with content of object A
-- 1 set of fields with the business key of object B
-- 1 set of fields with content of object B
-
-![m1e1p1 mapping](./images/source_mapping_m1e1p1.drawio.png)
-
-Example source: Table with data of manufactured items and the product+product description, the item belongs to
-
-
-
-### M1EnP1 Single main object with multiple relations and content for one partner
-The source row contains
-
-- 1 set of fields with the business key of object A
-- 1 set of fields with content of object A
-- 2 or more sets of fields with the business key of object B representing another or the same relation
-- 1 set of fields with content of object B for one specific set of business keys
-
-![m1enp1 mapping](./images/source_mapping_m1enp1.drawio.png)
-
-Example source: Table with contract data including the id, name and current delivery rating of the person,that receives the delivery and the id and current credibilty rating of the person that pays the bill
-
-### MR1 single main object with self relation
-The source row contains
-
-- 1 set of fields with the business key of object A
-- 1 set of fields with content of object A
-- 2nd set of fields with the business key of object A (may share some field of first set) 
-
-![mr1 mapping](./images/source_mapping_mr1.drawio.png)
-
-Example source: Table with company data and the id of the company that owns this company
-
-
-### Mn Multiple object sets 
-The source row contains
-
-- 2 or more sets of dedicated businesskey fields for every delivered object
-- 2 or more sets of dedicated content fields for every delivered object
-- optionally: shared set of fields with businesskey data, that is the same for all objects
-- optionally: shared set of fields with content data, that is the same for all objects
-
-![mn mapping](./images/source_mapping_mn.drawio.png)
-
-
-## Combination Matrix
-
-The following table shows all of the upper combinations in a comprehensive way.
-
-| business key fieldsets of object A(main object) | Content fieldsets of object A | business key fieldsets of object B(related object) | Content fieldsets of B  | Content fieldsets for relation | Estimated ocurrence in regular projects | Covered by pattern  |
-|:---------------------------------------------:|:-----------------------:|:-------------------------------:|:-----------------------:|:------------:|:-----------:|---------------------|
-|                        1                        |                1                 |                         0                          |            0            |               0                |                   15%                   | M1                  |
-|                        1                        |                1                 |                         1                          |            0            |               0                |                   55%                   | M1E1                |
-|                        1                        |                1                 |                         1                          |            0            |               1                |                   10%                   | M1LS1               |
-|                        1                        |                1                 |                         1                          |            1            |               0                |                   20%                   | M1E1P1              |
-|                        1                        |                1                 |                         1                          |            1            |               1                |                   <1%                   | M1LS1+M1E1P1        |
-|                        1                        |                1                 |                         2+                         |            0            |               0                |                   2%                    | M1En                |
-|                        1                        |                1                 |                         2+                         |            0            |       same as ident of B       |                   <1%                   | M1LSn               |
-|                        1                        |                1                 |                         2+                         |            1            |               0                |                   <1%                   | M1EnP1              |
-|                       2+                        |                1                 |                         0                          |            0            |               0                |                   2%                    | MR1                 |
-|                       2+                        |        same as ident of A        |                         0                          |            0            |               0                |                   <1%                   | Mn                  |
+| Model |              A3BR | A3BL | A3BE | A3BD | 3AR  | 
+| ---                 | --- | ---  | ---  | ---  | ---  | 
+| field setting       |     |      |      |      |      | 
+| BK1+                |  ?  |  ?   |  ?   |  ?   |  ?   | 
+| BK1~ & BK1+         |  ?  |  ?   |  ?   |  ?   |  ?   | 
+| BK1* & BK1+         |  ?  |  ?   |  ?   |  ?   |  ?   | 
+| BK2*                |  ?  |  ?   |  ?   |  ?   |  ?   | 
+| BK2* & BK1+         |  ?  |  ?   |  ?   |  ?   |  ?   | 
+| BK2* & BK1~ & BK1+  |  ?  |  ?   |  ?   |  ?   |  ?   | 
+| BK2* & BK1* & BK1+  |  ?  |  ?   |  ?   |  ?   |  ?   | 
 
