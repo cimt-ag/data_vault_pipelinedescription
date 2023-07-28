@@ -93,10 +93,10 @@ subelement of root
 This field will not be parsed from the source. Depending on the consuming code generator,
 the value might be an expression, interpreted and replaced with an actual value by the final 
 loading process 
-(e.g. for inserting the load date or some other information from the processing environment). 
+(e.g. for inserting the load date or some other information from the processing environment or metadata of the processed work item). 
 Transforming incoming data should be expressed in other properties. 
 
-It is recommended to use the "${value name}" syntax for this purpose (e.g. "${CURRENT_DATE}").
+It is recommended to use the "\${value name}" syntax for this purpose (e.g. "\${CURRENT_DATE}").
 
 The following constants are defined by the core syntax
 
@@ -135,7 +135,7 @@ The order of elements in the array should be used for parsing positional data (c
 ### targets[]
 subelement of fields[]
 
-This array must contain at least one target description. Fields, that are mapped to multiple tables, must have one entry for each target table
+This array must contain at least one target mapping. Fields, that are mapped to multiple tables, must have one entry for each target table
 
 **table_name**
 (mandatory)
@@ -170,11 +170,14 @@ The high default value sets all columns without any declaration at the end of th
 
 **relation_names[]**
 (optional )
-<br>Declares this mapping to be used when processing specific relations.
-The name must be defined as ***relation_name*** at a links parent declaration to the mapped table. 
-Ommitting this property, declares it to be used on the relation without a name
-(wich is the most occuring case).
-Set this zu "*" to use the field on any link relation to the mapped hub. 
+<br>Declares this mapping to be used only in specific relations.
+The used name must be defined as ***relation_name*** at a links parent declaration to the mapped table. It can also be "/" to explicitly declare participation in the main(unnamend) relation. This must be used to declare the participation in a subset of relations, including the unnamed relation.
+
+When ommitting this property, the field mapping participates in relations as follows:
+* When the field is the only field mapped to a target column, the mapping participates in all relations
+* when there are multiple fields mapped to a target column, the field to be mapped only in the main (unnamed) relation. 
+
+<br>*["parent"] , ["child1","child2"], ["/","Sibling"]*
 
 
 **exclude_from_key_hash**
@@ -200,29 +203,27 @@ is rare but possible).
 <br>→ see "hash_cleansing_rules"
 
 **update_on_every_load**
-(optional, default=false, can't set for business keys)
+(optional, default=false, can't be set for business keys)
 <br>*announced for upcoming version*
 <br>*if not supported on specific stereotypes, this must throw a warning*
 <br>Forces the load process to update the column with the staged value every time (e.g. for a last seen date in a hub). When used satellite or reference table mappings only the current row for the parent key should be updated.
-
 
 **column_content_comment**
 (optional, default=comment of the field)
 <br>comment, that will be added to the column in the data vault model. Default it the comment of the field
 
-
 ## data_vault_model[]
 
 **storage_component**
 (optional)
-<br>Identification of the storage, this part of the model is placed. If not defined, there is only one storage component Valid valued depend on the processing modules and the overall architecture.
+<br>Identification of the storage, this part of the model resides. If not defined, there is only one storage component. Valid values depend on the processing modules and the overall architecture.
 <br>*"main_dwh_db" | "big_data_storage"*
 
 **schema_name**
 (mandatory)
 <br>Name of the database schema, the tables are located. (this may also be the “database name”, since different database engines, adress this differently)
 
-Especially for situations, where the schema name must also be used to provide dev/test/prod stages, it is recommended to declare parsable placeholders in the schema name. Those will be filled an runtime by the process, depending on the stage it runs in.
+Especially for situations, where the schema name must also be used to provide dev/test/prod stages, it is recommended to declare parsable placeholders in the schema name. It is recommended to use the "\${value name}" syntax for this purpose (e.g. "\${STAGE_TAG}"). Those will be filled an runtime by the process, depending on the stage it runs in.
 <br>*"rvlt_accounting"*
 
 **tables[]**
@@ -240,7 +241,7 @@ Especially for situations, where the schema name must also be used to provide de
 
 **table_stereotype**
 (mandatory)
-<br>Data Vault Stereotype of the table. Valid values are: hub, lnk, sat, msat, esat
+<br>Data Vault Stereotype of the table. Valid values are: hub, lnk, sat, ref
 <br>Depending on the stereotype, different properties have to be provided. The stereotype controls the processing for the load. The class of a column, generated for a mapped field is derived on the stereotype of the table as follows:
 
 **hub**: mapped field is a business key except it is explicitly declared not to be (exclude_from_key_hash=true)
@@ -249,7 +250,9 @@ Especially for situations, where the schema name must also be used to provide de
 
 **sat**: mapped field is part of the satellite
 
-Satellites without any mapped content column are allowed but must have a link as parent  (effectivity satellites). 
+**ref**: mapped field is part of the reference table
+
+Satellites without any mapped content column are allowed(effectivity satellites). 
 
 **table_content_comment**
 (optional)
@@ -269,14 +272,13 @@ Satellites without any mapped content column are allowed but must have a link as
  
 **hub_key_column_name**
 (mandatory)
-<br>Name of the hub key in the table. (Currently this name must be unique over all tables in the declared model. Future versions will extend the syntax to allow the same name in different tables)
+<br>Name of the hub key in the table. (Currently this name must be unique over all tables in the declared model. Future versions will extend the syntax to allow the same name in different tables, even though it is highly recommended to have unique hub key names)
 <br>*"hk_raccn_account"*
 
 ### "lnk" specific properties
 Depending on mapped fields and the properties this can be a 
 * **normal link** 
 * **Link with dependend child keys**: Defined by mapping  a field to the link table (without excluding it from the key)
-* **recursive / hierarchical link**: is defined by recursive_parents declaration
 
 **link_key_column_name**
 (mandatory)
@@ -292,17 +294,12 @@ Depending on mapped fields and the properties this can be a
 → link_parent_tables[]
 
 The order of the tables in the list can be relevant to the hashing order of the link key (depends on processing engine and project conventions).  In case, the processing engine enforces its own order, it should issue a warning, when the final order differs from the declarated.
-*Example for 1: "[“raccn_account_hub”, “raccn_department_hub”]"*
-*Example for 2: "[{"table_name":“raccn_account_hub”, "releation_name":"PARTNER"},{"table_name":“raccn_account_hub”}]"*
-
+<br>*Example for 1: "[“raccn_account_hub”, “raccn_department_hub”]"*
+<br>*Example for 2: "[{"table_name":“raccn_account_hub”, "releation_name":"PARTNER"},{"table_name":“raccn_account_hub”}]"*
 
 **is_link_without_sat**
 (optional)
 <br>must be set to true, to avoid warnings for links without an esat or sat.
-
-**tracked_field_groups[]**
-(optional,only valid on links for is_link_without_sat=true)
-<br>list of field groups, this link will be processed for. The field groups must align with mappings of fields that are used as businesskey in the hubs, the link is referring
 
 ### link_parent_tables[]
 By using the full property declaration syntax for parent tables, multiple relations to the same hub can be explressed propertly
@@ -313,13 +310,16 @@ By using the full property declaration syntax for parent tables, multiple relati
 *"raccn_department_hub"*
 
 **relation_name**
-(mandatory for every table, declared more then once)
-<br>Name of the relation. The name should be usable to extend the hub key column names,
-since in general the additional hub key columns in the the link will be generated 
-by adding the relation name. The name is referenced by the "relation_name" property of a field, 
+(mandatory for every table, declared more then once in the list)
+<br>Name of the relation. The name should be usable to extend the hub key column names, 
+
+The name is referenced by the "relation_name" property of a field, 
 to declare the field to be used for this relation.
 <br>*"master"|"parent"|"duplicate"*
 
+**hub_key_column_name_in_link**
+(optional)
+<br>Name of the hub key columns, to be used for the mapping of this relation. If ommitted the hub key column name will be generated by adding the relation name to the original hub key column name
 
 ### "sat" specific properties
 
@@ -351,8 +351,8 @@ The settings "key" and "none" make the setting of diff_hash_column_name optional
 <br>when set to true (default) metadata columns for historization enddating will be added to the table and loading process will execute enddating functions
 
 **uses_diff_hash**
-(optional, default depends on model profile))<br>
-When set to true, data change is detected by calculation of a hash value ober all relevant columns and comparison of the hash value against the latest stored satellite row for every key.
+(optional, default depends on model profile)<br>
+When set to true, data change is detected by calculation of a hash value over all relevant columns and comparison of the hash value against the latest stored satellite row for every key.
 
 **diff_hash_column_name**
 (depending on uses_diff_hash setting and compare_criteria)
@@ -370,7 +370,7 @@ Determines if a deletion flag column will be added to the satellite.
 (optional,must refer to a parent_key or dependent_child_key in the parent link table of the satellite)
 <br>List of column names of the parent link, that are used as driving keys, to end former relations. 
 
-In general, the name must match the final name of a hub key column in the link. Especially in case of recursive relation, the method of creating the key name must be taken into account.
+In general, the name must match the final name of a hub key column in the link. Especially in case of multiple relations to the same table, the method of creating the key clumn name must be taken into account.
 <br>*"[“hk_raccn_account”]" | "[“hk_rerps_artice”,”year”,”month”]"
 
 **history_depth_limit**
@@ -382,7 +382,7 @@ In general, the name must match the final name of a hub key column in the link. 
 (mandatory when history_depth_limit is set)
 <br>*announced for upcoming version*
 <br> Defines the criteria to determine the history depth
-- versions : the number of versions for every key is limited to the given threshhold.
+- versions : the number of versions for every key is limited to the given threshold.
 - enddate_days : the number of days the enddate is behind the current day
 
 ### "ref"  specific properties
@@ -403,7 +403,7 @@ When set to true, data change is detected by calculation of a hash value ober al
 **history_depth_limit**
 (optional)
 <br>*announced for upcoming version*
-<br> defines a maximum depth of history in the satellite in days. No declaration or nagative values are treated as "no limit". When the satellite is loaded, all rows, that are beyond the given threshhold, are deleted. 
+<br> defines a maximum depth of history in the reference table in days. No declaration or nagative values are treated as "no limit". When the table is loaded, all rows, that are beyond the given threshhold, are deleted. 
 
 **history_depth_criteria**
 (mandatory when history_depth_limit is set)

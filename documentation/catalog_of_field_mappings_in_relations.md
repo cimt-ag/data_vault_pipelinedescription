@@ -267,11 +267,11 @@ can contain
 - part of a hubs satellite data (hsd)
 - part of a links satellite data (lsd)
  
-Participation to a relation must be declared at every table mapping of the field.
-If not declared, a field is considerd to participate only on the "main"(unnamed) relation.
-To declare the participation on a subset, that contains the "main"(unnamed) relation
-the syntax provides the reserved relation name "/".
-A shortcut to participate in all relations of the target is available with the syntax: "*".
+Participation to a relation is declared at every table mapping of the field.
+If not declared, a field is considerd to participate in every relation, when it is the only field mapped to the target, else it will be assigned only to the "main"(unnamed) relation.
+To declare the participation on a subset, that contains the "main"(unnamed) relation and another one, the syntax provides the reserved relation name "/" for the unnamed relation.
+
+A target column must only have one field mapped in every relation. 
 
 ## Participation of hubs
 Hubs participate to all relations that contain a full set of fields mapped to the 
@@ -287,22 +287,22 @@ since fields without any relation declaration  belong to the
 "main"(unnamed) relation .
 
 ## Participation of links with explicit relation mapping
-These links have at least on explicit relation declaration in the hub mapping.
+These links have at least on explicit relation declaration in their parent  mapping.
 - they participate only in the relations, that are represented by the connections
 - the hubs, targeted with an explicit relation must participate at the same relations
 - if a hub is referenced more then once, the hub key names in the link must be adapted
     - names for the main(unnamed) reference will stick to the name in the hub 
-    - names for the named references must be declared or will be extended by a hard role (mostly the concatenation of hub key name and relation name)
+    - names for the named references must be declared or will be extended by a hard rule (mostly the concatenation of hub key name and relation name)
 - Undeclared relations in the link belong to a "main" relation, so theses hubs must
  participate to the main(unnamed) relation
-- Satellites on the link are not allowed to declare a relation
+- Satellites on these kind of link are not allowed to declare a relation
 
 ## Participation of simple links
-These links have no explicit relation declaration to a hub (an therefora only one reference columnt for every hub). 
+These links have no explicit relation declaration to a hub (an therefore only one reference column for every hub). 
 - these links participate to all relations that are
     - are declared at their satellites
     - are declared at the mapping of their dependent child keys
- - all relations, the link contributes must be covered by at 
+ - all relations, the link contributes must be known by at 
 least one hub, the link is connecting
   
 This also covers the simple common model use case, since without declaration
@@ -315,7 +315,7 @@ mapped with relation declaration to the satellite.
 
 - The full set of satellite columns is determined from the relation with the most columns.
 - relations with different column outcome will fail the consistency check
-- all relations, the satellites contributes must be covered by the parent
+- all relations, the satellites contributes must be known by the parent
 
 The simple common model use case is covered by participating on the
 main(unnamed) relation when without any declaration.
@@ -325,7 +325,7 @@ Effectivity satellites contribute to the relation of their parent link. In
 case of a link, that collects multiple relations (see Modell pattern "E" above), a
 declaration of the relation is needed and allowed at the satellite.
 
-- the relations, the satellites contributes must be covered by the parent link
+- the relations, the satellites contributes must be known by the parent link
 
 The simple common model use case is covered by participating in the relation of the link.
 
@@ -367,12 +367,12 @@ implemented yet, set to "-" when his combination is not possible)
 | BK1* & HS1+         |*227*|*327* |*427* |*527* |*627* | 
 | BK1* & HS1~         |*228*|*328* |*428* |*528* |  -   | 
 | BK1* & HS1*         |*229*|*329* |*429* |*529* |*629* | 
-| BK1+ & LS1+         |*231*|*331* |*431* |*531* |*631* | 
-| BK1+ & LS1~         |*232*|*332* |*432* |*532* |  -   | 
+| BK1+ & LS1+         |  -  |*331* |*431* |*531* |*631* | 
+| BK1+ & LS1~         |  -  |*332* |*432* |*532* |  -   | 
 | BK1+ & LS1*         |*233*|*333* |*433* |*533* |*633* | 
-| BK1~ & LS1+         |*234*|*334* |*434* |*534* |  -   |
-| BK1~ & LS1~         |*235*|*335* |*435* |*535* |  -   |
+| BK1~ & LS1+         |  -  |*334* |*434* |*534* |  -   |
+| BK1~ & LS1~         |  -  |*335* |*435* |*535* |  -   |
 | BK1~ & LS1*         |*236*|*336* |*436* |*536* |  -   |
-| BK1* & LS1+         |*237*|*337* |*437* |*537* |*637* |
-| BK1* & LS1~         |*238*|*338* |*438* |*538* |  -   |
+| BK1* & LS1+         |  -  |*337* |*437* |*537* |*637* |
+| BK1* & LS1~         |  -  |*338* |*438* |*538* |  -   |
 | BK1* & LS1*         |*239*|*339* |*439* |*539* |*639* |
