@@ -26,7 +26,7 @@ select
 	,upper(trim(field_type)) as field_type
 	,lower(table_name) as table_name
 	,upper(coalesce (column_name,pfter.field_name)) as column_name
-	,upper(coalesce(relation_name,'~')) as recursion_name
+	,upper(coalesce(relation_name,'~')) as relation_name
 	,upper(coalesce (column_type,field_type)) as column_type
 	,coalesce(to_number(prio_in_key_hash,'9'),0) as prio_in_key_hash
 	,coalesce(exclude_from_key_hash::boolean,false) as exclude_from_key_hash
