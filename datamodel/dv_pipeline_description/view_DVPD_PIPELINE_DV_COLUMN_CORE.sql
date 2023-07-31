@@ -51,9 +51,9 @@ union
 select -- keys of parents
   pdt.pipeline_name 
  ,pdtlp.table_name 
- ,case when pdtlp.is_recursive_relation then 4 else 3 end as column_block
+ , 3  column_block
  ,'parent_key' as column_class
- ,case when pdtlp.is_recursive_relation then  pdt.hub_key_column_name||'_'||pdtlp.recursion_name
+ ,case when pdtlp.relation_name <>'/' then  pdt.hub_key_column_name||'_'||pdtlp.recursion_name
  		else pdt.hub_key_column_name end as column_name
  ,mp.property_value  as column_type
  ,false as is_nullable

@@ -20,10 +20,11 @@
 
 CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_LINK_PARENT_RAW (
 	meta_inserted_at timestamp default current_timestamp,
-	pipeline_name text NULL,
-	table_name text NULL,
-	parent_table_name text NULL,
-	relation_name text NULL,
+	pipeline_name varchar(255) NULL,
+	table_name varchar(255) NULL,
+	parent_table_name varchar(255) NULL,
+	relation_name varchar(255) NULL,
+	hub_key_column_name_in_link varchar(255) NULL,
 	link_parent_order integer
 );
 

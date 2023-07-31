@@ -39,6 +39,7 @@ from dv_pipeline_description.dvpd_dictionary dt
 	,  table_name
 	, json_array_elements_text(link_parent_tables) as parent_table_name
 	, null::varchar as relation_name
+	, null::varchar as hub_key_column_name_in_link
 	, 0 as link_parent_order
 	from table_expansion
 		)
@@ -48,6 +49,7 @@ from dv_pipeline_description.dvpd_dictionary dt
 	,  table_name
 	, json_array_elements(link_parent_tables)->>'table_name' as parent_table_name
 	, json_array_elements(link_parent_tables)->>'relation_name' as relation_name
+	, json_array_elements(link_parent_tables)->>'hub_key_column_name_in_link' as hub_key_column_name_in_link
 	, 0 as link_parent_order
 	from table_expansion
 )

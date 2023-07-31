@@ -66,7 +66,8 @@ VALUES
 												"link_parent_tables": [	{"table_name":"rtjj_222_aaa_hub"}
 																	   ,{"table_name":"rtjj_222_bbb_hub","relation_name":"R111"}
 																	   ,{"table_name":"rtjj_222_bbb_hub","relation_name":"R222"}
-																	   ,{"table_name":"rtjj_222_bbb_hub","relation_name":"R333"}  ]}
+																	   ,{"table_name":"rtjj_222_bbb_hub","relation_name":"R333"
+																			,"hub_key_column_name_in_link":"HK_rtjj_222_bbb_R333EXTRA"}  ]}
 				,{"table_name": "rtjj_222_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_222_aaa_bbb_lnk"}
 				,{"table_name": "rtjj_222_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_222_bbb"}
 				,{"table_name": "rtjj_222_bbb_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_222_bbb_hub"

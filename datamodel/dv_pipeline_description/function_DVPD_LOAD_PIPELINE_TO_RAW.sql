@@ -145,6 +145,7 @@ insert
 	table_name,
 	parent_table_name,
 	relation_name,
+	hub_key_column_name_in_link,
 	link_parent_order
 	)
 select
@@ -152,6 +153,7 @@ select
 	table_name,
 	parent_table_name,
 	relation_name,
+	hub_key_column_name_in_link,
 	link_parent_order
 from
 	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_link_parent_raw;

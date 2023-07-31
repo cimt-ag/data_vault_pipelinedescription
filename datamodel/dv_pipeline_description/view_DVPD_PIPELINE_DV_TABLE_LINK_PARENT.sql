@@ -25,7 +25,8 @@ with cleansed_link_parents as (
 		lower(pipeline_name ) pipeline_name
 		,lower(table_name)  table_name
 		,lower(parent_table_name)  link_parent_table
-		,coalesce(upper(relation_name),'') relation_name
+		,coalesce(upper(relation_name),'/') relation_name
+		,upper(hub_key_column_name_in_link) hub_key_column_name_in_link
 		,link_parent_order 
 	from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent_raw
 ) 
@@ -35,6 +36,7 @@ select distinct
 	,clp.link_parent_table
 	,pdmt.hub_key_column_name as hub_key_column_name
 	,relation_name
+	,hub_key_column_name_in_link
 	,link_parent_order 
 from cleansed_link_parents clp 
 left join dv_pipeline_description.DVPD_PIPELINE_DV_TABLE pdmt on pdmt.table_name=clp.link_parent_table
