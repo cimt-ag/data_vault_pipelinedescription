@@ -51,9 +51,9 @@ union
 select -- keys of parents
   pdt.pipeline_name 
  ,pdtlp.table_name 
- , 3  column_block
+ , case when pdtlp.relation_name <>'/' then 4 else  3 end as  column_block
  ,'parent_key' as column_class
- ,case when pdtlp.relation_name <>'/' then  pdt.hub_key_column_name||'_'||pdtlp.recursion_name
+ ,case when pdtlp.relation_name <>'/' then  pdt.hub_key_column_name||'_'||pdtlp.relation_name
  		else pdt.hub_key_column_name end as column_name
  ,mp.property_value  as column_type
  ,false as is_nullable
@@ -233,4 +233,4 @@ select -- own key column
 comment on view dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN_CORE is
  'table columns of the pipeline derived by the dvpd core implementation'; 
  
--- select * from dv_pipeline_description.DVPD_DV_MODEL_COLUMN ddmc  order by 1,2,3,4,5;
+-- select * from dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN_CORE ddmc  order by 1,2,3,4,5;

@@ -44,15 +44,15 @@ VALUES
 		      ,{"field_name": "F07_ID_BBB2_R3", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_224_bbb_hub" ,"column_name": "ID_BBB2"
 																				 	,"relation_names":["R333"]} ]}
 	 
-		      ,{"field_name": "F08_S_BBB1_R1",  "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_224_bbb_hub" ,"column_name": "S_BBB1"
+		      ,{"field_name": "F08_S_BBB1_R1",  "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_224_bbb_sat" ,"column_name": "S_BBB1"
 																				 	,"relation_names":["R111"]} ]}
-		      ,{"field_name": "F09_S_BBB1_R23",  "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_224_bbb_hub" ,"column_name": "S_BBB1"
+		      ,{"field_name": "F09_S_BBB1_R23",  "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_224_bbb_sat" ,"column_name": "S_BBB1"
 																				 	,"relation_names":["R222","R333"]} ]}
-		      ,{"field_name": "F10_S_BBB2_R1",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_224_bbb_hub" ,"column_name": "S_BBB2"
+		      ,{"field_name": "F10_S_BBB2_R1",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_224_bbb_sat" ,"column_name": "S_BBB2"
 																				 	,"relation_names":["R111"]} ]}
-		      ,{"field_name": "F11_S_BBB2_R2",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_224_bbb_hub" ,"column_name": "S_BBB2"
+		      ,{"field_name": "F11_S_BBB2_R2",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_224_bbb_sat" ,"column_name": "S_BBB2"
 																				 	,"relation_names":["R222"]} ]}
-		      ,{"field_name": "F12_S_BBB2_R3",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_224_bbb_hub" ,"column_name": "S_BBB2"
+		      ,{"field_name": "F12_S_BBB2_R3",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_224_bbb_sat" ,"column_name": "S_BBB2"
 																				 	,"relation_names":["R333"]} ]}
  
 			 ],
