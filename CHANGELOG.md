@@ -10,8 +10,10 @@
 ATTENTION: You need to declare stage_properties with a stage_schema or will get a check error 
 
 ### DVPD syntax changes
-- refactored syntax for multiple references on same hub. See syntax reference for data_vault_model/tables/link_parent_tables/ 
-<br>Integrated the recursive_parenst syntax into the link_parent_tables, since not all multiple relations of hubs are a result of recursion 
+- refactored the syntax to declare multiple mappings to the same target columns. This also covers multiple references to same hub. In general the 
+    - removed key words: field_groups, field_group, tracked_field_groups, recursion_name, 
+    - added key words: relation_names (property of the field mapping), relation_name (property of the link parent mapping), tracked_relation_name(property of 
+effectivity satellites)
 
 - renamed "is_historized" to "is_enddated", since this reflects the behaviour much more precise. Providing diff hashes is another aspect and not bound to enddating
 - renamed "target_column_name" to "column_name", following the naming concept, addressing the data vault objects as tables and columns 

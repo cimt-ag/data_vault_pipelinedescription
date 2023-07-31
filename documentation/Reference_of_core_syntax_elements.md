@@ -170,12 +170,21 @@ The high default value sets all columns without any declaration at the end of th
 
 **relation_names[]**
 (optional )
-<br>Declares this mapping to be used only in specific relations.
-The used name must be defined as ***relation_name*** at a links parent declaration to the mapped table. It can also be "/" to explicitly declare participation in the main(unnamend) relation. This must be used to declare the participation in a subset of relations, including the unnamed relation.
+<br>Declares this mapping to be used only in specific relations. It should be valid as an SQL name, since it 
+will be used as name extention for staging columns.
+
+The name must be a valid ***relation_name*** depending on the role of the field.
+* Business key - The name defines a valid relation, the targeted hub is supporting
+* Dependent child key - The name must match a relation name, that is supported by a parent of the link
+* data excluded from key for hub or link - The name must match a relation name, supported by the target
+* Satellite Content - The name must match a relation name, supported by the parent
+
+To explicitly declare participation in the main(unnamend) relation use "/" as name. 
+This is the only way to declare the participation in a subset of relations that contains the unnamed relation.
 
 When ommitting this property, the field mapping participates in relations as follows:
-* When the field is the only field mapped to a target column, the mapping participates in all relations
-* when there are multiple fields mapped to a target column, the field to be mapped only in the main (unnamed) relation. 
+* when the field is the only field mapped to a target column, the mapping is used in all relations
+* when there are multiple fields mapped to a target column, the mapping is used only in the main (unnamed) relation. 
 
 <br>*["parent"] , ["child1","child2"], ["/","Sibling"]*
 
@@ -372,6 +381,11 @@ Determines if a deletion flag column will be added to the satellite.
 
 In general, the name must match the final name of a hub key column in the link. Especially in case of multiple relations to the same table, the method of creating the key clumn name must be taken into account.
 <br>*"[“hk_raccn_account”]" | "[“hk_rerps_artice”,”year”,”month”]"
+
+**tracked_relation_name**
+(optional, only valid on effectivity satellites)
+<br>Name of the relation this satellite will track the validity for. This is only used for satellites
+whithout any field mapping. The relation name must be valid for the satellites parent.
 
 **history_depth_limit**
 (optional)

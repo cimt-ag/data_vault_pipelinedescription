@@ -49,6 +49,7 @@ select
 , upper(link_key_column_name) as link_key_column_name
 , upper(diff_hash_column_name) as diff_hash_column_name
 , lower(satellite_parent_table) as satellite_parent_table
+, upper(tracked_relation_name) as tracked_relation_name
 , coalesce(is_link_without_sat::boolean,false) as is_link_without_sat
 , coalesce(is_enddated ::boolean,mp_is_endated_default.property_value ::boolean) as is_enddated 
 , coalesce(has_deletion_flag ::boolean,has_deletion_flag_default.property_value ::boolean) as has_deletion_flag 

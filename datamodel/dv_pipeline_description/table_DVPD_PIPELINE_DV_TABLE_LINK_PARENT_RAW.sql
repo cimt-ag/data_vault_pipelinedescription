@@ -23,10 +23,8 @@ CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_LINK_PARENT_RAW (
 	pipeline_name text NULL,
 	table_name text NULL,
 	parent_table_name text NULL,
-	is_recursive_relation boolean NULL,
-	recursion_name text NULL,
-	link_parent_order integer,
-	recursive_parent_order integer
+	relation_name text NULL,
+	link_parent_order integer
 );
 
 comment on table dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_LINK_PARENT_RAW is
