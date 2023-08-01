@@ -100,13 +100,14 @@ It is recommended to use the "\${value name}" syntax for this purpose (e.g. "\${
 
 The following constants are defined by the core syntax
 
-|       constant        | content                                 |
-|:---------------------:|:----------------------------------------|
-|        ${NULL}        | Null value                              |
-|       ${EMPTY}        | Emtpy String value                      |
-|    ${CURRENT_DATE}    | Date of the day of the loading process  |
-| ${CURRENT_TIMESTAMP}  | Timestamp of the loading process        |
-|    ${CURRENT_TIME}    | Time of the loading process             |
+|       constant       | content                                |
+|:--------------------:|:---------------------------------------|
+|       ${NULL}        | Null value                             |
+|       ${EMPTY}       | Emtpy String value                     |
+|   ${CURRENT_DATE}    | Date of the day of the loading process |
+| ${CURRENT_TIMESTAMP} | Timestamp of the loading process       |
+|   ${CURRENT_TIME}    | Time of the loading process            |
+|   ${RELATION_NAME}   | Name of the processed relation         |
 
 **needs_encryption**
 (optional boolean with default false)
