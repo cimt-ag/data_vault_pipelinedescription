@@ -32,7 +32,7 @@ select distinct
 from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte
 join dv_pipeline_description.dvpd_pipeline_dv_table pdt  on pdt.table_name =pfte.table_name 
 														and pdt.pipeline_name = pfte.pipeline_name 
-where relation_name is not null and relation_name not in ('/','*')  
+where relation_name is not null and relation_name not in ('*')  
 --
 union
 -- tracked relations of effectivity satellites
