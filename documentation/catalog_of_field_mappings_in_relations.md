@@ -339,40 +339,63 @@ define the test set, a DVPD compiler must solve.
     - AB3CR+ABC = Link from A to B and C with 3 references to C + Link to A,B,C
     - A3BL = 3 separate Links from A to B
 - **Field setting**: Short notation of the content constellation to map.<br>
-\<content type (bk,dc,hs,ls)>\<relation participation (+,~,*)>\<number of target tables> \[& <next field in same notation...>] <br>
+\<content type (bk,dc,hs,ls)>\<relation participation (+,~,*,-,%)>\<number of target tables> \[& <next field in same notation...>] <br>
     - BK1+ = Business key in one table used for one relation
     - BK2* & BK1+ & hsd1+ = Business key in 2 tables for all relations and business key in one table single relations an hub sattelite content in 1 table and one relation
-    - BK1~ + lsd1~ = Business key in 1 table and link satellite content in more then one but not all relations
+    - BK1~ & ls1~ = Business key in 1 table and link satellite content in more then one but not all relations
+    - BK1+ & hs1- = Business key in 1 table and hub satellite processed only in 1 relatiion  
+    - BK1+ & hs1% = Business key in 1 table and hub satellite processed only in subset of relatiiojn  
 - **Test**: Number of the test case, that will cover this setting (set *italic* when not
 implemented yet, set to "-" when his combination is not possible)
  
-| Model |              A3BR | A3BL | A3BE | A3BD | 3AR  | 
-| ---                 | --- | ---  | ---  | ---  | ---  | 
-| field setting       |     |      |      |      |      | 
-| BK1+                |*201*|*301* |*401* |*501* |*601* | 
-| BK1~                |*202*|*302* |*402* |*502* |  -   | 
-| BK1*                |*203*|*303* |*403* |*503* |*603* | 
-| BK2+                |*211*|*311* |*411* |*511* |  -   | 
-| BK2~                |*212*|*312* |*412* |*512* |  -   | 
-| BK2*                |*213*|*313* |*413* |*513* |  -   | 
-| BK2* & BK1+         |*215*|*315* |*415* |*515* |  -   | 
-| BK2* & BK1~         |*216*|*316* |*416* |*516* |  -   | 
-| BK2* & BK1*         |*217*|*317* |*417* |*517* |  -   | 
-| BK1+ & HS1+         |*221*|*321* |*421* |*521* |*621* | 
-| BK1+ & HS1~         |*222*|*322* |*422* |*522* |  -   | 
-| BK1+ & HS1*         |*223*|*323* |*423* |*523* |*623* | 
-| BK1~ & HS1+         |*224*|*324* |*424* |*524* |  -   | 
-| BK1~ & HS1~         |*225*|*325* |*425* |*525* |  -   | 
-| BK1~ & HS1*         |*226*|*326* |*426* |*526* |  -   | 
-| BK1* & HS1+         |*227*|*327* |*427* |*527* |*627* | 
-| BK1* & HS1~         |*228*|*328* |*428* |*528* |  -   | 
-| BK1* & HS1*         |*229*|*329* |*429* |*529* |*629* | 
-| BK1+ & LS1+         |  -  |*331* |*431* |*531* |*631* | 
-| BK1+ & LS1~         |  -  |*332* |*432* |*532* |  -   | 
-| BK1+ & LS1*         |*233*|*333* |*433* |*533* |*633* | 
-| BK1~ & LS1+         |  -  |*334* |*434* |*534* |  -   |
-| BK1~ & LS1~         |  -  |*335* |*435* |*535* |  -   |
-| BK1~ & LS1*         |*236*|*336* |*436* |*536* |  -   |
-| BK1* & LS1+         |  -  |*337* |*437* |*537* |*637* |
-| BK1* & LS1~         |  -  |*338* |*438* |*538* |  -   |
-| BK1* & LS1*         |*239*|*339* |*439* |*539* |*639* |
+| Model          | A3BR      | A3BL    | A3BE    | A3BD | 3AR   | 
+|----------------|-----------|---------|---------| ---  |-------| 
+| field setting  |           |         |         |      |       | 
+| BK1+           | *201*     | *301*   | *401*   |*501* | *601* | 
+| BK1~           | *202*     | *302*   | *402*   |*502* | -     | 
+| BK1*           | *203*     | *303*   | *403*   |*503* | *603* | 
+| BK2+           | *211*     | *311*   | *411*   |*511* | -     | 
+| BK2~           | *212*     | *312*   | *412*   |*512* | -     | 
+| BK2*           | *213*     | *313*   | *413*   |*513* | -     | 
+| BK2* & BK1+    | *215*     | *315*   | *415*   |*515* | -     | 
+| BK2* & BK1~    | *216*     | *316*   | *416*   |*516* | -     | 
+| BK2* & BK1*    | *217*     | *317*   | *417*   |*517* | -     | 
+|                |           |         |         |      |       | 
+| BK1+ & HS++    | **220**   | *320*   | *420*   |*520* | *620* | 
+| BK1+ & HS~+    | *221*     | *321*   | *421*   |*521* | -     | 
+| BK1+ & HS~~    | **222**   | *322*   | *422*   |*522* | -     | 
+| BK1+ & HS*+    | *223*     | *323*   | *423*   |*523* | *623* | 
+| BK1+ & HS*~    | *224*     | *324*   | *424*   |*524* | -     | 
+| BK1+ & HS**    | *225*     | *325*   | *425*   |*525* | *625* | 
+| BK1~ & HS++    | *226*     | *326*   | *426*   |*526* | *626* | 
+| BK1~ & HS~+    | **227**   | **327** | **427** |*527* | -     | 
+| BK1~ & HS~~    | *228*     | *328*   | *428*   |*528* | -     | 
+| BK1~ & HS*+    | **229**   | *329*   | *429*   |*529* | *629* | 
+| BK1~ & HS*~    | *230*     | *330*   | *430*   |*530* | -     | 
+| BK1~ & HS**    | *231*     | *331*   | *431*   |*531* | *631* | 
+| BK1* & HS++    | *232*     | *332*   | *432*   |*532* | *632* | 
+| BK1* & HS~+    | *233*     | *333*   | *433*   |*533* | -     | 
+| BK1* & HS~~    | *234*     | *334*   | *434*   |*534* | -     |
+| BK1* & HS*+    | *235*     | *335*   | *435*   |*535* | *635* |
+| BK1* & HS*~    | *236*     | *336*   | *436*   |*536* | -     |
+| BK1* & HS**    | *237*     | *337*   | *437*   |*537* | *637* |
+|                |           |         |         |      |       |
+| BK1+ & LS1+    | -         | *341*   | *441*   |*541* | *641* | 
+| BK1+ & LS1~    | -         | *342*   | *442*   |*542* | -     | 
+| BK1+ & LS1*    | *243*     | *343*   | *443*   |*543* | *643* | 
+| BK1~ & LS1+    | -         | *344*   | *444*   |*544* | -     |
+| BK1~ & LS1~    | -         | *345*   | *445*   |*545* | -     |
+| BK1~ & LS1*    | *246*     | *346*   | *446*   |*546* | -     |
+| BK1* & LS1+    | -         | *347*   | *447*   |*547* | *647* |
+| BK1* & LS1~    | -         | *348*   | *448*   |*548* | -     |
+| BK1* & LS1*    | *249*     | *349*   | *449*   |*549* | *649* |
+|                |           |         |         |      |       | 
+| BK1+ & HS--    | *281*     | *381*   | *481*   |*581* | -     | 
+| BK1+ & HS%%    | **282**   | *382*   | *482*   |*582* | -     | 
+| BK1+ & HS*%    | *283*     | *383*   | *483*   |*583* | -     | 
+| BK1~ & HS--    | *284*     | *384*   | *484*   |*584* | -     | 
+| BK1~ & HS%%    | **285**   | *385*   | *485*   |*585* | -     | 
+| BK1~ & HS*%    | **286**   | *386*   | *486*   |*586* | -     | 
+| BK1* & HS--    | *284*     | *384*   | *484*   |*584* | -     | 
+| BK1* & HS%%    | *285*     | *385*   | *485*   |*585* | -     | 
+| BK1* & HS*%    | *286*     | *386*   | *486*   |*586* | -     | 
