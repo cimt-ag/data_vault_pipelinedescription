@@ -27,7 +27,7 @@ select distinct
 	pdt.pipeline_name
 	,pdt.table_name
 	,pdt.table_stereotype 
-	,relation_name as process_name
+	,relation_name as relation_to_process
 	,'explicit field mapping' relation_origin
 from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte
 join dv_pipeline_description.dvpd_pipeline_dv_table pdt  on pdt.table_name =pfte.table_name 
@@ -40,7 +40,7 @@ select distinct
 	pdt.pipeline_name 
 	,pdt.table_name 
 	,pdt.table_stereotype 
-	,tracked_relation_name as process_name
+	,tracked_relation_name as relation_to_process
 	,'tracked_relation_name' relation_origin
 from dv_pipeline_description.dvpd_pipeline_dv_table pdt
 where tracked_relation_name is not null
@@ -51,7 +51,7 @@ select distinct
 	pdtlp.pipeline_name 
 	,pdtlp.table_name 
 	,'lnk' 
-	,'/' as process_name
+	,'/' as relation_to_process
 	,'link with explicit parent mapping' relation_origin
 from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp
 where relation_name <> '/'
@@ -72,7 +72,7 @@ select
 	twoep.pipeline_name 
 	,twoep.table_name
 	,twoep.table_stereotype 
-	,twep.process_name 
+	,twep.relation_to_process 
 	,'driven by sat'::text relation_origin
 from tables_without_explicit_processes  twoep
 join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = twoep.pipeline_name 
@@ -98,7 +98,7 @@ from link_processes_derived_from_satellite
 select 	lndbs.pipeline_name
 	,lndbs.table_name
 	,lndbs.table_stereotype
-	,twep.process_name
+	,twep.relation_to_process
 	,'driven by hub'::text relation_origin
 from links_not_driven_by_satellite lndbs
 join dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp on pdtlp.table_name = lndbs.table_name 
@@ -112,7 +112,7 @@ select
 	twoep.pipeline_name 
 	,twoep.table_name 
 	,twoep.table_stereotype 
-	,twep.process_name
+	,twep.relation_to_process
     ,'driven by explicit parent'::text relation_origin
 from tables_without_explicit_processes  twoep
 join tables_with_explicit_processes twep  on twep.pipeline_name = twoep.pipeline_name 
@@ -123,7 +123,7 @@ select
 	twoep.pipeline_name 
 	,twoep.table_name 
 	,twoep.table_stereotype 
-	,lpdbh.process_name
+	,lpdbh.relation_to_process
     ,'driven by explicit parent'::text relation_origin
 from tables_without_explicit_processes  twoep
 join link_processes_driven_by_hub lpdbh  on lpdbh.pipeline_name = twoep.pipeline_name 
@@ -137,14 +137,14 @@ union
 select * from link_processes_driven_by_hub
 union
 select * from sat_processes_driven_by_parent
---order by pipeline_name, table_name,process_name
+--order by pipeline_name, table_name,relation_to_process
 )
 , all_simple_processes as (
 select
 	twoep.pipeline_name 
 	,twoep.table_name 
 	,twoep.table_stereotype 
-	,'/' :: varchar as process_name
+	,'/' :: varchar as relation_to_process
     ,'simple'::varchar relation_origin
 from tables_without_explicit_processes twoep
 left join all_special_processes asp on asp.pipeline_name = twoep.pipeline_name
@@ -158,6 +158,6 @@ select * from all_simple_processes;
 
 
 comment on view dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN is
- 'List of necessary processes (identified by the process_name) for every target table of a pipeline. ';		
+ 'List of necessary processes (identified by  relation_to_process) for every target table of a pipeline. ';		
 
--- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN order by pipeline_name,table_name,process_name;										
+-- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN order by pipeline_name,table_name,relation_to_process;										

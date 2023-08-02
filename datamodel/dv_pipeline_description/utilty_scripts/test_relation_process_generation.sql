@@ -25,9 +25,9 @@ select
 	pipeline_name,
 	table_name,
 	table_stereotype,
-	process_name,
+	relation_to_process,
 	relation_origin
 from
 	dv_pipeline_description.dvpd_pipeline_process_plan
 join youngest_pipeline using (pipeline_name)	
-order by pipeline_name ,table_name, process_name;
+order by pipeline_name ,table_name, relation_to_process;

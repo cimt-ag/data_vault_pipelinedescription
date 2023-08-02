@@ -55,8 +55,12 @@ VALUES
 		      ,{"field_name": "F12_S_BBB2_R3",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_527_bbb_sat" ,"column_name": "S_BBB2"
 																				 	,"relation_names":["R333"]} ]}
 			  
-		      ,{"field_name": "RELATION_TRACKER",  "field_type": "VARCHAR(255)", "field_value":"${RELATION_NAME}"
-																, "targets": [{"table_name": "rtjj_527_aaa_bbb_dlnk"} ]}
+		      ,{"field_name": "RELATION_111",  "field_type": "VARCHAR(255)", "field_value":"R111"
+																, "targets": [{"table_name": "rtjj_527_aaa_bbb_dlnk","relation_names":["R111"]} ]}
+		      ,{"field_name": "RELATION_222",  "field_type": "VARCHAR(255)", "field_value":"R222"
+																, "targets": [{"table_name": "rtjj_527_aaa_bbb_dlnk","relation_names":["R222"]} ]}
+		      ,{"field_name": "RELATION_333",  "field_type": "VARCHAR(255)", "field_value":"R333"
+																, "targets": [{"table_name": "rtjj_527_aaa_bbb_dlnk","relation_names":["R333"]} ]}
  
 			 ],
 	"data_vault_model": [
