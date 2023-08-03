@@ -57,7 +57,6 @@ select distinct
 	,pdc.column_name 
 	,pdc.column_class  
 	--,ptpc.parent_process_count  -- for debug purposes
-	--,pfte.relation_name         -- for debug purposes
     -- case when pfte.field_name is not null and process_block ='_A_'  then pdc.column_name  -- legacy generator compatible  (Stage = Target, will fail on multiple mappings to same target)
 	,case when pfte.field_name is not null then pfte.field_name 
 		  when relation_to_process ='/' then pdc.column_name 
@@ -68,6 +67,7 @@ select distinct
 	,pdc.column_block 
 	,pfte.field_name 
 	,pfte.field_type 
+	,pfte.relation_name as field_relation_name         -- for debug purposes
 	,pfte.needs_encryption
 	,pfte.prio_in_key_hash 
 	,pfte.prio_in_diff_hash 

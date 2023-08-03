@@ -38,9 +38,9 @@ select
 		  when column_mapping_count>1    then '/'
 		  								 else '*' end as relation_name
 	,upper(coalesce (column_type,field_type)) as column_type
-	,coalesce(to_number(prio_in_key_hash,'9'),0) as prio_in_key_hash
+	,coalesce(to_number(prio_in_key_hash,'9'),50000) as prio_in_key_hash
 	,coalesce(exclude_from_key_hash::boolean,false) as exclude_from_key_hash
-	,coalesce(to_number(prio_in_diff_hash,'9'),0) as prio_in_diff_hash
+	,coalesce(to_number(prio_in_diff_hash,'9'),50000) as prio_in_diff_hash
 	,coalesce(exclude_from_change_detection::boolean,false) as exclude_from_change_detection
 	,coalesce(needs_encryption::boolean,false) as needs_encryption
 	,field_comment

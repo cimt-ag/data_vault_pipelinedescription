@@ -33,6 +33,7 @@ select 	base .pipeline_name,
 	base .column_block,
 	base .field_name,
 	base .field_type,
+	base .field_relation_name,
 	base .needs_encryption,
 	base .prio_in_key_hash,
 	base .prio_in_diff_hash
@@ -52,6 +53,7 @@ select
 	base .column_block,
 	base .field_name,
 	base .field_type,
+	base .field_relation_name,
 	base .needs_encryption,
 	base .prio_in_key_hash,
 	base .prio_in_diff_hash

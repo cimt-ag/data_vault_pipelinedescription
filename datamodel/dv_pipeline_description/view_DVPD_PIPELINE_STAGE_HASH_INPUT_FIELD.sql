@@ -22,11 +22,9 @@
 
 create or replace view dv_pipeline_description.DVPD_PIPELINE_STAGE_HASH_INPUT_FIELD as
 
-with target_hash_columns as (
+with stage_hash_columns as (
 	select  pipeline_name
-		,process_block 
-		,field_group 
-		,recursion_name 
+		,relation_to_process 
 		,stage_column_name 
 		,table_name 
 		,table_stereotype
@@ -37,84 +35,70 @@ with target_hash_columns as (
 )
 , fields_for_link_key_hashes as (
 select distinct
- thc.pipeline_name 
- ,thc.process_block 
- ,thc.stage_column_name 
+ shc.pipeline_name 
+ ,shc.relation_to_process as relation_of_hash 
+ ,shc.stage_column_name 
+ ,dmhic.content_column 
+ ,dmhic.link_parent_order 
  ,ppstdmm.field_name
- ,ppstdmm.field_group 
+ ,ppstdmm.field_relation_name
  ,ppstdmm.prio_in_key_hash 
  ,ppstdmm.prio_in_diff_hash  
- ,ppstdmm.recursion_name 
- ,dmhic.content_column 
- ,dmhic.content_recursion_name 
- ,dmhic.link_parent_order 
- ,dmhic.recursive_parent_order 
-from target_hash_columns  thc
-join dv_pipeline_description.dvpd_pipeline_dv_hash_input_column dmhic on dmhic.pipeline_name = thc.pipeline_name 
-																  and dmhic.table_name =thc.table_name 
-																  and dmhic.key_column =thc.column_name 
-join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm on ppstdmm.pipeline_name =thc.pipeline_name 
-					and (ppstdmm.field_group = thc.field_group 	or ppstdmm.field_group = '_A_')
-					and ppstdmm.recursion_name =dmhic.content_recursion_name 
+ ,ppstdmm.relation_to_process as relation_of_content_to_process
+from stage_hash_columns  shc
+join dv_pipeline_description.dvpd_pipeline_dv_hash_input_column dmhic on dmhic.pipeline_name = shc.pipeline_name 
+																  and dmhic.table_name =shc.table_name 
+																  and dmhic.key_column =shc.column_name 
+join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm on ppstdmm.pipeline_name =shc.pipeline_name 
 					and ppstdmm.table_name = dmhic.content_table 
 					and ppstdmm.column_name = dmhic.content_column 
-where thc.table_stereotype  ='lnk' 
+					and (ppstdmm.relation_to_process =shc.relation_to_process or ppstdmm.field_relation_name='*' or shc.relation_to_process ='/' )
+where shc.table_stereotype  ='lnk' 
 )
 , fields_for_not_link_key_hashes as (
 select distinct
- thc.pipeline_name 
- ,thc.process_block 
- ,ppstdmm.process_block field_pb
- ,thc.field_group 
- ,ppstdmm.field_group  field_fg
- ,thc.stage_column_name 
+ shc.pipeline_name 
+ ,shc.relation_to_process as relation_of_hash  
+ ,shc.stage_column_name 
+ ,dmhic.content_column 
+ ,dmhic.link_parent_order 
  ,ppstdmm.field_name
+ ,ppstdmm.field_relation_name
  ,ppstdmm.prio_in_key_hash 
  ,ppstdmm.prio_in_diff_hash  
- ,ppstdmm.recursion_name
- ,dmhic.content_column 
- ,dmhic.content_recursion_name 
- ,dmhic.link_parent_order 
- ,dmhic.recursive_parent_order 
-from target_hash_columns  thc
-join dv_pipeline_description.dvpd_pipeline_dv_hash_input_column dmhic on dmhic.pipeline_name = thc.pipeline_name
-																	and  dmhic.table_name =thc.table_name 
-																  and dmhic.key_column =thc.column_name 
-join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm on ppstdmm.pipeline_name =thc.pipeline_name 
+ ,ppstdmm.relation_to_process as relation_of_content_to_process
+from stage_hash_columns  shc
+join dv_pipeline_description.dvpd_pipeline_dv_hash_input_column dmhic on dmhic.pipeline_name = shc.pipeline_name
+																	and  dmhic.table_name =shc.table_name 
+																  and dmhic.key_column =shc.column_name 
+join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm on ppstdmm.pipeline_name =shc.pipeline_name 
 					and ppstdmm.table_name = dmhic.content_table 
 					and ppstdmm.column_name = dmhic.content_column 
-					and ppstdmm.process_block = thc.process_block     
-where thc.table_stereotype  !='lnk' 
+					and ppstdmm.relation_to_process = shc.relation_to_process     
+where shc.table_stereotype  !='lnk' 
 )
 select 
  pipeline_name 
- ,process_block 
+ ,relation_of_hash 
  ,stage_column_name 
  ,field_name
- ,field_group 
  ,prio_in_key_hash 
  ,prio_in_diff_hash  
- ,recursion_name 
  ,content_column 
- ,content_recursion_name
  ,link_parent_order 
- ,recursive_parent_order 
  from fields_for_link_key_hashes
  union 
 select 
  pipeline_name 
- ,process_block 
+ ,relation_of_hash 
  ,stage_column_name 
  ,field_name
- ,field_group 
  ,prio_in_key_hash 
  ,prio_in_diff_hash  
- ,recursion_name 
  ,content_column 
- ,content_recursion_name
  ,link_parent_order 
- ,recursive_parent_order 
  from fields_for_not_link_key_hashes
+ order by 1,3,4
 ; 
 
 comment on view dv_pipeline_description.DVPD_PIPELINE_STAGE_HASH_INPUT_FIELD is
