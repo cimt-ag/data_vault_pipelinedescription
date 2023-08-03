@@ -68,4 +68,4 @@ comment on view dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN is
  'list of columns, that need to be in the stage table of the pipeline.';
 									
 									
--- select * from dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN order by pipeline_name,column_block,min_column_class,min_table_name,min_column_name,stage_column_name									
+-- select * from dv_pipeline_description.DVPD_PIPELINE_STAGE_TABLE_COLUMN order by pipeline_name,column_block,min_table_name,min_column_name,stage_column_name									
