@@ -409,7 +409,8 @@ An effectivity satellite is a sattellite on a link without any field mappings. T
 			  {"table_name": "order_product_sale_esat", "table_stereotype": "sat",   "satellite_parent_table": "order_product_link",
 			  													"driving_keys": ["HK_ORDER"]},
 			
-			  {"table_name": "order_product_link", "table_stereotype": "lnk",  "link_parent_tables": ["order_hub","product_hub"]},
+			  {"table_name": "order_product_link", "table_stereotype": "lnk", "link_key_column_name": "LK_order_product"
+                                                  , "link_parent_tables": ["order_hub","product_hub"]},
 		      {"table_name": "order_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_ORDER"},
 		      {"table_name": "product_hub", "table_stereotype": "hub",  "hub_key_column_name": "HK_PRODUCT"}
 		]

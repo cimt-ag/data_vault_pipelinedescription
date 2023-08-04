@@ -6,11 +6,20 @@ Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-
 
 ---------
 
-To create a toolset for loading data into a data vault model, we need to determine the completeness of the toolset. 
-Beside adressing the variety of source technologies and formats and the different data vault stereotypes we also need to fulfill  the requirements coming from the pure arrangement of data in the incoming data stream and how it must be distributed to the target model. 
-Generic modelling and loading approaches need to be able to provide at least the most common patterns. Universal descriptions like Data Vault Pipeline Description Standard (DVPD) should be able to cover all aspects.
+To create a toolset for loading data into a data vault model, we need to
+determine the completeness of the toolset. 
+One aspect of variety is the different possibilites how the source fields are mapped,
+when multiple relations
+Beside adressing the variety of source technologies and formats
+and the different data vault stereotypes we also need to fulfill 
+the requirements coming from the arrangement of data in the incoming
+data set and how it must be distributed to the target model. 
+Generic modelling and loading approaches need to be able to provide at 
+least the most common patterns. Universal descriptions like Data Vault 
+Pipeline Description Standard (DVPD) should be able to cover all aspects.
 
-In the follwing, the possible basic mapping patterns are described. 
+This investigation tries to provide a nearly complete list of 
+all possibile mapping patterns. 
 
 
 # Definitions
@@ -45,14 +54,70 @@ To define the variety of mappings, it is necessary to clarify the types of infor
 
 *2nd Note: data that is stored in dependent child key columns of a link is also an identification type, since it is needed to identify attributes, that are attached with the satellite*
 
-# Basic Taxonomy
-The basic taxonomy describes the following possibilities, how fields can be **part of the same row**
 
-- There must be at least one set of fields to describe the objects. 
-- There might be multiple sets of fields to describe objects of the same class (e.g. a child and its parent)
-- There might be multiple relations between the same partners corresponding to different roles/responsibilities in the relation (e.g. driver of a car and the owner of a car)
+# Scenario combinatotions
+Scenarios are described from the perspective of the hub, of the major object loaded. 
 
-### M1 Single main object with content only
+The model structure variations depend on:
+- satellites with data on the major hub (0-2)
+- number of partner hubs
+     - linked individually to the major object hub (P1-P2)
+     - linked together to the major object hub (T2)
+- Link with dependent child key (D)
+- satellites with data on links (Sl)
+- effectivity satellite on link (E)
+- satellites with data on partner hubs (Sh)
+- modelling approach for multiple relations to the same hub 
+    - multiple relations in the link (Rn)
+    - multiple links (and effectivity satellites) (Ln)
+    - multiple effectivity satellites on the same link (En)
+- recursive link to the major object (C)
+
+For fields in the source row, we can identify different mapping constellations
+- all fields are mapped to one or more exclusive targets 
+- some fields share target columns due to different relations to the same partner
+- some fields with exclusive targets are only valid for specific relations (VS)
+- some fields share target columns due to lack of normalization in the source.
+This can be ignored in the mapping variations, since it should be eliminated by generating multiple rows during extraction and staging. Nevertheless DVPD needs a declaration for normalization to instruct the process to do so. 
+    
+## Notation and calatog
+    <Hub and Hub satellite specification>-<link&sat for partner 1>-<link&sat for partner 2>
+```
+HS
+HS2
+HS-E-H
+HS-DE-H
+HS-S-H
+HS-S-HS
+
+HS-2RE-H
+HS-2E-H
+HS-2LE-H
+
+HS-2RE-HS
+HS-2RE-HSVs
+
+
+HS-2S-HSVs
+HS-ES-HSVs
+
+1P2ShVS-R2E-E
+1T2-E
+1T2VS-E
+1T2ShVS-E
+1T2ShVS-R2E
+
+Recursive
+1VS-C
+
+
+```
+
+# Taxonomy 
+
+## Single relation scenarios
+
+### (1) M1 Single main object with content only 
 The source row contains
 
 - 1 set of fields with the business key of object A
@@ -62,7 +127,18 @@ The source row contains
 
 Example source: Table with product data
 
-### M1E1 Single main object with partner relation 
+### (2) Single main object with content divided to two satellites
+
+The source row contains
+
+- 1 set of fields with the business key of object A
+- 1 set of fields with content of object A, some for sat1 , some for sat2 and
+somefor both
+
+![fig pending](./images/figure_pending.drawio.png)
+
+
+### (1P1-E) M1E1 Single main object with partner relation 
 The source row contains
 
 - 1 set of fields with the business key of object A
@@ -71,20 +147,21 @@ The source row contains
 
 ![m1e1 mapping](./images/source_mapping_m1e1.drawio.png)
 
-Example source: Table with employee data including the current department he is working 
+Example source: Table with employee data including the current department he is working
 
-### M1En Single main object with multiple relations
+### (1P1Sh-E)M1E1P1 Single main object and single partner object,both with content
 The source row contains
 
 - 1 set of fields with the business key of object A
 - 1 set of fields with content of object A
-- more then 1 set of fields with the business key of object B representing another or the same relation
+- 1 set of fields with the business key of object B
+- 1 set of fields with content of object B
 
-![m1en mapping](./images/source_mapping_m1en.drawio.png)
+![m1e1p1 mapping](./images/source_mapping_m1e1p1.drawio.png)
 
-Example source: Table with contract data including the id of the person,that receives the delivery and the id of the person that pays the bill
+Example source: Table with data of manufactured items and the product+product description, the item belongs to
 
-### M1LS1 Single main object with content on single relation
+### (1P1-Sl) M1LS1 Single main object with content on single relation
 The source row contains
 
 - 1 set of fields with the business key of object A
@@ -94,15 +171,49 @@ The source row contains
 
 ![m1ls1 mapping](./images/source_mapping_m1ls1.drawio.png)
 
-Example source: Table with billing data, the id of the sold object and the price it was sold
-
-### M1LSn Single main object with content on multiple relations
+### (1P1-DE) M1En Single main object with dependend child key relation
 The source row contains
 
 - 1 set of fields with the business key of object A
 - 1 set of fields with content of object A
-- 2 or more sets of fields with the business key of object B
-- 2 or more sets of field with content about different relations of A and B
+- more then 1 set of fields with the business key of object B representing another or the same relation
+
+![fig pending](./images/figure_pending.drawio.png)
+
+
+
+## Multiple relations between 2 hubs
+
+### Single main object with multiple relations, separated businieskeys
+The source row contains
+
+- 1 set of fields with the business key of object A
+- 1 set of fields with content of object A
+- 2 set of fields with the business key of object B representing 
+different relations
+
+Example source: Table with contract data including the id of the person,that receives the delivery and the id of the person that pays the bill
+
+#### (1P1-R2E) Modeled with multiple relations from 1 link
+
+![fig pending](./images/figure_pending.drawio.png)
+
+#### (1P1-E2) Modeled with 2 effectivity satellites
+
+![m1en mapping](./images/source_mapping_m1en.drawio.png)
+
+#### (1P1-E2) Modeled with 2 links and
+
+![m1en mapping](./images/source_mapping_m1en.drawio.png)
+
+###  (1P1-Sl2) M1LSn Single main object with content on multiple relations
+The source row contains
+
+- 1 set of fields with the business key of object A
+- 1 set of fields with content of object A
+- 2 sets of fields with the business key of object B representing 
+different relations
+- 2 sets of field with content about different the relations of A and B
 
 ![m1lsn mapping](./images/source_mapping_m1lsn.drawio.png)
 
@@ -119,6 +230,8 @@ The source row contains
 ![m1e1p1 mapping](./images/source_mapping_m1e1p1.drawio.png)
 
 Example source: Table with data of manufactured items and the product+product description, the item belongs to
+
+
 
 ### M1EnP1 Single main object with multiple relations and content for one partner
 The source row contains
@@ -159,16 +272,16 @@ The source row contains
 
 The following table shows all of the upper combinations in a comprehensive way.
 
-| business key fieldsets of object A(main object) | Content fieldsets of object A| business key fieldsets of object B(related object) | Content fieldsets of B|Content fieldsets for relation | Estimated ocurrence in regular projects | Covered by pattern |
-| :----: | :----: | :----: | :----: | :----: | :----: | ---- |
-| 1 | 1 | 0 | 0 | 0 | 15% | M1 |
-| 1 |1|1|0|0|55%|M1E1 |
-| 1 |1|1|0|1|10%|M1LS1|
-| 1 |1|1|1|0|20%|M1E1P1|
-| 1 |1|1|1|1|<1%|M1LS1+M1E1P1|
-| 1 |1|2+|0|0|2%|M1En |
-| 1 |1|2+|0|same as ident of B|<1%|M1LSn|
-| 1 |1|2+|1|0|<1%|M1EnP1|
-| 2+ |1|0|0|0|2%|MR1 |
-| 2+ |same as ident of A|0|0|0|<1%|Mn|
+| business key fieldsets of object A(main object) | Content fieldsets of object A | business key fieldsets of object B(related object) | Content fieldsets of B  | Content fieldsets for relation | Estimated ocurrence in regular projects | Covered by pattern  |
+|:---------------------------------------------:|:-----------------------:|:-------------------------------:|:-----------------------:|:------------:|:-----------:|---------------------|
+|                        1                        |                1                 |                         0                          |            0            |               0                |                   15%                   | M1                  |
+|                        1                        |                1                 |                         1                          |            0            |               0                |                   55%                   | M1E1                |
+|                        1                        |                1                 |                         1                          |            0            |               1                |                   10%                   | M1LS1               |
+|                        1                        |                1                 |                         1                          |            1            |               0                |                   20%                   | M1E1P1              |
+|                        1                        |                1                 |                         1                          |            1            |               1                |                   <1%                   | M1LS1+M1E1P1        |
+|                        1                        |                1                 |                         2+                         |            0            |               0                |                   2%                    | M1En                |
+|                        1                        |                1                 |                         2+                         |            0            |       same as ident of B       |                   <1%                   | M1LSn               |
+|                        1                        |                1                 |                         2+                         |            1            |               0                |                   <1%                   | M1EnP1              |
+|                       2+                        |                1                 |                         0                          |            0            |               0                |                   2%                    | MR1                 |
+|                       2+                        |        same as ident of A        |                         0                          |            0            |               0                |                   <1%                   | Mn                  |
 

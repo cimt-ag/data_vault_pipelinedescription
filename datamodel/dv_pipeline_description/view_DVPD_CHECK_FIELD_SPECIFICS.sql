@@ -44,8 +44,7 @@ pipeline_name
 ,exclude_from_change_detection
 ,needs_encryption 
 ,string_agg( field_name,'|') field_list
-,string_agg(recursion_name,'|') recursion_list
-,string_agg(field_group,'|') field_group_list
+--,string_agg(relation_name,'|') relation_list
 from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm
 group by 1,2,3,4,5,6,7,8,9
 )

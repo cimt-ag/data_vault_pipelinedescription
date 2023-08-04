@@ -23,7 +23,7 @@ create or replace view dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_DV
 
 -- EKI columns for satellites
 select 	base .pipeline_name,
-	base .process_block,
+	base .relation_to_process,
 	base .table_name,
 	base .table_stereotype,
 	base .column_name,
@@ -31,10 +31,9 @@ select 	base .pipeline_name,
 	base .stage_column_name,
 	base .column_type,
 	base .column_block,
-	base .field_group,
-	base .recursion_name,
 	base .field_name,
 	base .field_type,
+	base .field_relation_name,
 	base .needs_encryption,
 	base .prio_in_key_hash,
 	base .prio_in_diff_hash
@@ -44,7 +43,7 @@ union
 -- additional stage columns for encrypted fields, that are distributed to more then one table
 select
 	base .pipeline_name,
-	base .process_block,
+	base .relation_to_process,
 	base .table_name,
 	base .table_stereotype,
 	base .column_name,
@@ -52,17 +51,16 @@ select
 	xenc .content_stage_column_name  stage_column_name,
 	base .column_type,
 	base .column_block,
-	base .field_group,
-	base .recursion_name,
 	base .field_name,
 	base .field_type,
+	base .field_relation_name,
 	base .needs_encryption,
 	base .prio_in_key_hash,
 	base .prio_in_diff_hash
 from dv_pipeline_description.xenc_pipeline_process_field_to_encryption_key_mapping xenc
 join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping_base base 
 												on base .pipeline_name = xenc .pipeline_name 
-												and base .process_block  = xenc .process_block 
+												and base .relation_to_process  = xenc .relation_to_process 
 												and base.table_name = xenc.content_table_name 
 												and base .field_name = xenc.field_name 
 												and base.stage_column_name = xenc.origin_content_stage_column_name 
@@ -73,4 +71,4 @@ comment on view dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_
  '[Encryption Extention] Additional mapping of field to stage to target column for every process block, table, pipeline ';
 
 
--- select * from dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_ADDITION order by pipeline,table_name,process_block;										
+-- select * from dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_ADDITION order by pipeline,table_name,relation_to_process;										

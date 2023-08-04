@@ -48,8 +48,7 @@ INSERT
 	field_name,
 	table_name,
 	column_name,
-	field_group,
-	recursion_name,
+	relation_name,
 	column_type,
 	prio_in_key_hash,
 	exclude_from_key_hash,
@@ -61,8 +60,7 @@ SELECT
 	field_name,
 	table_name,
 	column_name,
-	field_group,
-	recursion_name,
+	relation_name,
 	column_type,
 	prio_in_key_hash,
 	exclude_from_key_hash,
@@ -108,6 +106,7 @@ insert
 	link_key_column_name,
 	diff_hash_column_name,
 	satellite_parent_table,
+	tracked_relation_name,
 	is_link_without_sat,
 	is_enddated,
 	has_deletion_flag,
@@ -124,6 +123,7 @@ select
 	link_key_column_name,
 	diff_hash_column_name,
 	satellite_parent_table,
+	tracked_relation_name,
 	is_link_without_sat,
 	is_enddated,
 	has_deletion_flag,
@@ -135,19 +135,6 @@ from
 	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_raw;
 
 
-truncate table dv_pipeline_description.dvpd_pipeline_dv_table_field_group_raw;
-insert
-	into
-	dv_pipeline_description.dvpd_pipeline_dv_table_field_group_raw
-(pipeline_name,
-	table_name,
-	field_group)
-select
-	pipeline_name,
-	table_name,
-	field_group
-from
-	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_field_group_raw;
 
 
 truncate table dv_pipeline_description.dvpd_pipeline_dv_table_link_parent_raw;
@@ -157,16 +144,17 @@ insert
 (pipeline_name,
 	table_name,
 	parent_table_name,
-	is_recursive_relation,
-	recursion_name,link_parent_order,recursive_parent_order)
+	relation_name,
+	hub_key_column_name_in_link,
+	link_parent_order
+	)
 select
 	pipeline_name,
 	table_name,
 	parent_table_name,
-	is_recursive_relation,
-	recursion_name,
-	link_parent_order,
-	recursive_parent_order
+	relation_name,
+	hub_key_column_name_in_link,
+	link_parent_order
 from
 	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_link_parent_raw;
 
