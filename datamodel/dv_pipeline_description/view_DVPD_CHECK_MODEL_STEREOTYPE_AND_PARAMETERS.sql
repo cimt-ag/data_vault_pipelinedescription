@@ -23,7 +23,6 @@ create or replace view dv_pipeline_description.DVPD_CHECK_MODEL_STEREOTYPE_AND_P
 with link_parent_table_count as (
 select pipeline_name ,table_name ,count(link_parent_table)
 from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp
-where not is_recursive_relation 
 group by 1,2
 )
 -- key column declaration

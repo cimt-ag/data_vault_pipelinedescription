@@ -28,7 +28,7 @@ from dv_pipeline_description.dvpd_atmtst_ref_process_column_mapping
 ,result_data as (
 select 
     pwad.pipeline_name 
-	,process_block 
+	--,process_block 
 	,field_name 
 	,content_stage_column_name 
 	,encryption_key_stage_column_name
@@ -40,7 +40,7 @@ join dv_pipeline_description.XENC_PIPELINE_PROCESS_FIELD_TO_ENCRYPTION_KEY_MAPPI
 , reference_data as ( 
 select 
     pipeline_name 
-	,process_block 
+	--,process_block 
 	,field_name 
 	,content_stage_column_name 
 	,encryption_key_stage_column_name

@@ -62,15 +62,15 @@ VALUES
 				{"table_name": "rtjj_327_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_327_aaa"}
 				,{"table_name": "rtjj_327_aaa_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_327_aaa_hub"
 																				,"diff_hash_column_name": "RH_rtjj_327_aaa_sat"}
-				,{"table_name": "rtjj_327_aaa_bbb_r111_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_327_aaa_bbb",
+				,{"table_name": "rtjj_327_aaa_bbb_r111_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_327_aaa_bbb_r111",
 												"link_parent_tables": [	"rtjj_327_aaa_hub","rtjj_327_bbb_hub"]}
 				,{"table_name": "rtjj_327_aaa_bbb_r111_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_327_aaa_bbb_r111_lnk"
 																						,"tracked_relation_name":"R111"}
-				,{"table_name": "rtjj_327_aaa_bbb_r222_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_327_aaa_bbb",
+				,{"table_name": "rtjj_327_aaa_bbb_r222_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_327_aaa_bbb_r222",
 												"link_parent_tables": [	"rtjj_327_aaa_hub","rtjj_327_bbb_hub"]}
 				,{"table_name": "rtjj_327_aaa_bbb_r222_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_327_aaa_bbb_r222_lnk"
 																						,"tracked_relation_name":"R222"}
-				,{"table_name": "rtjj_327_aaa_bbb_r333_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_327_aaa_bbb",
+				,{"table_name": "rtjj_327_aaa_bbb_r333_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_327_aaa_bbb_r333",
 												"link_parent_tables": [	"rtjj_327_aaa_hub","rtjj_327_bbb_hub"]}
 				,{"table_name": "rtjj_327_aaa_bbb_r333_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_327_aaa_bbb_r333_lnk"
 																						,"tracked_relation_name":"R333"}

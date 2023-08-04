@@ -29,7 +29,7 @@ from dv_pipeline_description.dvpd_atmtst_ref_process_column_mapping
 select 
  pwad.pipeline_name 
 	,table_name 
-	,process_block 
+	--,process_block 
 	,column_name 
 	,column_type 
 	,column_class 
@@ -44,7 +44,7 @@ where column_class <>'meta'
 select 
  pipeline_name  
 	,table_name 
-	,process_block 
+	--,process_block 
 	,column_name 
 	,column_type 
 	,column_class 

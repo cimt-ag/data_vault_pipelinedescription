@@ -35,16 +35,15 @@ VALUES
 																					,"column_name": "BK_AAA"}]}
 		      ,{"field_name": "F2_BK_AAA_H1", 		"field_type": "Varchar(20)",	"needs_encryption":true, "targets": [{"table_name": "rxecd_69_aaa_hub"
 																					,"column_name": "BK_AAA"
-																					,"recursion_name": "HRCHY1"}]}		  
+																					,"relation_names": ["HRCHY1"]}]}		  
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_xenc_data", 
 		 "tables": [
 				{"table_name": "rxecd_69_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_69_aaa"}
 				,{"table_name": "rxecd_69_aaa_hierarchy_hlnk",	"table_stereotype": "lnk" ,"link_key_column_name": "LK_rxecd_69_aaa_hierarchy"
-																			,"link_parent_tables": ["rxecd_69_aaa_hub"]
-																			,"recursive_parents": [ {"table_name":"rxecd_69_aaa_hub"
-																										,"recursion_name": "HRCHY1"}]}
+																			,"link_parent_tables":  [ {"table_name":"rxecd_69_aaa_hub"},{"table_name":"rxecd_69_aaa_hub"
+																										,"relation_name": "HRCHY1"}]}
 				,{"table_name": "rxecd_69_aaa_hierarchy_esat",	"table_stereotype": "sat","satellite_parent_table": "rxecd_69_aaa_hierarchy_hlnk"
 																				,"driving_keys": ["HK_rxecd_69_aaa_HRCHY1"]}
 

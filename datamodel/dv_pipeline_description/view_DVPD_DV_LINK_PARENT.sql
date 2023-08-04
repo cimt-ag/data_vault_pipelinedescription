@@ -24,10 +24,9 @@ SELECT
 	DISTINCT 
  	table_name,
 	link_parent_table,
-	case when is_recursive_relation then hub_key_column_name||'_'||recursion_name 
+	case when relation_name not in ('/','*') then hub_key_column_name||'_'||relation_name 
 			else hub_key_column_name end hub_key_column_name_in_link,
-	is_recursive_relation,
-	recursion_name
+	relation_name
 FROM
 	dv_pipeline_description.dvpd_pipeline_dv_table_link_parent;
 
