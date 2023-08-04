@@ -4,6 +4,11 @@ mandantory,type,schema_name,name
 
 0,testdata,dv_pipeline_description,MODEL_PROFILE_TEST00
 
+1,testdata,dv_pipeline_description,ctst_220_r_topo_hub_relation_missing
+1,testdata,dv_pipeline_description,ctst_327_l_topo_hub_relation_missing
+1,testdata,dv_pipeline_description,ctst_527_d_topo_hub_relation_missing
+1,testdata,dv_pipeline_description,etst_100_r_topo_2_to_2
+
 1,testdata,dv_pipeline_description,test00_check_stereotype_and_parameters
 1,testdata,dv_pipeline_description,test01_check_model_relations
 1,testdata,dv_pipeline_description,test02_check_field_target_table
@@ -14,8 +19,6 @@ mandantory,type,schema_name,name
 1,testdata,dv_pipeline_description,test10_bad_model_profile_name
 1,testdata,dv_pipeline_description,test11_stage_schema_missing
 1,testdata,dv_pipeline_description,test15_sat_without_diff_hash
-
-
 
 1,testdata,dv_pipeline_description,test20_simple_hub_sat
 1,testdata,dv_pipeline_description,test21_simple_hub_with_2_sats
@@ -53,6 +56,21 @@ mandantory,type,schema_name,name
 1,testdata,dv_pipeline_description,test82_double_recursion_and_link
 1,testdata,dv_pipeline_description,test90_model_profile_on_pipeline
 1,testdata,dv_pipeline_description,test91_model_profile_on_table
+
+1,testdata,dv_pipeline_description,test_120_n_topo_sat
+1,testdata,dv_pipeline_description,test_185_n_topo_hub_subset_sat_incomplete
+1,testdata,dv_pipeline_description,test_220_r_topo_sat
+1,testdata,dv_pipeline_description,test_222_r_topo_sat_subset
+1,testdata,dv_pipeline_description,test_227_r_topo_hubsat_subset
+1,testdata,dv_pipeline_description,test_282_r_topo_sat_incomplete
+1,testdata,dv_pipeline_description,test_285_r_topo_hub_subset_sat_incomplete
+1,testdata,dv_pipeline_description,test_327_l_topo_hubsat_subset
+1,testdata,dv_pipeline_description,test_427_e_topo_hubsat_subset
+1,testdata,dv_pipeline_description,test_482_e_topo_sat_incomplete
+1,testdata,dv_pipeline_description,test_485_e_topo_hub_subset_sat_incomplete
+1,testdata,dv_pipeline_description,test_527_d_topo_hubsat_subset
+1,testdata,dv_pipeline_description,test_622_rc_topo_sat_subset
+
 
 0,data,dv_pipeline_description,COMPILER_SETTING_ENABLE_REFRESH
 
