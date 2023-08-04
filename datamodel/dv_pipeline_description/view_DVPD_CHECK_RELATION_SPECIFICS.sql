@@ -52,6 +52,14 @@ with declared_relations as (
 	where tracked_relation_name is not null
 	group by 1,2,3,4
 )
+,link_relation_count as (
+	select 
+	  pdtlp.pipeline_name 
+	 ,pdtlp.table_name
+	 ,sum(case when relation_name<>'*' then 1 else 0 end ) count_of_declared_relation_names
+	from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent  pdtlp 
+	group by 1,2
+)
 ,processes_of_link_parent as (
 	select 
 	  pdtlp.pipeline_name 
@@ -61,7 +69,7 @@ with declared_relations as (
 	from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent  pdtlp 
 	join dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN ppp_p on ppp_p.pipeline_name = pdtlp.pipeline_name 
 																and ppp_p.table_name = pdtlp.link_parent_table 
-	--order by 1,2,4															
+	order by 1,2,4															
 )
 ,collection_of_problems as (
 select -- satellites with processes that are not supported by parent 
@@ -79,21 +87,23 @@ left join dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN ppp_p on ppp_p.pipe
 															and ppp_p.relation_to_process = ppp_s.relation_to_process 
 where ppp_p.table_name is null	and pdt_s.satellite_parent_table is not null
 --order by 1,2,4			
-union
-select distinct-- links with relation names in the hub declaration
+unions
+select distinct-- links with declared relation names
   ppp_l.pipeline_name 
  ,ppp_l.table_name
  ,pdtlp.relation_name
  ,pdtlp.link_parent_table 
 -- ,polp.processable_relation -- for DEBUG
 from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN ppp_l
+join link_relation_count lrc on lrc.pipeline_name = ppp_l.pipeline_name
+							    and lrc.table_name = ppp_l.table_name
+							     and lrc.count_of_declared_relation_names>0 
 join dv_pipeline_description.dvpd_pipeline_dv_table_link_parent  pdtlp on pdtlp.pipeline_name = ppp_l.pipeline_name 
 															and pdtlp.table_name =ppp_l.table_name  
 left join processes_of_link_parent polp on polp.pipeline_name = ppp_l.pipeline_name
 								and polp.table_name = ppp_l.table_name
-								and (polp.processable_relation = pdtlp.relation_name or pdtlp.relation_name='*')
-where ppp_l.relation_to_process	='/' 
-and polp.table_name is null 							
+								and (polp.processable_relation = pdtlp.relation_name )
+where polp.table_name is null and  pdtlp.relation_name<>'*'
 union
 select -- links driven by satellites
   ppp_l.pipeline_name 
@@ -101,14 +111,18 @@ select -- links driven by satellites
  ,ppp_l.relation_to_process 
  ,polp.table_name parent_table_name
 from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN ppp_l
+join link_relation_count lrc on lrc.pipeline_name = ppp_l.pipeline_name
+							    and lrc.table_name = ppp_l.table_name
+							     and lrc.count_of_declared_relation_names=0 
 join dv_pipeline_description.dvpd_pipeline_dv_table  pdt_l on pdt_l.pipeline_name = ppp_l.pipeline_name 
 															and pdt_l.table_name =ppp_l.table_name  
 															and pdt_l.table_stereotype ='lnk'
 left join processes_of_link_parent polp on polp.pipeline_name = ppp_l.pipeline_name
 								and polp.table_name = ppp_l.table_name
 								and polp.processable_relation = ppp_l.relation_to_process
-where polp.table_name is null								
---order by 1,2,3								
+where ppp_l.relation_to_process	<>'/'  
+and polp.table_name is null								
+order by 1,2,3								
 )								
 -- >>>> Final presentation as check entry <<<<<	
 select
