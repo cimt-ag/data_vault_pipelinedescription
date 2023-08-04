@@ -54,7 +54,7 @@ select distinct
 	,'/' as relation_to_process
 	,'link with explicit parent mapping' relation_origin
 from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp
-where relation_name <> '/'
+where relation_name <> '*'
 )
 ,tables_without_explicit_processes as(
 select distinct 

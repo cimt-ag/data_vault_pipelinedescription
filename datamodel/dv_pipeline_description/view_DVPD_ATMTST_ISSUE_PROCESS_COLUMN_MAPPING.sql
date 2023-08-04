@@ -29,7 +29,7 @@ from dv_pipeline_description.dvpd_atmtst_ref_process_column_mapping
 select 
  pwad.pipeline_name 
 	,table_name 
-	,process_block 
+	--,process_block 
 	,column_name 
 	,stage_column_name
 	,field_name
@@ -41,7 +41,7 @@ join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping pps
 select 
  pipeline_name  
 ,table_name 
-	,process_block 
+	--,process_block 
 	,column_name 
 	,stage_column_name
 	,field_name

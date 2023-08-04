@@ -28,18 +28,18 @@ from dv_pipeline_description.dvpd_atmtst_ref_stage_hash_input_field
 ,result_data as (
 select 
 	pshif.pipeline_name 
-	,process_block
+	--,relation_to_process
 	,stage_column_name
 	,field_name
-	,prio_in_key_hash
-	,prio_in_diff_hash
+	,mod(prio_in_key_hash,50000) prio_in_key_hash
+	,mod(prio_in_diff_hash,50000) prio_in_diff_hash
 from  pipelines_with_atmtst_data pwad
 join dv_pipeline_description.dvpd_pipeline_stage_hash_input_field pshif on pshif.pipeline_name  =pwad.pipeline_name 
 )   													
 , reference_data as ( 
 select 
 	pipeline_name 
-	,process_block
+	--,relation_to_process
 	,stage_column_name
 	,field_name
 	,prio_in_key_hash
