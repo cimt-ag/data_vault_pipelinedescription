@@ -301,6 +301,11 @@ Depending on mapped fields and the properties this can be a
 1. Just a list of the table_names of all hubs, this link is connecting.
 2. A list of json objects with full link parent property declarations 
 
+**tracked_relation_names[]**
+(optional)
+<br>List of relations, this link will track. This is mainly used, when parent hubs participate on more
+relation_names, then there should be tracked. In that case, the relations 
+
 → link_parent_tables[]
 
 The order of the tables in the list can be relevant to the hashing order of the link key (depends on processing engine and project conventions).  In case, the processing engine enforces its own order, it should issue a warning, when the final order differs from the declarated.
