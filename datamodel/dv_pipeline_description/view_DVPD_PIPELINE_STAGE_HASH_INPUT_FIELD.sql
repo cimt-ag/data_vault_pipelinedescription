@@ -52,7 +52,7 @@ join dv_pipeline_description.dvpd_pipeline_dv_hash_input_column dmhic on dmhic.p
 join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm on ppstdmm.pipeline_name =shc.pipeline_name 
 					and ppstdmm.table_name = dmhic.content_table 
 					and ppstdmm.column_name = dmhic.content_column 
-					and (ppstdmm.relation_to_process =shc.relation_to_process or ppstdmm.field_relation_name='*' or shc.relation_to_process ='/' )
+					and (ppstdmm.relation_to_process =shc.relation_to_process or ppstdmm.field_relation_name='*' or ppstdmm.has_explicit_relation_name )
 where shc.table_stereotype  ='lnk' 
 )
 , fields_for_not_link_key_hashes as (

@@ -28,6 +28,7 @@ select distinct
 	,pdt.table_name
 	,pdt.table_stereotype 
 	,relation_name as relation_to_process
+	,true as has_explicit_relation_names
 	,'explicit field mapping' relation_origin
 from dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte
 join dv_pipeline_description.dvpd_pipeline_dv_table pdt  on pdt.table_name =pfte.table_name 
@@ -41,6 +42,7 @@ select distinct
 	,pdt.table_name 
 	,pdt.table_stereotype 
 	,tracked_relation_name as relation_to_process
+	,true as has_explicit_relation_names
 	,'tracked_relation_name' relation_origin
 from dv_pipeline_description.dvpd_pipeline_dv_table pdt
 where tracked_relation_name is not null
@@ -52,6 +54,7 @@ select distinct
 	,pdtlp.table_name 
 	,'lnk' 
 	,'/' as relation_to_process
+	,true as has_explicit_relation_names
 	,'link with explicit parent mapping' relation_origin
 from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp
 where relation_name <> '*'
@@ -73,6 +76,7 @@ select
 	,twoep.table_name
 	,twoep.table_stereotype 
 	,twep.relation_to_process 
+	,false as has_explicit_relation_names
 	,'driven by sat'::text relation_origin
 from tables_without_explicit_processes  twoep
 join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name = twoep.pipeline_name 
@@ -94,17 +98,40 @@ select pipeline_name
 	,table_stereotype
 from link_processes_derived_from_satellite 
 )
+,link_explicit_parent_count as (
+select 	pdtlp.pipeline_name
+	,pdtlp.table_name
+	,count(1) parent_count
+from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp
+where (pdtlp.pipeline_name,pdtlp.link_parent_table ) in (Select pipeline_name,table_name from tables_with_explicit_processes)
+--and pdtlp.pipeline_name='test63_fg_drive_scenario_3' --													 <<<<<<<<<<<<<<<<<<<<<DEBUG										     
+group by 1,2
+)
+,link_explicit_parent_count_per_parent_process as (
+select 	pdtlp.pipeline_name
+	,pdtlp.table_name
+	,twep.relation_to_process
+	,count(distinct twep.table_name) parent_count_per_process
+from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp 
+join tables_with_explicit_processes twep on twep.pipeline_name =pdtlp.pipeline_name 
+										     and twep.table_name  = pdtlp.link_parent_table
+--where pdtlp.pipeline_name='test63_fg_drive_scenario_3' --														 <<<<<<<<<<<<<<<<<<<<<DEBUG										     
+group by 1,2,3
+)
 ,link_processes_driven_by_hub as (
 select 	lndbs.pipeline_name
 	,lndbs.table_name
 	,lndbs.table_stereotype
-	,twep.relation_to_process
+	,lepcppp.relation_to_process
+	,false as has_explicit_relation_names
 	,'driven by hub'::text relation_origin
 from links_not_driven_by_satellite lndbs
-join dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp on pdtlp.table_name = lndbs.table_name 
-													and pdtlp.pipeline_name = lndbs .pipeline_name 
-join tables_with_explicit_processes twep on twep.pipeline_name =lndbs.pipeline_name 
-										     and twep.table_name  = pdtlp.link_parent_table
+join link_explicit_parent_count lepc on  lepc.pipeline_name =lndbs.pipeline_name 
+										     and lepc.table_name  = lndbs.table_name	 										     
+join link_explicit_parent_count_per_parent_process lepcppp on lepcppp.pipeline_name =lndbs.pipeline_name 
+									     and lepcppp.table_name  = lndbs.table_name	
+								     and lepcppp.parent_count_per_process = lepc.parent_count
+--where lndbs.pipeline_name='test64_fg_drive_scenario_4' --														 <<<<<<<<<<<<<<<<<<<<<DEBUG										     
 )										
 , sat_processes_driven_by_parent as (
 -- parents with explicit processes
@@ -113,6 +140,7 @@ select
 	,twoep.table_name 
 	,twoep.table_stereotype 
 	,twep.relation_to_process
+	,false as has_explicit_relation_names
     ,'driven by explicit parent'::text relation_origin
 from tables_without_explicit_processes  twoep
 join tables_with_explicit_processes twep  on twep.pipeline_name = twoep.pipeline_name 
@@ -124,6 +152,7 @@ select
 	,twoep.table_name 
 	,twoep.table_stereotype 
 	,lpdbh.relation_to_process
+	,false as has_explicit_relation_names
     ,'driven by explicit parent'::text relation_origin
 from tables_without_explicit_processes  twoep
 join link_processes_driven_by_hub lpdbh  on lpdbh.pipeline_name = twoep.pipeline_name 
@@ -145,6 +174,7 @@ select
 	,twoep.table_name 
 	,twoep.table_stereotype 
 	,'/' :: varchar as relation_to_process
+	,false as has_explicit_relation_names
     ,'simple'::varchar relation_origin
 from tables_without_explicit_processes twoep
 left join all_special_processes asp on asp.pipeline_name = twoep.pipeline_name

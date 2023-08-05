@@ -33,11 +33,11 @@ VALUES
 	"fields": [
 		      {"field_name": "F1_BK_AAA_L1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_63_aaa_hub"
 																					,"column_name": "BK_AAA"
-																				 	,"relation_names":["R111"]}]}
+																				 	,"relation_names":["/"]}]}
 		      ,{"field_name": "F2_BK_AAA_L2", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_63_aaa_hub"
 																					,"column_name": "BK_AAA"
 																				 	,"relation_names":["R222"]}]}		 	  
-		      ,{"field_name": "F3_BK_BBB", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_63_bbb_hub","relation_names":["R111"]}]}		 
+		      ,{"field_name": "F3_BK_BBB", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_63_bbb_hub","relation_names":["/"]}]}		 
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
