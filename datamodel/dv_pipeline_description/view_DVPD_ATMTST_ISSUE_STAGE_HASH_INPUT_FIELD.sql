@@ -28,7 +28,7 @@ from dv_pipeline_description.dvpd_atmtst_ref_stage_hash_input_field
 ,result_data as (
 select 
 	pshif.pipeline_name 
-	--,relation_to_process
+	,relation_of_hash
 	,stage_column_name
 	,field_name
 	,mod(prio_in_key_hash,50000) prio_in_key_hash
@@ -39,7 +39,7 @@ join dv_pipeline_description.dvpd_pipeline_stage_hash_input_field pshif on pshif
 , reference_data as ( 
 select 
 	pipeline_name 
-	--,relation_to_process
+	,replace(relation_of_hash,'_A_','/') as relation_of_hash
 	,stage_column_name
 	,field_name
 	,prio_in_key_hash

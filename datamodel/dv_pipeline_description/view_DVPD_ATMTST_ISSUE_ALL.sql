@@ -39,7 +39,7 @@ select
 	,'02 Process Column Mapping' issue_class
 	,rank() over (order by table_name,/*process_block,*/column_name ) issue_order
 	,	coalesce (table_name,'#missing#') || ' | ' ||
-		-- coalesce (process_block,'#missing#') || ' | ' ||
+		coalesce (relation_to_process,'#missing#') || ' | ' ||
 		coalesce (column_name,'#missing#') || ' | ' ||
 		coalesce (stage_column_name,'#missing#') || ' | ' ||
 		coalesce (field_name,'') result_string
@@ -51,7 +51,7 @@ select
 	pipeline_name
 	,'03 Hash Input fields' issue_class
 	,rank() over (order by /*process_block,*/stage_column_name,field_name ) issue_order
-	,--coalesce(process_block,'#missing#') || ' | ' ||
+	,coalesce(relation_of_hash,'#missing#') || ' | ' ||
 	 coalesce(stage_column_name,'#missing#') || ' | ' ||
 	 coalesce(field_name,'#missing#') || ' | ' ||
 	 coalesce(prio_in_key_hash,-1) || ' | ' ||
@@ -81,7 +81,7 @@ select
 	,'10 Encryption Table Process Column Mapping' issue_class
 	,rank() over (order by table_name,/*process_block,*/column_name ) issue_order
 	,	coalesce (table_name,'#missing#') || ' | ' ||
-		--coalesce (process_block,'#missing#') || ' | ' ||
+		coalesce (relation_to_process,'#missing#') || ' | ' ||
 		coalesce (column_name,'#missing#') || ' | ' ||
 		coalesce (column_type,'#missing#') || ' | ' ||
 		coalesce (column_class,'#missing#') || ' | ' ||
@@ -96,7 +96,7 @@ select
 	 pipeline_name
 	,'11 Field to Encryption Key mapping' issue_class
 	,rank() over (order by /*process_block,*/field_name,content_stage_column_name ) issue_order
-	,	--coalesce (process_block,'#missing#') || ' | ' ||
+	,	coalesce (relation_to_process,'#missing#') || ' | ' ||
 		coalesce (field_name,'#missing#') || ' | ' ||
 		coalesce (content_stage_column_name,'#missing#') || ' | ' ||
 		coalesce (encryption_key_stage_column_name,'#missing#') || ' | ' ||

@@ -90,7 +90,7 @@ def deploy_job_instance_db_objects():
 
 
 @cimtjobinstance_job
-def main(file_to_deploy="#all#", file_to_stop=None, die_on_error=False, **kwargs):
+def main(file_to_deploy="#all#", file_to_stop_before=None, die_on_error=False, **kwargs):
 
     deploy_job_instance_db_objects();
 
@@ -110,8 +110,8 @@ def main(file_to_deploy="#all#", file_to_stop=None, die_on_error=False, **kwargs
         for file in sorted(base_path.iterdir()):
             try:
                 in_preparation=False
-                if file.stem==file_to_stop:
-                    print("Stopped deploy. Reched  stop file:",file_to_stop)
+                if file.stem==file_to_stop_before:
+                    print("Stopped deploy. Reched  stop file:", file_to_stop_before)
                     break
                 if os.stat(file).st_size != 0 and (file_to_deploy=="#all#" or file.stem == file_to_deploy):
                     read_file(file)
@@ -153,10 +153,12 @@ def main(file_to_deploy="#all#", file_to_stop=None, die_on_error=False, **kwargs
 
 
 if __name__ == '__main__':
-    main(die_on_error=True)
+    #main(die_on_error=True)
 
-    #main(file_to_stop='00_dvpd_90_deploy_dvpd_automated_testing_base',die_on_error=True)
-    #main(file_to_stop='00_dvpd_95_testcases_dvpd',die_on_error=True)
+    #main(file_to_stop='00_dvpd_90_deploy_dvpd_automated_testing_base',die_on_error=True) # leave out all automated testing
+
+    main(file_to_stop_before='00_dvpd_95_testcases_dvpd', die_on_error=True) # just leave out testcases
+
     #main(file_to_deploy='00_dvpd_89_deploy_dvpd_checks_final.csv', die_on_error=True)
-    #main(file_to_deploy='00_dvpd_95_testcases_dvpd',die_on_error=True)
+
     #main(file_to_deploy='00_dvpd_95_testcases_xenc',die_on_error=True)
