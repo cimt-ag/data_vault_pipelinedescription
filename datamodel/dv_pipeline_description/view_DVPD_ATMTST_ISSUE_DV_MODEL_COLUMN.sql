@@ -63,10 +63,10 @@ select * from reference_data
 except 
 select * from result_data 
 )
-select *,'not in reference' atmtst_issue_message
+select *,'<-- result' atmtst_issue_message
 from not_in_reference 
 union
-select *,'only in reference' atmtst_issue_message
+select *,'<-- reference' atmtst_issue_message
 from only_in_reference 
 
 );

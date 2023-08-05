@@ -32,26 +32,23 @@ VALUES
  
 	"fields": [
 		      {"field_name": "F1_BK_AAA_L1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_70_aaa_hub"
-																					,"column_name": "BK_AAA"
-																				 	,"field_groups":["fg1"]}]}
+																					,"column_name": "BK_AAA"}]}
 		      ,{"field_name": "F2_BK_AAA_L2", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_70_aaa_hub"
 																					,"column_name": "BK_AAA"
-																				 	,"field_groups":["fg2"]}]}		 	  
+																				 	,"relation_names":["R222"]}]}		 	  
 		      ,{"field_name": "F3_BK_AAA_H1_L1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_70_aaa_hub"
 																					,"column_name": "BK_AAA"
-																				 	,"field_groups":["fg1"]
-																					,"recursion_name": "HRCHY1"}]}		  
+																				 	,"relation_names":["HRCHY1"]
+																					}]}		  
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
 				{"table_name": "rtjj_70_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_70_aaa"}
 				,{"table_name": "rtjj_70_aaa_hierarchy_hlnk",	"table_stereotype": "lnk" ,"link_key_column_name": "LK_rtjj_70_aaa_hierarchy"
-																			,"link_parent_tables": ["rtjj_70_aaa_hub"]
-																			,"recursive_parents": [ {"table_name":"rtjj_70_aaa_hub"
-																										,"recursion_name": "HRCHY1"}]}
-				,{"table_name": "rtjj_70_aaa_hierarchy_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_70_aaa_hierarchy_hlnk"
-																				 ,"tracked_field_groups":["fg1"]}
+																			,"link_parent_tables": [{"table_name":"rtjj_70_aaa_hub","relation_name": "/"},
+																									{"table_name":"rtjj_70_aaa_hub","relation_name": "HRCHY1"}]}
+				,{"table_name": "rtjj_70_aaa_hierarchy_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_70_aaa_hierarchy_hlnk"}
 
 				]
 		}
@@ -73,30 +70,30 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rvlt_test_jj","rtjj_70_aaa_hub",8,"business_key","BK_AAA","VARCHAR(20)"]
  ],
  "process_column_mapping": [
-         ["rtjj_70_aaa_hierarchy_esat","_FG1","LK_RTJJ_70_AAA_HIERARCHY","LK_RTJJ_70_AAA_HIERARCHY_FG1",null],
-         ["rtjj_70_aaa_hierarchy_hlnk","_FG1","LK_RTJJ_70_AAA_HIERARCHY","LK_RTJJ_70_AAA_HIERARCHY_FG1",null],
-         ["rtjj_70_aaa_hierarchy_hlnk","_FG1","HK_RTJJ_70_AAA","HK_RTJJ_70_AAA_FG1",null],
-         ["rtjj_70_aaa_hierarchy_hlnk","_FG1","HK_RTJJ_70_AAA_HRCHY1","HK_RTJJ_70_AAA_HRCHY1_FG1",null],
-         ["rtjj_70_aaa_hub","_FG1","HK_RTJJ_70_AAA","HK_RTJJ_70_AAA_FG1",null],
-         ["rtjj_70_aaa_hub","_FG1","BK_AAA","F1_BK_AAA_L1","F1_BK_AAA_L1"],
-         ["rtjj_70_aaa_hub","_FG2","HK_RTJJ_70_AAA","HK_RTJJ_70_AAA_FG2",null],
-         ["rtjj_70_aaa_hub","_FG2","BK_AAA","F2_BK_AAA_L2","F2_BK_AAA_L2"],
-         ["rtjj_70_aaa_hub","_HRCHY1_FG1","HK_RTJJ_70_AAA","HK_RTJJ_70_AAA_HRCHY1_FG1",null],
-         ["rtjj_70_aaa_hub","_HRCHY1_FG1","BK_AAA","F3_BK_AAA_H1_L1","F3_BK_AAA_H1_L1"]
+         ["rtjj_70_aaa_hierarchy_esat","/","LK_RTJJ_70_AAA_HIERARCHY","LK_RTJJ_70_AAA_HIERARCHY",null],
+         ["rtjj_70_aaa_hierarchy_hlnk","/","LK_RTJJ_70_AAA_HIERARCHY","LK_RTJJ_70_AAA_HIERARCHY",null],
+         ["rtjj_70_aaa_hierarchy_hlnk","/","HK_RTJJ_70_AAA","HK_RTJJ_70_AAA",null],
+         ["rtjj_70_aaa_hierarchy_hlnk","/","HK_RTJJ_70_AAA_HRCHY1","HK_RTJJ_70_AAA_HRCHY1",null],
+         ["rtjj_70_aaa_hub","/","HK_RTJJ_70_AAA","HK_RTJJ_70_AAA",null],
+         ["rtjj_70_aaa_hub","/","BK_AAA","F1_BK_AAA_L1","F1_BK_AAA_L1"],
+         ["rtjj_70_aaa_hub","R222","HK_RTJJ_70_AAA","HK_RTJJ_70_AAA_R222",null],
+         ["rtjj_70_aaa_hub","R222","BK_AAA","F2_BK_AAA_L2","F2_BK_AAA_L2"],
+         ["rtjj_70_aaa_hub","HRCHY1","HK_RTJJ_70_AAA","HK_RTJJ_70_AAA_HRCHY1",null],
+         ["rtjj_70_aaa_hub","HRCHY1","BK_AAA","F3_BK_AAA_H1_L1","F3_BK_AAA_H1_L1"]
  ], 
 "stage_table_column": [
          ["F1_BK_AAA_L1","VARCHAR(20)",8,"F1_BK_AAA_L1","VARCHAR(20)",false],
          ["F2_BK_AAA_L2","VARCHAR(20)",8,"F2_BK_AAA_L2","VARCHAR(20)",false],
          ["F3_BK_AAA_H1_L1","VARCHAR(20)",8,"F3_BK_AAA_H1_L1","VARCHAR(20)",false],
-         ["HK_RTJJ_70_AAA_FG1","CHAR(28)",2,null,null,false],
-         ["HK_RTJJ_70_AAA_FG2","CHAR(28)",2,null,null,false],
-         ["HK_RTJJ_70_AAA_HRCHY1_FG1","CHAR(28)",2,null,null,false],
-         ["LK_RTJJ_70_AAA_HIERARCHY_FG1","CHAR(28)",2,null,null,false]
+         ["HK_RTJJ_70_AAA","CHAR(28)",2,null,null,false],
+         ["HK_RTJJ_70_AAA_R222","CHAR(28)",2,null,null,false],
+         ["HK_RTJJ_70_AAA_HRCHY1","CHAR(28)",2,null,null,false],
+         ["LK_RTJJ_70_AAA_HIERARCHY","CHAR(28)",2,null,null,false]
  ],
  "stage_hash_input_field": [
-         ["_FG1","HK_RTJJ_70_AAA_FG1","F1_BK_AAA_L1",0,0],
-         ["_FG1","LK_RTJJ_70_AAA_HIERARCHY_FG1","F1_BK_AAA_L1",0,0],
-         ["_FG1","LK_RTJJ_70_AAA_HIERARCHY_FG1","F3_BK_AAA_H1_L1",0,0],
-         ["_FG2","HK_RTJJ_70_AAA_FG2","F2_BK_AAA_L2",0,0],
-         ["_HRCHY1_FG1","HK_RTJJ_70_AAA_HRCHY1_FG1","F3_BK_AAA_H1_L1",0,0]
+         ["/","HK_RTJJ_70_AAA","F1_BK_AAA_L1",0,0],
+         ["/","LK_RTJJ_70_AAA_HIERARCHY","F1_BK_AAA_L1",0,0],
+         ["/","LK_RTJJ_70_AAA_HIERARCHY","F3_BK_AAA_H1_L1",0,0],
+         ["R222","HK_RTJJ_70_AAA_R222","F2_BK_AAA_L2",0,0],
+         ["HRCHY1","HK_RTJJ_70_AAA_HRCHY1","F3_BK_AAA_H1_L1",0,0]
   ]    }');

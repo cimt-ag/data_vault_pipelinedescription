@@ -22,7 +22,7 @@
 create or replace view dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE as 
 
 with parent_table_process_count as (
-select 
+select -- parent of link
 	parent_plan.pipeline_name 
 	,pdtlp.table_name 
 	,pdtlp.link_parent_table as parent_table_name 
@@ -35,7 +35,7 @@ join dv_pipeline_description.dvpd_pipeline_dv_table parent_pdt on parent_pdt.pip
 															 and parent_pdt.table_name = pdtlp.link_parent_table 	
 group by 1,2,3,4															 
 union
-select 
+select -- parent of satellite
 	parent_plan.pipeline_name 
 	,pdt.table_name 
 	,pdt.satellite_parent_table as parent_table_name 

@@ -51,5 +51,5 @@ select
 	field_relation_name
 from dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping
 join youngest_pipeline using (pipeline_name)
-where pipeline_name ~ '.+st_\d{3}_.*'	
+--where pipeline_name ~ '.+st_\d{3}_.*'	
 order by pipeline_name ,table_name, relation_to_process,column_block,column_name;
