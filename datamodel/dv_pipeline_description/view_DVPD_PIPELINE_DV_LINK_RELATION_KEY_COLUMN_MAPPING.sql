@@ -29,6 +29,14 @@ from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent
 where relation_name<>'*'
 --order by pipeline_name ,table_name 
 )
+, link_parent_count as (
+select distinct pipeline_name ,table_name
+	,link_parent_table
+	,count(1) parent_reference_count
+from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent
+group by 1,2,3
+--order by pipeline_name ,table_name 
+)
 , assignment_for_direct_parent_relations as (
 select 
 	lwdprd.pipeline_name
@@ -37,7 +45,10 @@ select
 	,pdt.link_key_column_name
 	,pdt.link_key_column_name as link_key_stage_column_name
 	,pdtlp.link_parent_table
-	,pdtlp.relation_name as link_parent_relation_name
+	,case when pdtlp.relation_name<>'*' then pdtlp.relation_name 
+		  when 	lpc.parent_reference_count>1 then '/'
+		  else '*' 
+			end as link_parent_relation_name
 	,pdt_parent.hub_key_column_name
 	,case when hub_key_column_name_in_link is not null then hub_key_column_name_in_link
 		  when pdtlp.relation_name not in('*','/')  then  pdt_parent.hub_key_column_name||'_'||pdtlp.relation_name
@@ -51,8 +62,11 @@ join dv_pipeline_description.dvpd_pipeline_dv_table pdt on pdt.pipeline_name =lw
  														and pdt.table_name = lwdprd.table_name 		
 join dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp on pdtlp.pipeline_name = lwdprd.pipeline_name
 																	and pdtlp.table_name = lwdprd.table_name
+join link_parent_count lpc on lpc.pipeline_name =pdtlp.pipeline_name
+						    and lpc.table_name=pdtlp.table_name
+ 							and lpc.link_parent_table = pdtlp.link_parent_table 	
 join dv_pipeline_description.dvpd_pipeline_dv_table pdt_parent on pdt_parent.pipeline_name =pdtlp.pipeline_name
- 														and pdt_parent.table_name = pdtlp.link_parent_table 																	
+ 														and pdt_parent.table_name = pdtlp.link_parent_table
 )
 ,links_with_indirect_parent_relation_declaration as (
 select distinct pipeline_name ,table_name
