@@ -91,10 +91,10 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
       ["rvlt_test_jj","rtjj_65_bbb_hub",8,"business_key","F3_BK_BBB","VARCHAR(20)"]
  ],
  "process_column_mapping": [
-         ["rtjj_65_aaa_bbb_lnk","R111","LK_RTJJ_65_AAA_BBB","LK_RTJJ_65_AAA_BBB_R111",null],
+         ["rtjj_65_aaa_bbb_lnk","R111","LK_RTJJ_65_AAA_BBB","LK_RTJJ_65_AAA_BBB",null],
          ["rtjj_65_aaa_bbb_lnk","R111","HK_RTJJ_65_AAA","HK_RTJJ_65_AAA_R111",null],
          ["rtjj_65_aaa_bbb_lnk","R111","HK_RTJJ_65_BBB","HK_RTJJ_65_BBB",null],
-         ["rtjj_65_aaa_bbb_sat","R111","LK_RTJJ_65_AAA_BBB","LK_RTJJ_65_AAA_BBB_R111",null],
+         ["rtjj_65_aaa_bbb_sat","R111","LK_RTJJ_65_AAA_BBB","LK_RTJJ_65_AAA_BBB",null],
          ["rtjj_65_aaa_bbb_sat","R111","RH_RTJJ_65_AAA_BBB_SAT","RH_RTJJ_65_AAA_BBB_SAT_R111",null],
          ["rtjj_65_aaa_bbb_sat","R111","F4_AAA_BBB_S1_COLA","F4_AAA_BBB_S1_COLA","F4_AAA_BBB_S1_COLA"],
          ["rtjj_65_aaa_bbb_sat","R111","F5_AAA_BBB_S1_COLB","F5_AAA_BBB_S1_COLB","F5_AAA_BBB_S1_COLB"],
@@ -102,14 +102,14 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rtjj_65_aaa_hub","R111","BK_AAA","F1_BK_AAA_L1","F1_BK_AAA_L1"],
          ["rtjj_65_aaa_hub","R222","HK_RTJJ_65_AAA","HK_RTJJ_65_AAA_R222",null],
          ["rtjj_65_aaa_hub","R222","BK_AAA","F2_BK_AAA_L2","F2_BK_AAA_L2"],
-         ["rtjj_65_bbb_hub","_A_","HK_RTJJ_65_BBB","HK_RTJJ_65_BBB",null],
-         ["rtjj_65_bbb_hub","_A_","F3_BK_BBB","F3_BK_BBB","F3_BK_BBB"]
+         ["rtjj_65_bbb_hub","/","HK_RTJJ_65_BBB","HK_RTJJ_65_BBB",null],
+         ["rtjj_65_bbb_hub","/","F3_BK_BBB","F3_BK_BBB","F3_BK_BBB"]
  ],
  "stage_table_column": [
          ["HK_RTJJ_65_AAA_R111","CHAR(28)",2,null,null,false],
          ["HK_RTJJ_65_AAA_R222","CHAR(28)",2,null,null,false],
          ["HK_RTJJ_65_BBB","CHAR(28)",2,null,null,false],
-         ["LK_RTJJ_65_AAA_BBB_R111","CHAR(28)",2,null,null,false],
+         ["LK_RTJJ_65_AAA_BBB","CHAR(28)",2,null,null,false],
          ["RH_RTJJ_65_AAA_BBB_SAT_R111","CHAR(28)",3,null,null,false],
          ["F1_BK_AAA_L1","VARCHAR(20)",8,"F1_BK_AAA_L1","VARCHAR(20)",false],
          ["F2_BK_AAA_L2","VARCHAR(20)",8,"F2_BK_AAA_L2","VARCHAR(20)",false],
@@ -118,13 +118,13 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["F5_AAA_BBB_S1_COLB","VARCHAR(20)",8,"F5_AAA_BBB_S1_COLB","VARCHAR(20)",false]
  ],
  "stage_hash_input_field": [
-         ["_A_","HK_RTJJ_65_BBB","F3_BK_BBB",0,0],
-         ["R111","HK_RTJJ_65_AAA_R111","F1_BK_AAA_L1",0,0],
-         ["R111","LK_RTJJ_65_AAA_BBB_R111","F1_BK_AAA_L1",0,0],
-         ["R111","LK_RTJJ_65_AAA_BBB_R111","F3_BK_BBB",0,0],
-         ["R111","RH_RTJJ_65_AAA_BBB_SAT_R111","F4_AAA_BBB_S1_COLA",0,0],
-         ["R111","RH_RTJJ_65_AAA_BBB_SAT_R111","F5_AAA_BBB_S1_COLB",0,0],
-         ["R222","HK_RTJJ_65_AAA_R222","F2_BK_AAA_L2",0,0]
+         ["/","HK_RTJJ_65_BBB","F3_BK_BBB",50000,50000],
+         ["R111","HK_RTJJ_65_AAA_R111","F1_BK_AAA_L1",50000,50000],
+         ["R111","LK_RTJJ_65_AAA_BBB","F1_BK_AAA_L1",50000,50000],
+         ["R111","LK_RTJJ_65_AAA_BBB","F3_BK_BBB",50000,50000],
+         ["R111","RH_RTJJ_65_AAA_BBB_SAT_R111","F4_AAA_BBB_S1_COLA",50000,50000],
+         ["R111","RH_RTJJ_65_AAA_BBB_SAT_R111","F5_AAA_BBB_S1_COLB",50000,50000],
+         ["R222","HK_RTJJ_65_AAA_R222","F2_BK_AAA_L2",50000,50000]
  ],
  "xenc_process_column_mapping": [
  ],

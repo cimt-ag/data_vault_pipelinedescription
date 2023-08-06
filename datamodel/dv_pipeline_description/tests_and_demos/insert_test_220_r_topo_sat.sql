@@ -83,7 +83,6 @@ VALUES
 ');
 
 select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test_220_r_topo_sat');
-
 -- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test_220_r_topo_sat';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
@@ -102,7 +101,7 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
       ["rvlt_test_jj","rtjj_220_aaa_bbb_lnk",3,"parent_key","HK_RTJJ_220_AAA","CHAR(28)"],
       ["rvlt_test_jj","rtjj_220_aaa_bbb_lnk",4,"parent_key","HK_RTJJ_220_BBB_R111","CHAR(28)"],
       ["rvlt_test_jj","rtjj_220_aaa_bbb_lnk",4,"parent_key","HK_RTJJ_220_BBB_R222","CHAR(28)"],
-      ["rvlt_test_jj","rtjj_220_aaa_bbb_lnk",4,"parent_key","HK_RTJJ_220_BBB_R333","CHAR(28)"],
+      ["rvlt_test_jj","rtjj_220_aaa_bbb_lnk",4,"parent_key","HK_RTJJ_220_BBB_R333EXTRA","CHAR(28)"],
       ["rvlt_test_jj","rtjj_220_aaa_hub",1,"meta","META_INSERTED_AT","TIMESTAMP"],
       ["rvlt_test_jj","rtjj_220_aaa_hub",1,"meta","META_JOB_INSTANCE_ID","INT8"],
       ["rvlt_test_jj","rtjj_220_aaa_hub",1,"meta","META_RECORD_SOURCE","VARCHAR(255)"],
@@ -138,7 +137,7 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rtjj_220_aaa_bbb_lnk","/","HK_RTJJ_220_AAA","HK_RTJJ_220_AAA",null],
          ["rtjj_220_aaa_bbb_lnk","/","HK_RTJJ_220_BBB_R111","HK_RTJJ_220_BBB_R111",null],
          ["rtjj_220_aaa_bbb_lnk","/","HK_RTJJ_220_BBB_R222","HK_RTJJ_220_BBB_R222",null],
-         ["rtjj_220_aaa_bbb_lnk","/","HK_RTJJ_220_BBB_R333","HK_RTJJ_220_BBB_R333",null],
+         ["rtjj_220_aaa_bbb_lnk","/","HK_RTJJ_220_BBB_R333EXTRA","HK_RTJJ_220_BBB_R333",null],
          ["rtjj_220_aaa_hub","/","HK_RTJJ_220_AAA","HK_RTJJ_220_AAA",null],
          ["rtjj_220_aaa_hub","/","F01_ID_AAA1","F01_ID_AAA1","F01_ID_AAA1"],
          ["rtjj_220_aaa_sat","/","HK_RTJJ_220_AAA","HK_RTJJ_220_AAA",null],
