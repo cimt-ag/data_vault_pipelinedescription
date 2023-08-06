@@ -64,6 +64,32 @@ join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping pps
 						or (pdlrkcm.link_parent_relation_name = '*' and ppstdmm.field_relation_name =shc.relation_to_process)
 						or ppstdmm.field_relation_name='*')
 where shc.table_stereotype  ='lnk' 
+union 
+select distinct
+ shc.pipeline_name 
+ ,shc.relation_to_process as relation_of_hash 
+ ,shc.stage_column_name 
+-- ,dmhic.content_table   -- debug
+ ,dmhic.content_column 
+ ,dmhic.link_parent_order 
+-- ,pdlrkcm.link_parent_relation_name --debug
+ ,ppstdmm.field_name
+-- ,ppstdmm.field_relation_name  -- debug
+ ,ppstdmm.prio_in_key_hash 
+ ,ppstdmm.prio_in_diff_hash  
+,ppstdmm.relation_to_process as relation_of_content_to_process 
+ ,null as hub_key_column_name_in_link
+ ,null as hub_key_column_name
+from stage_hash_columns  shc
+join dv_pipeline_description.dvpd_pipeline_dv_hash_input_column dmhic on dmhic.pipeline_name = shc.pipeline_name
+																	and  dmhic.table_name =shc.table_name 
+																  and dmhic.key_column =shc.column_name 
+join dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm on ppstdmm.pipeline_name =shc.pipeline_name 
+					and ppstdmm.table_name = dmhic.content_table 
+					and ppstdmm.column_name = dmhic.content_column 
+					and ppstdmm.relation_to_process = shc.relation_to_process
+					and ppstdmm.column_class='dependent_child_key'
+where shc.table_stereotype  ='lnk' 	
 )
 , fields_for_not_link_key_hashes as (
 select distinct
