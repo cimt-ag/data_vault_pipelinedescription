@@ -54,7 +54,7 @@ select -- keys of parents
  , case when pdtlp.relation_name <>'*' then 4 else  3 end as  column_block
  ,'parent_key' as column_class
  ,case when hub_key_column_name_in_link is not null then hub_key_column_name_in_link
-	 when pdtlp.relation_name <>'*' then  pdt.hub_key_column_name||'_'||pdtlp.relation_name
+	 when pdtlp.relation_name not in ('*','/') then  pdt.hub_key_column_name||'_'||pdtlp.relation_name
  		else pdt.hub_key_column_name end as column_name
  ,mp.property_value  as column_type
  ,false as is_nullable
