@@ -28,22 +28,22 @@ from dv_pipeline_description.dvpd_atmtst_ref_stage_hash_input_field
 ,result_data as (
 select 
 	pshif.pipeline_name 
-	--,relation_to_process
+	,relation_of_hash
 	,stage_column_name
 	,field_name
-	,mod(prio_in_key_hash,50000) prio_in_key_hash
-	,mod(prio_in_diff_hash,50000) prio_in_diff_hash
+	,prio_in_key_hash prio_in_key_hash
+	,prio_in_diff_hash prio_in_diff_hash
 from  pipelines_with_atmtst_data pwad
 join dv_pipeline_description.dvpd_pipeline_stage_hash_input_field pshif on pshif.pipeline_name  =pwad.pipeline_name 
 )   													
 , reference_data as ( 
 select 
 	pipeline_name 
-	--,relation_to_process
+	,replace(relation_of_hash,'_A_','/') as relation_of_hash
 	,stage_column_name
 	,field_name
-	,prio_in_key_hash
-	,prio_in_diff_hash
+	,case when prio_in_key_hash>0 then prio_in_key_hash else 50000 end prio_in_key_hash
+	,case when prio_in_diff_hash>0 then prio_in_diff_hash else 50000 end prio_in_diff_hash
 from dv_pipeline_description.dvpd_atmtst_ref_stage_hash_input_field
 )
 ,not_in_reference as (
@@ -56,10 +56,10 @@ select * from reference_data
 except 
 select * from result_data 
 )
-select *,'not in reference' atmtst_issue_message
+select *,'<-- result' atmtst_issue_message
 from not_in_reference 
 union
-select *,'only in reference' atmtst_issue_message
+select *,'<-- reference' atmtst_issue_message
 from only_in_reference 
 
 );

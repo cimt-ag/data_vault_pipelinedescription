@@ -33,11 +33,11 @@ VALUES
 	"fields": [
 		      {"field_name": "F1_BK_AAA_L1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_63_aaa_hub"
 																					,"column_name": "BK_AAA"
-																				 	,"field_groups":["fg1"]}]}
+																				 	,"relation_names":["/"]}]}
 		      ,{"field_name": "F2_BK_AAA_L2", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_63_aaa_hub"
 																					,"column_name": "BK_AAA"
-																				 	,"field_groups":["fg2"]}]}		 	  
-		      ,{"field_name": "F3_BK_BBB", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_63_bbb_hub"}]}		 
+																				 	,"relation_names":["R222"]}]}		 	  
+		      ,{"field_name": "F3_BK_BBB", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_63_bbb_hub","relation_names":["/"]}]}		 
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
@@ -45,7 +45,7 @@ VALUES
 				{"table_name": "rtjj_63_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_63_aaa"}
 				,{"table_name": "rtjj_63_aaa_bbb_lnk",	"table_stereotype": "lnk"	,"link_key_column_name": "LK_rtjj_63_aaa_bbb"
 																			,"link_parent_tables": ["rtjj_63_aaa_hub","rtjj_63_bbb_hub"]
-																			,"tracked_field_groups": ["fg1"]}
+																			,"tracked_relation_names": ["R111"]}
 				,{"table_name": "rtjj_63_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_63_bbb"}
 				]
 		}
@@ -55,6 +55,7 @@ VALUES
 
 select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test63_fg_drive_scenario_3');
 
+-- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test63_fg_drive_scenario_3';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
 ('test63_fg_drive_scenario_3','{
@@ -77,29 +78,33 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
       ["rvlt_test_jj","rtjj_63_bbb_hub",8,"business_key","F3_BK_BBB","VARCHAR(20)"]
  ],
  "process_column_mapping": [
-         ["rtjj_63_aaa_bbb_lnk","_FG1","LK_RTJJ_63_AAA_BBB","LK_RTJJ_63_AAA_BBB_FG1",null],
-         ["rtjj_63_aaa_bbb_lnk","_FG1","HK_RTJJ_63_AAA","HK_RTJJ_63_AAA_FG1",null],
-         ["rtjj_63_aaa_bbb_lnk","_FG1","HK_RTJJ_63_BBB","HK_RTJJ_63_BBB",null],
-         ["rtjj_63_aaa_hub","_FG1","HK_RTJJ_63_AAA","HK_RTJJ_63_AAA_FG1",null],
-         ["rtjj_63_aaa_hub","_FG1","BK_AAA","F1_BK_AAA_L1","F1_BK_AAA_L1"],
-         ["rtjj_63_aaa_hub","_FG2","HK_RTJJ_63_AAA","HK_RTJJ_63_AAA_FG2",null],
-         ["rtjj_63_aaa_hub","_FG2","BK_AAA","F2_BK_AAA_L2","F2_BK_AAA_L2"],
-         ["rtjj_63_bbb_hub","_A_","HK_RTJJ_63_BBB","HK_RTJJ_63_BBB",null],
-         ["rtjj_63_bbb_hub","_A_","F3_BK_BBB","F3_BK_BBB","F3_BK_BBB"]
+         ["rtjj_63_aaa_bbb_lnk","/","LK_RTJJ_63_AAA_BBB","LK_RTJJ_63_AAA_BBB",null],
+         ["rtjj_63_aaa_bbb_lnk","/","HK_RTJJ_63_AAA","HK_RTJJ_63_AAA",null],
+         ["rtjj_63_aaa_bbb_lnk","/","HK_RTJJ_63_BBB","HK_RTJJ_63_BBB",null],
+         ["rtjj_63_aaa_hub","/","HK_RTJJ_63_AAA","HK_RTJJ_63_AAA",null],
+         ["rtjj_63_aaa_hub","/","BK_AAA","F1_BK_AAA_L1","F1_BK_AAA_L1"],
+         ["rtjj_63_aaa_hub","R222","HK_RTJJ_63_AAA","HK_RTJJ_63_AAA_R222",null],
+         ["rtjj_63_aaa_hub","R222","BK_AAA","F2_BK_AAA_L2","F2_BK_AAA_L2"],
+         ["rtjj_63_bbb_hub","/","HK_RTJJ_63_BBB","HK_RTJJ_63_BBB",null],
+         ["rtjj_63_bbb_hub","/","F3_BK_BBB","F3_BK_BBB","F3_BK_BBB"]
  ],
  "stage_table_column": [
-         ["HK_RTJJ_63_AAA_FG1","CHAR(28)",2,null,null,false],
-         ["HK_RTJJ_63_AAA_FG2","CHAR(28)",2,null,null,false],
+         ["HK_RTJJ_63_AAA","CHAR(28)",2,null,null,false],
+         ["HK_RTJJ_63_AAA_R222","CHAR(28)",2,null,null,false],
          ["HK_RTJJ_63_BBB","CHAR(28)",2,null,null,false],
-         ["LK_RTJJ_63_AAA_BBB_FG1","CHAR(28)",2,null,null,false],
+         ["LK_RTJJ_63_AAA_BBB","CHAR(28)",2,null,null,false],
          ["F1_BK_AAA_L1","VARCHAR(20)",8,"F1_BK_AAA_L1","VARCHAR(20)",false],
          ["F2_BK_AAA_L2","VARCHAR(20)",8,"F2_BK_AAA_L2","VARCHAR(20)",false],
          ["F3_BK_BBB","VARCHAR(20)",8,"F3_BK_BBB","VARCHAR(20)",false]
  ],
  "stage_hash_input_field": [
-         ["_A_","HK_RTJJ_63_BBB","F3_BK_BBB",0,0],
-         ["_FG1","HK_RTJJ_63_AAA_FG1","F1_BK_AAA_L1",0,0],
-         ["_FG1","LK_RTJJ_63_AAA_BBB_FG1","F1_BK_AAA_L1",0,0],
-         ["_FG1","LK_RTJJ_63_AAA_BBB_FG1","F3_BK_BBB",0,0],
-         ["_FG2","HK_RTJJ_63_AAA_FG2","F2_BK_AAA_L2",0,0]
+         ["/","HK_RTJJ_63_AAA","F1_BK_AAA_L1",50000,50000],
+         ["/","HK_RTJJ_63_BBB","F3_BK_BBB",50000,50000],
+         ["/","LK_RTJJ_63_AAA_BBB","F1_BK_AAA_L1",50000,50000],
+         ["/","LK_RTJJ_63_AAA_BBB","F3_BK_BBB",50000,50000],
+         ["R222","HK_RTJJ_63_AAA_R222","F2_BK_AAA_L2",50000,50000]
+ ],
+ "xenc_process_column_mapping": [
+ ],
+ "xenc_process_field_to_encryption_key_mapping": [
   ]    }');

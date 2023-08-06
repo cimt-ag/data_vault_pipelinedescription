@@ -50,13 +50,13 @@ VALUES('test50_double_esat_field_group', '{
 								"targets": [{"table_name": "rtjj_50_aaa_p1_sat","exclude_from_change_detection": "true"}]}
 
 		,{"field_name": "F7_BK_BBB_2_L1",		"field_type": "DECIMAL(10,0)", "field_position": "3",
-								"targets": [{"table_name": "rtkk_50_bbb_hub","column_name": "F7_BK_BBB_2","field_groups": ["fg1"]}]}
+								"targets": [{"table_name": "rtkk_50_bbb_hub","column_name": "F7_BK_BBB_2","relation_names": ["R111"]}]}
 
 		,{"field_name": "F8_BK_BBB_2_L2",	"field_type": "DECIMAL(10,0)",	"field_position": "4",
-								"targets": [{"table_name": "rtkk_50_bbb_hub","column_name": "F7_BK_BBB_2","field_groups": ["fg2"]}]}
+								"targets": [{"table_name": "rtkk_50_bbb_hub","column_name": "F7_BK_BBB_2","relation_names": ["R222"]}]}
 
 		,{"field_name": "F9_BBB_SP1_L1",		"field_type": "VARCHAR(200)", "field_position": "5",
-								"targets": [{"table_name": "rtkk_50_bbb_p1_sat","field_groups": ["fg1"]}]}
+								"targets": [{"table_name": "rtkk_50_bbb_p1_sat","relation_names": ["R111"]}]}
 
 	],
 	"data_vault_model": [{
@@ -67,16 +67,16 @@ VALUES('test50_double_esat_field_group', '{
 				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_lnk","table_stereotype": "lnk","link_key_column_name": "LK_rtjj_50_aaa_rtjkk_bbb"
 																	,	"link_parent_tables": ["rtjj_50_aaa_hub","rtkk_50_bbb_hub"]}
 				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g1_esat","table_stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
-																		"tracked_field_groups": ["fg1"],
+																		"tracked_relation_name": "R111",
 																		"driving_keys": ["HK_rtjj_50_aaa"]}
 				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g2_esat","table_stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
-																		"tracked_field_groups": ["fg2"],
+																		"tracked_relation_name": "R222",
 																		"driving_keys": ["HK_rtjj_50_aaa"]}
 			]
 		},
 		{"schema_name": "rvlt_test_kk",
 			"tables": [
-				{"table_name": "rtkk_50_bbb_hub",		 "table_stereotype": "hub","hub_key_column_name": "HK_rtkk_50_bbb","tracked_field_groups": ["fg1","fg2"]}
+				{"table_name": "rtkk_50_bbb_hub",		 "table_stereotype": "hub","hub_key_column_name": "HK_rtkk_50_bbb"}
 				,{"table_name": "rtkk_50_bbb_p1_sat",	 "table_stereotype": "sat","satellite_parent_table": "rtkk_50_bbb_hub"
 																		,"diff_hash_column_name": "rh_rtkk_50_bbb_p1_sat"}
 			]
@@ -121,23 +121,23 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rtjj_50_aaa_p1_sat","_A_","F4_AAA_SP1","F4_AAA_SP1","F4_AAA_SP1"],
          ["rtjj_50_aaa_p1_sat","_A_","F5_AAA_SP1","F5_AAA_SP1","F5_AAA_SP1"],
          ["rtjj_50_aaa_p1_sat","_A_","F6_AAA_SP1_EXCLUDED_FROM_DIFF","F6_AAA_SP1_EXCLUDED_FROM_DIFF","F6_AAA_SP1_EXCLUDED_FROM_DIFF"],
-         ["rtjj_50_aaa_rtjkk_bbb_g1_esat","_FG1","LK_RTJJ_50_AAA_RTJKK_BBB","LK_RTJJ_50_AAA_RTJKK_BBB_FG1",null],
-         ["rtjj_50_aaa_rtjkk_bbb_g2_esat","_FG2","LK_RTJJ_50_AAA_RTJKK_BBB","LK_RTJJ_50_AAA_RTJKK_BBB_FG2",null],
-         ["rtjj_50_aaa_rtjkk_bbb_lnk","_FG1","LK_RTJJ_50_AAA_RTJKK_BBB","LK_RTJJ_50_AAA_RTJKK_BBB_FG1",null],
-         ["rtjj_50_aaa_rtjkk_bbb_lnk","_FG1","HK_RTJJ_50_AAA","HK_RTJJ_50_AAA",null],
-         ["rtjj_50_aaa_rtjkk_bbb_lnk","_FG1","HK_RTKK_50_BBB","HK_RTKK_50_BBB_FG1",null],
-         ["rtjj_50_aaa_rtjkk_bbb_lnk","_FG2","LK_RTJJ_50_AAA_RTJKK_BBB","LK_RTJJ_50_AAA_RTJKK_BBB_FG2",null],
-         ["rtjj_50_aaa_rtjkk_bbb_lnk","_FG2","HK_RTJJ_50_AAA","HK_RTJJ_50_AAA",null],
-         ["rtjj_50_aaa_rtjkk_bbb_lnk","_FG2","HK_RTKK_50_BBB","HK_RTKK_50_BBB_FG2",null],
-         ["rtkk_50_bbb_hub","_FG1","HK_RTKK_50_BBB","HK_RTKK_50_BBB_FG1",null],
-         ["rtkk_50_bbb_hub","_FG1","F1_BK_1","F1_BK_1","F1_BK_1"],
-         ["rtkk_50_bbb_hub","_FG1","F7_BK_BBB_2","F7_BK_BBB_2_L1","F7_BK_BBB_2_L1"],
-         ["rtkk_50_bbb_hub","_FG2","HK_RTKK_50_BBB","HK_RTKK_50_BBB_FG2",null],
-         ["rtkk_50_bbb_hub","_FG2","F1_BK_1","F1_BK_1","F1_BK_1"],
-         ["rtkk_50_bbb_hub","_FG2","F7_BK_BBB_2","F8_BK_BBB_2_L2","F8_BK_BBB_2_L2"],
-         ["rtkk_50_bbb_p1_sat","_FG1","HK_RTKK_50_BBB","HK_RTKK_50_BBB_FG1",null],
-         ["rtkk_50_bbb_p1_sat","_FG1","RH_RTKK_50_BBB_P1_SAT","RH_RTKK_50_BBB_P1_SAT_FG1",null],
-         ["rtkk_50_bbb_p1_sat","_FG1","F9_BBB_SP1_L1","F9_BBB_SP1_L1","F9_BBB_SP1_L1"]
+         ["rtjj_50_aaa_rtjkk_bbb_g1_esat","R111","LK_RTJJ_50_AAA_RTJKK_BBB","LK_RTJJ_50_AAA_RTJKK_BBB_R111",null],
+         ["rtjj_50_aaa_rtjkk_bbb_g2_esat","R222","LK_RTJJ_50_AAA_RTJKK_BBB","LK_RTJJ_50_AAA_RTJKK_BBB_R222",null],
+         ["rtjj_50_aaa_rtjkk_bbb_lnk","R111","LK_RTJJ_50_AAA_RTJKK_BBB","LK_RTJJ_50_AAA_RTJKK_BBB_R111",null],
+         ["rtjj_50_aaa_rtjkk_bbb_lnk","R111","HK_RTJJ_50_AAA","HK_RTJJ_50_AAA",null],
+         ["rtjj_50_aaa_rtjkk_bbb_lnk","R111","HK_RTKK_50_BBB","HK_RTKK_50_BBB_R111",null],
+         ["rtjj_50_aaa_rtjkk_bbb_lnk","R222","LK_RTJJ_50_AAA_RTJKK_BBB","LK_RTJJ_50_AAA_RTJKK_BBB_R222",null],
+         ["rtjj_50_aaa_rtjkk_bbb_lnk","R222","HK_RTJJ_50_AAA","HK_RTJJ_50_AAA",null],
+         ["rtjj_50_aaa_rtjkk_bbb_lnk","R222","HK_RTKK_50_BBB","HK_RTKK_50_BBB_R222",null],
+         ["rtkk_50_bbb_hub","R111","HK_RTKK_50_BBB","HK_RTKK_50_BBB_R111",null],
+         ["rtkk_50_bbb_hub","R111","F1_BK_1","F1_BK_1","F1_BK_1"],
+         ["rtkk_50_bbb_hub","R111","F7_BK_BBB_2","F7_BK_BBB_2_L1","F7_BK_BBB_2_L1"],
+         ["rtkk_50_bbb_hub","R222","HK_RTKK_50_BBB","HK_RTKK_50_BBB_R222",null],
+         ["rtkk_50_bbb_hub","R222","F1_BK_1","F1_BK_1","F1_BK_1"],
+         ["rtkk_50_bbb_hub","R222","F7_BK_BBB_2","F8_BK_BBB_2_L2","F8_BK_BBB_2_L2"],
+         ["rtkk_50_bbb_p1_sat","R111","HK_RTKK_50_BBB","HK_RTKK_50_BBB_R111",null],
+         ["rtkk_50_bbb_p1_sat","R111","RH_RTKK_50_BBB_P1_SAT","RH_RTKK_50_BBB_P1_SAT_R111",null],
+         ["rtkk_50_bbb_p1_sat","R111","F9_BBB_SP1_L1","F9_BBB_SP1_L1","F9_BBB_SP1_L1"]
  ], 
 "stage_table_column": [
          ["F1_BK_1","VARCHAR(20)",8,"F1_BK_1","VARCHAR(20)",false],
@@ -150,12 +150,12 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["F8_BK_BBB_2_L2","DECIMAL(10,0)",8,"F8_BK_BBB_2_L2","DECIMAL(10,0)",false],
          ["F9_BBB_SP1_L1","VARCHAR(200)",8,"F9_BBB_SP1_L1","VARCHAR(200)",false],
          ["HK_RTJJ_50_AAA","CHAR(28)",2,null,null,false],
-         ["HK_RTKK_50_BBB_FG1","CHAR(28)",2,null,null,false],
-         ["HK_RTKK_50_BBB_FG2","CHAR(28)",2,null,null,false],
-         ["LK_RTJJ_50_AAA_RTJKK_BBB_FG1","CHAR(28)",2,null,null,false],
-         ["LK_RTJJ_50_AAA_RTJKK_BBB_FG2","CHAR(28)",2,null,null,false],
+         ["HK_RTKK_50_BBB_R111","CHAR(28)",2,null,null,false],
+         ["HK_RTKK_50_BBB_R222","CHAR(28)",2,null,null,false],
+         ["LK_RTJJ_50_AAA_RTJKK_BBB_R111","CHAR(28)",2,null,null,false],
+         ["LK_RTJJ_50_AAA_RTJKK_BBB_R222","CHAR(28)",2,null,null,false],
          ["RH_RTJJ_50_AAA_P1_SAT","CHAR(28)",3,null,null,false],
-         ["RH_RTKK_50_BBB_P1_SAT_FG1","CHAR(28)",3,null,null,false]
+         ["RH_RTKK_50_BBB_P1_SAT_R111","CHAR(28)",3,null,null,false]
  ],
  "stage_hash_input_field": [
          ["_A_","HK_RTJJ_50_AAA","F1_BK_1",0,0],
@@ -163,15 +163,15 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["_A_","RH_RTJJ_50_AAA_P1_SAT","F3_AAA_SP1",0,0],
          ["_A_","RH_RTJJ_50_AAA_P1_SAT","F4_AAA_SP1",0,0],
          ["_A_","RH_RTJJ_50_AAA_P1_SAT","F5_AAA_SP1",0,0],
-         ["_FG1","HK_RTKK_50_BBB_FG1","F1_BK_1",0,0],
-         ["_FG1","HK_RTKK_50_BBB_FG1","F7_BK_BBB_2_L1",0,0],
-         ["_FG1","LK_RTJJ_50_AAA_RTJKK_BBB_FG1","F1_BK_1",0,0],
-         ["_FG1","LK_RTJJ_50_AAA_RTJKK_BBB_FG1","F2_BK_AAA_FIELDNAME",0,0],
-         ["_FG1","LK_RTJJ_50_AAA_RTJKK_BBB_FG1","F7_BK_BBB_2_L1",0,0],
-         ["_FG1","RH_RTKK_50_BBB_P1_SAT_FG1","F9_BBB_SP1_L1",0,0],
-         ["_FG2","HK_RTKK_50_BBB_FG2","F1_BK_1",0,0],
-         ["_FG2","HK_RTKK_50_BBB_FG2","F8_BK_BBB_2_L2",0,0],
-         ["_FG2","LK_RTJJ_50_AAA_RTJKK_BBB_FG2","F1_BK_1",0,0],
-         ["_FG2","LK_RTJJ_50_AAA_RTJKK_BBB_FG2","F2_BK_AAA_FIELDNAME",0,0],
-         ["_FG2","LK_RTJJ_50_AAA_RTJKK_BBB_FG2","F8_BK_BBB_2_L2",0,0]
+         ["R111","HK_RTKK_50_BBB_R111","F1_BK_1",0,0],
+         ["R111","HK_RTKK_50_BBB_R111","F7_BK_BBB_2_L1",0,0],
+         ["R111","LK_RTJJ_50_AAA_RTJKK_BBB_R111","F1_BK_1",0,0],
+         ["R111","LK_RTJJ_50_AAA_RTJKK_BBB_R111","F2_BK_AAA_FIELDNAME",0,0],
+         ["R111","LK_RTJJ_50_AAA_RTJKK_BBB_R111","F7_BK_BBB_2_L1",0,0],
+         ["R111","RH_RTKK_50_BBB_P1_SAT_R111","F9_BBB_SP1_L1",0,0],
+         ["R222","HK_RTKK_50_BBB_R222","F1_BK_1",0,0],
+         ["R222","HK_RTKK_50_BBB_R222","F8_BK_BBB_2_L2",0,0],
+         ["R222","LK_RTJJ_50_AAA_RTJKK_BBB_R222","F1_BK_1",0,0],
+         ["R222","LK_RTJJ_50_AAA_RTJKK_BBB_R222","F2_BK_AAA_FIELDNAME",0,0],
+         ["R222","LK_RTJJ_50_AAA_RTJKK_BBB_R222","F8_BK_BBB_2_L2",0,0]
   ]    }');

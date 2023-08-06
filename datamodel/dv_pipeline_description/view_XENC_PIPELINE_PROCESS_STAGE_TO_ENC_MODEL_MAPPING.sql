@@ -63,7 +63,7 @@ select -- encryption key columns for every relation_to_process
  ,extp.relation_to_process 
  ,pdc.column_name  
  ,case when extp.relation_to_process ='/' then pdc.column_name 
- 	  else pdc.column_name||extp.relation_to_process  
+ 	  else pdc.column_name||'_'||extp.relation_to_process  
  	  end  as stage_column_name
   ,pdc.column_type 
  ,pdc.column_block 
@@ -81,7 +81,7 @@ select -- encryption table columns referring to process block specific hash colu
  ,extp.relation_to_process 
  ,pdc.column_name  
  ,case when extp.relation_to_process ='/' then pdc.column_name 
- 	  else pdc.column_name||extp.relation_to_process  
+ 	  else pdc.column_name||'_'||extp.relation_to_process  
  	  end  as stage_column_name
   ,pdc.column_type 
  ,pdc.column_block 

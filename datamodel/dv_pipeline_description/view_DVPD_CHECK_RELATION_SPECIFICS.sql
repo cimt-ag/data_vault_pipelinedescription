@@ -87,7 +87,7 @@ left join dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN ppp_p on ppp_p.pipe
 															and ppp_p.relation_to_process = ppp_s.relation_to_process 
 where ppp_p.table_name is null	and pdt_s.satellite_parent_table is not null
 --order by 1,2,4			
-unions
+union
 select distinct-- links with declared relation names
   ppp_l.pipeline_name 
  ,ppp_l.table_name

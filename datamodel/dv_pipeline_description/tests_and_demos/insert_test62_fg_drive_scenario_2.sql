@@ -33,10 +33,10 @@ VALUES
 	"fields": [
 		      {"field_name": "F1_BK_AAA_L1", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_62_aaa_hub"
 																					,"column_name": "BK_AAA"
-																				 	,"field_groups":["fg1"]}]}
+																				 	,"relation_names":["R111"]}]}
 		      ,{"field_name": "F2_BK_AAA_L2", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_62_aaa_hub"
 																					,"column_name": "BK_AAA"
-																				 	,"field_groups":["fg2"]}]}		 	  
+																				 	,"relation_names":["R222"]}]}		 	  
 		      ,{"field_name": "F3_AAA_S1_COLA","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_62_aaa_p1_sat"}]}		 
 		      ,{"field_name": "F4_AAA_S1_COLB","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_62_aaa_p1_sat"}]}		 
 			 ],
@@ -74,34 +74,34 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
       ["rvlt_test_jj","rtjj_62_aaa_p1_sat",8,"content","F4_AAA_S1_COLB","VARCHAR(20)"]
  ],
  "process_column_mapping": [
-         ["rtjj_62_aaa_hub","_FG1","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_FG1",null],
-         ["rtjj_62_aaa_hub","_FG1","BK_AAA","F1_BK_AAA_L1","F1_BK_AAA_L1"],
-         ["rtjj_62_aaa_hub","_FG2","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_FG2",null],
-         ["rtjj_62_aaa_hub","_FG2","BK_AAA","F2_BK_AAA_L2","F2_BK_AAA_L2"],
-         ["rtjj_62_aaa_p1_sat","_FG1","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_FG1",null],
-         ["rtjj_62_aaa_p1_sat","_FG1","RH_RTJJ_62_AAA_P1_SAT","RH_RTJJ_62_AAA_P1_SAT_FG1",null],
-         ["rtjj_62_aaa_p1_sat","_FG1","F3_AAA_S1_COLA","F3_AAA_S1_COLA","F3_AAA_S1_COLA"],
-         ["rtjj_62_aaa_p1_sat","_FG1","F4_AAA_S1_COLB","F4_AAA_S1_COLB","F4_AAA_S1_COLB"],
-         ["rtjj_62_aaa_p1_sat","_FG2","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_FG2",null],
-         ["rtjj_62_aaa_p1_sat","_FG2","RH_RTJJ_62_AAA_P1_SAT","RH_RTJJ_62_AAA_P1_SAT_FG2",null],
-         ["rtjj_62_aaa_p1_sat","_FG2","F3_AAA_S1_COLA","F3_AAA_S1_COLA","F3_AAA_S1_COLA"],
-         ["rtjj_62_aaa_p1_sat","_FG2","F4_AAA_S1_COLB","F4_AAA_S1_COLB","F4_AAA_S1_COLB"]
+         ["rtjj_62_aaa_hub","R111","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_R111",null],
+         ["rtjj_62_aaa_hub","R111","BK_AAA","F1_BK_AAA_L1","F1_BK_AAA_L1"],
+         ["rtjj_62_aaa_hub","R222","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_R222",null],
+         ["rtjj_62_aaa_hub","R222","BK_AAA","F2_BK_AAA_L2","F2_BK_AAA_L2"],
+         ["rtjj_62_aaa_p1_sat","R111","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_R111",null],
+         ["rtjj_62_aaa_p1_sat","R111","RH_RTJJ_62_AAA_P1_SAT","RH_RTJJ_62_AAA_P1_SAT_R111",null],
+         ["rtjj_62_aaa_p1_sat","R111","F3_AAA_S1_COLA","F3_AAA_S1_COLA","F3_AAA_S1_COLA"],
+         ["rtjj_62_aaa_p1_sat","R111","F4_AAA_S1_COLB","F4_AAA_S1_COLB","F4_AAA_S1_COLB"],
+         ["rtjj_62_aaa_p1_sat","R222","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_R222",null],
+         ["rtjj_62_aaa_p1_sat","R222","RH_RTJJ_62_AAA_P1_SAT","RH_RTJJ_62_AAA_P1_SAT_R222",null],
+         ["rtjj_62_aaa_p1_sat","R222","F3_AAA_S1_COLA","F3_AAA_S1_COLA","F3_AAA_S1_COLA"],
+         ["rtjj_62_aaa_p1_sat","R222","F4_AAA_S1_COLB","F4_AAA_S1_COLB","F4_AAA_S1_COLB"]
  ],
  "stage_table_column": [
-         ["HK_RTJJ_62_AAA_FG1","CHAR(28)",2,null,null,false],
-         ["HK_RTJJ_62_AAA_FG2","CHAR(28)",2,null,null,false],
-         ["RH_RTJJ_62_AAA_P1_SAT_FG1","CHAR(28)",3,null,null,false],
-         ["RH_RTJJ_62_AAA_P1_SAT_FG2","CHAR(28)",3,null,null,false],
+         ["HK_RTJJ_62_AAA_R111","CHAR(28)",2,null,null,false],
+         ["HK_RTJJ_62_AAA_R222","CHAR(28)",2,null,null,false],
+         ["RH_RTJJ_62_AAA_P1_SAT_R111","CHAR(28)",3,null,null,false],
+         ["RH_RTJJ_62_AAA_P1_SAT_R222","CHAR(28)",3,null,null,false],
          ["F1_BK_AAA_L1","VARCHAR(20)",8,"F1_BK_AAA_L1","VARCHAR(20)",false],
          ["F2_BK_AAA_L2","VARCHAR(20)",8,"F2_BK_AAA_L2","VARCHAR(20)",false],
          ["F3_AAA_S1_COLA","VARCHAR(20)",8,"F3_AAA_S1_COLA","VARCHAR(20)",false],
          ["F4_AAA_S1_COLB","VARCHAR(20)",8,"F4_AAA_S1_COLB","VARCHAR(20)",false]
  ],
  "stage_hash_input_field": [
-         ["_FG1","HK_RTJJ_62_AAA_FG1","F1_BK_AAA_L1",0,0],
-         ["_FG1","RH_RTJJ_62_AAA_P1_SAT_FG1","F3_AAA_S1_COLA",0,0],
-         ["_FG1","RH_RTJJ_62_AAA_P1_SAT_FG1","F4_AAA_S1_COLB",0,0],
-         ["_FG2","HK_RTJJ_62_AAA_FG2","F2_BK_AAA_L2",0,0],
-         ["_FG2","RH_RTJJ_62_AAA_P1_SAT_FG2","F3_AAA_S1_COLA",0,0],
-         ["_FG2","RH_RTJJ_62_AAA_P1_SAT_FG2","F4_AAA_S1_COLB",0,0]
+         ["R111","HK_RTJJ_62_AAA_R111","F1_BK_AAA_L1",0,0],
+         ["R111","RH_RTJJ_62_AAA_P1_SAT_R111","F3_AAA_S1_COLA",0,0],
+         ["R111","RH_RTJJ_62_AAA_P1_SAT_R111","F4_AAA_S1_COLB",0,0],
+         ["R222","HK_RTJJ_62_AAA_R222","F2_BK_AAA_L2",0,0],
+         ["R222","RH_RTJJ_62_AAA_P1_SAT_R222","F3_AAA_S1_COLA",0,0],
+         ["R222","RH_RTJJ_62_AAA_P1_SAT_R222","F4_AAA_S1_COLB",0,0]
   ]    }');
