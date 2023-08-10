@@ -30,4 +30,4 @@ mandantory,type,schema_name,name
 1,view,dv_pipeline_description,DVPD_PIPELINE_DV_TABLE_DRIVING_KEY
 1,view,dv_pipeline_description,DVPD_PIPELINE_DV_COLUMN_CORE
 
-
+1,data,dv_pipeline_description,MODEL_PROFILE_DEFAULT

@@ -15,7 +15,7 @@ mandantory,type,schema_name,name
 1,function,dv_pipeline_description,DVPD_LOAD_PIPELINE_TO_RAW
 1,function,dv_pipeline_description,DVPD_LOAD_MODEL_PROFILE
 
-1,data,dv_pipeline_description,MODEL_PROFILE_DEFAULT
+
 
 
 

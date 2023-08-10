@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2023-08-05T17:19:08.348Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.5.1 Chrome/112.0.5615.204 Electron/24.6.0 Safari/537.36" etag="0fM_K3VI0w1Z5MSxFzrB" version="21.5.1" type="device">
+<mxfile host="Electron" modified="2023-08-06T18:33:48.630Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.5.1 Chrome/112.0.5615.204 Electron/24.6.0 Safari/537.36" etag="lfwYxN0HNWYXyFMFd9ER" version="21.5.1" type="device">
   <diagram id="S8_EbyP6fOLFSmQk0vZv" name="Seite-1">
     <mxGraphModel dx="1356" dy="868" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#FFFFFF" math="0" shadow="0">
       <root>
@@ -746,10 +746,10 @@
         <mxCell id="AQTmQn9YJskU7MhowZhO-217" value="&lt;div style=&quot;width: 25.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;HC&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=mxgraph.basic.pentagon;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#cc0000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=0.6;spacingRight=0;whiteSpace=wrap;gliffyId=258;" parent="2" vertex="1">
           <mxGeometry x="686.97" y="1343" width="30" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="jys8LJUgoWKAC8k-G7pv-126" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#000000;" vertex="1" parent="2">
+        <mxCell id="jys8LJUgoWKAC8k-G7pv-126" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#000000;" parent="2" vertex="1">
           <mxGeometry x="807" y="1371" width="10" height="11" as="geometry" />
         </mxCell>
-        <mxCell id="jys8LJUgoWKAC8k-G7pv-127" value="&lt;div style=&#39;width: 25.8px;height:auto;word-break: break-word;&#39;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;RL1&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=mxgraph.basic.pentagon;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#cc0000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=0.6;spacingRight=0;whiteSpace=wrap;gliffyId=221;" vertex="1" parent="2">
+        <mxCell id="jys8LJUgoWKAC8k-G7pv-127" value="&lt;div style=&#39;width: 25.8px;height:auto;word-break: break-word;&#39;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;RL1&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=mxgraph.basic.pentagon;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#cc0000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=0.6;spacingRight=0;whiteSpace=wrap;gliffyId=221;" parent="2" vertex="1">
           <mxGeometry x="500" y="565.5" width="30" height="40" as="geometry" />
         </mxCell>
       </root>
