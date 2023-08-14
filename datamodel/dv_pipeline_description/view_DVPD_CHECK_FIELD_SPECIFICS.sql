@@ -75,7 +75,7 @@ from target_constellation_count
 )
 , field_type_declaration_test as (
 select -- field type declaration
-  dpfp.pipeline pipeline_name
+  dpfp.pipeline_name
   ,'Field'::TEXT  object_type 
   ,dpfp.field_name object_name
   ,'DVPD_CHECK_FIELD_SPECIFICS'::text  check_ruleset

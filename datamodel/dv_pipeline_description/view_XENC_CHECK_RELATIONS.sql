@@ -25,7 +25,7 @@ select  distinct
 	pfte.pipeline_name 
 	, pfte.table_name table_name
 from dv_pipeline_description.dvpd_pipeline_field_properties pfp 
-join dv_pipeline_description.dvpd_pipeline_field_target_expansion pfte on pfte.pipeline_name =pfp.pipeline 
+join dv_pipeline_description.dvpd_pipeline_field_target_expansion pfte on pfte.pipeline_name =pfp.pipeline_name 
 																	and pfte.field_name = pfp.field_name 
 where pfp.needs_encryption 
 )

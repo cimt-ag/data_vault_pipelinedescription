@@ -22,7 +22,7 @@ create or replace view dv_pipeline_description.DVPD_PIPELINE_FIELD_PROPERTIES as
 
 
 select
- pipeline
+ lower(pipeline_name) as  pipeline_name
  ,upper(field_name) as field_name
  ,upper(trim(field_type)) as field_type
  ,field_position  

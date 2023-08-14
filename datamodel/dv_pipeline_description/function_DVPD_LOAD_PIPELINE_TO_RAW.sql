@@ -76,7 +76,7 @@ truncate
 insert
 	into
 	dv_pipeline_description.dvpd_pipeline_field_properties_raw
-(pipeline,
+(pipeline_name,
 	field_name,
 	field_type,
 	field_position,
@@ -84,7 +84,7 @@ insert
 	needs_encryption,
 	field_comment)
 select
-	pipeline,
+	pipeline_name,
 	field_name,
 	field_type,
 	field_position,

@@ -17,11 +17,11 @@
 -- =====================================================================
 
 
--- DROP TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_PROPERTIES_RAW;
+-- DROP TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_PROPERTIES_RAW cascade;
 
 CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_PROPERTIES_RAW (
 	meta_inserted_at timestamp default current_timestamp,
-	pipeline text NULL,
+	pipeline_name text NULL,
 	field_name text NULL,
 	field_type text NULL,
 	field_position int NULL,
