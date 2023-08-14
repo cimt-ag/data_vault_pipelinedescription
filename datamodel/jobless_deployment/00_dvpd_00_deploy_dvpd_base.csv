@@ -4,6 +4,7 @@ mandantory,type,schema_name,name
 
 1,table,dv_pipeline_description,DVPD_META_COLUMN_LOOKUP
 1,table,dv_pipeline_description,DVPD_MODEL_PROFILE_RAW
+1,data,dv_pipeline_description,MODEL_PROFILE_DEFAULT
 1,table,dv_pipeline_description,DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION
 1,table,dv_pipeline_description,DVPD_COMPILER_SETTING
 1,view,dv_pipeline_description,DVPD_MODEL_PROFILE
@@ -30,4 +31,4 @@ mandantory,type,schema_name,name
 1,view,dv_pipeline_description,DVPD_PIPELINE_DV_TABLE_DRIVING_KEY
 1,view,dv_pipeline_description,DVPD_PIPELINE_DV_COLUMN_CORE
 
-1,data,dv_pipeline_description,MODEL_PROFILE_DEFAULT
+

@@ -20,7 +20,7 @@
 --drop view if exists dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_CVIEW cascade;
 --drop table if exists dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING cascade;
 
-create  view dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_CVIEW as 
+create or replace view dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_CVIEW as 
 select * from dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping_core
 -- union
 -- select * from dv_pipeline_description.xenc_pipeline_process_stage_to_dv_model_mapping_addition

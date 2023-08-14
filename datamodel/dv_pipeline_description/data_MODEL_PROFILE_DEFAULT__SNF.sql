@@ -57,6 +57,8 @@ VALUES
 }
 ');
 
+DROP Table if exists dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP ; -- force a refresh of loading the lookup tables
+
 --select dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE('_default');
 
 

@@ -562,8 +562,7 @@ Since the hash rules are an essential part of the interface, the following decla
     One Group consists of :  <source elements class>/<ordering rules>
     
     Source elements classes are: 
-			“p” - (normal) parent tables 
-			“r” - recursive parent tables 
+			“p” - parent tables 
 			“d” - dependent child key elements 
     
     The sequence of source elements in the same group is not relevant
@@ -579,9 +578,8 @@ Since the hash rules are an essential part of the interface, the following decla
 	
 Examples:
 
-* "p:op -> r:op -> d:ea" 
+* "p:op ->d:ea" 
     * "p:op" all bk of parent tables, taking first all bk first from first table in the "parent_tables" array and so on. Sorting the bk of the same table like in the parent table
-    * "r:op" all bk of recursive parent tables, taking first all bk first from first table in the "recursive_tables" array and so on. Sorting the bk of the same table like in the parent table
     * "d:ea" all dependent child key fields, ordered by priority and name
 * "prd/ta"
 	* Order fields by their source table name and field name. Dependent child key fields have the link tables itseld as table name
