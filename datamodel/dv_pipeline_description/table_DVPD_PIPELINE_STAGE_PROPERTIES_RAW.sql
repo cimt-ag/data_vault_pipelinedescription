@@ -24,8 +24,7 @@ CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_STAGE_PROPERTIES_RAW (
 	pipeline_name varchar(1000) not NULL,
 	storage_component  varchar(1000) NULL,
 	stage_schema varchar(1000) NULL,
-	stage_table_name  varchar(1000)  NULL,
-	primary key (pipeline_name,storage_component)
+	stage_table_name  varchar(1000)  NULL
 );
 
 comment on table dv_pipeline_description.DVPD_PIPELINE_STAGE_PROPERTIES_RAW is

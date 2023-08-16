@@ -16,7 +16,10 @@
 -- limitations under the License.
 -- =====================================================================
 
+DROP Table if exists dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP ; -- force a refresh of loading the lookup tables
+
 DELETE FROM dv_pipeline_description.dvpd_json_storage where object_name  = '_default' and object_class ='model_profile';
+
 
 INSERT INTO dv_pipeline_description.dvpd_json_storage 
 (object_class,object_name,object_json)
@@ -57,9 +60,23 @@ VALUES
 }
 ');
 
-DROP Table if exists dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP ; -- force a refresh of loading the lookup tables
 
---select dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE('_default');
+-- Translate the json into the raw table for model profiles
+DELETE FROM dv_pipeline_description.DVPD_MODEL_PROFILE_RAW where model_profile_name  = '_default';
+
+INSERT INTO DVF_DEV_MWG.DV_PIPELINE_DESCRIPTION.DVPD_MODEL_PROFILE_RAW
+(MODEL_PROFILE_NAME, PROPERTY_NAME, PROPERTY_VALUE)
+with parsed_json as (
+select parse_json(object_json) object_json 
+     from dv_pipeline_description.dvpd_json_storage 
+     where object_name  = '_default' and object_class ='model_profile'
+)
+select object_json:"model_profile_name"::string model_profile_name
+,value::string property_name
+,get(object_json,value)::string property_value
+from parsed_json, Lateral flatten(input=> object_keys(object_json))
+where value <>'model_profile_name'
+order by key;
+  
 
 
---select object_json->>'model_profile_name' model_profile_name ,json_object_keys(object_json) property_name ,object_json->>json_object_keys(object_json) property_value from dv_pipeline_description.dvpd_json_storage where object_name  = '_default' and object_class ='model_profile'
