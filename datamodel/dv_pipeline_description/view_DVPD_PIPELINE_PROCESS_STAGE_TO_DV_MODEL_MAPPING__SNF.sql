@@ -27,11 +27,9 @@ select * from dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_ma
 ;
 
 create or replace table dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING 
- as select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_CVIEW;
-
-
-comment on  table dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING is
- 'processes specific mapping of fields to stage and target columns for every target table of a pipeline. ';
+ as (select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_CVIEW );
+comment on table  dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING is
+	'processes specific mapping of fields to stage and target columns for every target table of a pipeline. ';
 
 
 -- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING order by pipeline,table_name,process_block;										
