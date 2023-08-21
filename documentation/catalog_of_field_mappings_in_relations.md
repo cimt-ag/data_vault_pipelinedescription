@@ -216,7 +216,7 @@ solved by other designs.
 ### Single link table with a multiactive satellite, that contains a column to store the relation type 
 
 Although completly valid for relation type information, that is contained in the data, it can't be used for relation declaraton inbetween objects of the same row, since it would need the 
-creation of additional staging rows to ffed the multiactive satellite. Creating new rows during staging has a high risk of duplicating data or generate data, that was not in the source. Also the disadvantage of hiding relations in the data is the same as for the dependent child key approach.
+creation of additional staging rows to feed the multiactive satellite. Creating new rows during staging has a high risk of duplicating data or generate data, that was not in the source. Also the disadvantage of hiding relations in the data is the same as for the dependent child key approach.
 
 ![topo_multi_esat.png](images%2Fmapping_relations%2Ftopo_rsat.png)
 
