@@ -14,6 +14,10 @@ requirement are:
 - order, referring the customer in different roles (delivery and invoice).
 - flight, referring the start and destination airport
 
+### Related Document
+So also  [Data Mapping taxonomie](./data_mapping_taxonomie.md) about possible varitions of field distribution especially according one field to many columns.
+
+
 # Definitions
 When describing the data we classify the elements as follows:
 
