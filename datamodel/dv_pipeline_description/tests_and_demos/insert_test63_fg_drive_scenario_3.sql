@@ -25,7 +25,7 @@ VALUES
 	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test63_fg_drive_scenario_3",
-	"purpose":"Test dvpd transformation for multilayered field groups",
+	"purpose":"Test dvpd transformation for multi mapped targets. Using / as relation",
 	"record_source_name_expression": "knuppisoft.artikel",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
@@ -44,8 +44,7 @@ VALUES
 		 "tables": [
 				{"table_name": "rtjj_63_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_63_aaa"}
 				,{"table_name": "rtjj_63_aaa_bbb_lnk",	"table_stereotype": "lnk"	,"link_key_column_name": "LK_rtjj_63_aaa_bbb"
-																			,"link_parent_tables": ["rtjj_63_aaa_hub","rtjj_63_bbb_hub"]
-																			,"tracked_relation_names": ["R111"]}
+																			,"link_parent_tables": ["rtjj_63_aaa_hub","rtjj_63_bbb_hub"]}
 				,{"table_name": "rtjj_63_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_63_bbb"}
 				]
 		}
