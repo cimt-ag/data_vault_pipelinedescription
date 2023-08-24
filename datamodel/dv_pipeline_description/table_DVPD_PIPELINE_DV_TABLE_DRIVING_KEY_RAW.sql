@@ -16,7 +16,7 @@
 -- limitations under the License.
 -- =====================================================================
 
--- DROP TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_FIELD_GROUP_RAW;
+-- DROP TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_DRIVING_KEY_RAW;
 
 CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_DV_TABLE_DRIVING_KEY_RAW (
 	meta_inserted_at timestamp default current_timestamp,

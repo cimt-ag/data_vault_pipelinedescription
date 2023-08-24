@@ -52,49 +52,7 @@ order by pipeline,mc.column_block ,2
 
 
 
-/* dvpd_processing_plan */
-create view dvpd_processing_plan_per_leaf_table as
 
-/* determine all tables, touched by source mapping
- * sats/msats are directly targeted , probably by multiple field groups
- * esats and links whithout esat are adressed, when all business keys of hubs related to the esat/link 
- * hubs are always adressed as parents of sats and links
- * are adressed by a consistent field group */
-
-/* create explicit fieldsets for all field groups */
-with field_groups_of_pipeline as (
-	select distinct pipeline ,field_group 
-	from dv_pipeline_description.dvpd_source_field_mapping dfm
-)
---, explicit_fieldsets as(
-select fgop.pipeline,fgop.field_group,dfm2.field_group source_group,table_name ,column_name ,field_name 
-from dv_pipeline_description.dvpd_source_field_mapping dfm2 
-join field_groups_of_pipeline fgop on fgop.pipeline=dfm2.pipeline and (
-									fgop.field_group = dfm2.field_group 
-									 or dfm2.field_group ='##all##')
-order by pipeline ,fgop.field_group 	,table_name ,field_name 								 
-
-)
-select pipeline ,table_name ,column_name 
-,count(distinct field_group ) field_group_count
-,count(distinct field_name ) field_name_count
-from explicit_fieldsets
-group by 1,2,3
-
-with link_parent_hubs as (
-	select distinct
-		pipeline
-		,table_name as link_table_name
-		,json_array_elements_text(link_parent_tables) as hub_table_name 
-	from dvpd_dv_model_table 
-	where table_stereotype ='link'
-) -- link_parent_business_keys
-select lph.pipeline ,link_table_name,hub_table_name,ddmc.column_name 
-from link_parent_hubs lph 
-join dvpd_dv_model_column ddmc on ddmc.pipeline = lph.pipeline
-							  and ddmc.table_name = lph.hub_table_name
-							  and ddmc.column_class = 'business_key'
-   
 											 )
 											 
  /* Determine solutions to fill satellites and links without 
