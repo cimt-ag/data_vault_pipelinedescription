@@ -283,7 +283,7 @@ Participation to a relation is declared at every table mapping of the field.
 If not declared, a field is considerd to participate in every relation, when it is the only field mapped to the target, else it will be assigned only to the "main"(unnamed) relation.
 To declare the participation on a subset, that contains the "main"(unnamed) relation and another one, the syntax provides the reserved relation name "/" for the unnamed relation.
 
-A target column must only have one field mapped in every relation. 
+A target column must only have one field mapped in every specific relation. 
 
 ## Participation of hubs
 Hubs participate to all relations that contain a full set of fields mapped to the 
@@ -350,19 +350,27 @@ define the test set, a DVPD compiler must solve.
     - 3AR = Link with 2 references from A to A 
     - AB3CR+ABC = Link from A to B and C with 3 references to C + Link to A,B,C
     - A3BL = 3 separate Links from A to B
-- **Field setting**: Short notation of the content constellation to map.<br>
+- **field distribution**: Notation about the distribution of fields in the model for the scenario relevant fields (comma separeted list of fields with Upper case Letter=mapped Hub, Lower case = mapped sat of the hub,letters in pharentheses =link on the hubs)
+    - A,a,B,b = 4 Fields, each mapped to one of the tables
+    - AB,A,B,a,b,(ab) = 1 Feld used in BK of A and B, all other are separated. "(ab)"= Satellite on the Link of A and B.
+    - AB,B = 1 Field used in A and B hub. B hub has second field in business key
+- **relation overlap**: Short notation of the content participation in relations.<br>
 \<content type (bk,dc,hs,ls)>\<relation participation (+,~,*,-,%)>\<number of target tables> \[& <next field in same notation...>] <br>
     - BK1+ = Business key in one table used for one relation
     - BK2* & BK1+ & hsd1+ = Business key in 2 tables for all relations and business key in one table single relations an hub sattelite content in 1 table and one relation
     - BK1~ & ls1~ = Business key in 1 table and link satellite content in more then one but not all relations
     - BK1+ & hs1- = Business key in 1 table and hub satellite processed only in 1 relatiion  
-    - BK1+ & hs1% = Business key in 1 table and hub satellite processed only in subset of relatiiojn  
+    - BK1+ & hs1% = Business key in 1 table and hub satellite processed only in subset of relatiions  
 - **Test**: Number of the test case, that will cover this setting (set *italic* when not
 implemented yet, set to "-" when his combination is not possible)
+
+## Genric case matrix
+The generic cases all use a 1:1 field distribution. Every field is mappe to only one target column
+
  
 | Model          | A3BR    | A3BL    | A3BE    | A3BD    | 3AR     | A3BN   | 
 |----------------|---------|---------|---------|---------|---------|--------| 
-| field setting  |         |         |         |         |         |        | 
+| relation ovrlap|         |         |         |         |         |        | 
 | BK1+           | *201*   | *301*   | *401*   | *501*   | *601*   | *101*  | 
 | BK1~           | *202*   | *302*   | *402*   | *502*   | -       | *102*  | 
 | BK1*           | *203*   | *303*   | *403*   | *503*   | *603*   | *103*  | 
@@ -411,3 +419,8 @@ implemented yet, set to "-" when his combination is not possible)
 | BK1* & HS--    | *284*   | *384*   | *484*   | *584*   | -       | *184*  | 
 | BK1* & HS%%    | *285*   | *385*   | *485*   | *585*   | -       | *185*  | 
 | BK1* & HS*%    | *286*   | *386*   | *486*   | *586*   | -       | *186*  | 
+
+## Designed cases (700-999)
+| Model   | field distribution | relation ovrlap | test  |
+|---------|--------------------|-----------------|-------|
+|  A2B2C  |                    | BK1*            |       |
