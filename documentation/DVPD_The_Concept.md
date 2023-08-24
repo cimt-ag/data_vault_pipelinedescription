@@ -106,7 +106,7 @@ Beside the simple singluar mapping of one field to one or more data vault table 
 A complete investigation and catalog of possible combinations is specified seperatly in
 
 * [Catalog of field mappings in relations](./catalog_of_field_mappings_in_relations.md).
-* [Data Mapping taxonomie](./data_mapping_taxonomie.md).
+* [Model topologies and basic field mapping variations](./Model_topologies_and_basic_field_mapping_variations.md).
 
 (Yes, it currently takes two documents to get this into perspective)
 

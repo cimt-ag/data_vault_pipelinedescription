@@ -15,7 +15,7 @@ requirement are:
 - flight, referring the start and destination airport
 
 ### Related Document
-So also  [Data Mapping taxonomie](./data_mapping_taxonomie.md) about possible varitions of field distribution especially according one field to many columns.
+So also  [Model topologies and basic field mapping variations](./Model_topologies_and_basic_field_mapping_variations.md) about possible varitions of field distribution especially according one field to many columns.
 
 
 # Definitions

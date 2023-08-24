@@ -1,4 +1,4 @@
-Data Vault - Model Topology and basic source data mapping variations
+Data Vault - Model Topologies and basic source data mapping variations
 ==============================
 (C) Matthias Wegner, cimt ag
 
@@ -66,26 +66,19 @@ When classifing the mapping of the fields to the target tables and columns there
     - a target column is addressed by only one field mapping
     - a target column is addressed by multiple field mappings
 
-The last case will be discussed in [Catalog of field mappings in relations](./catalog_of_field_mappings_in_relations.md)
+## field perspective
+The field perspective is completly covered, when the DVPD provides syntax to
+distribute fields to multiple tables and columns.
 
-The other (simple) cases are investigated here on different topologies.
+The following example provides the solution for some common topologies.
 
-The number of business keys / dependent child key columns  in the cases is
-chosen to provide a good example. Adding more columns, will not change the 
-core case. 
-
-## Multisat, sat on link, Sat on Partner topology
 ![multisat,sat on link, sat on partner](./images/source_mapping_multisat_sat_on_link_sat_on_partner.drawio.png)
 
-## link with dependent child
+## target perspectice
 
-## link to n hubs
+Mapping multiple fields to the same target column is coupled to the concept of relations. It is discussed in [Catalog of field mappings in relations](./catalog_of_field_mappings_in_relations.md)
 
-## link with multi relation to same hub
-this contains target columns, that are adressed by multiple fields and is
-discussed in  in [Catalog of field mappings in relations](./catalog_of_field_mappings_in_relations.md)
+ 
 
 
-## hierachical link
-this contains target columns, that are adressed by multiple fields and is
-discussed in  in [Catalog of field mappings in relations](./catalog_of_field_mappings_in_relations.md)
+
