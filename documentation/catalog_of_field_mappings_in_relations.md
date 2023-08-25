@@ -428,6 +428,6 @@ The generic cases all use a 1:1 field distribution. Every field is mappe to only
 | Model          | field distribution     |  test  |
 |----------------|------------------------|--------|
 |  ABC           | ABC,A,B,C,a,b,c        |**701** |
-|  A2BCR         | ABC,A,B:t,B:u,C,a,b,c  | *702*  |
-|  A2BL+ACR      | ABC,A,B:t,B:u,C,a,b,c  | *703*  |
-|  ABCL+ABL      | ABC,A,B:t,B:u,C,a,b,c  | *704*  |
+|  A2BCR         | ABC,A,B:t,B:u,C,a,b,c  |**702** |
+|  ABCL+ABL      | ABC,A,B:t,B:u,C,a,b,c  |**703** |
+|  A2BR+ACL      | ABC,A,B:t,B:u,C,a,b,c  |**704** |

@@ -1,0 +1,10 @@
+mandantory,type,schema_name,name
+
+1,table,dv_pipeline_description,DVPD_MODEL_PROFILE_RAW
+1,view,dv_pipeline_description,DVPD_MODEL_PROFILE
+1,view,dv_pipeline_description,DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP
+1,data,dv_pipeline_description,MODEL_PROFILE_DEFAULT
+
+
+
+
