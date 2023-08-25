@@ -1,8 +1,5 @@
 mandantory,type,schema_name,name
 
-1,function,dv_pipeline_description,f_is_json
-
-
 1,view,dv_pipeline_description,DVPD_PIPELINE_PROPERTIES
 1,view,dv_pipeline_description,DVPD_PIPELINE_STAGE_PROPERTIES
 1,view,dv_pipeline_description,DVPD_PIPELINE_FIELD_TARGET_EXPANSION

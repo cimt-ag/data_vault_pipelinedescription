@@ -34,7 +34,8 @@ join dv_pipeline_description.dvpd_model_profile mp_t on mp_t.property_name =mcl.
 
 
 create or replace table dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP 
- as select * from dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP_CVIEW;
+ as select * from dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP_CVIEW
+;
 
 comment on  table dv_pipeline_description.dvpd_model_profile_meta_column_lookup is
  'Profile specific naming and type of the meta columns needed for every data vault table table_stereotype';
