@@ -23,8 +23,9 @@
 create or replace view dv_pipeline_description.DVPD_PIPELINE_STAGE_HASH_INPUT_FIELD as
 
 with stage_hash_columns as (
-	select  pipeline_name
-		,relation_to_process 
+	select distinct pipeline_name
+		,min(relation_to_process) over (partition by pipeline_name, table_name, stage_column_name) as relation_to_process 
+		-- This min function removes duplicates of diff hashes, when they are used for multiple relations
 		,stage_column_name 
 		,table_name 
 		,table_stereotype

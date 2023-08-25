@@ -54,6 +54,7 @@ VALUES
 
 select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('test62_fg_drive_scenario_2');
 
+-- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'test62_fg_drive_scenario_2';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
 ('test62_fg_drive_scenario_2','{
@@ -79,29 +80,30 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rtjj_62_aaa_hub","R222","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_R222",null],
          ["rtjj_62_aaa_hub","R222","BK_AAA","F2_BK_AAA_L2","F2_BK_AAA_L2"],
          ["rtjj_62_aaa_p1_sat","R111","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_R111",null],
-         ["rtjj_62_aaa_p1_sat","R111","RH_RTJJ_62_AAA_P1_SAT","RH_RTJJ_62_AAA_P1_SAT_R111",null],
+         ["rtjj_62_aaa_p1_sat","R111","RH_RTJJ_62_AAA_P1_SAT","RH_RTJJ_62_AAA_P1_SAT",null],
          ["rtjj_62_aaa_p1_sat","R111","F3_AAA_S1_COLA","F3_AAA_S1_COLA","F3_AAA_S1_COLA"],
          ["rtjj_62_aaa_p1_sat","R111","F4_AAA_S1_COLB","F4_AAA_S1_COLB","F4_AAA_S1_COLB"],
          ["rtjj_62_aaa_p1_sat","R222","HK_RTJJ_62_AAA","HK_RTJJ_62_AAA_R222",null],
-         ["rtjj_62_aaa_p1_sat","R222","RH_RTJJ_62_AAA_P1_SAT","RH_RTJJ_62_AAA_P1_SAT_R222",null],
+         ["rtjj_62_aaa_p1_sat","R222","RH_RTJJ_62_AAA_P1_SAT","RH_RTJJ_62_AAA_P1_SAT",null],
          ["rtjj_62_aaa_p1_sat","R222","F3_AAA_S1_COLA","F3_AAA_S1_COLA","F3_AAA_S1_COLA"],
          ["rtjj_62_aaa_p1_sat","R222","F4_AAA_S1_COLB","F4_AAA_S1_COLB","F4_AAA_S1_COLB"]
  ],
  "stage_table_column": [
          ["HK_RTJJ_62_AAA_R111","CHAR(28)",2,null,null,false],
          ["HK_RTJJ_62_AAA_R222","CHAR(28)",2,null,null,false],
-         ["RH_RTJJ_62_AAA_P1_SAT_R111","CHAR(28)",3,null,null,false],
-         ["RH_RTJJ_62_AAA_P1_SAT_R222","CHAR(28)",3,null,null,false],
+         ["RH_RTJJ_62_AAA_P1_SAT","CHAR(28)",3,null,null,false],
          ["F1_BK_AAA_L1","VARCHAR(20)",8,"F1_BK_AAA_L1","VARCHAR(20)",false],
          ["F2_BK_AAA_L2","VARCHAR(20)",8,"F2_BK_AAA_L2","VARCHAR(20)",false],
          ["F3_AAA_S1_COLA","VARCHAR(20)",8,"F3_AAA_S1_COLA","VARCHAR(20)",false],
          ["F4_AAA_S1_COLB","VARCHAR(20)",8,"F4_AAA_S1_COLB","VARCHAR(20)",false]
  ],
  "stage_hash_input_field": [
-         ["R111","HK_RTJJ_62_AAA_R111","F1_BK_AAA_L1",0,0],
-         ["R111","RH_RTJJ_62_AAA_P1_SAT_R111","F3_AAA_S1_COLA",0,0],
-         ["R111","RH_RTJJ_62_AAA_P1_SAT_R111","F4_AAA_S1_COLB",0,0],
-         ["R222","HK_RTJJ_62_AAA_R222","F2_BK_AAA_L2",0,0],
-         ["R222","RH_RTJJ_62_AAA_P1_SAT_R222","F3_AAA_S1_COLA",0,0],
-         ["R222","RH_RTJJ_62_AAA_P1_SAT_R222","F4_AAA_S1_COLB",0,0]
+         ["R111","HK_RTJJ_62_AAA_R111","F1_BK_AAA_L1",50000,50000],
+         ["R111","RH_RTJJ_62_AAA_P1_SAT","F3_AAA_S1_COLA",50000,50000],
+         ["R111","RH_RTJJ_62_AAA_P1_SAT","F4_AAA_S1_COLB",50000,50000],
+         ["R222","HK_RTJJ_62_AAA_R222","F2_BK_AAA_L2",50000,50000]
+ ],
+ "xenc_process_column_mapping": [
+ ],
+ "xenc_process_field_to_encryption_key_mapping": [
   ]    }');
