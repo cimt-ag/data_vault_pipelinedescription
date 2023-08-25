@@ -350,10 +350,14 @@ define the test set, a DVPD compiler must solve.
     - 3AR = Link with 2 references from A to A 
     - AB3CR+ABC = Link from A to B and C with 3 references to C + Link to A,B,C
     - A3BL = 3 separate Links from A to B
-- **field distribution**: Notation about the distribution of fields in the model for the scenario relevant fields (comma separeted list of fields with Upper case Letter=mapped Hub, Lower case = mapped sat of the hub,letters in pharentheses =link on the hubs)
-    - A,a,B,b = 4 Fields, each mapped to one of the tables
-    - AB,A,B,a,b,(ab) = 1 Feld used in BK of A and B, all other are separated. "(ab)"= Satellite on the Link of A and B.
-    - AB,B = 1 Field used in A and B hub. B hub has second field in business key
+- **field distribution**: Comma separated list of the incoming fields and their mapping. \<letters of tables>\[:\<letters of relations>]
+    - Letters from A to G represent hubs in upper case and satelliets on the hubs on lowercase
+    - Capital Letters in square brackets represent a link, that connects the hubs of the letters - Field is a dependent child key
+    - small Letters in square brackets represent a satelllite on a link that connects the hubs of the letters
+    - small letters from T to W declare a relation name this field will participate
+    - A,a,B,b = 4 Fields, each mapped to one of the tables (Hub A, Sat of Hub A, Hub B, Sat of Hub B)
+    - AB,A,B,a,b,\[ab] = 1 Feld used in Hub A and B, all other are separated. "\[ab]"= Satellite on the Link of A and B.
+    - ABC,A,B:t,B:u,C,a = 1 Field used in all hubs (ABC), 1 field exclusivly in A hub, 1 field for B hub in  relatiom t, one field for b hub in relation u, one field for C hub, one field in Sattelite if A hub.
 - **relation overlap**: Short notation of the content participation in relations.<br>
 \<content type (bk,dc,hs,ls)>\<relation participation (+,~,*,-,%)>\<number of target tables> \[& <next field in same notation...>] <br>
     - BK1+ = Business key in one table used for one relation
@@ -421,6 +425,9 @@ The generic cases all use a 1:1 field distribution. Every field is mappe to only
 | BK1* & HS*%    | *286*   | *386*   | *486*   | *586*   | -       | *186*  | 
 
 ## Designed cases (700-999)
-| Model   | field distribution | relation ovrlap | test  |
-|---------|--------------------|-----------------|-------|
-|  A2B2C  |                    | BK1*            |       |
+| Model          | field distribution     |  test  |
+|----------------|------------------------|--------|
+|  ABC           | ABC,A,B,C,a,b,c        |**701** |
+|  A2BCR         | ABC,A,B:t,B:u,C,a,b,c  | *702*  |
+|  A2BL+ACR      | ABC,A,B:t,B:u,C,a,b,c  | *703*  |
+|  ABCL+ABL      | ABC,A,B:t,B:u,C,a,b,c  | *704*  |
