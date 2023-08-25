@@ -3,6 +3,8 @@ DVPD core elements described here must be supported by any implementation in the
 
 The syntax must and can be extended by properties, needed for project specific solutions (e.g. data_extraction modules, data encryption frameworks). Documentation for these properties must be provided for every module in a separate document.
 
+For examples please look in : [Data Vault method coverage and syntax examples](./Data_Vault_method_coverage_and_syntax_examples.md)
+
 A DVPD is expressed with JSON syntax and contains the following attributes(Keys):
 
 # Root 
@@ -113,11 +115,6 @@ The following constants are defined by the core syntax
 (optional boolean with default false)
 <br>When set to true, the data will be encrypted, according to the underlying concept for data protection
 (This is the only standardized core element regarding encryption. All other properties are defined by the specific method of encryption)
-
-**is_partitioning**
-(optional, default=false)
-<br>*will be implemented in later version*
-<br>Declares this field to be an identifier of a data set, that is completely contained in the current increment (e.g. all data of a factory, country, code table). This is used to constrain deletion detection operations to the data, that is loaded completly into the stage table or ingestion table.
 
 **targets[]**
 (mandatory)
@@ -441,8 +438,12 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 - "stage_comparison" : The data retrieved and staged includes a complete set or partitions of the complete set. By comparing the whole vault against the stage, deletion records are created during the load from stage to the vault
 
 **key_fields[]**
-(mandatory for "key_comparison", fields must be declared in fields[]. The fields must be mapped to businesskeys of a parent of the satellites)
+(mandatory for "key_comparison", valid fields must be declared in fields[]. The fields must be mapped to businesskeys of a parent of the satellite)
 <br>Names of the fields, used to retrieve the list of still available keys in the source.  The modell mapping provides the necessary join relation to the satellite tables for determening the currently valid values in the vault.
+
+**partitioning_fields[]**
+(optional)
+<br>Names of the fields, that wich identify fully deliverd datasets in the current load. If set, the deletion detecion wil be restricted to the values in theses fields.
 
 **deletion_rules[]**
 (mandatory)

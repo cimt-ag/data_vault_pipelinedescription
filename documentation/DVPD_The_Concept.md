@@ -23,7 +23,9 @@ The Data Vault Pipeline Description concept specifies a data structure with all 
 
 ## Take your time
 
-Even though the overall approach of the concept is very simple, some parts might appear not very intuitive in the first reading. Please take your time to understand the requirements and solutions for the complex edge cases (especially relations). These scenarios don#t appear often, but mostly every project contains at least one source, that needs this special treatment. That's why this concept must cover theses topics.
+Even though the overall approach of the concept is follow simple and robust rules, some parts might appear not very intuitive in the first reading. Please take your time to understand the requirements and solutions for the complex edge cases (especially relations). 
+
+To get a first impression of the syntax you might look into [Data Vault method coverage and syntax examples](./Data_Vault_method_coverage_and_syntax_examples.md) 
 
 ## Version evolution
 
