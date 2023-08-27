@@ -470,6 +470,10 @@ For other procedures there might be other properties necessary.
 (optional,must contain all tables needed to be joined to reach the partitioning columns)
 <br>Describes the join path in the model to get from the tables to delete to the tables with partitioning fields. The path begins with the parent table of all listed satellites to delete. The path must not branch except when adding satellites to provide partitioning columns or restrict the validity of links. The path can skip unnecessary tables (e.g. hubs, where businesskey is not a partition criteria).
 
+An empty join path means, that the partitioning columns are all in the table to cleanup. It can't be set, when there are no partitioning_fields.
+
+
+
 Example:
 ```
     Model: contract_p1_sat + contract_p2_sat -> contract_hub(contId)
