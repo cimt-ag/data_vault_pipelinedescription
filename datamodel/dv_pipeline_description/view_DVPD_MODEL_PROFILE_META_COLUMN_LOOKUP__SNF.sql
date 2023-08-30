@@ -17,9 +17,10 @@
 -- =====================================================================
 
 
--- drop  view  dv_pipeline_description.dvpd_model_profile_meta_column_lookup cascade;
+-- drop  view  dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP_CVIEW;
+-- drop  table  dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP;
 
-Create  view dv_pipeline_description.dvpd_model_profile_meta_column_lookup as 
+Create or replace view dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP_CVIEW as 
 	
 select mp_n.model_profile_name 
 ,table_stereotype 
@@ -32,7 +33,11 @@ join dv_pipeline_description.dvpd_model_profile mp_t on mp_t.property_name =mcl.
 ;			
 
 
-comment on  view dv_pipeline_description.dvpd_model_profile_meta_column_lookup is
+create or replace table dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP 
+ as select * from dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP_CVIEW
+;
+
+comment on  table dv_pipeline_description.dvpd_model_profile_meta_column_lookup is
  'Profile specific naming and type of the meta columns needed for every data vault table table_stereotype';
 
 -- select * from dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP;

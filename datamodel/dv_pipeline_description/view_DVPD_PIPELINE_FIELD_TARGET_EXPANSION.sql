@@ -46,7 +46,7 @@ select
 	,field_comment
 	,coalesce (column_content_comment ,field_comment ) column_content_comment
 from dv_pipeline_description.dvpd_pipeline_field_target_expansion_raw pfter
-join dv_pipeline_description.dvpd_pipeline_field_properties_raw pfpr on pfpr.pipeline = pfter.pipeline_name 
+join dv_pipeline_description.dvpd_pipeline_field_properties_raw pfpr on pfpr.pipeline_name = pfter.pipeline_name 
 																	and pfpr.field_name = pfter.field_name 
 join target_usage tu on tu.pipeline_name = lower(pfter.pipeline_name)	
 					and tu.table_name = lower(pfter.table_name) 

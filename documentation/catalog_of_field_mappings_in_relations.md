@@ -14,6 +14,10 @@ requirement are:
 - order, referring the customer in different roles (delivery and invoice).
 - flight, referring the start and destination airport
 
+### Related Document
+So also  [Model topologies and basic field mapping variations](./Model_topologies_and_basic_field_mapping_variations.md) about possible varitions of field distribution especially according one field to many columns.
+
+
 # Definitions
 When describing the data we classify the elements as follows:
 
@@ -216,7 +220,7 @@ solved by other designs.
 ### Single link table with a multiactive satellite, that contains a column to store the relation type 
 
 Although completly valid for relation type information, that is contained in the data, it can't be used for relation declaraton inbetween objects of the same row, since it would need the 
-creation of additional staging rows to ffed the multiactive satellite. Creating new rows during staging has a high risk of duplicating data or generate data, that was not in the source. Also the disadvantage of hiding relations in the data is the same as for the dependent child key approach.
+creation of additional staging rows to feed the multiactive satellite. Creating new rows during staging has a high risk of duplicating data or generate data, that was not in the source. Also the disadvantage of hiding relations in the data is the same as for the dependent child key approach.
 
 ![topo_multi_esat.png](images%2Fmapping_relations%2Ftopo_rsat.png)
 
@@ -279,7 +283,7 @@ Participation to a relation is declared at every table mapping of the field.
 If not declared, a field is considerd to participate in every relation, when it is the only field mapped to the target, else it will be assigned only to the "main"(unnamed) relation.
 To declare the participation on a subset, that contains the "main"(unnamed) relation and another one, the syntax provides the reserved relation name "/" for the unnamed relation.
 
-A target column must only have one field mapped in every relation. 
+A target column must only have one field mapped in every specific relation. 
 
 ## Participation of hubs
 Hubs participate to all relations that contain a full set of fields mapped to the 
@@ -346,19 +350,31 @@ define the test set, a DVPD compiler must solve.
     - 3AR = Link with 2 references from A to A 
     - AB3CR+ABC = Link from A to B and C with 3 references to C + Link to A,B,C
     - A3BL = 3 separate Links from A to B
-- **Field setting**: Short notation of the content constellation to map.<br>
+- **field distribution**: Comma separated list of the incoming fields and their mapping. \<letters of tables>\[:\<letters of relations>]
+    - Letters from A to G represent hubs in upper case and satelliets on the hubs on lowercase
+    - Capital Letters in square brackets represent a link, that connects the hubs of the letters - Field is a dependent child key
+    - small Letters in square brackets represent a satelllite on a link that connects the hubs of the letters
+    - small letters from T to W declare a relation name this field will participate
+    - A,a,B,b = 4 Fields, each mapped to one of the tables (Hub A, Sat of Hub A, Hub B, Sat of Hub B)
+    - AB,A,B,a,b,\[ab] = 1 Feld used in Hub A and B, all other are separated. "\[ab]"= Satellite on the Link of A and B.
+    - ABC,A,B:t,B:u,C,a = 1 Field used in all hubs (ABC), 1 field exclusivly in A hub, 1 field for B hub in  relatiom t, one field for b hub in relation u, one field for C hub, one field in Sattelite if A hub.
+- **relation overlap**: Short notation of the content participation in relations.<br>
 \<content type (bk,dc,hs,ls)>\<relation participation (+,~,*,-,%)>\<number of target tables> \[& <next field in same notation...>] <br>
     - BK1+ = Business key in one table used for one relation
     - BK2* & BK1+ & hsd1+ = Business key in 2 tables for all relations and business key in one table single relations an hub sattelite content in 1 table and one relation
     - BK1~ & ls1~ = Business key in 1 table and link satellite content in more then one but not all relations
     - BK1+ & hs1- = Business key in 1 table and hub satellite processed only in 1 relatiion  
-    - BK1+ & hs1% = Business key in 1 table and hub satellite processed only in subset of relatiiojn  
+    - BK1+ & hs1% = Business key in 1 table and hub satellite processed only in subset of relatiions  
 - **Test**: Number of the test case, that will cover this setting (set *italic* when not
 implemented yet, set to "-" when his combination is not possible)
+
+## Genric case matrix
+The generic cases all use a 1:1 field distribution. Every field is mappe to only one target column
+
  
 | Model          | A3BR    | A3BL    | A3BE    | A3BD    | 3AR     | A3BN   | 
 |----------------|---------|---------|---------|---------|---------|--------| 
-| field setting  |         |         |         |         |         |        | 
+| relation ovrlap|         |         |         |         |         |        | 
 | BK1+           | *201*   | *301*   | *401*   | *501*   | *601*   | *101*  | 
 | BK1~           | *202*   | *302*   | *402*   | *502*   | -       | *102*  | 
 | BK1*           | *203*   | *303*   | *403*   | *503*   | *603*   | *103*  | 
@@ -407,3 +423,11 @@ implemented yet, set to "-" when his combination is not possible)
 | BK1* & HS--    | *284*   | *384*   | *484*   | *584*   | -       | *184*  | 
 | BK1* & HS%%    | *285*   | *385*   | *485*   | *585*   | -       | *185*  | 
 | BK1* & HS*%    | *286*   | *386*   | *486*   | *586*   | -       | *186*  | 
+
+## Designed cases (700-999)
+| Model          | field distribution     |  test  |
+|----------------|------------------------|--------|
+|  ABC           | ABC,A,B,C,a,b,c        |**701** |
+|  A2BCR         | ABC,A,B:t,B:u,C,a,b,c  |**702** |
+|  ABCL+ABL      | ABC,A,B:t,B:u,C,a,b,c  |**703** |
+|  A2BR+ACL      | ABC,A,B:t,B:u,C,a,b,c  |**704** |

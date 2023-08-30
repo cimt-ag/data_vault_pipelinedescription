@@ -24,7 +24,7 @@ SELECT
 	lower(dpspr.pipeline_name) pipeline_name
 	,storage_component
 	,lower(stage_schema) stage_schema 
-	,coalesce(lower(stage_table_name),lower(dpspr.pipeline_name)) stage_table_name
+	,coalesce(lower(stage_table_name),'s'||lower(dpspr.pipeline_name)) stage_table_name
 FROM 
 	dv_pipeline_description.DVPD_PIPELINE_STAGE_PROPERTIES_RAW dpspr;
 

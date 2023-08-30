@@ -3,6 +3,8 @@ DVPD core elements described here must be supported by any implementation in the
 
 The syntax must and can be extended by properties, needed for project specific solutions (e.g. data_extraction modules, data encryption frameworks). Documentation for these properties must be provided for every module in a separate document.
 
+For examples please look in : [Data Vault method coverage and syntax examples](./Data_Vault_method_coverage_and_syntax_examples.md)
+
 A DVPD is expressed with JSON syntax and contains the following attributes(Keys):
 
 # Root 
@@ -113,11 +115,6 @@ The following constants are defined by the core syntax
 (optional boolean with default false)
 <br>When set to true, the data will be encrypted, according to the underlying concept for data protection
 (This is the only standardized core element regarding encryption. All other properties are defined by the specific method of encryption)
-
-**is_partitioning**
-(optional, default=false)
-<br>*will be implemented in later version*
-<br>Declares this field to be an identifier of a data set, that is completely contained in the current increment (e.g. all data of a factory, country, code table). This is used to constrain deletion detection operations to the data, that is loaded completly into the stage table or ingestion table.
 
 **targets[]**
 (mandatory)
@@ -301,11 +298,6 @@ Depending on mapped fields and the properties this can be a
 1. Just a list of the table_names of all hubs, this link is connecting.
 2. A list of json objects with full link parent property declarations 
 
-**tracked_relation_names[]**
-(optional)
-<br>List of relations, this link will track. This is mainly used, when parent hubs participate on more
-relation_names, then there should be tracked. In that case, the relations 
-
 → link_parent_tables[]
 
 The order of the tables in the list can be relevant to the hashing order of the link key (depends on processing engine and project conventions).  In case, the processing engine enforces its own order, it should issue a warning, when the final order differs from the declarated.
@@ -446,8 +438,12 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 - "stage_comparison" : The data retrieved and staged includes a complete set or partitions of the complete set. By comparing the whole vault against the stage, deletion records are created during the load from stage to the vault
 
 **key_fields[]**
-(mandatory for "key_comparison", fields must be declared in fields[]. The fields must be mapped to businesskeys of a parent of the satellites)
+(mandatory for "key_comparison", valid fields must be declared in fields[]. The fields must be mapped to businesskeys of a parent of the satellite)
 <br>Names of the fields, used to retrieve the list of still available keys in the source.  The modell mapping provides the necessary join relation to the satellite tables for determening the currently valid values in the vault.
+
+**partitioning_fields[]**
+(optional)
+<br>Names of the fields, that wich identify fully deliverd datasets in the current load. If set, the deletion detecion wil be restricted to the values in theses fields.
 
 **deletion_rules[]**
 (mandatory)
@@ -473,6 +469,10 @@ For other procedures there might be other properties necessary.
 **join_path[]**
 (optional,must contain all tables needed to be joined to reach the partitioning columns)
 <br>Describes the join path in the model to get from the tables to delete to the tables with partitioning fields. The path begins with the parent table of all listed satellites to delete. The path must not branch except when adding satellites to provide partitioning columns or restrict the validity of links. The path can skip unnecessary tables (e.g. hubs, where businesskey is not a partition criteria).
+
+An empty join path means, that the partitioning columns are all in the table to cleanup. It can't be set, when there are no partitioning_fields.
+
+
 
 Example:
 ```
@@ -562,8 +562,7 @@ Since the hash rules are an essential part of the interface, the following decla
     One Group consists of :  <source elements class>/<ordering rules>
     
     Source elements classes are: 
-			“p” - (normal) parent tables 
-			“r” - recursive parent tables 
+			“p” - parent tables 
 			“d” - dependent child key elements 
     
     The sequence of source elements in the same group is not relevant
@@ -579,9 +578,8 @@ Since the hash rules are an essential part of the interface, the following decla
 	
 Examples:
 
-* "p:op -> r:op -> d:ea" 
+* "p:op ->d:ea" 
     * "p:op" all bk of parent tables, taking first all bk first from first table in the "parent_tables" array and so on. Sorting the bk of the same table like in the parent table
-    * "r:op" all bk of recursive parent tables, taking first all bk first from first table in the "recursive_tables" array and so on. Sorting the bk of the same table like in the parent table
     * "d:ea" all dependent child key fields, ordered by priority and name
 * "prd/ta"
 	* Order fields by their source table name and field name. Dependent child key fields have the link tables itseld as table name

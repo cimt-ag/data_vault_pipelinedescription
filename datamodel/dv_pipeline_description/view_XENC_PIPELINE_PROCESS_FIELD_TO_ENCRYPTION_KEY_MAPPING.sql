@@ -32,7 +32,7 @@ select ppstdmmb.pipeline_name
 	,pstemm.stage_column_name   encryption_key_stage_column_name
 	,rank() over (partition by  ppstdmmb .pipeline_name ,ppstdmmb .stage_column_name  order by ppstdmmb .table_name  ) stage_map_rank
 from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE ppstdmmb 
-join dv_pipeline_description.dvpd_pipeline_field_properties pfp on pfp.pipeline = ppstdmmb .pipeline_name 
+join dv_pipeline_description.dvpd_pipeline_field_properties pfp on pfp.pipeline_name = ppstdmmb .pipeline_name 
 																and pfp.field_name = ppstdmmb.field_name 
 																and pfp.needs_encryption
 join dv_pipeline_description.xenc_pipeline_dv_table_properties	pdtp on pdtp.pipeline_name = ppstdmmb .pipeline_name 

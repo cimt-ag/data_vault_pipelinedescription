@@ -42,8 +42,9 @@ select distinct -- content fields
 	,ppp.table_stereotype 
 	,pdc.column_name 
 	,pdc.column_class  
-    -- case when pfte.field_name is not null and relation_to_process in ('/','*')  then pdc.column_name  -- legacy generator compatible  (Stage = Target, will fail on multiple mappings to same target)
-	,pfte.field_name as stage_column_name
+    ,case when pfte.field_name is not null and relation_to_process in ('/','*')  then pdc.column_name  -- legacy generator compatible  (Stage = Target, will fail on multiple mappings to same target)
+     else pfte.field_name end as stage_column_name
+	--,pfte.field_name as stage_column_name  -- normal behaviuour
 	,pdc.column_type 
 	,pdc.column_block 
 	,pfte.field_name 
@@ -98,6 +99,7 @@ join table_relation_to_process_count trtpc on trtpc.pipeline_name = ppp.pipeline
 	,pdc.column_name 
 	,pdc.column_class  
 	,case when  pdc.column_class = 'parent_key' and hk.stage_column_name is not null then hk.stage_column_name
+		   when  pdc.column_class = 'diff_hash' and not has_explicit_relation_names then  pdc.column_name   
 			when  ppp.relation_to_process in ('/','*')  then pdc.column_name 
 	  		 else pdc.column_name||'_'||ppp.relation_to_process  
 	 end stage_column_name
@@ -119,7 +121,7 @@ join dv_pipeline_description.dvpd_pipeline_dv_column pdc on pdc.pipeline_name =p
 												and pdc.table_name=ppp.table_name 
 												and pdc.column_class in ('parent_key','diff_hash')
 												and ppp.table_stereotype = 'sat'
-where (pdt.pipeline_name,pdt.satellite_parent_table) in (select pipeline_name,table_name from hub_keys)												
+where (pdt.pipeline_name,pdt.satellite_parent_table) in (select pipeline_name,table_name from hub_keys)	
 )
 , link_keys as (
 select distinct -- link keys
@@ -184,6 +186,7 @@ join dv_pipeline_description.dvpd_pipeline_dv_column pdc on pdc.pipeline_name =p
 	,pdc.column_name 
 	,pdc.column_class  
 	,case when  pdc.column_class = 'parent_key' and lksc.link_key_stage_column_name is not null then lksc.link_key_stage_column_name
+			when  pdc.column_class = 'diff_hash' and not has_explicit_relation_names then  pdc.column_name 
 			when  ppp.relation_to_process in ('/','*')  then pdc.column_name 
 	  		 else pdc.column_name||'_'||ppp.relation_to_process  
 	 end stage_column_name
