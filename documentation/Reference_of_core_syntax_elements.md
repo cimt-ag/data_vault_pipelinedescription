@@ -405,7 +405,7 @@ whithout any field mapping. The relation name must be valid for the satellites p
 
 **uses_diff_hash**
 (optional, default depends on model profile)<br>
-When set to true, data change is detected by calculation of a hash value ober all relevant columns and comparison of the hash value against the latest stored satellite row for every key.
+When set to true, existence of a specific value combination  in the source is detected by calculation of a hash value over all relevant columns and comparison of the hash value against the actual valid rows in the reference table.
 
 **diff_hash_column_name**
 (mandatory)
