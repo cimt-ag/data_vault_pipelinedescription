@@ -975,7 +975,8 @@ This is a non historized reference table extendet by an enddate. The enddate is 
 		],
 "tables": [
 		    {	"table_name": "country_code_ref",
-				"table_stereotype": "ref"
+				"table_stereotype": "ref",
+				"diff_hash_column_name": "DIFF_COUNTRY_CODE_REF"
 			},
 		]
 ```
