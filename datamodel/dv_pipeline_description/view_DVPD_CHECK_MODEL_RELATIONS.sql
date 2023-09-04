@@ -23,11 +23,13 @@ create or replace view dv_pipeline_description.DVPD_CHECK_MODEL_RELATIONS as
 with all_parent_relations as (
 select 
 	pipeline_name
+	,table_stereotype
 	,lower(table_name)  table_name
 	,lower(parent_table) parent_table
 from (
 select 
 		pdt.pipeline_name 
+		,'lnk' as table_stereotype
 		,pdt.table_name
 		,pdtlp.link_parent_table parent_table
 	from  dv_pipeline_description.dvpd_pipeline_dv_table pdt
@@ -36,6 +38,7 @@ select
 	union
 	select 
 		pipeline_name 
+		,'sat' as table_stereotype
 		,table_name
 		,satellite_parent_table  parent_table
 	from dv_pipeline_description.dvpd_pipeline_dv_table pdt
@@ -48,8 +51,10 @@ select
   ,'Table'::TEXT  object_type 
   ,apr.table_name object_name
   ,'DVPD_CHECK_MODEL_RELATIONS'::text  check_ruleset
-  ,case when pdt.table_name is null then 'Unknown parent_table: '|| apr.parent_table  
-  		 when pdt.table_stereotype not in ('hub','lnk') then 'Parent table :'|| apr.parent_table || ' is not a hub or link'
+  ,case when pdt.table_name is null then 'Unknown parent_table: '|| apr.parent_table 
+  		 when apr.table_stereotype ='lnk' and pdt.table_stereotype <>'hub' 
+  		 							then 'Parent >'|| apr.parent_table || '< of link is not a hub'
+  		 when pdt.table_stereotype not in ('hub','lnk') then 'Parent table >'|| apr.parent_table || '< is not a hub or link'
     	else 'ok' 
     end  message
 from all_parent_relations apr
@@ -71,7 +76,6 @@ select
     end  message
 from dv_pipeline_description.dvpd_pipeline_dv_table pdt
 left join valid_model_profiles vmp on vmp.model_profile_name = pdt.model_profile_name 
-
 )
 select * from parent_relation_diagnostics
 union 

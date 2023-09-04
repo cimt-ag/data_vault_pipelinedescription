@@ -132,7 +132,6 @@ select distinct -- link keys
 	,pdc.column_name 
 	,pdc.column_class  
 	--,ptpc.parent_process_count  -- for debug purposes
-    -- case when pfte.field_name is not null and process_block ='_A_'  then pdc.column_name  -- legacy generator compatible  (Stage = Target, will fail on multiple mappings to same target)
 	,lksc.link_key_stage_column_name as stage_column_name
 	,pdc.column_type 
 	,pdc.column_block 

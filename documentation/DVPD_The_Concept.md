@@ -54,13 +54,33 @@ DVPD will act as the full information base to provide and transport all the info
 
 By using the DVPD as central exchange and information media, the tools are only loosly coupled. Adding or exchaning tools is more easy. Also the DVPD can be managed as an artifact, that can be versionized and processed in  CI/CD workflows (check, build, test, deploy).
 
-## Description + Derivation = instruction
+## Description + Derivation = instruction (DVPI)
 The design of DVPD focusses on the **description** of all elements, that are **not obvious** when using the data vault methodology.
 Also the design allows to use only minimal declarations, when using established best practices in Data Vault modelling.
 
-Informations, that can be derived from the minimal declaration by following the data vault method and best practices, is added by a DVDP compiler. The derivation rules are specified in this concept.
+Informations, that can be derived from the minimal declaration by following the data vault method and best practices, is added by a **DVDP compiler**. The derivation rules are specified in this concept.
 
 The derived informations will be provided in a Data Vault Pipeline Instruction (DVPI) Document. (DVPI is currently under development. Until its specification, the Information must be retreived from the compiler specific output interface)
+
+### Data Vault Pipeline Instruction
+The Data Vault Pipeline Instruction is the resultset of a DVPD compiler and contains the complete sets of declarations, for every processing step.
+- general source parsing properties
+- general processing properties
+- list of fields and parsing protperties for every field
+- list of data vault tables and their columns (ready to generate DDL)
+- stage table structure(ready to generate DDL) 
+- list of (step specific) hash keys, that must be calculated
+    - fields needed for the hash key
+	- hints to create an consistent order of fields 
+- list of loading steps for every table. For every step
+	- table to load
+	- mapping of fields to stage colunm and target column 
+	- mapping of hash keys to target
+
+It is up to the implementation approach of the loading process, if a stage table is used as an intermediate image. DVDP/DVPI does not 
+require the use of stage tables but provides the structure for implementations that do need it.
+
+It is also the responsibility of the code generator/execution engine to define the usage of field ordering hints for the hash calculation. It is recommended to adjust the DVDP compiler, to provide warnings, when syntax features for the ordering of hash content have been used in the DVPD but are not supported by the execution.
 
 # Requirements
 In this chapter, we define the requirements for the DVPD to fullfill.
@@ -84,26 +104,25 @@ The Data Vault modelling and loading concept define the major requirements about
 	- **load process id**: Identification of the process instance, that loaded the data to the table 
 - Satellite Table might additionally contain
     - **deletion flag**: To provide explicit rows to indicate deletion of the data in the source
-    - **Load End date**: To provide the Load date of the replacing record during historization. This reduces query times when determining the valid version for a given point in time 
+    - **Load End date**: To provide the Load date of the replacing record during historization. This reduces query times when determining the valid version for a given point in time.  
 	- **diff hash**: Hash value of all the columns in a satellite table, that have to be compared to determine if incoming data has to be inserted or is already loaded
-	- **Active Record Flag** : Boolean that is set to true for the active record of every key
+	- **active record flag** : Boolean that is set to true for the active record(s) of every key
 - Reference tables might contain
     - **Load End date**: To provide the Load date of the replacing record during historization. This reduces query times when determining the valid version for a given point in time 
 	- **diff hash**: Hash value of all columns in the reference table, to determine if incoming data has to be inserted or is already loaded
-- Satellites related to a link, determine the validity of the relation over time. In the common case, when a data source provides all valid relations of an object in the current load, it is necessary to mark obsolete relations as deleted, when relations change. This is achieved by declaring the Hub Keys of the loaded object as "**driving keys**"
+- Satellites related to a link, determine the validity of the relation over time. In the common case, when a data source provides all valid relations of an object in the current load, it is necessary to mark obsolete relations as deleted, when relations change. This is achieved by declaring the Hub Keys of the completly contained object as "**driving keys**"
 
 The DVPD approach is not restricted to raw vault loading. **Business Vault** loading works the same by using the transformation/aggregation resultset as input for the staging step. 
 
+## Source structure, parsing and mapping capabilites
+Describing the structure of the source data and how to map the incoming fields into the data vault mapping is the second major feature, that needs to be provided by the DVPD.
+Since DVPD will focus only to tabularized data (as discussed in "Scope Limitation" below), this boils down to a simple list containing
+- field name
+- field type
+- properties how to parse the field from the source data format
+- the mapping to the target table(s)
 
-## Scope limitation
-To enforce independency between loading processes and allow highly paralellized development, one DVPD  is restricted to describe the loading of **only one tabulated dataset** (every entity is represented by one row, all rows have the same field structure). Many common data source objects (DB table, CSV files) fullfill this requirement by definition. 
-
-The Transformation of **hierachical structured data** (XML, JSON, ...), that has to be broken down into multiple tablulated subsets, needs to be described by **one DVPD for each tabularized subset**. Handling these related DVPDs as a coupled set is not required by the DVPD concept. It is up to the implementation process, to organize necessary of grouping, by adding a custom property or with simple naming convention.
-
-The **datavault model**, described in one DVPD, should only contain the **tables, necessary to load the source**. The overall compatibilty of modells between different DVPDs in the project must be achieved by using an appropriate modelling process/toolset and/or some automated QA cross checking during the development process. 
-
-## Mapping capabilites
-Beside the simple singluar mapping of one field to one or more data vault table columns, also the mapping of multiple fields to the same tables/columns must be supported. Common scenarios are mulitple foreign keys to the same partner, representing different relation meanings or having two seperate data sets interweaved in the same row. This also covers the description of recursive links (also known as hierachical)
+Beside the simple singluar mapping of one field to one or more data vault table columns, also the mapping of multiple fields to the same tables/columns must be supported. Common scenarios for this are mulitple foreign keys mapped to the same partner, representing different relation meanings or having two seperate data sets interweaved in the same row. This also covers the description of recursive links (also known as hierachical)
 
 A complete investigation and catalog of possible combinations is specified seperatly in
 
@@ -113,32 +132,44 @@ A complete investigation and catalog of possible combinations is specified seper
 (Yes, it currently takes two documents to get this into perspective)
 
 ## Loading processes
-Beside the pure structural description of the Data Vault model and the source data, a loading process (or at least the coding of it) needs some more information, that has to be stored in the DVPD.
-To determine these requirements, the following overall phase structure of a loading process is assumed:
+Additionally to the description of structure, mapping and parsing ,  process specific declarations are needed for the loading process(or at least the coding of it).
+To determine the requirements for the loading process, the following overall phase structure assumed:
 
 ![Fig2](images/general_dv_pipeline_process.drawio.png)
 
-There are implementation approaches, that do not create a dedicated stage representation, but instead calculate all key hashes in every indivudual load directly from the source to the data vault table. Therfore using a stage table in the processesing must be optional, when using the DVDP concept. 
+Depending on the flexibility of the code generators or execution engine the necessary properties can vary. The major aspects are the following:
+- selection and behaviour of the incremental pattern
+- general settings for parsing
+- rejection handling
+
+The DVPD should **not** contain configuration properties, that might be changed, due to changes in the infrastructure (file pathes, urls, connection parameters) or operational patterns (logging method, monitoring).
+These should be managed by normal configuation concepts (e.g. loading of property files at runtime, environment variables) or by changing  the code generator/execution engine.
+
 
 ### Deletion detection
 Detecting the deletion of data in the source, is often not as straight foreward and
-intuitive as getting new and changed records. Mostly, it is not communicated at all
-or only indirectly. It is an essential part of the loading process and therefore must be
-describable by the DVPD.
+intuitive as getting new and changed records. Mostly, a deletion is not communicated by the source at all and needs some extra processing depending on the method, that can be applied on the specific source. 
 
-Not every thinkable kind of deletion detection can be described by a general set of parameters. DVPD core syntax focuses on the most common patterns. More patterns can be added through the extendability. 
+Due to the high number of possible models and methods, not every thinkable kind of deletion detection can be described by a general set of parameters. DVPD core syntax focuses on the most common patterns. More patterns can be added through the extendability. 
 The following **common patterns must be supported**
 - Receiving an explicit "deletion indication for an object" from the source   -> creating deletion stage records for the deleted key
 - Comparing full or partitioned lists of existing business keys between source and vault -> creating deletion stage records for now missing keys
 - Retreiving and staging the full or partitioned dataset -> creating deletion records by comparing stage with vault
 
-The term "partitioned" in this context means, that only an identifiable part of the full dataset is delivered completly and can be compared. The relevant partition is identified by content in one or more columns of the source (e.g. "All contracts of a single company", "all revenues of a specific month"). These columns might not be located in the same table in the data vault model(see [Partition Deletion Detection Catalog](./partition_deletion_detection_catalog.md) for more insight ). The procedure of a partitioned deletion detection for a satellite works as follows:
+The term "partitioned" in this context means, that only an identifiable part of the full dataset is delivered completly and can be compared. The relevant partition is identified by content in one or more fields of the source (e.g. "All contracts of a single company", "all revenues of a specific month"). These columns might not be located in the same table in the data vault model(see [Deletion Detection Catalog](./deletion_detection_catalog.md) for more insight ). The procedure of a partitioned deletion detection for a satellite works as follows:
 - determine all keys in the satellite of active records that belong to the staged partition
 - create deletion records for all of these satellite keys, when they are not in the stage table 
 
 
+## Scope limitation
+To enforce independency between loading processes, allow highly paralellized development and keep things simple, one DVPD is restricted to describe the loading of **only one tabulated dataset** (every entity is represented by one row, all rows have the same field structure). Many common data source objects (DB table, CSV files) fullfill this requirement by definition. 
+
+The Transformation of **hierachical structured data** (XML, JSON, ...), that has to be broken down into multiple tablulated subsets, needs to be described by **one DVPD for each tabularized subset**. Handling these related DVPDs as a coupled set is not required by the DVPD concept. ( In upcoming versions, DVPD will provide a property, that helps the generated code, to  keep the processing single units of work, that are spread over multiple DVPD, consistent. )
+
+The **datavault model**, described in one DVPD, should only contain the **tables, necessary to load the source**. The overall compatibilty of modells between different DVPDs in the project must be achieved by using an appropriate modelling process/toolset and/or some automated QA cross checking during the development process. (Future Versions of DVPD will provide a property, to declare the maturity of the DVPD. This can be used during the model crosscheck to distinguish between established parts of the model and parts currently under construction.)
+
 # Information content of the DVPD
-In general terms: A DVPD contains all parameters to describe the source and target data modell and the loading process. By relying on rules and conventions of the Data Vault method, many elements needed for the loaded can be derived, which reduces the amount of declarations drastically.
+In general terms: A DVPD contains all declarations to describe the source and target data modell and the loading process. By relying on rules and conventions of the Data Vault method, many elements needed for the loaded can be derived, which reduces the amount of declarations drastically.
 With the upper requirements in mind, the folling informations need to be described in the DVPD.
 
 - necessary elements 
@@ -218,7 +249,7 @@ The naming and description of all attributes in the structure is documented in [
 
 # Design decisions
 
-- **Table names must be unique** in the full model even if it is spread over multiple databases or database schemas. Beside of this to be a good practice for Data Vault models in general, this simplifies identfication of the tables in the various references in the DVDP and during the processing. Table names in the model are the default names for the physical table. By declaring other physical table names, a uniqueness of tables names in the physical model can be cirumvented. 
+- **Table names must be unique** in the full model even if it is spread over multiple databases or database schemas. Beside of this to be a good practice for Data Vault models in general, this simplifies identfication of the tables in the various references in the DVDP and during the processing. Table names in the model are the default names for the physical table. By declaring other physical table names, a uniqueness of tables names in the physical model can be circumvented. 
 - **Parent key column names are used in child tables**. Another good practice for Data Vault models is, to use the same column name for hub/link keys in all connected child tables (links/satellites). This allows simple derivation of the key column names by using the parent relations. To prevent name collision of hub keys in the link table, it is also best practice to have unique column names for the hub/link keys over the complete model. Enforcing any naming convention here (e.g. using the unique table name of hubs and links in the column name somehow) is left over to the implemention process and toolset.
 - Links, that relate multiple times to the same hub (Hierarchial Link, Same As Link) must declare a relation name for every additional reference. This name will be added to the hub key column names in the link, if not explicitly declare otherwise
 - Mapping different fields from the source to the same table column in the target indicates the existence of different realtions on the same hub. Here also a more complex annotation is acceptable, since it is not the common case in data mapping.
@@ -234,8 +265,8 @@ To map multiple source fields to the same target column, it is necessary to
 distinguish the different combinations of fields, that represent one set of 
 related business keys and content columns. This is achieved with the "relation" 
 concept. It is called "relation" since the need to store multiple fields in 
-the same column origins from the fact, that there are multiple busniess objects
-of the same kind in the source data row that are somehow related.
+the same column origins from the fact, that there are multiple business objects
+of the same kind in the source data row, that are somehow related.
 
 The relation approach defines, that all field mappings participate in one or many 
 relations. This includes also all simple models, where every field participates in 
@@ -244,7 +275,7 @@ the one and only "unnamed" or implicit relation.
 When multiple relation need to be distinguished there are 3 aspects, where the declaration of the relation is necessary
 - Mapping of the field to the table and column
 - Parent relation of a link to the hub
-- Relation that an effectivity satellite will track
+- Relation an effectivity satellite will track
 
 Declaration of explicit relations will result in additional, relation specifc hash values and relation specific loading processes.
 
@@ -254,11 +285,10 @@ A full investigation about the properties of Data Vault, that lead to this desin
 When source data contains multiple fields, which target the same satellite columns without different business keys, 
 this might look like denormalized data and bring up the desire to normalize it into a multiactive satellite. 
 
-This is not supported by the DVPD core, since Data vault highly recommends to keep the denormalized structures in the raw vault to represent the unit, allow full reconstruction of the source data and to provide full auditibility. 
+This is not supported by the DVPD core, since Data vault highly recommends to keep the denormalized structures in the raw vault to represent the unit of work, allow full reconstruction of the source data and to provide full auditibility. 
 
-Normalizing data can be done in the busniess vault. From the perspective of the DVPD, the normalization is implemented in the transformation that renders the data.
-The code for the normalization might be a property in the DVPD to be used by the retrieving process.
-Still, from the perspecitve of the pipeline, the data vault stage / load process expressed with the DVPD syntax starts after this transformation.
+Normalizing data should be done in the busniess vault. From the perspective of the DVPD, the normalization is implemented in the transformation that renders the normalized dataset.
+The code for the normalization might be a property in the DVPD, used by the retrieving process, but from the perspecitve of the pipeline, the data vault stage / load process expressed with the DVPD syntax starts behind this transformation.
 
 ## Deletion Detection
 The declaration of the deletion detection depends on the method.
@@ -268,7 +298,7 @@ The declaration of the deletion detection depends on the method.
 	- parameters for most common partioned deletion detection (linear join pathes only)
 	- SELECT statement providing all satellite keys that need to be deleted(allows any kind of complexity/ruleset)
 
-For a more insights about the variations, when trying to define a more general approach without SQL, check out the [partition_deletion_detection_catalog](./partition_deletion_detection_catalog.md).
+For more insights about the variations, when trying to define a more general approach without SQL, check out the [deletion_detection_catalog](./deletion_detection_catalog.md).
 
 
 ## Model Profile
@@ -276,15 +306,15 @@ All **basic properties of the data vault model and loading**, are defined in a m
 - Hashing properties
     - methods for keys and diff hashes
 	- DB column data types for the keys and diff hashes
-	- Constants for ghost records and missing values
 	- Separator to use in the hash concatenation
+- Constants for ghost records and missing values
 - Time values for far future and far past
 - Names and types for meta data columns
-- Defaults about
-	- Enddating in satellites
-	- Historization in satelllites
+- Defaults
+	- Enddating is used in satellites
+	- change detection in satelllites
 
-These definitions might change over time or between different technical platforms. Therefore different model profiles can be declared. To support high consistency over all DVPD, model profiles are kept seperatly from the DVPD document. The DVPD must refer to at least one model profile, that will be applied to all tables in the DVDP. To allow mixing of concepts, the model profile can be declared at every table (multiplatform pipeline, load old/new style in same DVPD) 
+These definitions might change over time or between different technical platforms. Therefore different model profiles can be declared. To support high consistency over all DVPD, model profiles are kept seperatly from the DVPD document. The DVPD must refer to at least one model profile, that will be applied to all tables in the DVDP. To allow mixing of concepts, the model profile can also be declared at every table (multiplatform pipeline, load old/new style in same DVPD) 
 
 All expected properties of the model profile are specifiend in [Model Profile reference](./reference_of_model_profile.md).
 
@@ -309,24 +339,23 @@ The following elements are derived
 - business key columns = fields mapped to a hub and not explicitly excluded from  key hash
 - dependend child key columns = fields mapped to a link and not explicitly excluded from key hash 
 - Key column of satellites = Key column of its parent
-- Hub Key columns in link = Key columns of all parents. If the parent mapping declare a relation_name but no hub_key_column_name_in_link the hub key column in the link will be the hub key column of the hub followed by an underscore and the relation name
+- Hub Key columns in link = Key columns of all parents. If the parent mapping declares a relation_name but no explicit hub_key_column_name_in_link the hub key column in the link will be the hub key column of the hub followed by an underscore and the relation name
 - meta data columns are created depending on the table stereotype, model profile settings and table specific settings
 	- deletion flag will be added for satellites when "has_deletion_flag" is set to true
 	- load enddate column will be added when "is_endated" is set to true
 	
-It is recommended to group and order the columns during table creation in a convinient arragement (e.g. Meta->key->parent_key in alphabetical order ->diff hash->data columns in alphabetical order ).
+It is recommended to group and order the columns during table creation in a convinient arragement (e.g. Meta->key->parent_key in alphabetical order ->diff hash->data columns in alphabetical order ). The compiler provides all these classifications. It is the responsibility of the DDL generator to use them wisely.
 
-## Relation participation  = load process deriviation##
-Depending on the number of relations the table participates and the table stereaotype, there will be one or more load process needed. The :
+## Relation participation  = load process deriviation
+Depending on the number of relations the table participates and the table stereaotype, there will be one or more load process needed. 
 - All tables with field mappings that declare a relation_name, will participate and be processed for every relation declared 
-- Links with explicit relation names in the hub mappings, will only be processed once, but participate in all relations, that are declared in the mapping
-- Satellites with a explicit tracking relation name, will only be processed for that relation
+- Links with explicit relation names in the hub mappings will only be processed once, but use the business key fields participating the  declared relations
 - When **no explicit relation** is declared for a table
   - hubs will only be processed once (unnamed relation)
-  - satellites will be processed for every process of its parent, alway participating in the unnamed relation
-  - links will be processed for every process of its satellites
+  - satellites will be processed for every process of its parent, using the content fields of the unnamed relation but the parent key of the processed relation
+  - links will be processed for every process of their satellites using the hashes based on the businesskeys for that relation
 
-The following figure provides a first orientation of scenarios, how processes are induced through differen declarations.
+The following figure provides a first orientation of scenarios, how processes are induced through different declarations.
 
 ![Fig1](./images/process_generation_scenarios.drawio.png)
 
@@ -337,9 +366,11 @@ A compiler must be able to solve all scenarios, that are in the testset.
 
 ## Relation specific creation and mappings of hash values 
 For every hash column in the target model 
-- create a hash column for the stage table for every relation the target tables whith that hash column are loaded 
+- create a stage hash column for every relation the target tables whith that hash column are loaded 
 - the stage hash column name can be the same as the target hash column, when there is no conflict
 - when multiple stage hash columns for the same target hash are needed, relation specific stage hash columns use the relation name as a postfix to the target hash column name
+
+For implementations, that are not using stage tables, the stage hash column names are still relevant, since they are the identification for the hat specific collection of fields, for the hash in that relation.
 
 ## Relation specific mappings 
 For every relation a target table will be loaded 
@@ -348,7 +379,7 @@ For every relation a target table will be loaded
 
 ## Hash value field list ##
 For every stage table hash column there will be a specific combination of fields to be used depending on the step, the hash column is provided for.
-The list of field is determined as follows:
+The list of fields is determined as follows:
 
 For every hash colunm in the model
 - list all data vault columns, that have to be used for the hash
@@ -357,11 +388,11 @@ For every hash colunm in the model
 # Final Words
 As with the Data Vault method itself, this concept can become the backbone of your Data Vault implementation tool chain. Feel free to use it for your needs.
 
-When you currently **create a Data Warehouse Platform**, the flexibility of the DVDP approach allows you to postpone tool descicions behind your first use case implementations. This shortens the time and effort for your first results and allows you to gather more project specific requirements. The selection of products, that will be integrated into your Workflow can then be done with more confidence about your needs.
+When you currently **create a Data Warehouse Platform**, the flexibility of the DVDP approach allows you to postpone tool descicions behind your first use case implementations. This shortens the time and effort for your first results and allows you to gather more project specific requirements. The selection of products, that will be integrated into your workflow can then be done with more confidence about your needs.
 
 **Data Warehouse Consultants** using DVPD as backbone, are able to collect and extend their portfolio of tools for the Data Warehouse implementation, while having a method to maintain collaboration between all these elements. This allows a more customer specific selection of tools including an already prepared way to adapt to products demanded by the customer.
 
-**Data Warehouse Toolprovider** supporting the DVPD in their product, can profit, by focussing their tool to support the implementation steps, they have a unique expertise and excellence. By using DVPD as target, source or intermediate artifact, your product is combinable with other excellent tools and will be attractive to more project settings.
+**Data Warehouse Toolprovider** supporting the DVPD in their product, can profit, by focussing their tool to support the implementation steps, they have a unique expertise and excellence. By using DVPD as target, source or intermediate artifact, your product is combinable with other excellent tools and will be attractive to more project setups.
 
 # Glossary
 

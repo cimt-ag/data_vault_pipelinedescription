@@ -205,7 +205,7 @@ select -- own key column
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
  left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
  				and mp.property_name ='diff_hash_column_type' 
- where pdt.table_stereotype in ('ref') and pdt.is_enddated 
+ where pdt.table_stereotype in ('ref') and uses_diff_hash and  pdt.diff_hash_column_name is not null  
  union
  select -- content
  	pdt.pipeline_name 
