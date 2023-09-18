@@ -65,7 +65,6 @@ Information, that can be derived from the minimal declaration by following the d
 
 The derived information will be provided in a Data Vault Pipeline Instruction (DVPI) Document. (DVPI is currently under development. Until its specification, the Information must be retreived from the compiler specific output interface)
 
-<!--- Stop 11.09.2023 --->
 
 ### Data Vault Pipeline Instruction
 The Data Vault Pipeline Instruction is the resultset of a DVPD compiler and contains the complete sets of declarations, for every processing step.
@@ -73,7 +72,7 @@ The Data Vault Pipeline Instruction is the resultset of a DVPD compiler and cont
 - general processing properties
 - list of fields and parsing properties for every field
 - list of data vault tables and their columns (ready to generate DDL)
-- stage table structure(ready to generate DDL) 
+- stage table structure (ready to generate DDL) 
 - list of (step specific) hash keys, that must be calculated
     - fields needed for the hash key
 	- hints to create a consistent order of fields 
@@ -129,7 +128,7 @@ Since DVPD will focus only to tabularized data (as discussed in "Scope Limitatio
 - properties how to parse the field from the source data format
 - the mapping to the target table(s)
 
-Beside the simple singluar mapping of one field to one or more data vault table columns, also the mapping of multiple fields to the same tables/columns must be supported. Common scenarios for this are mulitple foreign keys mapped to the same partner, representing different relation meanings or having two seperate data sets interweaved in the same row. This also covers the description of recursive links (also known as hierachical)
+Beside the simple singluar mapping of one field to one or more data vault table columns, also the mapping of multiple fields to the same tables/columns must be supported. Common scenarios for this are multiple foreign keys mapped to the same partner, representing different relation meanings or having two seperate data sets interweaved in the same row. This also covers the description of recursive links (also known as hierachical)
 
 A complete investigation and catalog of possible combinations is specified seperatly in
 
@@ -211,8 +210,8 @@ To model and load a Data Vault, some basic decisions about general rules and con
 All tables in the data vault, that will be loaded by the DVPD, must be declared by name, stereotype and stereotype specific properties.
 - Hub: Name of the Hub Key
 - Link: Name of the Link Key, names of the Hubs, related by the link. Names of relations to hubs, for hubs that are related more then one
-- Satellite: Name of the Hub or Link, the Satellite is connected to, Name of the diff hash column(if used for change detection by the load module). Configuration about enddating. Relation the satellite is trackin to, when beeing an effectivity satellite
-- Reference Table: Name of the diff hash column (if used for change detection by the load module).Configuration about enddating.
+- Satellite: Name of the Hub or Link, the Satellite is connected to, Name of the diff hash column (if used for change detection by the load module). Configuration about enddating. Relation the satellite is trackin to, when beeing an effectivity satellite
+- Reference Table: Name of the diff hash column (if used for change detection by the load module). Configuration about enddating.
 
 Just using names to reference other tables in the model, requires unique table names over all tables in the data vault model, even when distributed over different systems and technologies. If that is not applicable in the databases, the physical table names need to be annotated as a property of the table declarations and have to be used during DDL generation and load processing.
 
@@ -238,7 +237,7 @@ The methods to detect deleted entities in the source depends on the increment pa
 - The most common model constallations and field mappings should be described with the least effort. This is achieved by using proper default values for many options, so you can leave out these declarations in most cases.
 - It should be possible to implement plausibility checks on the DVPD
 - It must be maintainable with a text editor
-   - human readable and arrangable to support readablity
+   - human readable and arrangable to support readability
    - Copy/paste friendly = structure prevents accidential copy of critical properties 
 - Nearly free from conventions according naming and structure in sources and targets
    - Conventions can still be enforced or applied by the toolchain (Modelling tool, Generators, code validators)
@@ -287,7 +286,7 @@ When multiple relations need to be distinguished, there are 3 aspects where the 
 - Parent relation of a link to the hub
 - Relation an effectivity satellite will track
 
-Declaration of explicit relations will result in additional, relation specifc hash values and relation specific loading processes.
+Declaration of explicit relations will result in additional, relation specific hash values and relation specific loading processes.
 
 A full investigation about the properties of Data Vault, that lead to this desing is described in [Catalog of field mappings](./catalog_of_field_mappings.md).
 
