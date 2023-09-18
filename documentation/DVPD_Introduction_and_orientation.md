@@ -32,15 +32,15 @@ The main article about the concept
 
 ### [Data Vault method coverage and syntax examples](./Data_Vault_method_coverage_and_syntax_examples.md) 
 Provides examples for Data Vult model, especially all model elements from the book "Building A Scalable Data Warehouse With Data Vault 2.0" by Dan Linstedt and Michael Olschimke from 2016. This is to prove the 
-completness of the concept.
+completeness of the concept.
 
-Besides from that, this is a good entry point to understand the core syntax by looking on examples.
+Besides from that, this is a good entry point to understand the core syntax by looking at examples.
 
 ### [Reference of code syntax elements](./Reference_of_core_syntax_elements.md) 
-Defines and explains syntax and structure of the DVPD core syntax.
+Defines and explains the DVPD core syntax and structure.
 
 This article is highly formalized. The order of elements
-is not always supporting a learing process.
+is not always supporting a learning process.
 
 ### [Reference of model profile syntax](./Reference_of_model_profile_syntax.md) 
 Defines and explains syntax and structure of the model profile syntax.
@@ -55,13 +55,13 @@ Some requirements of the Data Vault Method are not directly described
 in the books, but are hidden as imlplicit conclusions. The following articles are investigating different aspects in the data vault method and explain the requirements that lead to some syntax concepts and design descisions.
 
 ### [Model topologies and basic field mapping variations](./Model_topologies_and_basic_field_mapping_variations.md)
-This article provides a complete set of model topologies. The described topologies are ab
+This article provides a complete set of model topologies. The described topologies are an
 aggregation and combination of the basic patterns, described by the Data Vault modelling method. 
 
 Also it explains the basic variations how fields of the source
 record can be mapped.
 
-Understanding both aspects is neessary to prove the completness of the syntax via test cases.
+Understanding both aspects is neessary to prove the completeness of the syntax via test cases.
 
 ### [Catalog of field mappings in relations](./catalog_of_field_mappings_in_relations.md) 
 Loading relations to the data vault model is getting complex, when the same hub, link or satellite must be loaded more then once for a single record (e.g. when loading hierachical link structures). This article investigates the scenarios and provides all the background needed to understand the relation concept in DVPD.
