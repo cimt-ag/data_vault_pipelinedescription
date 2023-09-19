@@ -63,12 +63,12 @@ of a link counts also as identification, since it is needed to address
 attributes, that are attached by the satellite*
 
 ## Properties of relation data
-Relation data always must contain the busniess key columns of all participants. 
+Relation data always must contain the business key columns of all participants. 
 Data sets with multiple relations to the same object must contain multiple instances of 
 the business key fields. It might (but must not) contain multiple instances of content data fields.
 
 There are two flavours for relations in the source data.
-- **Business object relation**, is the obvious flavour, covering any relation between businiess objects or 
+- **Business object relation**, is the obvious flavour, covering any relation between business objects or 
 self relation in hierarchies
 - **data delivery relation**, expresses the circumstance that  multiple objects are delivered in the same data row, but 
 without any known business relation meaning
@@ -84,7 +84,7 @@ When source data contains multiple fields, which target the same satellite colum
 different business keys, this might look like denormalized data and trigger the desire to normalize it into a 
 multiactive satellite. 
 
-Data vault highly recommends to keep the denormalized structure in the raw vault to allow full auditibility. 
+Data vault highly recommends to keep the denormalized structure in the raw vault to allow full auditability. 
 That's why DVPD core will not support any explicit syntax that allows denormalization in the 
 load phase.
 
@@ -100,8 +100,8 @@ the mapping stays simple, regardless of the complexity of the model topology.
 For every table there is only one set of fields, that has to be used 
 for hashing and loading. 
 
-The following example will be used as base to work out the possible mapping variations.
-It is designed to embed the most common simple models as a subset. By being capable to define this model with DVPD, the coverage of all subsets is also proved.
+The following example will be used as a base to work out the possible mapping variations.
+It is designed to embed the most common simple models as a subset. By being capable to define this model with DVPD, the coverage of all subsets is also proven.
 
 ![topo_simple.png](./images/mapping_relations/topo_simple.png)
 
@@ -112,12 +112,12 @@ The following approaches are available to represent multiple relations
 - a single link with multiple hub keys of the same hub. One for every kind of relation
 - dedicated links to the hub for every kind of relation
 - a single link but dedicated effectivity satellites for every kind of relation
-- a single link with a dependent child key,declaring the relation type
+- a single link with a dependent child key, declaring the relation type
 - a single link with a multi active satellite, that contains a column to store the currenty valid relation types (not recommended)
 
-These approaches can also be mixed up, wicht might happen on purpose or due to legacy. 
+These approaches can also be mixed up, which might happen on purpose or due to legacy. 
 
-*side note: When the relation type is declared in the data(not by the field structure),
+*side note: When the relation type is declared in the data (not by the field structure),
 this is a simple relation from the perspective of the data vault. 
 The relation type is then stored in a dependent child key or a satellite of the link.*
 
@@ -127,7 +127,7 @@ This is necessary to prove completeness of the DVDP syntax. Only with
 3 Elements or more, it is possible to create subsets with more than 1 element.
 
 Satellites are omitted in the diagram for simplicity.
-There can be satellites on every hub and the effective satellites can 
+There can be satellites on every hub and the effectivity satellites can 
 be replaced by normal satellites, for adding more content to the pure relation information.
 
 ### Multiple hub keys in link to the same hub (R)
@@ -139,7 +139,7 @@ in chapter 4.4.4 of the Data Vault 2.0 Book of Dan Linstedt). It uses the minima
 - Depending on the meaning, one relation might be the "main" object. This relation
 might use the original hub key column name from the hub. Hierarchical links are
 a common example for this situation.
-- to calculate the link key, all business keys for the multie
+- To calculate the link key, all business keys for the multi
 referenced hub have to be assembled
 - Link and Esat must be loaded once. 
 - The multi referenced hub needs a load pass for every reference
@@ -158,21 +158,21 @@ in chapter 4.4.4 of the Data Vault 2.0 Book of Dan Linstedt)
 ![topo_multi_link.png](images%2Fmapping_relations%2Ftopo_multi_link.png)
 
 ### Single link table with relation specific effectivity satellites (E)
-This method reduced the number of link tables , without loosing the flexibility 
+This method reduced the number of link tables, without loosing the flexibility 
 of the multi link approach.  It suffers from the same "phanton relation" issue.  
 - the link only contains one reference to each hub
 - for every relation, there must be a separate the link key calculation only using
 the business key fields for a specific relation
 - every Esat must be loaded once 
-- The link and the multi referenced hub needs a load pass for every reference
+- The link and the multi referenced hub needs a load pass for every relation
 
 ![topo_multi_esat.png](images%2Fmapping_relations%2Ftopo_multi_esat.png)
 
 
 ### Single link table with a dependent child key declaring the relation type (D)
-This method uses the minimal amount of tables and allows extention of relations 
+This method uses the minimal amount of tables and allows extension of relations 
 without any structure modification. It even can be extented without change
-of running pipelines, by just adding a new one for the new releations. On the downside
+of running pipelines, by just adding a new one for the new relations. The downside beeing, that
 it hides the different kind of relations in the data, instead of communicating
 it through model elements.
 - the link only contains one reference to each hub
@@ -224,7 +224,7 @@ creation of additional staging rows to feed the multiactive satellite. Creating 
 
 ![topo_multi_esat.png](images%2Fmapping_relations%2Ftopo_rsat.png)
 
-### mixing esat and multi referecence
+### mixing esat and multi reference
 Mixing different approaches at the same link is not supported. In the example 
 two relations are expressed with two references to the hub and then are "multiplied"
 by two more relation types represented by esat. This makes no sense in the combination, 
@@ -244,23 +244,16 @@ hub, or by modelling two links, keeping the pairs.
 
 ## Observerations and conclusions
 
-1-Multiple relations are only possible with multiple sets of business keys field for the hub, they refer.
-<br>2-From 1. -> every kind of multi relation to a hub needs business key field mappings, that are restricted to a relation
-<br>3-hubs need to be loaded for every relation declared by their business key mappings
-<br>4-links can only contribute to relations, that are declared in the  hubs they connect
-<br>5-a link with multiple references to the same hub, need relation specific columns
-<br>6-a link with multiple references to the same hub, can only have satellites
-that contribute to the relation set, provided in the link.
-<br>7-satellites on links contribute to every relations, they have a field mapping
-for 
-<br>8-effectivity satellites need to declare the relation they track, due to the lack
-of a field, that would declare it
-<br>9-link satellites can only contribute to relations, the link can 
-contribute according to its parents
-<br>10-Different dependent child keys for different relations can only be modeled with
-relation specific links or relation specific satellites. (If only the dependend child key
-appears multiple times in the source data set, this must be solveld by normalizing the 
-data)
+1. Multiple relations are only possible with multiple sets of business key fields for the hub, they refer.
+1. From 1. &rarr; every kind of multi relation to a hub needs business key field mappings, that are restricted to a relation
+1. hubs need to be loaded for every relation declared by their business key mappings
+1. links can only contribute to relations that are declared in the hubs they connect to
+1. a link with multiple references to the same hub needs relation specific columns
+1. a link with multiple references to the same hub can only have satellites that contribute to the relation set, provided in the link.
+1. satellites on links contribute to every relation they have a field mapping for 
+1. effectivity satellites need to declare the relation they track, due to the lack of a field that would declare it
+1. link satellites can only contribute to relations, the link can contribute according to its parents
+1. Different dependent child keys for different relations can only be modelled with relation specific links or relation specific satellites. (If only the dependend child key appears multiple times in the source data set, this must be solveld by normalizing the data)
 
 ![relation_conclusions.png](./images%2Fmapping_relations%2Frelation_conclusions.png)
 
@@ -281,12 +274,12 @@ can contain
  
 Participation to a relation is declared at every table mapping of the field.
 If not declared, a field is considerd to participate in every relation, when it is the only field mapped to the target, else it will be assigned only to the "main"(unnamed) relation.
-To declare the participation on a subset, that contains the "main"(unnamed) relation and another one, the syntax provides the reserved relation name "/" for the unnamed relation.
+To declare the participation on a subset, that contains the "main" (unnamed) relation and another one, the syntax provides the reserved relation name "/" for the unnamed relation.
 
 A target column must only have one field mapped in every specific relation. 
 
 ## Participation of hubs
-Hubs participate to all relations that contain a full set of fields mapped to the 
+Hubs participate in all relations that contain a full set of fields mapped to the 
 business keys.
 
 - The full set of business keys is determined by the relation with the most business key columns.
@@ -296,29 +289,29 @@ since there might be unnecessary data loaded.
 
 These rules cover the "simple case" (no extra relations), 
 since fields without any relation declaration  belong to the 
-"main"(unnamed) relation .
+"main" (unnamed) relation .
 
 ## Participation of links with explicit relation mapping
-These links have at least on explicit relation declaration in their parent  mapping.
-- they participate only in the relations, that are represented by the connections
-- the hubs, targeted with an explicit relation must participate at the same relations
+These links have at least one explicit relation declaration in their parent mapping.
+- they participate only in the relations that are represented by the connections
+- the hubs targeted with an explicit relation must participate at the same relations <!-- unclear -->
 - if a hub is referenced more then once, the hub key names in the link must be adapted
-    - names for the main(unnamed) reference will stick to the name in the hub 
+    - names for the main (unnamed) reference will stick to the name in the hub 
     - names for the named references must be declared or will be extended by a hard rule (mostly the concatenation of hub key name and relation name)
 - Undeclared relations in the link belong to a "main" relation, so theses hubs must
- participate to the main(unnamed) relation
+ participate to the main (unnamed) relation
 - Satellites on these kind of link are not allowed to declare a relation
 
 ## Participation of simple links
-These links have no explicit relation declaration to a hub (an therefore only one reference column for every hub). 
-- these links participate to all relations that are
-    - are declared at their satellites
-    - are declared at the mapping of their dependent child keys
- - all relations, the link contributes must be known by at 
-least one hub, the link is connecting
+These links have no explicit relation declaration to a hub (and therefore only one reference column for every hub). 
+- these links participate in all relations that are
+    - declared at their satellites
+    - declared at the mapping of their dependent child keys
+ - each relation the link contributes to, must be known by at 
+least one connecting hub
   
 This also covers the simple common model use case, since without declaration
-a sattelite contributes to the main(unnamed) relation.
+a sattelite contributes to the main (unnamed) relation.
 
 
 ## Participation of satellites
@@ -327,27 +320,28 @@ mapped with relation declaration to the satellite.
 
 - The full set of satellite columns is determined from the relation with the most columns.
 - relations with different column outcome will fail the consistency check
-- all relations, the satellites contributes must be known by the parent
+- all relations a satellite contributes to must be known by the parent
 
 The simple common model use case is covered by participating on the
-main(unnamed) relation when without any declaration.
+main (unnamed) relation when without any declaration.
 
 ## Participation of effectivity satellites
 Effectivity satellites contribute to the relation of their parent link. In
 case of a link, that collects multiple relations (see Modell pattern "E" above), a
-declaration of the relation is needed and allowed at the satellite.
+declaration of the relation at the satellite is necessary (for instance by adding the relation name to the e-sat table name).
 
-- the relations, the satellites contributes must be known by the parent link
+- each relation an effectivity satellite participates in must be known by the parent link
 
 The simple common model use case is covered by participating in the relation of the link.
 
 # Catalog of field mappings
-The following table lists combinations of field mappings and models as an orientation and to 
+The following table lists combinations of field mappings and models, as an orientation and to 
 define the test set, a DVPD compiler must solve.
 
-- **Model**: Short notation of the model by just specifing the links with<br> \<multiplicity>\<Hub>\[\<multiplicity>\<hub>]...\<approach(RLEDS)> + ....  <br>(multiplicity os only provided when greater then 1)
+
+- **Model**: Short notation of the model by just specifying the links with<br> \<multiplicity>\<Hub>\[\<multiplicity>\<hub>]...\<approach (indicated by [R,L,E,D,S])> + ....  <br>(multiplicity is only provided when greater then 1)
     - A2BE = Link from A to B with 2 references to B, modeled as effectivity satellites
-    - 3AR = Link with 2 references from A to A 
+    - 3AR = Link with 2 references from A to A <!-- 2 or 3? -->
     - AB3CR+ABC = Link from A to B and C with 3 references to C + Link to A,B,C
     - A3BL = 3 separate Links from A to B
 - **field distribution**: Comma separated list of the incoming fields and their mapping. \<letters of tables>\[:\<letters of relations>]
@@ -357,24 +351,24 @@ define the test set, a DVPD compiler must solve.
     - small letters from T to W declare a relation name this field will participate
     - A,a,B,b = 4 Fields, each mapped to one of the tables (Hub A, Sat of Hub A, Hub B, Sat of Hub B)
     - AB,A,B,a,b,\[ab] = 1 Feld used in Hub A and B, all other are separated. "\[ab]"= Satellite on the Link of A and B.
-    - ABC,A,B:t,B:u,C,a = 1 Field used in all hubs (ABC), 1 field exclusivly in A hub, 1 field for B hub in  relatiom t, one field for b hub in relation u, one field for C hub, one field in Sattelite if A hub.
+    - ABC,A,B:t,B:u,C,a = 1 Field used in all hubs (ABC), 1 field exclusively in A hub, 1 field for B hub in  relation t, one field for b hub in relation u, one field for C hub, one field in Sattelite of A hub.
 - **relation overlap**: Short notation of the content participation in relations.<br>
-\<content type (bk,dc,hs,ls)>\<relation participation (+,~,*,-,%)>\<number of target tables> \[& <next field in same notation...>] <br>
+\<content type (bk,dc,hs,ls)>\<relation participation (+,~,*,-,%)>\<number of target tables> \[& <next field in same notation...>] <br> <!-- I think it would be great if the different participation options would be explained before examples are given | I don't really understand many of the examples below-->
     - BK1+ = Business key in one table used for one relation
-    - BK2* & BK1+ & hsd1+ = Business key in 2 tables for all relations and business key in one table single relations an hub sattelite content in 1 table and one relation
-    - BK1~ & ls1~ = Business key in 1 table and link satellite content in more then one but not all relations
-    - BK1+ & hs1- = Business key in 1 table and hub satellite processed only in 1 relatiion  
+    - BK2* & BK1+ & hsd1+ = Business key in 2 tables for all relations; business key in one table single relation; hub satellite content in 1 table and one relation <!-- what does d in hsd1+ mean? -->
+    - BK1~ & ls1~ = Business key in 1 table and link satellite content in more than one but not all relations <!-- I don't understand this eample - BK & ls both have the same postfix, yet seem to mean different things-->
+    - BK1+ & hs1- = Business key in 1 table and hub satellite processed only in 1 relation  
     - BK1+ & hs1% = Business key in 1 table and hub satellite processed only in subset of relatiions  
 - **Test**: Number of the test case, that will cover this setting (set *italic* when not
-implemented yet, set to "-" when his combination is not possible)
+implemented yet, set to "-" when this combination is not possible)
 
-## Genric case matrix
+## Generic case matrix
 The generic cases all use a 1:1 field distribution. Every field is mappe to only one target column
 
  
 | Model          | A3BR    | A3BL    | A3BE    | A3BD    | 3AR     | A3BN   | 
 |----------------|---------|---------|---------|---------|---------|--------| 
-| relation ovrlap|         |         |         |         |         |        | 
+| relation overlap|         |         |         |         |         |        | 
 | BK1+           | *201*   | *301*   | *401*   | *501*   | *601*   | *101*  | 
 | BK1~           | *202*   | *302*   | *402*   | *502*   | -       | *102*  | 
 | BK1*           | *203*   | *303*   | *403*   | *503*   | *603*   | *103*  | 
