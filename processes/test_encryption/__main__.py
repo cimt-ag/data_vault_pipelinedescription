@@ -18,9 +18,12 @@ class AESCipher:
 
     @staticmethod
     def decrypt(enc, key):
-        decodedKey = base64.b64decode(key)
-        enc = base64.b64decode(enc)
-        cipher = AES.new(decodedKey, AES.MODE_ECB)
+        try:
+            decodedKey = base64.b64decode(key)
+            enc = base64.b64decode(enc)
+            cipher = AES.new(decodedKey, AES.MODE_ECB)
+        except:
+            return '>>Cant decrypt>>'+enc[:15]+'...'
         return unpad(cipher.decrypt(enc),AES.block_size).decode('utf-8')
 
 
@@ -115,6 +118,22 @@ def test5():
 
     print("output cypher = >"+cypher+"<")
 
+def test6():
+    print("--- TEST 6 ( bad decrpyt cases) ---")
+
+    ciphertext_inBase64 = '6B5cCoMCv8jotJLiFA2Wtw=='
+    key_inBase64 = 'Bad key'
+
+    decrypt_result = AESCipher.decrypt(ciphertext_inBase64, key_inBase64)
+
+    print("decrypt_result = >" + decrypt_result + "<")
+
+    ciphertext_inBase64 = 'Bad cipher'
+    key_inBase64 = 'iyVf1xYqU92mP/lW2bV/rQ=='
+
+    decrypt_result = AESCipher.decrypt(ciphertext_inBase64, key_inBase64)
+
+    print("decrypt_result = >" + decrypt_result + "<")
 
 class Test(unittest.TestCase):
     # key as base64
@@ -165,6 +184,7 @@ if __name__ == "__main__":
     test3()
     test4()
     test5()
+    test6()
     unittest.main()
 
 

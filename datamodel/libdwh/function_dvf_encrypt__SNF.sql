@@ -20,11 +20,7 @@ def dvf_encrypt(data_to_encrypt, key_inBase64):
     return base64.b64encode(cipher).decode('utf-8')
 $$;
 
-
-
-
-
-COMMENT ON FUNCTION libdwh.dvf_encrypt(varchar,varchar) IS 'Ecrypts data, according to data vault GDPR concept AES128-ECB. Arguments: (value,key). The key must be encoded in base64 as varchar';
+COMMENT ON FUNCTION libdwh.dvf_encrypt(varchar,varchar) IS 'Encrypts data according to cimt data vault framework GDPR concept. Arguments: (value,key). The key must be encoded in base64 as varchar';
 
 /* select libdwh.dvf_encrypt('Congratulation, decryption was successful','doT4HVzQbPyBzsF9idG1vA==');
 */
