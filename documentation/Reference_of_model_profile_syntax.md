@@ -10,7 +10,7 @@ Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-
 
 DVPD model profile syntax must be supported by any implementation in the same way. If an implementation leaves out elements for simplicity, it should implement a check and warning message, to prevent false expectations.
 
-The syntax must and can be extended by properties, needed for project specific solutions (e.g. data_extraction modules, data encryption frameworks). Documentation for these properties must be provided for every module in a separate document.
+The syntax must and can be extended by properties needed for project specific solutions (e.g. data_extraction modules, data encryption frameworks). Documentation for these properties must be provided for every module in a separate document.
 
 A DVPD model profile is expressed with JSON syntax and contains the following attributes(Keys):
 
@@ -18,14 +18,14 @@ A DVPD model profile is expressed with JSON syntax and contains the following at
 
 ## core elements
 
-**dvpd_Version**
+**dvpd_version**
 (mandatory)<br>
 Used to allow checking of compatibility. Must be set to the first version, that supports the used core elements. Minor version changes are kept backwardscompatible. Major version changes might modify structure, keywords and functionality.
 <br>*"1.0"*
 
 **model_profile_name**
 (mandatory)<br>
-Identifies the profile. The name is referenced by the DVPD property "model_profile_name" an DVPD level and/or table level.
+Identifies the profile. The name is referenced by the DVPD property "model_profile_name" at DVPD level and/or table level.
  
 At least one model profile with the name "_default" must be declared in a project. It will be applied to every DVPD, that omits the declaration of a model_profile.
 
@@ -38,7 +38,7 @@ Database column type to be used for the key columns. This must be a valid SQL ty
 
 **table_key_hash_function**
 (mandatory)<br>
-Name of the hash function to use when hashing data vault table keys (hub keys, link keys). Valid names depend on the implementation of the staging. Recommended values are common lowercase names of the functions(md5, sha-1, sha-256) 
+Name of the hash function to use when hashing data vault table keys (hub keys, link keys). Valid names depend on the implementation of the staging phase. Recommended values are common lowercase names of the functions (md5, sha-1, sha-256) 
 <br>*Example: sha-1*
 
 **table_key_hash_encoding**
@@ -47,9 +47,9 @@ Name of the method to encode the hash value. This can be "binary" (default) or a
 Recommended values are common lowercase names of methods for encoding binary values: (binary, hex, base64)
 <br>*Example: base64*
 
-**hash_concatenation_seperator**
+**hash_concatenation_separator**
 (mandatory)<br>
-Character or string of characters to be used as seperator when concatinating fields before hashing.
+Character or string of characters to be used as separator when concatinating fields before hashing.
 <br>*Example: |*
 
 **hash_timestamp_format_sqlstyle**
@@ -65,11 +65,11 @@ Character to be used as decimal separator, when converting numbers with decimals
 **hash_null_value_string**
 (mandatory)<br>
 String to be used for hashing, when a field contains a NULL value.
-<br>Examlpe: "" (empty string)
+<br>Example: "" (empty string)
 
 **key_for_null_ghost_record**
 (mandatory)<br>
-Hash value to be used for the ghost record, that will be addressed when all business keys are null in a delivered source record (will happen in optional foreign key relations). The encoding of the value depends on the table_key_hash_encoding. 
+Hash value to be used for the ghost record, that will be addressed when all business keys are null in a delivered source record (will happen in optional foreign key relations). The encoding of the value depends on the table_key_hash_encoding.
 
 <br>*Example: "0000000000000000000000000001"*
 
@@ -93,7 +93,7 @@ Numeric value to be used in the missing ghost record for number columns. Columns
 
 **content_for_missing_timestamp**
 (mandatory)<br>
-Timeatmp value to be used in the missing ghost record for timestamp columns. 
+Timestamp value to be used in the missing ghost record for timestamp columns. 
 
 <br>*Example: 1900-01-01 00:00:00*
 
@@ -135,7 +135,7 @@ Recommended values are common lowercase names of methods for encoding binary val
 
 **is_enddated_default**
 (mandatory)<br>
-Determines if a enddate column will be added to the satellite and gets updated by the loading processing. This can be overwritten via table specific properties.
+Determines if an enddate column will be added to the satellite and gets updated by the loading processing. This can be overwritten via table specific properties.
 <br>*true"
 
 **far_future_timestamp**
@@ -172,7 +172,7 @@ Determines if a deletion flag column will be added to satellites by default.
 
 **deletion_flag_column_name**
 (mandatory)<br>
-Name of the column, wich marks the current row to indicate, that the data for the business key is technically deleted/not existing in the source any more.
+Name of the column, which marks the current row to indicate, that the data for the business key is technically deleted/not existing in the source any more.
 <br>*Example: META_IS_DELETED*
 
 **deletion_flag_column_type**
@@ -219,12 +219,12 @@ SQL datatype of the column, to store the content diff hash in the encryption key
 
 **xenc_content_hash_function**
 (mandatory, when using the encryption extention)<br>
-Name of the hash function to use when hashing diff for the encryption key tables. Valid names depend on the implementation of the staging. Recommended values are common lowercase names of the functions(md5, sha-1, sha-256) 
+Name of the hash function to use when hashing diff for the encryption key tables. Valid names depend on the implementation of the staging phase. Recommended values are common lowercase names of the functions (md5, sha-1, sha-256) 
 <br>*sha-1*
 
 **xenc_content_hash_encoding**
 (mandatory, when using the encryption extention)<br>
-Name of the method to encode the content hash value. This can be "binary" (default) or any other method supported by the database and implementation of the staging.
+Name of the method to encode the content hash value. This can be "binary" (default) or any other method supported by the database and implementation of the staging phase.
 Recommended values are common lowercase names of methods for encoding binary values: (binary, hex, base64)
 <br>*BASE64*
 
