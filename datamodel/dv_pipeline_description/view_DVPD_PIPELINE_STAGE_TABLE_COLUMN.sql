@@ -33,6 +33,7 @@ left join pipeline_model_profile pmp on pmp.pipeline_name= pp.pipeline_name
 select distinct 
 	pipeline_name 
 	,stage_column_name
+	,stage_column_name_target_based
 	,column_type 
 	,false is_meta
 	,(ppstdmm.column_class  in ('content','business_key','content_untracked')) is_nullable
@@ -45,11 +46,12 @@ select distinct
 from  dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping ppstdmm
 left join dv_pipeline_description.DVPD_STAGE_COLUMN_BLOCK_CONFIGURATION cbc on cbc.column_class = ppstdmm.column_class 
 																and (cbc.table_stereotype =  ppstdmm.table_stereotype  or cbc.table_stereotype is null)
-group by 1,2,3,4,5,6,7,8
+group by 1,2,3,4,5,6,7,8,9
 union 
 select
 	pp.pipeline_name 
-	,mpmcl.meta_column_name 
+	,mpmcl.meta_column_name as stage_column_name
+	,mpmcl.meta_column_name as stage_column_name_target_based
 	,mpmcl.meta_column_type 
 	,true is_meta
 	,false is_nullable

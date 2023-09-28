@@ -42,9 +42,7 @@ select distinct -- content fields
 	,ppp.table_stereotype 
 	,pdc.column_name 
 	,pdc.column_class  
-    ,case when pfte.field_name is not null and relation_to_process in ('/','*')  then pdc.column_name  -- legacy generator compatible  (Stage = Target, will fail on multiple mappings to same target)
-     else pfte.field_name end as stage_column_name
-	--,pfte.field_name as stage_column_name  -- normal behaviuour
+	,pfte.field_name as stage_column_name  -- normal behaviuour
 	,pdc.column_type 
 	,pdc.column_block 
 	,pfte.field_name 
@@ -53,6 +51,8 @@ select distinct -- content fields
 	,pfte.needs_encryption
 	,pfte.prio_in_key_hash 
 	,pfte.prio_in_diff_hash 
+    ,case when pfte.field_name is not null and relation_to_process in ('/','*')  then pdc.column_name  -- legacy generator compatible  (Stage = Target, will fail on multiple mappings to same target)
+     else pfte.field_name end as stage_column_name_target_based
 from dv_pipeline_description.dvpd_pipeline_process_plan ppp
 join dv_pipeline_description.dvpd_pipeline_dv_column pdc on pdc.pipeline_name =ppp.pipeline_name 
 												and pdc.table_name=ppp.table_name 
@@ -235,17 +235,17 @@ join dv_pipeline_description.dvpd_pipeline_dv_column pdc on pdc.pipeline_name =p
 -- >>>>>>>>> Final union <<<<<<<<<<<<<<<
 Select * from fields
 union
-Select * from hub_keys
+Select *,stage_column_name as stage_column_name_target_based from hub_keys
 union
-Select * from sat_of_hub_keys_and_diff
+Select *,stage_column_name as stage_column_name_target_based from sat_of_hub_keys_and_diff
 union
-Select * from link_keys
+Select *,stage_column_name as stage_column_name_target_based from link_keys
 union
-Select * from link_hub_keys
+Select *,stage_column_name as stage_column_name_target_based from link_hub_keys
 union
-Select * from sat_of_link_keys
+Select *,stage_column_name as stage_column_name_target_based from sat_of_link_keys
 union
-Select * from ref_key_and_diff
+Select *,stage_column_name as stage_column_name_target_based from ref_key_and_diff
 ;
 
 
