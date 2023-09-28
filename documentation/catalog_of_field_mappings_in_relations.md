@@ -42,8 +42,8 @@ When describing the data we classify the elements as follows:
 ## Tabularized
 Data can be complex in multiple ways, especially when it comes
 to hierarchical data or document formats. The following approach requires
-the source data representation to be tabularized(all data is organized in Rows, every row contains all fields).
-Hierarchical data formats might need multiple transformations(one for each array).
+the source data representation to be tabularized (all data is organized in Rows, every row contains all fields).
+Hierarchical data formats might need multiple transformations (one for each array).
 
 ## Information types of data
 To define the variety of mappings, it is necessary to clarify the types of information, 
