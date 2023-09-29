@@ -58,8 +58,8 @@ VALUES
 }
 ');
 
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test69_simple_hierarchy_with_encrypted_bk');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test69_simple_hierarchy_with_encrypted_bk');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test69_simple_hierarchy_with_encrypted_bk');
 
 -- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test69_simple_hierarchy_with_encrypted_bk';

@@ -54,5 +54,5 @@ VALUES
 }
 ');
 
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test00_bad_properties');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test00_bad_properties');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test00_bad_properties');

@@ -54,8 +54,8 @@ VALUES
 }
 ');
 
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test99_issue_detection');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test99_issue_detection');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test99_issue_detection');
 
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test99_issue_detection';
 INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, reference_data_json) VALUES
