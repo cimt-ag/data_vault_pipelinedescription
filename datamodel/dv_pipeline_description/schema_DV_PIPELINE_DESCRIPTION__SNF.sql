@@ -28,3 +28,4 @@ grant usage on schema DV_PIPELINE_DESCRIPTION to role dvf_z_process;
 grant select, insert, update, delete on future tables in schema DV_PIPELINE_DESCRIPTION to role dvf_z_process;
 grant select                         on future views in schema DV_PIPELINE_DESCRIPTION to role dvf_z_process;
 grant usage on future procedures in schema DV_PIPELINE_DESCRIPTION to role dvf_z_process;
+grant usage on future functions in schema DV_PIPELINE_DESCRIPTION to role dvf_z_process;

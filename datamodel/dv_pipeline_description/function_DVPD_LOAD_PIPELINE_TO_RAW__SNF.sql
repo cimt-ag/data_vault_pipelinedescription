@@ -22,6 +22,9 @@ create or replace procedure dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW(
    profile_to_load varchar
 )
 returns boolean
+comment = 
+ 	'Helper function to convert and load the dvpd  document into the relational tables'
+
 as 
 $$
 begin
@@ -42,7 +45,5 @@ return true;
 end;
 $$;
 
- comment on procedure  dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW (varchar) is
- 	'Helper function to convert and load the dvpd  document into the relational tables';
  	
 --call   dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('hello');
