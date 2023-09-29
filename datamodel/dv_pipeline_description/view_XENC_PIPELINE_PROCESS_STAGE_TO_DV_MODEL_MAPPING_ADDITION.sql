@@ -125,7 +125,7 @@ left join link_key_stage_columns lksc on lksc.pipeline_name = pdt.pipeline_name
 join dv_pipeline_description.dvpd_pipeline_dv_column pdc on pdc.pipeline_name =ppp.pipeline_name 
 												and pdc.table_name=ppp.table_name 
 												and pdc.column_class  like 'xenc_%'
-												and ppp.table_stereotype = 'sat'
+												and  ppp.table_stereotype in ('sat')
 where (pdt.pipeline_name,pdt.satellite_parent_table) in (select pipeline_name,table_name from link_key_stage_columns)	
 )
 , fields_used_in_multiple_tables as (

@@ -60,8 +60,8 @@ VALUES
 
 ');
 
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test21_encrypt_on_hub');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test21_encrypt_on_hub');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test21_encrypt_on_hub');
 
 -- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test21_encrypt_on_hub';

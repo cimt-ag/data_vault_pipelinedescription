@@ -68,8 +68,8 @@ VALUES
 }
 ');
 
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test62_fgs1_enc_on_hub');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test62_fgs1_enc_on_hub');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test62_fgs1_enc_on_hub');
 
 
 -- vvvvv Reference data for automated testing of dvpd implementation vvvv
