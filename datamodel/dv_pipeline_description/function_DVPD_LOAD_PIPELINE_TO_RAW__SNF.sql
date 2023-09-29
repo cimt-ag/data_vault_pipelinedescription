@@ -18,7 +18,7 @@
 
 --drop procedure dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE(varchar);
 
-create or replace procedure dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE(
+create or replace procedure dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW(
    profile_to_load varchar
 )
 returns boolean
@@ -26,15 +26,23 @@ as
 $$
 begin
 
-truncate table  dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP ; 	
-insert into dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP  
-	select * from dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP_CVIEW ;
+truncate table  dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN; 	
+insert into dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN  select * from dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN_CVIEW;
+	
+truncate table dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN ;
+insert into  dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN 
+ select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN_CVIEW;
+
+truncate table dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING ;
+insert into  dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING 
+ select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_CVIEW;
+
 
 return true;
 end;
 $$;
 
- comment on procedure  dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE (varchar) is
- 	'Helper function to convert and load the dvpd model profile document into the relational tables';
+ comment on procedure  dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW (varchar) is
+ 	'Helper function to convert and load the dvpd  document into the relational tables';
  	
---call   dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE('hello');
+--call   dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('hello');
