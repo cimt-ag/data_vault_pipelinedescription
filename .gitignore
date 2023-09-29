@@ -4,3 +4,4 @@ datamodel/Scripts/
 config/
 lib/__pycache__/
 *.bkp
+dvpd/

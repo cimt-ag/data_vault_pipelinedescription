@@ -13,11 +13,11 @@ The reference implementation serves two major goals:
 - Test and prove the concept of the DVPD
 - Provide orientation and testsets for other implementations
 
-It is implemented mostly with data base objects, since  databases and expertise about it can be expected in every data warehouse project.
+It is implemented mostly with data base objects, since databases and expertise about it can be expected in every data warehouse project.
 
 # Architecture and content of the reference implementation
 
-The reference implementation focuses on the interpretation of the DVPD. The implementation platform is a postgreSQL database extended by some python scripts for automatic deployment of the data base objects.
+The reference implementation focuses on the interpretation of the DVPD. The implementation platform is a postgreSQL database extended by some python scripts for automatic deployment of the database objects.
 The following functions are provided:
 
 - Loading and compiling of a DVPD
@@ -29,7 +29,7 @@ The following functions are provided:
 	- compare compiler resultes with executed results
 	- wide range of Testsets (in the directory datamodel/dv_pipeline_description/tests_and_demos)
 - Automatic deployment of compiler and automatic tests
-- cimt framework for job execution logging (This is a standard pattern at cimt, whem implementing load processes, it is not requiered for the DVDP compiler itself)
+- cimt framework for job execution logging (This is a standard pattern at cimt, when implementing load processes, it is not required for the DVDP compiler itself)
 
 All database objects reside in the **database schema "dv_pipeline_description"**.
 
@@ -39,10 +39,10 @@ This project can be installed nearly automatically on a PostgreSQL Database
 by using the provided python scripts. 
 **Knowledge about adminstration of postgreSQL and using Phython is required.**
 
-Due to the huge number and the complex dependencies between the various data base objects, it is recommended, to use the automatic deployment. 
-It is definitly requiered, when you want to prepare releases of the DVPD, since a full automatic deployment is a mandatory step before releasing.
+Due to the huge number and the complex dependencies between the various database objects, it is recommended to use the automatic deployment. 
+It is definitly required, when you want to prepare releases of the DVPD, since a full automatic deployment is a mandatory step before releasing.
 
-*Note: all directories and files mentioned in the upcoming description are part of the git repositoring and declared from the root of the git repository. 
+*Note: all directories and files mentioned in the upcoming description are part of the git repository and declared from the root of the git repository. 
 
 
 ### prepare the database
@@ -54,7 +54,7 @@ Installation operations are using a database user which is owner of the target d
 The python project needs some environment information for connecting to the database and retrieving the ddl scripts.
 * create a copy of the directory "config_template" as "config"
 * edit "config/basic.ini"
-    * set "ddl_root_path" to the full path pointing to the "datamodel" directory of the repository. This depends on the location of the procect.
+    * set "ddl_root_path" to the full path pointing to the "datamodel" directory of the repository. This depends on the location of the project.
 * edit "config/pg_connect.ini"
     * adapt all connection parameters to your meet you DB configuration (DB, user, password)
 * the following steps depend on your python environment/ide:
