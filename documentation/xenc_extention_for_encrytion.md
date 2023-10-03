@@ -49,6 +49,13 @@ The transformation provides the following:
 
 # Extention of DVPD Syntax  
 
+### stage_properties
+subelemt of root
+
+**xenc_stage_schema**
+(mandatory when xenc table stereotypes are used)
+<br>Declares the name of the schema for the stage table of the encryption keys
+
 ### tables[]
 subelement of data_vault_model[] 
 

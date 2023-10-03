@@ -58,8 +58,8 @@ Object, describing all necessary properties to access the data source<br>
 
 **stage_properties[]**
 (mandatory)
-<br>Array with stage table declarations
-<br>→ see "stage_properties[]”
+<br>Object with stage table declarations. (one for every storage component)
+<br>→ see "stage_properties”
 
 
 ## data_extraction 
@@ -499,7 +499,9 @@ The DVPD properties "join_path" and "partitioning_columns" must be empty.
 For other procedures, then the defined above there might be other properties to be declared in the deletion_rule. 
 
 ## stage_properties[]
-Contains the declaration of the stage table locations. In common scenarios there will be only one. In case of a distributed model using ELT from stage to vault, the stage table can be placed on every target. 
+<br> subelement of root
+
+<br>Contains the declaration of the stage table locations. In common scenarios there will be only one. In case of a distributed model using ELT from stage to vault, the stage table can be placed on every target. 
 
 **storage_component**
 (optional)
