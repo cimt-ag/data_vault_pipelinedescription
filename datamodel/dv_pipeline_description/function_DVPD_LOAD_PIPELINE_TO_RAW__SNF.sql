@@ -38,7 +38,9 @@ insert into  dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN
 
 truncate table dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING ;
 insert into  dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING 
- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_CVIEW;
+ select * from dv_pipeline_description.dvpd_pipeline_process_stage_to_dv_model_mapping_core;
+insert into dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING 
+select * from dv_pipeline_description.xenc_pipeline_process_stage_to_dv_model_mapping_addition;
 
 
 return true;

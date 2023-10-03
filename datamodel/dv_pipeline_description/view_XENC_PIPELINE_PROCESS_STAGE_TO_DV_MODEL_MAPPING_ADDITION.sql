@@ -165,7 +165,7 @@ select * from fields_used_in_multiple_tables
 ;
 
 comment on view dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_ADDITION is
- '[Encryption Extention] Additional mapping of field to stage to target column for every process block, table, pipeline ';
+ '[Encryption Extention] Additional mapping of field to stage to target column for every process pipeline. table and relation to process ';
 
 
 -- select * from dv_pipeline_description.XENC_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_ADDITION order by pipeline,table_name,relation_to_process;										
