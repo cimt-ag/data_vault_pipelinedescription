@@ -218,36 +218,80 @@ def map_field_to_tables(field_entry):
         if not table_name in g_table_dict:
             register_error(f"Can't map field {field_name} to table {table_name}. Table is not declared in the model")
             continue
-        table_map_entry={}
-        table_map_entry['field_name']=field_name
-        table_map_entry['column_name'] = table_mapping.get('column_name',field_name)  # defaults to field name
-        table_map_entry['column_type'] = table_mapping.get('column_type',field_entry['field_type']).upper()  # defaults to field type
-        table_map_entry['prio_for_column_position'] = table_mapping.get('prio_for_column_position',50000)  # defaults to 50000
-        table_map_entry['prio_for_row_order'] = table_mapping.get('prio_for_row_order',50000)  # defaults to 50000
-        table_map_entry['row_order_direction'] = table_mapping.get('row_order_direction','ASC')  # defaults to ASC
-        table_map_entry['exclude_from_key_hash'] = table_mapping.get('exclude_from_key_hash',False)  # defaults to False
-        table_map_entry['prio_in_key_hash'] = table_mapping.get('prio_in_key_hash',0)  # defaults to 0
-        table_map_entry['exclude_from_change_detection'] = table_mapping.get('exclude_from_change_detection',False)  # defaults to False
-        table_map_entry['prio_in_diff_hash'] = table_mapping.get('prio_in_diff_hash',0)  # defaults to 0
-        table_map_entry['column_content_comment'] = table_mapping.get('column_content_comment',field_entry.get('field_comment'))
-        table_map_entry['update_on_every_load'] = table_mapping.get('update_on_every_load',False)  # defaults to False
+        column_map_entry={}
+        column_name = table_mapping.get('column_name',field_name)  # defaults to field name
+        column_map_entry['field_name']=field_name
+        column_map_entry['column_type'] = table_mapping.get('column_type',field_entry['field_type']).upper()  # defaults to field type
+        column_map_entry['prio_for_column_position'] = table_mapping.get('prio_for_column_position',50000)  # defaults to 50000
+        column_map_entry['prio_for_row_order'] = table_mapping.get('prio_for_row_order',50000)  # defaults to 50000
+        column_map_entry['row_order_direction'] = table_mapping.get('row_order_direction','ASC')  # defaults to ASC
+        column_map_entry['exclude_from_key_hash'] = table_mapping.get('exclude_from_key_hash',False)  # defaults to False
+        column_map_entry['prio_in_key_hash'] = table_mapping.get('prio_in_key_hash',0)  # defaults to 0
+        column_map_entry['exclude_from_change_detection'] = table_mapping.get('exclude_from_change_detection',False)  # defaults to False
+        column_map_entry['prio_in_diff_hash'] = table_mapping.get('prio_in_diff_hash',0)  # defaults to 0
+        column_map_entry['column_content_comment'] = table_mapping.get('column_content_comment',field_entry.get('field_comment'))
+        column_map_entry['update_on_every_load'] = table_mapping.get('update_on_every_load',False)  # defaults to False
         relation_names_cleansed = []
         if 'relation_names' in table_mapping:
             for relation_name in  table_mapping['relation_names']:
                 #todo test if relation_name is a string object
                 relation_names_cleansed.append(relation_name.upper())
-        table_map_entry['relation_names']=relation_names_cleansed
+        column_map_entry['relation_names']=relation_names_cleansed
         # announced property: hash_cleansing_rules
         # announced property: hash_cleansing_rules
 
         # finally add this to the table
         table_entry=g_table_dict[table_name]
-        if not 'field_assignment' in table_entry:
-            table_entry['field_assignment']=[]
-        table_entry['field_assignment'].append(table_map_entry)
+        if not 'data_columns' in table_entry:
+            table_entry['data_columns']={}
+        column_dict=table_entry['data_columns']
+        if not column_name in column_dict:
+            column_dict[column_name] = {}
+        theColumn=column_dict[column_name]
+        if not 'field_mappings' in theColumn:
+            theColumn['field_mappings'] = []
+        theColumn['field_mappings'].append(column_map_entry)
+
+
+def check_multifield_mapping_consistency():
+    global g_table_dict
+    for table_name, table_entry in g_table_dict.items():
+        if 'data_columns' in table_entry:
+            for column_name,column_entry in table_entry['data_columns'].items():
+                check_multifield_mapping_consistency_of_column(table_name, column_name, column_entry)
+
+def check_multifield_mapping_consistency_of_column(table_name, column_name, column_entry):
+    properties_to_align=['column_type','prio_for_column_position','prio_for_row_order','exclude_from_key_hash'
+            ,'prio_in_key_hash','exclude_from_change_detection','prio_in_diff_hash']
+    if not 'field_mappings' in column_entry:
+        raise(f" no field mappings on data column {column_name} in table {table_name}")
+    if len(column_entry['field_mappings']) <2:
+        return      # there can be no conflict in single mappings
+    #todo implement mapping comparison
+    raise("Field mapping comparison is not implemented yet")
 
 def derive_content_dependent_table_properties():
-    print("tbd")
+    global g_table_dict
+    for table_name, table_entry in g_table_dict.items():
+        match table_entry['table_stereotype']:
+            case 'hub':
+                derive_content_dependent_hub_properties(table_name,table_entry)
+            case 'lnk':
+                derive_content_dependent_lnk_properties(table_name,table_entry)
+            case 'sat':
+                derive_content_dependent_sat_properties(table_name,table_entry)
+            case 'ref':
+                derive_content_dependent_ref_properties(table_name,table_entry)
+            case _:
+                raise(
+                    f"!!! Something weird happened !!! cleansed stereotype {table_entry['table_stereotype']} has no rule in derive_content_dependent_table_properties()")
+
+    if g_error_count > 0:
+        print("*** Stopped compiling due to errors ***")
+        exit(5)
+
+def derive_content_dependent_hub_properties(table_name,table_entry):
+    print('tbd')
     # iterate over all tables
 
     # for links
@@ -292,6 +336,8 @@ if __name__ == "__main__":
     check_essential_element(dvpd_object)
     collect_table_properties(dvpd_object)
     collect_field_properties(dvpd_object)
+    check_multifield_mapping_consistency()
+    #derive_content_dependent_table_properties()
 
     print("compile successful")
     print("JSON of g_table_dict:")
