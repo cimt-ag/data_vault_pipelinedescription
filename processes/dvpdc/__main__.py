@@ -203,13 +203,13 @@ def collect_field_properties(dvpd_object):
         cleansed_field_entry['field_position']=field_position
         cleansed_field_entry['needs_encryption'] = field_entry.get('needs_encryption',False)
         g_field_dict[field_name] = cleansed_field_entry
-        map_field_to_tables(field_entry)
+        map_field_to_tables(field_entry,field_position)
 
     if g_error_count > 0:
         print("*** Stopped compiling due to errors ***")
         exit(5)
 
-def map_field_to_tables(field_entry):
+def map_field_to_tables(field_entry,field_position):
     global g_table_dict
 
     field_name=field_entry['field_name'].upper()
@@ -221,6 +221,7 @@ def map_field_to_tables(field_entry):
         column_map_entry={}
         column_name = table_mapping.get('column_name',field_name)  # defaults to field name
         column_map_entry['field_name']=field_name
+        column_map_entry['field_position']=field_position
         column_map_entry['column_type'] = table_mapping.get('column_type',field_entry['field_type']).upper()  # defaults to field type
         column_map_entry['prio_for_column_position'] = table_mapping.get('prio_for_column_position',50000)  # defaults to 50000
         column_map_entry['prio_for_row_order'] = table_mapping.get('prio_for_row_order',50000)  # defaults to 50000
@@ -284,22 +285,100 @@ def derive_content_dependent_table_properties():
                 derive_content_dependent_ref_properties(table_name,table_entry)
             case _:
                 raise(
-                    f"!!! Something weird happened !!! cleansed stereotype {table_entry['table_stereotype']} has no rule in derive_content_dependent_table_properties()")
+                    f"!!! Something bad happened !!! cleansed stereotype {table_entry['table_stereotype']} has no rule in derive_content_dependent_table_properties()")
 
     if g_error_count > 0:
         print("*** Stopped compiling due to errors ***")
         exit(5)
 
 def derive_content_dependent_hub_properties(table_name,table_entry):
-    print('tbd')
-    # iterate over all tables
+    if not 'data_columns' in table_entry:
+        register_error(f"Hub table {table_name} has no field mapping")
+        return
+
+    for column_name,column_properties in table_entry['data_columns'].items():
+        first_field=column_properties['field_mappings'][0]
+        if first_field['exclude_from_key_hash']:
+            column_properties['column_class'] = 'content_untracked'
+        else:
+            column_properties['column_class']='business_key'
+        column_properties['field_mapping_count']=len(column_properties['field_mappings'])
+        for property_name in ['prio_for_column_position','field_position','prio_in_key_hash','exclude_from_key_hash','column_content_comment']:
+            column_properties[property_name]=first_field[property_name]
+        derive_implicit_relations(column_properties)
+
+def derive_content_dependent_lnk_properties(table_name, table_entry):
+    global g_table_dict
+
+    for link_parent in table_entry['link_parent_tables']:
+        if link_parent['table_name'] not in g_table_dict:
+            register_error(f"link parent table '{link_parent['table_name']}' of link '{table_name}' is not declared")
+            return
+        parent_table=g_table_dict[link_parent['table_name']]
+        link_parent['parent_key_column_name']=parent_table['hub_key_column_name']
+
+    if 'data_columns' in table_entry:
+        for column_name, column_properties in table_entry['data_columns'].items():
+            first_field = column_properties['field_mappings'][0]
+            if first_field['exclude_from_key_hash']:
+                column_properties['column_class'] = 'content_untracked'
+            else:
+                column_properties['column_class'] = 'dependent_child_key'
+            column_properties['field_mapping_count'] = len(column_properties['field_mappings'])
+            for property_name in ['prio_for_column_position', 'field_position','prio_in_key_hash', 'exclude_from_key_hash','column_content_comment']:
+                column_properties[property_name] = first_field[property_name]
+            derive_implicit_relations(column_properties)
+
 
     # for links
     #  add hub key column names to the references
 
     # for satellites
 
-    # determine if it is an effectivity satellite
+def derive_content_dependent_sat_properties(table_name, table_entry):
+    if table_entry['satellite_parent_table'] not in g_table_dict:
+        register_error(f"parent table '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is not declared")
+        return
+
+    table_entry['is_effectivity_sat'] = not 'data_columns' in table_entry
+
+    parent_table = g_table_dict[table_entry['satellite_parent_table']]
+    match parent_table['table_stereotype']:
+        case 'hub':
+            table_entry['parent_key_column_name'] = parent_table['hub_key_column_name']
+            if table_entry['is_effectivity_sat']:
+                register_error(f"Parent table '{table_entry['satellite_parent_table']}' of effectivity sat '{table_name}' is not a link")
+        case 'lnk':
+            table_entry['parent_key_column_name'] = parent_table['link_key_column_name']
+        case _:
+            register_error(f"Parent table '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is not a link or hub")
+
+    if table_entry['is_effectivity_sat']:
+        return  # without any columns, we are done here
+
+    for column_name,column_properties in table_entry['data_columns'].items():
+        first_field=column_properties['field_mappings'][0]
+        if first_field['exclude_from_change_detection']:
+            column_properties['column_class'] = 'content_untracked'
+        else:
+            column_properties['column_class']='content'
+        column_properties['field_mapping_count']=len(column_properties['field_mappings'])
+        for property_name in ['prio_for_column_position','field_position','prio_for_row_order','row_order_direction','exclude_from_change_detection','prio_in_diff_hash','column_content_comment']:
+            column_properties[property_name]=first_field[property_name]
+        derive_implicit_relations(column_properties)
+
+def derive_implicit_relations(column_properties):
+    has_multiple_field_mappings= len(column_properties['field_mappings']) > 1
+    for field_entry in  column_properties['field_mappings']:
+        if len(field_entry['relation_names']) == 0:
+            if has_multiple_field_mappings:
+                field_entry['relation_names'].append('/')
+            else:
+                field_entry['relation_names'].append('*')
+
+
+
+# determine if it is an effectivity satellite
 
     #    if not effectitivity sat  table_properties['compare_criteria'] == 'key' or table_properties['compare_criteria'] != 'none'
     #     if table_properties['uses_diff_hash'] and diff hash is not declared:
@@ -308,6 +387,10 @@ def derive_content_dependent_hub_properties(table_name,table_entry):
     # check if parent is link, when sat has driving keys
 
     # warn when parent is hub but sat is an esat
+
+def derive_content_dependent_ref_properties(table_name, table_entry):
+    print("tbd")
+
 
 # ======================= Main =========================================== #
 
@@ -337,7 +420,7 @@ if __name__ == "__main__":
     collect_table_properties(dvpd_object)
     collect_field_properties(dvpd_object)
     check_multifield_mapping_consistency()
-    #derive_content_dependent_table_properties()
+    derive_content_dependent_table_properties()
 
     print("compile successful")
     print("JSON of g_table_dict:")
