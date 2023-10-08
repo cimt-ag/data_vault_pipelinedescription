@@ -30,6 +30,12 @@
 				,{"field_name": "F15_BK_DDD2_RWWW",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_55_ddd_hub",
 																																												"column_name":"BK_DDD2",
 																																												"relation_names":["WWW"]}]}
+		 	  ,{"field_name": "F16_DDD_SP1_RUUU",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_55_ddd_p1_sat",
+																																												"column_name":"DDD_SP1",
+																																												"relation_names":["UUU"]}]}
+				,{"field_name": "F17_DDD_SP1_RUUU",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_55_ddd_p1_sat",
+																																												"column_name":"DDD_SP1",
+																																												"relation_names":["WWW"]}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
@@ -71,6 +77,7 @@
 				,{"table_name": "rtjj_55_aaa_ccc_p1_sat",
      				"table_stereotype": "sat",
 						"satellite_parent_table": "rtjj_55_aaa_ccc_lnk",
+						"diff_hash_column_name": "RH_rtjj_55_aaa_ccc_p1_sat",
 						"driving_keys":["HK_rtjj_55_aaa"]
 						}
 				,{"table_name": "rtjj_55_ddd_hub",
@@ -83,6 +90,11 @@
 					"link_parent_tables": [{"table_name":"rtjj_55_aaa_hub"},
 																 {"table_name":"rtjj_55_ddd_hub","relation_name":"UUU"},
 																 {"table_name":"rtjj_55_ddd_hub","relation_name":"WWW"}]
+					}
+				,{"table_name": "rtjj_55_ddd_p1_sat",
+  				"table_stereotype": "sat",
+					"satellite_parent_table": "rtjj_55_ddd_HUB",
+					"diff_hash_column_name": "RH_rtjj_55_ddd_P1_SAT"
 					}
 				]
 		},

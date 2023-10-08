@@ -385,9 +385,7 @@ def derive_implicit_relations(column_properties):
 
 # determine if it is an effectivity satellite
 
-    #    if not effectitivity sat  table_properties['compare_criteria'] == 'key' or table_properties['compare_criteria'] != 'none'
-    #     if table_properties['uses_diff_hash'] and diff hash is not declared:
-    #           register_error(f'diff_hash_column_name is not declared but needed for satellite table {table_name}')
+
 
     # check if parent is link, when sat has driving keys
 
@@ -460,13 +458,91 @@ def derive_load_operations():
                     load_operations = {"/": {"operation_origin": "implicit unnamed relation of link, that has no sat"}}
                     link_table_entry['load_operations'] = load_operations
 
-def add_data_column_mappings_to_load_operations():
+def add_column_mappings_to_load_operations():
     global g_table_dict
 
     for table_name,table_entry in g_table_dict.items():
-        if 'data_columns' in table_entry:
-            for relation_name,load_operation in table_entry['load_operations'].items():
+        add_hash_column_mappings(table_name, table_entry)
+        for relation_name,load_operation in table_entry['load_operations'].items():
+            if 'data_columns' in table_entry:
                 add_data_column_mappings_for_one_load_operations_(table_name,table_entry,relation_name,load_operation)
+
+def add_hash_column_mappings(table_name,table_entry):
+    load_operations=table_entry['load_operations']
+    match(table_entry['table_stereotype']):
+        case 'hub':
+            add_hash_column_mappings_for_hub(table_name, table_entry, load_operations)
+        case 'lnk':
+            add_hash_column_mappings_for_lnk(table_name, table_entry, load_operations)
+        case 'sat':
+            add_hash_column_mappings_for_sat(table_name, table_entry, load_operations)
+        case 'ref':
+            add_hash_column_mappings_for_ref(table_name, table_entry, load_operations)
+        case _:
+            raise(f"no rule for stereotype '{table_entry['table_stereotype']}' for  table '{table_name}'")
+
+    if g_error_count > 0:
+        print("*** Stopped compiling due to errors ***")
+        exit(5)
+
+
+def add_hash_column_mappings_for_hub(table_name,table_entry,load_operations):
+    key_column_name = table_entry['hub_key_column_name']
+    for relation_name, load_operation_entry in load_operations.items():
+        if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
+            stage_key_column_name = key_column_name
+        else:
+            stage_key_column_name = key_column_name + "_" + relation_name
+        hash_column_mapping = {key_column_name:{"stage_column_name": stage_key_column_name,
+                                                "hash_column_origin":table_name,
+                                                "column_class":"key"}}
+        load_operation_entry['hash_column_mapping'] = hash_column_mapping
+
+def add_hash_column_mappings_for_lnk(table_name,table_entry,load_operations):
+    key_column_name = table_entry['link_key_column_name']
+    for relation_name, load_operation_entry in load_operations.items():
+        if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
+            stage_key_column_name = key_column_name
+        else:
+            stage_key_column_name = key_column_name + "_" + relation_name
+        hash_column_mapping = {key_column_name:{"stage_column_name": stage_key_column_name,
+                                                "hash_column_origin":table_name,
+                                                "column_class":"key"}}
+        load_operation_entry['hash_column_mapping'] = hash_column_mapping
+        #todo manage all relation hashes
+
+def add_hash_column_mappings_for_sat(table_name,table_entry,load_operations):
+    key_column_name = table_entry['parent_key_column_name']
+    uses_diff_hash=False
+    diff_hash_column_name="#not defined#"
+    if not table_entry['is_effectivity_sat'] and table_entry['compare_criteria'] != 'key' and table_entry[
+        'compare_criteria'] != 'none':
+        if table_entry['uses_diff_hash']:
+            if 'diff_hash_column_name' not in table_entry:
+                register_error(f"Table {table_name} needs diff hash, but has no 'diff_hash_column_name' declaration")
+                return
+            uses_diff_hash=True
+            diff_hash_column_name = table_entry['diff_hash_column_name']
+
+    for relation_name, load_operation_entry in load_operations.items():
+        if relation_name == "/" :
+            stage_key_column_name = key_column_name
+            stage_diff_hash_column_name = diff_hash_column_name
+        else:
+            stage_key_column_name = key_column_name + "_" + relation_name
+            stage_diff_hash_column_name = diff_hash_column_name+ "_" + relation_name
+        hash_column_mapping = {key_column_name:{"stage_column_name": stage_key_column_name,
+                                                "hash_column_origin":table_entry['satellite_parent_table'],
+                                                "column_class":"parent_key"}}
+        if uses_diff_hash:
+            hash_column_mapping[diff_hash_column_name] = {"stage_column_name": stage_diff_hash_column_name,
+                                                          "hash_column_origin": table_name,
+                                                          "column_class": "diff_hash"}
+        load_operation_entry['hash_column_mapping'] = hash_column_mapping
+
+def add_hash_column_mappings_for_ref(table_name,table_entry,load_operations):
+    print("tbd")
+    #todo manage row hash if needed
 
 def add_data_column_mappings_for_one_load_operations_(table_name,table_entry,relation_name,load_operation):
     data_column_mapping={}
@@ -499,6 +575,7 @@ def copy_data_column_properties_to_operation_mapping(data_column_mapping,data_co
             data_column_mapping[relevant_key]=data_column[relevant_key]
 
 
+
 # ======================= Main =========================================== #
 
 if __name__ == "__main__":
@@ -529,7 +606,8 @@ if __name__ == "__main__":
     check_multifield_mapping_consistency()
     derive_content_dependent_table_properties()
     derive_load_operations()
-    add_data_column_mappings_to_load_operations()
+    add_column_mappings_to_load_operations()
+
 
     print("compile successful")
     print("JSON of g_table_dict:")
