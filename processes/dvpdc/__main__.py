@@ -460,6 +460,43 @@ def derive_load_operations():
                     load_operations = {"/": {"operation_origin": "implicit unnamed relation of link, that has no sat"}}
                     link_table_entry['load_operations'] = load_operations
 
+def add_data_column_mappings_to_load_operations():
+    global g_table_dict
+
+    for table_name,table_entry in g_table_dict.items():
+        if 'data_columns' in table_entry:
+            for relation_name,load_operation in table_entry['load_operations'].items():
+                add_data_column_mappings_for_one_load_operations_(table_name,table_entry,relation_name,load_operation)
+
+def add_data_column_mappings_for_one_load_operations_(table_name,table_entry,relation_name,load_operation):
+    data_column_mapping={}
+    for data_column_name, data_column in table_entry['data_columns'].items():
+        for field_mapping in data_column['field_mappings']:
+            field_name = field_mapping['field_name']
+            use_field=False
+            for mapping_relation_name in field_mapping['relation_names']:
+                if mapping_relation_name == relation_name or mapping_relation_name=='*':
+                    use_field=True
+            if not use_field:
+                continue
+            if data_column_name not in data_column_mapping:
+                data_column_mapping[data_column_name]={"field_name":field_name}
+                copy_data_column_properties_to_operation_mapping(data_column_mapping[data_column_name],data_column)
+            else:
+                register_error(f"Duplicate field mappings for column {data_column_name} in relation {relation_name} for table {table_name}")
+
+    if len(data_column_mapping)>0:
+        load_operation['data_column_mapping']=data_column_mapping
+
+    if g_error_count > 0:
+        print("*** Stopped compiling due to errors ***")
+        exit(5)
+
+def copy_data_column_properties_to_operation_mapping(data_column_mapping,data_column):
+    operation_relevant_column_properties=['column_class','exclude_from_change_detection','prio_for_row_order','prio_in_diff_hash','exclude_from_key_hash','prio_in_key_hash','update_on_every_load']
+    for relevant_key in operation_relevant_column_properties:
+        if relevant_key in data_column:
+            data_column_mapping[relevant_key]=data_column[relevant_key]
 
 
 # ======================= Main =========================================== #
@@ -492,6 +529,7 @@ if __name__ == "__main__":
     check_multifield_mapping_consistency()
     derive_content_dependent_table_properties()
     derive_load_operations()
+    add_data_column_mappings_to_load_operations()
 
     print("compile successful")
     print("JSON of g_table_dict:")
