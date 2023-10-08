@@ -8,6 +8,7 @@ import json
 g_error_count=0
 g_table_dict={}
 g_field_dict={}
+g_hash_dict={}
 
 def register_error(message):
     global g_error_count
@@ -19,21 +20,21 @@ def check_essential_element(dvpd_object):
 
     root_keys=['pipeline_name','dvpd_version','stage_properties','data_extraction','fields']
     for key_name in root_keys:
-        if dvpd_object.get(key_name)==None:
+        if dvpd_object.get(key_name) is None:
             register_error ("missing declaration of root property "+key_name)
 
     # Check essential keys of data model declaration
     table_keys=['table_name','table_stereotype']
     table_count = 0
     for schema_entry in dvpd_object['data_vault_model']:
-        if schema_entry.get('schema_name') == None:
+        if schema_entry.get('schema_name') is None:
             register_error("\"schema_name\" is not dedclared")
 
 
         for table_entry in schema_entry['tables']:
             table_count+=1
             for key_name in table_keys:
-                if table_entry.get(key_name) == None:
+                if table_entry.get(key_name) is None:
                     register_error("missing declaration of essential table property \"" + key_name + "\" for table "+ str(table_count))
 
     if table_count == 0:
@@ -47,8 +48,8 @@ def check_essential_element(dvpd_object):
         for key_name in field_keys:
             if field_entry.get(key_name) == None:
                 register_error(f"missing declaration of essential field property \"{key_name}\" for field {field_count}")
-            target_count=0
-        if field_entry.get('targets') != None:
+        target_count=0
+        if 'targets' in field_entry:
             for target_entry in field_entry.get('targets'):
                 target_count += 1
                 if target_entry.get('table_name') == None:
@@ -93,7 +94,10 @@ def transform_lnk_table(table_entry,schema_name,storage_component):
                 if 'table_name' in parent_entry:
                     cleansed_parent_entry['table_name']=parent_entry['table_name' ].lower()
                     cleansed_parent_entry['relation_name']=parent_entry.get('relation_name','*')
-                    cleansed_parent_entry['hub_key_column_name_in_link']=parent_entry.get('hub_key_column_name_in_link').upper()
+                    if 'hub_key_column_name_in_link' in parent_entry:
+                        cleansed_parent_entry['hub_key_column_name_in_link']=parent_entry.get('hub_key_column_name_in_link').upper()
+                    else:
+                        cleansed_parent_entry['hub_key_column_name_in_link'] = None
                     cleansed_parent_entry['parent_list_position']=list_position
                 else:
                     register_error(f'table_name is not declared in link_parent_tables for lnk table {table_name}')
@@ -141,7 +145,8 @@ def transform_sat_table(table_entry,schema_name,storage_component):
         for driving_key in table_entry['driving_keys']:
             cleansed_driving_keys.append(driving_key.upper())
     table_properties['driving_keys']=cleansed_driving_keys
-    table_properties['tracked_relation_name'] = table_entry.get('tracked_relation_name')  # default is None
+    if 'tracked_relation_name' in table_entry:
+        table_properties['tracked_relation_name'] = table_entry.get('tracked_relation_name')  # default is None
 
     # finally add the cleansed properties to the table dictionary
     g_table_dict[table_name] = table_properties
@@ -269,7 +274,7 @@ def check_multifield_mapping_consistency_of_column(table_name, column_name, colu
     if len(column_entry['field_mappings']) <2:
         return      # there can be no conflict in single mappings
     #todo implement mapping comparison
-    raise("Field mapping comparison is not implemented yet")
+    print("!!! WARNING !!!! Field mapping comparison is not implemented yet")
 
 def derive_content_dependent_table_properties():
     global g_table_dict
@@ -391,6 +396,71 @@ def derive_implicit_relations(column_properties):
 def derive_content_dependent_ref_properties(table_name, table_entry):
     print("tbd")
 
+def derive_load_operations():
+    global g_table_dict
+
+    # collect declared relations
+    for table_name,table_entry in g_table_dict.items():
+        load_operations={}
+        if 'data_columns' in table_entry:
+            for data_column in table_entry['data_columns'].values():
+                for field_mapping in data_column['field_mappings']:
+                    for relation_name in field_mapping['relation_names']:
+                        if relation_name != '*':
+                            load_operations[relation_name]={"operation_origin":"explicit data relation"}
+        if 'tracked_relation_name' in table_entry:
+            load_operations[table_entry['tracked_relation_name']] = {"operation_origin": "explicitly tracked relation"}
+        if len(load_operations)>0:
+            table_entry['load_operations']=load_operations
+        link_relation_list=[]
+        if 'link_parent_tables' in table_entry:
+            for link_parent_entry in table_entry['link_parent_tables']:
+                if link_parent_entry['relation_name'] != '*' and link_parent_entry['relation_name'] is not None :
+                    link_relation_list.append(link_parent_entry['relation_name'])
+        if len(link_relation_list)>0:
+            table_entry['link_relations'] = link_relation_list
+            if 'load_operations' not in table_entry:
+                load_operations = {"/":{"operation_origin":"unnamed relation of link due to explict link relations"}}
+                table_entry['load_operations'] = load_operations
+
+
+    # hub tables, without explicit relations only have the "/" relation
+    for table_name,table_entry in g_table_dict.items():
+        if table_entry['table_stereotype'] == 'hub':
+           if 'load_operations' not in table_entry:
+                load_operations = {"/":{"operation_origin":"implicit unnamed relation of hub"}}
+                table_entry['load_operations'] = load_operations
+
+    # sat table without explicit relations, use the operations of their parent
+    for table_name, table_entry in g_table_dict.items():
+        if table_entry['table_stereotype'] == 'sat':
+            if 'load_operations' not in table_entry:
+                parent_table=g_table_dict[table_entry['satellite_parent_table']]
+                if 'load_operations' in parent_table:
+                    load_operations = {}
+                    for parent_operation in parent_table['load_operations']:
+                        load_operations[parent_operation] = {"operation_origin":"following parent operation list"}
+                else:
+                    load_operations = {
+                        "/": {"operation_origin": "implicit unnamed relation operation"}}
+                table_entry['load_operations'] = load_operations
+
+    # link without specific relation use relations of all their satellites (which at this point must have one)
+    for link_table_name, link_table_entry in g_table_dict.items():
+        if link_table_entry['table_stereotype'] == 'lnk':
+            if 'load_operations' not in link_table_entry:
+                load_operations = {}
+                for sat_table_name,sat_table_entry in g_table_dict.items():
+                    if sat_table_entry.get('satellite_parent_table') == link_table_name:
+                        for sat_load_operation in sat_table_entry['load_operations']:
+                            load_operations[sat_load_operation]={"operation_origin":"collected from satellites"}
+                if len(load_operations) > 0:
+                    link_table_entry['load_operations'] = load_operations
+                else:
+                    load_operations = {"/": {"operation_origin": "implicit unnamed relation of link, that has no sat"}}
+                    link_table_entry['load_operations'] = load_operations
+
+
 
 # ======================= Main =========================================== #
 
@@ -421,9 +491,10 @@ if __name__ == "__main__":
     collect_field_properties(dvpd_object)
     check_multifield_mapping_consistency()
     derive_content_dependent_table_properties()
+    derive_load_operations()
 
     print("compile successful")
     print("JSON of g_table_dict:")
-    print(json.dumps(g_table_dict, indent=2))
+    print(json.dumps(g_table_dict, indent=2,sort_keys=True))
 
 
