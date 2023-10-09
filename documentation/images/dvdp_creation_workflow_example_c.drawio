@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-05-25T15:54:56.463Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="UIM1lHXba-aY60Qx5zsr" version="21.3.4" type="device">
+<mxfile host="Electron" modified="2023-10-09T11:18:30.055Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.2 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="BEeXou762EgRlJiKkoaD" version="22.0.2" type="device">
   <diagram name="Seite-1" id="HqBW4fTeCPGUdDQ781vC">
-    <mxGraphModel dx="1235" dy="669" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
+    <mxGraphModel dx="819" dy="482" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -20,44 +20,44 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-41" value="DVPD" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#F3AC0C;gradientColor=none;" parent="1" vertex="1">
-          <mxGeometry x="240" y="378" width="590" height="40" as="geometry" />
+          <mxGeometry x="240" y="388" width="590" height="40" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-72" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-43" target="SHAmAD_ecb-zwq3bcNpp-41" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="150" y="398" />
+              <mxPoint x="150" y="408" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="SHAmAD_ecb-zwq3bcNpp-43" value="Conversion and enhancment tool (Glue code)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="80" y="200" width="140" height="40" as="geometry" />
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-43" value="Conversion and enhancment tool &lt;br&gt;(Glue code)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="80" y="210" width="140" height="50" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-70" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-45" target="SHAmAD_ecb-zwq3bcNpp-43" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-45" value="Pipeline properties&lt;br&gt;Excel Sheet" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=15;" parent="1" vertex="1">
-          <mxGeometry x="280" y="185" width="160" height="30" as="geometry" />
+          <mxGeometry x="280" y="220" width="160" height="30" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-46" value="inkrement &amp;amp; deletion propterties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
-          <mxGeometry x="160" y="255.5" width="120" height="30" as="geometry" />
+          <mxGeometry x="160" y="265.5" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-47" value="fields&amp;amp;types" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
-          <mxGeometry x="40" y="275.5" width="120" height="30" as="geometry" />
+          <mxGeometry x="40" y="285.5" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-48" value="Mapping of fields to model" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
-          <mxGeometry x="160" y="310.5" width="120" height="25" as="geometry" />
+          <mxGeometry x="160" y="320.5" width="120" height="25" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-49" value="Data Vault&amp;nbsp;Tables &amp;amp; Relations" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
-          <mxGeometry x="160" y="285.5" width="120" height="25" as="geometry" />
+          <mxGeometry x="160" y="295.5" width="120" height="25" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-50" value="Fetch properties of fields" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
-          <mxGeometry x="40" y="305.5" width="120" height="30" as="geometry" />
+          <mxGeometry x="40" y="315.5" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-51" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-52" target="SHAmAD_ecb-zwq3bcNpp-54" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-52" value="DVPD Compiler" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="875" y="368" width="105" height="60" as="geometry" />
+          <mxGeometry x="875" y="378" width="105" height="60" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-53" style="shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=open;dashed=1;endFill=0;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-54" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -83,13 +83,13 @@
           <mxGeometry x="70" y="170" width="160" height="20" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-37" value="Basic pipeline properties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
-          <mxGeometry x="40" y="255.5" width="120" height="20" as="geometry" />
+          <mxGeometry x="40" y="265.5" width="120" height="20" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-79" value="Model Documentation" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=15;" parent="1" vertex="1">
           <mxGeometry x="200" y="140" width="160" height="20" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-84" value="Data Vault Model&lt;br style=&quot;font-size: 10px;&quot;&gt;Column properties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
-          <mxGeometry x="160" y="335.5" width="120" height="30" as="geometry" />
+          <mxGeometry x="160" y="345.5" width="120" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

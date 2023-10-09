@@ -62,9 +62,9 @@ In case you have a convenient modelling tool, that is capable of reading source 
     - Create or extend the data vault model accordingly
     - configure the mapping 
 	- add DVPD property data in custom fields, when possible
-	- Export the modell and the mapping in a processible format
+	- Export the model and the mapping in a processable format
 - Add DVPD specific properties, that can't be stored in the modelling tool in a separate document (e.g. an excel sheet)
-- By using a converter process (glue code), convert the exported model ad mapping into a DVPD and merge all seperatly defined DVPD properties
+- By using a converter process (glue code), convert the exported model and mapping into a DVPD and merge all seperately defined DVPD properties
 - compile the DVPD and manage and fix errors
 
 ![Phase1 Example C](./images/dvdp_creation_workflow_example_c.drawio.png)
@@ -77,14 +77,14 @@ With the complete description of the source structure, target model and field ma
 
 ## Example A: DDL and Documentation generator only
 
-- the result of the DVPD compiler is only used to generatr all DDL statements
+- the result of the DVPD compiler is only used to generate all DDL statements
 - load processes are implemented manually by copy & adapt, supported by
     - a set of libraries
     - standardized implementation patterns
-    - code snippets created from the DVDP Compiler results by a generator 
+    - code snippets created from the DVPD Compiler results by a generator 
 - documentation is done manually in a general documentation tool. To keep consistency, documentation snippets are generated from the DVPD and copied into the documentation tool
 
-This approach has the most flexibilty when facing variations of incoming data formats, transportation protocol and incremental logic. It will mostly be used in small projects or projects with a high or hardly predictable number of  input formats.
+This approach has the most flexibilty when facing variations of incoming data formats, transportation protocol and incremental logic. It will mostly be used in small projects or projects with a high or hardly predictable number of input formats.
 
 
 ![Phase1 Example C](./images/dvdp_based_processing_example_workflow_a.drawio.png)
@@ -92,9 +92,9 @@ This approach has the most flexibilty when facing variations of incoming data fo
 ## Example B: Code Generator
 This is an evolution of the Example A, but instead of providing only code snippets, the generator creates the complete code. Adaption to new formats and technologies must be achieved by providing new libraries to the generator.
 
-Generation of documentation is not needed for the implementation process.(It is still good practice to support analysis and linage investigation).
+Generation of documentation is not needed for the implementation process (It is still good practice to support analysis and linage investigation).
 
-Implementation of general libraries takes more effort in testing and needs higher discipline from the  maintainting developers. Therefore it is only efficient for projects with a high number of source objects, that follow the same formats, protocols and increment pattern.
+Implementation of general libraries takes more effort in testing and needs higher discipline from the maintainting developers. Therefore it is only efficient for projects with a high number of source objects, that follow the same formats, protocols and increment pattern.
 
 
 ![Phase1 Example C](./images/dvdp_based_processing_example_workflow_b.drawio.png)
@@ -110,7 +110,7 @@ Depending on the type of tool, the processes are run by the tool or the tool gen
 # There is no "works for all" solution, but some bad
 As mentioned in the introduction, there is no best option, that fits for all projects. It depends on the sprectrum of sources, the available budget, the teamsize and the toolstack already in place or favoured.
 
-Since the DVPD itself is an enclosed artifact containing all informations, one might be tempted to use it as the final deployment package and rely on the consistency of an execution engine, that compiles the dvpd and executes the result instantly.
+Since the DVPD itself is an enclosed artifact containing all information, one might be tempted to use it as the final deployment package and rely on the consistency of an execution engine, that compiles the dvpd and executes the result instantly.
 
 **It is not recommended to include the DVDP compiler in the code generator**.
 
@@ -119,7 +119,7 @@ Since the DVPD itself is an enclosed artifact containing all informations, one m
 **Only small independent modules with a distinct set of responsibilities and functions stay maintainable and testable**
 
 This is already valid for all tools of the implementation workflow but especially for the final loading processes. 
-Keepin mind, that retesting of released loading processes should be highly avoided. This is, why most examples create packages for deployment, that are decoupled from all future code changes in the development. Feeding the DVDP to a monolithic execution engine puts all implemented pipelines to risk of failiure when the engines gets changed (e.g. update). 
+Keep in mind, that retesting of released loading processes should be highly avoided. This is why most examples create packages for deployment, that are decoupled from all future code changes in the development. Feeding the DVDP to a monolithic execution engine puts all implemented pipelines to risk of failiure when the engines gets changed (e.g. update). 
 In the worst case, this might corrupt your data vault.
 
 
