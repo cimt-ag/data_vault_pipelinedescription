@@ -8,7 +8,7 @@ DVPD development workflow scenarios
 Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)
 
 # Introduction
-The Data Vault Pipeline Description allows many variations, how to set up the workflow and toolchain for implementation of data vault loading processes. In the following, we describe some example scenarios, to give an idea about the possibilites.
+The Data Vault Pipeline Description allows many variations in how to set up the workflow and toolchain for an implementation of data vault loading processes. In the following, we describe some example scenarios, to give an idea about the possibilities.
 
 
 ## About the main phases: Analysis/Design and implementation
@@ -17,7 +17,7 @@ In the implementation  workflow for data loading processes, there are two main p
 - Phase 1: Gather all necessary knowledge about the source data and design the data vault structure based on that knowledge. 
 - Phase 2: Implement database objects and the loading process. Test and deploy the process.
 
-DVPD is designed to gather all information during phase 1 and be the single source of information for phase 2. The examples provided here, focus either phase 1 or 2. By using DVPD, all phase 1 examples are compatible to all phase 2 examples. 
+DVPD is designed to gather all information during phase 1 and be the single source of information for phase 2. The following examples focus either on phase 1 or 2. By using DVPD, all phase 1 examples are compatible to all phase 2 examples. 
 
 # Phase 1: DVPD Creation Scenarios
 
@@ -29,7 +29,7 @@ The examples try to emphasize this approach. They can only scratch  the whole po
 - The sources are mainly database tables or views from the operational systems. To accelerate the process of listing all source fields, a script can use the database dictionary of the source system to generate the list of fields in DVDP syntax.
 - Analysis of the source data (business keys, uniqueness) is done with basic SQL queries by the data engineers and documented in a source specification document
 - With the analysis result in mind, the data engineer creates the data vault model, documented in a diagram
-- the diagram is translared into the DVDP model syntax by the data enginneer and merged with the generated field list
+- the diagram is translated into the DVDP model syntax by the data enginneer and merged with the generated field list
 - the generated field list is extended with the mapping to the data vault model
 - additional properties to guide the access, parsing and increment logic are added to the DVPD
 
@@ -39,15 +39,15 @@ Errors during the compiling of the final DVPD will lead to corrections in the DV
 
 ## Example B: proprietary mapping tool
 
-In this example, a team of business analysts provides the whole specification of the source , including primary key and foreign key relations of the source object.
-This information is given to the dataengineers in a standardizes Excel sheet. The workflow is as follows:
+In this example, a team of business analysts provides the whole specification of the source, including primary key and foreign key relations of the source object.
+This information is given to the data engineers in a standardized Excel sheet. The workflow is as follows:
 - the Excel Sheet with the source object declaration is provided
 - a transformation tool (script) translates the provided information into a draft DVPD, incuding a data vault data model
-- in parallel a data engineers declares the technical properties for the pipeline in a separate shortened DVPD document (Pipeline properties)
+- in parallel a data engineer declares the technical properties for the pipeline in a separate shortened DVPD document (Pipeline properties)
 - With a merge script, the draft DVPD gets enhanced with the pipeline properties
-- Only in case, some data vault columns and mappings need more technical declaration, this will be provided in a third shortened DVPD and merged with a script into the now completed DVPD document.
-- For a first quality check, a script will parse an check the tables and column names, declared in the DVPD. Convention or consistency violations are reported to the data engineerss and need to be fixed
-- Finally the DVPD gets compiled. Errors and warnings need to be managed and fixed before releasing the DVPD into the implementation phase
+- In case some data vault columns and mappings need more technical declaration, this will be provided in a third shortened DVPD and merged with a script into the now completed DVPD document.
+- For a first quality check, a script will parse and check the tables and column names, declared in the DVPD. Convention or consistency violations are reported to the data engineers and need to be fixed
+- Finally, the DVPD gets compiled. Errors and warnings need to be managed and fixed before releasing the DVPD into the implementation phase
 - Successful compilation of a DVDP will generate a model diagram and a mapping specification table, that are copied into the central documentation tool
 
 By orchestrating all the steps in a CI workflow, the upper steps take an initial effort of 15 minutes. Corrections are applied and verified in minutes. Depending on the documentation tool, even the update of the central documentation can be automated.
