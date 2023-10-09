@@ -16,25 +16,16 @@
 -- limitations under the License.
 -- =====================================================================
 
---drop procedure dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE(varchar);
 
-create or replace procedure dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE(
-   profile_to_load varchar
-)
-returns boolean
-as 
-$$
-begin
+-- DROP TABLE dv_pipeline_description.XENC_PIPELINE_STAGE_PROPERTIES_RAW cascade;
 
-truncate table  dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP ; 	
-insert into dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP  
-	select * from dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP_CVIEW ;
+CREATE TABLE dv_pipeline_description.XENC_PIPELINE_STAGE_PROPERTIES_RAW (
+	meta_inserted_at timestamp default current_timestamp,
+	pipeline_name varchar(1000) not NULL,
+	storage_component  varchar(1000) NULL,
+	xenc_stage_schema varchar(1000) NULL,
+	xenc_stage_table_name  varchar(1000)  NULL
+);
 
-return true;
-end;
-$$;
-
- comment on procedure  dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE (varchar) is
- 	'Helper function to convert and load the dvpd model profile document into the relational tables';
- 	
---call   dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE('hello');
+comment on table dv_pipeline_description.DVPD_PIPELINE_STAGE_PROPERTIES_RAW is
+ 'xenc Schema properties of xenc pipeline. raw = exact copy from dvpd document';

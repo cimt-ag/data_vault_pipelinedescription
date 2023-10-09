@@ -19,7 +19,7 @@
 
 --drop view if exists dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE cascade;
 
-create or replace view dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE as 
+create or replace view dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE_CVIEW as 
 
 with table_relation_to_process_count as (
 select pipeline_name,table_name,count(distinct relation_to_process) relation_to_process_count
@@ -249,9 +249,11 @@ Select *,stage_column_name as stage_column_name_target_based from ref_key_and_di
 ;
 
 
+create or replace table dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE 
+ as (select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE_CVIEW );
 
 
-comment on view dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE is
+comment on table dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE is
  'processes specific mapping of fields to stage and target columns for every target table of a pipeline. (no meta elements) ';
 
 -- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_BASE order by pipeline_name,table_name,column_block,column_name,relation_to_process;										

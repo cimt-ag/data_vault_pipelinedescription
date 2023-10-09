@@ -244,16 +244,23 @@ hub, or by modelling two links, keeping the pairs.
 
 ## Observerations and conclusions
 
-1. Multiple relations are only possible with multiple sets of business key fields for the hub, they refer.
-1. From 1. &rarr; every kind of multi relation to a hub needs business key field mappings, that are restricted to a relation
-1. hubs need to be loaded for every relation declared by their business key mappings
-1. links can only contribute to relations that are declared in the hubs they connect to
-1. a link with multiple references to the same hub needs relation specific columns
-1. a link with multiple references to the same hub can only have satellites that contribute to the relation set, provided in the link.
-1. satellites on links contribute to every relation they have a field mapping for 
-1. effectivity satellites need to declare the relation they track, due to the lack of a field that would declare it
-1. link satellites can only contribute to relations, the link can contribute according to its parents
-1. Different dependent child keys for different relations can only be modelled with relation specific links or relation specific satellites. (If only the dependend child key appears multiple times in the source data set, this must be solveld by normalizing the data)
+1-Multiple relations are only possible with multiple sets of business key fields for the hub, they refer.
+<br>2-From 1. -> every kind of multi relation to a hub needs business key field mappings, that are restricted to a relation
+<br>3-hubs need to be loaded for every relation declared by their business key mappings
+<br>4-links can only contribute to relations, that are declared in the hubs they connect
+<br>5-a link with multiple references to the same hub, needs relation specific columns
+<br>6-a link with multiple references to the same hub, can only have satellites
+that contribute to the relation set, provided in the link.
+<br>7-satellites on links contribute to every relations, they have a field mapping
+for 
+<br>8-effectivity satellites need to declare the relation they track, due to the lack
+of a field, that would declare it
+<br>9-link satellites can only contribute to relations, the link can 
+contribute according to its parents
+<br>10-Different dependent child keys for different relations can only be modeled with
+relation specific links or relation specific satellites. (If only the dependend child key
+appears multiple times in the source data set, this must be solveld by normalizing the 
+data)
 
 ![relation_conclusions.png](./images%2Fmapping_relations%2Frelation_conclusions.png)
 
@@ -320,7 +327,7 @@ mapped with relation declaration to the satellite.
 
 - The full set of satellite columns is determined from the relation with the most columns.
 - relations with different column outcome will fail the consistency check
-- all relations a satellite contributes to must be known by the parent
+- all relations a satellite contributes to, must be known by the parent
 
 The simple common model use case is covered by participating on the
 main (unnamed) relation when without any declaration.
@@ -328,7 +335,7 @@ main (unnamed) relation when without any declaration.
 ## Participation of effectivity satellites
 Effectivity satellites contribute to the relation of their parent link. In
 case of a link, that collects multiple relations (see Modell pattern "E" above), a
-declaration of the relation at the satellite is necessary (for instance by adding the relation name to the e-sat table name).
+declaration of the relation at the effectivity satellite is necessary.
 
 - each relation an effectivity satellite participates in must be known by the parent link
 
@@ -341,7 +348,7 @@ define the test set, a DVPD compiler must solve.
 
 - **Model**: Short notation of the model by just specifying the links with<br> \<multiplicity>\<Hub>\[\<multiplicity>\<hub>]...\<approach (indicated by [R,L,E,D,S])> + ....  <br>(multiplicity is only provided when greater then 1)
     - A2BE = Link from A to B with 2 references to B, modeled as effectivity satellites
-    - 3AR = Link with 2 references from A to A <!-- 2 or 3? -->
+    - 3AR = Link with 3 references from A to A (one origin and two recursive relations)
     - AB3CR+ABC = Link from A to B and C with 3 references to C + Link to A,B,C
     - A3BL = 3 separate Links from A to B
 - **field distribution**: Comma separated list of the incoming fields and their mapping. \<letters of tables>\[:\<letters of relations>]
@@ -353,7 +360,9 @@ define the test set, a DVPD compiler must solve.
     - AB,A,B,a,b,\[ab] = 1 Feld used in Hub A and B, all other are separated. "\[ab]"= Satellite on the Link of A and B.
     - ABC,A,B:t,B:u,C,a = 1 Field used in all hubs (ABC), 1 field exclusively in A hub, 1 field for B hub in  relation t, one field for b hub in relation u, one field for C hub, one field in Sattelite of A hub.
 - **relation overlap**: Short notation of the content participation in relations.<br>
-\<content type (bk,dc,hs,ls)>\<relation participation (+,~,*,-,%)>\<number of target tables> \[& <next field in same notation...>] <br> <!-- I think it would be great if the different participation options would be explained before examples are given | I don't really understand many of the examples below-->
+\<content type (bk,dc,hs,ls)>\<relation participation (+,~,*,-,%)>\<number of target tables> \[& <next field in same notation...>] <br> 
+with BK relation paritipation + = one, ~ more then one but not all, * all . - ?? , % ??<br>
+with HS relation paritipation - = one, % more then one but not all, * all . - ?? , % ??<br>
     - BK1+ = Business key in one table used for one relation
     - BK2* & BK1+ & hsd1+ = Business key in 2 tables for all relations; business key in one table single relation; hub satellite content in 1 table and one relation <!-- what does d in hsd1+ mean? -->
     - BK1~ & ls1~ = Business key in 1 table and link satellite content in more than one but not all relations <!-- I don't understand this eample - BK & ls both have the same postfix, yet seem to mean different things-->

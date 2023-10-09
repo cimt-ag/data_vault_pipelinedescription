@@ -16,25 +16,21 @@
 -- limitations under the License.
 -- =====================================================================
 
---drop procedure dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE(varchar);
 
-create or replace procedure dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE(
-   profile_to_load varchar
-)
-returns boolean
-as 
-$$
-begin
+--drop view if exists dv_pipeline_description.XENC_PIPELINE_STAGE_PROPERTIES cascade;
+create or replace view dv_pipeline_description.XENC_PIPELINE_STAGE_PROPERTIES as 
 
-truncate table  dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP ; 	
-insert into dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP  
-	select * from dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP_CVIEW ;
+SELECT
+	lower(dpspr.pipeline_name) pipeline_name
+	,storage_component
+	,lower(xenc_stage_schema) xenc_stage_schema 
+	,coalesce(lower(xenc_stage_table_name),'s'||lower(dpspr.pipeline_name)||'_ek') xenc_stage_table_name
+FROM 
+	dv_pipeline_description.XENC_PIPELINE_STAGE_PROPERTIES_RAW dpspr;
 
-return true;
-end;
-$$;
+comment on view dv_pipeline_description.XENC_PIPELINE_STAGE_PROPERTIES is
+ 'xenc stage table properties of the pipeline. (cleansed and normalized)';
 
- comment on procedure  dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE (varchar) is
- 	'Helper function to convert and load the dvpd model profile document into the relational tables';
- 	
---call   dv_pipeline_description.DVPD_LOAD_MODEL_PROFILE('hello');
+
+--  select * from dv_pipeline_description.XENC_PIPELINE_STAGE_PROPERTIES
+

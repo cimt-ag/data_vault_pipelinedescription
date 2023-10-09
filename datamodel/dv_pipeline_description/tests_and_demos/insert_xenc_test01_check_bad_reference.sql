@@ -60,5 +60,5 @@ VALUES
 }
 ');
 
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test01_check_bad_reference');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test01_check_bad_reference');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test01_check_bad_reference');

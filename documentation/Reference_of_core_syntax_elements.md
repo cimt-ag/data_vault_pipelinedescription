@@ -58,8 +58,8 @@ Object, describing all necessary properties to access the data source<br>
 
 **stage_properties[]**
 (mandatory)
-<br>Array with stage table declarations
-<br>→ see "stage_properties[]”
+<br>Object with stage table declarations. (one for every storage component)
+<br>→ see "stage_properties”
 
 
 ## data_extraction 
@@ -358,7 +358,7 @@ The settings "key" and "none" make the setting of diff_hash_column_name optional
 
 **uses_diff_hash**
 (optional, default depends on model profile)<br>
-When set to true, data change is detected by calculation of a hash value over all relevant columns. With the  key+current compare_criteria, a change is detected by comparing the hash value of new data against the hash of the latest stored satellite row for every key.
+When set to true, data change is detected by calculation of a hash value over all relevant columns and comparison of the hash value.
 
 **diff_hash_column_name**
 (depending on uses_diff_hash setting and compare_criteria)
@@ -384,18 +384,20 @@ In general, the name must match the final name of a hub key column in the link. 
 <br>Name of the relation this satellite will track the validity for. This is only used for satellites
 whithout any field mapping. The relation name must be valid for the satellites parent.
 
-**history_depth_limit**
-(optional)
-<br>*announced for upcoming version*
-<br> defines a maximum depth of history in the satellite in days. No declaration or nagative values are treated as "no limit". When the satellite is loaded, all rows, that are beyond the given threshhold, are deleted. 
-<!-- why is the limit measured in days here, when it can be set to something different (like versions) with the criteria? -->
-
 **history_depth_criteria**
 (mandatory when history_depth_limit is set)
 <br>*announced for upcoming version*
 <br> Defines the criteria to determine the history depth
 - versions : the number of versions for every key is limited to the given threshold (i.e. only store the last x entries for a given key).
 - enddate_days : the number of days the enddate is behind the current day
+
+
+**history_depth_limit**
+(optional)
+<br>*announced for upcoming version*
+<br> defines a maximum depth of history in the satellite. No declaration or nagative values are treated as "no limit". When the satellite is loaded, all "not current" rows, that are beyond the given threshhold, are deleted. 
+
+
 
 ### "ref"  specific properties
 
@@ -405,7 +407,7 @@ whithout any field mapping. The relation name must be valid for the satellites p
 
 **uses_diff_hash**
 (optional, default depends on model profile)<br>
-When set to true, existence of a specific value combination in the source is detected by calculation of a hash value over all relevant columns. Change detection is done by comparing the diff_hash of the new data to the diff hash of the valid rows in the reference table.
+When set to true, existence of a specific value combination  in the source is detected by calculation of a hash value over all relevant columns and comparison of the hash value against the actual valid rows in the reference table.
 
 **diff_hash_column_name**
 (mandatory)
@@ -415,15 +417,9 @@ When set to true, existence of a specific value combination in the source is det
 **history_depth_limit**
 (optional)
 <br>*announced for upcoming version*
-<br> defines a maximum depth of history in the reference table in days. No declaration or nagative values are treated as "no limit". When the table is loaded, all rows, that are beyond the given threshhold, are deleted. 
-<!-- same issue as above - why use enddate_days here if versions are also possible -->
+<br> defines a maximum depth of history in the reference table in days . No declaration or nagative values are treated as "no limit". When the table is loaded, all rows, that are beyond the given threshhold, are deleted. 
+<br>(in reference tables, the row can only age "on their own", they have no "key" to measure a version count)
 
-**history_depth_criteria**
-(mandatory when history_depth_limit is set)
-<br>*announced for upcoming version*
-<br> Defines the criteria to determine the history depth
-- versions : the number of versions for every key is limited to the given threshhold.
-- enddate_days : the number of days the enddate is behind the current day
 
 
 ## deletion_detection 
@@ -464,7 +460,7 @@ For other procedures there might be other properties necessary.
 
 **tables_to_cleanup[]**
 (mandatory, only declared table names allowed)
-<br>List of table names, on which to apply the deletion detection rule. Multiple entries are only allowed for satellites of the same parent. To delete from hubs, links or satellites of different parents, you need to declare multiple deletion rules. <!-- last sentence unclear -->
+<br>List of table names, on which to apply the deletion detection rule. Multiple entries are only allowed for satellites of the same parent. 
 <br>“rsfdl_customer_p1_sat”,”rsfdl_customer_p2_sat”
 
 **join_path[]**
@@ -487,7 +483,7 @@ Example:
 	
 	join_path: [customer_contract_lnk,customer_contract_esat,customer_hub]
 	
-	This will delete all active rows from contract_from_customer_p1_sat and contract_from_customer_p2_sat where the country of the customer is the same but the contId is missing in the stage.
+	This will delete all acitve rows from contract_from_customer_p1_sat and contract_from_customer_p2_sat where the country is present in the stage but combination of country and contId is missing 
 	(=Hub key of satellite = second hub key in link)
 ```
 	
@@ -500,7 +496,9 @@ The DVPD properties "join_path" and "partitioning_columns" must be empty.
 For other procedures than the ones defined above, there might be other properties to be declared in the deletion_rule. 
 
 ## stage_properties[]
-Contains the declaration of the stage table locations. In common scenarios there will be only one. In case of a distributed model using ELT from stage to vault, the stage table can be placed on every target. 
+<br> subelement of root
+
+<br>Contains the declaration of the stage table locations. In common scenarios there will be only one. In case of a distributed model using ELT from stage to vault, the stage table can be placed on every target. 
 
 **storage_component**
 (optional)

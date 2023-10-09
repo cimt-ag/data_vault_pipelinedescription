@@ -41,22 +41,31 @@ VALUES
 	"data_vault_model": [
 		{"schema_name": "rvlt_xenc_data", 
 		 "tables": [
-				{"table_name": "rxecd_24_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_24_aaa"}
-				,{"table_name": "rxecd_24_aaa_sat",		"table_stereotype": "sat","satellite_parent_table": "rxecd_24_aaa_hub", "compare_criteria":"key","is_enddated":false,"has_deletion_flag":false}
+				{"table_name": "rxecd_24_aaa_hub", "table_stereotype": "hub",
+					"hub_key_column_name": "HK_rxecd_24_aaa"
+				}
+				,{"table_name": "rxecd_24_aaa_sat", "table_stereotype": "sat",
+					"satellite_parent_table": "rxecd_24_aaa_hub"
+					,"compare_criteria":"key"
+					,"is_enddated":false
+					,"has_deletion_flag":false}
 				]
 		}
 		,{"schema_name": "rvlt_xenc_keys", 
 		 "tables": [
-				{"table_name": "rxeck_24_aaa_sat_ek",	"table_stereotype": "xenc_sat-ek", "xenc_content_table_name":"rxecd_24_aaa_sat"
-																			, "compare_criteria":"key", "is_enddated":false,"has_deletion_flag":false}
+				{"table_name": "rxeck_24_aaa_sat_ek", "table_stereotype": "xenc_sat-ek"
+					,"xenc_content_table_name":"rxecd_24_aaa_sat"
+					,"compare_criteria":"key"
+					,"is_enddated":false
+					,"has_deletion_flag":false}
 				]
 		}
 	]
 }
 ');
 
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test24_encrypt_on_non_hist_sat');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test24_encrypt_on_non_hist_sat');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test24_encrypt_on_non_hist_sat');
 
 -- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test24_encrypt_on_non_hist_sat';
