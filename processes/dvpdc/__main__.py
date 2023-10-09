@@ -429,6 +429,7 @@ def derive_load_operations():
                 load_operations = {"/":{"operation_origin":"implicit unnamed relation of hub"}}
                 table_entry['load_operations'] = load_operations
 
+
     # sat table without explicit relations, use the operations of their parent
     for table_name, table_entry in g_table_dict.items():
         if table_entry['table_stereotype'] == 'sat':
@@ -457,6 +458,14 @@ def derive_load_operations():
                 else:
                     load_operations = {"/": {"operation_origin": "implicit unnamed relation of link, that has no sat"}}
                     link_table_entry['load_operations'] = load_operations
+
+    # ref tables alswys only have  "/" operation
+    for table_name,table_entry in g_table_dict.items():
+        if table_entry['table_stereotype'] == 'ref':
+           if 'load_operations' not in table_entry:
+                load_operations = {"/":{"operation_origin":"ref table load operation"}}
+                table_entry['load_operations'] = load_operations
+
 
 def add_column_mappings_to_load_operations():
     global g_table_dict
@@ -487,33 +496,56 @@ def add_hash_column_mappings(table_name,table_entry):
 
 
 def add_hash_column_mappings_for_hub(table_name,table_entry,load_operations):
+    hash_base_name = "hk_"+table_name
     key_column_name = table_entry['hub_key_column_name']
     for relation_name, load_operation_entry in load_operations.items():
         if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
-            stage_key_column_name = key_column_name
+            hash_name = hash_base_name
+            stage_column_name = key_column_name
         else:
-            stage_key_column_name = key_column_name + "_" + relation_name
-        hash_column_mapping = {key_column_name:{"stage_column_name": stage_key_column_name,
-                                                "hash_column_origin":table_name,
-                                                "column_class":"key"}}
-        load_operation_entry['hash_column_mapping'] = hash_column_mapping
+            hash_name = hash_base_name + "_" + relation_name
+            stage_column_name = key_column_name + "_" + relation_name
+        hash_mapping = {hash_name:{ "hash_column_name":key_column_name,
+                                    "stage_column_name": stage_column_name,
+                                    "hash_column_origin":table_name,
+                                    "column_class":"key"}}
+        load_operation_entry['hash_mapping'] = hash_mapping
 
 def add_hash_column_mappings_for_lnk(table_name,table_entry,load_operations):
+    hash_base_name = "lk_"+table_name
     key_column_name = table_entry['link_key_column_name']
     for relation_name, load_operation_entry in load_operations.items():
         if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
-            stage_key_column_name = key_column_name
+            hash_name = hash_base_name
+            stage_column_name = key_column_name
         else:
-            stage_key_column_name = key_column_name + "_" + relation_name
-        hash_column_mapping = {key_column_name:{"stage_column_name": stage_key_column_name,
-                                                "hash_column_origin":table_name,
-                                                "column_class":"key"}}
-        load_operation_entry['hash_column_mapping'] = hash_column_mapping
+            hash_name = hash_base_name + "_" + relation_name
+            stage_column_name = key_column_name + "_" + relation_name
+        hash_mapping = {hash_name:{ "hash_column_name":key_column_name,
+                                    "stage_column_name": stage_column_name,
+                                    "hash_column_origin":table_name,
+                                    "column_class":"key"}}
+        load_operation_entry['hash_mapping'] = hash_mapping
         #todo manage all relation hashes
 
 def add_hash_column_mappings_for_sat(table_name,table_entry,load_operations):
-    key_column_name = table_entry['parent_key_column_name']
-    uses_diff_hash=False
+
+    # collect key columns names from parent tables
+    parent_table_entry=g_table_dict[table_entry['satellite_parent_table']]
+    match( parent_table_entry['table_stereotype']):
+        case 'hub':
+             key_hash_base_name='hk_'+table_entry['satellite_parent_table']
+             key_column_name=parent_table_entry['hub_key_column_name']
+        case 'lnk':
+             key_hash_base_name = 'lk_' + table_entry['satellite_parent_table']
+             key_column_name = parent_table_entry['link_key_column_name']
+        case _:
+            raise (f"no rule for stereotype '{parent_table_entry['table_stereotype']}' in add_hash_column_mappings_for_sat()")
+
+    # prepare diff hash generation
+
+    uses_diff_hash = False
+    diff_hash_base_name="diff_"+table_name
     diff_hash_column_name="#not defined#"
     if not table_entry['is_effectivity_sat'] and table_entry['compare_criteria'] != 'key' and table_entry[
         'compare_criteria'] != 'none':
@@ -524,21 +556,29 @@ def add_hash_column_mappings_for_sat(table_name,table_entry,load_operations):
             uses_diff_hash=True
             diff_hash_column_name = table_entry['diff_hash_column_name']
 
+    # create the hash objects
     for relation_name, load_operation_entry in load_operations.items():
         if relation_name == "/" :
-            stage_key_column_name = key_column_name
+            key_hash_name = key_hash_base_name
+            key_stage_column_name = key_column_name
+            diff_hash_name=diff_hash_base_name
             stage_diff_hash_column_name = diff_hash_column_name
         else:
-            stage_key_column_name = key_column_name + "_" + relation_name
+            key_hash_name = key_hash_base_name+ "_" + relation_name
+            key_stage_column_name = key_column_name+ "_" + relation_name
+            diff_hash_name=diff_hash_base_name+ "_" + relation_name
             stage_diff_hash_column_name = diff_hash_column_name+ "_" + relation_name
-        hash_column_mapping = {key_column_name:{"stage_column_name": stage_key_column_name,
-                                                "hash_column_origin":table_entry['satellite_parent_table'],
-                                                "column_class":"parent_key"}}
+
+        hash_mapping = {key_hash_name: {"hash_column_name": key_column_name,
+                                    "stage_column_name": key_stage_column_name,
+                                    "hash_column_origin": table_entry['satellite_parent_table'],
+                                    "column_class": "key"}}
         if uses_diff_hash:
-            hash_column_mapping[diff_hash_column_name] = {"stage_column_name": stage_diff_hash_column_name,
-                                                          "hash_column_origin": table_name,
-                                                          "column_class": "diff_hash"}
-        load_operation_entry['hash_column_mapping'] = hash_column_mapping
+            hash_mapping[diff_hash_name]={"hash_column_name": diff_hash_column_name,
+                                            "stage_column_name": stage_diff_hash_column_name,
+                                            "hash_column_origin": table_name,
+                                            "column_class": "diff_hash"}
+        load_operation_entry['hash_mapping'] = hash_mapping
 
 def add_hash_column_mappings_for_ref(table_name,table_entry,load_operations):
     print("tbd")
