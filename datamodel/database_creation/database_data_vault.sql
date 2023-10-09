@@ -26,7 +26,9 @@ CREATE DATABASE "data_vault"
     WITH 
     OWNER = owner_data_vault
     ENCODING = 'UTF8'
-    LC_COLLATE = 'German_Germany.1252'
-    LC_CTYPE = 'German_Germany.1252'
+    LC_COLLATE = 'de_DE.utf8'
+    LC_CTYPE = 'de_DE.utf8'
     TABLESPACE = pg_default
-    CONNECTION LIMIT = -1;
+    CONNECTION LIMIT = -1
+   template template0;
+    
