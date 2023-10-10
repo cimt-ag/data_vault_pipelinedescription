@@ -24,7 +24,7 @@ To be easy understandable, the examples use simplified table and column names th
 
 Some properties of the DVPD can be declared on the level of the **model profile**.  All examples refer to the following, most common, profile settings:
 ```json
-{	"compare_criteria": "key+actual",
+{	"compare_criteria": "key+current",
 	"uses_diff_hash_default": true,
 	"is_enddated_default": true,
 	"has_deletion_flag_default": true
@@ -82,7 +82,7 @@ This example assumes, that customer id's are not unique over the different web s
 			},
 		    {	"field_name": "LASTSEENDATE",
 			   	"field_type": "TIMESTAMP",
-			   	"field_value":"${LOAD_TIMESTAMP}",
+			   	"field_value":"${CURRENT_TIMESTAMP}",
 			   	"targets": [
 						{"table_name": "airline_hub"
 			   			, "exclude_from_key_hash":true
@@ -102,7 +102,7 @@ This example assumes, that customer id's are not unique over the different web s
 ```
 
 ### Multiple hubs with partly the same businiess key 
-Here for both hub's the businiess key must contain the company id to be unique. Also the incoming field ARCHITECT contains an employee identification must be mapped to the business key column EMPLOYEE_ID
+Here for both hub's the businiess key must contain the company id to be unique. Also, the incoming field ARCHITECT contains an employee identification and must be mapped to the business key column EMPLOYEE_ID
 ```json
 "fields": [
 		    {	"field_name": "COMPANY_ID",
@@ -306,7 +306,7 @@ It is stored in the link, not relevant for the link hash key and must be updated
 			},
 			{	"field_name": "LASTSEENDATE",
 				"field_type": "TIMESTAMP",
-				"field_value":"${LOAD_TIMESTAMP}",
+				"field_value":"${CURRENT_TIMESTAMP}",
 				"targets": [{	"table_name": "order_customer_link",
 								"exclude_from_key_hash":true,
 								"update_on_every_load":true
@@ -359,7 +359,7 @@ The source for a "same as" Link contains the business keys of the main object an
 		]
 ```
 To also load the SAME_PRODUCT_ID id to the product hub, its field mapping needs to declare an explicit relation name, to distinguish it from PRODUCT_ID. It also needs to declare the column name to be PRODUCT_ID.
-The same relation name must be declared in the mapping of link parent tables. This determines, in which hub key column in the link wich hash value of must be placed. The link will generate its own hub key column name for the second column, from the original name and the name of the relation (if not told otherwise).
+The same relation name must be declared in the mapping of link parent tables. This determines, in which hub key column in the link which hash value of must be placed. The link will generate its own hub key column name for the second column, from the original name and the name of the relation (if not told otherwise).
 
 ### Link on Link {DV-5.2.1}
 A link on a link is **not supported** by the core syntax of DVPD, since it is highly discouraged by Dan Linstedt. The Data Vault methodolgy already describes ways to circumvent the need for it.
@@ -449,6 +449,8 @@ Like the simple link example, non descriptive links are expressed by leaving out
 
 This example focuses on only one link from the books Figure 5.17. Since the DVPD core syntax only supports 1 stage table, loading both links in Figure 5.17 of the book, needs two pipelines.
 
+<!-- Wouldn't an E-Sat be used to track deletions in this example? -->
+
 ```json
 "fields": [
 		    {	"field_name": "OFFERING_ID",
@@ -490,6 +492,8 @@ By restricting the deletion deteion to the current OFFERING_ID in the stage, inc
 ### nondescriptive link (multi) {DV-5.2.5}
 >> needs review <<
 
+<!-- where is the difference to the above example? -->
+
 ```json
 "fields": [
 		    {	"field_name": "OFFERING_ID",
@@ -525,7 +529,7 @@ By restricting the deletion deteion to the current OFFERING_ID in the stage, inc
 ```
 
 ### exploration link {DV-5.2.7}
-An exploration link is declared like any other link by declaring the hubs, that are connected by the link and the link itself. The main difference to normal links comes from the sourcing of the business keys, that will be selected from the raw vault. (a directive to take  hub key values from the source dataset instead of recalculating it, will be added in later versions)
+An exploration link is declared like any other link by declaring the hubs, that are connected by the link and the link itself. The main difference to normal links comes from the sourcing of the business keys, that will be selected from the raw vault <!-- I don't understand this sentence -->. (a directive to take  hub key values from the source dataset instead of recalculating it, will be added in later versions)
 
 ## Satellite tables
 
@@ -559,7 +563,7 @@ An exploration link is declared like any other link by declaring the hubs, that 
 		]
 ```
 ### Multiple satellites on a hub (Splitting by rate of change) {DV-4.5.2.2}
-Store the fast changing attributes of a product (price, priority) seperate from the slow/never changing attribute (name, class).
+Store the fast changing attributes of a product (price, priority) separate from the slow/never changing attribute (name, class).
 Just as reminder: A pipline only transforms one source object. So splitting by source system is achieved by using  different pipelines serving different satellites.
 ```json
 "fields": [
@@ -636,7 +640,7 @@ In case the extract date differs significantly from the loading date, it must be
 ```
 
 ### Satellite on a link, with a driving key declaration {DV-4.5.5}
-This data source is a table with the order, referencing the product of the order. Should product of the order be modified the former product of the order must be "unlinked". Data Vault indicates this by declaring the driving keys, that must be used by the loading process for ending former relations. Driving keys are the hub key columns of the parent link of the satellite.
+This data source is a table with the order, referencing the product of the order. Should product of the order be modified, the former product of the order must be "unlinked". Data Vault indicates this by declaring the driving keys, that must be used by the loading process for ending former relations. Driving keys are the hub key columns of the parent link of the satellite.
 ```json
 "fields": [
 		    {	"field_name": "ORDER_ID",
@@ -681,7 +685,7 @@ This data source is a table with the order, referencing the product of the order
 
 
 ### Multi-Active Satellite {DV-5.3.2}
-The example shows a possible solution, how to store the matching scores of products to various categories in a multi active satellite. The only declaration difference to a normal satellite it the "is_multiactive" attribute that should trigger the specfic load processing of multi active statellite.
+The example shows a possible solution, how to store the matching scores of products to various categories in a multi active satellite. The only declaration difference to a normal satellite is the "is_multiactive" attribute that should trigger the specfic load processing of multi active statellite.
 ```json
 "fields": [
 		    {	"field_name": "PRODUCT_ID",
@@ -889,7 +893,9 @@ Record tracking information must be inserted every time we get it, but previous 
 		    {	"table_name": "product_rectracksat",
 				"table_stereotype": "sat",
 				"satellite_parent_table": "product_hub",
-				"compare_criteria":"none","history_depth_criteria":"versions","history_depth_limit":0
+				"compare_criteria":"none",
+				"history_depth_criteria":"versions",
+				"history_depth_limit":0
 			},
 			{	"table_name": "product_hub",
 				"table_stereotype": "hub",
@@ -911,7 +917,7 @@ ref table, that are missing now.
 				"targets": [{"table_name": "country_code_ref"}]
 			},
 		    {	"field_name": "ISO_3166_ALPHA_3",
-				"field_type": "Varchar(2)",
+				"field_type": "Varchar(3)",
 				"targets": [{"table_name": "country_code_ref"}]
 			},
 		    {	"field_name": "ISO_3166_NUMERIC",
@@ -932,32 +938,32 @@ ref table, that are missing now.
 "fields": [
 		    {	"field_name": "DAY_DATE",
 				"field_type": "DATE",
-				"targets": [{"table_name": "calender_hub"}]
+				"targets": [{"table_name": "calendar_hub"}]
 			},
 		    {	"field_name": "FISCAL_YEAR",
 				"field_type": "integer",
-				"targets": [{"table_name": "calender_sat"}]
+				"targets": [{"table_name": "calendar_sat"}]
 			},
 			{	"field_name": "FISCAL_QUATER",
 				"field_type": "integer",
-				"targets": [{"table_name": "calender_sat"}]
+				"targets": [{"table_name": "calendar_sat"}]
 			}
 	],
 "tables": [
-		    {	"table_name": "calender_sat",
+		    {	"table_name": "calendar_sat",
 				"table_stereotype": "sat",
-				"satellite_parent_table": "calender_hub",
+				"satellite_parent_table": "calendar_hub",
 				"uses_diff_hash":false
 			},
-			{	"table_name": "calender_hub",
+			{	"table_name": "calendar_hub",
 				"table_stereotype": "hub",
-				"hub_key_column_name": "HK_CALENDER"
+				"hub_key_column_name": "HK_calendar"
 			}
 		]
 ```
 
 ### "ref" historized (single table)
-This is a non historized reference table extendet by an enddate. The enddate is set by the loadprocess, when the specific value combination is not present in the source. 
+This is a non historized reference table extended by an enddate. The enddate is set by the loadprocess, when the specific value combination is not present in the source. 
 ```json
 "fields": [
 		    {	"field_name": "ISO_3166_ALPHA_2",
@@ -1067,7 +1073,7 @@ reference table loading, that would delete all rows, currently not in stage.
 ```
 
 ### "ref" - code and descriptions, historized (single table)
-This is a non historized reference table extendet by an enddate. The enddate is set by a load run, where the specific value combination of the group is not present in the source. Restrict enddating to the group is done with the "deletion_detection" declaration.
+This is a non historized reference table extended by an enddate. The enddate is set by a load run, where the specific value combination of the group is not present in the source. Restrict enddating to the group is done with the "deletion_detection" declaration.
 ```json
 "fields": [
 		    {	"field_name": "GROUP",
