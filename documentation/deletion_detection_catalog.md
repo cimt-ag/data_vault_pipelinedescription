@@ -159,7 +159,7 @@ Satellites are enddated. The currently active rows are marked by setting the end
 
 ### Naming convention
 - Data Vault table stereotype is provided as postfix 
-- Names of hash keys consist of a prefix followed by the table the hash belongs
+- Names of hash keys consist of a prefix followed by the table the hash belongs to
     - HK_ prefix indicates the hash key of a hub
     - LK_ prefix indicates the hash key of a link
 - table names of satellites begin with the table name of their parent
