@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2023-08-24T14:51:31.161Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.5.1 Chrome/112.0.5615.204 Electron/24.6.0 Safari/537.36" etag="i196n8Uj5tx55jZw4ng3" version="21.5.1" type="device">
+<mxfile host="Electron" modified="2023-10-13T09:25:07.658Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.2 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="TyXpUBWidJuWUKklBkAU" version="22.0.2" type="device">
   <diagram id="S8_EbyP6fOLFSmQk0vZv" name="Seite-1">
-    <mxGraphModel dx="1098" dy="868" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#FFFFFF" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#FFFFFF" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="2" value="Layer 0" parent="0" />
@@ -254,7 +254,7 @@
         <mxCell id="38" value="&lt;div style=&#39;width: 43.0px;height:auto;word-break: break-word;&#39;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Helvetica; font-size: 36px; text-decoration: none; font-weight: bold; line-height: 36px;&quot;&gt;8&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=0;strokeColor=none;fillColor=#cccccc;opacity=100.0;html=1;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;spacingTop=1.0;spacingBottom=8;whiteSpace=wrap;gliffyId=371;" parent="2" vertex="1">
           <mxGeometry x="585" y="960" width="50" height="260" as="geometry" />
         </mxCell>
-        <mxCell id="39" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;represents a relation declaration in the field to target mapping&lt;br&gt;&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;represents a &quot;trackig&quot; declaration at the table&lt;br&gt;&lt;br&gt;&amp;nbsp;RL = RelationThe color of the table relation line indicates, where process steps are induced by child / parent relations (red+purple=pink) &amp;nbsp;&lt;br&gt;&lt;br&gt;&amp;nbsp;Dots represent the process steps induced by the declataion (Black = default process)" style="shape=rect;shadow=0;strokeWidth=0;strokeColor=none;fillColor=#cccccc;opacity=100.0;nl2Br=0;verticalAlign=top;align=left;spacingLeft=2.0;spacingRight=0;spacingTop=-5.6;spacingBottom=8;gliffyId=392;html=1;whiteSpace=wrap;" parent="2" vertex="1">
+        <mxCell id="39" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &lt;br&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;represents a relation declaration in the field to target mapping&lt;br&gt;&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;represents a &quot;trackig&quot; declaration at the table&lt;br&gt;&lt;br&gt;&amp;nbsp;RL = Relation - The color of the table relation line indicates, where process steps are induced by child / parent relations (red+purple=pink) &amp;nbsp;&lt;br&gt;&lt;br&gt;&amp;nbsp;Dots represent the process steps induced by the declaration (Black = default process)" style="shape=rect;shadow=0;strokeWidth=0;strokeColor=none;fillColor=#cccccc;opacity=100.0;nl2Br=0;verticalAlign=top;align=left;spacingLeft=2.0;spacingRight=0;spacingTop=-5.6;spacingBottom=8;gliffyId=392;html=1;whiteSpace=wrap;" parent="2" vertex="1">
           <mxGeometry x="520" y="29" width="530" height="178" as="geometry" />
         </mxCell>
         <mxCell id="40" value="&lt;div style=&#39;width: 43.0px;height:auto;word-break: break-word;&#39;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Helvetica; font-size: 36px; text-decoration: none; font-weight: bold; line-height: 36px;&quot;&gt;7&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=0;strokeColor=none;fillColor=#cccccc;opacity=100.0;html=1;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;spacingTop=1.0;spacingBottom=8;whiteSpace=wrap;gliffyId=373;" parent="2" vertex="1">
@@ -371,7 +371,7 @@
         <mxCell id="83" value="&lt;div style=&#39;width: 25.8px;height:auto;word-break: break-word;&#39;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;RL1&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=mxgraph.basic.pentagon;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#cc0000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=0.6;spacingRight=0;whiteSpace=wrap;gliffyId=199;" parent="2" vertex="1">
           <mxGeometry x="687" y="555.5" width="30" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="84" value="&lt;div style=&quot;width: 25.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;/&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=mxgraph.basic.pentagon;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#cc0000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=0.6;spacingRight=0;whiteSpace=wrap;gliffyId=221;" parent="2" vertex="1">
+        <mxCell id="84" value="&lt;div style=&quot;width: 25.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;RL1&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=mxgraph.basic.pentagon;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#cc0000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=0.6;spacingRight=0;whiteSpace=wrap;gliffyId=221;" parent="2" vertex="1">
           <mxGeometry x="145" y="566.5" width="30" height="40" as="geometry" />
         </mxCell>
         <mxCell id="85" value="&lt;div style=&#39;width: 25.8px;height:auto;word-break: break-word;&#39;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;RL1&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=mxgraph.basic.pentagon;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#cc0000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=0.6;spacingRight=0;whiteSpace=wrap;gliffyId=30;" parent="2" vertex="1">
@@ -443,7 +443,7 @@
         <mxCell id="111" value="&lt;div style=&quot;width: 351.57144px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; line-height: 0;&quot;&gt;&lt;span style=&quot;line-height: 14px;&quot; class=&quot;&quot;&gt;Tables with a relation mapping will induce explicitly named processes. All other tables will have a&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; line-height: 0;&quot;&gt;&lt;span style=&quot;line-height: 14px;&quot; class=&quot;&quot;&gt;process name &quot;/&quot;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=note;size=10;shadow=0;strokeWidth=1;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=5.214286;spacingRight=0;whiteSpace=wrap;gliffyId=87;" parent="2" vertex="1">
           <mxGeometry x="100" y="29" width="365" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="114" value="A_B_LNK is processed for both RL triggerd by satellite declaration" style="shape=note;size=10;shadow=0;strokeWidth=1;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=95;" parent="2" vertex="1">
+        <mxCell id="114" value="A_B_LNK is processed for both RL triggered by satellite declaration" style="shape=note;size=10;shadow=0;strokeWidth=1;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=95;" parent="2" vertex="1">
           <mxGeometry x="230" y="1170" width="162.5" height="50" as="geometry" />
         </mxCell>
         <mxCell id="116" value="A_HUB must be mapped to RL1 so corresponding businesskey for the relation is identified" style="shape=note;size=10;shadow=0;strokeWidth=1;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=340;" parent="2" vertex="1">
@@ -452,7 +452,7 @@
         <mxCell id="118" value="A_B_LNK will only be processed for RL1 due to declaration on SAT" style="shape=note;size=10;shadow=0;strokeWidth=1;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=140;" parent="2" vertex="1">
           <mxGeometry x="280" y="880" width="110" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="119" value="A_AR_LNK and ESAT are processes by &quot;/&quot; (it is just one relation)" style="shape=note;size=10;shadow=0;strokeWidth=1;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=166;" parent="2" vertex="1">
+        <mxCell id="119" value="A_AR_LNK and ESAT are processed by &quot;/&quot; (it is just one relation)" style="shape=note;size=10;shadow=0;strokeWidth=1;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=166;" parent="2" vertex="1">
           <mxGeometry x="290" y="1460" width="210" height="47" as="geometry" />
         </mxCell>
         <mxCell id="121" value="A_HUB will be processed for the origin business key and the business key of the recursion" style="shape=note;size=10;shadow=0;strokeWidth=1;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=268;" parent="2" vertex="1">
@@ -464,7 +464,7 @@
         <mxCell id="124" value="A_HUB and A_B_LNK will be processed for RL1 and RL2" style="shape=note;size=10;shadow=0;strokeWidth=1;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=193;" parent="2" vertex="1">
           <mxGeometry x="670" y="620.63" width="240" height="46.25" as="geometry" />
         </mxCell>
-        <mxCell id="125" value="Link abd B_HUB will only be loaded for RL1" style="shape=note;size=10;shadow=0;strokeWidth=1;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=213;" parent="2" vertex="1">
+        <mxCell id="125" value="Link and B_HUB will only be loaded for RL1" style="shape=note;size=10;shadow=0;strokeWidth=1;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=213;" parent="2" vertex="1">
           <mxGeometry x="252.5" y="620" width="257.5" height="42.5" as="geometry" />
         </mxCell>
         <mxCell id="D5uimbUbbbk_esGOEbq7-128" value="&lt;div style=&quot;width: 43.0px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Helvetica; font-size: 36px; text-decoration: none; line-height: 36px; font-weight: bold;&quot;&gt;1a&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=0;strokeColor=none;fillColor=#cccccc;opacity=100.0;html=1;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;spacingTop=1.0;spacingBottom=8;whiteSpace=wrap;gliffyId=345;" parent="2" vertex="1">
@@ -497,10 +497,10 @@
         <mxCell id="D5uimbUbbbk_esGOEbq7-138" value="Multiple mappings from single row to satellite while using the same business key results in a multiactive satellite." style="shape=note;size=10;shadow=0;strokeWidth=0;fillColor=#cccccc;strokeColor=none;opacity=100.0;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=41;spacingTop=1;spacingBottom=8;" parent="2" vertex="1">
           <mxGeometry x="450" y="220" width="260" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="D5uimbUbbbk_esGOEbq7-139" value="Multiple business keys in one row, identifing same data " style="shape=note;size=10;shadow=0;strokeWidth=0;fillColor=#cccccc;strokeColor=none;opacity=100.0;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=282;spacingTop=1;spacingBottom=8;" parent="2" vertex="1">
-          <mxGeometry x="775" y="220" width="345" height="41.25" as="geometry" />
+        <mxCell id="D5uimbUbbbk_esGOEbq7-139" value="Multiple business keys in one row, identifying the same data " style="shape=note;size=10;shadow=0;strokeWidth=0;fillColor=#cccccc;strokeColor=none;opacity=100.0;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=282;spacingTop=1;spacingBottom=8;" parent="2" vertex="1">
+          <mxGeometry x="770" y="220" width="350" height="41.25" as="geometry" />
         </mxCell>
-        <mxCell id="D5uimbUbbbk_esGOEbq7-141" value="Multiple business keys for A_HUB but only a selected reletion should be used for the relation to B_HUB. There is only one businesskey for the B_HUB" style="shape=note;size=10;shadow=0;strokeWidth=0;fillColor=#cccccc;strokeColor=none;opacity=100.0;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=282;spacingTop=1;spacingBottom=8;" parent="2" vertex="1">
+        <mxCell id="D5uimbUbbbk_esGOEbq7-141" value="Multiple business keys for A_HUB but only a selected relation should be used for the relation to B_HUB. There is only one businesskey for the B_HUB" style="shape=note;size=10;shadow=0;strokeWidth=0;fillColor=#cccccc;strokeColor=none;opacity=100.0;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=282;spacingTop=1;spacingBottom=8;" parent="2" vertex="1">
           <mxGeometry x="70" y="500" width="490" height="41.25" as="geometry" />
         </mxCell>
         <mxCell id="D5uimbUbbbk_esGOEbq7-142" value="&lt;div style=&quot;width: 25.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=mxgraph.basic.pentagon;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=0.6;spacingRight=0;whiteSpace=wrap;gliffyId=286;" parent="2" vertex="1">
@@ -539,7 +539,7 @@
         <mxCell id="D5uimbUbbbk_esGOEbq7-156" value="Multiple business keys for A_HUB. Every combination should be tracked by another satellite. There is only one businesskey for the B_HUB." style="shape=note;size=10;shadow=0;strokeWidth=0;fillColor=#cccccc;strokeColor=none;opacity=100.0;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=282;spacingTop=1;spacingBottom=8;" parent="2" vertex="1">
           <mxGeometry x="70" y="960" width="490" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="D5uimbUbbbk_esGOEbq7-157" value="Multiple business keys for A_HUB and B_HUB. Only one combination represent the relation from A to B and should be tracked by another satellite." style="shape=note;size=10;shadow=0;strokeWidth=0;fillColor=#cccccc;strokeColor=none;opacity=100.0;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=282;spacingTop=1;spacingBottom=8;" parent="2" vertex="1">
+        <mxCell id="D5uimbUbbbk_esGOEbq7-157" value="Multiple business keys for A_HUB and B_HUB. Only one combination represents the relation from A to B and should be tracked by another satellite." style="shape=note;size=10;shadow=0;strokeWidth=0;fillColor=#cccccc;strokeColor=none;opacity=100.0;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=282;spacingTop=1;spacingBottom=8;" parent="2" vertex="1">
           <mxGeometry x="635" y="960" width="485" height="50" as="geometry" />
         </mxCell>
         <mxCell id="D5uimbUbbbk_esGOEbq7-158" value="B_HUB is processed for RL2 and RL3" style="shape=note;size=10;shadow=0;strokeWidth=1;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=215;" parent="2" vertex="1">
@@ -551,7 +551,7 @@
         <mxCell id="D5uimbUbbbk_esGOEbq7-160" value="Recursive relation from/to A_HUB" style="shape=note;size=10;shadow=0;strokeWidth=0;fillColor=#cccccc;strokeColor=none;opacity=100.0;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=282;spacingTop=1;spacingBottom=8;" parent="2" vertex="1">
           <mxGeometry x="70" y="1257" width="490" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="D5uimbUbbbk_esGOEbq7-161" value="Recursive relation from/to A_HUB, with additonal business key for A_HUB, where the recursion is not applyable" style="shape=note;size=10;shadow=0;strokeWidth=0;fillColor=#cccccc;strokeColor=none;opacity=100.0;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=282;spacingTop=1;spacingBottom=8;" parent="2" vertex="1">
+        <mxCell id="D5uimbUbbbk_esGOEbq7-161" value="Recursive relation from/to A_HUB, with additonal business key for A_HUB, where the recursion is not applicable" style="shape=note;size=10;shadow=0;strokeWidth=0;fillColor=#cccccc;strokeColor=none;opacity=100.0;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=282;spacingTop=1;spacingBottom=8;" parent="2" vertex="1">
           <mxGeometry x="635" y="1257" width="485" height="50" as="geometry" />
         </mxCell>
         <mxCell id="AQTmQn9YJskU7MhowZhO-128" value="RL1" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;size=5;fillColor=#FFFFFF;strokeColor=#cc0000;shadow=0;strokeWidth=2;opacity=100;spacingLeft=0.6;spacingRight=0;" parent="2" vertex="1">
@@ -594,7 +594,7 @@
           <mxGeometry x="866.97" y="588.5" width="10" height="11" as="geometry" />
         </mxCell>
         <mxCell id="AQTmQn9YJskU7MhowZhO-148" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
-          <mxGeometry x="330" y="599.5" width="10" height="11" as="geometry" />
+          <mxGeometry x="335" y="593.5" width="10" height="11" as="geometry" />
         </mxCell>
         <mxCell id="AQTmQn9YJskU7MhowZhO-149" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
           <mxGeometry x="210" y="595.5" width="10" height="11" as="geometry" />
@@ -635,10 +635,10 @@
         <mxCell id="AQTmQn9YJskU7MhowZhO-161" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
           <mxGeometry x="180" y="1119" width="10" height="11" as="geometry" />
         </mxCell>
-        <mxCell id="AQTmQn9YJskU7MhowZhO-162" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
+        <mxCell id="AQTmQn9YJskU7MhowZhO-162" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#000000;" parent="2" vertex="1">
           <mxGeometry x="910" y="1427.12" width="10" height="11" as="geometry" />
         </mxCell>
-        <mxCell id="AQTmQn9YJskU7MhowZhO-163" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
+        <mxCell id="AQTmQn9YJskU7MhowZhO-163" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#000000;" parent="2" vertex="1">
           <mxGeometry x="910" y="1371" width="10" height="11" as="geometry" />
         </mxCell>
         <mxCell id="AQTmQn9YJskU7MhowZhO-172" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#000000;" parent="2" vertex="1">
@@ -740,7 +740,7 @@
         <mxCell id="jys8LJUgoWKAC8k-G7pv-126" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#000000;" parent="2" vertex="1">
           <mxGeometry x="807" y="1371" width="10" height="11" as="geometry" />
         </mxCell>
-        <mxCell id="jys8LJUgoWKAC8k-G7pv-127" value="&lt;div style=&quot;width: 25.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;/&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=mxgraph.basic.pentagon;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#cc0000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=0.6;spacingRight=0;whiteSpace=wrap;gliffyId=221;" parent="2" vertex="1">
+        <mxCell id="jys8LJUgoWKAC8k-G7pv-127" value="&lt;div style=&quot;width: 25.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;RL1&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=mxgraph.basic.pentagon;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#cc0000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=0.6;spacingRight=0;whiteSpace=wrap;gliffyId=221;" parent="2" vertex="1">
           <mxGeometry x="500" y="565.5" width="30" height="40" as="geometry" />
         </mxCell>
         <mxCell id="lZJGbRG0akUhZNdjgXmK-126" value="A_AR_LNK and ESAT are processed by &quot;/&quot; (it is just one relation)" style="shape=note;size=10;shadow=0;strokeWidth=1;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=166;" parent="2" vertex="1">
