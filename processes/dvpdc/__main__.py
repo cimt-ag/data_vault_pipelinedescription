@@ -519,14 +519,34 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry,load_operations):
             hash_name = hash_base_name
             stage_column_name = key_column_name
         else:
-            hash_name = hash_base_name + "_" + relation_name
+            hash_name = hash_base_name + "_" + relation_name.upper()
             stage_column_name = key_column_name + "_" + relation_name
         hash_mapping = {hash_name:{ "hash_column_name":key_column_name,
                                     "stage_column_name": stage_column_name,
                                     "hash_column_origin":table_name,
                                     "column_class":"key"}}
         load_operation_entry['hash_mapping'] = hash_mapping
-        #todo manage all relation hashes
+        for link_parent_entry in table_entry['link_parent_tables']:
+            parent_relation_name=link_parent_entry['relation_name']
+            parent_table_name=link_parent_entry['table_name']
+            parent_key_column_name=link_parent_entry['parent_key_column_name']
+            parent_hash_base_name = "hk_"+parent_table_name
+            if relation_name != "*" and relation_name != "/":
+                parent_hash_name = hash_base_name + "_" + relation_name.lower()
+                parent_stage_column_name = key_column_name + "_" + relation_name.upper()
+            elif parent_relation_name != "*" and  parent_relation_name != "/" :
+                parent_hash_name = hash_base_name + "_" + parent_relation_name.lower()
+                parent_stage_column_name = key_column_name + "_" + parent_relation_name.upper()
+            else:
+                parent_hash_name = parent_hash_base_name
+                parent_stage_column_name = parent_key_column_name
+            hash_mapping [parent_hash_name] = {"hash_column_name": parent_key_column_name,
+                                        "stage_column_name": parent_stage_column_name,
+                                        "hash_column_origin": parent_table_name,
+                                        "column_class": "parent_key"}
+
+        load_operation_entry['hash_mapping'] = hash_mapping
+
 
 def add_hash_column_mappings_for_sat(table_name,table_entry,load_operations):
 
@@ -535,9 +555,11 @@ def add_hash_column_mappings_for_sat(table_name,table_entry,load_operations):
     match( parent_table_entry['table_stereotype']):
         case 'hub':
              key_hash_base_name='hk_'+table_entry['satellite_parent_table']
+             #todo enable local key column name definition
              key_column_name=parent_table_entry['hub_key_column_name']
         case 'lnk':
              key_hash_base_name = 'lk_' + table_entry['satellite_parent_table']
+             #todo enable local key column name definition
              key_column_name = parent_table_entry['link_key_column_name']
         case _:
             raise (f"no rule for stereotype '{parent_table_entry['table_stereotype']}' in add_hash_column_mappings_for_sat()")
@@ -581,8 +603,19 @@ def add_hash_column_mappings_for_sat(table_name,table_entry,load_operations):
         load_operation_entry['hash_mapping'] = hash_mapping
 
 def add_hash_column_mappings_for_ref(table_name,table_entry,load_operations):
-    print("tbd")
-    #todo manage row hash if needed
+    for relation_name, load_operation_entry in load_operations.items():
+        if table_entry['uses_diff_hash']:
+            if 'diff_hash_column_name' not in table_entry:
+                register_error(f"Table {table_name} needs diff hash, but has no 'diff_hash_column_name' declaration")
+                return
+            diff_hash_name = "diff_" + table_name
+            diff_hash_column_name = table_entry['diff_hash_column_name']
+            stage_diff_hash_column_name = diff_hash_column_name
+            hash_mapping = {diff_hash_name:{"hash_column_name": diff_hash_column_name,
+                                            "stage_column_name": stage_diff_hash_column_name,
+                                            "hash_column_origin": table_name,
+                                            "column_class": "diff_hash"}}
+            load_operation_entry['hash_mapping'] = hash_mapping
 
 def add_data_column_mappings_for_one_load_operations_(table_name,table_entry,relation_name,load_operation):
     data_column_mapping={}
