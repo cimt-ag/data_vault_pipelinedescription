@@ -15,6 +15,20 @@ def register_error(message):
     print(message)
     g_error_count += 1
 
+def remove_stereotype_suffix(table_name):
+    """Removes cimt best practice stereotype suffixes from table names, so the name can be used for specific column name
+    derivation """
+    triggering_suffixes=['hub','lnk','sat','ref']
+    words=table_name.split("_")
+    reduced_table_name=table_name
+    if len(words)>1:
+        for suffix in triggering_suffixes:
+            if words[-1].endswith(suffix):
+                words.pop(-1)
+                break
+        reduced_table_name=words.join("_")
+    return reduced_table_name
+
 def check_essential_element(dvpd_object):
     """Check for the essential keys, that are needed to identify the main objects"""
 
@@ -64,24 +78,24 @@ def transform_hub_table(table_entry,schema_name,storage_component):
     """Cleanse check and add table declaration for a hub table"""
     global g_table_dict
     table_name = table_entry['table_name'].lower()
-    table_properties={}
-    table_properties['table_stereotype'] = 'hub'
+    table_properties= {'table_stereotype': 'hub'}
     if 'hub_key_column_name' in table_entry:
         table_properties['hub_key_column_name'] = table_entry['hub_key_column_name'].upper()
     else:
-        register_error(f'hub_key_column_name is not declared for hub table {table_name}')
+        table_properties['hub_key_column_name'] = "HK_"+remove_stereotype_suffix(table_name).upper()
+        #register_error(f'hub_key_column_name is not declared for hub table {table_name}')
     g_table_dict[table_name] = table_properties
 
 def transform_lnk_table(table_entry,schema_name,storage_component):
     """Cleanse check and add table declaration for a lnk table"""
     global g_table_dict
     table_name = table_entry['table_name'].lower()
-    table_properties={}
-    table_properties['table_stereotype'] = 'lnk'
+    table_properties= {'table_stereotype': 'lnk'}
     if 'link_key_column_name' in table_entry:
         table_properties['link_key_column_name'] = table_entry['link_key_column_name'].upper()
     else:
-        register_error(f'link_key_column_name is not declared for lnk table {table_name}')
+        table_properties['link_key_column_name'] = "LK_" +remove_stereotype_suffix(table_name).upper()
+        #register_error(f'link_key_column_name is not declared for lnk table {table_name}')
     table_properties['is_link_without_sat'] = table_entry.get('is_link_without_sat', False)  # default is false
 
     if 'link_parent_tables' in table_entry:
@@ -121,8 +135,7 @@ def transform_sat_table(table_entry,schema_name,storage_component):
     """Cleanse check and add table declaration for a satellite table"""
     global g_table_dict
     table_name = table_entry['table_name'].lower()
-    table_properties={}
-    table_properties['table_stereotype'] = 'sat'
+    table_properties= {'table_stereotype': 'sat'}
     if 'satellite_parent_table' in table_entry:
         table_properties['satellite_parent_table'] = table_entry['satellite_parent_table'].lower()
     else:
@@ -244,7 +257,6 @@ def map_field_to_tables(field_entry,field_position):
                 relation_names_cleansed.append(relation_name.upper())
         column_map_entry['relation_names']=relation_names_cleansed
         # announced property: hash_cleansing_rules
-        # announced property: hash_cleansing_rules
 
         # finally add this to the table
         table_entry=g_table_dict[table_name]
@@ -298,19 +310,24 @@ def derive_content_dependent_table_properties():
 
 def derive_content_dependent_hub_properties(table_name,table_entry):
     if not 'data_columns' in table_entry:
-        register_error(f"Hub table {table_name} has no field mapping")
+        register_error(f"Hub table {table_name} has no field mapping. A hub without a business key makes no sense")
         return
 
+    has_business_key=False
     for column_name,column_properties in table_entry['data_columns'].items():
         first_field=column_properties['field_mappings'][0]
         if first_field['exclude_from_key_hash']:
             column_properties['column_class'] = 'content_untracked'
         else:
             column_properties['column_class']='business_key'
+            has_business_key=True
         column_properties['field_mapping_count']=len(column_properties['field_mappings'])
         for property_name in ['prio_for_column_position','field_position','prio_in_key_hash','exclude_from_key_hash','column_content_comment']:
             column_properties[property_name]=first_field[property_name]
         derive_implicit_relations(column_properties)
+
+    if not has_business_key:
+        register_error(f"Hub table {table_name} has no business key assigned")
 
 def derive_content_dependent_lnk_properties(table_name, table_entry):
     global g_table_dict
@@ -381,15 +398,6 @@ def derive_implicit_relations(column_properties):
             else:
                 field_entry['relation_names'].append('*')
 
-
-
-# determine if it is an effectivity satellite
-
-
-
-    # check if parent is link, when sat has driving keys
-
-    # warn when parent is hub but sat is an esat
 
 def derive_content_dependent_ref_properties(table_name, table_entry):
     print("tbd")
@@ -467,49 +475,77 @@ def derive_load_operations():
                 table_entry['load_operations'] = load_operations
 
 
-def add_column_mappings_to_load_operations():
+def add_data_column_mappings_to_load_operations():
     global g_table_dict
-
     for table_name,table_entry in g_table_dict.items():
-        add_hash_column_mappings(table_name, table_entry)
         for relation_name,load_operation in table_entry['load_operations'].items():
             if 'data_columns' in table_entry:
                 add_data_column_mappings_for_one_load_operations_(table_name,table_entry,relation_name,load_operation)
 
-def add_hash_column_mappings(table_name,table_entry):
-    load_operations=table_entry['load_operations']
-    match(table_entry['table_stereotype']):
-        case 'hub':
-            add_hash_column_mappings_for_hub(table_name, table_entry, load_operations)
-        case 'lnk':
-            add_hash_column_mappings_for_lnk(table_name, table_entry, load_operations)
-        case 'sat':
-            add_hash_column_mappings_for_sat(table_name, table_entry, load_operations)
-        case 'ref':
-            add_hash_column_mappings_for_ref(table_name, table_entry, load_operations)
-        case _:
-            raise(f"no rule for stereotype '{table_entry['table_stereotype']}' for  table '{table_name}'")
+def collect_hash_value_content():
+    # all hubs hashes first
+    for table_name,table_entry in g_table_dict.items():
+        if table_entry['table_stereotype']=="hub":
+            add_hash_column_mappings_for_hub(table_name, table_entry)
+
+    return
+    #todo implement next steps
+
+    # then link hashes
+    for table_name,table_entry in g_table_dict.items():
+        if table_entry['table_stereotype']=="lnk":
+            add_hash_column_mappings_for_lnk(table_name, table_entry)
+
+    # finally sattelites
+    for table_name,table_entry in g_table_dict.items():
+        if table_entry['table_stereotype']=="sat":
+            for relation_name, load_operation in table_entry['load_operations'].items():
+                add_hash_column_mappings_for_satellite(table_name, table_entry, load_operations)
+
+    # and reference tables
+    for table_name,table_entry in g_table_dict.items():
+        if table_entry['table_stereotype']=="ref":
+            for relation_name, load_operation in table_entry['load_operations'].items():
+                add_hash_column_mappings_for_satellite(table_name, table_entry, load_operations)
 
     if g_error_count > 0:
         print("*** Stopped compiling due to errors ***")
         exit(5)
 
 
-def add_hash_column_mappings_for_hub(table_name,table_entry,load_operations):
-    hash_base_name = "hk_"+table_name
+def add_hash_column_mappings_for_hub(table_name,table_entry):
+    global g_hash_dict
+
+    hash_base_name = "KEY_OF_"+table_name.upper()
     key_column_name = table_entry['hub_key_column_name']
+    # create a hash for every operation
+    load_operations=table_entry['load_operations']
     for relation_name, load_operation_entry in load_operations.items():
         if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
             hash_name = hash_base_name
             stage_column_name = key_column_name
         else:
-            hash_name = hash_base_name + "_" + relation_name
-            stage_column_name = key_column_name + "_" + relation_name
-        hash_mapping = {hash_name:{ "hash_column_name":key_column_name,
-                                    "stage_column_name": stage_column_name,
-                                    "hash_column_origin":table_name,
-                                    "column_class":"key"}}
-        load_operation_entry['hash_mapping'] = hash_mapping
+            hash_name = hash_base_name + "_" + relation_name.upper()
+            stage_column_name = key_column_name + "_" + relation_name.upper()
+
+        hash_fields=[]
+        for column_name,column_entry in load_operation_entry['data_column_mapping'].items():
+            hash_field={'field_name':column_entry['field_name'],
+                        'prio_in_key_hash':column_entry['prio_in_key_hash'],
+                        'field_target_table':table_name }
+            hash_fields.append(hash_field)
+
+        hash_entry={'key':{     "hash_name":hash_name,
+                                "hash_column_name":key_column_name,
+                                "stage_column_name": stage_column_name,
+                                "hash_column_origin":table_name,
+                                "column_class":"key",
+                                'hash_fields':hash_fields}}
+        if 'hash_assemblies' not in load_operation_entry:
+            load_operation_entry['hash_assemblies']=[]
+        load_operation_entry['hash_assemblies'].append(hash_entry)
+
+
 
 def add_hash_column_mappings_for_lnk(table_name,table_entry,load_operations):
     hash_base_name = "lk_"+table_name
@@ -679,11 +715,17 @@ if __name__ == "__main__":
     check_multifield_mapping_consistency()
     derive_content_dependent_table_properties()
     derive_load_operations()
-    add_column_mappings_to_load_operations()
+    add_data_column_mappings_to_load_operations()
+    collect_hash_value_content()
 
 
     print("compile successful")
+    print("JSON of g_field_dict:")
+    print(json.dumps(g_field_dict, indent=2,sort_keys=True))
+
     print("JSON of g_table_dict:")
     print(json.dumps(g_table_dict, indent=2,sort_keys=True))
 
+    print("JSON of g_hash_dict:")
+    print(json.dumps(g_hash_dict, indent=2,sort_keys=True))
 

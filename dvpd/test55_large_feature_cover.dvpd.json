@@ -85,7 +85,7 @@
 						}
 				,{"table_name": "rtjj_55_ddd_hub",
 					"table_stereotype": "hub",
-					"hub_key_column_name": "HK_rtjj_55_ccc"
+					"hub_key_column_name": "HK_rtjj_55_ddd"
 					}
 				,{"table_name": "rtjj_55_aaa_ddd_lnk",
   				"table_stereotype": "lnk",
