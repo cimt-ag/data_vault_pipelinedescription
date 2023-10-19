@@ -6,8 +6,12 @@ Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-
 
 ---------
 
-Data Vault Pipeline Description is a concept and syntax to provide a central data format, that can be 
-used by all tools, needed and used during the design and implementation of data vault platforms.
+Data Vault Pipeline Description is a concept and syntax to provide a standardized document format, 
+to declare all necessary metadata for fetching, parsing, hashing a data source and load it
+into a data vault model.
+
+It is provides as a common interface between all steps and tools, that are executed during the 
+design and implementation of data vault models and loading processes.
 
 Even though it is generally an easy to use concept, the description of all provided
 elements and how to apply them needs some amount of words. Therefore the documentation is distributed 
@@ -26,12 +30,14 @@ Please consult approriate literature, to learn Data Vault first.
 The main article about the concept
 * motivation of the concept
 * Data Vault model and load requirements covered by the concept
-* design descisions that have been made and are driving the syntax
+* design decisions that have been made and are driving the syntax
 * concepts behind the "non obvious purpose" syntax elements
 * benefits of the concept for projects / consultants / tool developers
 
 ### [Data Vault method coverage and syntax examples](./Data_Vault_method_coverage_and_syntax_examples.md) 
-Provides examples for Data Vult model, especially all model elements from the book "Building A Scalable Data Warehouse With Data Vault 2.0" by Dan Linstedt and Michael Olschimke from 2016. This is to prove the 
+Provides examples for Data Vault models, especially all model elements from the book
+"Building A Scalable Data Warehouse With Data Vault 2.0" by Dan Linstedt and 
+Michael Olschimke from 2016. This is to prove the 
 completeness of the concept.
 
 Besides from that, this is a good entry point to understand the core syntax by looking at examples.
