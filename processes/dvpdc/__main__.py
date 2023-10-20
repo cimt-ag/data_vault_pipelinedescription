@@ -10,6 +10,17 @@ g_table_dict={}
 g_field_dict={}
 g_hash_dict={}
 
+def print_the_brain():
+    print("compile successful")
+    print("JSON of g_field_dict:")
+    print(json.dumps(g_field_dict, indent=2,sort_keys=True))
+
+    print("JSON of g_table_dict:")
+    print(json.dumps(g_table_dict, indent=2,sort_keys=True))
+
+    print("JSON of g_hash_dict:")
+    print(json.dumps(g_hash_dict, indent=2,sort_keys=True))
+
 def register_error(message):
     global g_error_count
     print(message)
@@ -26,7 +37,7 @@ def remove_stereotype_suffix(table_name):
             if words[-1].endswith(suffix):
                 words.pop(-1)
                 break
-        reduced_table_name=words.join("_")
+        reduced_table_name='_'.join(words)
     return reduced_table_name
 
 def check_essential_element(dvpd_object):
@@ -352,11 +363,6 @@ def derive_content_dependent_lnk_properties(table_name, table_entry):
             derive_implicit_relations(column_properties)
 
 
-    # for links
-    #  add hub key column names to the references
-
-    # for satellites
-
 def derive_content_dependent_sat_properties(table_name, table_entry):
     if table_entry['satellite_parent_table'] not in g_table_dict:
         register_error(f"parent table '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is not declared")
@@ -430,11 +436,11 @@ def derive_load_operations():
                 table_entry['load_operations'] = load_operations
 
 
-    # hub tables, without explicit relations only have the "/" relation
+    # hub tables, without explicit relations have the universal relation "*"
     for table_name,table_entry in g_table_dict.items():
         if table_entry['table_stereotype'] == 'hub':
            if 'load_operations' not in table_entry:
-                load_operations = {"/":{"operation_origin":"implicit unnamed relation of hub"}}
+                load_operations = {"*":{"operation_origin":"implicit universal relation of hub"}}
                 table_entry['load_operations'] = load_operations
 
 
@@ -494,6 +500,10 @@ def collect_hash_value_content():
         if table_entry['table_stereotype']=="lnk":
             add_hash_column_mappings_for_lnk(table_name, table_entry)
 
+    if g_error_count > 0:
+        print_the_brain()
+        print("*** Stopped compiling due to errors ***")
+        exit(5)
 
     return
     #todo implement next steps
@@ -528,10 +538,12 @@ def add_hash_column_mappings_for_hub(table_name,table_entry):
             stage_column_name = key_column_name
         else:
             hash_name = hash_base_name + "__FOR__" + relation_name.upper()
-            stage_column_name = key_column_name + "__FOR__" + relation_name.upper()
+            stage_column_name = key_column_name + "_" + relation_name.upper()
 
         hash_fields=[]
         for column_name,column_entry in load_operation_entry['data_column_mapping'].items():
+            if column_entry['exclude_from_key_hash'] :
+                continue
             hash_field={'field_name':column_entry['field_name'],
                         'prio_in_key_hash':column_entry['prio_in_key_hash'],
                         'field_target_table':table_name,
@@ -554,7 +566,7 @@ def add_hash_column_mappings_for_hub(table_name,table_entry):
 
 
 def add_hash_column_mappings_for_lnk(table_name,table_entry):
-    link_hash_base_name = "KEY_OF_"+table_name
+    link_hash_base_name = "KEY_OF_"+table_name.upper()
     link_key_column_name = table_entry['link_key_column_name']
     load_operations = table_entry['load_operations']
 
@@ -578,10 +590,13 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
             link_parent_count+=1
             parent_table_entry=g_table_dict[link_parent_entry['table_name']]
             parent_load_operations=parent_table_entry['load_operations']
-            if link_parent_entry['relation_name'] == '*':  # the parent is not restricted and must match current operation of link
-                parent_relation=relation_name
-            else:
+            if link_parent_entry['relation_name'] != '*':
                 parent_relation= link_parent_entry['relation_name']  # the parent must provide operation of explicitly declared relation
+            elif '*' in parent_load_operations:
+                parent_relation = '*'  # the parent only has a universal relation
+            else:
+                parent_relation=relation_name  # the parent must provide the relation of the process of the link
+
             if not parent_relation in parent_load_operations:
                 register_error(f"Hub '{link_parent_entry['table_name']}' has no business key mapping for relation '{parent_relation}' needed for link '{table_name}'"  )
                 return
@@ -592,7 +607,7 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
             # assemble the column name for the hub key in the link
             if link_parent_entry['hub_key_column_name_in_link'] != None:
                 hub_key_column_name_in_link=link_parent_entry['hub_key_column_name_in_link']
-            elif parent_relation !="/":
+            elif parent_relation !="/" and parent_relation != '*':
                 hub_key_column_name_in_link=parent_key_hash_reference['hash_column_name']+"_"+parent_relation.upper()
             else:
                 hub_key_column_name_in_link = parent_key_hash_reference['hash_column_name']
@@ -600,20 +615,22 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
             # add the hash field mappings of the hash parent to the hash fields of the link
             parent_hash_entry=g_hash_dict[parent_key_hash_reference['hash_name']]
             for parent_hash_field in parent_hash_entry['hash_fields']:
-                link_hash_fields.append(parent_hash_field)
+                link_hash_field=parent_hash_field.copy()
+                link_hash_field['parent_declaration_position']=link_parent_count
+                link_hash_fields.append(link_hash_field)
 
             # add reference to global entry of parent into load operation
             link_parent_key_hash_reference =  {"hash_name": parent_key_hash_reference['hash_name'],
                                        "hash_column_name": hub_key_column_name_in_link }
 
-            hash_reference_dict[''parent_key_'+str(link_parent_count)'] =link_parent_key_hash_reference
-            if 'hashes' not in load_operation_entry:
-                load_operation_entry['hashes'] = []
-            load_operation_entry['hashes'].append(link_parent_key_hash_reference)
+            hash_reference_dict['parent_key_'+str(link_parent_count)] =link_parent_key_hash_reference
+
 
         # add dependent child keys if exist
         if 'data_column_mapping' in load_operation_entry:
             for column_name,column_entry in load_operation_entry['data_column_mapping'].items():
+                if column_entry['exclude_from_key_hash']:
+                    continue
                 hash_field={'field_name':column_entry['field_name'],
                             'prio_in_key_hash':column_entry['prio_in_key_hash'],
                             'field_target_table':table_name ,
@@ -624,7 +641,7 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
         link_hash_description = {"stage_column_name": stage_column_name,
                       "hash_origin_table": table_name,
                       "column_class": "key",
-                      "hash_fields": link_hash_description}
+                      "hash_fields": link_hash_fields}
 
         if link_hash_name not in g_hash_dict:
             g_hash_dict[link_hash_name] = link_hash_description
@@ -771,14 +788,7 @@ if __name__ == "__main__":
     add_data_column_mappings_to_load_operations()
     collect_hash_value_content()
 
+    print_the_brain()
 
-    print("compile successful")
-    print("JSON of g_field_dict:")
-    print(json.dumps(g_field_dict, indent=2,sort_keys=True))
 
-    print("JSON of g_table_dict:")
-    print(json.dumps(g_table_dict, indent=2,sort_keys=True))
-
-    print("JSON of g_hash_dict:")
-    print(json.dumps(g_hash_dict, indent=2,sort_keys=True))
 
