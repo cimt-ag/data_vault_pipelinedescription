@@ -488,13 +488,15 @@ def collect_hash_value_content():
         if table_entry['table_stereotype']=="hub":
             add_hash_column_mappings_for_hub(table_name, table_entry)
 
-    return
-    #todo implement next steps
 
     # then link hashes
     for table_name,table_entry in g_table_dict.items():
         if table_entry['table_stereotype']=="lnk":
             add_hash_column_mappings_for_lnk(table_name, table_entry)
+
+
+    return
+    #todo implement next steps
 
     # finally sattelites
     for table_name,table_entry in g_table_dict.items():
@@ -532,50 +534,48 @@ def add_hash_column_mappings_for_hub(table_name,table_entry):
         for column_name,column_entry in load_operation_entry['data_column_mapping'].items():
             hash_field={'field_name':column_entry['field_name'],
                         'prio_in_key_hash':column_entry['prio_in_key_hash'],
-                        'field_target_table':table_name }
+                        'field_target_table':table_name,
+                        'field_target_column':column_name}
             hash_fields.append(hash_field)
 
         # put hash definition into global list
-        hash_entry={   "stage_column_name": stage_column_name,
+        hash_description={   "stage_column_name": stage_column_name,
                         "hash_origin_table":table_name,
                          "column_class":"key",
                          "hash_fields":hash_fields}
 
         if hash_name not in g_hash_dict:
-            g_hash_dict[hash_name]=hash_entry
+            g_hash_dict[hash_name]=hash_description
 
         # add reference to global entry into load operation
-        hash_entry={'key':{     "hash_name":hash_name,
+        load_operation_entry['hash_reference_dict']={'key':{     "hash_name":hash_name,
                                 "hash_column_name":key_column_name,}}
-        if 'hashes' not in load_operation_entry:
-            load_operation_entry['hashes']=[]
-        load_operation_entry['hashes'].append(hash_entry)
 
 
-def add_hash_column_mappings_for_lnk(table_name,table_entry,load_operations):
-    hash_base_name = "KEY_OF_"+table_name
-    key_column_name = table_entry['link_key_column_name']
+
+def add_hash_column_mappings_for_lnk(table_name,table_entry):
+    link_hash_base_name = "KEY_OF_"+table_name
+    link_key_column_name = table_entry['link_key_column_name']
     load_operations = table_entry['load_operations']
+
     for relation_name, load_operation_entry in load_operations.items():
+        hash_reference_dict = {}
+        load_operation_entry['hash_reference_dict'] = hash_reference_dict
+
+        # render names according to relation
         if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
-            hash_name = hash_base_name
-            stage_column_name = key_column_name
+            link_hash_name = link_hash_base_name
+            stage_column_name = link_key_column_name
         else:
-            hash_name = hash_base_name + "_" + relation_name.upper()
-            stage_column_name = key_column_name + "_" + relation_name
+            link_hash_name = link_hash_base_name + "_" + relation_name.upper()
+            stage_column_name = link_key_column_name + "_" + relation_name
 
-        hash_fields=[]
-
-        # add dependent child keys if exist
-        if 'data_column_mapping' in load_operation_entry:
-            for column_name,column_entry in load_operation_entry['data_column_mapping'].items():
-                hash_field={'field_name':column_entry['field_name'],
-                            'prio_in_key_hash':column_entry['prio_in_key_hash'],
-                            'field_target_table':table_name }
-                hash_fields.append(hash_field)
+        link_hash_fields=[]
 
         # add parent hash key fields for this relation
+        link_parent_count=0
         for link_parent_entry in table_entry['link_parent_tables']:
+            link_parent_count+=1
             parent_table_entry=g_table_dict[link_parent_entry['table_name']]
             parent_load_operations=parent_table_entry['load_operations']
             if link_parent_entry['relation_name'] == '*':  # the parent is not restricted and must match current operation of link
@@ -586,25 +586,53 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry,load_operations):
                 register_error(f"Hub '{link_parent_entry['table_name']}' has no business key mapping for relation '{parent_relation}' needed for link '{table_name}'"  )
                 return
             parent_load_operation=parent_load_operations[parent_relation]
-            parent_key_hash=parent_load_operation['hash_assemblies']['key']
+            parent_hash_reference_dict=parent_load_operation['hash_reference_dict']
+            parent_key_hash_reference=parent_hash_reference_dict['key']
+
             # assemble the column name for the hub key in the link
             if link_parent_entry['hub_key_column_name_in_link'] != None:
                 hub_key_column_name_in_link=link_parent_entry['hub_key_column_name_in_link']
-            elif parent_relation =="/":
-                print("todo")
+            elif parent_relation !="/":
+                hub_key_column_name_in_link=parent_key_hash_reference['hash_column_name']+"_"+parent_relation.upper()
+            else:
+                hub_key_column_name_in_link = parent_key_hash_reference['hash_column_name']
 
+            # add the hash field mappings of the hash parent to the hash fields of the link
+            parent_hash_entry=g_hash_dict[parent_key_hash_reference['hash_name']]
+            for parent_hash_field in parent_hash_entry['hash_fields']:
+                link_hash_fields.append(parent_hash_field)
 
+            # add reference to global entry of parent into load operation
+            link_parent_key_hash_reference =  {"hash_name": parent_key_hash_reference['hash_name'],
+                                       "hash_column_name": hub_key_column_name_in_link }
 
-        # finally make the entry for the link key
-        hash_entry = {'key': {"hash_name": hash_name,
-                              "hash_column_name": key_column_name,
-                              "stage_column_name": stage_column_name,
-                              "hash_column_origin": table_name,
-                              "column_class": "key",
-                              'hash_fields': hash_fields}}
-        if 'hash_assemblies' not in load_operation_entry:
-            load_operation_entry['hash_assemblies'] = []
-        load_operation_entry['hash_assemblies'].append(hash_entry)
+            hash_reference_dict[''parent_key_'+str(link_parent_count)'] =link_parent_key_hash_reference
+            if 'hashes' not in load_operation_entry:
+                load_operation_entry['hashes'] = []
+            load_operation_entry['hashes'].append(link_parent_key_hash_reference)
+
+        # add dependent child keys if exist
+        if 'data_column_mapping' in load_operation_entry:
+            for column_name,column_entry in load_operation_entry['data_column_mapping'].items():
+                hash_field={'field_name':column_entry['field_name'],
+                            'prio_in_key_hash':column_entry['prio_in_key_hash'],
+                            'field_target_table':table_name ,
+                            'field_target_column':column_name}
+                link_hash_fields.append(hash_field)
+
+        # put hash definition into global list
+        link_hash_description = {"stage_column_name": stage_column_name,
+                      "hash_origin_table": table_name,
+                      "column_class": "key",
+                      "hash_fields": link_hash_description}
+
+        if link_hash_name not in g_hash_dict:
+            g_hash_dict[link_hash_name] = link_hash_description
+
+        # add reference for link key hash to load operation
+        link_key_hash_reference = {"hash_name": link_hash_name,
+                              "hash_column_name": link_key_column_name, }
+        hash_reference_dict['key']=link_key_hash_reference
 
 
 
