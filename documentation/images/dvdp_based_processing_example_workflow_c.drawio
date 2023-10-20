@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-05-30T11:29:51.887Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="A23VbY2ZPZRzNSRknrTA" version="21.3.5" type="device">
+<mxfile host="Electron" modified="2023-10-13T09:29:29.448Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.2 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="VGG5C1kTy1ucER3PH4Yd" version="22.0.2" type="device">
   <diagram name="Seite-1" id="HqBW4fTeCPGUdDQ781vC">
-    <mxGraphModel dx="1235" dy="669" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -28,7 +28,7 @@
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-212" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-194" target="SHAmAD_ecb-zwq3bcNpp-206" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SHAmAD_ecb-zwq3bcNpp-194" value="inkrement &amp;amp; deletion propterties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-194" value="increment &amp;amp; deletion properties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
           <mxGeometry x="80" y="375" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-210" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=10;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-196" target="SHAmAD_ecb-zwq3bcNpp-206" edge="1">

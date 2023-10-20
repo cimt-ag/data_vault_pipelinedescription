@@ -8,9 +8,9 @@ Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-
 
 Deletion detection by comparing the data vault content against the complete source data might become very expensive for large datasets or is even impossible, when the source only delivers excerpts of its data through the interface.
 
-In such cases a deletion detection, that is restriced to a specific partiotion of the data will provide a  way to maitain a correct image of the source data in the data vault.
+In such cases a deletion detection, that is restriced to a specific partition of the data, will provide a  way to maintain a correct image of the source data in the data vault.
 
-There are multiple ways and scenarios, to process a partioned deletion. That's why we need a more deeper investigation.
+There are multiple ways and scenarios to process a partioned deletion. That's why we need a more deeper investigation.
 
 The basic prerequisits for using a partitioned deletion detection are:
 - partitions are identified by values in fields, that are stored in the data vault model
@@ -159,7 +159,7 @@ Satellites are enddated. The currently active rows are marked by setting the end
 
 ### Naming convention
 - Data Vault table stereotype is provided as postfix 
-- Names of hash keys consist of a prefix followed by the table the hash belongs
+- Names of hash keys consist of a prefix followed by the table the hash belongs to
     - HK_ prefix indicates the hash key of a hub
     - LK_ prefix indicates the hash key of a link
 - table names of satellites begin with the table name of their parent

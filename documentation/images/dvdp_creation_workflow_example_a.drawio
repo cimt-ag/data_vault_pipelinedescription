@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-05-25T15:52:56.014Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36" etag="zfBvyGnAiJN1hpzQyfLd" version="21.3.4" type="device">
+<mxfile host="Electron" modified="2023-10-09T10:15:08.569Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.2 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="Wk71dyco1ihYPtrXjXBr" version="22.0.2" type="device">
   <diagram name="Seite-1" id="HqBW4fTeCPGUdDQ781vC">
-    <mxGraphModel dx="1235" dy="726" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -44,19 +44,19 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="XJ6b9KdQrqp1vy3ghaq9-16" value="Data Vault&amp;nbsp;Tables &amp;amp; Relations" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
-          <mxGeometry x="430" y="295" width="120" height="25" as="geometry" />
+          <mxGeometry x="377.5" y="295" width="120" height="25" as="geometry" />
         </mxCell>
         <mxCell id="XJ6b9KdQrqp1vy3ghaq9-17" value="Mapping of fields to model" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
-          <mxGeometry x="430" y="270" width="120" height="25" as="geometry" />
+          <mxGeometry x="377.5" y="270" width="120" height="25" as="geometry" />
         </mxCell>
         <mxCell id="XJ6b9KdQrqp1vy3ghaq9-18" value="Basic pipeline properties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
-          <mxGeometry x="430" y="250" width="120" height="20" as="geometry" />
+          <mxGeometry x="377.5" y="250" width="120" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-19" value="fields&amp;amp;types" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-19" value="fields &amp;amp; types" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
           <mxGeometry x="60" y="230" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="XJ6b9KdQrqp1vy3ghaq9-21" value="Data Vault Model&lt;br style=&quot;font-size: 10px;&quot;&gt;Column properties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
-          <mxGeometry x="430" y="320" width="120" height="30" as="geometry" />
+          <mxGeometry x="377.5" y="320" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="XJ6b9KdQrqp1vy3ghaq9-36" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-22" target="XJ6b9KdQrqp1vy3ghaq9-3" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -68,8 +68,8 @@
         <mxCell id="XJ6b9KdQrqp1vy3ghaq9-22" value="Fetch properties of fields" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
           <mxGeometry x="60" y="260" width="120" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-23" value="inkrement &amp;amp; deletion propterties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
-          <mxGeometry x="430" y="350" width="120" height="30" as="geometry" />
+        <mxCell id="XJ6b9KdQrqp1vy3ghaq9-23" value="increment &amp;amp; deletion properties" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="377.5" y="350" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="XJ6b9KdQrqp1vy3ghaq9-25" value="Example A: nearly &quot;handmade&quot;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#BFBFBF;fontStyle=1;align=left;fontSize=16;" parent="1" vertex="1">
           <mxGeometry x="40" y="20" width="930" height="30" as="geometry" />
@@ -87,7 +87,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-16" value="Errors and Warnings" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;size=15;" parent="1" vertex="1">
-          <mxGeometry x="780" y="300" width="150" height="20" as="geometry" />
+          <mxGeometry x="777.5" y="297.5" width="150" height="20" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-17" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=classic;" parent="1" source="XJ6b9KdQrqp1vy3ghaq9-11" target="SHAmAD_ecb-zwq3bcNpp-16" edge="1">
           <mxGeometry relative="1" as="geometry">
