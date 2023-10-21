@@ -160,6 +160,12 @@ def transform_sat_table(table_entry,schema_name,storage_component):
     table_properties['uses_diff_hash']=table_entry.get('uses_diff_hash',True)  # default is profile
     if 'diff_hash_column_name' in table_entry:
         table_properties['diff_hash_column_name'] = table_entry['diff_hash_column_name'].upper()
+    else:  # derive default for diff column hash name
+        if table_properties['is_multiactive']:
+            table_properties['diff_hash_column_name'] = 'GH_' + table_name.upper()
+        else:
+            table_properties['diff_hash_column_name'] = 'RH_' + table_name.upper()
+
     #todo Add model profile default logic ->
     table_properties['has_deletion_flag']=table_entry.get('has_deletion_flag',True)  # default is profile
     cleansed_driving_keys=[]
@@ -368,18 +374,14 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
         register_error(f"parent table '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is not declared")
         return
 
-    table_entry['is_effectivity_sat'] = not 'data_columns' in table_entry
+    table_entry['is_effectivity_sat'] = not 'data_columns' in table_entry  # determine is_effectivity_sat
 
     parent_table = g_table_dict[table_entry['satellite_parent_table']]
-    match parent_table['table_stereotype']:
-        case 'hub':
-            table_entry['parent_key_column_name'] = parent_table['hub_key_column_name']
-            if table_entry['is_effectivity_sat']:
-                register_error(f"Parent table '{table_entry['satellite_parent_table']}' of effectivity sat '{table_name}' is not a link")
-        case 'lnk':
-            table_entry['parent_key_column_name'] = parent_table['link_key_column_name']
-        case _:
-            register_error(f"Parent table '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is not a link or hub")
+    if parent_table['table_stereotype'] == 'hub':
+        if table_entry['is_effectivity_sat']:
+            register_error(f"Parent table '{table_entry['satellite_parent_table']}' of effectivity sat '{table_name}' is not a link")
+    elif parent_table['table_stereotype'] != 'lnk':
+        register_error(f"Parent table '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is not a link or hub")
 
     if table_entry['is_effectivity_sat']:
         return  # without any columns, we are done here
@@ -488,7 +490,7 @@ def add_data_column_mappings_to_load_operations():
             if 'data_columns' in table_entry:
                 add_data_column_mappings_for_one_load_operations_(table_name,table_entry,relation_name,load_operation)
 
-def collect_hash_value_content():
+def add_hash_columns():
     # all hubs hashes first
     for table_name,table_entry in g_table_dict.items():
         if table_entry['table_stereotype']=="hub":
@@ -500,6 +502,14 @@ def collect_hash_value_content():
         if table_entry['table_stereotype']=="lnk":
             add_hash_column_mappings_for_lnk(table_name, table_entry)
 
+
+
+    # finally sattelites
+    for table_name,table_entry in g_table_dict.items():
+        if table_entry['table_stereotype']=="sat":
+            for relation_name, load_operation in table_entry['load_operations'].items():
+                add_hash_column_mappings_for_sat(table_name, table_entry)
+
     if g_error_count > 0:
         print_the_brain()
         print("*** Stopped compiling due to errors ***")
@@ -507,12 +517,6 @@ def collect_hash_value_content():
 
     return
     #todo implement next steps
-
-    # finally sattelites
-    for table_name,table_entry in g_table_dict.items():
-        if table_entry['table_stereotype']=="sat":
-            for relation_name, load_operation in table_entry['load_operations'].items():
-                add_hash_column_mappings_for_satellite(table_name, table_entry, load_operations)
 
     # and reference tables
     for table_name,table_entry in g_table_dict.items():
@@ -654,59 +658,41 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
 
 
 
-def add_hash_column_mappings_for_sat(table_name,table_entry,load_operations):
+def add_hash_column_mappings_for_sat(table_name,table_entry):
 
-    # collect key columns names from parent tables
-    parent_table_entry=g_table_dict[table_entry['satellite_parent_table']]
-    match( parent_table_entry['table_stereotype']):
-        case 'hub':
-             key_hash_base_name='hk_'+table_entry['satellite_parent_table']
-             #todo enable local key column name definition
-             key_column_name=parent_table_entry['hub_key_column_name']
-        case 'lnk':
-             key_hash_base_name = 'lk_' + table_entry['satellite_parent_table']
-             #todo enable local key column name definition
-             key_column_name = parent_table_entry['link_key_column_name']
-        case _:
-            raise (f"no rule for stereotype '{parent_table_entry['table_stereotype']}' in add_hash_column_mappings_for_sat()")
+    for relation_name, load_operation_entry in table_entry['load_operations'].items():
+        hash_reference_dict = {}
+        load_operation_entry['hash_reference_dict'] = hash_reference_dict
+        # add parent key hash to hash reference list
+        satellite_parent_table = g_table_dict[table_entry['satellite_parent_table']]
+        parent_load_operations = satellite_parent_table['load_operations']
 
-    # prepare diff hash generation
+        if not relation_name in parent_load_operations:
+            register_error(
+                f"Parent table '{satellite_parent_table['table_name']}' has no load operation for relation '{relation_name}' requiered for satellite '{table_name}'")
+            return
 
-    uses_diff_hash = False
-    diff_hash_base_name="diff_"+table_name
-    diff_hash_column_name="#not defined#"
-    if not table_entry['is_effectivity_sat'] and table_entry['compare_criteria'] != 'key' and table_entry[
-        'compare_criteria'] != 'none':
-        if table_entry['uses_diff_hash']:
-            if 'diff_hash_column_name' not in table_entry:
-                register_error(f"Table {table_name} needs diff hash, but has no 'diff_hash_column_name' declaration")
-                return
-            uses_diff_hash=True
-            diff_hash_column_name = table_entry['diff_hash_column_name']
+        parent_load_operation = parent_load_operations[relation_name]
+        parent_hash_reference_dict = parent_load_operation['hash_reference_dict']
+        parent_key_hash_reference = parent_hash_reference_dict['key']
 
-    # create the hash objects
-    for relation_name, load_operation_entry in load_operations.items():
-        if relation_name == "/" :
-            key_hash_name = key_hash_base_name
-            key_stage_column_name = key_column_name
-            diff_hash_name=diff_hash_base_name
-            stage_diff_hash_column_name = diff_hash_column_name
-        else:
-            key_hash_name = key_hash_base_name+ "_" + relation_name
-            key_stage_column_name = key_column_name+ "_" + relation_name
-            diff_hash_name=diff_hash_base_name+ "_" + relation_name
-            stage_diff_hash_column_name = diff_hash_column_name+ "_" + relation_name
+        sat_key_hash_reference = {"hash_name": parent_key_hash_reference['hash_name'],
+                                          "hash_column_name": parent_key_hash_reference['hash_column_name']}
 
-        hash_mapping = {key_hash_name: {"hash_column_name": key_column_name,
-                                    "stage_column_name": key_stage_column_name,
-                                    "hash_column_origin": table_entry['satellite_parent_table'],
-                                    "column_class": "key"}}
-        if uses_diff_hash:
-            hash_mapping[diff_hash_name]={"hash_column_name": diff_hash_column_name,
-                                            "stage_column_name": stage_diff_hash_column_name,
-                                            "hash_column_origin": table_name,
-                                            "column_class": "diff_hash"}
-        load_operation_entry['hash_mapping'] = hash_mapping
+        hash_reference_dict['parent_key'] = sat_key_hash_reference
+
+        # if not needed, skip diff hash
+        if table_entry['is_effectivity_sat'] or table_entry['compare_criteria'] == 'key' or table_entry[
+            'compare_criteria'] != 'none' or not  table_entry['uses_diff_hash']:
+                continue
+
+        # add diff hash
+        diff_hash_base_name="DIFF_OF_"+table_name.upper()
+        #todo implement diff hash creation
+
+
+
+
 
 def add_hash_column_mappings_for_ref(table_name,table_entry,load_operations):
     for relation_name, load_operation_entry in load_operations.items():
@@ -786,7 +772,7 @@ if __name__ == "__main__":
     derive_content_dependent_table_properties()
     derive_load_operations()
     add_data_column_mappings_to_load_operations()
-    collect_hash_value_content()
+    add_hash_columns()
 
     print_the_brain()
 
