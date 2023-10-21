@@ -3,12 +3,15 @@ import os
 from pathlib import Path
 from lib.configuration import configuration_load_ini
 import json
+from datetime import datetime
+
 
 
 g_error_count=0
 g_table_dict={}
 g_field_dict={}
 g_hash_dict={}
+g_dvpi_document={}
 
 def print_the_brain():
     print("compile successful")
@@ -20,6 +23,11 @@ def print_the_brain():
 
     print("JSON of g_hash_dict:")
     print(json.dumps(g_hash_dict, indent=2,sort_keys=True))
+
+def print_dvpi_document():
+    print("DVPI :")
+    print(json.dumps(g_dvpi_document, indent=2))
+
 
 def register_error(message):
     global g_error_count
@@ -194,6 +202,8 @@ def transform_ref_table(table_entry,schema_name,storage_component):
     table_properties['uses_diff_hash']=table_entry.get('uses_diff_hash',True)  # default is profile
     if 'diff_hash_column_name' in table_entry:
         table_properties['diff_hash_column_name'] = table_entry['diff_hash_column_name'].upper()
+    else:
+        table_properties['diff_hash_column_name'] = 'RH_' + table_name.upper()
 
     # finally add the cleansed properties to the table dictionary
     g_table_dict[table_name] = table_properties
@@ -238,13 +248,13 @@ def collect_field_properties(dvpd_object):
         cleansed_field_entry['field_position']=field_position
         cleansed_field_entry['needs_encryption'] = field_entry.get('needs_encryption',False)
         g_field_dict[field_name] = cleansed_field_entry
-        map_field_to_tables(field_entry,field_position)
+        create_columns_from_field_mapping(field_entry, field_position)
 
     if g_error_count > 0:
         print("*** Stopped compiling due to errors ***")
         exit(5)
 
-def map_field_to_tables(field_entry,field_position):
+def create_columns_from_field_mapping(field_entry, field_position):
     global g_table_dict
 
     field_name=field_entry['field_name'].upper()
@@ -254,7 +264,7 @@ def map_field_to_tables(field_entry,field_position):
             register_error(f"Can't map field {field_name} to table {table_name}. Table is not declared in the model")
             continue
         column_map_entry={}
-        column_name = table_mapping.get('column_name',field_name)  # defaults to field name
+        column_name = table_mapping.get('column_name',field_name).upper()  # defaults to field name
         column_map_entry['field_name']=field_name
         column_map_entry['field_position']=field_position
         column_map_entry['column_type'] = table_mapping.get('column_type',field_entry['field_type']).upper()  # defaults to field type
@@ -393,8 +403,21 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
         else:
             column_properties['column_class']='content'
         column_properties['field_mapping_count']=len(column_properties['field_mappings'])
-        for property_name in ['prio_for_column_position','field_position','prio_for_row_order','row_order_direction','exclude_from_change_detection','prio_in_diff_hash','column_content_comment']:
+        for property_name in ['column_type','column_content_comment','prio_for_column_position','prio_for_row_order','row_order_direction','exclude_from_change_detection','prio_in_diff_hash']:
             column_properties[property_name]=first_field[property_name]
+        derive_implicit_relations(column_properties)
+
+def derive_content_dependent_ref_properties(table_name, table_entry):
+    for column_name, column_properties in table_entry['data_columns'].items():
+        first_field = column_properties['field_mappings'][0]
+        if first_field['exclude_from_change_detection']:
+            column_properties['column_class'] = 'content_untracked'
+        else:
+            column_properties['column_class'] = 'content'
+        column_properties['field_mapping_count'] = len(column_properties['field_mappings'])
+        for property_name in ['column_type', 'column_content_comment','prio_for_column_position',
+                              'exclude_from_change_detection', 'prio_in_diff_hash']:
+            column_properties[property_name] = first_field[property_name]
         derive_implicit_relations(column_properties)
 
 def derive_implicit_relations(column_properties):
@@ -407,8 +430,6 @@ def derive_implicit_relations(column_properties):
                 field_entry['relation_names'].append('*')
 
 
-def derive_content_dependent_ref_properties(table_name, table_entry):
-    print("tbd")
 
 def derive_load_operations():
     global g_table_dict
@@ -483,12 +504,12 @@ def derive_load_operations():
                 table_entry['load_operations'] = load_operations
 
 
-def add_data_column_mappings_to_load_operations():
+def add_data_mapping_dict_to_load_operations():
     global g_table_dict
     for table_name,table_entry in g_table_dict.items():
         for relation_name,load_operation in table_entry['load_operations'].items():
             if 'data_columns' in table_entry:
-                add_data_column_mappings_for_one_load_operations_(table_name,table_entry,relation_name,load_operation)
+                add_data_mapping_dict_for_one_load_operation(table_name, table_entry, relation_name, load_operation)
 
 def add_hash_columns():
     # all hubs hashes first
@@ -502,27 +523,26 @@ def add_hash_columns():
         if table_entry['table_stereotype']=="lnk":
             add_hash_column_mappings_for_lnk(table_name, table_entry)
 
+    if g_error_count > 0:
+        print_the_brain()
+        print("*** Stopped compiling due to errors ***")
+        exit(5)
 
 
     # finally sattelites
     for table_name,table_entry in g_table_dict.items():
         if table_entry['table_stereotype']=="sat":
-            for relation_name, load_operation in table_entry['load_operations'].items():
-                add_hash_column_mappings_for_sat(table_name, table_entry)
+            add_hash_column_mappings_for_sat(table_name, table_entry)
 
     if g_error_count > 0:
         print_the_brain()
         print("*** Stopped compiling due to errors ***")
         exit(5)
 
-    return
-    #todo implement next steps
-
     # and reference tables
     for table_name,table_entry in g_table_dict.items():
         if table_entry['table_stereotype']=="ref":
-            for relation_name, load_operation in table_entry['load_operations'].items():
-                add_hash_column_mappings_for_satellite(table_name, table_entry, load_operations)
+             add_hash_column_mappings_for_ref(table_name, table_entry)
 
     if g_error_count > 0:
         print("*** Stopped compiling due to errors ***")
@@ -531,6 +551,10 @@ def add_hash_columns():
 
 def add_hash_column_mappings_for_hub(table_name,table_entry):
     global g_hash_dict
+
+    if 'hash_columns' not in table_entry:
+        table_entry['hash_columns']={}
+    table_hash_columns= table_entry['hash_columns']
 
     hash_base_name = "KEY_OF_"+table_name.upper()
     key_column_name = table_entry['hub_key_column_name']
@@ -545,7 +569,7 @@ def add_hash_column_mappings_for_hub(table_name,table_entry):
             stage_column_name = key_column_name + "_" + relation_name.upper()
 
         hash_fields=[]
-        for column_name,column_entry in load_operation_entry['data_column_mapping'].items():
+        for column_name,column_entry in load_operation_entry['data_mapping_dict'].items():
             if column_entry['exclude_from_key_hash'] :
                 continue
             hash_field={'field_name':column_entry['field_name'],
@@ -564,8 +588,13 @@ def add_hash_column_mappings_for_hub(table_name,table_entry):
             g_hash_dict[hash_name]=hash_description
 
         # add reference to global entry into load operation
-        load_operation_entry['hash_reference_dict']={'key':{     "hash_name":hash_name,
+        load_operation_entry['hash_mapping_dict']={'key':{     "hash_name":hash_name,
                                 "hash_column_name":key_column_name,}}
+
+        # put hash column in table hash list
+        if key_column_name not in table_hash_columns:
+            table_hash_columns[key_column_name]={"column_class":"key",
+                                             "column_type":"#todo "} #todo integrate model profile
 
 
 
@@ -574,9 +603,13 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
     link_key_column_name = table_entry['link_key_column_name']
     load_operations = table_entry['load_operations']
 
+    if 'hash_columns' not in table_entry:
+        table_entry['hash_columns']={}
+    table_hash_columns= table_entry['hash_columns']
+
     for relation_name, load_operation_entry in load_operations.items():
-        hash_reference_dict = {}
-        load_operation_entry['hash_reference_dict'] = hash_reference_dict
+        hash_mapping_dict = {}
+        load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
 
         # render names according to relation
         if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
@@ -605,7 +638,7 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
                 register_error(f"Hub '{link_parent_entry['table_name']}' has no business key mapping for relation '{parent_relation}' needed for link '{table_name}'"  )
                 return
             parent_load_operation=parent_load_operations[parent_relation]
-            parent_hash_reference_dict=parent_load_operation['hash_reference_dict']
+            parent_hash_reference_dict=parent_load_operation['hash_mapping_dict']
             parent_key_hash_reference=parent_hash_reference_dict['key']
 
             # assemble the column name for the hub key in the link
@@ -627,12 +660,19 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
             link_parent_key_hash_reference =  {"hash_name": parent_key_hash_reference['hash_name'],
                                        "hash_column_name": hub_key_column_name_in_link }
 
-            hash_reference_dict['parent_key_'+str(link_parent_count)] =link_parent_key_hash_reference
+            hash_mapping_dict['parent_key_'+str(link_parent_count)] =link_parent_key_hash_reference
+
+            # put hash column in table hash list
+            if hub_key_column_name_in_link not in table_hash_columns:
+                table_hash_columns[hub_key_column_name_in_link] = {"column_class": "parent_key",
+                                                    "parent_table_name":link_parent_entry['table_name'],
+                                                   "parent_key_column_name":parent_key_hash_reference['hash_column_name'],
+                                                   "column_type": "#todo "}  # todo integrate model profile
 
 
         # add dependent child keys if exist
-        if 'data_column_mapping' in load_operation_entry:
-            for column_name,column_entry in load_operation_entry['data_column_mapping'].items():
+        if 'data_mapping_dict' in load_operation_entry:
+            for column_name,column_entry in load_operation_entry['data_mapping_dict'].items():
                 if column_entry['exclude_from_key_hash']:
                     continue
                 hash_field={'field_name':column_entry['field_name'],
@@ -653,17 +693,23 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
         # add reference for link key hash to load operation
         link_key_hash_reference = {"hash_name": link_hash_name,
                               "hash_column_name": link_key_column_name, }
-        hash_reference_dict['key']=link_key_hash_reference
+        hash_mapping_dict['key']=link_key_hash_reference
 
-
-
+        # put hash column in table hash list
+        if link_key_column_name not in table_hash_columns:
+            table_hash_columns[link_key_column_name] = {"column_class": "key",
+                                                               "column_type": "#todo "}  # todo integrate model profile
 
 def add_hash_column_mappings_for_sat(table_name,table_entry):
 
+    if 'hash_columns' not in table_entry:
+        table_entry['hash_columns']={}
+    table_hash_columns= table_entry['hash_columns']
+
     load_operations= table_entry['load_operations']
     for relation_name, load_operation_entry in load_operations.items():
-        hash_reference_dict = {}
-        load_operation_entry['hash_reference_dict'] = hash_reference_dict
+        hash_mapping_dict = {}
+        load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
         # add parent key hash to hash reference list
         satellite_parent_table = g_table_dict[table_entry['satellite_parent_table']]
         parent_load_operations = satellite_parent_table['load_operations']
@@ -674,13 +720,22 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
             return
 
         parent_load_operation = parent_load_operations[relation_name]
-        parent_hash_reference_dict = parent_load_operation['hash_reference_dict']
+        parent_hash_reference_dict = parent_load_operation['hash_mapping_dict']
         parent_key_hash_reference = parent_hash_reference_dict['key']
 
-        sat_key_hash_reference = {"hash_name": parent_key_hash_reference['hash_name'],
-                                          "hash_column_name": parent_key_hash_reference['hash_column_name']}
+        sat_key_column_name=parent_key_hash_reference['hash_column_name']
 
-        hash_reference_dict['parent_key'] = sat_key_hash_reference
+        sat_key_hash_reference = {"hash_name": parent_key_hash_reference['hash_name'],
+                                          "hash_column_name": sat_key_column_name}
+        hash_mapping_dict['parent_key'] = sat_key_hash_reference
+
+        # put hash column in table hash list
+        if sat_key_column_name not in table_hash_columns:
+            table_hash_columns[sat_key_column_name] = {"column_class": "parent_key",
+                                                               "parent_table_name": table_entry['satellite_parent_table'],
+                                                               "parent_key_column_name": parent_key_hash_reference[
+                                                                   'hash_column_name'],
+                                                               "column_type": "#todo "}  # todo integrate model profile
 
         # if not needed, skip diff hash
         if table_entry['is_effectivity_sat'] or table_entry['compare_criteria'] == 'key' or table_entry[
@@ -699,7 +754,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
             stage_column_name = diff_hash_column_name + "_" + relation_name.upper()
 
         hash_fields = []
-        for column_name, column_entry in load_operation_entry['data_column_mapping'].items():
+        for column_name, column_entry in load_operation_entry['data_mapping_dict'].items():
             if column_entry['exclude_from_change_detection']:
                 continue
             hash_field = {'field_name': column_entry['field_name'],
@@ -721,27 +776,65 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
             g_hash_dict[hash_name] = hash_description
 
         # add reference to global entry into load operation
-        hash_reference_dict['diff_hash']={"hash_name": hash_name,
+        hash_mapping_dict['diff_hash']={"hash_name": hash_name,
                                          "hash_column_name": diff_hash_column_name }
 
+        # put hash column in table hash list
+        if diff_hash_column_name not in table_hash_columns:
+            table_hash_columns[diff_hash_column_name] = {"column_class": "diff_hash",
+                                                               "column_type": "#todo "}  # todo integrate model profile
 
-def add_hash_column_mappings_for_ref(table_name,table_entry,load_operations):
+
+def add_hash_column_mappings_for_ref(table_name,table_entry):
+    if 'hash_columns' not in table_entry:
+        table_entry['hash_columns']={}
+    table_hash_columns= table_entry['hash_columns']
+
+    if not table_entry['uses_diff_hash']:
+        return
+
+    load_operations=table_entry['load_operations']
+    diff_hash_base_name = "DIFF_OF_" + table_name.upper()
+    diff_hash_column_name = table_entry['diff_hash_column_name']
     for relation_name, load_operation_entry in load_operations.items():
-        if table_entry['uses_diff_hash']:
-            if 'diff_hash_column_name' not in table_entry:
-                register_error(f"Table {table_name} needs diff hash, but has no 'diff_hash_column_name' declaration")
-                return
-            diff_hash_name = "diff_" + table_name
-            diff_hash_column_name = table_entry['diff_hash_column_name']
-            stage_diff_hash_column_name = diff_hash_column_name
-            hash_mapping = {diff_hash_name:{"hash_column_name": diff_hash_column_name,
-                                            "stage_column_name": stage_diff_hash_column_name,
-                                            "hash_column_origin": table_name,
-                                            "column_class": "diff_hash"}}
-            load_operation_entry['hash_mapping'] = hash_mapping
+        hash_mapping_dict = {}
+        load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
+        if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
+            hash_name = diff_hash_base_name
+            stage_column_name = diff_hash_column_name
+        else:
+            hash_name = diff_hash_base_name + "__FOR__" + relation_name.upper()
+            stage_column_name = diff_hash_column_name + "_" + relation_name.upper()
 
-def add_data_column_mappings_for_one_load_operations_(table_name,table_entry,relation_name,load_operation):
-    data_column_mapping={}
+        hash_fields = []
+        for column_name, column_entry in load_operation_entry['data_mapping_dict'].items():
+            if column_entry['exclude_from_change_detection']:
+                continue
+            hash_field = {'field_name': column_entry['field_name'],
+                          'prio_in_diff_hash': column_entry['prio_in_diff_hash'],
+                          'field_target_table': table_name,
+                          'field_target_column': column_name}
+            hash_fields.append(hash_field)
+
+        # put hash definition into global list
+        hash_description = {"stage_column_name": stage_column_name,
+                            "hash_origin_table": table_name,
+                            "column_class": "diff_hash",
+                            "hash_fields": hash_fields}
+        if hash_name not in g_hash_dict:
+            g_hash_dict[hash_name] = hash_description
+
+        # add reference to global entry into load operation
+        hash_mapping_dict['diff_hash']={"hash_name": hash_name,
+                                         "hash_column_name": diff_hash_column_name }
+
+        # put hash column in table hash list
+        if diff_hash_column_name not in table_hash_columns:
+            table_hash_columns[diff_hash_column_name] = {"column_class": "diff_hash",
+                                                               "column_type": "#todo "}  # todo integrate model profile
+
+def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, relation_name, load_operation):
+    data_mapping_dict={}
     for data_column_name, data_column in table_entry['data_columns'].items():
         for field_mapping in data_column['field_mappings']:
             field_name = field_mapping['field_name']
@@ -751,24 +844,81 @@ def add_data_column_mappings_for_one_load_operations_(table_name,table_entry,rel
                     use_field=True
             if not use_field:
                 continue
-            if data_column_name not in data_column_mapping:
-                data_column_mapping[data_column_name]={"field_name":field_name}
-                copy_data_column_properties_to_operation_mapping(data_column_mapping[data_column_name],data_column)
+            if data_column_name not in data_mapping_dict:
+                data_mapping_dict[data_column_name]={"field_name":field_name}
+                copy_data_column_properties_to_operation_mapping(data_mapping_dict[data_column_name],data_column)
             else:
                 register_error(f"Duplicate field mappings for column {data_column_name} in relation {relation_name} for table {table_name}")
 
-    if len(data_column_mapping)>0:
-        load_operation['data_column_mapping']=data_column_mapping
+    if len(data_mapping_dict)>0:
+        load_operation['data_mapping_dict']=data_mapping_dict
 
     if g_error_count > 0:
         print("*** Stopped compiling due to errors ***")
         exit(5)
 
-def copy_data_column_properties_to_operation_mapping(data_column_mapping,data_column):
+def copy_data_column_properties_to_operation_mapping(data_mapping_dict,data_column):
     operation_relevant_column_properties=['column_class','exclude_from_change_detection','prio_for_row_order','prio_in_diff_hash','exclude_from_key_hash','prio_in_key_hash','update_on_every_load']
     for relevant_key in operation_relevant_column_properties:
         if relevant_key in data_column:
-            data_column_mapping[relevant_key]=data_column[relevant_key]
+            data_mapping_dict[relevant_key]=data_column[relevant_key]
+
+
+def assemble_dvpi(dvpd_object, dvpd_filename):
+    global g_dvpi_document
+
+    # add meta declaration and dpvd meta data
+    g_dvpi_document={'dvdp_compiler':'dvpdc reference compiler,  release 0.6.0',
+                     'dvpi_version': '0.6.0',
+                     'compile_timestamp':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    'dvpd_version':dvpd_object['dvpd_version'],
+                     'pipeline_name':dvpd_object['pipeline_name'],
+                     'dvpd_filemame':dvpd_filename}
+
+    # add tables
+    dvpi_table_dict={}
+    g_dvpi_document['table_dict']=dvpi_table_dict
+    for table_name, table_entry in g_table_dict.items():
+        dvpi_table_entry=assemble_dvpi_table_entry(table_name,table_entry)
+        dvpi_table_dict[table_name]=dvpi_table_entry
+
+def assemble_dvpi_table_entry(table_name,table_entry):
+    table_properties_to_copy=['table_stereotype','has_deletion_flag','is_effectivity_sat','is_enddated','is_multiactive','compare_criteria','uses_diff_hash']
+    dvpi_table_entry={}
+    for table_property in table_properties_to_copy:
+        if table_property in table_entry:
+            dvpi_table_entry[table_property]=table_entry[table_property]
+
+    dvpi_column_dict={}
+    dvpi_table_entry['column_dict']=dvpi_column_dict
+
+    # add hash columns to column dict
+    hash_column_properties_to_copy=['column_class','column_type','parent_key_column_name','parent_table_name']
+    for column_name,column_entry in table_entry['hash_columns'].items():
+        dvpi_column_entry = {}
+        dvpi_column_dict[column_name] = dvpi_column_entry
+        for column_property in hash_column_properties_to_copy:
+            if column_property in column_entry:
+                dvpi_column_entry[column_property] = column_entry[column_property]
+
+    # add data columns to column dict
+    data_column_properties_to_copy=['column_class','column_type','column_content_comment','exclude_from_change_detection','prio_for_column_position']
+    if 'data_columns' in table_entry:
+        for column_name,column_entry in table_entry['data_columns'].items():
+            if column_name in dvpi_column_dict:
+                register_error(f"Double column name '{column_name}' when assembling columns for table '{table_name}'. Check for conflicts between data and hashes ?")
+            dvpi_column_entry={}
+            dvpi_column_dict[column_name] =dvpi_column_entry
+            for column_property in data_column_properties_to_copy:
+                if column_property in column_entry:
+                    dvpi_column_entry[column_property] = column_entry[column_property]
+
+
+    return dvpi_table_entry
+
+
+
+
 
 
 
@@ -791,6 +941,7 @@ if __name__ == "__main__":
     try:
         with open(dvpd_file_path, "r") as dvpd_file:
             dvpd_object=json.load(dvpd_file)
+            dvpd_filename = dvpd_file.name
     except json.JSONDecodeError as e:
         print("ERROR: JSON Parsing error of file "+ dvpd_file_path.as_posix())
         print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
@@ -802,10 +953,14 @@ if __name__ == "__main__":
     check_multifield_mapping_consistency()
     derive_content_dependent_table_properties()
     derive_load_operations()
-    add_data_column_mappings_to_load_operations()
+    add_data_mapping_dict_to_load_operations()
     add_hash_columns()
 
-    print_the_brain()
+    #print_the_brain()
+
+    assemble_dvpi(dvpd_object,dvpd_filename)
+    print_dvpi_document()
+
 
 
 
