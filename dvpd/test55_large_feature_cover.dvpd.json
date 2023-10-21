@@ -8,7 +8,7 @@
 	},
 
 	"fields": [
-		     {"field_name": "F1_MULTI_BK1", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_55_aaa_hub"},
+		     {"field_name": "F1_MULTI_BK1", 	"field_type": "Varchar(20)",	"some_fancy_property":"fancy", "targets": [{"table_name": "rtjj_55_aaa_hub"},
 																																										{"table_name": "rtkk_55_bbb_hub"},
 																																										{"table_name": "rtjj_55_ccc_hub"}]}
 		    ,{"field_name": "F2_AAA_BK2", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_55_aaa_hub"}]}

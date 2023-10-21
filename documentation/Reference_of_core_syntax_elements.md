@@ -153,7 +153,7 @@ This array must contain at least one target mapping. Fields, that are mapped to 
 **prio_for_column_position**
 (optional, default is 50000)
 <br>*will be implemented later*
-<br>Defines the position of the column in the table declaration. Columns of the same prio will be orderd alphabetically by the column name.
+<br>Defines the position of the column in the table declaration. Columns of the same prio will be ordered alphabetically by the column name.
 
 **prio_for_row_order**
 (optional, default is 50000)

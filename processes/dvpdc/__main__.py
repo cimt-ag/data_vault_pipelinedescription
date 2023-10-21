@@ -660,7 +660,8 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
 
 def add_hash_column_mappings_for_sat(table_name,table_entry):
 
-    for relation_name, load_operation_entry in table_entry['load_operations'].items():
+    load_operations= table_entry['load_operations']
+    for relation_name, load_operation_entry in load_operations.items():
         hash_reference_dict = {}
         load_operation_entry['hash_reference_dict'] = hash_reference_dict
         # add parent key hash to hash reference list
@@ -683,15 +684,45 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
 
         # if not needed, skip diff hash
         if table_entry['is_effectivity_sat'] or table_entry['compare_criteria'] == 'key' or table_entry[
-            'compare_criteria'] != 'none' or not  table_entry['uses_diff_hash']:
+            'compare_criteria'] == 'none' or not  table_entry['uses_diff_hash']:
                 continue
 
         # add diff hash
+
         diff_hash_base_name="DIFF_OF_"+table_name.upper()
-        #todo implement diff hash creation
+        diff_hash_column_name = table_entry['diff_hash_column_name']
+        if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
+            hash_name = diff_hash_base_name
+            stage_column_name = diff_hash_column_name
+        else:
+            hash_name = diff_hash_base_name + "__FOR__" + relation_name.upper()
+            stage_column_name = diff_hash_column_name + "_" + relation_name.upper()
 
+        hash_fields = []
+        for column_name, column_entry in load_operation_entry['data_column_mapping'].items():
+            if column_entry['exclude_from_change_detection']:
+                continue
+            hash_field = {'field_name': column_entry['field_name'],
+                          'prio_in_diff_hash': column_entry['prio_in_diff_hash'],
+                          'prio_for_row_order':column_entry['prio_for_row_order'],
+                          'field_target_table': table_name,
+                          'field_target_column': column_name}
+            hash_fields.append(hash_field)
 
+        # put hash definition into global list
+        hash_description = {"stage_column_name": stage_column_name,
+                            "hash_origin_table": table_name,
+                            "multi_row_content" : table_entry['is_multiactive'],
+                            "related_key_hash" : parent_key_hash_reference['hash_name'],
+                            "column_class": "diff_hash",
+                            "hash_fields": hash_fields}
 
+        if hash_name not in g_hash_dict:
+            g_hash_dict[hash_name] = hash_description
+
+        # add reference to global entry into load operation
+        hash_reference_dict['diff_hash']={"hash_name": hash_name,
+                                         "hash_column_name": diff_hash_column_name }
 
 
 def add_hash_column_mappings_for_ref(table_name,table_entry,load_operations):
