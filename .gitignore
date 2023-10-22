@@ -5,3 +5,4 @@ config/
 lib/__pycache__/
 *.bkp
 var/
+*.pyc

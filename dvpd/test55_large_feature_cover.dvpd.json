@@ -23,7 +23,7 @@
 			  ,{"field_name": "F10_AAA_SP1_V3_UT",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_55_aaa_p1_sat",																																								"exclude_from_change_detection":true}]}
 		 	  ,{"field_name": "F11_AAA_CCC_SP1_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_55_aaa_ccc_p1_sat"}]}
 			  ,{"field_name": "F12_AAA_CCC_SP1_C2",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_55_aaa_ccc_p1_sat"}]}
-			  ,{"field_name": "F12_AAA_CCC_DC1",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_55_aaa_ccc_lnk"}]}
+			  ,{"field_name": "F13_AAA_CCC_DC1",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_55_aaa_ccc_lnk"}]}
 		 	  ,{"field_name": "F14_DDD_BK1_RUUU",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_55_ddd_hub",
 																																												"column_name":"DDD_BK1",
 																																												"relation_names":["UUU"]}]}

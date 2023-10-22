@@ -964,7 +964,10 @@ def assemble_dvpi_parse_set(dvpd_object):
     #add load operations
     dvpi_load_operations=[]
     parse_set['load_operations'] = dvpi_load_operations
+    has_deletion_flag_in_a_table=False
     for table_name, table_entry in g_table_dict.items():
+        if 'has_deletion_flag' in table_entry and table_entry['has_deletion_flag']:
+            has_deletion_flag_in_a_table=True
         for relation_name,load_operation_entry in table_entry['load_operations'].items():
             dvpi_load_operation_entry= {'table_name': table_name,
                                         'relation_name': relation_name,
@@ -974,13 +977,23 @@ def assemble_dvpi_parse_set(dvpd_object):
             if 'data_mapping_dict' in  load_operation_entry:
                 dvpi_load_operation_entry['data_mapping_dict']=assemble_dvpi_data_mapping_dict(load_operation_entry)
             dvpi_load_operations.append(dvpi_load_operation_entry)
+
+    # add stage column dict
+    parse_set['stage_column_dict']=assemble_dvpi_stage_column_dict(has_deletion_flag_in_a_table)
+
+    if g_error_count > 0:
+        print_the_brain()
+        print("*** Stopped compiling due to errors ***")
+        exit(5)
+
     return  parse_set
 
 def assemble_dvpi_hash_mapping_dict(load_operation_entry):
     dvpi_hash_mapping_dict={}
     for hash_type_name,load_operation_hash_dict_entry in load_operation_entry['hash_mapping_dict'].items():
         dvpi_hash_mapping_dict[hash_type_name]={ 'hash_column_name':load_operation_hash_dict_entry['hash_column_name'],
-                'hash_name':load_operation_hash_dict_entry['hash_name']
+                'hash_name':load_operation_hash_dict_entry['hash_name'],
+                'stage_column_name':g_hash_dict[load_operation_hash_dict_entry['hash_name']]['stage_column_name']
                     }
     return dvpi_hash_mapping_dict
 
@@ -988,26 +1001,77 @@ def assemble_dvpi_data_mapping_dict(load_operation_entry):
     dvpi_data_mapping_dict = {}
     for column_name, data_mapping_dict_entry in load_operation_entry['data_mapping_dict'].items():
         dvpi_data_mapping_dict[column_name] = {'field_name': data_mapping_dict_entry['field_name'],
-                                                  'column_class': data_mapping_dict_entry['column_class']
+                                                  'column_class': data_mapping_dict_entry['column_class'],
+                                               'stage_column_name':data_mapping_dict_entry['field_name'] # currently it is 1:1 naming
                                                   }
     return dvpi_data_mapping_dict
 
 
+def assemble_dvpi_stage_column_dict(has_deletion_flag_in_a_table):
+    dvpi_stage_column_dict = {}
 
 
+    # add meta columns to column stage dict
+    # todo use model profile for column names and types
+    dvpi_stage_column_dict['MD_INSERTED_AT'] = {'stage_column_class': 'meta_load_date',
+                                          'column_type': '#tdbd'}
+    dvpi_stage_column_dict['MD_RECORD_SOURCE'] = {'stage_column_class': 'meta_record_source',
+                                            'column_type': '#tdbd'}
+    dvpi_stage_column_dict['MD_LOAD_PROCESS_ID'] = {'stage_column_class': 'meta_record_source',
+                                              'column_type': '#tdbd'}
+    if has_deletion_flag_in_a_table:
+        dvpi_stage_column_dict['MD_IS_DELETED'] = {'stage_column_class': 'meta_deletion_flag',
+                                             'column_type': '#tdbd'}
+
+    # add all hashes to
+    for hash_name,hash_entry in g_hash_dict.items():
+        stage_column_name=hash_entry['stage_column_name']
+        if stage_column_name in dvpi_stage_column_dict:
+            register_error(
+                f"Double stage column name '{stage_column_name}' when adding hash to columns for stage table. Check for conflicts between meta data colums and hashes ?")
+        dvpi_stage_column_entry = {'stage_column_class':'hash',
+                             'hash_name':hash_name,
+                             'column_type':'#tbd'} # todo use model profile for type
+        dvpi_stage_column_dict[stage_column_name] = dvpi_stage_column_entry
+
+    # add all fields to
+    for field_name,field_entry in g_field_dict.items():
+        stage_column_name=field_name
+        if stage_column_name in dvpi_stage_column_dict:
+            register_error(
+                f"Double stage column name '{stage_column_name}' when adding hash to columns for stage table. Check for conflicts between meta data colums and hashes ?")
+        dvpi_stage_column_entry = {'stage_column_class':'data',
+                             'field_name':field_name,
+                             'column_type':field_entry['field_type'],
+                             'column_classes':['content'] } # later feature will collect list of classes
+        dvpi_stage_column_dict[stage_column_name] = dvpi_stage_column_entry
+
+    return dvpi_stage_column_dict
 
 # ======================= Main =========================================== #
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("dvpd_filename", help="Name of the dvpd file to compile")
-    parser.add_argument("--dvpi",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
-    parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
-    args = parser.parse_args()
+def dvpdc(dvpd_filename,dvpi_filename=None):
+
+    global g_table_dict
+    global g_dvpi_document
+    global g_field_dict
+    global g_error_count
+    global g_hash_dict
+
+    g_table_dict={}
+    g_dvpi_document={}
+    g_field_dict={}
+    g_error_count=0
+    g_hash_dict={}
+
 
     params = configuration_load_ini('dvpdc.ini', 'dvpdc')
 
-    dvpd_file_path = Path(params['dvpd_default_directory']).joinpath(args.dvpd_filename)
+    dvpd_file_path = Path(params['dvpd_default_directory']).joinpath(dvpd_filename)
+
+    if dvpi_filename == None:
+        dvpi_filename=dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpi.json"
+
     if not os.path.exists(dvpd_file_path):
         raise Exception(f'could not find dvpd file: {dvpd_file_path}')
 
@@ -1015,11 +1079,11 @@ if __name__ == "__main__":
     try:
         with open(dvpd_file_path, "r") as dvpd_file:
             dvpd_object=json.load(dvpd_file)
-            dvpd_filename = dvpd_file.name
     except json.JSONDecodeError as e:
         print("ERROR: JSON Parsing error of file "+ dvpd_file_path.as_posix())
         print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
         exit(5)
+
 
     check_essential_element(dvpd_object)
     collect_table_properties(dvpd_object)
@@ -1032,9 +1096,32 @@ if __name__ == "__main__":
 
     #print_the_brain()
 
-    assemble_dvpi(dvpd_object,dvpd_filename)
+    assemble_dvpi(dvpd_object,dvpd_filename) # todo add option to omit stage_column_dict
     print_dvpi_document()
 
+    # write DVPI to file
+    dvpi_directory=Path(params['dvpi_default_directory'])
+    dvpi_directory.mkdir(parents=True, exist_ok=True)
+    dvpi_file_path = dvpi_directory.joinpath(dvpi_filename)
+
+    print("Compile successfull. Writing DVPI to " + dvpi_file_path.as_posix())
+
+    try:
+        with open(dvpi_file_path, "w") as dvpi_file:
+            json.dump(g_dvpi_document, dvpi_file, ensure_ascii=False, indent=2)
+    except json.JSONDecodeError as e:
+        print("ERROR: JSON writing to  of file "+ dvpi_file_path.as_posix())
+        print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
+        exit(5)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("dvpd_filename", help="Name of the dvpd file to compile")
+    parser.add_argument("--dvpi",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
+    #parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
+    args = parser.parse_args()
+    dvpdc(dvpd_filename=args.dvpd_filename, dvpi_filename=args.dvpi)
 
 
 
