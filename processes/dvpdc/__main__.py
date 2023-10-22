@@ -442,7 +442,7 @@ def derive_load_operations():
                 for field_mapping in data_column['field_mappings']:
                     for relation_name in field_mapping['relation_names']:
                         if relation_name != '*':
-                            load_operations[relation_name]={"operation_origin":"explicit data relation"}
+                            load_operations[relation_name]={"operation_origin":"explicit field mapping relation"}
         if 'tracked_relation_name' in table_entry:
             load_operations[table_entry['tracked_relation_name']] = {"operation_origin": "explicitly tracked relation"}
         if len(load_operations)>0:
@@ -489,7 +489,7 @@ def derive_load_operations():
                 for sat_table_name,sat_table_entry in g_table_dict.items():
                     if sat_table_entry.get('satellite_parent_table') == link_table_name:
                         for sat_load_operation in sat_table_entry['load_operations']:
-                            load_operations[sat_load_operation]={"operation_origin":"collected from satellites"}
+                            load_operations[sat_load_operation]={"operation_origin":f"induced from satellite {sat_table_name}"}
                 if len(load_operations) > 0:
                     link_table_entry['load_operations'] = load_operations
                 else:
@@ -882,6 +882,14 @@ def assemble_dvpi(dvpd_object, dvpd_filename):
         dvpi_table_entry=assemble_dvpi_table_entry(table_name,table_entry)
         dvpi_table_dict[table_name]=dvpi_table_entry
 
+    # copy data_extraction from dvpd
+    g_dvpi_document['data_extraction']=dvpd_object['data_extraction']
+
+    # add parse sets
+    dvpi_parse_sets=[]
+    g_dvpi_document['parse_sets']=dvpi_parse_sets
+    dvpi_parse_sets.append(assemble_dvpi_parse_set(dvpd_object))
+
 def assemble_dvpi_table_entry(table_name,table_entry):
     table_properties_to_copy=['table_stereotype','has_deletion_flag','is_effectivity_sat','is_enddated','is_multiactive','compare_criteria','uses_diff_hash']
     dvpi_table_entry={}
@@ -892,21 +900,44 @@ def assemble_dvpi_table_entry(table_name,table_entry):
     dvpi_column_dict={}
     dvpi_table_entry['column_dict']=dvpi_column_dict
 
+
+    # add meta columns to column dict
+    #todo use model profile for column names and types
+    dvpi_column_dict['MD_INSERTED_AT'] = { 'column_class':'meta_load_date',
+                                           'column_type':'#tdbd'}
+    dvpi_column_dict['MD_RECORD_SOURCE'] = { 'column_class':'meta_record_source',
+                                           'column_type':'#tdbd'}
+    dvpi_column_dict['MD_LOAD_PROCESS_ID'] = { 'column_class':'meta_record_source',
+                                           'column_type':'#tdbd'}
+    if 'has_deletion_flag' in table_entry and table_entry['has_deletion_flag']:
+        dvpi_column_dict['MD_IS_DELETED'] = {'column_class': 'meta_deletion_flag',
+                                                  'column_type': '#tdbd'}
+
+    if 'is_enddated' in table_entry and table_entry['is_enddated']:
+        dvpi_column_dict['MD_VALID_BEFORE'] = {'column_class': 'meta_load_enddate',
+                                                  'column_type': '#tdbd'}
+
+
     # add hash columns to column dict
     hash_column_properties_to_copy=['column_class','column_type','parent_key_column_name','parent_table_name']
     for column_name,column_entry in table_entry['hash_columns'].items():
+        if column_name in dvpi_column_dict:
+            register_error(
+                f"Double column name '{column_name}' when adding hash to columns for table '{table_name}'. Check for conflicts between meta data colums and hashes ?")
         dvpi_column_entry = {}
         dvpi_column_dict[column_name] = dvpi_column_entry
         for column_property in hash_column_properties_to_copy:
             if column_property in column_entry:
                 dvpi_column_entry[column_property] = column_entry[column_property]
 
+
+
     # add data columns to column dict
     data_column_properties_to_copy=['column_class','column_type','column_content_comment','exclude_from_change_detection','prio_for_column_position']
     if 'data_columns' in table_entry:
         for column_name,column_entry in table_entry['data_columns'].items():
             if column_name in dvpi_column_dict:
-                register_error(f"Double column name '{column_name}' when assembling columns for table '{table_name}'. Check for conflicts between data and hashes ?")
+                register_error(f"Double column name '{column_name}' when adding data column for table '{table_name}'. Check for conflicts between data, meta data colums and hashes ?")
             dvpi_column_entry={}
             dvpi_column_dict[column_name] =dvpi_column_entry
             for column_property in data_column_properties_to_copy:
@@ -917,6 +948,49 @@ def assemble_dvpi_table_entry(table_name,table_entry):
     return dvpi_table_entry
 
 
+def assemble_dvpi_parse_set(dvpd_object):
+    parse_set={}
+
+    #add meta data for parsing
+    parse_set['stage_properties']=dvpd_object['stage_properties']
+    parse_set['record_source_name_expression'] = dvpd_object['record_source_name_expression']
+
+    #add field dictionary
+    parse_set['field_dict']=g_field_dict
+
+    #add hash dictionary
+    parse_set['hash_dict']=g_hash_dict
+
+    #add load operations
+    dvpi_load_operations=[]
+    parse_set['load_operations'] = dvpi_load_operations
+    for table_name, table_entry in g_table_dict.items():
+        for relation_name,load_operation_entry in table_entry['load_operations'].items():
+            dvpi_load_operation_entry= {'table_name': table_name,
+                                        'relation_name': relation_name,
+                                        'operation_origin': load_operation_entry['operation_origin'],
+                                        'hash_mapping_dict': assemble_dvpi_hash_mapping_dict(load_operation_entry)}
+
+            if 'data_mapping_dict' in  load_operation_entry:
+                dvpi_load_operation_entry['data_mapping_dict']=assemble_dvpi_data_mapping_dict(load_operation_entry)
+            dvpi_load_operations.append(dvpi_load_operation_entry)
+    return  parse_set
+
+def assemble_dvpi_hash_mapping_dict(load_operation_entry):
+    dvpi_hash_mapping_dict={}
+    for hash_type_name,load_operation_hash_dict_entry in load_operation_entry['hash_mapping_dict'].items():
+        dvpi_hash_mapping_dict[hash_type_name]={ 'hash_column_name':load_operation_hash_dict_entry['hash_column_name'],
+                'hash_name':load_operation_hash_dict_entry['hash_name']
+                    }
+    return dvpi_hash_mapping_dict
+
+def assemble_dvpi_data_mapping_dict(load_operation_entry):
+    dvpi_data_mapping_dict = {}
+    for column_name, data_mapping_dict_entry in load_operation_entry['data_mapping_dict'].items():
+        dvpi_data_mapping_dict[column_name] = {'field_name': data_mapping_dict_entry['field_name'],
+                                                  'column_class': data_mapping_dict_entry['column_class']
+                                                  }
+    return dvpi_data_mapping_dict
 
 
 
