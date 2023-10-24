@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-06-14T07:44:57.591Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="sQ3sN3DuJqY13QrhJ-qH" version="21.3.8" type="device">
+<mxfile host="Electron" modified="2023-10-24T19:13:08.239Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.5.1 Chrome/112.0.5615.204 Electron/24.6.0 Safari/537.36" etag="IaQZO3FOSnO_eMK1b_fp" version="21.5.1" type="device">
   <diagram id="vNLIBaDfy6V9ff-0SzCh" name="Seite-1">
-    <mxGraphModel dx="1358" dy="790" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#FFFFFF" math="0" shadow="0">
+    <mxGraphModel dx="1356" dy="868" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#FFFFFF" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="2" value="Layer 0" parent="0" />
@@ -20,7 +20,7 @@
           <mxGeometry x="726.25" y="315" width="180" height="75" as="geometry" />
         </mxCell>
         <mxCell id="8" value="&lt;div style=&quot;width: 169.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;font face=&quot;Arial&quot;&gt;Data Vault model tables with all columns&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#d9ead3;strokeColor=#000000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=3.6;spacingRight=0;whiteSpace=wrap;gliffyId=13;" parent="2" vertex="1">
-          <mxGeometry x="556.25" y="535" width="180" height="75" as="geometry" />
+          <mxGeometry x="556.25" y="470" width="180" height="75" as="geometry" />
         </mxCell>
         <mxCell id="9" value="&lt;div style=&quot;width: 102.6px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; line-height: 14px;&quot;&gt;Input for DDL generator&lt;span style=&quot;text-decoration: none; line-height: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=0;strokeColor=none;fillColor=#d9ead3;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.2;spacingRight=0;whiteSpace=wrap;gliffyId=51;" parent="2" vertex="1">
           <mxGeometry x="110" y="855" width="110" height="30" as="geometry" />
@@ -34,20 +34,26 @@
         <mxCell id="12" value="&lt;div style=&quot;width: 102.6px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; line-height: 14px;&quot;&gt;Input for loading into target table&lt;span style=&quot;text-decoration: none; line-height: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#990000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.2;spacingRight=0;whiteSpace=wrap;gliffyId=57;" parent="2" vertex="1">
           <mxGeometry x="110" y="955" width="110" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="13" value="&lt;div style=&quot;width: 169.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;For every hash value: list of Data Vault model table columns to use&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#333333;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=3.6;spacingRight=0;whiteSpace=wrap;gliffyId=17;" parent="2" vertex="1">
-          <mxGeometry x="726.25" y="707.5" width="180" height="75" as="geometry" />
+        <mxCell id="13" value="&lt;div style=&quot;width: 169.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;For every hash column: list of Data Vault table columns to use&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;(business keys, dependent child keys, satellite content)&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#333333;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=3.6;spacingRight=0;whiteSpace=wrap;gliffyId=17;" parent="2" vertex="1">
+          <mxGeometry x="726.25" y="608.75" width="180" height="75" as="geometry" />
         </mxCell>
-        <mxCell id="14" value="&lt;div style=&quot;width: 169.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;List of necessary loading processes for every table&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=3.6;spacingRight=0;whiteSpace=wrap;gliffyId=24;" parent="2" vertex="1">
-          <mxGeometry x="266.25" y="535" width="180" height="40" as="geometry" />
+        <mxCell id="14" value="&lt;div style=&quot;width: 169.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;List of necessary loading operations for every table and its relations&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#000000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=3.6;spacingRight=0;whiteSpace=wrap;gliffyId=24;" parent="2" vertex="1">
+          <mxGeometry x="266.25" y="475" width="180" height="65" as="geometry" />
         </mxCell>
-        <mxCell id="15" value="&lt;div style=&quot;width: 169.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;For every table loading process:&amp;nbsp;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;Mapping of fields to stage column and Data Vault model column.&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;Mapping of&amp;nbsp;&lt;/span&gt;&lt;/span&gt;(process specific)&lt;span style=&quot;font-family: Arial; background-color: initial;&quot;&gt;&amp;nbsp;stage hash columns to Data Vault hash columns&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#990000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=3.6;spacingRight=0;whiteSpace=wrap;gliffyId=31;" parent="2" vertex="1">
-          <mxGeometry x="351.25" y="700" width="230" height="130" as="geometry" />
+        <mxCell id="Gl26JLkWMYPqlJ2-tYro-34" style="edgeStyle=orthogonalEdgeStyle;shape=filledEdge;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=default;startArrow=none;startFill=0;endArrow=open;endFill=0;startSize=6;endSize=6;fillColor=none;" edge="1" parent="2" source="15" target="16">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="16" value="&lt;div style=&quot;width: 208.2px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; line-height: 14px;&quot;&gt;Stage table columns (including the mapping of fields to stage columns)&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#d9ead3;strokeColor=#e69138;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=4.4;spacingRight=0;whiteSpace=wrap;gliffyId=44;" parent="2" vertex="1">
-          <mxGeometry x="356.25" y="910" width="220" height="75" as="geometry" />
+        <mxCell id="15" value="&lt;div style=&quot;width: 169.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;For every table loading operation:&amp;nbsp;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot;&gt;Mapping of fields to Data Vault model column.&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#990000;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=3.6;spacingRight=0;whiteSpace=wrap;gliffyId=31;" parent="2" vertex="1">
+          <mxGeometry x="351.25" y="775" width="230" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="17" value="&lt;div style=&quot;width: 169.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;font face=&quot;Arial&quot;&gt;For every stage hash column: List of fields to hash (including properties for ordering)&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#e69138;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=3.6;spacingRight=0;whiteSpace=wrap;gliffyId=48;" parent="2" vertex="1">
-          <mxGeometry x="726.25" y="910" width="180" height="75" as="geometry" />
+        <mxCell id="16" value="&lt;div style=&quot;width: 208.2px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; line-height: 14px;&quot;&gt;Stage table columns&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#d9ead3;strokeColor=#e69138;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=4.4;spacingRight=0;whiteSpace=wrap;gliffyId=44;" parent="2" vertex="1">
+          <mxGeometry x="530" y="910" width="220" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="Gl26JLkWMYPqlJ2-tYro-35" style="edgeStyle=orthogonalEdgeStyle;shape=filledEdge;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=default;startArrow=none;startFill=0;endArrow=open;endFill=0;startSize=6;endSize=6;fillColor=none;" edge="1" parent="2" source="17" target="16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="17" value="&lt;div style=&quot;width: 169.8px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;font face=&quot;Arial&quot;&gt;For every table loading operation: List of all needed field composition for every hash&amp;nbsp;&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#e69138;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=3.6;spacingRight=0;whiteSpace=wrap;gliffyId=48;" parent="2" vertex="1">
+          <mxGeometry x="726.25" y="775" width="180" height="75" as="geometry" />
         </mxCell>
         <mxCell id="18" style="shape=filledEdge;strokeWidth=2;strokeColor=#000000;fillColor=none;startArrow=none;startFill=0;startSize=6;endArrow=open;endFill=0;endSize=6;rounded=1;gliffyId=11;edgeStyle=orthogonalEdgeStyle;" parent="2" source="3" target="7" edge="1">
           <mxGeometry width="5" height="192" relative="1" as="geometry">
@@ -92,26 +98,24 @@
         <mxCell id="22" style="shape=filledEdge;strokeWidth=2;strokeColor=#000000;fillColor=none;startArrow=none;startFill=0;startSize=6;endArrow=open;endFill=0;endSize=6;rounded=1;gliffyId=15;edgeStyle=orthogonalEdgeStyle;" parent="2" source="7" target="8" edge="1">
           <mxGeometry width="5" height="192" relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="816" y="500" />
-              <mxPoint x="646" y="500" />
+              <mxPoint x="816" y="410" />
+              <mxPoint x="646" y="410" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="23" style="shape=filledEdge;strokeWidth=2;strokeColor=#000000;fillColor=none;startArrow=none;startFill=0;startSize=6;endArrow=open;endFill=0;endSize=6;rounded=1;gliffyId=16;edgeStyle=orthogonalEdgeStyle;" parent="2" source="4" target="8" edge="1">
           <mxGeometry width="5" height="192" relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="466" y="500" />
-              <mxPoint x="646" y="500" />
+              <mxPoint x="466" y="410" />
+              <mxPoint x="646" y="410" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="24" style="shape=filledEdge;strokeWidth=2;strokeColor=#000000;fillColor=none;startArrow=none;startFill=0;startSize=6;endArrow=open;endFill=0;endSize=6;rounded=1;gliffyId=19;edgeStyle=orthogonalEdgeStyle;" parent="2" source="8" target="13" edge="1">
           <mxGeometry width="5" height="192" relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="646.25" y="610" />
-              <mxPoint x="646.25" y="658.75" />
-              <mxPoint x="816.25" y="658.75" />
-              <mxPoint x="816.25" y="707.5" />
+              <mxPoint x="646" y="570" />
+              <mxPoint x="816" y="570" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -171,33 +175,8 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="31" style="shape=filledEdge;strokeWidth=2;strokeColor=#000000;fillColor=none;startArrow=none;startFill=0;startSize=6;endArrow=open;endFill=0;endSize=6;rounded=1;gliffyId=46;edgeStyle=orthogonalEdgeStyle;" parent="2" source="15" target="16" edge="1">
-          <mxGeometry width="5" height="192" relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="466.25" y="790" />
-              <mxPoint x="466.25" y="830" />
-              <mxPoint x="466.25" y="870" />
-              <mxPoint x="466.25" y="910" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
         <mxCell id="32" style="shape=filledEdge;strokeWidth=2;strokeColor=#000000;fillColor=none;startArrow=none;startFill=0;startSize=6;endArrow=open;endFill=0;endSize=6;rounded=1;gliffyId=47;edgeStyle=orthogonalEdgeStyle;" parent="2" source="13" target="17" edge="1">
-          <mxGeometry width="5" height="192" relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="816.25" y="782.5" />
-              <mxPoint x="816.25" y="825" />
-              <mxPoint x="816.25" y="867.5" />
-              <mxPoint x="816.25" y="910" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="33" style="shape=filledEdge;strokeWidth=2;strokeColor=#000000;fillColor=none;startArrow=none;startFill=0;startSize=6;endArrow=open;endFill=0;endSize=6;rounded=1;gliffyId=50;edgeStyle=orthogonalEdgeStyle;" parent="2" source="15" target="17" edge="1">
-          <mxGeometry width="5" height="192" relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="466" y="850" />
-              <mxPoint x="816" y="850" />
-            </Array>
-          </mxGeometry>
+          <mxGeometry width="5" height="192" relative="1" as="geometry" />
         </mxCell>
         <mxCell id="NpN65zklDhgpVr-dGM9f-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.25;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="2" source="NpN65zklDhgpVr-dGM9f-33" target="3" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -213,6 +192,16 @@
         </mxCell>
         <mxCell id="5ljOtFP8lKzOFH9_YUSK-35" value="global" style="shape=rect;shadow=0;strokeWidth=0;strokeColor=none;fillColor=#d9d9d9;opacity=100.0;rotation=270.0;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=0;spacingRight=0;gliffyId=65;fontSize=18;labelPosition=center;verticalLabelPosition=middle;" parent="2" vertex="1">
           <mxGeometry x="22.5" y="60" width="87.5" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="Gl26JLkWMYPqlJ2-tYro-33" style="shape=filledEdge;strokeWidth=2;strokeColor=#000000;fillColor=none;startArrow=none;startFill=0;startSize=6;endArrow=open;endFill=0;endSize=6;rounded=1;gliffyId=33;edgeStyle=orthogonalEdgeStyle;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="2" source="14" target="17">
+          <mxGeometry width="5" height="192" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="356" y="730" />
+              <mxPoint x="816" y="730" />
+            </Array>
+            <mxPoint x="366" y="550" as="sourcePoint" />
+            <mxPoint x="476" y="810" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>

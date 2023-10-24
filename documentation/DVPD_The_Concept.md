@@ -257,7 +257,7 @@ One DVDP is represented by a single json document. The root element contains gen
 
 The following diagram provides an overview of the main structural elements. Please keep in mind that relations are aritificial objects, that are created by just referencing them from different elements. 
 
-![fig](./images/dvpd_object_model.drawio.png)
+![Alt text](images/DVPD_structure.drawio.png)
 
 The naming and description of all attributes in the structure is documented in [Reference of core syntax](./Reference_of_core_syntax_elements.md)
 
@@ -434,8 +434,13 @@ The key column of a link, calculated by hashing all business key of the related 
 **Load Operation**
 A table load operation contains all necessary steps for loading a defined set of fields to a single data vault table. This can be a single SQL Insert Statement or a more complex series of Statemets (e.g. check Hash collision, insert new and changed data, insert deletion records, update enddate columns)
 
-
 **Process**
+The process contains all tasks, taht are needed to load the whole desribed transformation.
+- determine increment
+- fetch data 
+- parse data into rows and fields
+- calculate hash values (can also be part of the load operation)
+- execute all load operations for all tables
 
 **Relation**
-
+A relation between two business objects. In data vault relations are expressed via link table structures. The same business objects can have multiple kinds of relations between each other. As soon, as there is more then one kind of relation between the same objects, it is necessary to provide multiple connections and explicit names for the relation. see [Catalog of field mappings](./catalog_of_field_mappings_in_relations.md) for more insights
