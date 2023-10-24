@@ -1,7 +1,7 @@
 # release 0.6.0
 
 ### features
-- stage schema must be declared now im stage_properties clause
+- stage schema must be declared now in stage_properties clause
 - stage table name can be declared now in stage_properties clause, default is the name of the pipeline
 - schema name and table are used in the DDL Generator utility script
 - if the change detection uses a diff hash can not be switched with **uses_diff_hash** at the table and uses_diff_hash_default in the model profile

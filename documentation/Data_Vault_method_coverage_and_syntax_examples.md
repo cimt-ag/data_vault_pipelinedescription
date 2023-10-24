@@ -397,7 +397,7 @@ This is an example of a part containment hierarchy. The declaration is another v
 
 ### non historized link {DV-5.2.4}
 ```json
-"fields": [
+{"fields": [
 		    {	"field_name": "ACCOUNT_NO",
 				"field_type": "integer",
 				"targets": [{"table_name": "account_hub"}]
@@ -442,7 +442,7 @@ This is an example of a part containment hierarchy. The declaration is another v
 				"hub_key_column_name": "HK_ACCOUNTANT"
 			}
 		]
-```
+}```
 
 ### nondescriptive link (single) {DV-5.2.5}
 Like the simple link example, non descriptive links are expressed by leaving out satellites. To keep only the current relations and remove deprecated relations a deletion rule for the link is declared. The source delivers complete customer relations for all orders in the data increment, so the order is partition criteria. 
