@@ -6,3 +6,6 @@ lib/__pycache__/
 *.bkp
 var/
 *.pyc
+dvpd/
+datamodel/dvpd/
+
