@@ -49,7 +49,7 @@ def create_documentation(pipeline_name, fields):
     html += "table, th, td {border: 1px solid;}\n"
     html += "table {border-collapse: collapse;}\n"
     html += "</style>\n"
-    html += "   <title>{pipeline_name}</title>\n"
+    html += f"   <title>{pipeline_name}</title>\n"
     html += "</head>\n"
     html += "<body>\n"
     html += "   <table>\n"
