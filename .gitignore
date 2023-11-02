@@ -8,4 +8,4 @@ var/
 *.pyc
 dvpd/
 datamodel/dvpd/
-
+java-dvpi-consumer/target/
