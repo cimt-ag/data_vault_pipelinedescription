@@ -4,7 +4,19 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "com.cimtag.app.App"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "com.cimtag.app.App",
+            "projectName": "java-dvpi-consumer"
+        },
         {
             "name": "Python: Current File",
             "type": "python",
@@ -12,7 +24,9 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["/home/joscha/data_vault_pipelinedescription/processes/render_documentation/test_dvpd.json"]
+            "args": [
+                "/home/joscha/data_vault_pipelinedescription/processes/render_documentation/test_dvpd.json"
+            ]
         }
     ]
 }
