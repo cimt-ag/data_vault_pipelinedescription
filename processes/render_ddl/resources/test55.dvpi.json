@@ -1,0 +1,1658 @@
+{
+  "compile_timestamp": "2023-10-22 18:45:50",
+  "data_extraction": {
+    "fetch_module_name": "none - this is a pure generator test case"
+  },
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
+  "dvpd_filemame": "test55_large_feature_cover.dvpd.json",
+  "dvpd_version": "0.6.0",
+  "dvpi_version": "0.6.0",
+  "parse_sets": [
+    {
+      "field_dict": {
+        "F10_AAA_SP1_V3_UT": {
+          "field_position": 10,
+          "field_type": "DECIMAL(5,0)",
+          "needs_encryption": false
+        },
+        "F11_AAA_CCC_SP1_C1": {
+          "field_position": 11,
+          "field_type": "VARCHAR(200)",
+          "needs_encryption": false
+        },
+        "F12_AAA_CCC_SP1_C2": {
+          "field_position": 12,
+          "field_type": "DECIMAL(5,0)",
+          "needs_encryption": false
+        },
+        "F13_AAA_CCC_DC1": {
+          "field_position": 13,
+          "field_type": "DECIMAL(5,0)",
+          "needs_encryption": false
+        },
+        "F14_DDD_BK1_RUUU": {
+          "field_position": 14,
+          "field_type": "Decimal(20,0)",
+          "needs_encryption": false
+        },
+        "F15_DDD_BK1_RWWW": {
+          "field_position": 15,
+          "field_type": "Decimal(20,0)",
+          "needs_encryption": false
+        },
+        "F16_DDD_SP1_C1_RUUU": {
+          "field_position": 16,
+          "field_type": "Decimal(20,0)",
+          "needs_encryption": false
+        },
+        "F17_DDD_SP1_C1_RUUU": {
+          "field_position": 17,
+          "field_type": "Decimal(20,0)",
+          "needs_encryption": false
+        },
+        "F18_EEE_SP1_C1": {
+          "field_position": 18,
+          "field_type": "DECIMAL(5,0)",
+          "needs_encryption": false
+        },
+        "F19__FIELD_NAME": {
+          "field_position": 19,
+          "field_type": "VARCHAR(200)",
+          "needs_encryption": false
+        },
+        "F1_MULTI_BK1": {
+          "field_position": 1,
+          "field_type": "Varchar(20)",
+          "needs_encryption": false,
+          "some_fancy_property": "fancy"
+        },
+        "F2_AAA_BK2": {
+          "field_position": 2,
+          "field_type": "Varchar(20)",
+          "needs_encryption": false
+        },
+        "F3_BBB_BK2_RSSS": {
+          "field_position": 3,
+          "field_type": "Decimal(20,0)",
+          "needs_encryption": false
+        },
+        "F4_BBB_BK2_RTTT": {
+          "field_position": 4,
+          "field_type": "Decimal(20,0)",
+          "needs_encryption": false
+        },
+        "F5_CCC_BK2": {
+          "field_position": 5,
+          "field_type": "Varchar(20)",
+          "needs_encryption": false
+        },
+        "F6_CCC_UT1": {
+          "field_position": 6,
+          "field_type": "Varchar(20)",
+          "needs_encryption": false
+        },
+        "F7_AAA_SP1_C1": {
+          "field_position": 7,
+          "field_type": "VARCHAR(200)",
+          "needs_encryption": false
+        },
+        "F8_AAA_SP1_C2": {
+          "field_position": 8,
+          "field_type": "DECIMAL(5,0)",
+          "needs_encryption": false
+        },
+        "F9_AAA_FIELD_NAME": {
+          "field_position": 9,
+          "field_type": "VARCHAR(200)",
+          "needs_encryption": false
+        }
+      },
+      "hash_dict": {
+        "DIFF_OF_RTJJ_55_AAA_CCC_P1_SAT": {
+          "column_class": "diff_hash",
+          "hash_fields": [
+            {
+              "field_name": "F11_AAA_CCC_SP1_C1",
+              "field_target_column": "F11_AAA_CCC_SP1_C1",
+              "field_target_table": "rtjj_55_aaa_ccc_p1_sat",
+              "prio_for_row_order": 50000,
+              "prio_in_diff_hash": 0
+            },
+            {
+              "field_name": "F12_AAA_CCC_SP1_C2",
+              "field_target_column": "F12_AAA_CCC_SP1_C2",
+              "field_target_table": "rtjj_55_aaa_ccc_p1_sat",
+              "prio_for_row_order": 50000,
+              "prio_in_diff_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtjj_55_aaa_ccc_p1_sat",
+          "multi_row_content": false,
+          "related_key_hash": "KEY_OF_RTJJ_55_AAA_CCC_LNK",
+          "stage_column_name": "RH_RTJJ_55_AAA_CCC_P1_SAT"
+        },
+        "DIFF_OF_RTJJ_55_AAA_P1_SAT": {
+          "column_class": "diff_hash",
+          "hash_fields": [
+            {
+              "field_name": "F7_AAA_SP1_C1",
+              "field_target_column": "F7_AAA_SP1_C1",
+              "field_target_table": "rtjj_55_aaa_p1_sat",
+              "prio_for_row_order": 50000,
+              "prio_in_diff_hash": 0
+            },
+            {
+              "field_name": "F8_AAA_SP1_C2",
+              "field_target_column": "F8_AAA_SP1_C2",
+              "field_target_table": "rtjj_55_aaa_p1_sat",
+              "prio_for_row_order": 50000,
+              "prio_in_diff_hash": 0
+            },
+            {
+              "field_name": "F9_AAA_FIELD_NAME",
+              "field_target_column": "F9_AAA_SP1_C3",
+              "field_target_table": "rtjj_55_aaa_p1_sat",
+              "prio_for_row_order": 50000,
+              "prio_in_diff_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtjj_55_aaa_p1_sat",
+          "multi_row_content": false,
+          "related_key_hash": "KEY_OF_RTJJ_55_AAA_HUB",
+          "stage_column_name": "RH_RTJJ_55_AAA_P1_SAT"
+        },
+        "DIFF_OF_RTJJ_55_DDD_P1_SAT__FOR__UUU": {
+          "column_class": "diff_hash",
+          "hash_fields": [
+            {
+              "field_name": "F16_DDD_SP1_C1_RUUU",
+              "field_target_column": "DDD_SP1_C1",
+              "field_target_table": "rtjj_55_ddd_p1_sat",
+              "prio_for_row_order": 50000,
+              "prio_in_diff_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtjj_55_ddd_p1_sat",
+          "multi_row_content": false,
+          "related_key_hash": "KEY_OF_RTJJ_55_DDD_HUB__FOR__UUU",
+          "stage_column_name": "RH_RTJJ_55_DDD_P1_SAT_UUU"
+        },
+        "DIFF_OF_RTJJ_55_DDD_P1_SAT__FOR__WWW": {
+          "column_class": "diff_hash",
+          "hash_fields": [
+            {
+              "field_name": "F17_DDD_SP1_C1_RUUU",
+              "field_target_column": "DDD_SP1_C1",
+              "field_target_table": "rtjj_55_ddd_p1_sat",
+              "prio_for_row_order": 50000,
+              "prio_in_diff_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtjj_55_ddd_p1_sat",
+          "multi_row_content": false,
+          "related_key_hash": "KEY_OF_RTJJ_55_DDD_HUB__FOR__WWW",
+          "stage_column_name": "RH_RTJJ_55_DDD_P1_SAT_WWW"
+        },
+        "DIFF_OF_RTJJ_55_EEE_REF": {
+          "column_class": "diff_hash",
+          "hash_fields": [
+            {
+              "field_name": "F18_EEE_SP1_C1",
+              "field_target_column": "F18_EEE_SP1_C1",
+              "field_target_table": "rtjj_55_eee_ref",
+              "prio_in_diff_hash": 0
+            },
+            {
+              "field_name": "F19__FIELD_NAME",
+              "field_target_column": "F9_EEE_SP1_C2",
+              "field_target_table": "rtjj_55_eee_ref",
+              "prio_in_diff_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtjj_55_eee_ref",
+          "stage_column_name": "RH_RTJJ_55_EEE_P1_REF"
+        },
+        "KEY_OF_RTJJ_55_AAA_BBB_LNK": {
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F1_MULTI_BK1",
+              "field_target_column": "F1_MULTI_BK1",
+              "field_target_table": "rtjj_55_aaa_hub",
+              "parent_declaration_position": 1,
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F2_AAA_BK2",
+              "field_target_column": "F2_AAA_BK2",
+              "field_target_table": "rtjj_55_aaa_hub",
+              "parent_declaration_position": 1,
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F1_MULTI_BK1",
+              "field_target_column": "F1_MULTI_BK1",
+              "field_target_table": "rtkk_55_bbb_hub",
+              "parent_declaration_position": 2,
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F3_BBB_BK2_RSSS",
+              "field_target_column": "BBB_BK2",
+              "field_target_table": "rtkk_55_bbb_hub",
+              "parent_declaration_position": 2,
+              "prio_in_key_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtjj_55_aaa_bbb_lnk",
+          "stage_column_name": "LK_RTJJ_55_AAA_BBB"
+        },
+        "KEY_OF_RTJJ_55_AAA_BBB_LNK_TTT": {
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F1_MULTI_BK1",
+              "field_target_column": "F1_MULTI_BK1",
+              "field_target_table": "rtjj_55_aaa_hub",
+              "parent_declaration_position": 1,
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F2_AAA_BK2",
+              "field_target_column": "F2_AAA_BK2",
+              "field_target_table": "rtjj_55_aaa_hub",
+              "parent_declaration_position": 1,
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F1_MULTI_BK1",
+              "field_target_column": "F1_MULTI_BK1",
+              "field_target_table": "rtkk_55_bbb_hub",
+              "parent_declaration_position": 2,
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F4_BBB_BK2_RTTT",
+              "field_target_column": "BBB_BK2",
+              "field_target_table": "rtkk_55_bbb_hub",
+              "parent_declaration_position": 2,
+              "prio_in_key_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtjj_55_aaa_bbb_lnk",
+          "stage_column_name": "LK_RTJJ_55_AAA_BBB_TTT"
+        },
+        "KEY_OF_RTJJ_55_AAA_CCC_LNK": {
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F1_MULTI_BK1",
+              "field_target_column": "F1_MULTI_BK1",
+              "field_target_table": "rtjj_55_aaa_hub",
+              "parent_declaration_position": 1,
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F2_AAA_BK2",
+              "field_target_column": "F2_AAA_BK2",
+              "field_target_table": "rtjj_55_aaa_hub",
+              "parent_declaration_position": 1,
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F1_MULTI_BK1",
+              "field_target_column": "F1_MULTI_BK1",
+              "field_target_table": "rtjj_55_ccc_hub",
+              "parent_declaration_position": 2,
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F5_CCC_BK2",
+              "field_target_column": "F5_CCC_BK2",
+              "field_target_table": "rtjj_55_ccc_hub",
+              "parent_declaration_position": 2,
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F13_AAA_CCC_DC1",
+              "field_target_column": "F13_AAA_CCC_DC1",
+              "field_target_table": "rtjj_55_aaa_ccc_lnk",
+              "prio_in_key_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtjj_55_aaa_ccc_lnk",
+          "stage_column_name": "LK_RTJJ_55_AAA_CCC"
+        },
+        "KEY_OF_RTJJ_55_AAA_DDD_LNK": {
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F1_MULTI_BK1",
+              "field_target_column": "F1_MULTI_BK1",
+              "field_target_table": "rtjj_55_aaa_hub",
+              "parent_declaration_position": 1,
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F2_AAA_BK2",
+              "field_target_column": "F2_AAA_BK2",
+              "field_target_table": "rtjj_55_aaa_hub",
+              "parent_declaration_position": 1,
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F14_DDD_BK1_RUUU",
+              "field_target_column": "DDD_BK1",
+              "field_target_table": "rtjj_55_ddd_hub",
+              "parent_declaration_position": 2,
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F15_DDD_BK1_RWWW",
+              "field_target_column": "DDD_BK1",
+              "field_target_table": "rtjj_55_ddd_hub",
+              "parent_declaration_position": 3,
+              "prio_in_key_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtjj_55_aaa_ddd_lnk",
+          "stage_column_name": "LK_RTJJ_55_AAA_DDD"
+        },
+        "KEY_OF_RTJJ_55_AAA_HUB": {
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F1_MULTI_BK1",
+              "field_target_column": "F1_MULTI_BK1",
+              "field_target_table": "rtjj_55_aaa_hub",
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F2_AAA_BK2",
+              "field_target_column": "F2_AAA_BK2",
+              "field_target_table": "rtjj_55_aaa_hub",
+              "prio_in_key_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtjj_55_aaa_hub",
+          "stage_column_name": "HK_RTJJ_55_AAA"
+        },
+        "KEY_OF_RTJJ_55_CCC_HUB": {
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F1_MULTI_BK1",
+              "field_target_column": "F1_MULTI_BK1",
+              "field_target_table": "rtjj_55_ccc_hub",
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F5_CCC_BK2",
+              "field_target_column": "F5_CCC_BK2",
+              "field_target_table": "rtjj_55_ccc_hub",
+              "prio_in_key_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtjj_55_ccc_hub",
+          "stage_column_name": "HK_RTJJ_55_CCC"
+        },
+        "KEY_OF_RTJJ_55_DDD_HUB__FOR__UUU": {
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F14_DDD_BK1_RUUU",
+              "field_target_column": "DDD_BK1",
+              "field_target_table": "rtjj_55_ddd_hub",
+              "prio_in_key_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtjj_55_ddd_hub",
+          "stage_column_name": "HK_RTJJ_55_DDD_UUU"
+        },
+        "KEY_OF_RTJJ_55_DDD_HUB__FOR__WWW": {
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F15_DDD_BK1_RWWW",
+              "field_target_column": "DDD_BK1",
+              "field_target_table": "rtjj_55_ddd_hub",
+              "prio_in_key_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtjj_55_ddd_hub",
+          "stage_column_name": "HK_RTJJ_55_DDD_WWW"
+        },
+        "KEY_OF_RTKK_55_BBB_HUB": {
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F1_MULTI_BK1",
+              "field_target_column": "F1_MULTI_BK1",
+              "field_target_table": "rtkk_55_bbb_hub",
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F3_BBB_BK2_RSSS",
+              "field_target_column": "BBB_BK2",
+              "field_target_table": "rtkk_55_bbb_hub",
+              "prio_in_key_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtkk_55_bbb_hub",
+          "stage_column_name": "HK_RTKK_55_BBB"
+        },
+        "KEY_OF_RTKK_55_BBB_HUB__FOR__TTT": {
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F1_MULTI_BK1",
+              "field_target_column": "F1_MULTI_BK1",
+              "field_target_table": "rtkk_55_bbb_hub",
+              "prio_in_key_hash": 0
+            },
+            {
+              "field_name": "F4_BBB_BK2_RTTT",
+              "field_target_column": "BBB_BK2",
+              "field_target_table": "rtkk_55_bbb_hub",
+              "prio_in_key_hash": 0
+            }
+          ],
+          "hash_origin_table": "rtkk_55_bbb_hub",
+          "stage_column_name": "HK_RTKK_55_BBB_TTT"
+        }
+      },
+      "load_operations": [
+        {
+          "data_mapping_dict": {
+            "F1_MULTI_BK1": {
+              "column_class": "business_key",
+              "field_name": "F1_MULTI_BK1",
+              "stage_column_name": "F1_MULTI_BK1"
+            },
+            "F2_AAA_BK2": {
+              "column_class": "business_key",
+              "field_name": "F2_AAA_BK2",
+              "stage_column_name": "F2_AAA_BK2"
+            }
+          },
+          "hash_mapping_dict": {
+            "key": {
+              "hash_column_name": "HK_RTJJ_55_AAA",
+              "hash_name": "KEY_OF_RTJJ_55_AAA_HUB",
+              "stage_column_name": "HK_RTJJ_55_AAA"
+            }
+          },
+          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "*",
+          "table_name": "rtjj_55_aaa_hub"
+        },
+        {
+          "data_mapping_dict": {
+            "F10_AAA_SP1_V3_UT": {
+              "column_class": "content_untracked",
+              "field_name": "F10_AAA_SP1_V3_UT",
+              "stage_column_name": "F10_AAA_SP1_V3_UT"
+            },
+            "F7_AAA_SP1_C1": {
+              "column_class": "content",
+              "field_name": "F7_AAA_SP1_C1",
+              "stage_column_name": "F7_AAA_SP1_C1"
+            },
+            "F8_AAA_SP1_C2": {
+              "column_class": "content",
+              "field_name": "F8_AAA_SP1_C2",
+              "stage_column_name": "F8_AAA_SP1_C2"
+            },
+            "F9_AAA_SP1_C3": {
+              "column_class": "content",
+              "field_name": "F9_AAA_FIELD_NAME",
+              "stage_column_name": "F9_AAA_FIELD_NAME"
+            }
+          },
+          "hash_mapping_dict": {
+            "diff_hash": {
+              "hash_column_name": "RH_RTJJ_55_AAA_P1_SAT",
+              "hash_name": "DIFF_OF_RTJJ_55_AAA_P1_SAT",
+              "stage_column_name": "RH_RTJJ_55_AAA_P1_SAT"
+            },
+            "parent_key": {
+              "hash_column_name": "HK_RTJJ_55_AAA",
+              "hash_name": "KEY_OF_RTJJ_55_AAA_HUB",
+              "stage_column_name": "HK_RTJJ_55_AAA"
+            }
+          },
+          "operation_origin": "following parent operation list",
+          "relation_name": "*",
+          "table_name": "rtjj_55_aaa_p1_sat"
+        },
+        {
+          "hash_mapping_dict": {
+            "key": {
+              "hash_column_name": "LK_RTJJ_55_AAA_BBB",
+              "hash_name": "KEY_OF_RTJJ_55_AAA_BBB_LNK",
+              "stage_column_name": "LK_RTJJ_55_AAA_BBB"
+            },
+            "parent_key_1": {
+              "hash_column_name": "HK_RTJJ_55_AAA",
+              "hash_name": "KEY_OF_RTJJ_55_AAA_HUB",
+              "stage_column_name": "HK_RTJJ_55_AAA"
+            },
+            "parent_key_2": {
+              "hash_column_name": "HK_RTKK_55_BBB",
+              "hash_name": "KEY_OF_RTKK_55_BBB_HUB",
+              "stage_column_name": "HK_RTKK_55_BBB"
+            }
+          },
+          "operation_origin": "induced from satellite rtjj_55_aaa_bbb_sss_esat",
+          "relation_name": "/",
+          "table_name": "rtjj_55_aaa_bbb_lnk"
+        },
+        {
+          "hash_mapping_dict": {
+            "key": {
+              "hash_column_name": "LK_RTJJ_55_AAA_BBB",
+              "hash_name": "KEY_OF_RTJJ_55_AAA_BBB_LNK_TTT",
+              "stage_column_name": "LK_RTJJ_55_AAA_BBB_TTT"
+            },
+            "parent_key_1": {
+              "hash_column_name": "HK_RTJJ_55_AAA",
+              "hash_name": "KEY_OF_RTJJ_55_AAA_HUB",
+              "stage_column_name": "HK_RTJJ_55_AAA"
+            },
+            "parent_key_2": {
+              "hash_column_name": "HK_RTKK_55_BBB_TTT",
+              "hash_name": "KEY_OF_RTKK_55_BBB_HUB__FOR__TTT",
+              "stage_column_name": "HK_RTKK_55_BBB_TTT"
+            }
+          },
+          "operation_origin": "induced from satellite rtjj_55_aaa_bbb_ttt_esat",
+          "relation_name": "TTT",
+          "table_name": "rtjj_55_aaa_bbb_lnk"
+        },
+        {
+          "hash_mapping_dict": {
+            "parent_key": {
+              "hash_column_name": "LK_RTJJ_55_AAA_BBB",
+              "hash_name": "KEY_OF_RTJJ_55_AAA_BBB_LNK",
+              "stage_column_name": "LK_RTJJ_55_AAA_BBB"
+            }
+          },
+          "operation_origin": "explicitly tracked relation",
+          "relation_name": "/",
+          "table_name": "rtjj_55_aaa_bbb_sss_esat"
+        },
+        {
+          "hash_mapping_dict": {
+            "parent_key": {
+              "hash_column_name": "LK_RTJJ_55_AAA_BBB",
+              "hash_name": "KEY_OF_RTJJ_55_AAA_BBB_LNK_TTT",
+              "stage_column_name": "LK_RTJJ_55_AAA_BBB_TTT"
+            }
+          },
+          "operation_origin": "explicitly tracked relation",
+          "relation_name": "TTT",
+          "table_name": "rtjj_55_aaa_bbb_ttt_esat"
+        },
+        {
+          "data_mapping_dict": {
+            "F1_MULTI_BK1": {
+              "column_class": "business_key",
+              "field_name": "F1_MULTI_BK1",
+              "stage_column_name": "F1_MULTI_BK1"
+            },
+            "F5_CCC_BK2": {
+              "column_class": "business_key",
+              "field_name": "F5_CCC_BK2",
+              "stage_column_name": "F5_CCC_BK2"
+            },
+            "F6_CCC_UT1": {
+              "column_class": "content_untracked",
+              "field_name": "F6_CCC_UT1",
+              "stage_column_name": "F6_CCC_UT1"
+            }
+          },
+          "hash_mapping_dict": {
+            "key": {
+              "hash_column_name": "HK_RTJJ_55_CCC",
+              "hash_name": "KEY_OF_RTJJ_55_CCC_HUB",
+              "stage_column_name": "HK_RTJJ_55_CCC"
+            }
+          },
+          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "*",
+          "table_name": "rtjj_55_ccc_hub"
+        },
+        {
+          "data_mapping_dict": {
+            "F13_AAA_CCC_DC1": {
+              "column_class": "dependent_child_key",
+              "field_name": "F13_AAA_CCC_DC1",
+              "stage_column_name": "F13_AAA_CCC_DC1"
+            }
+          },
+          "hash_mapping_dict": {
+            "key": {
+              "hash_column_name": "LK_RTJJ_55_AAA_CCC",
+              "hash_name": "KEY_OF_RTJJ_55_AAA_CCC_LNK",
+              "stage_column_name": "LK_RTJJ_55_AAA_CCC"
+            },
+            "parent_key_1": {
+              "hash_column_name": "HK_RTJJ_55_AAA",
+              "hash_name": "KEY_OF_RTJJ_55_AAA_HUB",
+              "stage_column_name": "HK_RTJJ_55_AAA"
+            },
+            "parent_key_2": {
+              "hash_column_name": "HK_RTJJ_55_CCC",
+              "hash_name": "KEY_OF_RTJJ_55_CCC_HUB",
+              "stage_column_name": "HK_RTJJ_55_CCC"
+            }
+          },
+          "operation_origin": "induced from satellite rtjj_55_aaa_ccc_p1_sat",
+          "relation_name": "/",
+          "table_name": "rtjj_55_aaa_ccc_lnk"
+        },
+        {
+          "data_mapping_dict": {
+            "F11_AAA_CCC_SP1_C1": {
+              "column_class": "content",
+              "field_name": "F11_AAA_CCC_SP1_C1",
+              "stage_column_name": "F11_AAA_CCC_SP1_C1"
+            },
+            "F12_AAA_CCC_SP1_C2": {
+              "column_class": "content",
+              "field_name": "F12_AAA_CCC_SP1_C2",
+              "stage_column_name": "F12_AAA_CCC_SP1_C2"
+            }
+          },
+          "hash_mapping_dict": {
+            "diff_hash": {
+              "hash_column_name": "RH_RTJJ_55_AAA_CCC_P1_SAT",
+              "hash_name": "DIFF_OF_RTJJ_55_AAA_CCC_P1_SAT",
+              "stage_column_name": "RH_RTJJ_55_AAA_CCC_P1_SAT"
+            },
+            "parent_key": {
+              "hash_column_name": "LK_RTJJ_55_AAA_CCC",
+              "hash_name": "KEY_OF_RTJJ_55_AAA_CCC_LNK",
+              "stage_column_name": "LK_RTJJ_55_AAA_CCC"
+            }
+          },
+          "operation_origin": "implicit unnamed relation operation",
+          "relation_name": "/",
+          "table_name": "rtjj_55_aaa_ccc_p1_sat"
+        },
+        {
+          "data_mapping_dict": {
+            "DDD_BK1": {
+              "column_class": "business_key",
+              "field_name": "F14_DDD_BK1_RUUU",
+              "stage_column_name": "F14_DDD_BK1_RUUU"
+            }
+          },
+          "hash_mapping_dict": {
+            "key": {
+              "hash_column_name": "HK_RTJJ_55_DDD",
+              "hash_name": "KEY_OF_RTJJ_55_DDD_HUB__FOR__UUU",
+              "stage_column_name": "HK_RTJJ_55_DDD_UUU"
+            }
+          },
+          "operation_origin": "explicit field mapping relation",
+          "relation_name": "UUU",
+          "table_name": "rtjj_55_ddd_hub"
+        },
+        {
+          "data_mapping_dict": {
+            "DDD_BK1": {
+              "column_class": "business_key",
+              "field_name": "F15_DDD_BK1_RWWW",
+              "stage_column_name": "F15_DDD_BK1_RWWW"
+            }
+          },
+          "hash_mapping_dict": {
+            "key": {
+              "hash_column_name": "HK_RTJJ_55_DDD",
+              "hash_name": "KEY_OF_RTJJ_55_DDD_HUB__FOR__WWW",
+              "stage_column_name": "HK_RTJJ_55_DDD_WWW"
+            }
+          },
+          "operation_origin": "explicit field mapping relation",
+          "relation_name": "WWW",
+          "table_name": "rtjj_55_ddd_hub"
+        },
+        {
+          "hash_mapping_dict": {
+            "key": {
+              "hash_column_name": "LK_RTJJ_55_AAA_DDD",
+              "hash_name": "KEY_OF_RTJJ_55_AAA_DDD_LNK",
+              "stage_column_name": "LK_RTJJ_55_AAA_DDD"
+            },
+            "parent_key_1": {
+              "hash_column_name": "HK_RTJJ_55_AAA",
+              "hash_name": "KEY_OF_RTJJ_55_AAA_HUB",
+              "stage_column_name": "HK_RTJJ_55_AAA"
+            },
+            "parent_key_2": {
+              "hash_column_name": "HK_RTJJ_55_DDD_UUU",
+              "hash_name": "KEY_OF_RTJJ_55_DDD_HUB__FOR__UUU",
+              "stage_column_name": "HK_RTJJ_55_DDD_UUU"
+            },
+            "parent_key_3": {
+              "hash_column_name": "HK_RTJJ_55_DDD_WWW",
+              "hash_name": "KEY_OF_RTJJ_55_DDD_HUB__FOR__WWW",
+              "stage_column_name": "HK_RTJJ_55_DDD_WWW"
+            }
+          },
+          "operation_origin": "unnamed relation of link due to explict link relations",
+          "relation_name": "/",
+          "table_name": "rtjj_55_aaa_ddd_lnk"
+        },
+        {
+          "data_mapping_dict": {
+            "DDD_SP1_C1": {
+              "column_class": "content",
+              "field_name": "F16_DDD_SP1_C1_RUUU",
+              "stage_column_name": "F16_DDD_SP1_C1_RUUU"
+            }
+          },
+          "hash_mapping_dict": {
+            "diff_hash": {
+              "hash_column_name": "RH_RTJJ_55_DDD_P1_SAT",
+              "hash_name": "DIFF_OF_RTJJ_55_DDD_P1_SAT__FOR__UUU",
+              "stage_column_name": "RH_RTJJ_55_DDD_P1_SAT_UUU"
+            },
+            "parent_key": {
+              "hash_column_name": "HK_RTJJ_55_DDD",
+              "hash_name": "KEY_OF_RTJJ_55_DDD_HUB__FOR__UUU",
+              "stage_column_name": "HK_RTJJ_55_DDD_UUU"
+            }
+          },
+          "operation_origin": "explicit field mapping relation",
+          "relation_name": "UUU",
+          "table_name": "rtjj_55_ddd_p1_sat"
+        },
+        {
+          "data_mapping_dict": {
+            "DDD_SP1_C1": {
+              "column_class": "content",
+              "field_name": "F17_DDD_SP1_C1_RUUU",
+              "stage_column_name": "F17_DDD_SP1_C1_RUUU"
+            }
+          },
+          "hash_mapping_dict": {
+            "diff_hash": {
+              "hash_column_name": "RH_RTJJ_55_DDD_P1_SAT",
+              "hash_name": "DIFF_OF_RTJJ_55_DDD_P1_SAT__FOR__WWW",
+              "stage_column_name": "RH_RTJJ_55_DDD_P1_SAT_WWW"
+            },
+            "parent_key": {
+              "hash_column_name": "HK_RTJJ_55_DDD",
+              "hash_name": "KEY_OF_RTJJ_55_DDD_HUB__FOR__WWW",
+              "stage_column_name": "HK_RTJJ_55_DDD_WWW"
+            }
+          },
+          "operation_origin": "explicit field mapping relation",
+          "relation_name": "WWW",
+          "table_name": "rtjj_55_ddd_p1_sat"
+        },
+        {
+          "data_mapping_dict": {
+            "F18_EEE_SP1_C1": {
+              "column_class": "content",
+              "field_name": "F18_EEE_SP1_C1",
+              "stage_column_name": "F18_EEE_SP1_C1"
+            },
+            "F9_EEE_SP1_C2": {
+              "column_class": "content",
+              "field_name": "F19__FIELD_NAME",
+              "stage_column_name": "F19__FIELD_NAME"
+            }
+          },
+          "hash_mapping_dict": {
+            "diff_hash": {
+              "hash_column_name": "RH_RTJJ_55_EEE_P1_REF",
+              "hash_name": "DIFF_OF_RTJJ_55_EEE_REF",
+              "stage_column_name": "RH_RTJJ_55_EEE_P1_REF"
+            }
+          },
+          "operation_origin": "ref table load operation",
+          "relation_name": "/",
+          "table_name": "rtjj_55_eee_ref"
+        },
+        {
+          "data_mapping_dict": {
+            "BBB_BK2": {
+              "column_class": "business_key",
+              "field_name": "F3_BBB_BK2_RSSS",
+              "stage_column_name": "F3_BBB_BK2_RSSS"
+            },
+            "F1_MULTI_BK1": {
+              "column_class": "business_key",
+              "field_name": "F1_MULTI_BK1",
+              "stage_column_name": "F1_MULTI_BK1"
+            }
+          },
+          "hash_mapping_dict": {
+            "key": {
+              "hash_column_name": "HK_RTKK_55_BBB",
+              "hash_name": "KEY_OF_RTKK_55_BBB_HUB",
+              "stage_column_name": "HK_RTKK_55_BBB"
+            }
+          },
+          "operation_origin": "explicit field mapping relation",
+          "relation_name": "/",
+          "table_name": "rtkk_55_bbb_hub"
+        },
+        {
+          "data_mapping_dict": {
+            "BBB_BK2": {
+              "column_class": "business_key",
+              "field_name": "F4_BBB_BK2_RTTT",
+              "stage_column_name": "F4_BBB_BK2_RTTT"
+            },
+            "F1_MULTI_BK1": {
+              "column_class": "business_key",
+              "field_name": "F1_MULTI_BK1",
+              "stage_column_name": "F1_MULTI_BK1"
+            }
+          },
+          "hash_mapping_dict": {
+            "key": {
+              "hash_column_name": "HK_RTKK_55_BBB",
+              "hash_name": "KEY_OF_RTKK_55_BBB_HUB__FOR__TTT",
+              "stage_column_name": "HK_RTKK_55_BBB_TTT"
+            }
+          },
+          "operation_origin": "explicit field mapping relation",
+          "relation_name": "TTT",
+          "table_name": "rtkk_55_bbb_hub"
+        }
+      ],
+      "record_source_name_expression": "dvpd implementation test",
+      "stage_column_dict": {
+        "F10_AAA_SP1_V3_UT": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "DECIMAL(5,0)",
+          "field_name": "F10_AAA_SP1_V3_UT",
+          "stage_column_class": "data"
+        },
+        "F11_AAA_CCC_SP1_C1": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "VARCHAR(200)",
+          "field_name": "F11_AAA_CCC_SP1_C1",
+          "stage_column_class": "data"
+        },
+        "F12_AAA_CCC_SP1_C2": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "DECIMAL(5,0)",
+          "field_name": "F12_AAA_CCC_SP1_C2",
+          "stage_column_class": "data"
+        },
+        "F13_AAA_CCC_DC1": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "DECIMAL(5,0)",
+          "field_name": "F13_AAA_CCC_DC1",
+          "stage_column_class": "data"
+        },
+        "F14_DDD_BK1_RUUU": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "Decimal(20,0)",
+          "field_name": "F14_DDD_BK1_RUUU",
+          "stage_column_class": "data"
+        },
+        "F15_DDD_BK1_RWWW": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "Decimal(20,0)",
+          "field_name": "F15_DDD_BK1_RWWW",
+          "stage_column_class": "data"
+        },
+        "F16_DDD_SP1_C1_RUUU": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "Decimal(20,0)",
+          "field_name": "F16_DDD_SP1_C1_RUUU",
+          "stage_column_class": "data"
+        },
+        "F17_DDD_SP1_C1_RUUU": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "Decimal(20,0)",
+          "field_name": "F17_DDD_SP1_C1_RUUU",
+          "stage_column_class": "data"
+        },
+        "F18_EEE_SP1_C1": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "DECIMAL(5,0)",
+          "field_name": "F18_EEE_SP1_C1",
+          "stage_column_class": "data"
+        },
+        "F19__FIELD_NAME": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "VARCHAR(200)",
+          "field_name": "F19__FIELD_NAME",
+          "stage_column_class": "data"
+        },
+        "F1_MULTI_BK1": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "Varchar(20)",
+          "field_name": "F1_MULTI_BK1",
+          "stage_column_class": "data"
+        },
+        "F2_AAA_BK2": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "Varchar(20)",
+          "field_name": "F2_AAA_BK2",
+          "stage_column_class": "data"
+        },
+        "F3_BBB_BK2_RSSS": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "Decimal(20,0)",
+          "field_name": "F3_BBB_BK2_RSSS",
+          "stage_column_class": "data"
+        },
+        "F4_BBB_BK2_RTTT": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "Decimal(20,0)",
+          "field_name": "F4_BBB_BK2_RTTT",
+          "stage_column_class": "data"
+        },
+        "F5_CCC_BK2": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "Varchar(20)",
+          "field_name": "F5_CCC_BK2",
+          "stage_column_class": "data"
+        },
+        "F6_CCC_UT1": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "Varchar(20)",
+          "field_name": "F6_CCC_UT1",
+          "stage_column_class": "data"
+        },
+        "F7_AAA_SP1_C1": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "VARCHAR(200)",
+          "field_name": "F7_AAA_SP1_C1",
+          "stage_column_class": "data"
+        },
+        "F8_AAA_SP1_C2": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "DECIMAL(5,0)",
+          "field_name": "F8_AAA_SP1_C2",
+          "stage_column_class": "data"
+        },
+        "F9_AAA_FIELD_NAME": {
+          "column_classes": [
+            "content"
+          ],
+          "column_type": "VARCHAR(200)",
+          "field_name": "F9_AAA_FIELD_NAME",
+          "stage_column_class": "data"
+        },
+        "HK_RTJJ_55_AAA": {
+          "column_type": "#tbd",
+          "hash_name": "KEY_OF_RTJJ_55_AAA_HUB",
+          "stage_column_class": "hash"
+        },
+        "HK_RTJJ_55_CCC": {
+          "column_type": "#tbd",
+          "hash_name": "KEY_OF_RTJJ_55_CCC_HUB",
+          "stage_column_class": "hash"
+        },
+        "HK_RTJJ_55_DDD_UUU": {
+          "column_type": "#tbd",
+          "hash_name": "KEY_OF_RTJJ_55_DDD_HUB__FOR__UUU",
+          "stage_column_class": "hash"
+        },
+        "HK_RTJJ_55_DDD_WWW": {
+          "column_type": "#tbd",
+          "hash_name": "KEY_OF_RTJJ_55_DDD_HUB__FOR__WWW",
+          "stage_column_class": "hash"
+        },
+        "HK_RTKK_55_BBB": {
+          "column_type": "#tbd",
+          "hash_name": "KEY_OF_RTKK_55_BBB_HUB",
+          "stage_column_class": "hash"
+        },
+        "HK_RTKK_55_BBB_TTT": {
+          "column_type": "#tbd",
+          "hash_name": "KEY_OF_RTKK_55_BBB_HUB__FOR__TTT",
+          "stage_column_class": "hash"
+        },
+        "LK_RTJJ_55_AAA_BBB": {
+          "column_type": "#tbd",
+          "hash_name": "KEY_OF_RTJJ_55_AAA_BBB_LNK",
+          "stage_column_class": "hash"
+        },
+        "LK_RTJJ_55_AAA_BBB_TTT": {
+          "column_type": "#tbd",
+          "hash_name": "KEY_OF_RTJJ_55_AAA_BBB_LNK_TTT",
+          "stage_column_class": "hash"
+        },
+        "LK_RTJJ_55_AAA_CCC": {
+          "column_type": "#tbd",
+          "hash_name": "KEY_OF_RTJJ_55_AAA_CCC_LNK",
+          "stage_column_class": "hash"
+        },
+        "LK_RTJJ_55_AAA_DDD": {
+          "column_type": "#tbd",
+          "hash_name": "KEY_OF_RTJJ_55_AAA_DDD_LNK",
+          "stage_column_class": "hash"
+        },
+        "MD_INSERTED_AT": {
+          "column_type": "#tdbd",
+          "stage_column_class": "meta_load_date"
+        },
+        "MD_IS_DELETED": {
+          "column_type": "#tdbd",
+          "stage_column_class": "meta_deletion_flag"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_type": "#tdbd",
+          "stage_column_class": "meta_record_source"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_type": "#tdbd",
+          "stage_column_class": "meta_record_source"
+        },
+        "RH_RTJJ_55_AAA_CCC_P1_SAT": {
+          "column_type": "#tbd",
+          "hash_name": "DIFF_OF_RTJJ_55_AAA_CCC_P1_SAT",
+          "stage_column_class": "hash"
+        },
+        "RH_RTJJ_55_AAA_P1_SAT": {
+          "column_type": "#tbd",
+          "hash_name": "DIFF_OF_RTJJ_55_AAA_P1_SAT",
+          "stage_column_class": "hash"
+        },
+        "RH_RTJJ_55_DDD_P1_SAT_UUU": {
+          "column_type": "#tbd",
+          "hash_name": "DIFF_OF_RTJJ_55_DDD_P1_SAT__FOR__UUU",
+          "stage_column_class": "hash"
+        },
+        "RH_RTJJ_55_DDD_P1_SAT_WWW": {
+          "column_type": "#tbd",
+          "hash_name": "DIFF_OF_RTJJ_55_DDD_P1_SAT__FOR__WWW",
+          "stage_column_class": "hash"
+        },
+        "RH_RTJJ_55_EEE_P1_REF": {
+          "column_type": "#tbd",
+          "hash_name": "DIFF_OF_RTJJ_55_EEE_REF",
+          "stage_column_class": "hash"
+        }
+      },
+      "stage_properties": [
+        {
+          "stage_schema": "stage_rvlt"
+        }
+      ]
+    }
+  ],
+  "pipeline_name": "test55_large_feature_cover",
+  "table_dict": {
+    "rtjj_55_aaa_bbb_lnk": {
+      "column_dict": {
+        "HK_RTJJ_55_AAA": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "HK_RTJJ_55_AAA",
+          "parent_table_name": "rtjj_55_aaa_hub"
+        },
+        "HK_RTKK_55_BBB": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "HK_RTKK_55_BBB",
+          "parent_table_name": "rtkk_55_bbb_hub"
+        },
+        "HK_RTKK_55_BBB_TTT": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "HK_RTKK_55_BBB",
+          "parent_table_name": "rtkk_55_bbb_hub"
+        },
+        "LK_RTJJ_55_AAA_BBB": {
+          "column_class": "key",
+          "column_type": "#todo "
+        },
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        }
+      },
+      "table_stereotype": "lnk",
+      "schema": "rtjj"
+    },
+    "rtjj_55_aaa_bbb_sss_esat": {
+      "column_dict": {
+        "LK_RTJJ_55_AAA_BBB": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "LK_RTJJ_55_AAA_BBB",
+          "parent_table_name": "rtjj_55_aaa_bbb_lnk"
+        },
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_IS_DELETED": {
+          "column_class": "meta_deletion_flag",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_VALID_BEFORE": {
+          "column_class": "meta_load_enddate",
+          "column_type": "#tdbd"
+        }
+      },
+      "compare_criteria": "key+current",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": true,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "table_stereotype": "sat",
+      "uses_diff_hash": true
+    },
+    "rtjj_55_aaa_bbb_ttt_esat": {
+      "column_dict": {
+        "LK_RTJJ_55_AAA_BBB": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "LK_RTJJ_55_AAA_BBB",
+          "parent_table_name": "rtjj_55_aaa_bbb_lnk"
+        },
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_IS_DELETED": {
+          "column_class": "meta_deletion_flag",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_VALID_BEFORE": {
+          "column_class": "meta_load_enddate",
+          "column_type": "#tdbd"
+        }
+      },
+      "compare_criteria": "key+current",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": true,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "table_stereotype": "sat",
+      "uses_diff_hash": true
+    },
+    "rtjj_55_aaa_ccc_lnk": {
+      "column_dict": {
+        "F13_AAA_CCC_DC1": {
+          "column_class": "dependent_child_key",
+          "column_type": "#todo ",
+          "column_content_comment": null,
+          "prio_for_column_position": 50000
+        },
+        "HK_RTJJ_55_AAA": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "HK_RTJJ_55_AAA",
+          "parent_table_name": "rtjj_55_aaa_hub"
+        },
+        "HK_RTJJ_55_CCC": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "HK_RTJJ_55_CCC",
+          "parent_table_name": "rtjj_55_ccc_hub"
+        },
+        "LK_RTJJ_55_AAA_CCC": {
+          "column_class": "key",
+          "column_type": "#todo "
+        },
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        }
+      },
+      "table_stereotype": "lnk"
+    },
+    "rtjj_55_aaa_ccc_p1_sat": {
+      "column_dict": {
+        "F11_AAA_CCC_SP1_C1": {
+          "column_class": "content",
+          "column_content_comment": null,
+          "column_type": "VARCHAR(200)",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        "F12_AAA_CCC_SP1_C2": {
+          "column_class": "content",
+          "column_content_comment": null,
+          "column_type": "DECIMAL(5,0)",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        "LK_RTJJ_55_AAA_CCC": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "LK_RTJJ_55_AAA_CCC",
+          "parent_table_name": "rtjj_55_aaa_ccc_lnk"
+        },
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_IS_DELETED": {
+          "column_class": "meta_deletion_flag",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_VALID_BEFORE": {
+          "column_class": "meta_load_enddate",
+          "column_type": "#tdbd"
+        },
+        "RH_RTJJ_55_AAA_CCC_P1_SAT": {
+          "column_class": "diff_hash",
+          "column_type": "#todo "
+        }
+      },
+      "compare_criteria": "key+current",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": false,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "table_stereotype": "sat",
+      "uses_diff_hash": true
+    },
+    "rtjj_55_aaa_ddd_lnk": {
+      "column_dict": {
+        "HK_RTJJ_55_AAA": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "HK_RTJJ_55_AAA",
+          "parent_table_name": "rtjj_55_aaa_hub"
+        },
+        "HK_RTJJ_55_DDD_UUU": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "HK_RTJJ_55_DDD",
+          "parent_table_name": "rtjj_55_ddd_hub"
+        },
+        "HK_RTJJ_55_DDD_WWW": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "HK_RTJJ_55_DDD",
+          "parent_table_name": "rtjj_55_ddd_hub"
+        },
+        "LK_RTJJ_55_AAA_DDD": {
+          "column_class": "key",
+          "column_type": "#todo "
+        },
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        }
+      },
+      "table_stereotype": "lnk"
+    },
+    "rtjj_55_aaa_hub": {
+      "column_dict": {
+        "F1_MULTI_BK1": {
+          "column_class": "business_key",
+          "column_content_comment": null,
+          "prio_for_column_position": 50000
+        },
+        "F2_AAA_BK2": {
+          "column_class": "business_key",
+          "column_content_comment": null,
+          "prio_for_column_position": 50000
+        },
+        "HK_RTJJ_55_AAA": {
+          "column_class": "key",
+          "column_type": "#todo "
+        },
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        }
+      },
+      "table_stereotype": "hub"
+    },
+    "rtjj_55_aaa_p1_sat": {
+      "column_dict": {
+        "F10_AAA_SP1_V3_UT": {
+          "column_class": "content_untracked",
+          "column_content_comment": null,
+          "column_type": "DECIMAL(5,0)",
+          "exclude_from_change_detection": true,
+          "prio_for_column_position": 50000
+        },
+        "F7_AAA_SP1_C1": {
+          "column_class": "content",
+          "column_content_comment": null,
+          "column_type": "VARCHAR(200)",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        "F8_AAA_SP1_C2": {
+          "column_class": "content",
+          "column_content_comment": null,
+          "column_type": "DECIMAL(5,0)",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        "F9_AAA_SP1_C3": {
+          "column_class": "content",
+          "column_content_comment": null,
+          "column_type": "VARCHAR(200)",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        "HK_RTJJ_55_AAA": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "HK_RTJJ_55_AAA",
+          "parent_table_name": "rtjj_55_aaa_hub"
+        },
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_IS_DELETED": {
+          "column_class": "meta_deletion_flag",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_VALID_BEFORE": {
+          "column_class": "meta_load_enddate",
+          "column_type": "#tdbd"
+        },
+        "RH_RTJJ_55_AAA_P1_SAT": {
+          "column_class": "diff_hash",
+          "column_type": "#todo "
+        }
+      },
+      "compare_criteria": "key+current",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": false,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "table_stereotype": "sat",
+      "uses_diff_hash": true
+    },
+    "rtjj_55_ccc_hub": {
+      "column_dict": {
+        "F1_MULTI_BK1": {
+          "column_class": "business_key",
+          "column_content_comment": null,
+          "prio_for_column_position": 50000,
+          "column_type": "#tdbd"
+        },
+        "F5_CCC_BK2": {
+          "column_class": "business_key",
+          "column_content_comment": null,
+          "prio_for_column_position": 50000,
+          "column_type": "#tdbd"
+        },
+        "F6_CCC_UT1": {
+          "column_class": "content_untracked",
+          "column_content_comment": null,
+          "prio_for_column_position": 50000,
+          "column_type": "#tdbd"
+        },
+        "HK_RTJJ_55_CCC": {
+          "column_class": "key",
+          "column_type": "#todo "
+        },
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        }
+      },
+      "table_stereotype": "hub"
+    },
+    "rtjj_55_ddd_hub": {
+      "column_dict": {
+        "DDD_BK1": {
+          "column_class": "business_key",
+          "column_content_comment": null,
+          "prio_for_column_position": 50000,
+          "column_type": "#tdbd"
+        },
+        "HK_RTJJ_55_DDD": {
+          "column_class": "key",
+          "column_type": "#todo "
+        },
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        }
+      },
+      "table_stereotype": "hub"
+    },
+    "rtjj_55_ddd_p1_sat": {
+      "column_dict": {
+        "DDD_SP1_C1": {
+          "column_class": "content",
+          "column_content_comment": null,
+          "column_type": "DECIMAL(20,0)",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        "HK_RTJJ_55_DDD": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "HK_RTJJ_55_DDD",
+          "parent_table_name": "rtjj_55_ddd_hub"
+        },
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_IS_DELETED": {
+          "column_class": "meta_deletion_flag",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_VALID_BEFORE": {
+          "column_class": "meta_load_enddate",
+          "column_type": "#tdbd"
+        },
+        "RH_RTJJ_55_DDD_P1_SAT": {
+          "column_class": "diff_hash",
+          "column_type": "#todo "
+        }
+      },
+      "compare_criteria": "key+current",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": false,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "table_stereotype": "sat",
+      "uses_diff_hash": true
+    },
+    "rtjj_55_eee_ref": {
+      "column_dict": {
+        "F18_EEE_SP1_C1": {
+          "column_class": "content",
+          "column_content_comment": null,
+          "column_type": "DECIMAL(5,0)",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        "F9_EEE_SP1_C2": {
+          "column_class": "content",
+          "column_content_comment": null,
+          "column_type": "VARCHAR(200)",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_VALID_BEFORE": {
+          "column_class": "meta_load_enddate",
+          "column_type": "#tdbd"
+        },
+        "RH_RTJJ_55_EEE_P1_REF": {
+          "column_class": "diff_hash",
+          "column_type": "#todo "
+        }
+      },
+      "is_enddated": true,
+      "table_stereotype": "ref",
+      "uses_diff_hash": true
+    },
+    "rtkk_55_bbb_hub": {
+      "column_dict": {
+        "BBB_BK2": {
+          "column_class": "business_key",
+          "column_content_comment": null,
+          "prio_for_column_position": 50000
+        },
+        "F1_MULTI_BK1": {
+          "column_class": "business_key",
+          "column_content_comment": null,
+          "prio_for_column_position": 50000
+        },
+        "HK_RTKK_55_BBB": {
+          "column_class": "key",
+          "column_type": "#todo "
+        },
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        }
+      },
+      "table_stereotype": "hub"
+    }
+  }
+}
