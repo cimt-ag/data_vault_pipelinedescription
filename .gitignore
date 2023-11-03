@@ -8,5 +8,6 @@ var/
 *.pyc
 dvpd/
 datamodel/dvpd/
-java-dvpi-consumer/target/
-
+experimental/java-dvpi-consumer/target/
+.vscode/
+.vscode/launch.json

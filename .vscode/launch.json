@@ -8,6 +8,12 @@
             "type": "java",
             "name": "App",
             "request": "launch",
+            "mainClass": "com.cimtag.app.App"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
             "mainClass": "com.cimtag.app.App",
             "projectName": "java-dvpi-consumer"
         },
