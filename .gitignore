@@ -6,8 +6,6 @@ lib/__pycache__/
 *.bkp
 var/
 *.pyc
-dvpd/
-datamodel/dvpd/
 experimental/java-dvpi-consumer/target/
 .vscode/
 .vscode/launch.json

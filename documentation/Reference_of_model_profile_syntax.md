@@ -27,13 +27,13 @@ Used to allow checking of compatibility. Must be set to the first version, that 
 (mandatory)<br>
 Identifies the profile. The name is referenced by the DVPD property "model_profile_name" at DVPD level and/or table level.
  
-At least one model profile with the name "_default" must be declared in a project. It will be applied to every DVPD, that omits the declaration of a model_profile.
+At least the model profile with the name "_default" must be declared in a project. It will be applied to every DVPD, that omits the declaration of a model_profile.
 
 <br>*Example: "postgresql_with_enddating"*
 
 **table_key_column_type**
 (mandatory)<br>
-Database column type to be used for the key columns. This must be a valid SQL type for the database used.
+Database column type to be used for the columns with a key hash. This must be a valid SQL type for the database used.
 <br>*Example: CHAR(28)*
 
 **table_key_hash_function**
@@ -43,7 +43,7 @@ Name of the hash function to use when hashing data vault table keys (hub keys, l
 
 **table_key_hash_encoding**
 (mandatory)<br>
-Name of the method to encode the hash value. This can be "binary" (default) or any other method supported by the database and implementation of the staging.
+Name of the method to encode the hash value. This can be "hex" (default) or any other method supported by the implementation of the staging.
 Recommended values are common lowercase names of methods for encoding binary values: (binary, hex, base64)
 <br>*Example: base64*
 
@@ -64,7 +64,7 @@ Character to be used as decimal separator, when converting numbers with decimals
 
 **hash_null_value_string**
 (mandatory)<br>
-String to be used for hashing, when a field contains a NULL value.
+String to be used in value concatination for hashing, when a field contains a NULL value.
 <br>Example: "" (empty string)
 
 **key_for_null_ghost_record**
@@ -75,7 +75,7 @@ Hash value to be used for the ghost record, that will be addressed when all busi
 
 **key_for_missing_ghost_record**
 (mandatory)<br>
-Hash value to be used for the ghost record, that will be addressed when a business rule cannot find a relation. The encoding of the value depends on the table_key_hash_encoding. 
+Hash value to be used for the ghost record, that can be addressed when a business rule cannot find a relation. The encoding of the value depends on the table_key_hash_encoding. 
 
 <br>*Example:"FFFFFFFFFFFFFFFFFFFFFFFFFFFE"*
 
@@ -99,20 +99,20 @@ Timestamp value to be used in the missing ghost record for timestamp columns.
 
 **insert_criteria_default**
 (mandatory)<br>
-Determines the default behaviour of satellite loading. 
+Declares the criteria, that will be checked before a row is inserted. 
 Valid settings are:
-- key = the key (hub key, link key) is not already in the satellite
-- data = the value combination of the relevant compare columns or the diff hash are not already in the satellite
+- key = the key (hub key or link key) must not be in the satellite
+- data = the value combination of the relevant compare columns or the diff hash must not be in the satellite
 - current = the value combination of the relevant compare columns or the diff hash are not equal to a current row in the satellite
-- key+data = comparison of data is done by key
-- key+current = comparison of current values is reduced to the key (this is the main mode of data vault satellites)
-- none = data will always be inserted (preventing duplication by repeated loads must be solved by load orchestration)
+- key+data = comparison of data also includes the satellites key
+- key+current = comparison of current values also includes the satellites key (this is the main mode of data vault satellites)
+- none = data will always be inserted (prevention of duplication by repeated loads must be solved by load orchestration)
 
-The settings "key", "current" and "key+current" should be supported by every implementation, since they belong to the core of data vault. The settings "key" and "none" might remove a declared diff hash column, or at least will leave out the check for a diff_hash even, when uses_diff_hash is true. 
+The settings "key", "current" and "key+current" should be supported by every implementation, since they are needed to declare table load behavior of the Data Vault method. The settings "key" and "none" might remove a declared diff hash column, or at least will leave out the check for a diff_hash even, when uses_diff_hash is true. 
 
 **uses_diff_hash_default**
 (mandatory)<br>
-Determines the default method to determine changes of data. When set to true, all historized satellites with content columns must declare a diff hash column. This can be overruled via table specific settings. 
+Determines the default method to compare data rows. When set to true, all historized satellites with content columns must declare a diff hash column. This can be overruled via table specific settings. 
 
 <br>*Example: true*
 
@@ -129,7 +129,7 @@ Name of the hash function to use when hashing diff hashes. Valid names depend on
 
 **diff_hash_encoding**
 (mandatory)<br>
-Name of the method to encode the diff hash value. This can be "binary" (default) or any other method supported by the database and implementation of the staging.
+Name of the method to encode the diff hash value. This can be "hex" (default) or any other method supported by the implementation.
 Recommended values are common lowercase names of methods for encoding binary values: (binary, hex, base64)
 <br>*Example: base64*
 
@@ -157,12 +157,12 @@ SQL datatype of the column, that keeps the insert timestamp of the replacing row
 
 **load_date_column_name**
 (mandatory)<br>
-Name of the column, that keeps the insert timestamp of the current row.
+Name of the column, that keeps the load timestamp of the current row.
 <br>*Example: META_INSERTED_AT"
 
 **load_date_column_type**
 (mandatory)<br>
-SQL datatype of the column, that keeps the insert timestamp of the current row.
+SQL datatype of the column, that keeps the load timestamp of the current row.
 <br>*Example: TIMESTAMP"
 
 **has_deletion_flag_default**

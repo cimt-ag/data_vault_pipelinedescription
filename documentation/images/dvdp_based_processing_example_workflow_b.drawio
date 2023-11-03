@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2023-10-13T09:28:47.604Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.2 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="5TvGGnUUINAKt35HST6j" version="22.0.2" type="device">
+<mxfile host="Electron" modified="2023-10-30T10:41:37.728Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.5.1 Chrome/112.0.5615.204 Electron/24.6.0 Safari/537.36" etag="kjVi7X33GZvS1KKAgP9a" version="21.5.1" type="device">
   <diagram name="Seite-1" id="HqBW4fTeCPGUdDQ781vC">
-    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
+    <mxGraphModel dx="1356" dy="868" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -74,7 +74,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="SHAmAD_ecb-zwq3bcNpp-142" value="process step specifc mapping of data" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-142" value="load operation specifc mapping of data" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
           <mxGeometry x="80" y="435" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-175" style="edgeStyle=orthogonalEdgeStyle;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;strokeColor=default;fontFamily=Helvetica;fontSize=11;fontColor=default;endArrow=classic;" parent="1" source="SHAmAD_ecb-zwq3bcNpp-143" target="SHAmAD_ecb-zwq3bcNpp-155" edge="1">
@@ -96,7 +96,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="SHAmAD_ecb-zwq3bcNpp-144" value="process step specific hash key assembly mapping" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
+        <mxCell id="SHAmAD_ecb-zwq3bcNpp-144" value="load operation specific hash key assembly&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
           <mxGeometry x="80" y="465" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="SHAmAD_ecb-zwq3bcNpp-150" value="Mapping of fields to model" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F3AC0C;gradientColor=none;fontSize=10;" parent="1" vertex="1">
