@@ -1114,7 +1114,8 @@
       },
       "stage_properties": [
         {
-          "stage_schema": "stage_rvlt"
+          "stage_schema": "stage_rvlt",
+          "stage_table_name": "srtjj_55"
         }
       ]
     }
