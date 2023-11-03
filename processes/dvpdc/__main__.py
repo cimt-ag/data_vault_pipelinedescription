@@ -348,7 +348,7 @@ def derive_content_dependent_hub_properties(table_name,table_entry):
             column_properties['column_class']='business_key'
             has_business_key=True
         column_properties['field_mapping_count']=len(column_properties['field_mappings'])
-        for property_name in ['prio_for_column_position','field_position','prio_in_key_hash','exclude_from_key_hash','column_content_comment']:
+        for property_name in ['column_type','prio_for_column_position','field_position','prio_in_key_hash','exclude_from_key_hash','column_content_comment']:
             column_properties[property_name]=first_field[property_name]
         derive_implicit_relations(column_properties)
 
@@ -373,7 +373,7 @@ def derive_content_dependent_lnk_properties(table_name, table_entry):
             else:
                 column_properties['column_class'] = 'dependent_child_key'
             column_properties['field_mapping_count'] = len(column_properties['field_mappings'])
-            for property_name in ['prio_for_column_position', 'field_position','prio_in_key_hash', 'exclude_from_key_hash','column_content_comment']:
+            for property_name in ['column_type','prio_for_column_position', 'field_position','prio_in_key_hash', 'exclude_from_key_hash','column_content_comment']:
                 column_properties[property_name] = first_field[property_name]
             derive_implicit_relations(column_properties)
 
