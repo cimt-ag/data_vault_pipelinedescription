@@ -645,8 +645,10 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
                 hub_key_column_name_in_link=link_parent_entry['hub_key_column_name_in_link']
             elif parent_relation !="/" and parent_relation != '*':
                 hub_key_column_name_in_link=parent_key_hash_reference['hash_column_name']+"_"+parent_relation.upper()
+                link_parent_entry['hub_key_column_name_in_link']=hub_key_column_name_in_link
             else:
                 hub_key_column_name_in_link = parent_key_hash_reference['hash_column_name']
+                link_parent_entry['hub_key_column_name_in_link'] = hub_key_column_name_in_link
 
             # add the hash field mappings of the hash parent to the hash fields of the link
             parent_hash_entry=g_hash_dict[parent_key_hash_reference['hash_name']]
@@ -905,26 +907,26 @@ def assemble_dvpi_table_entry(table_name,table_entry):
 
     # add meta columns to column dict
     #todo use model profile for column names and types
-    dvpi_columns.append({'column_name':'MD_INSERTED_AT', 'column_class':'meta_load_date',
+    dvpi_columns.append({'column_name':'MD_INSERTED_AT', 'is_nullable':False,'column_class':'meta_load_date',
                                            'column_type':'#tdbd'})
-    dvpi_columns.append({'column_name':'MD_RECORD_SOURCE','column_class':'meta_record_source',
+    dvpi_columns.append({'column_name':'MD_RECORD_SOURCE','is_nullable':False,'column_class':'meta_record_source',
                                            'column_type':'#tdbd'})
-    dvpi_columns.append({'column_name':'MD_LOAD_PROCESS_ID','column_class':'meta_record_source',
+    dvpi_columns.append({'column_name':'MD_LOAD_PROCESS_ID','is_nullable':False,'column_class':'meta_record_source',
                                            'column_type':'#tdbd'})
 
     if 'has_deletion_flag' in table_entry and table_entry['has_deletion_flag']:
-        dvpi_columns.append({'column_name':'MD_IS_DELETED','column_class': 'meta_deletion_flag',
+        dvpi_columns.append({'column_name':'MD_IS_DELETED','is_nullable':False,'column_class': 'meta_deletion_flag',
                                                   'column_type': '#tdbd'})
 
     if 'is_enddated' in table_entry and table_entry['is_enddated']:
-        dvpi_columns.append({'column_name':'MD_VALID_BEFORE','column_class': 'meta_load_enddate',
+        dvpi_columns.append({'column_name':'MD_VALID_BEFORE','is_nullable': False, 'column_class': 'meta_load_enddate',
                                                   'column_type': '#tdbd'})
 
 
     # add hash columns to columns
     hash_column_properties_to_copy=['column_class','column_type','parent_key_column_name','parent_table_name']
     for column_name,column_entry in table_entry['hash_columns'].items():
-        dvpi_column_entry = {'column_name':column_name}
+        dvpi_column_entry = {'column_name':column_name,'is_nullable':False}
         dvpi_columns.append(dvpi_column_entry)
         for column_property in hash_column_properties_to_copy:
             if column_property in column_entry:
@@ -934,7 +936,7 @@ def assemble_dvpi_table_entry(table_name,table_entry):
     data_column_properties_to_copy=['column_class','column_type','column_content_comment','exclude_from_change_detection','prio_for_column_position']
     if 'data_columns' in table_entry:
         for column_name,column_entry in table_entry['data_columns'].items():
-            dvpi_column_entry = {'column_name': column_name}
+            dvpi_column_entry = {'column_name': column_name,'is_nullable':True,}
             dvpi_columns.append(dvpi_column_entry)
             for column_property in data_column_properties_to_copy:
                 if column_property in column_entry:
@@ -1010,6 +1012,7 @@ def assemble_dvpi_hash_mappings(load_operation_entry):
         dvpi_hash_mapping_entry={'hash_class':hash_class,
                                 'hash_column_name':load_operation_hash_dict_entry['hash_column_name'],
                                 'hash_name':load_operation_hash_dict_entry['hash_name'],
+                                'is_nullable':False,
                                 'stage_column_name':g_hash_dict[load_operation_hash_dict_entry['hash_name']]['stage_column_name']
                     }
         dvpi_hash_mappings.append(dvpi_hash_mapping_entry)
@@ -1021,6 +1024,7 @@ def assemble_dvpi_data_mappings(load_operation_entry):
         dvpi_data_mapping_entry = {'column_name':column_name,
                                    'field_name': data_mapping_dict_entry['field_name'],
                                    'column_class': data_mapping_dict_entry['column_class'],
+                                   'is_nullable': True,
                                     'stage_column_name':data_mapping_dict_entry['field_name'] # currently it is 1:1 naming
                                     }
         dvpi_data_mappings.append(dvpi_data_mapping_entry)
@@ -1033,20 +1037,21 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
 
     # add meta columns to column stage dict
     # todo use model profile for column names and types
-    dvpi_stage_columns.append({'stage_column_name':'MD_INSERTED_AT','stage_column_class': 'meta_load_date',
+    dvpi_stage_columns.append({'stage_column_name':'MD_INSERTED_AT','is_nullable':False,'stage_column_class': 'meta_load_date',
                                           'column_type': '#tdbd'})
-    dvpi_stage_columns.append({'stage_column_name':'MD_RECORD_SOURCE','stage_column_class': 'meta_record_source',
+    dvpi_stage_columns.append({'stage_column_name':'MD_RECORD_SOURCE','is_nullable':False,'stage_column_class': 'meta_record_source',
                                             'column_type': '#tdbd'})
-    dvpi_stage_columns.append({'stage_column_name':'MD_LOAD_PROCESS_ID','stage_column_class': 'meta_record_source',
+    dvpi_stage_columns.append({'stage_column_name':'MD_LOAD_PROCESS_ID','is_nullable':False,'stage_column_class': 'meta_record_source',
                                               'column_type': '#tdbd'})
     if has_deletion_flag_in_a_table:
-        dvpi_stage_columns.append({'stage_column_name':'MD_IS_DELETED','stage_column_class': 'meta_deletion_flag',
+        dvpi_stage_columns.append({'stage_column_name':'MD_IS_DELETED','is_nullable':False,'stage_column_class': 'meta_deletion_flag',
                                              'column_type': '#tdbd'})
 
     # add all hashes to stage list
     for hash_name,hash_entry in g_hash_dict.items():
         dvpi_stage_column_entry = {'stage_column_name':hash_entry['stage_column_name'],
                                    'stage_column_class':'hash',
+                                   'is_nullable': False,
                                    'hash_name':hash_name,
                                    'column_type':'#tbd'} # todo use model profile for type
         dvpi_stage_columns.append(dvpi_stage_column_entry)
@@ -1056,6 +1061,7 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
         dvpi_stage_column_entry = {'stage_column_name':field_name,
                                    'stage_column_class':'data',
                                    'field_name':field_name,
+                                   'is_nullable': True,
                                    'column_type':field_entry['field_type'],
                                    'column_classes':['content'] } # later feature will collect list of classes
         dvpi_stage_columns.append(dvpi_stage_column_entry)
