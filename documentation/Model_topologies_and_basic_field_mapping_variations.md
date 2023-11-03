@@ -18,7 +18,7 @@ discussed in [Catalog of field mappings in relations](./catalog_of_field_mapping
 # Definitions
 When describing the data we classify the elements as follows:
 
-**field:** smallest element of source data. Will always be processed as unity. Will be stored in one or multiple columns in the data vault.
+**field:** smallest element of source data. Will always be processed as a unit. Will be stored in one or multiple columns in the data vault.
 
 **source row:** the fixed structure of fields, containing the data of one or more business-objects and their relation in a single row/unit. 
 
@@ -33,7 +33,7 @@ When describing the data we classify the elements as follows:
 **content:** Data that is not used for identification, and just stored in the data model
 
 # Flat Structure Transformation
-Data can be complex in multiple ways, especially when it comes to hierarchical data or document formats. The following approach uses the source data representation after its transformaion into a single relational table model(all data is organized in Rows, every row contains all fields). Hierarchical data formats might need multiple transformations(one for each array). In that case, each of these particular transformations will relate to one of the described patterns. 
+Data can be complex in multiple ways, especially when it comes to hierarchical data or document formats. The following approach uses the source data representation after its transformation into a single relational table model (all data is organized in rows, every row contains all fields). Hierarchical data formats might need multiple transformations (one for each array). In that case, each of these particular transformations will relate to one of the described patterns. 
 
 # Informationtypes of data
 To define the variety of mappings, it is necessary to clarify the types of information, represented by a field.
@@ -45,20 +45,20 @@ To define the variety of mappings, it is necessary to clarify the types of infor
 
 *Note: The data vault main stereotypes map to this classification as follows.  hub=object / link=relation / satellite=attribution.*
 
-*2nd Note: data that is stored in dependent child key columns of a link is also an identification type, since it is needed to identify attributes, that are attached with the satellite*
+*2nd Note: data that is stored in dependent child key columns of a link is also an identification type, since it is needed to identify attributes, that are attached to the satellite*
 
 # Model Topologies
 
-The follwing diagram provides a comprehensive overview about all 
+The following diagram provides a comprehensive overview about all 
 basic topologies in data vault.
 
-![topologie catalog](./images/data_vault_model_topologies.drawio.png)
+![topologie catalog](./images/Data_Vault_Model_Topologies.drawio.png)
 
 More complex models can always be broken down into a concatination of theses models. By providing a method, that describes all the basic topologies, any kind of model should be describable.
 
 # Mapping variations
 
-When classifing the mapping of the fields to the target tables and columns there are 2 perspectives 
+When classifying the mapping of the fields to the target tables and columns there are 2 perspectives 
 - Field perspective
     - one field is mapped to one target column
     - one field is mapped to multiple target columns

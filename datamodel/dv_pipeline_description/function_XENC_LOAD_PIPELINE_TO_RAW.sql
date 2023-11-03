@@ -66,6 +66,25 @@ select
 from
 	dv_pipeline_description.xenc_transform_to_pipeline_dv_table_properties_raw;
 
+TRUNCATE TABLE dv_pipeline_description.xenc_pipeline_stage_properties_raw;
+
+insert
+	into
+	dv_pipeline_description.xenc_pipeline_stage_properties_raw
+( pipeline_name,
+	storage_component,
+	xenc_stage_schema,
+	xenc_stage_table_name)
+select
+	pipeline_name,
+	storage_component,
+	xenc_stage_schema,
+	xenc_stage_table_name
+from
+	dv_pipeline_description.xenc_transform_to_pipeline_stage_properties_raw;
+
+
+
 
 REFRESH MATERIALIZED VIEW dv_pipeline_description.DVPD_PIPELINE_DV_TABLE;
 

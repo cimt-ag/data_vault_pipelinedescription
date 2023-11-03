@@ -26,17 +26,9 @@ as
 $$
 begin
 
-truncate table  dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN; 	
-insert into dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN  select * from dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN_CVIEW;
-	
-truncate table dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN ;
-insert into  dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN 
- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_PLAN_CVIEW;
-
-truncate table dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING ;
-insert into  dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING 
- select * from dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_CVIEW;
-
+truncate table  dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP ; 	
+insert into dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP  
+	select * from dv_pipeline_description.DVPD_MODEL_PROFILE_META_COLUMN_LOOKUP_CVIEW ;
 
 return true;
 end;

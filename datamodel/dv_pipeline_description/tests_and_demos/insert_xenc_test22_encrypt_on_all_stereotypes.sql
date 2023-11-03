@@ -23,7 +23,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 VALUES
 ('xenc_test22_encrypt_on_all_stereotypes','{
 	"dvpd_version": "0.6.0",
-	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"stage_properties" : [{"stage_schema":"stage_rvlt","xenc_stage_schema":"stage_encryption"}],
 	"pipeline_name": "xenc_test22_encrypt_on_all_stereotypes",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
