@@ -33,7 +33,7 @@
 		 	  ,{"field_name": "F16_DDD_SP1_C1_RUUU",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_55_ddd_p1_sat",
 																																												"column_name":"DDD_SP1_C1",
 																																												"relation_names":["UUU"]}]}
-				,{"field_name": "F17_DDD_SP1_C1_RUUU",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_55_ddd_p1_sat",
+				,{"field_name": "F17_DDD_SP1_C1_RWWW",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_55_ddd_p1_sat",
 																																												"column_name":"DDD_SP1_C1",
 																																												"relation_names":["WWW"]}]}
 				,{"field_name": "F18_EEE_SP1_C1",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_55_eee_ref"}]}
