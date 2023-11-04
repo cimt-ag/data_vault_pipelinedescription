@@ -57,6 +57,15 @@ def remove_stereotype_suffix(table_name):
         reduced_table_name='_'.join(words)
     return reduced_table_name
 
+def cast2Bool(boolCandidate):
+    if isinstance(boolCandidate,bool):
+        return boolCandidate
+    if isinstance(boolCandidate,str):
+        return boolCandidate.lower()=='true'
+    if isinstance(boolCandidate,int):
+        return boolCandidate != 0
+    raise Exception(f"can't cast '{boolCandidate}' to bool")
+
 def load_model_profiles(full_directory_name):
     """Runs through model profile files and tries to load them"""
     directory = Path(full_directory_name)
@@ -174,7 +183,7 @@ def transform_lnk_table(dvpd_table_entry, schema_name, storage_component):
     else:
         table_properties['link_key_column_name'] = "LK_" +remove_stereotype_suffix(table_name).upper()
         #register_error(f'link_key_column_name is not declared for lnk table {table_name}')
-    table_properties['is_link_without_sat'] = dvpd_table_entry.get('is_link_without_sat', False)  # default is false
+    table_properties['is_link_without_sat'] = cast2Bool(dvpd_table_entry.get('is_link_without_sat', False))  # default is false
 
     if 'link_parent_tables' in dvpd_table_entry:
         list_position=0
@@ -226,10 +235,10 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component):
         table_properties['satellite_parent_table'] = dvpd_table_entry['satellite_parent_table'].lower()
     else:
         register_error(f'satellite_parent_table is not declared for satellite table {table_name}')
-    table_properties['is_multiactive']=dvpd_table_entry.get('is_multiactive', False)  # default is false
+    table_properties['is_multiactive']=cast2Bool(dvpd_table_entry.get('is_multiactive', False))  # default is false
     table_properties['compare_criteria']=dvpd_table_entry.get('compare_criteria', model_profile['compare_criteria_default']).lower()  # default is profile
-    table_properties['is_enddated']=dvpd_table_entry.get('is_enddated', model_profile['is_enddated_default'])  # default is profile
-    table_properties['uses_diff_hash']=dvpd_table_entry.get('uses_diff_hash', model_profile['uses_diff_hash_default'])  # default is profile
+    table_properties['is_enddated']=cast2Bool(dvpd_table_entry.get('is_enddated', model_profile['is_enddated_default']))  # default is profile
+    table_properties['uses_diff_hash']=cast2Bool(dvpd_table_entry.get('uses_diff_hash', model_profile['uses_diff_hash_default']))  # default is profile
     if 'diff_hash_column_name' in dvpd_table_entry:
         table_properties['diff_hash_column_name'] = dvpd_table_entry['diff_hash_column_name'].upper()
     else:  # derive default for diff column hash name
@@ -238,7 +247,7 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component):
         else:
             table_properties['diff_hash_column_name'] = 'RH_' + table_name.upper()
 
-    table_properties['has_deletion_flag']=dvpd_table_entry.get('has_deletion_flag', model_profile['has_deletion_flag_default'])  # default is profile
+    table_properties['has_deletion_flag']=cast2Bool(dvpd_table_entry.get('has_deletion_flag', model_profile['has_deletion_flag_default']))  # default is profile
     cleansed_driving_keys=[]
     if 'driving_keys' in dvpd_table_entry:
         #todo check if driving keys is a list
@@ -266,8 +275,8 @@ def transform_ref_table(dvpd_table_entry, schema_name, storage_component):
 
     model_profile=g_model_profile_dict[model_profile_name]
 
-    table_properties['is_enddated']=dvpd_table_entry.get('is_enddated', model_profile['is_enddated_default'])  # default is profile
-    table_properties['uses_diff_hash']=dvpd_table_entry.get('uses_diff_hash', model_profile['uses_diff_hash_default'])  # default is profile
+    table_properties['is_enddated']=cast2Bool(dvpd_table_entry.get('is_enddated', model_profile['is_enddated_default']) ) # default is profile
+    table_properties['uses_diff_hash']=cast2Bool(dvpd_table_entry.get('uses_diff_hash', model_profile['uses_diff_hash_default']))  # default is profile
     if 'diff_hash_column_name' in dvpd_table_entry:
         table_properties['diff_hash_column_name'] = dvpd_table_entry['diff_hash_column_name'].upper()
     else:
@@ -1173,7 +1182,7 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
                                    'stage_column_class':'hash',
                                    'is_nullable': False,
                                    'hash_name':hash_name,
-                                   'column_type':'#tbd'} # todo use model profile for type
+                                   'column_type':hash_entry['column_type']}
         dvpi_stage_columns.append(dvpi_stage_column_entry)
 
     # add all fields to
