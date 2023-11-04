@@ -623,6 +623,7 @@ def add_hash_column_mappings_for_hub(table_name,table_entry):
     model_profile = g_model_profile_dict[table_entry['model_profile_name']]
     table_key_column_type = model_profile['table_key_column_type']
 
+
     hash_base_name = "KEY_OF_"+table_name.upper()
     key_column_name = table_entry['hub_key_column_name']
     # create a hash for every operation
@@ -649,7 +650,16 @@ def add_hash_column_mappings_for_hub(table_name,table_entry):
         hash_description={   "stage_column_name": stage_column_name,
                         "hash_origin_table":table_name,
                          "column_class":"key",
-                         "hash_fields":hash_fields}
+                         "hash_fields":hash_fields,
+                         "column_type":table_key_column_type,
+                         "hash_encoding":model_profile['table_key_hash_encoding'],
+                         "hash_function":model_profile['table_key_hash_function'],
+                         "hash_concatenation_seperator": model_profile['hash_concatenation_seperator'],
+                         "hash_timestamp_format_sqlstyle": model_profile['hash_timestamp_format_sqlstyle'],
+                         "hash_null_value_string": model_profile['hash_null_value_string'],
+                         "model_profile_name":table_entry['model_profile_name']
+                          }
+
 
         if hash_name not in g_hash_dict:
             g_hash_dict[hash_name]=hash_description
@@ -752,11 +762,23 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
                             'field_target_column':column_name}
                 link_hash_fields.append(hash_field)
 
-        # put hash definition into global list
+        # put link hash definition into global list
+        model_profile = g_model_profile_dict[table_entry['model_profile_name']]
+        table_key_column_type = model_profile['table_key_column_type']
+
+
         link_hash_description = {"stage_column_name": stage_column_name,
-                      "hash_origin_table": table_name,
-                      "column_class": "key",
-                      "hash_fields": link_hash_fields}
+                                 "hash_origin_table": table_name,
+                                 "column_class": "key",
+                                 "hash_fields": link_hash_fields,
+                                 "column_type": table_key_column_type,
+                                 "hash_encoding": model_profile['table_key_hash_encoding'],
+                                 "hash_function": model_profile['table_key_hash_function'],
+                                 "hash_concatenation_seperator": model_profile['hash_concatenation_seperator'],
+                                 "hash_timestamp_format_sqlstyle": model_profile['hash_timestamp_format_sqlstyle'],
+                                 "hash_null_value_string": model_profile['hash_null_value_string'],
+                                 "model_profile_name": table_entry['model_profile_name']
+                                 }
 
         if link_hash_name not in g_hash_dict:
             g_hash_dict[link_hash_name] = link_hash_description
@@ -767,8 +789,6 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
         hash_mapping_dict['key']=link_key_hash_reference
 
         # put hash column in table hash list
-        model_profile = g_model_profile_dict[table_entry['model_profile_name']]
-        table_key_column_type = model_profile['table_key_column_type']
 
         if link_key_column_name not in table_hash_columns:
             table_hash_columns[link_key_column_name] = {"column_class": "key",
@@ -824,7 +844,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         diff_hash_base_name="DIFF_OF_"+table_name.upper()
         diff_hash_column_name = table_entry['diff_hash_column_name']
         model_profile = g_model_profile_dict[table_entry['model_profile_name']]
-        table_key_column_type = model_profile['table_key_column_type']
+        diff_hash_column_type = model_profile['diff_hash_column_type']
 
         if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
             hash_name = diff_hash_base_name
@@ -850,7 +870,15 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                             "multi_row_content" : table_entry['is_multiactive'],
                             "related_key_hash" : parent_key_hash_reference['hash_name'],
                             "column_class": "diff_hash",
-                            "hash_fields": hash_fields}
+                            "hash_fields": hash_fields,
+                            "column_type": diff_hash_column_type,
+                            "hash_encoding": model_profile['diff_hash_encoding'],
+                            "hash_function": model_profile['diff_hash_function'],
+                            "hash_concatenation_seperator": model_profile['hash_concatenation_seperator'],
+                            "hash_timestamp_format_sqlstyle": model_profile['hash_timestamp_format_sqlstyle'],
+                            "hash_null_value_string": model_profile['hash_null_value_string'],
+                            "model_profile_name": table_entry['model_profile_name']
+                            }
 
         if hash_name not in g_hash_dict:
             g_hash_dict[hash_name] = hash_description
@@ -862,7 +890,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         # put hash column in table hash list
         if diff_hash_column_name not in table_hash_columns:
             table_hash_columns[diff_hash_column_name] = {"column_class": "diff_hash",
-                                                               "column_type": table_key_column_type}
+                                                               "column_type": diff_hash_column_type}
 
 
 def add_hash_column_mappings_for_ref(table_name,table_entry):
@@ -874,7 +902,7 @@ def add_hash_column_mappings_for_ref(table_name,table_entry):
         return
 
     model_profile = g_model_profile_dict[table_entry['model_profile_name']]
-    table_key_column_type = model_profile['table_key_column_type']
+    diff_hash_column_type = model_profile['table_key_column_type']
 
     load_operations=table_entry['load_operations']
     diff_hash_base_name = "DIFF_OF_" + table_name.upper()
@@ -903,7 +931,15 @@ def add_hash_column_mappings_for_ref(table_name,table_entry):
         hash_description = {"stage_column_name": stage_column_name,
                             "hash_origin_table": table_name,
                             "column_class": "diff_hash",
-                            "hash_fields": hash_fields}
+                            "hash_fields": hash_fields,
+                            "column_type": diff_hash_column_type,
+                            "hash_encoding": model_profile['diff_hash_encoding'],
+                            "hash_function": model_profile['diff_hash_function'],
+                            "hash_concatenation_seperator": model_profile['hash_concatenation_seperator'],
+                            "hash_timestamp_format_sqlstyle": model_profile['hash_timestamp_format_sqlstyle'],
+                            "hash_null_value_string": model_profile['hash_null_value_string'],
+                            "model_profile_name": table_entry['model_profile_name']
+                            }
         if hash_name not in g_hash_dict:
             g_hash_dict[hash_name] = hash_description
 
@@ -914,7 +950,7 @@ def add_hash_column_mappings_for_ref(table_name,table_entry):
         # put hash column in table hash list
         if diff_hash_column_name not in table_hash_columns:
             table_hash_columns[diff_hash_column_name] = {"column_class": "diff_hash",
-                                                               "column_type": table_key_column_type}
+                                                               "column_type": diff_hash_column_type}
 
 def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, relation_name, load_operation):
     data_mapping_dict={}
