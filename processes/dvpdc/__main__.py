@@ -341,15 +341,19 @@ def create_columns_from_field_mapping(field_entry, field_position):
         column_map_entry['field_name']=field_name
         column_map_entry['field_position']=field_position
         column_map_entry['column_type'] = table_mapping.get('column_type',field_entry['field_type']).upper()  # defaults to field type
-        column_map_entry['prio_for_column_position'] = table_mapping.get('prio_for_column_position',50000)  # defaults to 50000
-        column_map_entry['prio_for_row_order'] = table_mapping.get('prio_for_row_order',50000)  # defaults to 50000
         column_map_entry['row_order_direction'] = table_mapping.get('row_order_direction','ASC')  # defaults to ASC
         column_map_entry['exclude_from_key_hash'] = table_mapping.get('exclude_from_key_hash',False)  # defaults to False
-        column_map_entry['prio_in_key_hash'] = table_mapping.get('prio_in_key_hash',0)  # defaults to 0
         column_map_entry['exclude_from_change_detection'] = table_mapping.get('exclude_from_change_detection',False)  # defaults to False
-        column_map_entry['prio_in_diff_hash'] = table_mapping.get('prio_in_diff_hash',0)  # defaults to 0
         column_map_entry['column_content_comment'] = table_mapping.get('column_content_comment',field_entry.get('field_comment'))
         column_map_entry['update_on_every_load'] = table_mapping.get('update_on_every_load',False)  # defaults to False
+        try:
+            column_map_entry['prio_in_key_hash'] = int(table_mapping.get('prio_in_key_hash',0) ) # defaults to 0
+            column_map_entry['prio_for_column_position'] = int(table_mapping.get('prio_for_column_position',50000))  # defaults to 50000
+            column_map_entry['prio_for_row_order'] = int(table_mapping.get('prio_for_row_order',50000) ) # defaults to 50000
+            column_map_entry['prio_in_diff_hash'] = int(table_mapping.get('prio_in_diff_hash',0))  # defaults to 0
+        except ValueError as ve:
+            register_error(f"Error when reading numerical properties from  mapping of field '{field_name}' to table '{table_name}':"+str(ve))
+
         relation_names_cleansed = []
         if 'relation_names' in table_mapping:
             for relation_name in  table_mapping['relation_names']:
@@ -1138,7 +1142,7 @@ def assemble_dvpi_hash_mappings(load_operation_entry):
     dvpi_hash_mappings=[]
     for hash_class,load_operation_hash_dict_entry in load_operation_entry['hash_mapping_dict'].items():
         dvpi_hash_mapping_entry={'hash_class':hash_class,
-                                'hash_column_name':load_operation_hash_dict_entry['hash_column_name'],
+                                'column_name':load_operation_hash_dict_entry['hash_column_name'],
                                 'hash_name':load_operation_hash_dict_entry['hash_name'],
                                 'is_nullable':False,
                                 'stage_column_name':g_hash_dict[load_operation_hash_dict_entry['hash_name']]['stage_column_name']

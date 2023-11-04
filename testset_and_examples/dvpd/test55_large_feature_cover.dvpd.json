@@ -17,7 +17,7 @@
 		    ,{"field_name": "F5_CCC_BK2", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_55_ccc_hub"}]}
 		    ,{"field_name": "F6_CCC_UT1", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_55_ccc_hub","exclude_from_key_hash":true}]}
 		 	  ,{"field_name": "F7_AAA_SP1_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_55_aaa_p1_sat"}]}
-			  ,{"field_name": "F8_AAA_SP1_C2",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_55_aaa_p1_sat"}]}
+			  ,{"field_name": "F8_AAA_SP1_C2",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_55_aaa_p1_sat","prio_in_diff_hash":"8"}]}
 			  ,{"field_name": "F9_AAA_FIELD_NAME",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_55_aaa_p1_sat",
 																																											"column_name":"F9_AAA_SP1_C3"}]}
 			  ,{"field_name": "F10_AAA_SP1_V3_UT",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_55_aaa_p1_sat",																																								"exclude_from_change_detection":true}]}
