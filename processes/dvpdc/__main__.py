@@ -14,6 +14,11 @@ g_field_dict={}
 g_hash_dict={}
 g_dvpi_document={}
 g_model_profile_dict={}
+g_pipeline_model_profile_name=""
+
+class DvpdcError(Exception):
+    """Raised when Compiler must stop """
+    pass
 
 def print_the_brain():
     print("JSON of g_model_profile_dict:")
@@ -58,7 +63,7 @@ def load_model_profiles(full_directory_name):
 
     name_pattern_matcher=re.compile(".+profile.json$")
     for file in directory.iterdir():
-          if file.is_file() and os.path.getsize(file) is not 0 and name_pattern_matcher.match(Path(file).name):
+          if file.is_file() and os.path.getsize(file) != 0 and name_pattern_matcher.match(Path(file).name):
                 add_model_profile_file(file)
 
 def add_model_profile_file(file_to_process: Path):
@@ -96,10 +101,13 @@ def add_model_profile_file(file_to_process: Path):
 def check_essential_element(dvpd_object):
     """Check for the essential keys, that are needed to identify the main objects"""
 
+    global g_pipeline_model_profile
+
     root_keys=['pipeline_name','dvpd_version','stage_properties','data_extraction','fields']
     for key_name in root_keys:
         if dvpd_object.get(key_name) is None:
             register_error ("missing declaration of root property "+key_name)
+
 
     # Check essential keys of data model declaration
     table_keys=['table_name','table_stereotype']
@@ -134,38 +142,44 @@ def check_essential_element(dvpd_object):
                     register_error(f"missing declaration of table_name: field {field_count}, target {target_count} ")
 
 
-    if g_error_count>0:
-        print ("*** Stopped compiling due to errors ***")
-        exit(5)
-
-def transform_hub_table(table_entry,schema_name,storage_component):
+def transform_hub_table(dvpd_table_entry, schema_name, storage_component):
     """Cleanse check and add table declaration for a hub table"""
     global g_table_dict
-    table_name = table_entry['table_name'].lower()
-    table_properties= {'table_stereotype': 'hub','schema_name':schema_name,'storage_component':storage_component}
-    if 'hub_key_column_name' in table_entry:
-        table_properties['hub_key_column_name'] = table_entry['hub_key_column_name'].upper()
+    table_name = dvpd_table_entry['table_name'].lower()
+    model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
+    table_properties= {'table_stereotype': 'hub', 'schema_name': schema_name, 'storage_component': storage_component,
+                       'model_profile_name': model_profile_name}
+    if model_profile_name not in g_model_profile_dict:
+        register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
+
+    if 'hub_key_column_name' in dvpd_table_entry:
+        table_properties['hub_key_column_name'] = dvpd_table_entry['hub_key_column_name'].upper()
     else:
         table_properties['hub_key_column_name'] = "HK_"+remove_stereotype_suffix(table_name).upper()
         #register_error(f'hub_key_column_name is not declared for hub table {table_name}')
     g_table_dict[table_name] = table_properties
 
-def transform_lnk_table(table_entry,schema_name,storage_component):
+def transform_lnk_table(dvpd_table_entry, schema_name, storage_component):
     """Cleanse check and add table declaration for a lnk table"""
     global g_table_dict
-    table_name = table_entry['table_name'].lower()
-    table_properties= {'table_stereotype': 'lnk','schema_name':schema_name,'storage_component':storage_component}
-    if 'link_key_column_name' in table_entry:
-        table_properties['link_key_column_name'] = table_entry['link_key_column_name'].upper()
+    table_name = dvpd_table_entry['table_name'].lower()
+    model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
+    table_properties= {'table_stereotype': 'lnk','schema_name':schema_name,'storage_component':storage_component,
+                       'model_profile_name': model_profile_name}
+    if model_profile_name not in g_model_profile_dict:
+        register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
+
+    if 'link_key_column_name' in dvpd_table_entry:
+        table_properties['link_key_column_name'] = dvpd_table_entry['link_key_column_name'].upper()
     else:
         table_properties['link_key_column_name'] = "LK_" +remove_stereotype_suffix(table_name).upper()
         #register_error(f'link_key_column_name is not declared for lnk table {table_name}')
-    table_properties['is_link_without_sat'] = table_entry.get('is_link_without_sat', False)  # default is false
+    table_properties['is_link_without_sat'] = dvpd_table_entry.get('is_link_without_sat', False)  # default is false
 
-    if 'link_parent_tables' in table_entry:
+    if 'link_parent_tables' in dvpd_table_entry:
         list_position=0
         table_properties['link_parent_tables']=[]
-        for parent_entry in table_entry['link_parent_tables']:
+        for parent_entry in dvpd_table_entry['link_parent_tables']:
             cleansed_parent_entry={}
             list_position += 1
             if isinstance(parent_entry,dict):
@@ -195,57 +209,67 @@ def transform_lnk_table(table_entry,schema_name,storage_component):
     g_table_dict[table_name] = table_properties
 
 
-def transform_sat_table(table_entry,schema_name,storage_component):
+def transform_sat_table(dvpd_table_entry, schema_name, storage_component):
     """Cleanse check and add table declaration for a satellite table"""
     global g_table_dict
-    table_name = table_entry['table_name'].lower()
-    table_properties= {'table_stereotype': 'sat','schema_name':schema_name,'storage_component':storage_component}
-    if 'satellite_parent_table' in table_entry:
-        table_properties['satellite_parent_table'] = table_entry['satellite_parent_table'].lower()
+    table_name = dvpd_table_entry['table_name'].lower()
+    model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name);
+    table_properties= {'table_stereotype': 'sat','schema_name':schema_name,'storage_component':storage_component,
+                       'model_profile_name': model_profile_name}
+
+    if model_profile_name not in g_model_profile_dict:
+        register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
+        return
+    model_profile=g_model_profile_dict[model_profile_name]
+
+    if 'satellite_parent_table' in dvpd_table_entry:
+        table_properties['satellite_parent_table'] = dvpd_table_entry['satellite_parent_table'].lower()
     else:
         register_error(f'satellite_parent_table is not declared for satellite table {table_name}')
-    table_properties['is_multiactive']=table_entry.get('is_multiactive',False)  # default is false
-    #todo Add model profile default logic ->
-    table_properties['compare_criteria']=table_entry.get('compare_criteria','key+current').lower()  # default is profile
-    #todo Add model profile default logic ->
-    table_properties['is_enddated']=table_entry.get('is_enddated',True)  # default is profile
-    #todo Add model profile default logic ->
-    table_properties['uses_diff_hash']=table_entry.get('uses_diff_hash',True)  # default is profile
-    if 'diff_hash_column_name' in table_entry:
-        table_properties['diff_hash_column_name'] = table_entry['diff_hash_column_name'].upper()
+    table_properties['is_multiactive']=dvpd_table_entry.get('is_multiactive', False)  # default is false
+    table_properties['compare_criteria']=dvpd_table_entry.get('compare_criteria', model_profile['compare_criteria_default']).lower()  # default is profile
+    table_properties['is_enddated']=dvpd_table_entry.get('is_enddated', model_profile['is_enddated_default'])  # default is profile
+    table_properties['uses_diff_hash']=dvpd_table_entry.get('uses_diff_hash', model_profile['uses_diff_hash_default'])  # default is profile
+    if 'diff_hash_column_name' in dvpd_table_entry:
+        table_properties['diff_hash_column_name'] = dvpd_table_entry['diff_hash_column_name'].upper()
     else:  # derive default for diff column hash name
         if table_properties['is_multiactive']:
             table_properties['diff_hash_column_name'] = 'GH_' + table_name.upper()
         else:
             table_properties['diff_hash_column_name'] = 'RH_' + table_name.upper()
 
-    #todo Add model profile default logic ->
-    table_properties['has_deletion_flag']=table_entry.get('has_deletion_flag',True)  # default is profile
+    table_properties['has_deletion_flag']=dvpd_table_entry.get('has_deletion_flag', model_profile['has_deletion_flag_default'])  # default is profile
     cleansed_driving_keys=[]
-    if 'driving_keys' in table_entry:
+    if 'driving_keys' in dvpd_table_entry:
         #todo check if driving keys is a list
         cleansed_driving_keys=[]
-        for driving_key in table_entry['driving_keys']:
+        for driving_key in dvpd_table_entry['driving_keys']:
             cleansed_driving_keys.append(driving_key.upper())
     table_properties['driving_keys']=cleansed_driving_keys
-    if 'tracked_relation_name' in table_entry:
-        table_properties['tracked_relation_name'] = table_entry.get('tracked_relation_name')  # default is None
+    if 'tracked_relation_name' in dvpd_table_entry:
+        table_properties['tracked_relation_name'] = dvpd_table_entry.get('tracked_relation_name')  # default is None
 
     # finally add the cleansed properties to the table dictionary
     g_table_dict[table_name] = table_properties
 
-def transform_ref_table(table_entry,schema_name,storage_component):
+def transform_ref_table(dvpd_table_entry, schema_name, storage_component):
     """Cleanse check and add table declaration for a satellite table"""
     global g_table_dict
-    table_name = table_entry['table_name'].lower()
-    table_properties={'table_stereotype': 'ref','schema_name':schema_name,'storage_component':storage_component}
+    table_name = dvpd_table_entry['table_name'].lower()
+    model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
+    table_properties={'table_stereotype': 'ref','schema_name':schema_name,'storage_component':storage_component,
+                       'model_profile_name': model_profile_name}
 
-    #todo Add model profile default logic ->
-    table_properties['is_enddated']=table_entry.get('is_enddated',True)  # default is profile
-    #todo Add model profile default logic ->
-    table_properties['uses_diff_hash']=table_entry.get('uses_diff_hash',True)  # default is profile
-    if 'diff_hash_column_name' in table_entry:
-        table_properties['diff_hash_column_name'] = table_entry['diff_hash_column_name'].upper()
+    if model_profile_name not in g_model_profile_dict:
+        register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
+        return
+
+    model_profile=g_model_profile_dict[model_profile_name]
+
+    table_properties['is_enddated']=dvpd_table_entry.get('is_enddated', model_profile['is_enddated_default'])  # default is profile
+    table_properties['uses_diff_hash']=dvpd_table_entry.get('uses_diff_hash', model_profile['uses_diff_hash_default'])  # default is profile
+    if 'diff_hash_column_name' in dvpd_table_entry:
+        table_properties['diff_hash_column_name'] = dvpd_table_entry['diff_hash_column_name'].upper()
     else:
         table_properties['diff_hash_column_name'] = 'RH_' + table_name.upper()
 
@@ -273,9 +297,7 @@ def collect_table_properties(dvpd_object):
                 case _:
                     register_error(f"Unknown table stereotype '{table_entry['table_stereotype']}' declared for table {table_entry['table_name']}")
 
-    if g_error_count > 0:
-        print("*** Stopped compiling due to errors ***")
-        exit(5)
+
 
 def collect_field_properties(dvpd_object):
     global g_field_dict
@@ -294,9 +316,7 @@ def collect_field_properties(dvpd_object):
         g_field_dict[field_name] = cleansed_field_entry
         create_columns_from_field_mapping(field_entry, field_position)
 
-    if g_error_count > 0:
-        print("*** Stopped compiling due to errors ***")
-        exit(5)
+
 
 def create_columns_from_field_mapping(field_entry, field_position):
     global g_table_dict
@@ -600,6 +620,9 @@ def add_hash_column_mappings_for_hub(table_name,table_entry):
         table_entry['hash_columns']={}
     table_hash_columns= table_entry['hash_columns']
 
+    model_profile = g_model_profile_dict[table_entry['model_profile_name']]
+    table_key_column_type = model_profile['table_key_column_type']
+
     hash_base_name = "KEY_OF_"+table_name.upper()
     key_column_name = table_entry['hub_key_column_name']
     # create a hash for every operation
@@ -638,7 +661,7 @@ def add_hash_column_mappings_for_hub(table_name,table_entry):
         # put hash column in table hash list
         if key_column_name not in table_hash_columns:
             table_hash_columns[key_column_name]={"column_class":"key",
-                                             "column_type":"#todo "} #todo integrate model profile
+                                             "column_type":table_key_column_type}
 
 
 
@@ -670,6 +693,8 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
         for link_parent_entry in table_entry['link_parent_tables']:
             link_parent_count+=1
             parent_table_entry=g_table_dict[link_parent_entry['table_name']]
+            parent_model_profile=g_model_profile_dict[parent_table_entry['model_profile_name']]
+            parent_table_key_column_type=parent_model_profile['table_key_column_type']
             parent_load_operations=parent_table_entry['load_operations']
             if link_parent_entry['relation_name'] != '*':
                 parent_relation= link_parent_entry['relation_name']  # the parent must provide operation of explicitly declared relation
@@ -713,7 +738,7 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
                 table_hash_columns[hub_key_column_name_in_link] = {"column_class": "parent_key",
                                                     "parent_table_name":link_parent_entry['table_name'],
                                                    "parent_key_column_name":parent_key_hash_reference['hash_column_name'],
-                                                   "column_type": "#todo "}  # todo integrate model profile
+                                                   "column_type": parent_table_key_column_type}
 
 
         # add dependent child keys if exist
@@ -742,22 +767,28 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
         hash_mapping_dict['key']=link_key_hash_reference
 
         # put hash column in table hash list
+        model_profile = g_model_profile_dict[table_entry['model_profile_name']]
+        table_key_column_type = model_profile['table_key_column_type']
+
         if link_key_column_name not in table_hash_columns:
             table_hash_columns[link_key_column_name] = {"column_class": "key",
-                                                               "column_type": "#todo "}  # todo integrate model profile
+                                                               "column_type": table_key_column_type}
 
 def add_hash_column_mappings_for_sat(table_name,table_entry):
 
     if 'hash_columns' not in table_entry:
         table_entry['hash_columns']={}
     table_hash_columns= table_entry['hash_columns']
+    satellite_parent_table = g_table_dict[table_entry['satellite_parent_table']]
+    satellite_parent_model_profile = g_model_profile_dict[satellite_parent_table['model_profile_name']]
+    satellite_parent_table_key_column_type = satellite_parent_model_profile['table_key_column_type']
 
     load_operations= table_entry['load_operations']
+
     for relation_name, load_operation_entry in load_operations.items():
         hash_mapping_dict = {}
         load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
         # add parent key hash to hash reference list
-        satellite_parent_table = g_table_dict[table_entry['satellite_parent_table']]
         parent_load_operations = satellite_parent_table['load_operations']
 
         if not relation_name in parent_load_operations:
@@ -781,7 +812,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                                                                "parent_table_name": table_entry['satellite_parent_table'],
                                                                "parent_key_column_name": parent_key_hash_reference[
                                                                    'hash_column_name'],
-                                                               "column_type": "#todo "}  # todo integrate model profile
+                                                               "column_type":satellite_parent_table_key_column_type}
 
         # if not needed, skip diff hash
         if table_entry['is_effectivity_sat'] or table_entry['compare_criteria'] == 'key' or table_entry[
@@ -792,6 +823,9 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
 
         diff_hash_base_name="DIFF_OF_"+table_name.upper()
         diff_hash_column_name = table_entry['diff_hash_column_name']
+        model_profile = g_model_profile_dict[table_entry['model_profile_name']]
+        table_key_column_type = model_profile['table_key_column_type']
+
         if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
             hash_name = diff_hash_base_name
             stage_column_name = diff_hash_column_name
@@ -828,7 +862,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         # put hash column in table hash list
         if diff_hash_column_name not in table_hash_columns:
             table_hash_columns[diff_hash_column_name] = {"column_class": "diff_hash",
-                                                               "column_type": "#todo "}  # todo integrate model profile
+                                                               "column_type": table_key_column_type}
 
 
 def add_hash_column_mappings_for_ref(table_name,table_entry):
@@ -838,6 +872,9 @@ def add_hash_column_mappings_for_ref(table_name,table_entry):
 
     if not table_entry['uses_diff_hash']:
         return
+
+    model_profile = g_model_profile_dict[table_entry['model_profile_name']]
+    table_key_column_type = model_profile['table_key_column_type']
 
     load_operations=table_entry['load_operations']
     diff_hash_base_name = "DIFF_OF_" + table_name.upper()
@@ -877,7 +914,7 @@ def add_hash_column_mappings_for_ref(table_name,table_entry):
         # put hash column in table hash list
         if diff_hash_column_name not in table_hash_columns:
             table_hash_columns[diff_hash_column_name] = {"column_class": "diff_hash",
-                                                               "column_type": "#todo "}  # todo integrate model profile
+                                                               "column_type": table_key_column_type}
 
 def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, relation_name, load_operation):
     data_mapping_dict={}
@@ -948,24 +985,25 @@ def assemble_dvpi_table_entry(table_name,table_entry):
     dvpi_columns=[]
     dvpi_table_entry['columns']=dvpi_columns
 
+    model_profile = g_model_profile_dict[table_entry['model_profile_name']]
 
 
     # add meta columns to column dict
-    #todo use model profile for column names and types
-    dvpi_columns.append({'column_name':'MD_INSERTED_AT', 'is_nullable':False,'column_class':'meta_load_date',
-                                           'column_type':'#tdbd'})
-    dvpi_columns.append({'column_name':'MD_RECORD_SOURCE','is_nullable':False,'column_class':'meta_record_source',
-                                           'column_type':'#tdbd'})
-    dvpi_columns.append({'column_name':'MD_LOAD_PROCESS_ID','is_nullable':False,'column_class':'meta_record_source',
-                                           'column_type':'#tdbd'})
+
+    dvpi_columns.append({'column_name':model_profile['load_date_column_name'], 'is_nullable':False,'column_class':'meta_load_date',
+                                           'column_type':model_profile['load_date_column_type']})
+    dvpi_columns.append({'column_name':model_profile['load_process_id_column_name'],'is_nullable':False,'column_class':'meta_record_source',
+                                           'column_type':model_profile['load_process_id_column_type']})
+    dvpi_columns.append({'column_name':model_profile['record_source_column_name'],'is_nullable':False,'column_class':'meta_record_source',
+                                           'column_type':model_profile['record_source_column_type']})
 
     if 'has_deletion_flag' in table_entry and table_entry['has_deletion_flag']:
-        dvpi_columns.append({'column_name':'MD_IS_DELETED','is_nullable':False,'column_class': 'meta_deletion_flag',
-                                                  'column_type': '#tdbd'})
+        dvpi_columns.append({'column_name':model_profile['deletion_flag_column_name'],'is_nullable':False,'column_class': 'meta_deletion_flag',
+                                                  'column_type': model_profile['deletion_flag_column_type']})
 
     if 'is_enddated' in table_entry and table_entry['is_enddated']:
-        dvpi_columns.append({'column_name':'MD_VALID_BEFORE','is_nullable': False, 'column_class': 'meta_load_enddate',
-                                                  'column_type': '#tdbd'})
+        dvpi_columns.append({'column_name':model_profile['load_enddate_column_name'],'is_nullable': False, 'column_class': 'meta_load_enddate',
+                                                  'column_type': model_profile['load_enddate_column_type']})
 
 
     # add hash columns to columns
@@ -1079,18 +1117,19 @@ def assemble_dvpi_data_mappings(load_operation_entry):
 def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
     dvpi_stage_columns = []
 
+    model_profile = g_model_profile_dict[g_pipeline_model_profile_name]
 
     # add meta columns to column stage dict
-    # todo use model profile for column names and types
-    dvpi_stage_columns.append({'stage_column_name':'MD_INSERTED_AT','is_nullable':False,'stage_column_class': 'meta_load_date',
-                                          'column_type': '#tdbd'})
-    dvpi_stage_columns.append({'stage_column_name':'MD_RECORD_SOURCE','is_nullable':False,'stage_column_class': 'meta_record_source',
-                                            'column_type': '#tdbd'})
-    dvpi_stage_columns.append({'stage_column_name':'MD_LOAD_PROCESS_ID','is_nullable':False,'stage_column_class': 'meta_record_source',
-                                              'column_type': '#tdbd'})
+
+    dvpi_stage_columns.append({'stage_column_name':model_profile['load_date_column_name'],'is_nullable':False,'stage_column_class': 'meta_load_date',
+                                          'column_type': model_profile['load_date_column_type']})
+    dvpi_stage_columns.append({'stage_column_name':model_profile['load_process_id_column_name'],'is_nullable':False,'stage_column_class': 'meta_record_source',
+                                            'column_type':model_profile['load_process_id_column_type']})
+    dvpi_stage_columns.append({'stage_column_name':model_profile['record_source_column_name'],'is_nullable':False,'stage_column_class': 'meta_record_source',
+                                              'column_type': model_profile['record_source_column_type']})
     if has_deletion_flag_in_a_table:
-        dvpi_stage_columns.append({'stage_column_name':'MD_IS_DELETED','is_nullable':False,'stage_column_class': 'meta_deletion_flag',
-                                             'column_type': '#tdbd'})
+        dvpi_stage_columns.append({'stage_column_name':model_profile['deletion_flag_column_name'],'is_nullable':False,'stage_column_class': 'meta_deletion_flag',
+                                             'column_type': model_profile['deletion_flag_column_type']})
 
     # add all hashes to stage list
     for hash_name,hash_entry in g_hash_dict.items():
@@ -1133,6 +1172,7 @@ def dvpdc(dvpd_filename,dvpi_filename=None):
     global g_error_count
     global g_hash_dict
     global g_model_profile_dict
+    global g_pipeline_model_profile_name
 
     g_table_dict={}
     g_dvpi_document={}
@@ -1140,6 +1180,7 @@ def dvpdc(dvpd_filename,dvpi_filename=None):
     g_error_count=0
     g_hash_dict={}
     g_model_profile_dict={}
+    g_pipeline_model_profile_name=""
 
 
     params = configuration_load_ini('dvpdc.ini', 'dvpdc',['dvpd_model_profile_directory'])
@@ -1159,23 +1200,53 @@ def dvpdc(dvpd_filename,dvpi_filename=None):
         with open(dvpd_file_path, "r") as dvpd_file:
             dvpd_object=json.load(dvpd_file)
     except json.JSONDecodeError as e:
-        print("ERROR: JSON Parsing error of file "+ dvpd_file_path.as_posix())
-        print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
-        exit(5)
+        register_error("ERROR: JSON Parsing error of file "+ dvpd_file_path.as_posix())
+        register_error(print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno)))
+        raise DvpdcError
+
+    g_pipeline_model_profile_name= dvpd_object.get('model_profile_name','_default')
+    if g_pipeline_model_profile_name not in g_model_profile_dict:
+        register_error(f"Model profile '{g_pipeline_model_profile_name}' declared in pipeline does not exist")
+        raise DvpdcError
+
 
 
     check_essential_element(dvpd_object)
+    if g_error_count > 0:
+        raise DvpdcError
+
     collect_table_properties(dvpd_object)
+    if g_error_count > 0:
+        raise DvpdcError
+
     collect_field_properties(dvpd_object)
+    if g_error_count > 0:
+        raise DvpdcError
+
     check_multifield_mapping_consistency()
+    if g_error_count > 0:
+        raise DvpdcError
+
     derive_content_dependent_table_properties()
+    if g_error_count > 0:
+        raise DvpdcError
+
     derive_load_operations()
+    if g_error_count > 0:
+        raise DvpdcError
+
     add_data_mapping_dict_to_load_operations()
+    if g_error_count > 0:
+        raise DvpdcError
+
     add_hash_columns()
+    if g_error_count > 0:
+        raise DvpdcError
+
 
     print_the_brain()
 
-    assemble_dvpi(dvpd_object,dvpd_filename) # todo add option to omit stage_column_dict
+    assemble_dvpi(dvpd_object,dvpd_filename)
     #print_dvpi_document()
 
     # write DVPI to file
@@ -1191,7 +1262,7 @@ def dvpdc(dvpd_filename,dvpi_filename=None):
     except json.JSONDecodeError as e:
         print("ERROR: JSON writing to  of file "+ dvpi_file_path.as_posix())
         print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
-        exit(5)
+        raise DvpdcError
 
 
 if __name__ == "__main__":
@@ -1200,7 +1271,11 @@ if __name__ == "__main__":
     parser.add_argument("--dvpi",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
     #parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
     args = parser.parse_args()
-    dvpdc(dvpd_filename=args.dvpd_filename, dvpi_filename=args.dvpi)
+    try:
+        dvpdc(dvpd_filename=args.dvpd_filename, dvpi_filename=args.dvpi)
+    except DvpdcError:
+        print("*** stopped compilation due to errors in input ***")
+        exit(5)
 
 
 
