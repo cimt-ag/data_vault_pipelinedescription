@@ -1,5 +1,6 @@
 import argparse
 import os
+import re
 from pathlib import Path
 from lib.configuration import configuration_load_ini
 import json
@@ -12,9 +13,12 @@ g_table_dict={}
 g_field_dict={}
 g_hash_dict={}
 g_dvpi_document={}
+g_model_profile_dict={}
 
 def print_the_brain():
-    print("compile successful")
+    print("JSON of g_model_profile_dict:")
+    print(json.dumps(g_model_profile_dict, indent=2,sort_keys=True))
+
     print("JSON of g_field_dict:")
     print(json.dumps(g_field_dict, indent=2,sort_keys=True))
 
@@ -47,6 +51,47 @@ def remove_stereotype_suffix(table_name):
                 break
         reduced_table_name='_'.join(words)
     return reduced_table_name
+
+def load_model_profiles(full_directory_name):
+    """Runs through model profile files and tries to load them"""
+    directory = Path(full_directory_name)
+
+    name_pattern_matcher=re.compile(".+profile.json$")
+    for file in directory.iterdir():
+          if file.is_file() and os.path.getsize(file) is not 0 and name_pattern_matcher.match(Path(file).name):
+                add_model_profile_file(file)
+
+def add_model_profile_file(file_to_process: Path):
+    """Parses one model profile file, validates it and adds it to the internal dictionary"""
+    global g_model_profile_dict
+
+    file_name=file_to_process.name
+
+    #todo add all mandatory keywords
+    mandatory_keys=['model_profile_name','table_key_column_type','table_key_hash_function','table_key_hash_encoding','hash_concatenation_seperator']
+
+    try:
+        with open(file_to_process, "r") as dvpd_model_profile_file:
+            model_profile_object=json.load(dvpd_model_profile_file)
+    except json.JSONDecodeError as e:
+        print("WARNING: JSON Parsing error of file "+ file_to_process.as_posix())
+        print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
+        print("Model profile will not be available")
+        return
+
+    for mandatory_keyword in mandatory_keys:
+        if mandatory_keyword not in model_profile_object:
+            register_error(f"'model profile is missing keyword '{mandatory_keyword}' in file '{file_name}'")
+
+
+    model_profile_name=model_profile_object['model_profile_name']
+    model_profile_object['model_profile_file_name']=file_name
+    if model_profile_name not in g_model_profile_dict:
+        g_model_profile_dict[model_profile_name]=model_profile_object
+    else:
+        if file_name != g_model_profile_dict[model_profile_name]['model_profile_file_name']:
+            register_error("duplicate declaration of model profile '{0}' in '{1}'. Already read from '{2}'".format(model_profile_name,file_name,g_model_profile_dict[model_profile_name]['model_profile_file_name']))
+
 
 def check_essential_element(dvpd_object):
     """Check for the essential keys, that are needed to identify the main objects"""
@@ -1087,15 +1132,17 @@ def dvpdc(dvpd_filename,dvpi_filename=None):
     global g_field_dict
     global g_error_count
     global g_hash_dict
+    global g_model_profile_dict
 
     g_table_dict={}
     g_dvpi_document={}
     g_field_dict={}
     g_error_count=0
     g_hash_dict={}
+    g_model_profile_dict={}
 
 
-    params = configuration_load_ini('dvpdc.ini', 'dvpdc')
+    params = configuration_load_ini('dvpdc.ini', 'dvpdc',['dvpd_model_profile_directory'])
 
     dvpd_file_path = Path(params['dvpd_default_directory']).joinpath(dvpd_filename)
 
@@ -1104,6 +1151,8 @@ def dvpdc(dvpd_filename,dvpi_filename=None):
 
     if not os.path.exists(dvpd_file_path):
         raise Exception(f'could not find dvpd file: {dvpd_file_path}')
+
+    load_model_profiles(params['dvpd_model_profile_directory']);
 
     print("Compiling "+ dvpd_file_path.as_posix())
     try:

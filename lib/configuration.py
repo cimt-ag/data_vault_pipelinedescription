@@ -29,9 +29,10 @@ def error_print(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 
-def configuration_load_ini(filename=None, section=None):
+def configuration_load_ini(filename=None, section=None, mandatory_elements=None):
     """Reads the section in the ini file, that has to be located in the
         config directory and returns a dictionary with all found key values"""
+    # todo move responsibility for full path to caller
 
     # read config file
     file_path = Path(os.path.dirname(os.path.realpath(__file__))+'/../config').joinpath(filename)
@@ -49,6 +50,11 @@ def configuration_load_ini(filename=None, section=None):
             # print(param[0], param[1])
     else:
         raise Exception('Section {0} not found in the {1} file'.format(section, filename))
+
+    if mandatory_elements != None:
+        for keyword in mandatory_elements:
+            if keyword not in key_value_list:
+                raise Exception('Mandtatory parameter "{0}" not found in the configuration file "{1}"'.format(keyword, filename))
 
     return key_value_list
 
