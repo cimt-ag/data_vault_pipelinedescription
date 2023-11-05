@@ -19,8 +19,9 @@ def report_type_missmatch(expected_value, found_value, path):
 
 def report_list_length_missmatch(expected_list, found_list, path):
     global g_difference_count
-    print(f"Different list length. Found '{len(found_value)}' Expected '{len(expected_value)}' at /{path}")
+    print(f"Different count of list elements. Found '{len(found_list)}' Expected '{len(expected_list)}' at /{path}")
     g_difference_count += 1
+    #todo implement comparison based on identifiing element (approach: path pattern->keyword list to find identifing )
 def report_value_difference(expected_value, found_value, path):
     global g_difference_count
     print(f"Different value. Found '{found_value}' Expected '{expected_value}' at /{path}")
@@ -98,4 +99,5 @@ def check_reference_values(reference_object,test_object,path=""):
 if __name__ == "__main__":
     run_test_for_file("test20_simple_hub_sat.dvpd.json")
     run_test_for_file("test22_one_link_one_esat.dvpd.json")
+    run_test_for_file("test55_large_feature_cover.dvpd.json")
     #todo scan reference data dorectory and call compio

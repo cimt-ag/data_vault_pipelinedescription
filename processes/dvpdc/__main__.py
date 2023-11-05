@@ -1,4 +1,5 @@
 import argparse
+import copy
 import os
 import re
 from pathlib import Path
@@ -1090,7 +1091,7 @@ def assemble_dvpi_parse_set(dvpd_object):
     parse_set={}
 
     #add meta data for parsing
-    stage_properties=dvpd_object['stage_properties'].copy()
+    stage_properties=copy.deepcopy(dvpd_object['stage_properties'])
     for stage_property_entry in stage_properties:
         if 'stage_table_name' not in  stage_property_entry:
             stage_property_entry['stage_table_name']=f"s{g_dvpi_document['pipeline_name']}"
@@ -1219,11 +1220,11 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
     return dvpi_stage_columns
 
 
-def writeDvpiSummary(dvpdc_report_path, dvpd_filename):
+def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
     dvpdc_report_directory = Path(dvpdc_report_path)
     dvpdc_report_directory.mkdir(parents=True, exist_ok=True)
 
-    dvpisum_filename = dvpd_filename.replace('.json', '').replace('.dvpd', '') + ".dvpisum.txt"
+    dvpisum_filename = dvpd_file_path.name.replace('.json', '').replace('.dvpd', '') + ".dvpisum.txt"
 
     dvpisum_file_path = dvpdc_report_directory.joinpath(dvpisum_filename)
 
@@ -1232,7 +1233,7 @@ def writeDvpiSummary(dvpdc_report_path, dvpd_filename):
             dvpisum_file.write("Data Vault Pipeline Instruction Summary (DVPISUM)\n")
             dvpisum_file.write("=================================================\n\n")
             dvpisum_file.write(f"Pipeline name: { g_dvpi_document['pipeline_name']}\n")
-            dvpisum_file.write(f"DVPD file:     {dvpisum_filename}\n")
+            dvpisum_file.write(f"DVPD file:     {dvpd_file_path.name}\n")
             dvpisum_file.write(f"dvpd version:  {g_dvpi_document['dvpd_version']}\n")
             dvpisum_file.write(f"compiled at:   {g_dvpi_document['compile_timestamp']}\n")
 
@@ -1286,6 +1287,12 @@ def writeDvpiSummary(dvpdc_report_path, dvpd_filename):
                     dvpisum_file.write(f"      {column_entry['stage_column_class'].ljust(20)}| {column_entry['stage_column_name'].ljust(max_column_name_length)}  {column_entry['column_type']}\n")
                 dvpisum_file.write("\n")
 
+            dvpisum_file.write("\nDVPD\n")
+            dvpisum_file.write("--------------------------------------------------\n")
+
+            with open(dvpd_file_path,"r") as dvdp_source_file:
+                   for line in dvdp_source_file:
+                            dvpisum_file.write(line)
 
 
     except:
@@ -1300,9 +1307,6 @@ def renderHashFieldAssembly(parse_set_entry,hash_name):
                 fields.append(field_entry['field_name'])
             return hash_entry['hash_concatenation_seperator'].join(fields)
     raise(f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
-
-
-# ======================= Main =========================================== #
 
 
 
@@ -1403,9 +1407,9 @@ def dvpdc(dvpd_filename,dvpi_filename=None):
         print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
         raise DvpdcError
 
-    writeDvpiSummary(params['dvpdc_report_directory'],dvpd_filename)
+    writeDvpiSummary(params['dvpdc_report_directory'],dvpd_file_path)
 
-
+########################################################################################################################
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("dvpd_filename", help="Name of the dvpd file to compile")
