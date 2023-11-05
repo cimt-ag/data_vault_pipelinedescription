@@ -178,7 +178,9 @@ if __name__ == "__main__":
     #todo scan reference data directory and call compio
 
     dvpd_file_list= [#'test00_check_essential_elements.dvpd.json',
-                     'test01_check_model_relations.dvpd.json',
+                     #'test01_check_model_relations.dvpd.json',
+                     #'test23_one_link_with_one_satellite.dvpd.json',
+                     'test24_one_satellite_on_linked_hub.dvpd.json'
                      #'test20_simple_hub_sat.dvpd.json',
                      #'test22_one_link_one_esat.dvpd.json',
                      #'test55_large_feature_cover.dvpd.json'
