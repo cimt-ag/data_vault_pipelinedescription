@@ -30,11 +30,16 @@ def report_value_difference(expected_value, found_value, path):
 def run_test_for_file(dvpd_filename):
     try:
         dvpdc(dvpd_filename)
-        compare_dvpi_with_reference(dvpd_filename)
+        return compare_dvpi_with_reference(dvpd_filename)
     except DvpdcError:
         print("Compile failed. but this might be on purpose")
+        return 0
 
 def compare_dvpi_with_reference(dvpd_filename):
+    global g_difference_count
+
+    g_difference_count=0
+
     dvpdc_params = configuration_load_ini('dvpdc.ini', 'dvpdc')
     dvpdc_test_params = configuration_load_ini('dvpdc.ini', 'dvpdc_test')
 
@@ -65,9 +70,10 @@ def compare_dvpi_with_reference(dvpd_filename):
     print("Comparing")
     check_reference_values(dvpi_reference_object, dvpi_object)
     if g_difference_count > 0:
-        print("!!!! we had some differences !!!!")
+        print(f"*** Identified {g_difference_count} differences *** ")
     else:
         print("---- result acceptable ----")
+    return g_difference_count
 
 def check_reference_values(reference_object,test_object,path=""):
 
@@ -97,7 +103,38 @@ def check_reference_values(reference_object,test_object,path=""):
 
 ############ My MAIN ############
 if __name__ == "__main__":
-    run_test_for_file("test20_simple_hub_sat.dvpd.json")
-    run_test_for_file("test22_one_link_one_esat.dvpd.json")
-    run_test_for_file("test55_large_feature_cover.dvpd.json")
-    #todo scan reference data dorectory and call compio
+
+    #todo scan reference data directory and call compio
+
+    dvpd_file_list= ['test20_simple_hub_sat.dvpd.json',
+                     'test22_one_link_one_esat.dvpd.json',
+                     'test55_large_feature_cover.dvpd.json']
+    successful_file_list=[]
+    failing_file_list=[]
+
+    for filename in dvpd_file_list:
+        print(f"\n------------------ Testing:{filename} ---------------------------")
+        if run_test_for_file(filename) == 0:
+            successful_file_list.append(filename)
+        else:
+            failing_file_list.append(filename)
+
+    print("\n ==================== Test Summary ================================")
+    print("\nPassed tests:")
+    for filename in successful_file_list:
+        print(filename)
+
+    if len(failing_file_list)==0:
+        print(f"\n---- All {len(successful_file_list)} tests completed sucessfully ----")
+        exit(0)
+
+    print("\nFailed test:")
+    for filename in failing_file_list:
+        print(filename)
+
+    print(f"\n**** {len(failing_file_list)} of {len(dvpd_file_list)} tests failed ****")
+    exit(5)
+
+
+
+

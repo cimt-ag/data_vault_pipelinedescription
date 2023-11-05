@@ -18,7 +18,7 @@ g_dvpi_document={}
 g_model_profile_dict={}
 g_pipeline_model_profile_name=""
 
-
+g_logfile=None
 
 def print_the_brain():
     print("JSON of g_model_profile_dict:")
@@ -41,7 +41,14 @@ def print_dvpi_document():
 def register_error(message):
     global g_error_count
     print(message)
+    g_logfile.write(message)
+    g_logfile.write("\n")
     g_error_count += 1
+
+def log_progress(message):
+    print(message)
+    g_logfile.write(message)
+    g_logfile.write("\n")
 
 def remove_stereotype_suffix(table_name):
     """Removes cimt best practice stereotype suffixes from table names, so the name can be used for specific column name
@@ -88,9 +95,9 @@ def add_model_profile_file(file_to_process: Path):
         with open(file_to_process, "r") as dvpd_model_profile_file:
             model_profile_object=json.load(dvpd_model_profile_file)
     except json.JSONDecodeError as e:
-        print("WARNING: JSON Parsing error of file "+ file_to_process.as_posix())
-        print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
-        print("Model profile will not be available")
+        register_error("WARNING: JSON Parsing error of file "+ file_to_process.as_posix())
+        log_progress(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
+        log_progress("Model profile will not be available")
         return
 
     for mandatory_keyword in mandatory_keys:
@@ -408,10 +415,6 @@ def derive_content_dependent_table_properties():
                 raise(
                     f"!!! Something bad happened !!! cleansed stereotype {table_entry['table_stereotype']} has no rule in derive_content_dependent_table_properties()")
 
-    if g_error_count > 0:
-        print("*** Stopped compiling due to errors ***")
-        exit(5)
-
 def derive_content_dependent_hub_properties(table_name,table_entry):
     if not 'data_columns' in table_entry:
         register_error(f"Hub table {table_name} has no field mapping. A hub without a business key makes no sense")
@@ -601,9 +604,7 @@ def add_hash_columns():
             add_hash_column_mappings_for_lnk(table_name, table_entry)
 
     if g_error_count > 0:
-        print_the_brain()
-        print("*** Stopped compiling due to errors ***")
-        exit(5)
+        raise DvpdcError
 
 
     # finally sattelites
@@ -612,18 +613,12 @@ def add_hash_columns():
             add_hash_column_mappings_for_sat(table_name, table_entry)
 
     if g_error_count > 0:
-        print_the_brain()
-        print("*** Stopped compiling due to errors ***")
-        exit(5)
+        raise DvpdcError
 
     # and reference tables
     for table_name,table_entry in g_table_dict.items():
         if table_entry['table_stereotype']=="ref":
              add_hash_column_mappings_for_ref(table_name, table_entry)
-
-    if g_error_count > 0:
-        print("*** Stopped compiling due to errors ***")
-        exit(5)
 
 
 def add_hash_column_mappings_for_hub(table_name,table_entry):
@@ -985,9 +980,7 @@ def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, relati
     if len(data_mapping_dict)>0:
         load_operation['data_mapping_dict']=data_mapping_dict
 
-    if g_error_count > 0:
-        print("*** Stopped compiling due to errors ***")
-        exit(5)
+
 
 def copy_data_column_properties_to_operation_mapping(data_mapping_dict,data_column):
     operation_relevant_column_properties=['column_class','exclude_from_change_detection','prio_for_row_order','prio_in_diff_hash','exclude_from_key_hash','prio_in_key_hash','update_on_every_load']
@@ -1140,9 +1133,7 @@ def assemble_dvpi_parse_set(dvpd_object):
     parse_set['stage_columns']=assemble_dvpi_stage_columns(has_deletion_flag_in_a_table)
 
     if g_error_count > 0:
-        print_the_brain()
-        print("*** Stopped compiling due to errors ***")
-        exit(5)
+        raise DvpdcError
 
     return  parse_set
 
@@ -1296,7 +1287,7 @@ def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
 
 
     except:
-        print("ERROR: writing dvpi summary " + dvpisum_file_path.as_posix())
+        log_progress("ERROR: writing dvpi summary " + dvpisum_file_path.as_posix())
         raise
 
 def renderHashFieldAssembly(parse_set_entry,hash_name):
@@ -1309,8 +1300,29 @@ def renderHashFieldAssembly(parse_set_entry,hash_name):
     raise(f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
 
 
-
 def dvpdc(dvpd_filename,dvpi_filename=None):
+    """ this function is a wrapper arounf the real compiler to initialize the log file"""
+    global g_logfile
+
+    params = configuration_load_ini('dvpdc.ini', 'dvpdc',['dvpd_model_profile_directory'])
+    dvpdc_report_directory=Path(params['dvpdc_report_directory'])
+    dvpdc_report_directory.mkdir(parents=True, exist_ok=True)
+
+    dvpdc_log_filename= dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpdc.log"
+    dvpdc_log_file_path = dvpdc_report_directory.joinpath(dvpdc_log_filename)
+
+    with open(dvpdc_log_file_path,"w") as g_logfile:
+        g_logfile.write(f"Data vault pipeline description compiler log \n")
+        print("---")
+        log_progress(f"Compiler Version 0.6.0")
+        g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        log_progress(f"Compiling {dvpd_filename}\n")
+        try:
+            dvpdc_worker(dvpd_filename, dvpi_filename)
+        except DvpdcError:
+            log_progress("*** Compilation ended with errors ***")
+
+def dvpdc_worker(dvpd_filename,dvpi_filename=None):
 
     global g_table_dict
     global g_dvpi_document
@@ -1341,13 +1353,12 @@ def dvpdc(dvpd_filename,dvpi_filename=None):
 
     load_model_profiles(params['dvpd_model_profile_directory']);
 
-    print("Compiling "+ dvpd_file_path.as_posix())
     try:
         with open(dvpd_file_path, "r") as dvpd_file:
             dvpd_object=json.load(dvpd_file)
     except json.JSONDecodeError as e:
         register_error("ERROR: JSON Parsing error of file "+ dvpd_file_path.as_posix())
-        register_error(print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno)))
+        log_progress(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
         raise DvpdcError
 
     g_pipeline_model_profile_name= dvpd_object.get('model_profile_name','_default')
@@ -1397,15 +1408,17 @@ def dvpdc(dvpd_filename,dvpi_filename=None):
     dvpi_directory.mkdir(parents=True, exist_ok=True)
     dvpi_file_path = dvpi_directory.joinpath(dvpi_filename)
 
-    print("Compile successfull. Writing DVPI to " + dvpi_file_path.as_posix())
+    log_progress("Writing DVPI to " + dvpi_file_path.as_posix())
 
     try:
         with open(dvpi_file_path, "w") as dvpi_file:
             json.dump(g_dvpi_document, dvpi_file, ensure_ascii=False, indent=2)
     except json.JSONDecodeError as e:
-        print("ERROR: JSON writing to  of file "+ dvpi_file_path.as_posix())
-        print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
+        register_error("ERROR: JSON writing to  of file "+ dvpi_file_path.as_posix())
+        log_progress(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
         raise DvpdcError
+
+    log_progress("--- Compile successfull ---")
 
     writeDvpiSummary(params['dvpdc_report_directory'],dvpd_file_path)
 

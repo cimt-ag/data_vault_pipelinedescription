@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
   "dvpi_version": "0.6.0",
-  "compile_timestamp": "2023-11-05 13:30:03",
+  "compile_timestamp": "2023-11-05 17:37:51",
   "dvpd_version": "0.6.0",
   "pipeline_name": "test22_one_link_one_esat",
   "dvpd_filemame": "test22_one_link_one_esat.dvpd.json",
@@ -42,7 +42,7 @@
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
           "column_content_comment": null,
-          "prio_for_column_position": 5000
+          "prio_for_column_position": 50000
         }
       ]
     },
@@ -137,7 +137,12 @@
       "schema_name": "rvlt_test_jj",
       "storage_component": "",
       "columns": [
-       
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
         {
           "column_name": "MD_RUN_ID",
           "is_nullable": false,
