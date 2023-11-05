@@ -3,6 +3,7 @@ import os
 import re
 from pathlib import Path
 from lib.configuration import configuration_load_ini
+from lib.exceptions import DvpdcError
 import json
 from datetime import datetime
 
@@ -16,9 +17,7 @@ g_dvpi_document={}
 g_model_profile_dict={}
 g_pipeline_model_profile_name=""
 
-class DvpdcError(Exception):
-    """Raised when Compiler must stop """
-    pass
+
 
 def print_the_brain():
     print("JSON of g_model_profile_dict:")
@@ -1386,9 +1385,6 @@ def dvpdc(dvpd_filename,dvpi_filename=None):
     if g_error_count > 0:
         raise DvpdcError
 
-
-    print_the_brain()
-
     assemble_dvpi(dvpd_object,dvpd_filename)
     #print_dvpi_document()
 
@@ -1418,7 +1414,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
     try:
         dvpdc(dvpd_filename=args.dvpd_filename, dvpi_filename=args.dvpi)
+        print_the_brain()
     except DvpdcError:
+        print_the_brain()
         print("*** stopped compilation due to errors in input ***")
         exit(5)
 
