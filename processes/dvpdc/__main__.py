@@ -1041,7 +1041,7 @@ def assemble_dvpi_table_entry(table_name,table_entry):
 
     dvpi_columns.append({'column_name':model_profile['load_date_column_name'], 'is_nullable':False,'column_class':'meta_load_date',
                                            'column_type':model_profile['load_date_column_type']})
-    dvpi_columns.append({'column_name':model_profile['load_process_id_column_name'],'is_nullable':False,'column_class':'meta_record_source',
+    dvpi_columns.append({'column_name':model_profile['load_process_id_column_name'],'is_nullable':False,'column_class':'meta_load_process_id',
                                            'column_type':model_profile['load_process_id_column_type']})
     dvpi_columns.append({'column_name':model_profile['record_source_column_name'],'is_nullable':False,'column_class':'meta_record_source',
                                            'column_type':model_profile['record_source_column_type']})
@@ -1091,7 +1091,15 @@ def assemble_dvpi_parse_set(dvpd_object):
     parse_set={}
 
     #add meta data for parsing
-    parse_set['stage_properties']=dvpd_object['stage_properties']
+    stage_properties=dvpd_object['stage_properties'].copy()
+    for stage_property_entry in stage_properties:
+        if 'stage_table_name' not in  stage_property_entry:
+            stage_property_entry['stage_table_name']=f"s{g_dvpi_document['pipeline_name']}"
+        if 'storage_component' not in  stage_property_entry:
+            stage_property_entry['storage_component']=""
+    parse_set['stage_properties']=stage_properties
+    #todo check for duplicate stage table names on same system
+
     parse_set['record_source_name_expression'] = dvpd_object['record_source_name_expression']
 
     #add field dictionary
@@ -1172,7 +1180,7 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
 
     dvpi_stage_columns.append({'stage_column_name':model_profile['load_date_column_name'],'is_nullable':False,'stage_column_class': 'meta_load_date',
                                           'column_type': model_profile['load_date_column_type']})
-    dvpi_stage_columns.append({'stage_column_name':model_profile['load_process_id_column_name'],'is_nullable':False,'stage_column_class': 'meta_record_source',
+    dvpi_stage_columns.append({'stage_column_name':model_profile['load_process_id_column_name'],'is_nullable':False,'stage_column_class': 'meta_load_process_id',
                                             'column_type':model_profile['load_process_id_column_type']})
     dvpi_stage_columns.append({'stage_column_name':model_profile['record_source_column_name'],'is_nullable':False,'stage_column_class': 'meta_record_source',
                                               'column_type': model_profile['record_source_column_type']})
@@ -1211,7 +1219,93 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
 
     return dvpi_stage_columns
 
+
+def writeDvpiSummary(dvpdc_report_path, dvpd_filename):
+    dvpdc_report_directory = Path(dvpdc_report_path)
+    dvpdc_report_directory.mkdir(parents=True, exist_ok=True)
+
+    dvpisum_filename = dvpd_filename.replace('.json', '').replace('.dvpd', '') + ".dvpisum.txt"
+
+    dvpisum_file_path = dvpdc_report_directory.joinpath(dvpisum_filename)
+
+    try:
+        with open(dvpisum_file_path, "w") as dvpisum_file:
+            dvpisum_file.write("Data Vault Pipeline Instruction Summary (DVPISUM)\n")
+            dvpisum_file.write("=================================================\n\n")
+            dvpisum_file.write(f"Pipeline name: { g_dvpi_document['pipeline_name']}\n")
+            dvpisum_file.write(f"DVPD file:     {dvpisum_filename}\n")
+            dvpisum_file.write(f"dvpd version:  {g_dvpi_document['dvpd_version']}\n")
+            dvpisum_file.write(f"compiled at:   {g_dvpi_document['compile_timestamp']}\n")
+
+            dvpisum_file.write("\nTables\n")
+            dvpisum_file.write("--------------------------------------------------\n")
+            for table_entry in g_dvpi_document['tables']:
+                dvpisum_file.write(f"{table_entry['table_name']}")
+                if table_entry['table_stereotype'] == 'sat':
+                    if table_entry['is_multiactive']:
+                        dvpisum_file.write(' (multiactive sat)')
+                    elif table_entry['is_effectivity_sat']:
+                        dvpisum_file.write(' (effectivity sat)')
+                    else:
+                        dvpisum_file.write(' (sat)')
+                else:
+                    dvpisum_file.write(f" ({table_entry['table_stereotype']})")
+
+                dvpisum_file.write(f" [{table_entry['storage_component']}.{table_entry['schema_name']}.{table_entry['table_name']}]\n")
+                max_column_name_length=0
+                for column_entry in table_entry['columns']:
+                    if len(column_entry['column_name']) > max_column_name_length:
+                        max_column_name_length=len(column_entry['column_name'])
+                for column_entry in table_entry['columns']:
+                    dvpisum_file.write(f"      {column_entry['column_class'].ljust(20)}| {column_entry['column_name'].ljust(max_column_name_length)}  {column_entry['column_type']}\n")
+                dvpisum_file.write("\n")
+
+            for parse_set_index,parse_set_entry in enumerate(g_dvpi_document['parse_sets'],start=1):
+                dvpisum_file.write(f"\nParse set {parse_set_index}\n")
+                dvpisum_file.write("--------------------------------------------------\n")
+                for load_operation_entry in parse_set_entry['load_operations']:
+                    dvpisum_file.write(f"\n{load_operation_entry['table_name']} [{load_operation_entry['relation_name']}] {load_operation_entry['operation_origin']} \n")
+                    for hash_mapping_entry in load_operation_entry['hash_mappings']:
+                        dvpisum_file.write(f"     {hash_mapping_entry['hash_class']}:  {hash_mapping_entry['stage_column_name']} >> {hash_mapping_entry['column_name']}  [")
+                        dvpisum_file.write(renderHashFieldAssembly(parse_set_entry,hash_mapping_entry['hash_name']))
+                        dvpisum_file.write("]\n")
+
+                    if 'data_mapping' not in load_operation_entry:
+                        continue
+
+                    for data_mapping_entry in load_operation_entry['data_mapping']:
+                        dvpisum_file.write(f"     {data_mapping_entry['column_class']}:  {data_mapping_entry['stage_column_name']} >> {data_mapping_entry['column_name']}\n")
+
+                for stage_property_entry in parse_set_entry['stage_properties']:
+                    dvpisum_file.write(f"\nStage table: {stage_property_entry['storage_component']}.{stage_property_entry['stage_schema']}.{stage_property_entry['stage_table_name']}\n")
+
+                max_column_name_length=0
+                for column_entry in parse_set_entry['stage_columns']:
+                    if len(column_entry['stage_column_name']) > max_column_name_length:
+                        max_column_name_length=len(column_entry['stage_column_name'])
+                for column_entry in parse_set_entry['stage_columns']:
+                    dvpisum_file.write(f"      {column_entry['stage_column_class'].ljust(20)}| {column_entry['stage_column_name'].ljust(max_column_name_length)}  {column_entry['column_type']}\n")
+                dvpisum_file.write("\n")
+
+
+
+    except:
+        print("ERROR: writing dvpi summary " + dvpisum_file_path.as_posix())
+        raise
+
+def renderHashFieldAssembly(parse_set_entry,hash_name):
+    for hash_entry in parse_set_entry['hashes']:
+        if hash_entry['hash_name'] == hash_name:
+            fields = []
+            for field_entry in hash_entry['hash_fields']:
+                fields.append(field_entry['field_name'])
+            return hash_entry['hash_concatenation_seperator'].join(fields)
+    raise(f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
+
+
 # ======================= Main =========================================== #
+
+
 
 def dvpdc(dvpd_filename,dvpi_filename=None):
 
@@ -1312,6 +1406,8 @@ def dvpdc(dvpd_filename,dvpi_filename=None):
         print("ERROR: JSON writing to  of file "+ dvpi_file_path.as_posix())
         print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
         raise DvpdcError
+
+    writeDvpiSummary(params['dvpdc_report_directory'],dvpd_filename)
 
 
 if __name__ == "__main__":
