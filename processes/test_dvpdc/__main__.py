@@ -28,17 +28,83 @@ def report_value_difference(expected_value, found_value, path):
     g_difference_count += 1
 
 def run_test_for_file(dvpd_filename):
+    global g_difference_count
+    g_difference_count=0
+
     try:
         dvpdc(dvpd_filename)
-        return compare_dvpi_with_reference(dvpd_filename)
+        compare_dvpdc_log_with_reference(dvpd_filename)
+        compare_dvpi_with_reference(dvpd_filename)
     except DvpdcError:
-        print("Compile failed. but this might be on purpose")
-        return 0
+        print("Compile failed. But this might be on purpose")
+        compare_dvpdc_log_with_reference(dvpd_filename)
+        return g_difference_count
+    except FileNotFoundError:
+        print("Probably some reference files are missing")
+        return g_difference_count
+
+    return g_difference_count
+
+
+def compare_dvpdc_log_with_reference(dvpd_filename):
+    global g_difference_count
+
+
+    dvpdc_params = configuration_load_ini('dvpdc.ini', 'dvpdc')
+    dvpdc_test_params = configuration_load_ini('dvpdc.ini', 'dvpdc_test')
+
+    dvpdc_report_directory = Path(dvpdc_params['dvpdc_report_directory'])
+
+    dvpdc_log_filename = dvpd_filename.replace('.json', '').replace('.dvpd', '') + ".dvpdc.log"
+    dvpdc_log_file_path = dvpdc_report_directory.joinpath(dvpdc_log_filename)
+    dvpdc_log_file_reference_file_path = Path(dvpdc_test_params['dvpdc_test_reference_data_directory']).joinpath(dvpdc_log_filename)
+
+
+    try:
+        with open(dvpdc_log_file_path, "r") as dvpdc_log_file:
+            log_file_lines=dvpdc_log_file.read().splitlines()
+    except Exception:
+        print("ERROR: reading "+ dvpdc_log_file_path.as_posix())
+        raise
+
+    try:
+        with open(dvpdc_log_file_reference_file_path, "r") as dvpdc_log_file_reference:
+            reference_log_file_lines=dvpdc_log_file_reference.read().splitlines()
+    except FileNotFoundError:
+        print("Reference file not found " + dvpdc_log_file_reference_file_path.as_posix())
+        g_difference_count+=1
+        raise
+
+    print("Comparing Compiler log")
+    HEADER_LOG_LINES=3
+    for index, reference_line in enumerate(reference_log_file_lines):
+        if index < HEADER_LOG_LINES or reference_line.startswith("Writing DVPI to"): # skip first lines, they can change without impact
+            continue
+        message_found=False
+        for log_line in log_file_lines:
+            if log_line==reference_line:
+                message_found=True
+                break
+        if not message_found:
+            print(f"missing in log >>{reference_line}")
+            g_difference_count+=1
+
+    for index, log_line in enumerate(log_file_lines):
+        if index < HEADER_LOG_LINES or log_line.startswith("Writing DVPI to"): # skip first lines, they can change without impact
+            continue
+        message_found=False
+        for reference_line in  reference_log_file_lines:
+            if log_line==reference_line:
+                message_found=True
+                break
+        if not message_found:
+            print(f"not in reference >>{log_line}")
+            g_difference_count+=1
+
+
 
 def compare_dvpi_with_reference(dvpd_filename):
     global g_difference_count
-
-    g_difference_count=0
 
     dvpdc_params = configuration_load_ini('dvpdc.ini', 'dvpdc')
     dvpdc_test_params = configuration_load_ini('dvpdc.ini', 'dvpdc_test')
@@ -61,13 +127,18 @@ def compare_dvpi_with_reference(dvpd_filename):
     except json.JSONDecodeError as e:
         print("ERROR: JSON Parsing error of file "+ dvpi_reference_file_path.as_posix())
         print(print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno)))
+        g_difference_count+=1
+        return
+    except FileNotFoundError:
+        print("Reference file is missing " + dvpi_reference_file_path.as_posix())
+        g_difference_count+=1
         raise
 
     elements_to_ignore=['dvdp_compiler','dvpi_version','compile_timestamp']
     for ignorable in elements_to_ignore:
         dvpi_reference_object.pop(ignorable, None)
 
-    print("Comparing")
+    print("Comparing DVPI")
     check_reference_values(dvpi_reference_object, dvpi_object)
     if g_difference_count > 0:
         print(f"*** Identified {g_difference_count} differences *** ")
@@ -106,9 +177,12 @@ if __name__ == "__main__":
 
     #todo scan reference data directory and call compio
 
-    dvpd_file_list= ['test20_simple_hub_sat.dvpd.json',
-                     'test22_one_link_one_esat.dvpd.json',
-                     'test55_large_feature_cover.dvpd.json']
+    dvpd_file_list= [#'test00_check_essential_elements.dvpd.json',
+                     'test01_check_model_relations.dvpd.json',
+                     #'test20_simple_hub_sat.dvpd.json',
+                     #'test22_one_link_one_esat.dvpd.json',
+                     #'test55_large_feature_cover.dvpd.json'
+                     ]
     successful_file_list=[]
     failing_file_list=[]
 
@@ -120,7 +194,7 @@ if __name__ == "__main__":
             failing_file_list.append(filename)
 
     print("\n ==================== Test Summary ================================")
-    print("\nPassed tests:")
+    print("\nvvv---Passed tests---vvv")
     for filename in successful_file_list:
         print(filename)
 
@@ -128,7 +202,7 @@ if __name__ == "__main__":
         print(f"\n---- All {len(successful_file_list)} tests completed sucessfully ----")
         exit(0)
 
-    print("\nFailed test:")
+    print("\nvvv---Failed test---vvv")
     for filename in failing_file_list:
         print(filename)
 

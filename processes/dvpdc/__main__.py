@@ -122,22 +122,22 @@ def check_essential_element(dvpd_object):
     root_keys=['pipeline_name','dvpd_version','stage_properties','data_extraction','fields']
     for key_name in root_keys:
         if dvpd_object.get(key_name) is None:
-            register_error ("missing declaration of root property "+key_name)
+            register_error (f"missing declaration of root property '{key_name}'")
 
 
     # Check essential keys of data model declaration
     table_keys=['table_name','table_stereotype']
     table_count = 0
-    for schema_entry in dvpd_object['data_vault_model']:
+    for schema_index,schema_entry in enumerate(dvpd_object['data_vault_model'],start=1):
         if schema_entry.get('schema_name') is None:
-            register_error("\"schema_name\" is not dedclared")
+            register_error(f"missing declaration of 'schema_name' for data_vault_model entry [{schema_index}]")
 
 
         for table_entry in schema_entry['tables']:
             table_count+=1
             for key_name in table_keys:
                 if table_entry.get(key_name) is None:
-                    register_error("missing declaration of essential table property \"" + key_name + "\" for table "+ str(table_count))
+                    register_error(f"missing declaration of essential table property '{key_name}' for table entry [{str(table_count)}]")
 
     if table_count == 0:
         register_error("No table declared")
@@ -149,13 +149,13 @@ def check_essential_element(dvpd_object):
         field_count += 1
         for key_name in field_keys:
             if field_entry.get(key_name) == None:
-                register_error(f"missing declaration of essential field property \"{key_name}\" for field {field_count}")
+                register_error(f"missing declaration of essential field property '{key_name}' for field [{field_count}]")
         target_count=0
         if 'targets' in field_entry:
             for target_entry in field_entry.get('targets'):
                 target_count += 1
                 if target_entry.get('table_name') == None:
-                    register_error(f"missing declaration of table_name: field {field_count}, target {target_count} ")
+                    register_error(f"missing declaration of 'table_name' for field [{field_count}], target [{target_count}] ")
 
 
 def transform_hub_table(dvpd_table_entry, schema_name, storage_component):
@@ -444,6 +444,9 @@ def derive_content_dependent_lnk_properties(table_name, table_entry):
             register_error(f"link parent table '{link_parent['table_name']}' of link '{table_name}' is not declared")
             return
         parent_table=g_table_dict[link_parent['table_name']]
+        if parent_table['table_stereotype']!='hub':
+            register_error(f"link parent table '{link_parent['table_name']}' of link '{table_name}' is not a hub")
+            return
         link_parent['parent_key_column_name']=parent_table['hub_key_column_name']
 
     if 'data_columns' in table_entry:

@@ -1,0 +1,16 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2023-11-05 18:46:13
+Compiling test00_check_essential_elements.dvpd.json
+
+missing declaration of root property 'dvpd_version'
+missing declaration of root property 'stage_properties'
+missing declaration of root property 'data_extraction'
+missing declaration of 'schema_name' for data_vault_model entry [1]
+missing declaration of essential table property 'table_name' for table entry [1]
+missing declaration of essential table property 'table_stereotype' for table entry [2]
+missing declaration of essential field property 'field_name' for field [1]
+missing declaration of essential field property 'targets' for field [2]
+missing declaration of 'table_name' for field [5], target [1] 
+missing declaration of essential field property 'field_type' for field [7]
+*** Compilation ended with errors ***
