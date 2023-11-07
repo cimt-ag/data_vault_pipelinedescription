@@ -8,6 +8,57 @@ class MissingFieldError(Exception):
     def __init__(self, message):
         super().__init__(message)
 
+def get_missing_number_for_digits(digits):
+    result = '-'
+    result += '9'*digits
+    return result
+
+def create_ghost_records(full_name, columns):
+    null_record_column_class_map = {'meta_load_process_id': 0,
+                                    'meta_load_date': 'NOW()',
+                                    'meta_record_source': 'SYSTEM',
+                                    'meta_deletion_flag': 'false',
+                                    'meta_load_enddate': 'lib.get_far_future_date()',
+                                    'key': 'lib.hash_key_for_delivered_null()',
+                                    'parent_key': 'lib.hash_key_for_delivered_null()',
+                                    'diff_hash': 'lib.hash_key_for_delivered_null()',
+                                    'business_key': 'null',
+                                    'dependent_child_key': 'null',
+                                    'content': 'null',
+                                    'content_untracked': 'null'}
+
+    const_for_missing_map = {'string': '!#!missing!#!',
+                             'number': 'use_get_missing_number_for_digits_function',
+                             'timestamp': 'lib.get_is_missing_date()',
+                             'time': '00:00',
+                             'boolean': 'false'}
+
+    missing_record_column_class_map = {'meta_load_process_id': 0,
+                                    'meta_load_date': 'NOW()',
+                                    'meta_record_source': 'SYSTEM',
+                                    'meta_deletion_flag': 'true',
+                                    'meta_load_enddate': 'lib.get_far_future_date()',
+                                    'key': 'lib.hash_key_for_missing()',
+                                    'parent_key': 'lib.hash_key_for_missing()',
+                                    'diff_hash': 'lib.hash_key_for_missing()',
+                                    'business_key': 'full_constants_missing_data',
+                                    'dependent_child_key': 'full_constants_missing_data',
+                                    'content': 'only_missing_for_strings',
+                                    'content_untracked': 'only_missing_for_strings'}
+    
+    ddl = f"INSERT INTO {full_name} "
+    column_names = []
+    values_for_null = []
+    values_for_missing = []
+    for column in columns:
+        column_names.append(column['column_name'])
+        column_class = column['column_class']
+        values_for_null.append(null_record_column_class_map[column_class])
+        if const_for_missing_map[column_class] in ['full_constants_missing_data', 'only_missing_for_strings']:
+            column_type = column['column_type']
+            
+
+
 def parse_json_to_ddl(filepath, ddl_render_path):
     with open(filepath, 'r') as file:
         data = json.load(file)
