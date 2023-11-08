@@ -3,20 +3,30 @@ import configparser
 import os
 import argparse
 from pathlib import Path
+import re
 
 class MissingFieldError(Exception):
     def __init__(self, message):
         super().__init__(message)
 
-def get_missing_number_for_digits(digits):
+def get_missing_number_for_digits(digits: int):
     result = '-'
     result += '9'*digits
     return result
 
+def get_missing_for_string_length(length:int = 13, must_be_fixed_length=False):
+    result = '!#!missing!#!'
+    if length < 13:
+        result = '#' * length
+    else:
+        if must_be_fixed_length:
+            result += ' ' * (length-13)
+    return "'"+result+"'"
+
 def create_ghost_records(full_name, columns):
-    null_record_column_class_map = {'meta_load_process_id': 0,
+    null_record_column_class_map = {'meta_load_process_id': '0',
                                     'meta_load_date': 'NOW()',
-                                    'meta_record_source': 'SYSTEM',
+                                    'meta_record_source': "'SYSTEM'",
                                     'meta_deletion_flag': 'false',
                                     'meta_load_enddate': 'lib.get_far_future_date()',
                                     'key': 'lib.hash_key_for_delivered_null()',
@@ -27,26 +37,39 @@ def create_ghost_records(full_name, columns):
                                     'content': 'null',
                                     'content_untracked': 'null'}
 
-    const_for_missing_map = {'string': '!#!missing!#!',
-                             'number': 'use_get_missing_number_for_digits_function',
-                             'timestamp': 'lib.get_is_missing_date()',
-                             'time': '00:00',
-                             'boolean': 'false'}
+    const_for_missing_map = {
+                            'VARCHAR': '!#!missing!#!',
+                            'CHAR': 'use_get_missing_for_string_length',
+                            'TEXT': "'!#!missing!#!'",
+                            'INT': '-999999999',
+                            'INTEGER': '-999999999',
+                            'SMALLINT': '-9999',
+                            'BIGINT': '-999999999999999999',
+                            'DECIMAL': 'use_get_missing_number_for_digits_function',
+                            'NUMERIC': 'use_get_missing_number_for_digits_function',
+                            'FLOAT': 'NaN',
+                            'REAL': 'NaN',
+                            'DOUBLE': 'NaN',
+                            'BOOLEAN': 'false',
+                            'DATE': 'lib.get_is_missing_date()',
+                            'DATETIME': 'lib.get_is_missing_date()',
+                            'TIMESTAMP': 'lib.get_is_missing_date()',
+                            'TIME': '00:00',
+                            }
 
-    missing_record_column_class_map = {'meta_load_process_id': 0,
+    missing_record_column_class_map = {'meta_load_process_id': '0',
                                     'meta_load_date': 'NOW()',
-                                    'meta_record_source': 'SYSTEM',
+                                    'meta_record_source': "'SYSTEM'",
                                     'meta_deletion_flag': 'true',
                                     'meta_load_enddate': 'lib.get_far_future_date()',
                                     'key': 'lib.hash_key_for_missing()',
                                     'parent_key': 'lib.hash_key_for_missing()',
                                     'diff_hash': 'lib.hash_key_for_missing()',
-                                    'business_key': 'full_constants_missing_data',
-                                    'dependent_child_key': 'full_constants_missing_data',
-                                    'content': 'only_missing_for_strings',
-                                    'content_untracked': 'only_missing_for_strings'}
+                                    'business_key': 'const_missing_data',
+                                    'dependent_child_key': 'const_missing_data',
+                                    'content': 'const_missing_data',
+                                    'content_untracked': 'const_missing_data'}
     
-    ddl = f"INSERT INTO {full_name} "
     column_names = []
     values_for_null = []
     values_for_missing = []
@@ -54,9 +77,56 @@ def create_ghost_records(full_name, columns):
         column_names.append(column['column_name'])
         column_class = column['column_class']
         values_for_null.append(null_record_column_class_map[column_class])
-        if const_for_missing_map[column_class] in ['full_constants_missing_data', 'only_missing_for_strings']:
+        value_for_missing = missing_record_column_class_map[column_class]
+        if value_for_missing == 'const_missing_data': 
             column_type = column['column_type']
-            
+            # Extract the base SQL type and optional parameters
+            match = re.match(r'(\w+)(?:\((\d+),?\s*(\d*)\))?', column_type)
+            base_type, length, scale = match.groups()
+            if scale == '':
+                scale = None
+            if length != None:
+                length = int(length)
+            if scale != None:
+                scale = int(scale)
+            base_type = base_type.upper()
+            nullable = True if 'is_nullable' in column and column['is_nullable']==True else False
+            value_for_missing = const_for_missing_map[base_type]
+            # print(f'base_type: {base_type} | nullable: {nullable} | const_for_missing: {value_for_missing}\n')
+            if nullable and base_type not in ['VARCHAR', 'TEXT', 'CHAR']:
+                value_for_missing = 'NULL'
+            else: # use const_for_missing_data
+                if base_type == 'VARCHAR':
+                    if length == None:
+                        value_for_missing = get_missing_for_string_length()
+                    else:
+                        value_for_missing = get_missing_for_string_length(length)
+                if base_type == 'CHAR':
+                    if length == None:
+                        value_for_missing = get_missing_for_string_length(1, True)
+                    else:
+                        value_for_missing = get_missing_for_string_length(length, True)
+                if value_for_missing == 'use_get_missing_number_for_digits_function':
+                    if length == None: 
+                        value_for_missing = get_missing_number_for_digits(18)
+                    else:
+                        if scale == None or scale == '':
+                            value_for_missing = get_missing_number_for_digits(length)
+                        else:
+                            value_for_missing = get_missing_number_for_digits(length - scale)
+        
+
+        values_for_missing.append(value_for_missing)
+
+    ddl_start = "INSERT INTO {} {{\n".format(full_name)
+    ddl_start += ',\n'.join(column_names) +'\n} VALUES {\n'
+    ddl_null = '-- Ghost Record for delivered NULL Data\n' + ddl_start + ',\n'.join(values_for_null) + '\n}'
+    ddl_missing = '-- Ghost Record for missing data due to business rule\n' + ddl_start + ',\n'.join(values_for_missing) + '\n}'
+
+    result = '\n\n' + ddl_null + '\n\n' + ddl_missing
+    return result
+        
+
 
 
 def parse_json_to_ddl(filepath, ddl_render_path):
@@ -113,6 +183,8 @@ def parse_json_to_ddl(filepath, ddl_render_path):
             column_statements.append("{} {} {}".format(col_name, col_type, nullable))
         column_statements = ',\n'.join(column_statements)
         ddl = f"-- DROP TABLE {full_name}\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+        
+        ddl += create_ghost_records(full_name, columns)
         ddl_statements.append(ddl)
 
         # create schema dir if not exists
@@ -139,6 +211,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
         filtered_schemas = {key: schema_sats[key] for key in schema_sats if key in schema_with_max_count}
         stage_schema_dir = max(filtered_schemas, key=filtered_schemas.get)
     print(f'stage_schema_dir: {stage_schema_dir}')
+
 
     for parse_set in parse_sets:
         stage_properties = parse_set['stage_properties']
