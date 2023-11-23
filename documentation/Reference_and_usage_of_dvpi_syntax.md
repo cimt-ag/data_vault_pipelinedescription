@@ -1,14 +1,14 @@
 # DVPI Syntax Reference and usage guide
-DVPI is the resulset created from the compiler by transforming the a dvpd. It is mainly designed to be read by generators for creating loading code and DDL.
+DVPI is the resultset created from the compiler by transforming the a dvpd. It is mainly designed to be read by generators for creating loading code and DDL.
 
-In this document you find a brief guideline how to use the content of DVPI in your loading processes and a full syntax reference based on the core DVPD syntax.
+In this document you find a brief guideline on how to use DVPI content in your loading processes and a full syntax reference based on the core DVPD syntax.
 
 # Usage guideline
-DVPI is designed to support the multiple steps of loading a source object into a data vault model. The follwong steps are normally needed for the loading:
+DVPI is designed to support the multiple steps of loading a source object into a data vault model. The following steps are normally needed for the loading:
 - deploy the target database tables (might be done by the first run of the job or in sync with the deployment of the job artifact)
 - contact the source system and determine the increment
 - fetch the data increment from the source system
-- parse the fetched data into rows and fields (This might involve identfication and translation of deletion events)
+- parse the fetched data into rows and fields (This might involve identification and translation of deletion events)
 - calculate the needed hash values from the fetched data (might be part of every load operation or done in advance by creating a stage table)
 - load the parsed data and hashes into the data vault tables in all necessary combinations (this might involve detection of missing source data and its translation in deletion flagging)
 
@@ -17,24 +17,24 @@ The listed steps can be implemented in different approaches as there are
 - OSD + target: Incoming data is parsed into an "operational data store" (might be in memory only), hashes are calculated on the fly during the load into a target table
 - target only: Incoming data is parsed and hashed for every target table on the fly
 
-Please keep in mind, that the guideline describes, what should be used from the DVPI and how to get it.
-It is by no means a recepie for the finally executed loading code. At least before execution a code generator should create the case and platforn specific instructions (e.g. SQL Statements) that can be executed efficiently.  
+This guideline describes, what should be used from the DVPI and how to get it.
+It is by no means a recipe for the finally executed loading code. At least before execution a code generator should create the case and platforn specific instructions (e.g. SQL Statements) that can be executed efficiently.  
 
 
 ### deploy target database tables
-To deploy the target database tables, a ddl sql with the create statement must be generated somehow. The necessary information, to generate the ddl can be found in the DVPI as follows:
+To deploy the target database tables, a ddl sql with the create statement must be generated somehow. The necessary information to generate the ddl can be found in the DVPI as follows:
 - iterate over the tables[] list
 - inside a table list entry you find
     - schema and table name
-    - table stereotype (hub,lnk,sat,ref)
+    - table stereotype (hub,lnk,sat,ref) <!-- are msat/dlnk etc. their own stereotype? -->
 	- iterate over the columns[] list containing
 	    - column name, type
-		- indication of not null contratins
-		- column class, can be used to identify specific columns (e.g. Business keys) that are interesting for indexes or primary key constrainst depending on the table stereotype
+		- indication of not null contraints
+		- column class, can be used to identify specific columns (e.g. Business keys) that are interesting for indexes or primary key constraints depending on the table stereotype
 
-Should your loading pattern involve **stage tables** you also need to retreive the stage table structures as follows
+Should your loading pattern involve **stage tables** you also need to retrieve the stage table structures as follows
 - iterate over the "parse_sets[]" list
-- insinde a parse set entry you find
+- inside a parse set entry you find
 	- stage_properties [] list, containing stage table schema and name for every storage component involved
 	- stage_columns [] list with
 	    - stage column name and type
@@ -44,20 +44,20 @@ Should your loading pattern involve **stage tables** you also need to retreive t
 ### contact the source and determine the increment
 This should be clarified by all properies in the **"data_extraction"** section. It depends heavily on your implementation architecture 
 and module flexibility, how far the behavior of the fetching process can be configured.
-Therefore this guide can only forerward you to the documentation of your modules.
+Therefore this guide can only forward you to the documentation of your modules.
 		
 ### fetch the data increment from the source
 This also is mostly defined by the properties in the "data_extraction" section. 
 
 ### iterate over parse sets
-Depending on the data source there will be one or more parse sets for the fetched data. 
-Tabularized (DB, CSV) sources have only one set, where hiearchical data (JSON,XML) structures with multiple loops will have more. (upcoming feature in DVPD 0.7.0).
+Depending on the data source, there will be one or more parse sets for the fetched data. 
+Tabularized (DB, CSV) sources have only one set, whereas hierarchical data (JSON, XML) structures with multiple loops will have more. (upcoming feature in DVPD 0.7.0).
 Every parse set needs have its own **definitions for parsing, hashing/staging and loading**. This is why all declarations for this and the following steps **are subelements in the list of parse_sets**.
 
 ### parse the fetched data into rows and fields
-To parse the data for a single parse set interate through the **fields[]** list. 
+To parse the data for a single parse set, iterate through the **fields[]** list. 
 
-At least the following propertes will be available
+At least the following properties will be available
     - field name and type
 	- field position
 The field name is essential, since it is used as the identifier in the mappings.
@@ -75,35 +75,35 @@ This is only needed, when using the stage+target approach.
 To stage a single row 	
 - iterate over **stage_columns[]** list. Depending on the stage_column_class...
 	- **"meta..."** put in the appropriate value (e.g. record_source_name_expression, deletion flag)
-	- **hash** calculate the hash value according to the recepie provided by the  "hashes[]" list entry with  the same "hash_name" and its "hash_fields[] list
+	- **hash** calculate the hash value according to the recipe provided by the "hashes[]" list entry with the same "hash_name" and its "hash_fields[] list
 	- **data** put in the value of the field, probably with transformation of the data type
 
 ### load data from stage to the target tables in all possible combinations
 This only applies, when using the stage+target approach.
-- in the current parse set iterate over load_operations[] list
+- in the current parse set, iterate over load_operations[] list
     - retrieve table stereotype and properties by looking up the table name in the tables[] list.
 	- execute the loading steps for the table stereotype
 	- the data mapping must be read from the "hash_mappings[]" and "data_mappings[]" lists
-	    - copy data from the stage column  "stage_column_name" to the target column "column_name"
-	    - use the column_class to identify columns, that have special meanings in the loading (busniess keys, diff hash, etc)
+	    - copy data from the stage column "stage_column_name" to the target column "column_name"
+	    - use the column_class to identify columns, that have special meanings in the loading (business keys, diff hash, etc)
 	- iterate over all meta fields from the tables columns[] list and provide necessary data accordingly
 
 
 ### load data from Ods to the target tables in all possible combinations
 This only applies, when using the ods+target approach.
-- in the current parse set iterate over load_operations[] list
+- in the current parse set, iterate over load_operations[] list
     - retrieve table stereotype and properties by looking up the table name in the tables[] list.
 	- execute the loading steps for the table stereotype
 	- the mapping of data columns must be read from "data_mappings[]" lists
 	    - copy data from the ods column  "field_name" to the target column "column_name"
 	- the mapping of hash columns must be read from the "hash_mappings[]" lists
-	    - calculate the hash value according the the recepie provided by the  "hashes[]" list entry with  the same "hash_name" and its "hash_fields[] list
+	    - calculate the hash value according the the recipe provided by the "hashes[]" list entry with the same "hash_name" and its "hash_fields[] list
 		- store the value in the column "column_name"
-    - use the column_class to identify columns, that have special meanings in the loading (busniess keys, untracked)
+    - use the column_class to identify columns, that have special meanings in the loading (business keys, untracked)
 	- iterate over all meta fields from the table columns[] list and provide necessary data accordingly
 
 ### load data directly from source to the target table
-- in the current parse set iterate over load_operations[] list
+- in the current parse set, iterate over load_operations[] list
     - retrieve table stereotype and properties by looking up the table name in the tables[] list.
 	- execute the loading steps for the table stereotype and the declared deletion detection procedure
 	- the mapping of data columns must be read from "data_mappings[]" lists
@@ -111,9 +111,9 @@ This only applies, when using the ods+target approach.
 		- parse the field content from the source, by following the declaration of parsing properties
 		- store the value in the column "column_name"
 	- the mapping of hash columns must be read from the "hash_mappings[]" lists
-	    - calculate the hash value according the the recepie provided by the  "hashes[]" list entry with  the same "hash_name" and its "hash_fields[] list
+	    - calculate the hash value according the the recipe provided by the  "hashes[]" list entry with  the same "hash_name" and its "hash_fields[] list
 		- store the value in the column "column_name"
-    - use the column_class to identify columns, that have special meanings in the loading (busniess keys, untracked)
+    - use the column_class to identify columns, that have special meanings in the loading (business keys, untracked)
 	- iterate over all meta fields from the tables columns[] list and provide necessary data accordingly
 
 
@@ -139,10 +139,10 @@ A DVPI is expressed with JSON syntax and contains the following attributes (Keys
 <br> Name of the pipeline, as declared in the dvpd. Could/should be used to identify the loading process artifact(s)
 
 **dvpd_filemame**
-<br>Name of the compiled DVPD file. Just for auditibilty
+<br>Name of the compiled DVPD file. Just for auditability
 
 **tables[]**
-<br>List of all data vault tables, loadid by this pipeline.
+<br>List of all data vault tables, loaded by this pipeline.
 <br>→ see "tables[]"
 
 **data_extraction**
@@ -153,7 +153,7 @@ A DVPI is expressed with JSON syntax and contains the following attributes (Keys
 <br>→ see "parse_sets[]"
 
 ### tables[]
-Json Path: /
+Json Path: $
 
 The main purpose of the tables section, is to provide all structural information, needed to create the model tables, determine the loading procedure and document the relational structure
 
@@ -167,7 +167,7 @@ The main purpose of the tables section, is to provide all structural information
 <br>Database schema of the table. (or database name, when the DB Engine does not support schemas, but uses "Databases" as structuring element)
 
 **storage_component**
-<br>Identification of the storage component. Valid values depend on the system architecture and may control retrieval of connection parameters and use of platform technology specific  SQL Dialect, and loading procedures.
+<br>Identification of the storage component. Valid values depend on the system architecture and may control retrieval of connection parameters and use of platform technology specific SQL Dialect, and loading procedures.
 
 **has_deletion_flag**
 <br>Triggers a loading procedure to manage a deletion flag, when processing deletion data
@@ -182,7 +182,7 @@ The main purpose of the tables section, is to provide all structural information
 <br>Indicates to the satellite loading procedure to follow the multiactive satellite loading pattern
 
 **compare_criteria**
-<br>Defines the elements, that have to be compared, when loading a satellite. Rows will be loaded when:
+<br>Defines the elements that have to be compared, when loading a satellite. Rows will be loaded when:
 - key = the key (hub key, link key) is not already in the satellite
 - data = the value combination of the relevant compare columns or the diff hash are not already in the satellite
 - current = the value combination of the relevant compare columns or the diff hash are not equal to a current row in the satellite
@@ -198,7 +198,7 @@ The main purpose of the tables section, is to provide all structural information
 <br>→ see "columns[]"
 
 ### columns[]
-Json Path: /tables[]
+Json Path: $.tables[]
 
 **column_name**
 <br>Name of the column in the table. Should be used in DDL generation.
@@ -217,7 +217,7 @@ Json Path: /tables[]
 
 
 **column_class**
-<br>Information about the kind of data from perspective of the data vault method. It should be used during DDL generation, when indexes or primary key contrainst are generated, to identify the columns of interest.
+<br>Information about the kind of data from perspective of the data vault method. It should be used during DDL generation, when indexes or primary key contraints are generated, to identify the columns of interest.
 
 Possible values:
 * **key** - the column is the hub key or link key of a hub or link
@@ -244,7 +244,7 @@ Possible values:
 <br>Defines, if the column should be used in the change detection for loading satellites or reference tables. (#the meaning needs more clarification, since column_class and uses_diff_hash also control the elements involved#)
 
 ### data_extraction
-Json path: /
+Json path: $
 
 Contains all declarations needed to define the methods, how to retrieve the data. This might be just a module name, since it depends highly on the source technologiy and format and the flexibilty of the fetch and parse module.
 
@@ -259,7 +259,7 @@ Contains all declarations needed to define the methods, how to retrieve the data
 <br>
 
 ### parse_sets[]
-Json path: /
+Json path: $
 
 Contains a list of parse sets. Until DVPD version 0.7.0 there will be only one element.
 
@@ -288,9 +288,9 @@ processing module is capable of adding runtime specific information.
 <br>→ see "stage_columns[]"
 
 ### stage_properties[]
-Json Path: /pares_sets[]
+Json Path: $.parse_sets[]
 
-List of stage properties, for different storage comnponents. As long as there is only one data base system in a data warehouse platform, this will be only one entry. Nevertheless, in case the data model is distributed over multiple storage components and technologies, this provides the opportunity to declare different names for every storage component.
+List of stage properties, for different storage comnponents. As long as there is only one database system in a data warehouse platform, this will be only one entry. Nevertheless, in case the data model is distributed over multiple storage components and technologies, this provides the opportunity to declare different names for every storage component.
 
 **stage_schema**
 <br>Name of the schema, the stage table will be placed in.
@@ -299,7 +299,7 @@ List of stage properties, for different storage comnponents. As long as there is
 <br>Name of the stage table.
 
 ### fields[]
-Json Path: /pares_sets[]
+Json Path: $.parse_sets[]
 
 Provides all necessary declarations how to parse every field from the source data.
 
@@ -316,7 +316,7 @@ Provides all necessary declarations how to parse every field from the source dat
 
 
 ### hashes[]
-Json Path: /pares_sets[]
+Json Path: $.parse_sets[]
 
 Provides all necessary declarations, how to assemble and calculate the hash value.
 
@@ -373,7 +373,7 @@ identify all rows for the same multi row diff hash
 
 
 ### hash_fields[]
-Json Path: /pares_sets[]/hashes[]/
+Json Path: /parse_sets[]/hashes[]/
 
 The list of fields, to be concatenated for a hash. Be aware of the different properties to
 tweak the order of the fields for the concatination. The final ordering rule lies in the
@@ -405,7 +405,7 @@ This might be used to organize a link parent  declaration specific order, when a
 
 
 ### load_operations[]
-Json Path: /pares_sets[]
+Json Path: /parse_sets[]
 
 This is a list of all necessary load operations. It contains at least one operation for every target table.
 Multiple entries for the same target differ in the mapping of fields and hashes and probably deletion detection rules.
@@ -430,7 +430,7 @@ Multiple entries for the same target differ in the mapping of fields and hashes 
 <br>→ see "data_mappings[]"
 
 ### hash_mappings[]
-Json Path: /pares_sets[]/load_operations[]
+Json Path: /parse_sets[]/load_operations[]
 
 **column_name**
 <br>Name of the target column in the table
@@ -447,7 +447,7 @@ Json Path: /pares_sets[]/load_operations[]
 ### data_mapping[]
 (will be renamed to "field_mappings" in 0.6.1)
 
-Json Path: /pares_sets[]/load_operations[]
+Json Path: /parse_sets[]/load_operations[]
 
 <br>List of the mappings of all fields to the table columns.
 
@@ -465,7 +465,7 @@ Json Path: /pares_sets[]/load_operations[]
 
 
 ### stage_columns[]
-Json Path: /pares_sets[]
+Json Path: $.parse_sets[]
 
 The consolidated list of stage table columns.
 
@@ -489,7 +489,7 @@ The consolidated list of stage table columns.
 
 **colunm_classes**(only for data)
 <br>list of column classes of the target tables, this stage column is  mapped to.
-Might be used to order the columns of the stage table by class, when creating the table. (e.g. Business keys first, then content columns, then untracked columns)
+Might be used to order the columns of the stage table by class, when creating the table. (e.g. business keys first, then content columns, then untracked columns)
 
 
 
