@@ -192,7 +192,7 @@ where table_stereotype ='xenc_lnk-ek'
  where table_stereotype like 'xenc_%sat-ek'
  and xenc_diff_hash_column_name is not null
  )
---,sat_columns as ( -- <<<<<<<<<<<<<<<<<<<<<<<<< SAT
+,sat_columns as ( -- <<<<<<<<<<<<<<<<<<<<<<<<< SAT
   select -- encryption key index column
  	extp.pipeline_name 
    ,extp.table_name
