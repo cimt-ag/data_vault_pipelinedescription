@@ -194,7 +194,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
             schema_path.mkdir()
         
         # save ddl in directory
-        table_ddl_path = schema_path / f"{table_name}.sql"
+        table_ddl_path = schema_path / f"table_{table_name}.sql"
         with open(table_ddl_path, 'w') as file:
           file.write(ddl)
         
@@ -242,7 +242,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
             schema_path.mkdir()
         
         # save ddl in directory
-        table_ddl_path = schema_path / f"{table_name}.sql"
+        table_ddl_path = schema_path / f"table_{table_name}.sql"
         with open(table_ddl_path, 'w') as file:
           file.write(ddl)
 
