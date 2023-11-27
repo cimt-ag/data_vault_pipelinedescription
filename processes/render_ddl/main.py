@@ -10,8 +10,7 @@ class MissingFieldError(Exception):
         super().__init__(message)
 
 def get_missing_number_for_digits(digits: int):
-    result = '-'
-    result += '9'*digits
+    result = '9'*digits
     return result
 
 def get_missing_for_string_length(length:int = 13, must_be_fixed_length=False):
@@ -41,20 +40,21 @@ def create_ghost_records(full_name, columns):
                             'VARCHAR': '!#!missing!#!',
                             'CHAR': 'use_get_missing_for_string_length',
                             'TEXT': "'!#!missing!#!'",
-                            'INT': '-999999999',
-                            'INTEGER': '-999999999',
-                            'SMALLINT': '-9999',
-                            'BIGINT': '-999999999999999999',
+                            'INT': '999999999',
+                            'INTEGER': '999999999',
+                            'SMALLINT': '9999',
+                            'BIGINT': '999999999999999999',
                             'DECIMAL': 'use_get_missing_number_for_digits_function',
                             'NUMERIC': 'use_get_missing_number_for_digits_function',
                             'FLOAT': 'NaN',
                             'REAL': 'NaN',
                             'DOUBLE': 'NaN',
-                            'BOOLEAN': 'false',
-                            'DATE': 'lib.get_is_missing_date()',
-                            'DATETIME': 'lib.get_is_missing_date()',
-                            'TIMESTAMP': 'lib.get_is_missing_date()',
+                            'BOOLEAN': 'null',
+                            'DATE': '2998-11-30',
+                            'DATETIME': '2998-11-30 00:00:00.000',
+                            'TIMESTAMP': '2998-11-30 00:00:00.000',
                             'TIME': '00:00',
+                            'BYTE': '-99'
                             }
 
     missing_record_column_class_map = {'meta_load_process_id': '0',
@@ -194,7 +194,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
             schema_path.mkdir()
         
         # save ddl in directory
-        table_ddl_path = schema_path / f"{table_name}.sql"
+        table_ddl_path = schema_path / f"table_{table_name}.sql"
         with open(table_ddl_path, 'w') as file:
           file.write(ddl)
         
@@ -242,7 +242,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
             schema_path.mkdir()
         
         # save ddl in directory
-        table_ddl_path = schema_path / f"{table_name}.sql"
+        table_ddl_path = schema_path / f"table_{table_name}.sql"
         with open(table_ddl_path, 'w') as file:
           file.write(ddl)
 
