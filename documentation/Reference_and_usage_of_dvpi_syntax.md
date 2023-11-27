@@ -26,7 +26,7 @@ To deploy the target database tables, a ddl sql with the create statement must b
 - iterate over the tables[] list
 - inside a table list entry you find
     - schema and table name
-    - table stereotype (hub,lnk,sat,ref) <!-- are msat/dlnk etc. their own stereotype? -->
+    - table stereotype (hub,lnk,sat,ref) 
 	- iterate over the columns[] list containing
 	    - column name, type
 		- indication of not null contraints
@@ -373,7 +373,7 @@ identify all rows for the same multi row diff hash
 
 
 ### hash_fields[]
-Json Path: /parse_sets[]/hashes[]/
+Json Path: $.parse_sets[].hashes[]
 
 The list of fields, to be concatenated for a hash. Be aware of the different properties to
 tweak the order of the fields for the concatination. The final ordering rule lies in the
@@ -405,7 +405,7 @@ This might be used to organize a link parent  declaration specific order, when a
 
 
 ### load_operations[]
-Json Path: /parse_sets[]
+Json Path: $.parse_sets[]
 
 This is a list of all necessary load operations. It contains at least one operation for every target table.
 Multiple entries for the same target differ in the mapping of fields and hashes and probably deletion detection rules.
@@ -430,7 +430,7 @@ Multiple entries for the same target differ in the mapping of fields and hashes 
 <br>→ see "data_mappings[]"
 
 ### hash_mappings[]
-Json Path: /parse_sets[]/load_operations[]
+Json Path: $.parse_sets[].load_operations[]
 
 **column_name**
 <br>Name of the target column in the table
@@ -447,7 +447,7 @@ Json Path: /parse_sets[]/load_operations[]
 ### data_mapping[]
 (will be renamed to "field_mappings" in 0.6.1)
 
-Json Path: /parse_sets[]/load_operations[]
+Json Path: $.parse_sets[].load_operations[]
 
 <br>List of the mappings of all fields to the table columns.
 
