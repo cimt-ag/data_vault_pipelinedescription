@@ -16,13 +16,12 @@
 -- limitations under the License.
 -- =====================================================================
 
-/* insert Testcase 1*/
 DELETE FROM dv_pipeline_description.dvpd_dictionary where pipeline_name = 'test80_recursive_link_with_common_bk_field';
 INSERT INTO dv_pipeline_description.dvpd_dictionary 
 (pipeline_name, dvpd_json)
 VALUES
 ('test80_recursive_link_with_common_bk_field','{
- 	"dvpd_version": "1.0",
+ 	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
  	"pipeline_name": "test80_recursive_link_with_common_bk_field",
 	"data_extraction": {
@@ -30,22 +29,21 @@ VALUES
 	},
  	"fields": [
 		      {"field_name": "F1_BK_AAA_COMMON", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
-																					,"column_name": "BK_AAA_CM"}]}
+																					,"column_name": "BK_AAA_CM","relation_names": ["*"]}]}
 		      ,{"field_name": "F2_BK_AAA_ORIGIN", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
 																					,"column_name": "BK_AAA_SPLIT"}]}		 	  
 		      ,{"field_name": "F3_BK_AAA_RECURSE1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
 																					,"column_name": "BK_AAA_SPLIT"
-																					,"recursion_name": "RCS1"}]}		  
+																					,"relation_names": ["RCS1"]}]}		  
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
 				{"table_name": "rtjj_80_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_80_aaa"}
 				,{"table_name": "rtjj_80_aaa_recu_lnk",	"table_stereotype": "lnk" ,"link_key_column_name": "LK_rtjj_80_aaa_recu"
-																			,"link_parent_tables": ["rtjj_80_aaa_hub"]
-																			,"recursive_parents": [ {"table_name":"rtjj_80_aaa_hub"
-																										,"recursion_name": "RCS1"}]}
-				,{"table_name": "rtjj_80_aaa_recu_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_80_aaa_recu_lnk"}
+																			,"link_parent_tables": [{"table_name":"rtjj_80_aaa_hub"},{"table_name":"rtjj_80_aaa_hub"
+																										,"relation_name": "RCS1"}]}
+				,{"table_name": "rtjj_80_aaa_recu_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_80_aaa_recu_lnk"}
 
 				]
 		}
@@ -68,16 +66,16 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rvlt_test_jj","rtjj_80_aaa_recu_lnk",4,"parent_key","HK_RTJJ_80_AAA_RCS1","CHAR(28)"]
  ],
  "process_column_mapping": [
-         ["rtjj_80_aaa_hub","_A_","HK_RTJJ_80_AAA","HK_RTJJ_80_AAA",null],
-         ["rtjj_80_aaa_hub","_A_","BK_AAA_CM","F1_BK_AAA_COMMON","F1_BK_AAA_COMMON"],
-         ["rtjj_80_aaa_hub","_A_","BK_AAA_SPLIT","F2_BK_AAA_ORIGIN","F2_BK_AAA_ORIGIN"],
-         ["rtjj_80_aaa_hub","_RCS1","HK_RTJJ_80_AAA","HK_RTJJ_80_AAA_RCS1",null],
-         ["rtjj_80_aaa_hub","_RCS1","BK_AAA_CM","F1_BK_AAA_COMMON","F1_BK_AAA_COMMON"],
-         ["rtjj_80_aaa_hub","_RCS1","BK_AAA_SPLIT","F3_BK_AAA_RECURSE1","F3_BK_AAA_RECURSE1"],
-         ["rtjj_80_aaa_recu_esat","_A_","LK_RTJJ_80_AAA_RECU","LK_RTJJ_80_AAA_RECU",null],
-         ["rtjj_80_aaa_recu_lnk","_A_","LK_RTJJ_80_AAA_RECU","LK_RTJJ_80_AAA_RECU",null],
-         ["rtjj_80_aaa_recu_lnk","_A_","HK_RTJJ_80_AAA","HK_RTJJ_80_AAA",null],
-         ["rtjj_80_aaa_recu_lnk","_A_","HK_RTJJ_80_AAA_RCS1","HK_RTJJ_80_AAA_RCS1",null]
+         ["rtjj_80_aaa_hub","/","HK_RTJJ_80_AAA","HK_RTJJ_80_AAA",null],
+         ["rtjj_80_aaa_hub","/","BK_AAA_CM","F1_BK_AAA_COMMON","F1_BK_AAA_COMMON"],
+         ["rtjj_80_aaa_hub","/","BK_AAA_SPLIT","F2_BK_AAA_ORIGIN","F2_BK_AAA_ORIGIN"],
+         ["rtjj_80_aaa_hub","RCS1","HK_RTJJ_80_AAA","HK_RTJJ_80_AAA_RCS1",null],
+         ["rtjj_80_aaa_hub","RCS1","BK_AAA_CM","F1_BK_AAA_COMMON","F1_BK_AAA_COMMON"],
+         ["rtjj_80_aaa_hub","RCS1","BK_AAA_SPLIT","F3_BK_AAA_RECURSE1","F3_BK_AAA_RECURSE1"],
+         ["rtjj_80_aaa_recu_esat","/","LK_RTJJ_80_AAA_RECU","LK_RTJJ_80_AAA_RECU",null],
+         ["rtjj_80_aaa_recu_lnk","/","LK_RTJJ_80_AAA_RECU","LK_RTJJ_80_AAA_RECU",null],
+         ["rtjj_80_aaa_recu_lnk","/","HK_RTJJ_80_AAA","HK_RTJJ_80_AAA",null],
+         ["rtjj_80_aaa_recu_lnk","/","HK_RTJJ_80_AAA_RCS1","HK_RTJJ_80_AAA_RCS1",null]
  ],
  "stage_table_column": [
          ["F1_BK_AAA_COMMON","VARCHAR(20)",8,"F1_BK_AAA_COMMON","VARCHAR(20)",false],
@@ -88,11 +86,11 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["LK_RTJJ_80_AAA_RECU","CHAR(28)",2,null,null,false]
  ],
  "stage_hash_input_field": [
-         ["_A_","HK_RTJJ_80_AAA","F1_BK_AAA_COMMON",0,0],
-         ["_A_","HK_RTJJ_80_AAA","F2_BK_AAA_ORIGIN",0,0],
-         ["_A_","LK_RTJJ_80_AAA_RECU","F1_BK_AAA_COMMON",0,0],
-         ["_A_","LK_RTJJ_80_AAA_RECU","F2_BK_AAA_ORIGIN",0,0],
-         ["_A_","LK_RTJJ_80_AAA_RECU","F3_BK_AAA_RECURSE1",0,0],
-         ["_RCS1","HK_RTJJ_80_AAA_RCS1","F1_BK_AAA_COMMON",0,0],
-         ["_RCS1","HK_RTJJ_80_AAA_RCS1","F3_BK_AAA_RECURSE1",0,0]
+         ["/","HK_RTJJ_80_AAA","F1_BK_AAA_COMMON",0,0],
+         ["/","HK_RTJJ_80_AAA","F2_BK_AAA_ORIGIN",0,0],
+         ["/","LK_RTJJ_80_AAA_RECU","F1_BK_AAA_COMMON",0,0],
+         ["/","LK_RTJJ_80_AAA_RECU","F2_BK_AAA_ORIGIN",0,0],
+         ["/","LK_RTJJ_80_AAA_RECU","F3_BK_AAA_RECURSE1",0,0],
+         ["RCS1","HK_RTJJ_80_AAA_RCS1","F1_BK_AAA_COMMON",0,0],
+         ["RCS1","HK_RTJJ_80_AAA_RCS1","F3_BK_AAA_RECURSE1",0,0]
   ]    }');

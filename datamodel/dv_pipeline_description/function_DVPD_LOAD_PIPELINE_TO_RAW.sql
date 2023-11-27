@@ -48,26 +48,24 @@ INSERT
 	field_name,
 	table_name,
 	column_name,
-	field_group,
-	recursion_name,
+	relation_name,
 	column_type,
 	prio_in_key_hash,
 	exclude_from_key_hash,
 	prio_in_diff_hash,
-	exclude_from_diff_hash,
+	exclude_from_change_detection,
 	column_content_comment)
 SELECT
 	pipeline_name,
 	field_name,
 	table_name,
 	column_name,
-	field_group,
-	recursion_name,
+	relation_name,
 	column_type,
 	prio_in_key_hash,
 	exclude_from_key_hash,
 	prio_in_diff_hash,
-	exclude_from_diff_hash,
+	exclude_from_change_detection,
 	column_content_comment
 FROM
 	dv_pipeline_description.dvpd_transform_to_pipeline_field_target_expansion_raw;
@@ -78,7 +76,7 @@ truncate
 insert
 	into
 	dv_pipeline_description.dvpd_pipeline_field_properties_raw
-(pipeline,
+(pipeline_name,
 	field_name,
 	field_type,
 	field_position,
@@ -86,7 +84,7 @@ insert
 	needs_encryption,
 	field_comment)
 select
-	pipeline,
+	pipeline_name,
 	field_name,
 	field_type,
 	field_position,
@@ -108,10 +106,12 @@ insert
 	link_key_column_name,
 	diff_hash_column_name,
 	satellite_parent_table,
+	tracked_relation_name,
 	is_link_without_sat,
 	is_enddated,
 	has_deletion_flag,
 	uses_diff_hash,
+	compare_criteria,
 	model_profile_name,
 	table_content_comment)
 select
@@ -123,29 +123,18 @@ select
 	link_key_column_name,
 	diff_hash_column_name,
 	satellite_parent_table,
+	tracked_relation_name,
 	is_link_without_sat,
 	is_enddated,
 	has_deletion_flag,
 	uses_diff_hash,
+	compare_criteria,
 	model_profile_name,
 	table_content_comment
 from
 	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_raw;
 
 
-truncate table dv_pipeline_description.dvpd_pipeline_dv_table_field_group_raw;
-insert
-	into
-	dv_pipeline_description.dvpd_pipeline_dv_table_field_group_raw
-(pipeline_name,
-	table_name,
-	field_group)
-select
-	pipeline_name,
-	table_name,
-	field_group
-from
-	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_field_group_raw;
 
 
 truncate table dv_pipeline_description.dvpd_pipeline_dv_table_link_parent_raw;
@@ -155,16 +144,17 @@ insert
 (pipeline_name,
 	table_name,
 	parent_table_name,
-	is_recursive_relation,
-	recursion_name,link_parent_order,recursive_parent_order)
+	relation_name,
+	hub_key_column_name_in_link,
+	link_parent_order
+	)
 select
 	pipeline_name,
 	table_name,
 	parent_table_name,
-	is_recursive_relation,
-	recursion_name,
-	link_parent_order,
-	recursive_parent_order
+	relation_name,
+	hub_key_column_name_in_link,
+	link_parent_order
 from
 	dv_pipeline_description.dvpd_transform_to_pipeline_dv_table_link_parent_raw;
 
@@ -224,8 +214,11 @@ from
 
 
 
+REFRESH MATERIALIZED VIEW dv_pipeline_description.DVPD_PIPELINE_DV_TABLE;
 
 REFRESH MATERIALIZED VIEW dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN;
+
+REFRESH MATERIALIZED VIEW dv_pipeline_description.DVPD_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING;
 
 return true;
 

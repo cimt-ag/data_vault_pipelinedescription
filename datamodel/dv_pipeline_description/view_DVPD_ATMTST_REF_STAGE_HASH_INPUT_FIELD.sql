@@ -17,7 +17,7 @@
 -- =====================================================================
 
 
---drop view if exists dv_pipeline_description.DVPD_ATMTST_REF_STAGE_HASH_INPUT_FIELD;
+--drop view if exists dv_pipeline_description.DVPD_ATMTST_REF_STAGE_HASH_INPUT_FIELD CASCADE;
 create or replace view dv_pipeline_description.DVPD_ATMTST_REF_STAGE_HASH_INPUT_FIELD as (
 
 with parsed_dvmodel_column as (
@@ -28,7 +28,7 @@ from dv_pipeline_description.DVPD_ATMTST_REFERENCE
 )
 select 
 	pipeline_name 
-	,table_row->>0 process_block
+	,table_row->>0 relation_of_hash
 	,table_row->>1 stage_column_name
 	,table_row->>2 field_name
 	,(table_row->>3)::int prio_in_key_hash

@@ -1,10 +1,16 @@
 /* render DDL statements for a pipeline */
 with target as (
-select distinct dpdt.pipeline_name, dpsp.stage_schema stage_schema_name, stage_table_name
+select distinct 
+	  dpdt.pipeline_name
+	, dpsp.stage_schema stage_schema_name
+	, dpsp.stage_table_name
+	, xpsp.xenc_stage_schema xenc_stage_schema_name
+	, xpsp.xenc_stage_table_name
 from dv_pipeline_description.dvpd_pipeline_DV_table dpdt
 join dv_pipeline_description.dvpd_pipeline_stage_properties dpsp on dpsp.pipeline_name =dpdt.pipeline_name 
+left join dv_pipeline_description.xenc_pipeline_stage_properties xpsp on xpsp.pipeline_name =dpdt.pipeline_name 
 --where pipeline_name like 'test20%'
-where dpdt.pipeline_name like 'test61%'
+where dpdt.pipeline_name like '%test22%'
 ) /* */
 , model_profile as (select property_value load_date_column_name 
 from target tgt
@@ -128,7 +134,7 @@ select stage_table_name  , 59 block
 ,' '  script
 from target tgt
 union
-select stage_table_name table_name, 60 block
+select stage_table_name table_name, 60 block  --<<<< STAGE TABLE
 ,1 reverse_order
 ,'CREATE TABLE '||tgt.stage_schema_name ||'.'|| tgt.stage_table_name || '(' script
 from target tgt
@@ -160,7 +166,68 @@ select stage_table_name , 79 block
 ,'-- >>> end of: table_'||stage_table_name||'.sql <<<'  script
 from target tgt
 )
-select script
+-- ========== XENC part ====================================================================================
+, xenc_relevance_check as (
+select distinct tgt.pipeline_name
+from dv_pipeline_description.dvpd_pipeline_dv_table dpdt
+join target tgt on tgt.pipeline_name = dpdt.pipeline_name
+where table_stereotype like 'xenc%'
+)
+, xenc_script_renderer as (
+select xenc_stage_table_name table_name, 80 block
+,1 reverse_order
+,'-- >>> begin of: table_'||xenc_stage_table_name||'.sql in '||tgt.xenc_stage_schema_name ||' <<<'  script
+from target tgt join xenc_relevance_check xrc using(pipeline_name)
+union
+select xenc_stage_table_name table_name, 81 block
+,1 reverse_order
+,'-- DROP TABLE '||tgt.xenc_stage_schema_name ||'.'||xenc_stage_table_name  script
+from target tgt join xenc_relevance_check xrc using(pipeline_name)
+--join dv_pipeline_description.dvpd_pipeline_stage_table_column tbl on tbl.pipeline_name =tgt.pipeline_name  
+union
+select xenc_stage_table_name  table_name , 84 block
+,1 reverse_order
+,' '  script
+from target tgt join xenc_relevance_check xrc using(pipeline_name)
+union
+select xenc_stage_table_name table_name, 90 block 
+,1 reverse_order
+,'CREATE TABLE '||tgt.xenc_stage_schema_name ||'.'|| tgt.xenc_stage_table_name || '(' script
+from target tgt join xenc_relevance_check xrc using(pipeline_name)
+union 
+select xenc_stage_table_name table_name, 91 block
+,reverse_order
+, '  '|| column_name || '      '
+ || column_type || column_constraint
+ ||(case when reverse_order=1 then '' else ',' end) script
+from (
+	select 
+	rank () OVER (partition by stc.pipeline_name order by  column_block desc,content_table_name desc ,stage_column_name desc	 ) reverse_order
+	, xenc_stage_table_name  
+	,coalesce(stc.column_block ,-1) column_block
+	,coalesce(stc.stage_column_name ,'')  column_name
+	,coalesce(stc.column_type,'')  column_type
+	, ' NOT NULL '::text as column_constraint
+	from dv_pipeline_description.xenc_pipeline_stage_table_column stc  
+	join target tgt on tgt.pipeline_name = stc.pipeline_name  
+) the_columns
+union
+select xenc_stage_table_name  table_name , 95 block
+,1 reverse_order
+,');'
+from target tgt  join xenc_relevance_check xrc using(pipeline_name)
+union
+select xenc_stage_table_name  table_name, 99 block
+,1 reverse_order
+,'-- >>> end of: table_'||xenc_stage_table_name||'.sql <<<'  script
+from target tgt join xenc_relevance_check xrc using(pipeline_name)
+)
+-- ========= Final assembly ==============
+select table_name,block,reverse_order,script
 from script_renderer 
+union
+select table_name,block,reverse_order,script 
+from xenc_script_renderer xsr ,
+ xenc_relevance_check xrc 
 order by table_name,block,reverse_order desc
 

@@ -16,7 +16,7 @@
 -- limitations under the License.
 -- =====================================================================
 
--- DROP TABLE dv_pipeline_description.dvpd_pipeline_field_target_expansion_raw;
+-- DROP TABLE dv_pipeline_description.dvpd_pipeline_field_target_expansion_raw cascade;
 
 CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION_RAW (
 	meta_inserted_at timestamp default current_timestamp,
@@ -24,13 +24,12 @@ CREATE TABLE dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION_RAW (
 	field_name text NULL,
 	table_name text NULL,
 	column_name text NULL,
-	field_group text NULL,
-	recursion_name text NULL,
+	relation_name text NULL,
 	column_type text NULL,
 	prio_in_key_hash text NULL,
 	exclude_from_key_hash text NULL,
 	prio_in_diff_hash text NULL,
-	exclude_from_diff_hash text NULL,
+	exclude_from_change_detection text NULL,
 	column_content_comment text NULL
 );
 

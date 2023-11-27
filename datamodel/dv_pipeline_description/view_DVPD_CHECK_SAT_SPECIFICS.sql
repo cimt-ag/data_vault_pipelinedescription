@@ -21,17 +21,17 @@
 create or replace view dv_pipeline_description.DVPD_CHECK_SAT_SPECIFICS as
 
 
-with no_columns_on_esat as (
+with esat_must_have_link_parent as (
 	select 
 		pdt.pipeline_name 
-	 	,'Field'::TEXT  object_type 
-	 	, sfm.field_name object_name 
+	 	,'Table'::TEXT  object_type 
+	 	, pdt.table_name  object_name 
 	 	,'DVPD_CHECK_SAT_SPECIFICS'::text  check_ruleset
-		, 'a field cannot be mapped to an effecitivy satellite (esat)':: text message
-	from  dv_pipeline_description.dvpd_pipeline_dv_table pdt 
-	join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION sfm ON pdt.table_name = lower(sfm.table_name  )
-				and sfm.pipeline_name = pdt.pipeline_name 
-	where pdt.table_stereotype ='esat'
+		, 'an effectivity satellite (Sat without any mapped fields) must have a link as parent':: text message
+	from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
+	join dv_pipeline_description.dvpd_pipeline_dv_table parent ON parent.table_name = pdt.satellite_parent_table 
+				and parent.pipeline_name = pdt.pipeline_name 
+	where pdt.is_effectivity_sat and parent.table_stereotype  <> 'lnk'
 )
 ,driving_key_per_pipeline_and_sat_table as (
 	select 
@@ -42,7 +42,7 @@ with no_columns_on_esat as (
 	from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
 	join dv_pipeline_description.dvpd_pipeline_dv_table_driving_key pdtdk on pdtdk.pipeline_name =pdt.pipeline_name 
 																		 and pdtdk.table_name =pdt.table_name 
-	where table_stereotype in ('sat','esat','msat')
+	where table_stereotype in ('sat')
 )
 ,do_driving_keys_exist_in_parent as (
 select 
@@ -58,9 +58,26 @@ left join dv_pipeline_description.dvpd_pipeline_dv_column dc ON dc.pipeline_name
 															and dc.table_name = dkppast.satellite_parent_table
 															and dc.column_name =dkppast.driving_key 
 ) 
-select * from no_columns_on_esat
+,parameter_dependencies as (
+select 
+	pdt.pipeline_name 
+ 	,'Table'::TEXT  object_type 
+ 	, pdt.table_name   object_name 
+ 	,'DVPD_CHECK_SAT_SPECIFICS'::text  check_ruleset
+	, case when pdt.uses_diff_hash 
+	        and not is_effectivity_sat
+	        and compare_criteria not in('key','none') 
+	        and diff_hash_column_name is null 
+	        		then  'diff_hash_column_name needs to be declared'
+					else 'ok' end message
+	from dv_pipeline_description.dvpd_pipeline_dv_table pdt 
+	where table_stereotype ='sat'
+) 
+select * from esat_must_have_link_parent
 union
-select * from do_driving_keys_exist_in_parent ;
+select * from do_driving_keys_exist_in_parent
+union
+select * from parameter_dependencies;
 
 
 comment on view dv_pipeline_description.DVPD_CHECK_SAT_SPECIFICS IS

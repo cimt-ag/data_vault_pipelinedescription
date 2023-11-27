@@ -22,7 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test01_check_model_relations','{
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test01_check_model_relations",
 	"record_source_name_expression": "dvpd implementation test",
@@ -46,13 +46,11 @@ VALUES
 																									"link_parent_tables":["rtjj_01_AAA_HUB","rtjj_01_CCC_XXX_UNKNOWN_HUB"]}
 			,	{"table_name": "rtjj_01_AAA_CCC_XXX_DLINK_WITH_UNKNOWN_PARENT", "table_stereotype": "lnk","link_key_column_name": "rtjj_01_AAA_CCC_XXX_DLINK_WITH_UNKNOWN_PARENT",
 																									"link_parent_tables":["rtjj_01_AAA_HUB","rtjj_01_CCC_XXX_UNKNOWN_HUB"]}
-			,	{"table_name": "rtjj_01_AAA_CCC_XXX_LINK_WITH_UNKNOWN_RECURSIVE_PARENT", "table_stereotype": "lnk","link_key_column_name": "rtjj_01_AAA_CCC_XXX_LINK_WITH_UNKNOWN_RECURSIVE_PARENT",
-																									"link_parent_tables":["rtjj_01_AAA_HUB"]
-																								,"recursive_parents": [ {"table_name":"rtjj_XXX_UNKNOWN_HUB"
-																										,"recursion_name": "PARENT"}]}
-			,	{"table_name": "rtjj_01_BBB_CCC_XXX_ESAT_WITH_UNKNOWN_PARENT", "table_stereotype": "esat","satellite_parent_table":"rtjj_01_CCC_XXX_UNKNOWN_HUB"}
+			,	{"table_name": "rtjj_01_BBB_CCC_XXX_ESAT_WITH_UNKNOWN_PARENT", "table_stereotype": "sat","satellite_parent_table":"rtjj_01_CCC_XXX_UNKNOWN_HUB"}
 			,	{"table_name": "rtjj_01_AAA_EEE_DONT_USE_AS_PARENT",	"table_stereotype": "sat","satellite_parent_table":"rtjj_01_AAA_HUB","diff_hash_column_name": "rh_rtjj_01_AAA_EEE_DONT_USE_AS_PARENT"}
 			,	{"table_name": "rtjj_01_FFF_XXX_SAT_WITH_BAD_PARENT",	"table_stereotype": "sat","satellite_parent_table":"rtjj_01_AAA_EEE_DONT_USE_AS_PARENT","diff_hash_column_name": "rh_rtjj_01_FFF_XXX_SAT_WITH_BAD_PARENT"}
+			,	{"table_name": "rtjj_01_GGG_XXX_LINK_WITH_BAD_PARENT",	"table_stereotype": "lnk","link_key_column_name": "lk_rtjj_01_GGG_XXX_LINK_WITH_BAD_PARENT",
+																									"link_parent_tables":["rtjj_01_AAA_HUB","rtjj_01_AAA_EEE_DONT_USE_AS_PARENT"]}
 				]
 		}
 	]

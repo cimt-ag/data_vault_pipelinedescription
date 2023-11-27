@@ -17,7 +17,7 @@
 -- =====================================================================
 
 
---drop view if exists dv_pipeline_description.XENC_ATMTST_REF_PROCESS_FIELD_TO_ENCRYPTION_KEY_MAPPING;
+--drop view if exists dv_pipeline_description.XENC_ATMTST_REF_PROCESS_FIELD_TO_ENCRYPTION_KEY_MAPPING CASCADE;
 create or replace view dv_pipeline_description.XENC_ATMTST_REF_PROCESS_FIELD_TO_ENCRYPTION_KEY_MAPPING as (
 
 with parsed_dvmodel_column as (
@@ -28,7 +28,7 @@ from dv_pipeline_description.DVPD_ATMTST_REFERENCE
 )
 select 
 	pipeline_name 
-	,table_row->>0 process_block
+	,table_row->>0 relation_to_process
 	,table_row->>1 field_name
 	,table_row->>2 content_stage_column_name
 	,table_row->>3 encryption_key_stage_column_name

@@ -1,5 +1,5 @@
 {
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test61_fg_drive_scenario_1",
 	"purpose":"Test dvpd transformation for multilayered field groups",
@@ -10,23 +10,23 @@
 	"fields": [
 		      {"field_name": "F1_BK_AAA_L1", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_61_aaa_hub"
 																					,"column_name": "BK_AAA"
-																				 	,"field_groups":["fg1"]}]}
+																				 	,"relation_names":["R111"]}]}
 		      ,{"field_name": "F2_BK_AAA_L2", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_61_aaa_hub"
 																					,"column_name": "BK_AAA"
-																				 	,"field_groups":["fg2"]}]}		 	  
+																				 	,"relation_names":["R222"]}]}		 	  
 		      ,{"field_name": "F3_BK_AAA_L3", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_61_aaa_hub"
 																					,"column_name": "BK_AAA"
-																				 	,"field_groups":["fg3"]}]}		 	  
+																				 	,"relation_names":["R333"]}]}		 	  
 		      ,{"field_name": "F4_AAA_S1_COLA","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_61_aaa_p1_sat"
-																				 	,"field_groups":["fg1"]}]}		 
+																				 	,"relation_names":["R111"]}]}		 
 		      ,{"field_name": "F5_AAA_S1_COLB","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_61_aaa_p1_sat"
-																				 	,"field_groups":["fg1"]}]}		 
+																				 	,"relation_names":["R111"]}]}		 
 		      ,{"field_name": "F6_AAA_S1_COLA_L2","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_61_aaa_p1_sat"
 																					,"column_name": "F4_AAA_S1_COLA"
-																				 	,"field_groups":["fg2"]}]}		 
+																				 	,"relation_names":["R222"]}]}		 
 		      ,{"field_name": "F7_AAA_S1_COLB_L2","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_61_aaa_p1_sat"
 																					,"column_name": "F5_AAA_S1_COLB"
-																				 	,"field_groups":["fg2"]}]}		 
+																				 	,"relation_names":["R222"]}]}		 
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

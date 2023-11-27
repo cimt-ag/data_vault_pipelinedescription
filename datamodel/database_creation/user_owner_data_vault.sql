@@ -12,4 +12,4 @@ CREATE USER owner_data_vault WITH
   NOCREATEROLE
   NOREPLICATION;
   
-alter user owner_dwh with password '#ownerdatavault#'; -- <==== changepasssword before execution but dont save to git
+alter user owner_data_vault with password 'djPN44PPBc094eOi5DfY'; -- <==== changepasssword before execution but dont save to git

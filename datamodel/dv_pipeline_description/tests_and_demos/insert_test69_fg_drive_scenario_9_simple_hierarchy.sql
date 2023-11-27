@@ -22,7 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test69_fg_drive_scenario_9_simple_hierarchy','{
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test69_fg_drive_scenario_9_simple_hierarchy",
 	"record_source_name_expression":"dvpd implementation test",
@@ -35,17 +35,16 @@ VALUES
 																					,"column_name": "BK_AAA"}]}
 		      ,{"field_name": "F2_BK_AAA_H1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_69_aaa_hub"
 																					,"column_name": "BK_AAA"
-																					,"recursion_name": "HRCHY1"}]}		  
+																					,"relation_names": ["HRCHY1"]}]}		  
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
 				{"table_name": "rtjj_69_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_69_aaa"}
 				,{"table_name": "rtjj_69_aaa_hierarchy_hlnk",	"table_stereotype": "lnk" ,"link_key_column_name": "LK_rtjj_69_aaa_hierarchy"
-																			,"link_parent_tables": ["rtjj_69_aaa_hub"]
-																			,"recursive_parents": [ {"table_name":"rtjj_69_aaa_hub"
-																										,"recursion_name": "HRCHY1"}]}
-				,{"table_name": "rtjj_69_aaa_hierarchy_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_69_aaa_hierarchy_hlnk"
+																			,"link_parent_tables": [{"table_name":"rtjj_69_aaa_hub"},
+																									{"table_name":"rtjj_69_aaa_hub", "relation_name": "HRCHY1"}]}
+				,{"table_name": "rtjj_69_aaa_hierarchy_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_69_aaa_hierarchy_hlnk"
 																				,"driving_keys": ["HK_rtjj_69_aaa_HRCHY1"]}
 
 				]
@@ -74,8 +73,8 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["rtjj_69_aaa_hierarchy_hlnk","_A_","HK_RTJJ_69_AAA_HRCHY1","HK_RTJJ_69_AAA_HRCHY1",null],
          ["rtjj_69_aaa_hub","_A_","HK_RTJJ_69_AAA","HK_RTJJ_69_AAA",null],
          ["rtjj_69_aaa_hub","_A_","BK_AAA","F1_BK_AAA","F1_BK_AAA"],
-         ["rtjj_69_aaa_hub","_HRCHY1","HK_RTJJ_69_AAA","HK_RTJJ_69_AAA_HRCHY1",null],
-         ["rtjj_69_aaa_hub","_HRCHY1","BK_AAA","F2_BK_AAA_H1","F2_BK_AAA_H1"]
+         ["rtjj_69_aaa_hub","HRCHY1","HK_RTJJ_69_AAA","HK_RTJJ_69_AAA_HRCHY1",null],
+         ["rtjj_69_aaa_hub","HRCHY1","BK_AAA","F2_BK_AAA_H1","F2_BK_AAA_H1"]
  ], 
 "stage_table_column": [
          ["F1_BK_AAA","VARCHAR(20)",8,"F1_BK_AAA","VARCHAR(20)",false],
@@ -88,6 +87,6 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["_A_","HK_RTJJ_69_AAA","F1_BK_AAA",0,0],
          ["_A_","LK_RTJJ_69_AAA_HIERARCHY","F1_BK_AAA",0,0],
          ["_A_","LK_RTJJ_69_AAA_HIERARCHY","F2_BK_AAA_H1",0,0],
-         ["_HRCHY1","HK_RTJJ_69_AAA_HRCHY1","F2_BK_AAA_H1",0,0]
+         ["HRCHY1","HK_RTJJ_69_AAA_HRCHY1","F2_BK_AAA_H1",0,0]
   ]    }');                                                           
 	

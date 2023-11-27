@@ -163,7 +163,7 @@ where table_stereotype ='xenc_lnk-ek'
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.model_profile_name =extp.model_profile_name 
  														and (mpmcl.table_stereotype = extp.table_stereotype  or ( mpmcl.table_stereotype = 'xsat_hist' and cpdt.is_enddated )
  														or (mpmcl.table_stereotype = 'xsat_delflag' and cpdt.has_deletion_flag))
- where extp.table_stereotype in ('xenc_sat-ek','xenc_msat-ek')
+ where extp.table_stereotype in ('xenc_sat-ek')
  union 
   select -- encryption key index column
  	extp.pipeline_name 
@@ -204,8 +204,8 @@ where table_stereotype ='xenc_lnk-ek'
  from enhance_xenc_table_properties extp
  left join model_profile mp on mp.table_name = extp.table_name 
  		and mp.property_name ='xenc_encryption_key_index_column_type'
- where table_stereotype in ('sat','msat')
- 
+ where table_stereotype in ('sat')
+
  )
 -- ,ref_ek_columns as (-- <<<<<<<<<<<<<<<<<<<<<<<<< REF #TBD
 --

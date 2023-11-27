@@ -36,12 +36,14 @@ pipeline_name
 , json_array_elements(tables)->>'link_key_column_name' as link_key_column_name
 , json_array_elements(tables)->>'diff_hash_column_name' as diff_hash_column_name
 , json_array_elements(tables)->>'satellite_parent_table' as satellite_parent_table
+, json_array_elements(tables)->>'tracked_relation_name' as tracked_relation_name
 , json_array_elements(tables)->>'is_link_without_sat' as is_link_without_sat
 , json_array_elements(tables)->>'is_enddated' as is_enddated 
 , json_array_elements(tables)->>'model_profile_name' as model_profile_name 
 , json_array_elements(tables)->>'table_content_comment' as table_content_comment
 , json_array_elements(tables)->>'has_deletion_flag' as has_deletion_flag
 , json_array_elements(tables)->>'uses_diff_hash' as uses_diff_hash
+, json_array_elements(tables)->>'compare_criteria' as compare_criteria
 from data_vault_schema_basics;
 
 comment on view dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_DV_TABLE_RAW is

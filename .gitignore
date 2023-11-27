@@ -3,3 +3,10 @@ datamodel/Scripts/
 .idea/
 config/
 lib/__pycache__/
+*.bkp
+var/
+*.pyc
+experimental/java-dvpi-consumer/target/
+.vscode/
+.vscode/launch.json
+.venv/

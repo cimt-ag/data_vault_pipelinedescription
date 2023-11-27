@@ -21,7 +21,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test25_one_link_one_esat_three_hubs','{
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test25_one_link_one_esat_three_hubs",
 	"record_source_name_expression": "dvpd implementation test",
@@ -45,7 +45,7 @@ VALUES
 				,{"table_name": "rtjj_25_ccc_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_25_ccc"}
 				,{"table_name": "rtjj_25_aaa_bbb_ccc_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_25_aaa_bbb_ccc",
 																				"link_parent_tables": ["rtjj_25_aaa_hub","rtjj_25_bbb_hub","rtjj_25_ccc_hub"]}
-				,{"table_name": "rtjj_25_aaa_bbb_ccc_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_25_aaa_bbb_ccc_lnk"}
+				,{"table_name": "rtjj_25_aaa_bbb_ccc_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_25_aaa_bbb_ccc_lnk"}
 				]
 		}
 	]

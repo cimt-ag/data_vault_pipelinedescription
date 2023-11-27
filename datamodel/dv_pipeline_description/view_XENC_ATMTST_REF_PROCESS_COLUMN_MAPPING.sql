@@ -17,7 +17,7 @@
 -- =====================================================================
 
 
---drop view if exists dv_pipeline_description.XENC_ATMTST_REF_PROCESS_COLUMN_MAPPING;
+--drop view if exists dv_pipeline_description.XENC_ATMTST_REF_PROCESS_COLUMN_MAPPING CASCADE;
 create or replace view dv_pipeline_description.XENC_ATMTST_REF_PROCESS_COLUMN_MAPPING as (
 
 with parsed_dvmodel_column as (
@@ -29,7 +29,7 @@ from dv_pipeline_description.DVPD_ATMTST_REFERENCE
 select 
 	pipeline_name 
 	,table_row->>0 table_name
-	,table_row->>1 process_block
+	,table_row->>1 relation_to_process
 	,table_row->>2 column_name
 	,table_row->>3 column_type
 	,table_row->>4 column_class

@@ -22,7 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('xenc_test01_check_bad_reference','{
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "xenc_test01_check_bad_reference",
 	"record_source_name_expression": "dvpd implementation test",
@@ -60,5 +60,5 @@ VALUES
 }
 ');
 
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test01_check_bad_reference');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test01_check_bad_reference');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test01_check_bad_reference');

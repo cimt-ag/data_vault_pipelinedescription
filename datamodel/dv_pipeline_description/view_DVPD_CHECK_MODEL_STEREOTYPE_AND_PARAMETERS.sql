@@ -23,7 +23,6 @@ create or replace view dv_pipeline_description.DVPD_CHECK_MODEL_STEREOTYPE_AND_P
 with link_parent_table_count as (
 select pipeline_name ,table_name ,count(link_parent_table)
 from dv_pipeline_description.dvpd_pipeline_dv_table_link_parent pdtlp
-where not is_recursive_relation 
 group by 1,2
 )
 -- key column declaration
@@ -47,7 +46,6 @@ from dv_pipeline_description.dvpd_pipeline_dv_table pdt
 left join dv_pipeline_description.dvpd_stereotype_check_matrix scm on scm.table_stereotype = pdt.table_stereotype 
 left join link_parent_table_count lptc  on lptc.pipeline_name = pdt.pipeline_name 
 										and lptc.table_name = pdt.table_name 
-
 ;
 
 comment on view dv_pipeline_description.DVPD_CHECK_MODEL_STEREOTYPE_AND_PARAMETERS IS

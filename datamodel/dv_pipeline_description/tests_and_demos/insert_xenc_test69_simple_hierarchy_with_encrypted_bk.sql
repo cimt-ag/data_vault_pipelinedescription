@@ -22,7 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('xenc_test69_simple_hierarchy_with_encrypted_bk','{
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "xenc_test69_simple_hierarchy_with_encrypted_bk",
 	"record_source_name_expression":"dvpd implementation test",
@@ -35,17 +35,16 @@ VALUES
 																					,"column_name": "BK_AAA"}]}
 		      ,{"field_name": "F2_BK_AAA_H1", 		"field_type": "Varchar(20)",	"needs_encryption":true, "targets": [{"table_name": "rxecd_69_aaa_hub"
 																					,"column_name": "BK_AAA"
-																					,"recursion_name": "HRCHY1"}]}		  
+																					,"relation_names": ["HRCHY1"]}]}		  
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_xenc_data", 
 		 "tables": [
 				{"table_name": "rxecd_69_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_69_aaa"}
 				,{"table_name": "rxecd_69_aaa_hierarchy_hlnk",	"table_stereotype": "lnk" ,"link_key_column_name": "LK_rxecd_69_aaa_hierarchy"
-																			,"link_parent_tables": ["rxecd_69_aaa_hub"]
-																			,"recursive_parents": [ {"table_name":"rxecd_69_aaa_hub"
-																										,"recursion_name": "HRCHY1"}]}
-				,{"table_name": "rxecd_69_aaa_hierarchy_esat",	"table_stereotype": "esat","satellite_parent_table": "rxecd_69_aaa_hierarchy_hlnk"
+																			,"link_parent_tables":  [ {"table_name":"rxecd_69_aaa_hub"}
+																									 ,{"table_name":"rxecd_69_aaa_hub","relation_name": "HRCHY1"}]}
+				,{"table_name": "rxecd_69_aaa_hierarchy_esat",	"table_stereotype": "sat","satellite_parent_table": "rxecd_69_aaa_hierarchy_hlnk"
 																				,"driving_keys": ["HK_rxecd_69_aaa_HRCHY1"]}
 
 				]
@@ -59,8 +58,8 @@ VALUES
 }
 ');
 
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test69_simple_hierarchy_with_encrypted_bk');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test69_simple_hierarchy_with_encrypted_bk');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test69_simple_hierarchy_with_encrypted_bk');
 
 -- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test69_simple_hierarchy_with_encrypted_bk';
@@ -93,14 +92,14 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
       ["rvlt_xenc_keys","rxeck_69_aaa_hub_ek",7,"xenc_bk_salted_hash","BKH_RXECK_69_AAA_HUB_EK_ST","CHAR(28)"]
  ],
  "process_column_mapping": [
-         ["rxecd_69_aaa_hierarchy_esat","_A_","LK_RXECD_69_AAA_HIERARCHY","LK_RXECD_69_AAA_HIERARCHY",null],
-         ["rxecd_69_aaa_hierarchy_hlnk","_A_","LK_RXECD_69_AAA_HIERARCHY","LK_RXECD_69_AAA_HIERARCHY",null],
-         ["rxecd_69_aaa_hierarchy_hlnk","_A_","HK_RXECD_69_AAA","HK_RXECD_69_AAA",null],
-         ["rxecd_69_aaa_hierarchy_hlnk","_A_","HK_RXECD_69_AAA_HRCHY1","HK_RXECD_69_AAA_HRCHY1",null],
-         ["rxecd_69_aaa_hub","_A_","HK_RXECD_69_AAA","HK_RXECD_69_AAA",null],
-         ["rxecd_69_aaa_hub","_A_","BK_AAA","F1_BK_AAA","F1_BK_AAA"],
-         ["rxecd_69_aaa_hub","_HRCHY1","HK_RXECD_69_AAA","HK_RXECD_69_AAA_HRCHY1",null],
-         ["rxecd_69_aaa_hub","_HRCHY1","BK_AAA","F2_BK_AAA_H1","F2_BK_AAA_H1"]
+         ["rxecd_69_aaa_hierarchy_esat","/","LK_RXECD_69_AAA_HIERARCHY","LK_RXECD_69_AAA_HIERARCHY",null],
+         ["rxecd_69_aaa_hierarchy_hlnk","/","LK_RXECD_69_AAA_HIERARCHY","LK_RXECD_69_AAA_HIERARCHY",null],
+         ["rxecd_69_aaa_hierarchy_hlnk","/","HK_RXECD_69_AAA","HK_RXECD_69_AAA",null],
+         ["rxecd_69_aaa_hierarchy_hlnk","/","HK_RXECD_69_AAA_HRCHY1","HK_RXECD_69_AAA_HRCHY1",null],
+         ["rxecd_69_aaa_hub","/","HK_RXECD_69_AAA","HK_RXECD_69_AAA",null],
+         ["rxecd_69_aaa_hub","/","BK_AAA","F1_BK_AAA","F1_BK_AAA"],
+         ["rxecd_69_aaa_hub","HRCHY1","HK_RXECD_69_AAA","HK_RXECD_69_AAA_HRCHY1",null],
+         ["rxecd_69_aaa_hub","HRCHY1","BK_AAA","F2_BK_AAA_H1","F2_BK_AAA_H1"]
  ],
  "stage_table_column": [
          ["HK_RXECD_69_AAA","CHAR(28)",2,null,null,false],
@@ -110,22 +109,22 @@ INSERT INTO dv_pipeline_description.DVPD_ATMTST_REFERENCE (pipeline_name, refere
          ["F2_BK_AAA_H1","VARCHAR(20)",8,"F2_BK_AAA_H1","VARCHAR(20)",true]
  ],
  "stage_hash_input_field": [
-         ["_A_","HK_RXECD_69_AAA","F1_BK_AAA",0,0],
-         ["_A_","LK_RXECD_69_AAA_HIERARCHY","F1_BK_AAA",0,0],
-         ["_A_","LK_RXECD_69_AAA_HIERARCHY","F2_BK_AAA_H1",0,0],
-         ["_HRCHY1","HK_RXECD_69_AAA_HRCHY1","F2_BK_AAA_H1",0,0]
+         ["/","HK_RXECD_69_AAA","F1_BK_AAA",0,0],
+         ["/","LK_RXECD_69_AAA_HIERARCHY","F1_BK_AAA",0,0],
+         ["/","LK_RXECD_69_AAA_HIERARCHY","F2_BK_AAA_H1",0,0],
+         ["HRCHY1","HK_RXECD_69_AAA_HRCHY1","F2_BK_AAA_H1",0,0]
  ],
  "xenc_process_column_mapping": [
-         ["rxeck_69_aaa_hub_ek","_A_","HK_RXECD_69_AAA","CHAR(28)","key","HK_RXECD_69_AAA","HK_RXECD_69_AAA","rxecd_69_aaa_hub"],
-         ["rxeck_69_aaa_hub_ek","_A_","EK_RXECD_69_AAA_HUB","CHAR(28)","xenc_encryption_key","EK_RXECD_69_AAA_HUB",null,null],
-         ["rxeck_69_aaa_hub_ek","_A_","BKH_RXECK_69_AAA_HUB_EK","CHAR(28)","xenc_bk_hash","BKH_RXECK_69_AAA_HUB_EK","HK_RXECD_69_AAA","rxecd_69_aaa_hub"],
-         ["rxeck_69_aaa_hub_ek","_A_","BKH_RXECK_69_AAA_HUB_EK_ST","CHAR(28)","xenc_bk_salted_hash","BKH_RXECK_69_AAA_HUB_EK_ST","HK_RXECD_69_AAA","rxecd_69_aaa_hub"],
-         ["rxeck_69_aaa_hub_ek","_HRCHY1","HK_RXECD_69_AAA","CHAR(28)","key","HK_RXECD_69_AAA_HRCHY1","HK_RXECD_69_AAA_HRCHY1","rxecd_69_aaa_hub"],
-         ["rxeck_69_aaa_hub_ek","_HRCHY1","EK_RXECD_69_AAA_HUB","CHAR(28)","xenc_encryption_key","EK_RXECD_69_AAA_HUB_HRCHY1",null,null],
-         ["rxeck_69_aaa_hub_ek","_HRCHY1","BKH_RXECK_69_AAA_HUB_EK","CHAR(28)","xenc_bk_hash","BKH_RXECK_69_AAA_HUB_EK_HRCHY1","HK_RXECD_69_AAA_HRCHY1","rxecd_69_aaa_hub"],
-         ["rxeck_69_aaa_hub_ek","_HRCHY1","BKH_RXECK_69_AAA_HUB_EK_ST","CHAR(28)","xenc_bk_salted_hash","BKH_RXECK_69_AAA_HUB_EK_ST_HRCHY1","HK_RXECD_69_AAA_HRCHY1","rxecd_69_aaa_hub"]
+         ["rxeck_69_aaa_hub_ek","/","HK_RXECD_69_AAA","CHAR(28)","key","HK_RXECD_69_AAA","HK_RXECD_69_AAA","rxecd_69_aaa_hub"],
+         ["rxeck_69_aaa_hub_ek","/","EK_RXECD_69_AAA_HUB","CHAR(28)","xenc_encryption_key","EK_RXECD_69_AAA_HUB",null,null],
+         ["rxeck_69_aaa_hub_ek","/","BKH_RXECK_69_AAA_HUB_EK","CHAR(28)","xenc_bk_hash","BKH_RXECK_69_AAA_HUB_EK","HK_RXECD_69_AAA","rxecd_69_aaa_hub"],
+         ["rxeck_69_aaa_hub_ek","/","BKH_RXECK_69_AAA_HUB_EK_ST","CHAR(28)","xenc_bk_salted_hash","BKH_RXECK_69_AAA_HUB_EK_ST","HK_RXECD_69_AAA","rxecd_69_aaa_hub"],
+         ["rxeck_69_aaa_hub_ek","HRCHY1","HK_RXECD_69_AAA","CHAR(28)","key","HK_RXECD_69_AAA_HRCHY1","HK_RXECD_69_AAA_HRCHY1","rxecd_69_aaa_hub"],
+         ["rxeck_69_aaa_hub_ek","HRCHY1","EK_RXECD_69_AAA_HUB","CHAR(28)","xenc_encryption_key","EK_RXECD_69_AAA_HUB_HRCHY1",null,null],
+         ["rxeck_69_aaa_hub_ek","HRCHY1","BKH_RXECK_69_AAA_HUB_EK","CHAR(28)","xenc_bk_hash","BKH_RXECK_69_AAA_HUB_EK_HRCHY1","HK_RXECD_69_AAA_HRCHY1","rxecd_69_aaa_hub"],
+         ["rxeck_69_aaa_hub_ek","HRCHY1","BKH_RXECK_69_AAA_HUB_EK_ST","CHAR(28)","xenc_bk_salted_hash","BKH_RXECK_69_AAA_HUB_EK_ST_HRCHY1","HK_RXECD_69_AAA_HRCHY1","rxecd_69_aaa_hub"]
  ],
  "xenc_process_field_to_encryption_key_mapping": [
-         ["_A_","F1_BK_AAA","F1_BK_AAA","EK_RXECD_69_AAA_HUB",1],
-         ["_HRCHY1","F2_BK_AAA_H1","F2_BK_AAA_H1","EK_RXECD_69_AAA_HUB_HRCHY1",1]
+         ["/","F1_BK_AAA","F1_BK_AAA","EK_RXECD_69_AAA_HUB",1],
+         ["HRCHY1","F2_BK_AAA_H1","F2_BK_AAA_H1","EK_RXECD_69_AAA_HUB_HRCHY1",1]
   ]    }');

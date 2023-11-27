@@ -22,7 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('xenc_test23_encrypt_on_common_bk_field','{
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "xenc_test23_encrypt_on_common_bk_field",
 	"record_source_name_expression": "dvpd implementation test",
@@ -48,7 +48,7 @@ VALUES
 				,{"table_name": "rxecd_23_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rxecd_23_bbb"}
 				,{"table_name": "rxecd_23_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rxecd_23_aaa_bbb",
 																			"link_parent_tables": ["rxecd_23_aaa_hub","rxecd_23_bbb_hub"]}
-				,{"table_name": "rxecd_23_aaa_bbb_esat",	"table_stereotype": "esat","satellite_parent_table": "rxecd_23_aaa_bbb_lnk"}
+				,{"table_name": "rxecd_23_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rxecd_23_aaa_bbb_lnk"}
 				]
 		}
 		,{"schema_name": "rvlt_xenc_keys", 
@@ -64,8 +64,8 @@ VALUES
 
 ');
 
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test23_encrypt_on_common_bk_field');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test23_encrypt_on_common_bk_field');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test23_encrypt_on_common_bk_field');
 
 -- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test23_encrypt_on_common_bk_field';

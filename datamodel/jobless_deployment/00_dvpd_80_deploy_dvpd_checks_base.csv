@@ -8,6 +8,8 @@ mandantory,type,schema_name,name
 1,view,dv_pipeline_description,DVPD_CHECK_MODEL_RELATIONS
 1,view,dv_pipeline_description,DVPD_CHECK_MODEL_STEREOTYPE_AND_PARAMETERS
 1,view,dv_pipeline_description,DVPD_CHECK_SAT_SPECIFICS
+1,view,dv_pipeline_description,DVPD_CHECK_REF_SPECIFICS
 1,view,dv_pipeline_description,DVPD_CHECK_STAGE_SPECIFICS
+1,view,dv_pipeline_description,DVPD_CHECK_RELATION_SPECIFICS
 
 

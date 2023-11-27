@@ -51,9 +51,10 @@ union
 select -- keys of parents
   pdt.pipeline_name 
  ,pdtlp.table_name 
- ,case when pdtlp.is_recursive_relation then 4 else 3 end as column_block
+ , case when pdtlp.relation_name <>'*' then 4 else  3 end as  column_block
  ,'parent_key' as column_class
- ,case when pdtlp.is_recursive_relation then  pdt.hub_key_column_name||'_'||pdtlp.recursion_name
+ ,case when hub_key_column_name_in_link is not null then hub_key_column_name_in_link
+	 when pdtlp.relation_name not in ('*','/') then  pdt.hub_key_column_name||'_'||pdtlp.relation_name
  		else pdt.hub_key_column_name end as column_name
  ,mp.property_value  as column_type
  ,false as is_nullable
@@ -122,7 +123,7 @@ select -- keys of parents
 	 ,table_name 
 	 ,satellite_parent_table as parent_table
 	from  dv_pipeline_description.dvpd_pipeline_dv_table pdt
-	where table_stereotype in ('sat','esat','msat')
+	where table_stereotype in ('sat')
 )
 ,sat_columns as (
  select -- meta columns
@@ -137,7 +138,7 @@ select -- keys of parents
  join dv_pipeline_description.dvpd_model_profile_meta_column_lookup mpmcl on mpmcl.model_profile_name =pdt .model_profile_name 
 			 								and (mpmcl.table_stereotype = pdt.table_stereotype or ( mpmcl.table_stereotype = 'xsat_hist' and pdt.is_enddated )
 			 								or (mpmcl.table_stereotype = 'xsat_delflag' and pdt.has_deletion_flag))
- where pdt.table_stereotype in ('sat','esat','msat')
+ where pdt.table_stereotype in ('sat')
  union 
 select -- own key column
  	pdt.pipeline_name 
@@ -164,20 +165,20 @@ select -- own key column
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
  left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
  				and mp.property_name ='diff_hash_column_type'  
- where pdt.table_stereotype in ('sat','msat') and pdt.diff_hash_column_name is not null
+ where pdt.table_stereotype in ('sat') and uses_diff_hash and  pdt.diff_hash_column_name is not null 
  union
  select -- content
  	pdt.pipeline_name 
    ,pdt.table_name
    ,8 as column_block
-   ,case when pfte.exclude_from_diff_hash then 'content_untracked' else 'content' end as column_class
+   ,case when pfte.exclude_from_change_detection then 'content_untracked' else 'content' end as column_class
    ,pfte.column_name  as column_name
    ,pfte.column_type 
    ,true as is_nullable
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
  left join dv_pipeline_description.DVPD_PIPELINE_FIELD_TARGET_EXPANSION pfte on pfte.pipeline_name = pdt.pipeline_name 
  							and pfte.table_name = pdt.table_name 
- where pdt.table_stereotype in ('sat','msat')
+ where pdt.table_stereotype in ('sat') and not is_effectivity_sat 
  )
  ,ref_columns as (-- <<<<<<<<<<<<<<<<<<<<<<<<< REF
  select -- meta columns
@@ -204,13 +205,13 @@ select -- own key column
  from dv_pipeline_description.dvpd_pipeline_dv_table pdt
  left join dv_pipeline_description.DVPD_MODEL_PROFILE mp on mp.model_profile_name =pdt.model_profile_name 
  				and mp.property_name ='diff_hash_column_type' 
- where pdt.table_stereotype in ('ref') and pdt.is_enddated 
+ where pdt.table_stereotype in ('ref') and uses_diff_hash and  pdt.diff_hash_column_name is not null  
  union
  select -- content
  	pdt.pipeline_name 
    ,pdt.table_name
    ,8 as column_block
-   ,case when pfte.exclude_from_diff_hash then 'content_untracked' else 'content' end as column_class
+   ,case when pfte.exclude_from_change_detection then 'content_untracked' else 'content' end as column_class
    ,pfte.column_name  as column_name
    ,pfte.column_type 
    ,true as is_nullable
@@ -233,4 +234,4 @@ select -- own key column
 comment on view dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN_CORE is
  'table columns of the pipeline derived by the dvpd core implementation'; 
  
--- select * from dv_pipeline_description.DVPD_DV_MODEL_COLUMN ddmc  order by 1,2,3,4,5;
+-- select * from dv_pipeline_description.DVPD_PIPELINE_DV_COLUMN_CORE ddmc  order by 1,2,3,4,5;

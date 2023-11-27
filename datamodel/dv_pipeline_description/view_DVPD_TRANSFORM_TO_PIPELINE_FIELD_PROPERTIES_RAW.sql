@@ -22,7 +22,7 @@ create or replace view dv_pipeline_description.DVPD_TRANSFORM_TO_PIPELINE_FIELD_
 
 with raw_field_list as( 
 Select 
-	dvpd_json ->>'pipeline_name' as pipeline
+	dvpd_json ->>'pipeline_name' as pipeline_name
 	,json_array_elements(dvpd_json->'fields')->>'field_name' as field_name
 	,json_array_elements(dvpd_json->'fields')->>'field_type' as field_type
 	,json_array_elements(dvpd_json->'fields')->>'field_position' as explicit_field_position
@@ -33,10 +33,10 @@ Select
 from dv_pipeline_description.dvpd_dictionary dt
 )
 select
- pipeline
+ pipeline_name
  ,field_name
  ,field_type
- ,coalesce(explicit_field_position::integer,row_number() over (PARTITION BY pipeline )) field_position
+ ,coalesce(explicit_field_position::integer,row_number() over (PARTITION BY pipeline_name )) field_position
  ,parsing_expression
  ,needs_encryption :: boolean
  ,field_comment

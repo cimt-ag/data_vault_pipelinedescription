@@ -22,7 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('xenc_test21_encrypt_on_hub','{
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "xenc_test21_encrypt_on_hub",
 	"record_source_name_expression": "dvpd implementation test",
@@ -60,8 +60,8 @@ VALUES
 
 ');
 
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test21_encrypt_on_hub');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test21_encrypt_on_hub');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test21_encrypt_on_hub');
 
 -- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test21_encrypt_on_hub';

@@ -22,7 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test24_one_satellite_on_linked_hub','{
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test24_one_satellite_on_linked_hub",
 	"record_source_name_expression": "dvpd implementation test",
@@ -47,7 +47,7 @@ VALUES
 				,{"table_name": "rtjj_24_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_24_aaa_hub","diff_hash_column_name": "RH_rtjj_24_aaa_p1_sat"}
 				,{"table_name": "rtjj_24_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_24_aaa_bbb",
 																				"link_parent_tables": ["rtjj_24_aaa_hub","rtjj_24_bbb_hub"]}
-				,{"table_name": "rtjj_24_aaa_bbb_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_24_aaa_bbb_lnk"}
+				,{"table_name": "rtjj_24_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_24_aaa_bbb_lnk"}
 				,{"table_name": "rtjj_24_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_24_bbb"}
 				,{"table_name": "rtjj_24_bbb_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_24_bbb_hub","diff_hash_column_name": "RH_rtjj_24_bbb_p1_sat"}
 				]

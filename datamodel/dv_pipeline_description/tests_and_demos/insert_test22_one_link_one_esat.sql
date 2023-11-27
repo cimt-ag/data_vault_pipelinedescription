@@ -22,7 +22,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test22_one_link_one_esat','{
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test22_one_link_one_esat",
 	"record_source_name_expression": "dvpd implementation test",
@@ -45,7 +45,7 @@ VALUES
 				,{"table_name": "rtjj_22_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_22_aaa_HUB","diff_hash_column_name": "RH_rtjj_22_aaa_P1_SAT"}
 				,{"table_name": "rtjj_22_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_22_aaa_bbb",
 																				"link_parent_tables": ["rtjj_22_aaa_hub","rtkk_22_bbb_hub"]}
-				,{"table_name": "rtjj_22_aaa_bbb_esat",	"table_stereotype": "esat","satellite_parent_table": "rtjj_22_aaa_bbb_lnk"}
+				,{"table_name": "rtjj_22_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_22_aaa_bbb_lnk"}
 				]
 		},
 		{"schema_name": "rvlt_test_kk", 

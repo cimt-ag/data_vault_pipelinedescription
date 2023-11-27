@@ -21,7 +21,7 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('test40_ref_simple_with_history','{
-	"dvpd_version": "1.0",
+	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "test40_ref_simple_with_history",
 	"record_source_name_expression": "dvpd implementation test",
@@ -33,7 +33,7 @@ VALUES
 		 	  {"field_name": "F2_BBB_DECIMAL",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_40_aaa_ref"}]},
 		 	  {"field_name": "F3_CCC_FIELDNAME_DATE",		"field_type": "DATE",			"targets": [{"table_name": "rtjj_40_aaa_ref"
 																											,"column_name":"F3_CCC_DATE"}]},
-			  {"field_name": "F4_DDD_NOT_IN_RH__DECIMAL",		"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_40_aaa_ref","exclude_from_diff_hash": "true"}]}
+			  {"field_name": "F4_DDD_NOT_IN_RH__DECIMAL",		"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_40_aaa_ref","exclude_from_change_detection": "true"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

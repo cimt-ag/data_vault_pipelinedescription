@@ -1,0 +1,348 @@
+{
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
+  "dvpi_version": "0.6.0",
+  "compile_timestamp": "2023-10-22 18:53:28",
+  "dvpd_version": "0.6.0",
+  "pipeline_name": "test20_simple_hub_sat",
+  "dvpd_filemame": "test20_simple_hub_sat.dvpd.json",
+  "table_dict": {
+    "rtjj_20_aaa_hub": {
+      "table_stereotype": "hub",
+      "column_dict": {
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "HK_RTJJ_20_AAA": {
+          "column_class": "key",
+          "column_type": "#todo "
+        },
+        "F1_BK_AAA_VARCHAR": {
+          "column_class": "business_key",
+          "column_content_comment": null,
+          "prio_for_column_position": 50000
+        },
+        "F2_BK_AAA_DECIMAL": {
+          "column_class": "business_key",
+          "column_content_comment": null,
+          "prio_for_column_position": 50000
+        }
+      }
+    },
+    "rtjj_20_aaa_p1_sat": {
+      "table_stereotype": "sat",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": false,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "compare_criteria": "key+current",
+      "uses_diff_hash": true,
+      "column_dict": {
+        "MD_INSERTED_AT": {
+          "column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_IS_DELETED": {
+          "column_class": "meta_deletion_flag",
+          "column_type": "#tdbd"
+        },
+        "MD_VALID_BEFORE": {
+          "column_class": "meta_load_enddate",
+          "column_type": "#tdbd"
+        },
+        "HK_RTJJ_20_AAA": {
+          "column_class": "parent_key",
+          "column_type": "#todo ",
+          "parent_key_column_name": "HK_RTJJ_20_AAA",
+          "parent_table_name": "rtjj_20_aaa_hub"
+        },
+        "RH_RTJJ_20_AAA_P1_SAT": {
+          "column_class": "diff_hash",
+          "column_type": "#todo "
+        },
+        "F3_AAA_SP1_VARCHAR": {
+          "column_class": "content",
+          "column_type": "VARCHAR(200)",
+          "column_content_comment": null,
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        "F4_AAA_SP1_DECIMAL": {
+          "column_class": "content",
+          "column_type": "DECIMAL(5,0)",
+          "column_content_comment": null,
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        "F5_AAA_SP1_VARCHAR": {
+          "column_class": "content",
+          "column_type": "VARCHAR(200)",
+          "column_content_comment": null,
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        "F6_AAA_SP1_TIMESTAMP_XRH": {
+          "column_class": "content_untracked",
+          "column_type": "TIMESTAMP",
+          "column_content_comment": null,
+          "exclude_from_change_detection": "true",
+          "prio_for_column_position": 50000
+        }
+      }
+    }
+  },
+  "data_extraction": {
+    "fetch_module_name": "none - this is a pure generator test case"
+  },
+  "parse_sets": [
+    {
+      "stage_properties": [
+        {
+          "stage_schema": "stage_rvlt",
+          "stage_table_name": "srtjj_20"
+        }
+      ],
+      "record_source_name_expression": "dvpd implementation test",
+      "field_dict": {
+        "F1_BK_AAA_VARCHAR": {
+          "field_type": "Varchar(20)",
+          "field_position": 1,
+          "needs_encryption": false
+        },
+        "F2_BK_AAA_DECIMAL": {
+          "field_type": "Decimal(20,0)",
+          "field_position": 2,
+          "needs_encryption": false
+        },
+        "F3_AAA_SP1_VARCHAR": {
+          "field_type": "VARCHAR(200)",
+          "field_position": 3,
+          "needs_encryption": false
+        },
+        "F4_AAA_SP1_DECIMAL": {
+          "field_type": "DECIMAL(5,0)",
+          "field_position": 4,
+          "needs_encryption": false
+        },
+        "F5__FIELD_NAME": {
+          "field_type": "VARCHAR(200)",
+          "field_position": 5,
+          "needs_encryption": false
+        },
+        "F6_AAA_SP1_TIMESTAMP_XRH": {
+          "field_type": "TIMESTAMP",
+          "field_position": 6,
+          "needs_encryption": false
+        }
+      },
+      "hash_dict": {
+        "KEY_OF_RTJJ_20_AAA_HUB": {
+          "stage_column_name": "HK_RTJJ_20_AAA",
+          "hash_origin_table": "rtjj_20_aaa_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F1_BK_AAA_VARCHAR",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_20_aaa_hub",
+              "field_target_column": "F1_BK_AAA_VARCHAR"
+            },
+            {
+              "field_name": "F2_BK_AAA_DECIMAL",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_20_aaa_hub",
+              "field_target_column": "F2_BK_AAA_DECIMAL"
+            }
+          ]
+        },
+        "DIFF_OF_RTJJ_20_AAA_P1_SAT": {
+          "stage_column_name": "RH_RTJJ_20_AAA_P1_SAT",
+          "hash_origin_table": "rtjj_20_aaa_p1_sat",
+          "multi_row_content": false,
+          "related_key_hash": "KEY_OF_RTJJ_20_AAA_HUB",
+          "column_class": "diff_hash",
+          "hash_fields": [
+            {
+              "field_name": "F3_AAA_SP1_VARCHAR",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rtjj_20_aaa_p1_sat",
+              "field_target_column": "F3_AAA_SP1_VARCHAR"
+            },
+            {
+              "field_name": "F4_AAA_SP1_DECIMAL",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rtjj_20_aaa_p1_sat",
+              "field_target_column": "F4_AAA_SP1_DECIMAL"
+            },
+            {
+              "field_name": "F5__FIELD_NAME",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rtjj_20_aaa_p1_sat",
+              "field_target_column": "F5_AAA_SP1_VARCHAR"
+            }
+          ]
+        }
+      },
+      "load_operations": [
+        {
+          "table_name": "rtjj_20_aaa_hub",
+          "relation_name": "*",
+          "operation_origin": "implicit universal relation of hub",
+          "hash_mapping_dict": {
+            "key": {
+              "hash_column_name": "HK_RTJJ_20_AAA",
+              "hash_name": "KEY_OF_RTJJ_20_AAA_HUB",
+              "stage_column_name": "HK_RTJJ_20_AAA"
+            }
+          },
+          "data_mapping_dict": {
+            "F1_BK_AAA_VARCHAR": {
+              "field_name": "F1_BK_AAA_VARCHAR",
+              "column_class": "business_key",
+              "stage_column_name": "F1_BK_AAA_VARCHAR"
+            },
+            "F2_BK_AAA_DECIMAL": {
+              "field_name": "F2_BK_AAA_DECIMAL",
+              "column_class": "business_key",
+              "stage_column_name": "F2_BK_AAA_DECIMAL"
+            }
+          }
+        },
+        {
+          "table_name": "rtjj_20_aaa_p1_sat",
+          "relation_name": "*",
+          "operation_origin": "following parent operation list",
+          "hash_mapping_dict": {
+            "parent_key": {
+              "hash_column_name": "HK_RTJJ_20_AAA",
+              "hash_name": "KEY_OF_RTJJ_20_AAA_HUB",
+              "stage_column_name": "HK_RTJJ_20_AAA"
+            },
+            "diff_hash": {
+              "hash_column_name": "RH_RTJJ_20_AAA_P1_SAT",
+              "hash_name": "DIFF_OF_RTJJ_20_AAA_P1_SAT",
+              "stage_column_name": "RH_RTJJ_20_AAA_P1_SAT"
+            }
+          },
+          "data_mapping_dict": {
+            "F3_AAA_SP1_VARCHAR": {
+              "field_name": "F3_AAA_SP1_VARCHAR",
+              "column_class": "content",
+              "stage_column_name": "F3_AAA_SP1_VARCHAR"
+            },
+            "F4_AAA_SP1_DECIMAL": {
+              "field_name": "F4_AAA_SP1_DECIMAL",
+              "column_class": "content",
+              "stage_column_name": "F4_AAA_SP1_DECIMAL"
+            },
+            "F5_AAA_SP1_VARCHAR": {
+              "field_name": "F5__FIELD_NAME",
+              "column_class": "content",
+              "stage_column_name": "F5__FIELD_NAME"
+            },
+            "F6_AAA_SP1_TIMESTAMP_XRH": {
+              "field_name": "F6_AAA_SP1_TIMESTAMP_XRH",
+              "column_class": "content_untracked",
+              "stage_column_name": "F6_AAA_SP1_TIMESTAMP_XRH"
+            }
+          }
+        }
+      ],
+      "stage_column_dict": {
+        "MD_INSERTED_AT": {
+          "stage_column_class": "meta_load_date",
+          "column_type": "#tdbd"
+        },
+        "MD_RECORD_SOURCE": {
+          "stage_column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_LOAD_PROCESS_ID": {
+          "stage_column_class": "meta_record_source",
+          "column_type": "#tdbd"
+        },
+        "MD_IS_DELETED": {
+          "stage_column_class": "meta_deletion_flag",
+          "column_type": "#tdbd"
+        },
+        "HK_RTJJ_20_AAA": {
+          "stage_column_class": "hash",
+          "hash_name": "KEY_OF_RTJJ_20_AAA_HUB",
+          "column_type": "#tbd"
+        },
+        "RH_RTJJ_20_AAA_P1_SAT": {
+          "stage_column_class": "hash",
+          "hash_name": "DIFF_OF_RTJJ_20_AAA_P1_SAT",
+          "column_type": "#tbd"
+        },
+        "F1_BK_AAA_VARCHAR": {
+          "stage_column_class": "data",
+          "field_name": "F1_BK_AAA_VARCHAR",
+          "column_type": "Varchar(20)",
+          "column_classes": [
+            "content"
+          ]
+        },
+        "F2_BK_AAA_DECIMAL": {
+          "stage_column_class": "data",
+          "field_name": "F2_BK_AAA_DECIMAL",
+          "column_type": "Decimal(20,0)",
+          "column_classes": [
+            "content"
+          ]
+        },
+        "F3_AAA_SP1_VARCHAR": {
+          "stage_column_class": "data",
+          "field_name": "F3_AAA_SP1_VARCHAR",
+          "column_type": "VARCHAR(200)",
+          "column_classes": [
+            "content"
+          ]
+        },
+        "F4_AAA_SP1_DECIMAL": {
+          "stage_column_class": "data",
+          "field_name": "F4_AAA_SP1_DECIMAL",
+          "column_type": "DECIMAL(5,0)",
+          "column_classes": [
+            "content"
+          ]
+        },
+        "F5__FIELD_NAME": {
+          "stage_column_class": "data",
+          "field_name": "F5__FIELD_NAME",
+          "column_type": "VARCHAR(200)",
+          "column_classes": [
+            "content"
+          ]
+        },
+        "F6_AAA_SP1_TIMESTAMP_XRH": {
+          "stage_column_class": "data",
+          "field_name": "F6_AAA_SP1_TIMESTAMP_XRH",
+          "column_type": "TIMESTAMP",
+          "column_classes": [
+            "content"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -34,8 +34,6 @@ INSERT INTO dv_pipeline_description.DVPD_STEREOTYPE_CHECK_MATRIX
 VALUES('hub', 1, 0, 0, 0),
 	  ('lnk', 0, 1, 1, 0),	
 	  ('sat', 0, 0, 0, 1),	
-	  ('msat', 0, 0, 0, 1),	
-	  ('esat', 0, 0, 0, 1),
 	  ('ref', 0, 0, 0, 0)
 	 ;
 

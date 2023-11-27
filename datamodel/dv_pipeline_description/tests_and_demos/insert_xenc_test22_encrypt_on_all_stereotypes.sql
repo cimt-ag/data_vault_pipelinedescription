@@ -22,8 +22,8 @@ INSERT INTO dv_pipeline_description.dvpd_dictionary
 (pipeline_name, dvpd_json)
 VALUES
 ('xenc_test22_encrypt_on_all_stereotypes','{
-	"dvpd_version": "1.0",
-	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt","xenc_stage_schema":"stage_encryption"}],
 	"pipeline_name": "xenc_test22_encrypt_on_all_stereotypes",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
@@ -70,8 +70,8 @@ VALUES
 
 ');
 
-select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test22_encrypt_on_all_stereotypes');
 select dv_pipeline_description.XENC_LOAD_PIPELINE_TO_RAW('xenc_test22_encrypt_on_all_stereotypes');
+select dv_pipeline_description.DVPD_LOAD_PIPELINE_TO_RAW('xenc_test22_encrypt_on_all_stereotypes');
 
 -- vvvvv Reference data for automated testing of dvpd implementation vvvv
 DELETE FROM dv_pipeline_description.DVPD_ATMTST_REFERENCE  where pipeline_name = 'xenc_test22_encrypt_on_all_stereotypes';

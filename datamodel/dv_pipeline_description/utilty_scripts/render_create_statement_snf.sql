@@ -1,9 +1,12 @@
 /* render DDL statements for a pipeline */
 with target as (
-select distinct pipeline_name, 'stage_rvlt' as stage_schema_name, 's'||substring(pipeline_name,2) stage_table_name
-from dv_pipeline_description.dvpd_pipeline_DV_table
---where pipeline_name like 'test20%'
-where pipeline_name = 'rvis_invoice_billing_method_p1'
+select distinct pdt.pipeline_name
+, psp.STAGE_SCHEMA  as stage_schema_name
+, psp.STAGE_TABLE_NAME 
+from dv_pipeline_description.dvpd_pipeline_DV_table pdt
+join dv_pipeline_description.DVPD_PIPELINE_STAGE_PROPERTIES  psp on psp.PIPELINE_NAME = pdt.PIPELINE_NAME 
+where pdt.pipeline_name like '%test22%'
+--where pipeline_name = 'rvis_invoice_billing_method_p1'
 ) /* */
 , model_profile as (select property_value load_date_column_name 
 from target tgt

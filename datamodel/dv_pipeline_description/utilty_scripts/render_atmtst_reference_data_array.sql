@@ -21,7 +21,7 @@
 with target as (
 select distinct pipeline_name
 from dv_pipeline_description.dvpd_pipeline_DV_table
-where pipeline_name like 'test82%'
+where pipeline_name like '__st42%'
 ) /* */
 select 1 block
 ,1 reverse_order
@@ -86,16 +86,16 @@ select 16 block
 ,reverse_order
 ,'         ["' 
  || table_name || '","'
- || process_block  || '","'
+ || relation_to_process  || '","'
  || column_name || '","'
  || stage_column_name || '",'
  || coalesce('"'||field_name||'"','null') || ']'
  ||(case when reverse_order=1 then '' else ',' end)
 from (
 	select 
-	 rank () OVER (order by table_name desc ,process_block desc ,column_block desc, column_name desc ) reverse_order
+	 rank () OVER (order by table_name desc ,relation_to_process desc ,column_block desc, column_name desc ) reverse_order
 	,table_name 
-	,process_block 
+	,relation_to_process 
 	,column_name 
 	,stage_column_name
 	,field_name 
@@ -149,7 +149,7 @@ union
 select 31 block
 ,reverse_order 
 ,'         ["' 
- || coalesce(process_block,'null') || '","'
+ || coalesce(relation_of_hash,'null') || '","'
  || stage_column_name || '","'
  || field_name || '",'
  || prio_in_key_hash || ','
@@ -157,8 +157,8 @@ select 31 block
  ||(case when reverse_order=1 then '' else ',' end) 
 from ( 	
 	select 
-	 rank () OVER (order by process_block  desc,stage_column_name desc, field_name desc ) reverse_order
-	 ,process_block
+	 rank () OVER (order by relation_of_hash  desc,stage_column_name desc, field_name desc ) reverse_order
+	 , relation_of_hash
 	 , stage_column_name 
 	 , field_name 
 	 , prio_in_key_hash 
@@ -181,7 +181,7 @@ select 61 block
 ,reverse_order
 ,'         ["' 
  || table_name || '","'
- || process_block  || '","'
+ || relation_to_process  || '","'
  || column_name || '","'
  || column_type || '","'
  || column_class || '","'
@@ -191,9 +191,9 @@ select 61 block
  ||(case when reverse_order=1 then '' else ',' end)
 from (
 	select 
-	 rank () OVER (order by table_name desc ,process_block desc ,column_block desc, column_name desc ) reverse_order
+	 rank () OVER (order by table_name desc ,relation_to_process desc ,column_block desc, column_name desc ) reverse_order
 	,table_name 
-	,process_block 
+	,relation_to_process 
 	,column_name 
 	,column_type
 	,column_class 
@@ -218,7 +218,7 @@ union
 select 65 block
 ,reverse_order
 ,'         ["' 
- || process_block  || '","'
+ || relation_to_process  || '","'
  || field_name || '","'
  || content_stage_column_name || '","'
  || encryption_key_stage_column_name || '",'
@@ -226,9 +226,9 @@ select 65 block
  ||(case when reverse_order=1 then '' else ',' end)
 from (
 	select 
-	 rank () OVER (partition by pipeline_name order by process_block desc ,field_name desc, content_stage_column_name desc ) reverse_order
+	 rank () OVER (partition by pipeline_name order by relation_to_process desc ,field_name desc, content_stage_column_name desc ) reverse_order
 	,pipeline_name  
-	,process_block 
+	,relation_to_process 
 	,field_name  
 	,content_stage_column_name
 	,encryption_key_stage_column_name 

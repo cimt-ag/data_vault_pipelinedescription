@@ -1,0 +1,23 @@
+{
+	"dvpd_version":"0.6.0",
+	"stage_properties":[{"stage_schema":"stage_rvlt"}],
+	"pipeline_name":"hr_person",
+	"record_source_name_expression":"company.org.persons",
+	"data_extraction":{"fetch_module_name":"oracle_db_table_full", "source_system_name":"ora_company",
+										 "source_schema":"org_structure", "source_table":"persons"},
+	"data_vault_model":[
+		{"schema_name":"rvlt_company",
+		 "tables":[
+				 {"table_name":"person_hub","table_stereotype":"hub"},
+				 {"table_name":"person_sat","table_stereotype":"sat", "satellite_parent_table":"person_hub"}
+				 ]
+		}
+  ]
+	"fields":[
+		{"field_name":"company",  "field_type":"varchar(5)",  "targets":[{"table_name":"person_hub"}]},
+		{"field_name":"person_id","field_type":"varchar(10)", "targets":[{"table_name":"person_hub"}]},
+		{"field_name":"name",     "field_type":"varchar(250)","targets":[{"table_name":"person_sat"}]},
+		{"field_name":"job",      "field_type":"varchar(250)","targets":[{"table_name":"person_sat"}]}
+		],
+}
+

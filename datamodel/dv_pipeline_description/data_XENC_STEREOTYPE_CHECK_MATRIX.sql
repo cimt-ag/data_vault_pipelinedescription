@@ -23,6 +23,5 @@ INSERT INTO dv_pipeline_description.DVPD_STEREOTYPE_CHECK_MATRIX
 VALUES('xenc_hub-ek', 0, 0, 0, 0),
 	  ('xenc_lnk-ek', 0, 0, 0, 0),	
 	  ('xenc_sat-ek', 0, 0, 0, 0),	
-	  ('xenc_msat-ek', 0, 0, 0, 0),	
 	  ('xenc_ref-ek', 0, 0, 0, 0)
 	 ;
