@@ -1,6 +1,6 @@
 Data vault pipeline description compiler log 
 Compiler Version 0.6.0
-Compile time: 2023-11-05 18:05:07
+Compile time: 2023-12-08 11:57:53
 Compiling test20_simple_hub_sat.dvpd.json
 
 Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/test20_simple_hub_sat.dvpi.json
