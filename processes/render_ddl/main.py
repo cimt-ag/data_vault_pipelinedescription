@@ -232,13 +232,47 @@ def parse_json_to_ddl(filepath, ddl_render_path):
         hashkeys = []
         business_keys = []
         content = []
+        content_untracked = []
         for column in columns:
             col_name = column['stage_column_name']
-            col_type = column['column_type']
+            stage_column_class = column['stage_column_class']
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
-            match col_type:
-                case ''
-            column_statements.append("{} {} {}".format(col_name, col_type, nullable))
+            match stage_column_class:
+                case 'meta_load_date':
+                    meta_load_date_column = "{} {} {}".format(col_name, col_type, nullable)
+                case 'meta_load_process':
+                    meta_load_date_column = "{} {} {}".format(col_name, col_type, nullable)
+                case 'meta_load_process_id':
+                    meta_load_process_id_column = "{} {} {}".format(col_name, col_type, nullable) 
+                case 'meta_record_source':
+                    meta_record_source_column = "{} {} {}".format(col_name, col_type, nullable)
+                case 'meta_deletion_flag':
+                    meta_deletion_flag_column = "{} {} {}".format(col_name, col_type, nullable)
+                case 'hash':
+                    hashkeys.append("{} {} {}".format(col_name, col_type, nullable))
+                case 'data':
+                    column_classes = column['column_classes']
+                    if 'business_key' in column_classes or 'dependent_child_key' in column_classes:
+                        business_keys.append("{} {} {}".format(col_name, col_type, nullable))
+                    elif 'content_untracked' in column_classes:
+                        content_untracked.append("{} {} {}".format(col_name, col_type, nullable))
+                    elif 'content' in column_classes:
+                        content.append("{} {} {}".format(col_name, col_type, nullable))
+                    else:
+                        raise AssertionError(f"unexpected column class! {column_classes} are currently not supported!")
+            
+        # sort the arrays
+        hashkeys.sort()
+        business_keys.sort()
+        content.sort()
+        content_untracked.sort()
+        column_statements = [meta_load_date_column, meta_load_process_id_column, meta_record_source_column, meta_deletion_flag_column]
+        column_statements = [item for item in column_statements if item is not None] 
+        column_statements = ["--metadata"] + column_statements + ["--hash keys"] + hashkeys + ["--business keys"] + business_keys
+        if len(content_untracked) > 0:
+            column_statements += ["--content untracked"] + content_untracked
+        column_statements += ["--content"] + content
+
         column_statements = ',\n'.join(column_statements)
         ddl = f"-- DROP TABLE {full_name}\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
         ddl_statements.append(ddl)
