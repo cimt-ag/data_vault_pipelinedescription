@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
   "dvpi_version": "0.6.0",
-  "compile_timestamp": "2023-11-05 12:44:56",
+  "compile_timestamp": "2023-12-08 11:48:57",
   "dvpd_version": "0.6.0",
   "pipeline_name": "test55_large_feature_cover",
   "dvpd_filemame": "test55_large_feature_cover.dvpd.json",
@@ -2008,7 +2008,7 @@
           "is_nullable": true,
           "column_type": "Varchar(20)",
           "column_classes": [
-            "content"
+            "business_key"
           ]
         },
         {
@@ -2018,7 +2018,7 @@
           "is_nullable": true,
           "column_type": "Varchar(20)",
           "column_classes": [
-            "content"
+            "business_key"
           ]
         },
         {
@@ -2028,7 +2028,7 @@
           "is_nullable": true,
           "column_type": "Decimal(20,0)",
           "column_classes": [
-            "content"
+            "business_key"
           ]
         },
         {
@@ -2038,7 +2038,7 @@
           "is_nullable": true,
           "column_type": "Decimal(20,0)",
           "column_classes": [
-            "content"
+            "business_key"
           ]
         },
         {
@@ -2048,7 +2048,7 @@
           "is_nullable": true,
           "column_type": "Varchar(20)",
           "column_classes": [
-            "content"
+            "business_key"
           ]
         },
         {
@@ -2058,7 +2058,7 @@
           "is_nullable": true,
           "column_type": "Varchar(20)",
           "column_classes": [
-            "content"
+            "content_untracked"
           ]
         },
         {
@@ -2098,7 +2098,7 @@
           "is_nullable": true,
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
-            "content"
+            "content_untracked"
           ]
         },
         {
@@ -2128,7 +2128,7 @@
           "is_nullable": true,
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
-            "content"
+            "dependent_child_key"
           ]
         },
         {
@@ -2138,7 +2138,7 @@
           "is_nullable": true,
           "column_type": "Decimal(20,0)",
           "column_classes": [
-            "content"
+            "business_key"
           ]
         },
         {
@@ -2148,7 +2148,7 @@
           "is_nullable": true,
           "column_type": "Decimal(20,0)",
           "column_classes": [
-            "content"
+            "business_key"
           ]
         },
         {

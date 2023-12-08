@@ -1211,12 +1211,13 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
 
     # add all fields to
     for field_name,field_entry in g_field_dict.items():
+        column_classes = collect_column_classes_for_field(field_name)
         dvpi_stage_column_entry = {'stage_column_name':field_name,
                                    'stage_column_class':'data',
                                    'field_name':field_name,
                                    'is_nullable': True,
                                    'column_type':field_entry['field_type'],
-                                   'column_classes':['content'] } # later feature will collect list of classes
+                                   'column_classes':column_classes } # later feature will collect list of classes
         dvpi_stage_columns.append(dvpi_stage_column_entry)
 
     # final check for double stage column names
@@ -1231,6 +1232,18 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
 
     return dvpi_stage_columns
 
+def collect_column_classes_for_field(field_name):
+    column_classes=[]
+    for table_name,table_entry in g_table_dict.items():
+        if 'data_columns' not in table_entry:
+            continue
+        for column_name,data_column_entry in table_entry['data_columns'].items():
+            for field_mapping_entry in data_column_entry['field_mappings']:
+                if field_mapping_entry['field_name']==field_name:
+                    if data_column_entry['column_class'] not in column_classes:
+                        column_classes.append(data_column_entry['column_class'])
+
+    return column_classes
 
 def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
     dvpdc_report_directory = Path(dvpdc_report_path)
