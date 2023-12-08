@@ -271,7 +271,8 @@ def parse_json_to_ddl(filepath, ddl_render_path):
         column_statements = ["--metadata"] + column_statements + ["--hash keys"] + hashkeys + ["--business keys"] + business_keys
         if len(content_untracked) > 0:
             column_statements += ["--content untracked"] + content_untracked
-        column_statements += ["--content"] + content
+        if len(content) > 0:
+            column_statements += ["--content"] + content
 
         column_statements = ',\n'.join(column_statements)
         ddl = f"-- DROP TABLE {full_name}\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
