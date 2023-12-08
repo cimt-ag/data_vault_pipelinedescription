@@ -24,10 +24,10 @@ def get_missing_for_string_length(length:int = 13, must_be_fixed_length=False):
 
 def create_ghost_records(full_name, columns):
     null_record_column_class_map = {'meta_load_process_id': '0',
-                                    'meta_load_date': 'NOW()',
+                                    'meta_load_date': 'CURRENT_TIMESTAMP',
                                     'meta_record_source': "'SYSTEM'",
                                     'meta_deletion_flag': 'false',
-                                    'meta_load_enddate': 'lib.get_far_future_date()',
+                                    'meta_load_enddate': 'lib.far_future_date()',
                                     'key': 'lib.hash_key_for_delivered_null()',
                                     'parent_key': 'lib.hash_key_for_delivered_null()',
                                     'diff_hash': 'lib.hash_key_for_delivered_null()',
@@ -58,10 +58,10 @@ def create_ghost_records(full_name, columns):
                             }
 
     missing_record_column_class_map = {'meta_load_process_id': '0',
-                                    'meta_load_date': 'NOW()',
+                                    'meta_load_date': 'CURRENT_TIMESTAMP',
                                     'meta_record_source': "'SYSTEM'",
                                     'meta_deletion_flag': 'true',
-                                    'meta_load_enddate': 'lib.get_far_future_date()',
+                                    'meta_load_enddate': 'lib.far_future_date()',
                                     'key': 'lib.hash_key_for_missing()',
                                     'parent_key': 'lib.hash_key_for_missing()',
                                     'diff_hash': 'lib.hash_key_for_missing()',
@@ -118,10 +118,10 @@ def create_ghost_records(full_name, columns):
 
         values_for_missing.append(value_for_missing)
 
-    ddl_start = "INSERT INTO {} {{\n".format(full_name)
-    ddl_start += ',\n'.join(column_names) +'\n} VALUES {\n'
-    ddl_null = '-- Ghost Record for delivered NULL Data\n' + ddl_start + ',\n'.join(values_for_null) + '\n}'
-    ddl_missing = '-- Ghost Record for missing data due to business rule\n' + ddl_start + ',\n'.join(values_for_missing) + '\n}'
+    ddl_start = "INSERT INTO {} (\n".format(full_name)
+    ddl_start += ',\n'.join(column_names) +'\n) VALUES (\n'
+    ddl_null = '-- Ghost Record for delivered NULL Data\n' + ddl_start + ',\n'.join(values_for_null) + '\n);'
+    ddl_missing = '-- Ghost Record for missing data due to business rule\n' + ddl_start + ',\n'.join(values_for_missing) + '\n);'
 
     result = '\n\n' + ddl_null + '\n\n' + ddl_missing
     return result
@@ -225,11 +225,19 @@ def parse_json_to_ddl(filepath, ddl_render_path):
             # TODO: implement this case     
 
         columns = parse_set['stage_columns']
-        column_statements = []
+        meta_load_date_column = None
+        meta_load_process_id_column = None
+        meta_record_source_column = None
+        meta_deletion_flag_column = None
+        hashkeys = []
+        business_keys = []
+        content = []
         for column in columns:
             col_name = column['stage_column_name']
             col_type = column['column_type']
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
+            match col_type:
+                case ''
             column_statements.append("{} {} {}".format(col_name, col_type, nullable))
         column_statements = ',\n'.join(column_statements)
         ddl = f"-- DROP TABLE {full_name}\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
