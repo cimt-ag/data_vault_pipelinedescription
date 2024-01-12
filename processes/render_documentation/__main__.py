@@ -83,7 +83,7 @@ def create_documentation(pipeline_name, fields):
 
 def main():
     parser = argparse.ArgumentParser(description="Parse a JSON file")
-    parser.add_argument("file_path", help="Path to the JSON file to parse")
+    parser.add_argument("dvpd_file_path", help="Path to the JSON file to parse")
     args = parser.parse_args()
 
     (pipeline_name, fields) = parse_json_file(args.file_path)
