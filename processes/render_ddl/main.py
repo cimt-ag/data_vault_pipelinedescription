@@ -297,7 +297,7 @@ if __name__ == '__main__':
     # Ensuring the keys are read in a case_sensitive manner
     config.optionxform = str
     # Configuration File is hard-coded, as it should only be configured once - change according to your environment!
-    config.read("/home/joscha/data_vault_pipelinedescription/config/dvpdc.ini")
+    config.read("config/dvpdc.ini")
     ddl_render_path = Path(config.get('dvpi_render', 'ddl_render_path', fallback=None))
     
     parser = argparse.ArgumentParser(description='Process dvpi at the given location to render the ddl statmenets.')
