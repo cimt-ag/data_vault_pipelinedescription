@@ -268,7 +268,9 @@ def parse_json_to_ddl(filepath, ddl_render_path):
         content_untracked.sort()
         column_statements = [meta_load_date_column, meta_load_process_id_column, meta_record_source_column, meta_deletion_flag_column]
         column_statements = [item for item in column_statements if item is not None] 
-        column_statements = ["--metadata"] + column_statements + ["--hash keys"] + hashkeys + ["--business keys"] + business_keys
+        column_statements = ["--metadata"] + column_statements + ["--hash keys"] + hashkeys 
+        if len(business_keys) > 0:
+            column_statements += ["--business keys"] + business_keys
         if len(content_untracked) > 0:
             column_statements += ["--content untracked"] + content_untracked
         if len(content) > 0:
@@ -298,17 +300,17 @@ if __name__ == '__main__':
     config.optionxform = str
     # Configuration File is hard-coded, as it should only be configured once - change according to your environment!
     config.read("config/dvpdc.ini")
-    ddl_render_path = Path(config.get('dvpi_render', 'ddl_render_path', fallback=None))
+    ddl_render_path = Path(config.get('rendering', 'ddl_root_directory', fallback=None))
+    dvpi_default_directory = Path(config.get('dvpdc', 'dvpi_default_directory', fallback=None))
     
     parser = argparse.ArgumentParser(description='Process dvpi at the given location to render the ddl statmenets.')
      # Define the filepath argument, set a default, and provide a helpful description.
-    parser.add_argument('dvpi_path', nargs='?', default="/home/joscha/data_vault_pipelinedescription/testset_and_examples/reference/test20_simple_hub_sat.dvpi.json", help='Path to the file to process. Defaults to "/home/joscha/data_vault_pipelinedescription/testset_and_examples/reference/test20_simple_hub_sat.dvpi.json" if not provided.')
-    
+    parser.add_argument('dvpi_file_name', nargs='?', default="test20_simple_hub_sat.dvpi.json", help='Path to the file to process. Defaults to "/home/joscha/data_vault_pipelinedescription/testset_and_examples/reference/test20_simple_hub_sat.dvpi.json" if not provided.')
     args = parser.parse_args()
+    dvpi_file_path = dvpi_default_directory.joinpath(args.dvpi_file_name)
 
-    if args.dvpi_path == "/home/joscha/data_vault_pipelinedescription/testset_and_examples/reference/test20_simple_hub_sat.dvpi.json":
+    if dvpi_file_path == "/home/joscha/data_vault_pipelinedescription/testset_and_examples/reference/test20_simple_hub_sat.dvpi.json":
         print("Warning: No filepath provided. Using default filepath.")
     
-    filepath = ""
-    ddl_output = parse_json_to_ddl(args.dvpi_path, ddl_render_path)
+    ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path)
     print(ddl_output)

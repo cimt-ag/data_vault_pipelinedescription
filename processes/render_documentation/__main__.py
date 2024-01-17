@@ -1,5 +1,7 @@
 import argparse
 import json
+from pathlib import Path
+from lib.configuration import configuration_load_ini
 
 def parse_json_file(file_path):
     try:
@@ -83,14 +85,19 @@ def create_documentation(pipeline_name, fields):
 
 def main():
     parser = argparse.ArgumentParser(description="Parse a JSON file")
-    parser.add_argument("dvpd_file_path", help="Path to the JSON file to parse")
+    parser.add_argument("dvpd_file_name", help="Path to the JSON file to parse")
     args = parser.parse_args()
+    dvpd_filename = args.dvpd_file_name
 
-    (pipeline_name, fields) = parse_json_file(args.file_path)
+    params = configuration_load_ini('dvpdc.ini', 'rendering',['dvpd_default_directory','documentation_directory'])
+    dvpd_file_path = Path(params['dvpd_default_directory']).joinpath(dvpd_filename)
+
+    (pipeline_name, fields) = parse_json_file(dvpd_file_path)
     if isinstance(fields, (dict, list)):
         html = create_documentation(pipeline_name,fields)
         print(html)
-        with open(f"processes/render_documentation/{pipeline_name}.html", "w") as file:
+        out_file_Path = Path(params['documentation_directory']).joinpath(f'{pipeline_name}.html')
+        with open(out_file_Path, "w") as file:
             file.write(html)
     else:
         print(fields)
