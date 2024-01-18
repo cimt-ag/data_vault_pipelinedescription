@@ -236,6 +236,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
         for column in columns:
             col_name = column['stage_column_name']
             stage_column_class = column['stage_column_class']
+            col_type=column['column_type']
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
             match stage_column_class:
                 case 'meta_load_date':
