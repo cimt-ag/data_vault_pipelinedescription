@@ -182,7 +182,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
             column_statements.append("{} {} {}".format(col_name, col_type, nullable))
         column_statements = ',\n'.join(column_statements)
-        ddl = f"-- DROP TABLE {full_name}\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+        ddl = f"-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
         
         ddl += create_ghost_records(full_name, columns)
         ddl_statements.append(ddl)
@@ -278,7 +278,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
             column_statements += ["--content"] + content
 
         column_statements = ',\n'.join(column_statements)
-        ddl = f"-- DROP TABLE {full_name}\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+        ddl = f"-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
         ddl_statements.append(ddl)
 
         # create schema dir if not  exists
