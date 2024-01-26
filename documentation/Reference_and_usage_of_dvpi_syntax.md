@@ -393,7 +393,7 @@ executing module and must be well documented by it.
 
 **field_target_table**
 <br>Name of the table,  this field is mapped to and causes the participation of the field in the hash. (e.g. name of the hub table when participating as business key of the hub). 
-This should be used to arrage a table name specific order when assembling link keys.
+This should be used to arrange a table name specific order when assembling link keys.
 
 **field_target_column**
 <br>Name of the column,  this field the field is mapped to in the target table. 
