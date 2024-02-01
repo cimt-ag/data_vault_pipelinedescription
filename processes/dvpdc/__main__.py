@@ -19,6 +19,15 @@
 import argparse
 import copy
 import os
+import sys
+
+# Include data_vault_pipelinedescription folder into sys.path. -- needed for lib modules --
+script_dir = os.path.dirname(os.path.realpath("__main__.py"))
+parent_dir = os.path.dirname(script_dir)
+grandparent_dir = os.path.dirname(parent_dir)
+
+sys.path.insert(0,grandparent_dir)
+
 import re
 from pathlib import Path
 from lib.configuration import configuration_load_ini
@@ -1445,7 +1454,14 @@ def dvpdc_worker(dvpd_filename,dvpi_filename=None):
 
 ########################################################################################################################
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    description_for_terminal = "Cimt AG reccommends to follow the instruction before starting the script. If you run your script from command line, it should look" \
+                               " like this: python __main__.py inputFile"
+    usage_for_terminal = "Type: python __main__.py --h for further instruction"
+
+    parser = argparse.ArgumentParser(
+        description=description_for_terminal,
+        usage= usage_for_terminal
+    )
     parser.add_argument("dvpd_filename", help="Name of the dvpd file to compile")
     parser.add_argument("--dvpi",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
     #parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
