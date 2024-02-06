@@ -201,6 +201,7 @@ if __name__ == "__main__":
                      'test22_one_link_one_esat.dvpd.json',
                      'test23_one_link_with_one_satellite.dvpd.json',
                      'test24_one_satellite_on_linked_hub.dvpd.json',
+                     'test25_one_link_one_esat_three_hubs.dvpd.json',
                      'test55_large_feature_cover.dvpd.json'
                      ]
     successful_file_list=[]
