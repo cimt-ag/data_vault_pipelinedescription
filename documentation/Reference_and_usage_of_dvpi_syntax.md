@@ -429,6 +429,9 @@ Multiple entries for the same target differ in the mapping of fields and hashes 
 <br>List of the mappings of all fields to the table columns.
 <br>→ see "data_mappings[]"
 
+**deletion_detection_rules[]**
+<br>→ deletion_detection_rules[]
+
 ### hash_mappings[]
 Json Path: $.parse_sets[].load_operations[]
 
@@ -462,6 +465,36 @@ Json Path: $.parse_sets[].load_operations[]
 
 **stage_column_name**
 <br>Name of the stage column, the data must be taken from, when using the stage table approach.
+
+### deletion_detection_rules[]
+Contains all deletion detection rules, that have to be applied to the table of this load operation.
+
+**procedure**
+<br>declares deletion detection procedure for this rule. Suggested valid values are:
+- "key_comparison" : Retrieve all (or a partition of) keys from the source, compare vault to the keys and create & stage deletion records for keys, that are not present anymore
+- "deletion_event_transformation" : Convert explicit deletion event messages into a deletion record that is staged
+- "stage_comparison" : The data retrieved and staged includes a complete set or partitions of the complete set. By comparing the whole vault against the stage, deletion records are created during the load from stage to the vault
+- "driving_key" : Apply the driving key deletion for the declared satellites
+- (more procedure names might be available in the actual load process implementation)
+
+**rule_comment**
+(optional)
+*defines: documentation*
+<br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
+<br>*“All satellites of customer”*
+
+##### deletion_rule properties for procedure "driving_key"
+**driving_keys[]**
+(mandatory)
+List of the hub keys, that identify the driving objects  = Objects, where we have the complete relation data, expressed by the
+parent link, in the currently staged dataset
+
+##### properties for other procedure 
+Please check out the definition in the dvpd specification for the following key words
+- key_fields[]
+- partitioning_fields[]
+- join_path[]
+- active_keys_of_partition_sql
 
 
 ### stage_columns[]

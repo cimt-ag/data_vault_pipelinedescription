@@ -120,7 +120,7 @@ The Data Vault modelling and loading methof drive the major requirements about t
 - Reference tables might contain
     - **Load End date**: To provide the Load date of the replacing record during historization. This reduces query times when determining the valid version for a given point in time 
 	- **diff hash**: Hash value of all columns in the reference table, to determine if incoming data has to be inserted or is already loaded
-- The loading of a link Satellite might need the declaration of **driving keys**. This is needed in the (common) case, where a data source contains relation data between objects (known as foreign keys). A change of the related object is represented as a new foreing key value in the source. This will result in a new link row. Satellites on the link represent the validity of a relation over time and will also get a new row for that relation. Additionalliy a second row, representing the end of the old relation, must be inserted into the satellite. The **drivnig keys**  instruct the load process for the sattelites, how to determine the object that has changed its relation and insert a proper row.
+- The loading of a link Satellite might need the declaration of a **driving key** deletion rule. This is needed in the (common) case, where a data source contains relation data between objects (known as foreign keys). A change of the related object is represented as a new foreing key value in the source. This will result in a new link row. Satellites on the link represent the validity of a relation over time and will also get a new row for that relation. Additionalliy a second row, representing the end of the old relation, must be inserted into the satellite. The **drivnig keys** declare, how to determine the object that has changed its relation and delete obsolete relations.
  
 *Annotation(1) about Load_Date: There are neverending discussions in the data vault community, how to interpret this sentence from Dan Linstedt. It is up to the implementation of the loading process, to decide what time is stored here. DVPD will have no influence on this.*
 
@@ -164,10 +164,11 @@ Detecting the deletion of data in the source, is often not as straight foreward 
 intuitive as getting new and changed records. Mostly, a deletion is not communicated by the source at all and needs some extra processing depending on the method, that can be applied on the specific source. 
 
 Due to the high number of possible models and methods, not every theoretically possible kind of deletion detection can be described by a general set of parameters. DVPD core syntax focuses on the most common patterns. More patterns can be added through the extendability. 
-The following **common patterns must be supported**
-- Receiving an explicit "deletion indication for an object" from the source   &rarr; creating deletion stage records for the deleted key
-- Comparing full or partitioned lists of existing business keys between source and vault &rarr; creating deletion stage records for now missing keys
-- Retreiving and staging the full or partitioned dataset &rarr; creating deletion records by comparing stage with vault
+The following common patterns must be supported
+- Receiving an **explicit "deletion indication** for an object" from the source   &rarr; creating deletion stage records for the deleted key
+- **Comparing full or partitioned lists of** existing **business keys** between source and vault &rarr; creating deletion stage records for now missing keys
+- Retreiving and staging the **full or partitioned dataset** &rarr; creating deletion records by comparing stage with vault
+- **driving keys** are a specific partitioned deletion for satellites at links, where the drivng hub keys in the link define the partition  
 
 The term "partitioned" in this context means, that only an identifiable part of the full dataset is delivered completely and can be compared. The relevant partition is identified by content in one or more fields of the source (e.g. "All contracts of a single company", "all revenues of a specific month"). These columns might not be located in the same table in the data vault model (see [Deletion Detection Catalog](./deletion_detection_catalog.md) for more insight ). The procedure of a partitioned deletion detection for a satellite works as follows:
 - collect all keys in the satellite of active records that belong to the staged partition
@@ -234,7 +235,16 @@ For staging and mapping, the incoming data must be split up in data rows with a 
 Every field must be mapped to one or more tables in the data vault model. This will result in equivalent columns in the target tables. Name and type of the target column might be changed by additional declarations. The participation and ordering of the field in key hashes and diff hashes can be adjusted. When multiple fields map to the same target table and column, there are multiple relations to the same object in the model. These relations must be declared explicitly (see "declaration of relations" in the chapter "Design decisions" for the full concept).
 
 ## Definition of deletion detection processing
-The methods to detect deleted entities in the source depends on the increment pattern. All methods relying on special retrieval and parsing of source data will need special implementations. Parameters for this depend on the execution module. For cases, where the deletion detecion can be applied by cross checking the currently staged data against the data vault content, a generic approach and set of parameters will be provided.
+Deletion detection, identifies the removal of data from the source. From data vault perspective, 
+this also includes the change of relations, since it results in an insertion and a removal of relations by follwing
+the **driving key** procedure.
+
+Aside from the driving key procedure, that can always be solved with the staged data, the methods to detect deleted 
+entities in the source depends on the increment pattern. 
+All methods relying on special retrieval and parsing of source data will need special implementations. 
+Parameters for this depend on the execution module. For cases, where the deletion detecion can 
+be applied by cross checking the currently staged data against the data vault content, 
+a generic approach and set of parameters will be provided.
 
 # Design principle
 - It is **not** the purpose of DVPD to **enforce** Data Vault standard **but** to **support** all identified varieties of it. 

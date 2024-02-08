@@ -475,7 +475,7 @@ When set to true, existence of a specific value combination  in the source is de
 
 
 
-## deletion_detection 
+## deletion_detection_rules[] 
 
 Json Path: /
 
@@ -484,10 +484,34 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 **procedure**
 (mandatory)
 *defines: loading procedure*
-<br>provides the selection from different kind of procedures. Suggested valid values are:
+<br>declares deletion detection procedure for this rule. Suggested valid values are:
 - "key_comparison" : Retrieve all (or a partition of) keys from the source, compare vault to the keys and create & stage deletion records for keys, that are not present anymore
 - "deletion_event_transformation" : Convert explicit deletion event messages into a deletion record that is staged
 - "stage_comparison" : The data retrieved and staged includes a complete set or partitions of the complete set. By comparing the whole vault against the stage, deletion records are created during the load from stage to the vault
+- "driving_key" : Apply the driving key deletion for the declared satellites
+- (more procedure names might be available in the actual load process implementation)
+
+**tables_to_cleanup[]**
+(mandatory, only declared table names allowed)
+*defines: loading procedure*
+<br>List of table names, on which to apply the deletion detection rule. Multiple entries are only allowed for satellites of the same parent.
+<br>For the "driving_key" rule, the satellites must all have the same link as parent. 
+<br>“rsfdl_customer_p1_sat”,”rsfdl_customer_p2_sat”
+
+**rule_comment**
+(optional)
+*defines: documentation*
+<br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
+<br>*“All satellites of customer”*
+
+##### deletion_rule properties for procedure "driving_key"
+
+**driving_keys[]**
+(mandatory)
+List of the hub keys, that identify the driving objects  = Objects, where we have the complete relation data, expressed by the
+parent link, in the currently staged dataset
+
+##### deletion_rule properties for procedure "key_comparison"
 
 **key_fields[]**
 (mandatory for "key_comparison", valid fields must be declared in fields[]. The fields must be mapped to business keys of a parent of the satellite)
@@ -499,28 +523,12 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 *defines: loading procedure*
 <br>Names of the fields, which identify fully delivered datasets (partitions) in the current load. If set, the deletion detection wil be restricted to these partitions.
 
-**deletion_rules[]**
-(mandatory)
-<br>List of deletion rules. The order of the the rules in this array must be obeyed.
+##### deletion_rule properties for procedure "stage_comparison"
 
-→ deletion_rules[] 
-
-**> procedure specific properties <**
-For other procedures there might be other properties necessary. 
-
-#### deletion_rules[]
-
-**rule_comment**
+**partitioning_fields[]**
 (optional)
-*defines: documentation*
-<br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
-<br>*“All satellites of customer”*
-
-**tables_to_cleanup[]**
-(mandatory, only declared table names allowed)
 *defines: loading procedure*
-<br>List of table names, on which to apply the deletion detection rule. Multiple entries are only allowed for satellites of the same parent. 
-<br>“rsfdl_customer_p1_sat”,”rsfdl_customer_p2_sat”
+<br>Names of the fields, which identify fully delivered datasets (partitions) in the current load. If set, the deletion detection wil be restricted to these partitions.
 
 **join_path[]**
 (optional, must contain all tables needed to be joined to reach the partitioning columns)
@@ -528,8 +536,6 @@ For other procedures there might be other properties necessary.
 <br>Describes the join path in the model, to get from the tables to delete, to the tables with partitioning fields. The path begins with the parent table of all listed satellites to delete. The path must not branch except when adding satellites to provide partitioning columns or restrict the validity of links. The path can skip unnecessary tables (e.g. hubs, whose business keys are not a partition criteria).
 
 An empty join path means that the partitioning columns are all in the table to cleanup. It can't be set, when there are no partitioning_fields.
-
-
 
 Example:
 ```

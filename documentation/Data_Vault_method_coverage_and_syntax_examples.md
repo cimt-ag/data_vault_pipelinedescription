@@ -670,7 +670,7 @@ In case the extract date differs significantly from the loading date, it must be
 ```
 
 ### Satellite on a link, with a driving key declaration {DV-4.5.5}
-This data source is a table with the order, referencing the product of the order. Should the product of the order be modified, the former product of the order must be "unlinked". Data Vault indicates this toe the load operation by declaring driving keys, that must be used for ending former relations. Driving keys are the hub key columns of the parent link of the satellite.
+This data source is a table with the order, referencing the product of the order. Should the order change to another product, the former product of the order must be "unlinked". Data Vault indicates this to the load operation by declaring driving keys, that must be used for ending former relations. Driving keys are the hub key columns of the parent link of the satellite.
 ```json
 "fields": [
 		    {	"field_name": "ORDER_ID",
@@ -694,7 +694,6 @@ This data source is a table with the order, referencing the product of the order
 			{	"table_name": "order_product_sale_sat",
 				"table_stereotype": "sat",
 				"satellite_parent_table": "order_product_link",
-				"driving_keys": ["HK_ORDER"],
 				"diff_hash_column_name": "DIFF_ORDER_PRODUCT_SALES_SAT"
 			},
 			{	"table_name": "order_product_link",
@@ -709,7 +708,14 @@ This data source is a table with the order, referencing the product of the order
 				"table_stereotype": "hub",
 				"hub_key_column_name": "HK_PRODUCT"
 			}
-		]
+		],
+
+"deletion_detection_rules": {
+			"procedure":"driving_key",
+            "tables_to_cleanup":["order_product_sale_sat"],
+            "driving_keys":["HK_ORDER"]
+			]
+		}	
 ```
 
 
@@ -826,7 +832,6 @@ In this classical example an order as a reletion to a produdt. Should the order 
 			 {	"table_name": "order_product_sale_esat",
 			 	"table_stereotype": "sat",
 				"satellite_parent_table": "order_product_link",
-				"driving_keys": ["HK_ORDER"]
 			},
 			
 			{	"table_name": "order_product_link",
@@ -843,6 +848,13 @@ In this classical example an order as a reletion to a produdt. Should the order 
 				"hub_key_column_name": "HK_PRODUCT"
 			}
 		]
+"deletion_detection_rules": {
+			"procedure":"driving_key",
+            "tables_to_cleanup":["order_product_sale_esat"],
+            "driving_keys":["HK_ORDER"]
+			]
+		}	
+
 ```
 Notes:<br>
 An effectivity satellite is a sattellite on a link without any field mappings. The compiler will detect this and provide this observation in the is_effectivity_sat as a table property in the DVPI.
@@ -868,7 +880,6 @@ This kind of date information is called membership data and for quiering the dat
 			{	"table_name": "loyaltyprogram_customer_mbsat",
 				"table_stereotype": "sat",
 				"satellite_parent_table": "loyaltyprogram_customer_link",
-				"driving_keys": ["HK_CUSTOMER"],
 				"membership_end_columns":	[
 						{"column_name":"END_DATE",
 						 "membership_start_column":"START_DATE"}]
@@ -887,6 +898,13 @@ This kind of date information is called membership data and for quiering the dat
 				"hub_key_column_name": "HK_LOALTYPROGRAM"
 			}
 		]
+
+"deletion_detection_rules": {
+			"procedure":"driving_key",
+            "tables_to_cleanup":["loyaltyprogram_customer_mbsat"],
+            "driving_keys":["HK_CUSTOMER"]
+			]
+		}	
 ```
 Note:<br>
 (this syntax is not supported by the compiler yet)<br>
