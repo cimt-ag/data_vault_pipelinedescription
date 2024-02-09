@@ -4,7 +4,7 @@ DVPI is the resultset created from the compiler by transforming the a dvpd. It i
 In this document you find a brief guideline on how to use DVPI content in your loading processes and a full syntax reference based on the core DVPD syntax.
 
 # Usage guideline
-DVPI is designed to support the multiple steps of loading a source object into a data vault model. The following steps are normally needed for the loading:
+DVPI is designed to support the steps of loading a source object into a data vault model. The following steps are normally needed for the loading:
 - deploy the target database tables (might be done by the first run of the job or in sync with the deployment of the job artifact)
 - contact the source system and determine the increment
 - fetch the data increment from the source system
@@ -83,11 +83,13 @@ This only applies, when using the stage+target approach.
 - in the current parse set, iterate over load_operations[] list
     - retrieve table stereotype and properties by looking up the table name in the tables[] list.
 	- execute the loading steps for the table stereotype
-	- the data mapping must be read from the "hash_mappings[]" and "data_mappings[]" lists
-	    - copy data from the stage column "stage_column_name" to the target column "column_name"
-	    - use the column_class to identify columns, that have special meanings in the loading (business keys, diff hash, etc)
-	- iterate over all meta fields from the tables columns[] list and provide necessary data accordingly
-
+        - iterate over all meta fields from the tables columns[] list and provide necessary values accordingly
+        - the data mapping must be read from the "hash_mappings[]" and "data_mappings[]" lists
+            - copy data from the stage column "stage_column_name" to the target column "column_name"
+            - use the column_class to identify columns, that have special meanings in the loading (business keys, diff hash, etc)
+        - for satellites
+            - follow driving key directive
+          	- follow deletion detection rule	
 
 ### load data from Ods to the target tables in all possible combinations
 This only applies, when using the ods+target approach.
@@ -101,6 +103,9 @@ This only applies, when using the ods+target approach.
 		- store the value in the column "column_name"
     - use the column_class to identify columns, that have special meanings in the loading (business keys, untracked)
 	- iterate over all meta fields from the table columns[] list and provide necessary data accordingly
+    - for satellites
+        - follow driving key directive
+        - follow deletion detection rule	
 
 ### load data directly from source to the target table
 - in the current parse set, iterate over load_operations[] list
@@ -115,6 +120,9 @@ This only applies, when using the ods+target approach.
 		- store the value in the column "column_name"
     - use the column_class to identify columns, that have special meanings in the loading (business keys, untracked)
 	- iterate over all meta fields from the tables columns[] list and provide necessary data accordingly
+    - for satellites
+        - follow driving key directive
+        - follow deletion detection rule	
 
 
 # Syntax Reference
@@ -393,7 +401,7 @@ executing module and must be well documented by it.
 
 **field_target_table**
 <br>Name of the table,  this field is mapped to and causes the participation of the field in the hash. (e.g. name of the hub table when participating as business key of the hub). 
-This should be used to arrage a table name specific order when assembling link keys.
+This should be used to arrange a table name specific order when assembling link keys.
 
 **field_target_column**
 <br>Name of the column,  this field the field is mapped to in the target table. 
@@ -429,6 +437,17 @@ Multiple entries for the same target differ in the mapping of fields and hashes 
 <br>List of the mappings of all fields to the table columns.
 <br>→ see "data_mappings[]"
 
+**deletion_detection_rules[]**
+(optional)
+<br>→ deletion_detection_rules[]
+
+**driving_keys[]**
+(optional)
+<br>*will be implemented in 0.6.1*
+<br>List of the hub keys in the link, that identify the driving objects  = Objects, where the complete relation 
+data, expressed by the parent link, is in the currently staged dataset
+<br>Wihtout this declaration, no driving key logic should be applied.
+
 ### hash_mappings[]
 Json Path: $.parse_sets[].load_operations[]
 
@@ -462,6 +481,30 @@ Json Path: $.parse_sets[].load_operations[]
 
 **stage_column_name**
 <br>Name of the stage column, the data must be taken from, when using the stage table approach.
+
+
+### deletion_detection_rules[]
+Contains all deletion detection rules, that have to be applied to the table of this load operation.
+
+**procedure**
+<br>declares deletion detection procedure for this rule. Suggested valid values are:
+- "key_comparison" : Retrieve all (or a partition of) keys from the source, compare vault to the keys and create & stage deletion records for keys, that are not present anymore
+- "deletion_event_transformation" : Convert explicit deletion event messages into a deletion record that is staged
+- "stage_comparison" : The data retrieved and staged includes a complete set or partitions of the complete set. By comparing the whole vault against the stage, deletion records are created during the load from stage to the vault
+- (more procedure names might be available in the actual load process implementation)
+
+**rule_comment**
+(optional)
+*defines: documentation*
+<br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
+<br>*“All satellites of customer”*
+
+##### properties for other procedure 
+Please check out the definition in the dvpd specification for the following key words
+- key_fields[]
+- partitioning_fields[]
+- join_path[]
+- active_keys_of_partition_sql
 
 
 ### stage_columns[]
