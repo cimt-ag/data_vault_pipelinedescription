@@ -473,8 +473,6 @@ When set to true, existence of a specific value combination  in the source is de
 <br> defines a maximum depth of history in the reference table in days . No declaration or nagative values are treated as "no limit". When the table is loaded, all rows, that are beyond the given threshhold, are deleted. 
 <br>(in reference tables, the row can only age "on their own", they have no "key" to measure a version count)
 
-
-
 ## deletion_detection_rules[] 
 
 Json Path: /
@@ -488,14 +486,12 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 - "key_comparison" : Retrieve all (or a partition of) keys from the source, compare vault to the keys and create & stage deletion records for keys, that are not present anymore
 - "deletion_event_transformation" : Convert explicit deletion event messages into a deletion record that is staged
 - "stage_comparison" : The data retrieved and staged includes a complete set or partitions of the complete set. By comparing the whole vault against the stage, deletion records are created during the load from stage to the vault
-- "driving_key" : Apply the driving key deletion for the declared satellites
 - (more procedure names might be available in the actual load process implementation)
 
 **tables_to_cleanup[]**
 (mandatory, only declared table names allowed)
 *defines: loading procedure*
 <br>List of table names, on which to apply the deletion detection rule. Multiple entries are only allowed for satellites of the same parent.
-<br>For the "driving_key" rule, the satellites must all have the same link as parent. 
 <br>“rsfdl_customer_p1_sat”,”rsfdl_customer_p2_sat”
 
 **rule_comment**
@@ -503,13 +499,6 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 *defines: documentation*
 <br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
 <br>*“All satellites of customer”*
-
-##### deletion_rule properties for procedure "driving_key"
-
-**driving_keys[]**
-(mandatory)
-List of the hub keys, that identify the driving objects  = Objects, where we have the complete relation data, expressed by the
-parent link, in the currently staged dataset
 
 ##### deletion_rule properties for procedure "key_comparison"
 
