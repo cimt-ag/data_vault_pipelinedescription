@@ -177,6 +177,13 @@ The main purpose of the tables section, is to provide all structural information
 **storage_component**
 <br>Identification of the storage component. Valid values depend on the system architecture and may control retrieval of connection parameters and use of platform technology specific SQL Dialect, and loading procedures.
 
+**driving_keys[]**
+(optional, and only set when needed on satellites of links)
+<br>*will be implemented in 0.6.1*
+<br>List of the hub keys in the parent link of the satellite, that identify the driving objects  = Objects, where the complete relation 
+data, expressed by the parent link, is in the currently staged dataset
+<br>Without this declaration, no driving key logic should be applied.
+
 **has_deletion_flag**
 <br>Triggers a loading procedure to manage a deletion flag, when processing deletion data
 
@@ -320,6 +327,25 @@ Provides all necessary declarations how to parse every field from the source dat
 **field_position**
 <br>This is the position of the field in the DVDP field list. It might be relevant for the parsing (e.g. when field order in DVPD represents the order of CSV columns).
 
+**field_value**
+<br>*Will be added in release 0.6.2*
+<br>Allows the declaration of a constant value or a placeholder, that inject data from, that is not directly in the dataset.
+Valid settings depend on the generator/execution module. 
+General syntax for data placeholder is "${<name of placeholder}". The following placeholders are expected to be available:
+- <value> - this value will be taken as field value
+- ${CURRENT_TIMESTAMP} - Timestamp of the current load process
+- ${ROW_NUMBER_OVER_BUSINESSKEY(list of business keys)} - The numerical position of the row in the defined business key  
+- ${ROW_NUMBER_OVER_KEY(data vaut key)} - The numerical position of the row in the declared data vault key (e.g. the hub key) 
+- ${ROW_NUMBER} - The numerical position of the row in source data delivery 
+
+Examples for custom placeholders:
+- ${DATE_FROM_FILENAME} - parse the name of the processed filename
+- ${COMPANY_NAME_FROM_CALL_PARAMETER} - Get the company code from the call parameter
+
+Be aware: This property can be missused to provide cleansing and transformation functions. It is recommended 
+not to do so. It's purpose should be restricted to insert data from the execution environment into the dataset. Every kind of cleansing and 
+transformation of the source data, should be done before the staging.
+
 **\<more properties to come>**
 
 
@@ -374,6 +400,9 @@ identify all rows for the same multi row diff hash
 **hash_null_value_string**
 <br>String to be used for the data value NULL (Unknown) when concatenating the field data.
 (This is copied from the model profile, that has to be used for the hash containing table)
+
+**row_order_direction**
+<br>order direction to be used, when assembling data into a group hash. Will be set for multi active satellites.
 
 **model_profile_name**
 <br>This is just for documentation and tracing of the DVPD result and should not be used in any kind of processing of the DVPI.
@@ -441,12 +470,7 @@ Multiple entries for the same target differ in the mapping of fields and hashes 
 (optional)
 <br>→ deletion_detection_rules[]
 
-**driving_keys[]**
-(optional)
-<br>*will be implemented in 0.6.1*
-<br>List of the hub keys in the link, that identify the driving objects  = Objects, where the complete relation 
-data, expressed by the parent link, is in the currently staged dataset
-<br>Wihtout this declaration, no driving key logic should be applied.
+
 
 ### hash_mappings[]
 Json Path: $.parse_sets[].load_operations[]
