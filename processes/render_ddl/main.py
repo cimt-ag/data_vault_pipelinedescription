@@ -24,10 +24,10 @@ def get_missing_for_string_length(length:int = 13, must_be_fixed_length=False):
 
 def create_ghost_records(full_name, columns):
     null_record_column_class_map = {'meta_load_process_id': '0',
-                                    'meta_load_date': 'NOW()',
+                                    'meta_load_date': 'CURRENT_TIMESTAMP',
                                     'meta_record_source': "'SYSTEM'",
                                     'meta_deletion_flag': 'false',
-                                    'meta_load_enddate': 'lib.get_far_future_date()',
+                                    'meta_load_enddate': 'lib.far_future_date()',
                                     'key': 'lib.hash_key_for_delivered_null()',
                                     'parent_key': 'lib.hash_key_for_delivered_null()',
                                     'diff_hash': 'lib.hash_key_for_delivered_null()',
@@ -58,10 +58,10 @@ def create_ghost_records(full_name, columns):
                             }
 
     missing_record_column_class_map = {'meta_load_process_id': '0',
-                                    'meta_load_date': 'NOW()',
+                                    'meta_load_date': 'CURRENT_TIMESTAMP',
                                     'meta_record_source': "'SYSTEM'",
                                     'meta_deletion_flag': 'true',
-                                    'meta_load_enddate': 'lib.get_far_future_date()',
+                                    'meta_load_enddate': 'lib.far_future_date()',
                                     'key': 'lib.hash_key_for_missing()',
                                     'parent_key': 'lib.hash_key_for_missing()',
                                     'diff_hash': 'lib.hash_key_for_missing()',
@@ -118,10 +118,10 @@ def create_ghost_records(full_name, columns):
 
         values_for_missing.append(value_for_missing)
 
-    ddl_start = "INSERT INTO {} {{\n".format(full_name)
-    ddl_start += ',\n'.join(column_names) +'\n} VALUES {\n'
-    ddl_null = '-- Ghost Record for delivered NULL Data\n' + ddl_start + ',\n'.join(values_for_null) + '\n}'
-    ddl_missing = '-- Ghost Record for missing data due to business rule\n' + ddl_start + ',\n'.join(values_for_missing) + '\n}'
+    ddl_start = "INSERT INTO {} (\n".format(full_name)
+    ddl_start += ',\n'.join(column_names) +'\n) VALUES (\n'
+    ddl_null = '-- Ghost Record for delivered NULL Data\n' + ddl_start + ',\n'.join(values_for_null) + '\n);'
+    ddl_missing = '-- Ghost Record for missing data due to business rule\n' + ddl_start + ',\n'.join(values_for_missing) + '\n);'
 
     result = '\n\n' + ddl_null + '\n\n' + ddl_missing
     return result
@@ -182,7 +182,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
             column_statements.append("{} {} {}".format(col_name, col_type, nullable))
         column_statements = ',\n'.join(column_statements)
-        ddl = f"-- DROP TABLE {full_name}\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+        ddl = f"-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
         
         ddl += create_ghost_records(full_name, columns)
         ddl_statements.append(ddl)
@@ -225,14 +225,60 @@ def parse_json_to_ddl(filepath, ddl_render_path):
             # TODO: implement this case     
 
         columns = parse_set['stage_columns']
-        column_statements = []
+        meta_load_date_column = None
+        meta_load_process_id_column = None
+        meta_record_source_column = None
+        meta_deletion_flag_column = None
+        hashkeys = []
+        business_keys = []
+        content = []
+        content_untracked = []
         for column in columns:
             col_name = column['stage_column_name']
-            col_type = column['column_type']
+            stage_column_class = column['stage_column_class']
+            col_type=column['column_type']
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
-            column_statements.append("{} {} {}".format(col_name, col_type, nullable))
+            match stage_column_class:
+                case 'meta_load_date':
+                    meta_load_date_column = "{} {} {}".format(col_name, col_type, nullable)
+                case 'meta_load_process':
+                    meta_load_date_column = "{} {} {}".format(col_name, col_type, nullable)
+                case 'meta_load_process_id':
+                    meta_load_process_id_column = "{} {} {}".format(col_name, col_type, nullable) 
+                case 'meta_record_source':
+                    meta_record_source_column = "{} {} {}".format(col_name, col_type, nullable)
+                case 'meta_deletion_flag':
+                    meta_deletion_flag_column = "{} {} {}".format(col_name, col_type, nullable)
+                case 'hash':
+                    hashkeys.append("{} {} {}".format(col_name, col_type, nullable))
+                case 'data':
+                    column_classes = column['column_classes']
+                    if 'business_key' in column_classes or 'dependent_child_key' in column_classes:
+                        business_keys.append("{} {} {}".format(col_name, col_type, nullable))
+                    elif 'content_untracked' in column_classes:
+                        content_untracked.append("{} {} {}".format(col_name, col_type, nullable))
+                    elif 'content' in column_classes:
+                        content.append("{} {} {}".format(col_name, col_type, nullable))
+                    else:
+                        raise AssertionError(f"unexpected column class! {column_classes} are currently not supported!")
+            
+        # sort the arrays
+        hashkeys.sort()
+        business_keys.sort()
+        content.sort()
+        content_untracked.sort()
+        column_statements = [meta_load_date_column, meta_load_process_id_column, meta_record_source_column, meta_deletion_flag_column]
+        column_statements = [item for item in column_statements if item is not None] 
+        column_statements = ["--metadata"] + column_statements + ["--hash keys"] + hashkeys 
+        if len(business_keys) > 0:
+            column_statements += ["--business keys"] + business_keys
+        if len(content_untracked) > 0:
+            column_statements += ["--content untracked"] + content_untracked
+        if len(content) > 0:
+            column_statements += ["--content"] + content
+
         column_statements = ',\n'.join(column_statements)
-        ddl = f"-- DROP TABLE {full_name}\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+        ddl = f"-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
         ddl_statements.append(ddl)
 
         # create schema dir if not  exists
@@ -254,18 +300,18 @@ if __name__ == '__main__':
     # Ensuring the keys are read in a case_sensitive manner
     config.optionxform = str
     # Configuration File is hard-coded, as it should only be configured once - change according to your environment!
-    config.read("/home/joscha/data_vault_pipelinedescription/config/dvpdc.ini")
-    ddl_render_path = Path(config.get('dvpi_render', 'ddl_render_path', fallback=None))
+    config.read("config/dvpdc.ini")
+    ddl_render_path = Path(config.get('rendering', 'ddl_root_directory', fallback=None))
+    dvpi_default_directory = Path(config.get('dvpdc', 'dvpi_default_directory', fallback=None))
     
     parser = argparse.ArgumentParser(description='Process dvpi at the given location to render the ddl statmenets.')
      # Define the filepath argument, set a default, and provide a helpful description.
-    parser.add_argument('dvpi_path', nargs='?', default="/home/joscha/data_vault_pipelinedescription/testset_and_examples/reference/test20_simple_hub_sat.dvpi.json", help='Path to the file to process. Defaults to "/home/joscha/data_vault_pipelinedescription/testset_and_examples/reference/test20_simple_hub_sat.dvpi.json" if not provided.')
-    
+    parser.add_argument('dvpi_file_name', nargs='?', default="test20_simple_hub_sat.dvpi.json", help='Path to the file to process. Defaults to "/home/joscha/data_vault_pipelinedescription/testset_and_examples/reference/test20_simple_hub_sat.dvpi.json" if not provided.')
     args = parser.parse_args()
+    dvpi_file_path = dvpi_default_directory.joinpath(args.dvpi_file_name)
 
-    if args.dvpi_path == "/home/joscha/data_vault_pipelinedescription/testset_and_examples/reference/test20_simple_hub_sat.dvpi.json":
+    if dvpi_file_path == "/home/joscha/data_vault_pipelinedescription/testset_and_examples/reference/test20_simple_hub_sat.dvpi.json":
         print("Warning: No filepath provided. Using default filepath.")
     
-    filepath = ""
-    ddl_output = parse_json_to_ddl(args.dvpi_path, ddl_render_path)
+    ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path)
     print(ddl_output)
