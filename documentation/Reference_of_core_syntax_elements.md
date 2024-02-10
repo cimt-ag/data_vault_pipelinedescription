@@ -174,11 +174,12 @@ This array must contain at least one target mapping. Fields, that are mapped to 
 (optional, default is 50000) *defines: diff hash input assembly*
 <br>>will be implemented later<
 <br>Defines the position of the column, when ordering rows for calculation of the group hash for multiactive satellite loading. Columns of the same prio will be ordered alphabetically by the column name. 
-The high default value sets all columns without any declaration at the end of the list.
+The high default value sets all columns without any declaration at the end of the list. Usage of the setting depends on the
+module, responsible for calculating the group hash.
 
 **row_order_direction**
 (optional, default=ASC) *defines: diff hash input assembly*
-<br>*will be implemented later*
+<br>*will be implemented in 6.2.0 *
 <br>Defines the direction of the order of content of this column, for calculation of the group hash for multiactive satellite loading. Possible values are "ASC" and "DESC".
 
 **relation_names[]**
