@@ -84,19 +84,26 @@ def create_documentation(pipeline_name, fields):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Parse a JSON file")
-    parser.add_argument("dvpd_file_name", help="Path to the JSON file to parse")
+    parser = argparse.ArgumentParser(description="Create specification documentation snippet from DVDP file")
+    parser.add_argument("dvpd_file_name", help="Path to the DVPD file to parse")
     args = parser.parse_args()
     dvpd_filename = args.dvpd_file_name
 
     params = configuration_load_ini('dvpdc.ini', 'rendering',['dvpd_default_directory','documentation_directory'])
     dvpd_file_path = Path(params['dvpd_default_directory']).joinpath(dvpd_filename)
 
+    if not dvpd_file_path.exists():
+        raise Exception(f"file not found {dvpd_file_path.as_posix()}")
+    print(f"Redering documentation from {dvpd_file_path.name}")
+
     (pipeline_name, fields) = parse_json_file(dvpd_file_path)
     if isinstance(fields, (dict, list)):
         html = create_documentation(pipeline_name,fields)
         print(html)
-        out_file_Path = Path(params['documentation_directory']).joinpath(f'{pipeline_name}.html')
+        target_directory=Path(params['documentation_directory'])
+        if not target_directory.exists():
+            target_directory.mkdir(parents=True)
+        out_file_Path = target_directory.joinpath(f'{pipeline_name}.html')
         with open(out_file_Path, "w") as file:
             file.write(html)
     else:
