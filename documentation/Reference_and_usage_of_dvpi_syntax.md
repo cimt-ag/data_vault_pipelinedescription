@@ -506,6 +506,13 @@ Json Path: $.parse_sets[].load_operations[]
 **stage_column_name**
 <br>Name of the stage column, the data must be taken from, when using the stage table approach.
 
+**update_on_every_load**
+<br>When this property is set to true on at least one data mapping, the loading process must update
+the column in an existing current record if no new row is inserted. Identification of the record is 
+done as follows: hub - hub key, link - link key, sat - parent key, multi active sat - <depends on 
+multiactive historization pattern>, reference table- same set of values in all columns that are not udpated
+on every load (diff hash can be used as shortcut when available)
+ 
 
 ### deletion_detection_rules[]
 Contains all deletion detection rules, that have to be applied to the table of this load operation.

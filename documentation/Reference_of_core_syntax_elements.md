@@ -217,7 +217,9 @@ is rare but possible).
 **exclude_from_change_detection**
 (optional, default=false, only useful on mappings to historized satellites)
 *defines: satellite load, diff hash assembly*
-<br>true = exclude the field from the change detection. Depending on the method of the target, this will modify the comparison SQL or the calculation of the diff hash.
+<br>true = exclude the field from the change detection. Depending on the method of the target,
+this will modify the comparison SQL or the calculation of the diff hash.
+This property will be overruled by the setting of "update_on_every_load"
 
 **prio_in_diff_hash**
 (optional, default=0)
@@ -235,7 +237,12 @@ is rare but possible).
 *defines: load steps*
 <br>*announced for upcoming version*
 <br>*if not supported on specific stereotypes, this must throw a warning*
-<br>Forces the load process to update the column with the staged value every time (e.g. for a last seen date in a hub). When used in satellite or reference table mappings, only the current row for the parent key should be updated.
+<br>Forces the load process to update the column with the staged value every time (e.g. for a last
+seen dates in a hub or link). When used for satellites, only the current row for the parent key 
+should be updated. When used in reference tables, the update must happen on a row that has the
+same values for all columns, except the update_every_load columns.
+Fieldsmappings with update_on_every_load set to true, will be excluded from the diff hash calculation,
+regardless of the exclude_from_change_detection setting.
 
 **column_content_comment**
 (optional, default=comment of the field)
