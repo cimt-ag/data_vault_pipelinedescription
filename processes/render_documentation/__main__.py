@@ -28,7 +28,7 @@ def parse_target(target):
         # print(f"exclude_from_key_hash: {target['exclude_from_key_hash']}")  
         in_brackets.append("not in key hash") 
     if 'exclude_from_change_detection' in target and is_json_true(target['exclude_from_change_detection']):
-        in_brackets.append("not in diff hash") 
+        in_brackets.append("not in comparison")
     if 'relation_names' in target:
         relation_names = target["relation_names"] 
         if len(relation_names) == 1:
@@ -94,7 +94,7 @@ def main():
 
     if not dvpd_file_path.exists():
         raise Exception(f"file not found {dvpd_file_path.as_posix()}")
-    print(f"Redering documentation from {dvpd_file_path.name}")
+    print(f"Rendering documentation from {dvpd_file_path.name}")
 
     (pipeline_name, fields) = parse_json_file(dvpd_file_path)
     if isinstance(fields, (dict, list)):
@@ -108,6 +108,8 @@ def main():
             file.write(html)
     else:
         print(fields)
+
+    print (f"Completed rendering documentation from {dvpd_file_path.name}")
 
 if __name__ == "__main__":
     main()
