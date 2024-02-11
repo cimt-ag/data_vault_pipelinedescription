@@ -515,6 +515,8 @@ on every load (diff hash can be used as shortcut when available)
  
 
 ### deletion_detection_rules[]
+Json Path: $.parse_sets[].load_operations[]
+
 Contains all deletion detection rules, that have to be applied to the table of this load operation.
 
 **procedure**
@@ -526,12 +528,11 @@ Contains all deletion detection rules, that have to be applied to the table of t
 
 **rule_comment**
 (optional)
-*defines: documentation*
 <br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
 <br>*“All satellites of customer”*
 
 ##### properties for other procedure 
-Please check out the definition in the dvpd specification for the following key words
+Please check out the definition in the dvpd specification for the following keywords
 - key_fields[]
 - partitioning_fields[]
 - join_path[]
