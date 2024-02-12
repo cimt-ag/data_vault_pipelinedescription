@@ -1,9 +1,10 @@
 import json
-import configparser
+#import configparser
 import os
 import argparse
 from pathlib import Path
 import re
+from lib.configuration import configuration_load_ini
 
 class MissingFieldError(Exception):
     def __init__(self, message):
@@ -135,10 +136,10 @@ def parse_json_to_ddl(filepath, ddl_render_path):
 
     # Check for missing fields
     if 'tables' not in data:
-        raise MissingFieldError("The field 'tables' is missing from the JSON.")
+        raise MissingFieldError("The field 'tables' is missing in the DVPI.")
     
     if 'parse_sets' not in data:
-        raise MissingFieldError("The field 'parse_sets' is missing from the JSON.")
+        raise MissingFieldError("The field 'parse_sets' is missing in the DVPI.")
 
     # Extract tables and stage tables
     tables = data.get('tables', [])
@@ -152,7 +153,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
     for table in tables:
         # Check for missing fields 
         if 'schema_name' not in table:
-            raise MissingFieldError("The field 'schema_name' is missing from the JSON.")
+            raise MissingFieldError("The field 'schema_name' is missing from the DVPI.")
         schema_name = table['schema_name']
         if schema_name in schema_count:
             schema_count[schema_name] += 1
@@ -169,7 +170,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
 
 
         if 'table_name' not in table:
-            raise MissingFieldError("The field 'table_name' is missing from the JSON.")
+            raise MissingFieldError("The field 'table_name' is missing from the DVPI.")
         table_name = table['table_name']
 
         full_name = "{}.{}".format(schema_name, table_name)
@@ -182,7 +183,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
             column_statements.append("{} {} {}".format(col_name, col_type, nullable))
         column_statements = ',\n'.join(column_statements)
-        ddl = f"-- DROP TABLE {full_name}\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+        ddl = f"-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
         
         ddl += create_ghost_records(full_name, columns)
         ddl_statements.append(ddl)
@@ -191,7 +192,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
         schema_path = ddl_render_path / schema_name
         if not os.path.isdir(schema_path):
             print(f"creating dir: {schema_path}")
-            schema_path.mkdir()
+            schema_path.mkdir(parents=True)
         
         # save ddl in directory
         table_ddl_path = schema_path / f"table_{table_name}.sql"
@@ -236,6 +237,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
         for column in columns:
             col_name = column['stage_column_name']
             stage_column_class = column['stage_column_class']
+            col_type=column['column_type']
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
             match stage_column_class:
                 case 'meta_load_date':
@@ -268,14 +270,16 @@ def parse_json_to_ddl(filepath, ddl_render_path):
         content_untracked.sort()
         column_statements = [meta_load_date_column, meta_load_process_id_column, meta_record_source_column, meta_deletion_flag_column]
         column_statements = [item for item in column_statements if item is not None] 
-        column_statements = ["--metadata"] + column_statements + ["--hash keys"] + hashkeys + ["--business keys"] + business_keys
+        column_statements = ["--metadata"] + column_statements + ["--hash keys"] + hashkeys 
+        if len(business_keys) > 0:
+            column_statements += ["--business keys"] + business_keys
         if len(content_untracked) > 0:
             column_statements += ["--content untracked"] + content_untracked
         if len(content) > 0:
             column_statements += ["--content"] + content
 
         column_statements = ',\n'.join(column_statements)
-        ddl = f"-- DROP TABLE {full_name}\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+        ddl = f"-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
         ddl_statements.append(ddl)
 
         # create schema dir if not  exists
@@ -293,22 +297,20 @@ def parse_json_to_ddl(filepath, ddl_render_path):
 
 
 if __name__ == '__main__':
-    config = configparser.ConfigParser()
-    # Ensuring the keys are read in a case_sensitive manner
-    config.optionxform = str
-    # Configuration File is hard-coded, as it should only be configured once - change according to your environment!
-    config.read("config/dvpdc.ini")
-    ddl_render_path = Path(config.get('dvpi_render', 'ddl_render_path', fallback=None))
-    
-    parser = argparse.ArgumentParser(description='Process dvpi at the given location to render the ddl statmenets.')
-     # Define the filepath argument, set a default, and provide a helpful description.
-    parser.add_argument('dvpi_path', nargs='?', default="/home/joscha/data_vault_pipelinedescription/testset_and_examples/reference/test20_simple_hub_sat.dvpi.json", help='Path to the file to process. Defaults to "/home/joscha/data_vault_pipelinedescription/testset_and_examples/reference/test20_simple_hub_sat.dvpi.json" if not provided.')
-    
-    args = parser.parse_args()
+    params = configuration_load_ini('dvpdc.ini', 'rendering', ['ddl_root_directory', 'dvpi_default_directory'])
 
-    if args.dvpi_path == "/home/joscha/data_vault_pipelinedescription/testset_and_examples/reference/test20_simple_hub_sat.dvpi.json":
-        print("Warning: No filepath provided. Using default filepath.")
+    ddl_render_path = Path(params['ddl_root_directory'], fallback=None)
+    dvpi_default_directory = Path(params['dvpi_default_directory'], fallback=None)
     
-    filepath = ""
-    ddl_output = parse_json_to_ddl(args.dvpi_path, ddl_render_path)
+    parser = argparse.ArgumentParser(description='Process dvpi at the given location to render the ddl statements.')
+     # Define the filepath argument, set a default, and provide a helpful description.
+    parser.add_argument('dvpi_file_name', nargs='?', help='Path to the file to process.')
+    args = parser.parse_args()
+    dvpi_file_path = Path(args.dvpi_file_name)
+    if not dvpi_file_path.exists():
+       dvpi_file_path = dvpi_default_directory.joinpath(args.dvpi_file_name)
+       if not dvpi_file_path.exists():
+            print(f"could not find file {args.dvpi_file_name}")
+
+    ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path)
     print(ddl_output)

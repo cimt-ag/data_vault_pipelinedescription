@@ -20,14 +20,6 @@ import argparse
 import copy
 import os
 import re
-import sys
-from dotenv import load_dotenv
-# Load environment variables from .env file
-load_dotenv
-# Access the PROJECT_ROOT variable
-project_root = os.getenv("PROJECT_ROOT")
-# Add the project root to the Python path to allow relative imports
-sys.path.append(project_root)
 
 from pathlib import Path
 from lib.configuration import configuration_load_ini
