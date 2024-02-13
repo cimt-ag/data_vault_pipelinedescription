@@ -1,5 +1,7 @@
 import argparse
 import json
+from pathlib import Path
+from lib.configuration import configuration_load_ini
 
 def parse_json_file(file_path):
     try:
@@ -26,7 +28,7 @@ def parse_target(target):
         # print(f"exclude_from_key_hash: {target['exclude_from_key_hash']}")  
         in_brackets.append("not in key hash") 
     if 'exclude_from_change_detection' in target and is_json_true(target['exclude_from_change_detection']):
-        in_brackets.append("not in diff hash") 
+        in_brackets.append("not in comparison")
     if 'relation_names' in target:
         relation_names = target["relation_names"] 
         if len(relation_names) == 1:
@@ -82,18 +84,32 @@ def create_documentation(pipeline_name, fields):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Parse a JSON file")
-    parser.add_argument("file_path", help="Path to the JSON file to parse")
+    parser = argparse.ArgumentParser(description="Create specification documentation snippet from DVDP file")
+    parser.add_argument("dvpd_file_name", help="Path to the DVPD file to parse")
     args = parser.parse_args()
+    dvpd_filename = args.dvpd_file_name
 
-    (pipeline_name, fields) = parse_json_file(args.file_path)
+    params = configuration_load_ini('dvpdc.ini', 'rendering',['dvpd_default_directory','documentation_directory'])
+    dvpd_file_path = Path(params['dvpd_default_directory']).joinpath(dvpd_filename)
+
+    if not dvpd_file_path.exists():
+        raise Exception(f"file not found {dvpd_file_path.as_posix()}")
+    print(f"Rendering documentation from {dvpd_file_path.name}")
+
+    (pipeline_name, fields) = parse_json_file(dvpd_file_path)
     if isinstance(fields, (dict, list)):
         html = create_documentation(pipeline_name,fields)
         print(html)
-        with open(f"processes/render_documentation/{pipeline_name}.html", "w") as file:
+        target_directory=Path(params['documentation_directory'])
+        if not target_directory.exists():
+            target_directory.mkdir(parents=True)
+        out_file_Path = target_directory.joinpath(f'{pipeline_name}.html')
+        with open(out_file_Path, "w") as file:
             file.write(html)
     else:
         print(fields)
+
+    print (f"Completed rendering documentation from {dvpd_file_path.name}")
 
 if __name__ == "__main__":
     main()

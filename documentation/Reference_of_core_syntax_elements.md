@@ -174,11 +174,12 @@ This array must contain at least one target mapping. Fields, that are mapped to 
 (optional, default is 50000) *defines: diff hash input assembly*
 <br>>will be implemented later<
 <br>Defines the position of the column, when ordering rows for calculation of the group hash for multiactive satellite loading. Columns of the same prio will be ordered alphabetically by the column name. 
-The high default value sets all columns without any declaration at the end of the list.
+The high default value sets all columns without any declaration at the end of the list. Usage of the setting depends on the
+module, responsible for calculating the group hash.
 
 **row_order_direction**
 (optional, default=ASC) *defines: diff hash input assembly*
-<br>*will be implemented later*
+<br>*will be implemented in 6.2.0 *
 <br>Defines the direction of the order of content of this column, for calculation of the group hash for multiactive satellite loading. Possible values are "ASC" and "DESC".
 
 **relation_names[]**
@@ -216,7 +217,9 @@ is rare but possible).
 **exclude_from_change_detection**
 (optional, default=false, only useful on mappings to historized satellites)
 *defines: satellite load, diff hash assembly*
-<br>true = exclude the field from the change detection. Depending on the method of the target, this will modify the comparison SQL or the calculation of the diff hash.
+<br>true = exclude the field from the change detection. Depending on the method of the target,
+this will modify the comparison SQL or the calculation of the diff hash.
+This property will be overruled by the setting of "update_on_every_load"
 
 **prio_in_diff_hash**
 (optional, default=0)
@@ -234,7 +237,12 @@ is rare but possible).
 *defines: load steps*
 <br>*announced for upcoming version*
 <br>*if not supported on specific stereotypes, this must throw a warning*
-<br>Forces the load process to update the column with the staged value every time (e.g. for a last seen date in a hub). When used in satellite or reference table mappings, only the current row for the parent key should be updated.
+<br>Forces the load process to update the column with the staged value every time (e.g. for a last
+seen dates in a hub or link). When used for satellites, only the current row for the parent key 
+should be updated. When used in reference tables, the update must happen on a row that has the
+same values for all columns, except the update_every_load columns.
+Fieldsmappings with update_on_every_load set to true, will be excluded from the diff hash calculation,
+regardless of the exclude_from_change_detection setting.
 
 **column_content_comment**
 (optional, default=comment of the field)
@@ -473,9 +481,7 @@ When set to true, existence of a specific value combination  in the source is de
 <br> defines a maximum depth of history in the reference table in days . No declaration or nagative values are treated as "no limit". When the table is loaded, all rows, that are beyond the given threshhold, are deleted. 
 <br>(in reference tables, the row can only age "on their own", they have no "key" to measure a version count)
 
-
-
-## deletion_detection 
+## deletion_detection_rules[] 
 
 Json Path: /
 
@@ -484,10 +490,25 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 **procedure**
 (mandatory)
 *defines: loading procedure*
-<br>provides the selection from different kind of procedures. Suggested valid values are:
+<br>declares deletion detection procedure for this rule. Suggested valid values are:
 - "key_comparison" : Retrieve all (or a partition of) keys from the source, compare vault to the keys and create & stage deletion records for keys, that are not present anymore
 - "deletion_event_transformation" : Convert explicit deletion event messages into a deletion record that is staged
 - "stage_comparison" : The data retrieved and staged includes a complete set or partitions of the complete set. By comparing the whole vault against the stage, deletion records are created during the load from stage to the vault
+- (more procedure names might be available in the actual load process implementation)
+
+**tables_to_cleanup[]**
+(mandatory, only declared table names allowed)
+*defines: loading procedure*
+<br>List of table names, on which to apply the deletion detection rule. Multiple entries are only allowed for satellites of the same parent.
+<br>“rsfdl_customer_p1_sat”,”rsfdl_customer_p2_sat”
+
+**rule_comment**
+(optional)
+*defines: documentation*
+<br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
+<br>*“All satellites of customer”*
+
+##### deletion_rule properties for procedure "key_comparison"
 
 **key_fields[]**
 (mandatory for "key_comparison", valid fields must be declared in fields[]. The fields must be mapped to business keys of a parent of the satellite)
@@ -499,28 +520,12 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 *defines: loading procedure*
 <br>Names of the fields, which identify fully delivered datasets (partitions) in the current load. If set, the deletion detection wil be restricted to these partitions.
 
-**deletion_rules[]**
-(mandatory)
-<br>List of deletion rules. The order of the the rules in this array must be obeyed.
+##### deletion_rule properties for procedure "stage_comparison"
 
-→ deletion_rules[] 
-
-**> procedure specific properties <**
-For other procedures there might be other properties necessary. 
-
-#### deletion_rules[]
-
-**rule_comment**
+**partitioning_fields[]**
 (optional)
-*defines: documentation*
-<br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
-<br>*“All satellites of customer”*
-
-**tables_to_cleanup[]**
-(mandatory, only declared table names allowed)
 *defines: loading procedure*
-<br>List of table names, on which to apply the deletion detection rule. Multiple entries are only allowed for satellites of the same parent. 
-<br>“rsfdl_customer_p1_sat”,”rsfdl_customer_p2_sat”
+<br>Names of the fields, which identify fully delivered datasets (partitions) in the current load. If set, the deletion detection wil be restricted to these partitions.
 
 **join_path[]**
 (optional, must contain all tables needed to be joined to reach the partitioning columns)
@@ -528,8 +533,6 @@ For other procedures there might be other properties necessary.
 <br>Describes the join path in the model, to get from the tables to delete, to the tables with partitioning fields. The path begins with the parent table of all listed satellites to delete. The path must not branch except when adding satellites to provide partitioning columns or restrict the validity of links. The path can skip unnecessary tables (e.g. hubs, whose business keys are not a partition criteria).
 
 An empty join path means that the partitioning columns are all in the table to cleanup. It can't be set, when there are no partitioning_fields.
-
-
 
 Example:
 ```
