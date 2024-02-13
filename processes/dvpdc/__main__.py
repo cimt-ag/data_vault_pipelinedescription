@@ -1,3 +1,4 @@
+#!/usr/bin/env python310
 # =====================================================================
 # Part of the Data Vault Pipeline Description Reference Implementation
 #
@@ -26,7 +27,10 @@ script_dir = os.path.dirname(os.path.realpath("__main__.py"))
 parent_dir = os.path.dirname(script_dir)
 grandparent_dir = os.path.dirname(parent_dir)
 
+#print(parent_dir)
 sys.path.insert(0,grandparent_dir)
+
+print(sys.path)
 
 import re
 from pathlib import Path
@@ -34,6 +38,7 @@ from lib.configuration import configuration_load_ini
 from lib.exceptions import DvpdcError
 import json
 from datetime import datetime
+from tkinter import filedialog
 
 
 
