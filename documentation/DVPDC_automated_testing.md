@@ -55,7 +55,7 @@ to express the expected result, so it can be checked by eyesight very easy.
     - 
 **Field names and mappings**
 Fieldnames express the target of the field, to provide easy control of the correct mapping.  
-- format \<field position>\[\<rename trigger>]_\<target table identifier>_\<column class>\<sequence>\[F]\[_<identifier for relation>]
+- format \<field position>\[\<rename trigger>]_\<target table identifier>_\<column class>\<sequence>\[F]\[_\<identifier for relation>]
     - \<field position>: F + position in the field array (e.g. F1, F2). This allows immediate identification of the field
     - \<rename trigger>: XX is added to the field position, when renameing in the column mapping is expected
     - \<target table identifier>: see identifer above in the table names 
@@ -64,7 +64,8 @@ Fieldnames express the target of the field, to provide easy control of the corre
     - F: Is tagging the the field of a column class in the table (F=Finally) 
 - Fields that are adressing 2 to 3 targets, concatinate the table identifiers and colummns classes, separated by "_" 
 - Fields that are addressing more then 3 tragets, need more thinking about a good naming strategy
-- Column renaming is done by reducing the name to the table identifier column class, sequence and F marking
+- Column renaming is done by removing XX from the name to the table identifier column class, sequence and F marking
+- Columns that are adrssed by multiple fields, will concatenate all Field postions as prefix
 
 Examples:
 - F1_AAA_BK1F - Businesskey in Hub AAA. This is the final business key field for hub aaa
@@ -72,3 +73,4 @@ Examples:
 - F3_AAA_P1_C3 - Content in sattelite AAA_P1. There will be more content, and also there must be C1 and C2 in the sattelite
 - F4_CCC_BK1F_DDD_BK2 - Field is mapped to CCC and DDD as business key. It is the final business key column in CCC
 - F5XX_AAA_P2_C2 - Field is mapped to AAA P2 Satellite but must be renamed to AAA_BK2 
+- Multi mapping exampls###
