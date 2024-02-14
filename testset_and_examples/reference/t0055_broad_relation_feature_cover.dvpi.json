@@ -1,10 +1,10 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
   "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-02-14 09:23:25",
+  "compile_timestamp": "2024-02-14 19:12:33",
   "dvpd_version": "0.6.0",
-  "pipeline_name": "test55_large_feature_cover",
-  "dvpd_filemame": "test55_large_feature_cover.dvpd.json",
+  "pipeline_name": "t0055_broad_relation_feature_cover",
+  "dvpd_filemame": "t0055_broad_relation_feature_cover.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_55_aaa_hub",
@@ -775,7 +775,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "stest55_large_feature_cover",
+          "stage_table_name": "st0055_broad_relation_feature_cover",
           "storage_component": ""
         }
       ],

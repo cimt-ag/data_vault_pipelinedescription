@@ -1,7 +1,8 @@
 {
 	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "test55_large_feature_cover",
+	"pipeline_name": "t0055_broad_relation_feature_cover",
+	"pipeline_comment": "Test with a broad variety of relation constellations. Used during compiler implementation for fast first instant feedback.",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
