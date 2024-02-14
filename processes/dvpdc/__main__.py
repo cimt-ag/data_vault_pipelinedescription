@@ -1020,7 +1020,7 @@ def assemble_dvpi(dvpd_object, dvpd_filename):
                      'compile_timestamp':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'dvpd_version':dvpd_object['dvpd_version'],
                      'pipeline_name':dvpd_object['pipeline_name'],
-                     'dvpd_filemame':dvpd_filename}
+                     'dvpd_filename':dvpd_filename}
 
     # add tables
     dvpi_tables=[]
