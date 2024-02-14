@@ -15,6 +15,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 #  =====================================================================
+import argparse
 
 from processes.dvpdc.__main__ import dvpdc
 from pathlib import Path
@@ -206,12 +207,22 @@ if __name__ == "__main__":
     successful_file_list=[]
     failing_file_list=[]
 
-    for filename in dvpd_file_list:
-        print(f"\n------------------ Testing:{filename} ---------------------------")
-        if run_test_for_file(filename) == 0:
-            successful_file_list.append(filename)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dvpd_filename","-f", required=False, help="Name of the dvpd file to test")
+    args = parser.parse_args()
+
+    if args.dvpd_filename!=None:
+        if run_test_for_file(args.dvpd_filename) == 0:
+            successful_file_list.append(args.dvpd_filename)
         else:
-            failing_file_list.append(filename)
+            failing_file_list.append(args.dvpd_filename)
+    else:               # no filename given, process the internal list
+        for filename in dvpd_file_list:
+            print(f"\n------------------ Testing:{filename} ---------------------------")
+            if run_test_for_file(filename) == 0:
+                successful_file_list.append(filename)
+            else:
+                failing_file_list.append(filename)
 
     print("\n ==================== Test Summary ================================")
     print("\nvvv---Passed tests---vvv")
