@@ -22,15 +22,10 @@ import copy
 import os
 import sys
 
-# Include data_vault_pipelinedescription folder into sys.path. -- needed for lib modules --
-script_dir = os.path.dirname(os.path.realpath("__main__.py"))
-parent_dir = os.path.dirname(script_dir)
-grandparent_dir = os.path.dirname(parent_dir)
 
-#print(parent_dir)
-sys.path.insert(0,grandparent_dir)
-
-print(sys.path)
+# Include data_vault_pipelinedescription folder into
+project_directory = os.path.dirname(os.path.dirname(sys.path[0]))
+sys.path.insert(0,project_directory)
 
 import re
 
