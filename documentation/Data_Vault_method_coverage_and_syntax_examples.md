@@ -670,7 +670,7 @@ In case the extract date differs significantly from the loading date, it must be
 ```
 
 ### Satellite on a link, with a driving key declaration {DV-4.5.5}
-This data source is a table with the order, referencing the product of the order. Should the product of the order be modified, the former product of the order must be "unlinked". Data Vault indicates this toe the load operation by declaring driving keys, that must be used for ending former relations. Driving keys are the hub key columns of the parent link of the satellite.
+This data source is a table with the order, referencing the product of the order. Should the order change to another product, the former product of the order must be "unlinked". Data Vault indicates this to the load operation by declaring driving keys, that must be used for ending former relations. Driving keys are the hub key columns of the parent link of the satellite.
 ```json
 "fields": [
 		    {	"field_name": "ORDER_ID",
@@ -709,7 +709,7 @@ This data source is a table with the order, referencing the product of the order
 				"table_stereotype": "hub",
 				"hub_key_column_name": "HK_PRODUCT"
 			}
-		]
+			]
 ```
 
 
