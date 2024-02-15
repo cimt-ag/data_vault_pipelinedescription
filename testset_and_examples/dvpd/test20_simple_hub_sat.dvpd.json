@@ -8,13 +8,13 @@
 	},
 
 	"fields": [
-		      {"field_name": "F1_BK_AAA_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_20_aaa_hub"}]},
-		 	  {"field_name": "F2_BK_AAA_DECIMAL",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_20_aaa_hub"}]},
-		 	  {"field_name": "F3_AAA_SP1_VARCHAR",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_20_aaa_p1_sat"}]},
-			  {"field_name": "F4_AAA_SP1_DECIMAL",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_20_aaa_p1_sat"}]},
-			  {"field_name": "F5__FIELD_NAME",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_20_aaa_p1_sat",
-																									 "column_name":"F5_AAA_SP1_VARCHAR"}]},
-			  {"field_name": "F6_AAA_SP1_TIMESTAMP_XRH",	"field_type": "TIMESTAMP",		"targets": [{"table_name": "rtjj_20_aaa_p1_sat","exclude_from_change_detection": "true"}]}
+		      {"field_name": "F1_AAA_BK1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_20_aaa_hub"}]},
+		 	  {"field_name": "F2_AAA_BK2F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_20_aaa_hub"}]},
+		 	  {"field_name": "F3_AAA_P1_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_20_aaa_p1_sat"}]},
+			  {"field_name": "F4_AAA_P1_C2",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_20_aaa_p1_sat"}]},
+			  {"field_name": "F5XX_AAA_P1_C3F",	        "field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_20_aaa_p1_sat",
+																									 "column_name":"F5_AAA_P1_C3F"}]},
+			  {"field_name": "F6_AAA_P1_CU1F",	"field_type": "TIMESTAMP",		"targets": [{"table_name": "rtjj_20_aaa_p1_sat","exclude_from_change_detection": "true"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
