@@ -1,0 +1,45 @@
+{
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t0051_hub_with_multiple_sat",
+	"record_source_name_expression": "knuppisoft.artikel",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+	"fields": [
+		      {"field_name": "F1_AAA_BK1", 	"field_type": "VARCHAR(20)",	
+											"targets": [{"table_name": "rtsta_51_fahrzeug_hub"}]},
+		 	  {"field_name": "F2XX_AAA_BK2_UUU_VVV",	"field_type": "VARCHAR(20)",
+												"targets": [{"table_name": "rtsta_51_fahrzeug_hub", "column_name": "F2F3_AAA_BK2",
+						     					"relation_names":["uuu","vvv"]}] },
+		 	  {"field_name": "F3XX_AAA_BK2_WWW",	"field_type": "VARCHAR(20)",	
+											"targets": [{"table_name": "rtsta_51_fahrzeug_hub","column_name": "F2F3_AAA_BK2",
+												 	"relation_names":["www"]}]},
+		 	  {"field_name": "F4XX_AAA_BK3F_UUU",	"field_type": "VARCHAR(2)",	
+											"targets": [{"table_name": "rtsta_51_fahrzeug_hub","column_name": "F4F5F6_AAA_BK3F",
+											"relation_names":["uuu"]}]},
+		 	  {"field_name": "F5XX_AAA_BK3F_VVV",	"field_type": "VARCHAR(2)",	
+											"targets": [{"table_name": "rtsta_51_fahrzeug_hub","column_name": "F4F5F6_AAA_BK3F",
+										    "relation_names":["vvv"]}]},
+		 	  {"field_name": "F6XX_AAA_BK3F_WWW",	"field_type": "VARCHAR(2)",	
+										"targets": [{"table_name": "rtsta_51_fahrzeug_hub","column_name": "F4F5F6_AAA_BK3F",
+											 "relation_names":["www"]}]},
+		 	  {"field_name": "F7XX_AAA_UUU_C1F",		"field_type": "VARCHAR(200)",	
+										"targets": [{"table_name": "rtsta_51_fahrzeug_p1_sat","column_name": "F7F8F9_AAA_P1_C1F",
+										"relation_names":["uuu"]}]},
+		 	  {"field_name": "F8XX_AAA_VVV_C1F",		"field_type": "VARCHAR(200)",	
+										"targets": [{"table_name": "rtsta_51_fahrzeug_p1_sat","column_name": "F7F8F9_AAA_P1_C1F",
+										 "relation_names":["vvv"]}]},
+		 	  {"field_name": "F9XX_AAA_WWW_C1F",		"field_type": "VARCHAR(200)",	
+										"targets": [{"table_name": "rtsta_51_fahrzeug_p1_sat","column_name": "F7F8F9_AAA_P1_C1F",
+										 "relation_names":["www"]}]}
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtsta_51_fahrzeug_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_RTSTB_FAHRZEUG"},
+				{"table_name": "rtsta_51_fahrzeug_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtsta_51_fahrzeug_hub","diff_hash_column_name": "RH_rtsta_51_FAHRZEUG_P1_SAT"}
+				]
+		}
+	]
+}

@@ -1,7 +1,7 @@
 {
 	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "test35_tracking_sat_with_sequence_information",
+	"pipeline_name": "t0035_tracking_sat_with_sequence_information",
 	"record_source_name_expression": "dvpd implementation test",
 	"stage_properties" : [{"storage_component":"PostgresDWH","stage_schema":"stage_rvlt"}],
 	"data_extraction": {
@@ -9,9 +9,9 @@
 	},
 
 	"fields": [
-		      {"field_name": "F1_BK_AAA_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_35_aaa_hub"}]},
-		 	  {"field_name": "F2_TIMESTAMP",	"field_type": "timestamp",	"targets": [{"table_name": "rtjj_35_aaa_p1_trsat","column_name":"TIME_SEQUENCE"}]},
-		 	  {"field_name": "F3_OPERATION",	"field_type": "CHAR(1)",	"targets": [{"table_name": "rtjj_35_aaa_p1_trsat","column_name":"OPERATION"}]}
+		      {"field_name": "F1_AAA_BK1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_35_aaa_hub"}]},
+		 	  {"field_name": "F2XX_AAA_P1_C1",	"field_type": "timestamp",	"targets": [{"table_name": "rtjj_35_aaa_p1_trsat","column_name":"F2_AAA_P1_C1"}]},
+		 	  {"field_name": "F3XX_AAA_P1_C2F",	"field_type": "CHAR(1)",	"targets": [{"table_name": "rtjj_35_aaa_p1_trsat","column_name":"F3_AAA_P1_C2F"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

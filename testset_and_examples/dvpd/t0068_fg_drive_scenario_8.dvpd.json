@@ -1,0 +1,35 @@
+{
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "test68_fg_drive_scenario_8",
+	"purpose":"Test dvpd transformation for multilayered field groups",
+	"record_source_name_expression": "knuppisoft.artikel",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+	"fields": [
+		      {"field_name": "F1_BK_AAA_L1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_68_aaa_hub"
+																					,"column_name": "BK_AAA"
+																				 	,"relation_names":["R111"]}]}
+		      ,{"field_name": "F2_BK_AAA_L2", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_68_aaa_hub"
+																					,"column_name": "BK_AAA"
+																				 	,"relation_names":["R222"]}]}		 	  
+		      ,{"field_name": "F3_BK_BBB_L2", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_68_bbb_hub"
+																					,"column_name": "BK_BBB"
+																				 	,"relation_names":["R222"]}]}		 
+		      ,{"field_name": "F4_BK_BBB_L3", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_68_bbb_hub"
+																					,"column_name": "BK_BBB"
+																				 	,"relation_names":["R333"]}]}		 
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_68_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_68_aaa"}
+				,{"table_name": "rtjj_68_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_68_aaa_bbb",
+																				"link_parent_tables": ["rtjj_68_aaa_hub","rtjj_68_bbb_hub"]}
+				,{"table_name": "rtjj_68_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_68_aaa_bbb_lnk"}
+				,{"table_name": "rtjj_68_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_68_bbb"}
+				]
+		}
+	]
+}

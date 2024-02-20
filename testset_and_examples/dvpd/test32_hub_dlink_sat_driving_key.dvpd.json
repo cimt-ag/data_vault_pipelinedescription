@@ -7,11 +7,11 @@
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 	"fields": [
-		      {"field_name": "F1_BK_AAA_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_32_aaa_hub"}]},
-		 	  {"field_name": "F2_BK_AAA_DECIMAL",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_32_aaa_hub"}]},
-		 	  {"field_name": "F3_DC_AAA_DDD_VARCHAR",		"field_type": "DATE",			"targets": [{"table_name": "rtjj_32_aaa_ddd_dlnk"}]},
-			  {"field_name": "F4_AAA_DDD_SP1_DECIMAL",		"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_32_aaa_ddd_p1_sat"}]},
-			  {"field_name": "F5_AAA_DDD_SP1_DECIMAL",		"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_32_aaa_ddd_p1_sat"}]}
+		      {"field_name": "F1_AAA_BK1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_32_aaa_hub"}]},
+		 	  {"field_name": "F2_AAA_BK2F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_32_aaa_hub"}]},
+		 	  {"field_name": "F3_AAA_DDD_DC1F",		"field_type": "DATE",			"targets": [{"table_name": "rtjj_32_aaa_ddd_dlnk"}]},
+			  {"field_name": "F4_AAA_DDD_P1_C1",		"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_32_aaa_ddd_p1_sat"}]},
+			  {"field_name": "F5_AAA_DDD_P1_C2F",		"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_32_aaa_ddd_p1_sat"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

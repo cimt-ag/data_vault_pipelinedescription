@@ -1,7 +1,7 @@
 {
 	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "test34_sats_without_diff_hash",
+	"pipeline_name": "t0034_sats_without_diff_hash",
 	"record_source_name_expression": "dvpd implementation test",
 	"stage_properties" : [{"storage_component":"PostgresDWH","stage_schema":"stage_rvlt"}],
 	"data_extraction": {
@@ -9,14 +9,14 @@
 	},
 
 	"fields": [
-		      {"field_name": "F1_BK_AAA_VARCHAR", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_34_aaa_hub"}]},
-		 	  {"field_name": "F2_BK_AAA_DECIMAL",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_34_aaa_hub"}]},
-		 	  {"field_name": "F3_AAA_SP1_VARCHAR",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_34_aaa_p1_sat"}]},
-			  {"field_name": "F4_AAA_SP2_DECIMAL",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_34_aaa_p2_tsat"}]},
-			  {"field_name": "F5_AAA_SP1_AND_SP2_DECIMAL",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_34_aaa_p3_sat"},{"table_name": "rtjj_34_aaa_p2_tsat"}]},
-			  {"field_name": "F6_AAA_SP1_TIMESTAMP",	"field_type": "TIMESTAMP",		"targets": [{"table_name": "rtjj_34_aaa_p1_sat"}]},
-		 	  {"field_name": "F7_AAA_SP2_VARCHAR",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_34_aaa_p4_tsat"}]},
-			  {"field_name": "F8_AAA_SP1_DECIMAL",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_34_aaa_p1_sat"}]}
+		      {"field_name": "F1_AAA_BK1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_34_aaa_hub"}]},
+		 	  {"field_name": "F2_AAA_BK2F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_34_aaa_hub"}]},
+		 	  {"field_name": "F3_AAA_P1_C1",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_34_aaa_p1_sat"}]},
+			  {"field_name": "F4_AAA_P2_C1",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_34_aaa_p2_tsat"}]},
+			  {"field_name": "F5_AAA_P2_P3_C2F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_34_aaa_p3_sat"},{"table_name": "rtjj_34_aaa_p2_tsat"}]},
+			  {"field_name": "F6_AAA_P1_C2",	"field_type": "TIMESTAMP",		"targets": [{"table_name": "rtjj_34_aaa_p1_sat"}]},
+		 	  {"field_name": "F7_AAA_P4_C1F",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_34_aaa_p4_tsat"}]},
+			  {"field_name": "F8_AAA_P1_C3F",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_34_aaa_p1_sat"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

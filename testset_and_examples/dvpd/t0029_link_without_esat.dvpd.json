@@ -1,7 +1,7 @@
 {
 	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "test29_link_without_esat",
+	"pipeline_name": "t0029_link_without_esat",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"

@@ -198,11 +198,11 @@ if __name__ == "__main__":
 
     dvpd_file_list= [#'test00_check_essential_elements.dvpd.json',
                      #'test01_check_model_relations.dvpd.json',
-                     'test20_simple_hub_sat.dvpd.json',
-                     'test22_one_link_one_esat.dvpd.json',
-                     'test23_one_link_with_one_satellite.dvpd.json',
-                     'test24_one_satellite_on_linked_hub.dvpd.json',
-                     'test25_one_link_one_esat_three_hubs.dvpd.json',
+                     't0020_simple_hub_sat.dvpd.json',
+                     't0022_one_link_one_esat.dvpd.json',
+                     't0023_one_link_with_one_satellite.dvpd.json',
+                     't0024_one_satellite_on_linked_hub.dvpd.json',
+                     't0025_one_link_one_esat_three_hubs.dvpd.json',
                      't0055_broad_relation_feature_cover.dvpd.json'
                      ]
     successful_file_list=[]
