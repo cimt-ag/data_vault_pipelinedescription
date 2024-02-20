@@ -1344,7 +1344,7 @@ def renderHashFieldAssembly(parse_set_entry,hash_name):
     raise(f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
 
 
-def dvpdc(dvpd_filename,dvpi_filename=None):
+def dvpdc(dvpd_filename,dvpi_filename=None, dvpdc_log_filename=None):
     """ this function is a wrapper around the real compiler to initialize the log file"""
     global g_logfile
 
@@ -1352,8 +1352,10 @@ def dvpdc(dvpd_filename,dvpi_filename=None):
     dvpdc_report_directory=Path(params['dvpdc_report_directory'])
     dvpdc_report_directory.mkdir(parents=True, exist_ok=True)
 
-    dvpdc_log_filename= dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpdc.log"
+    if dvpdc_log_filename == None:
+        dvpdc_log_filename= dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpdc.log"
     dvpdc_log_file_path = dvpdc_report_directory.joinpath(dvpdc_log_filename)
+
 
     with open(dvpdc_log_file_path,"w") as g_logfile:
         g_logfile.write(f"Data vault pipeline description compiler log \n")
@@ -1490,7 +1492,7 @@ if __name__ == "__main__":
     #parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
     args = parser.parse_args()
     try:
-        dvpdc(dvpd_filename=args.dvpd_filename, dvpi_filename=args.dvpi)
+        dvpdc(dvpd_filename=args.dvpd_filename, dvpi_filename=args.dvpi, dvpdc_log_filename=args.log_file)
         print_the_brain()
     except DvpdcError:
         print_the_brain()
