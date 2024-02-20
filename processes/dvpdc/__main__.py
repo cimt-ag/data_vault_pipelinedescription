@@ -1345,7 +1345,7 @@ def renderHashFieldAssembly(parse_set_entry,hash_name):
 
 
 def dvpdc(dvpd_filename,dvpi_filename=None):
-    """ this function is a wrapper arounf the real compiler to initialize the log file"""
+    """ this function is a wrapper around the real compiler to initialize the log file"""
     global g_logfile
 
     params = configuration_load_ini('dvpdc.ini', 'dvpdc',['dvpd_model_profile_directory'])
@@ -1452,6 +1452,7 @@ def dvpdc_worker(dvpd_filename,dvpi_filename=None):
     dvpi_directory.mkdir(parents=True, exist_ok=True)
     dvpi_file_path = dvpi_directory.joinpath(dvpi_filename)
 
+
     log_progress("Writing DVPI to " + dvpi_file_path.as_posix())
 
     try:
@@ -1476,8 +1477,16 @@ if __name__ == "__main__":
         description=description_for_terminal,
         usage= usage_for_terminal
     )
+    # input Arguments
     parser.add_argument("dvpd_filename", help="Name of the dvpd file to compile")
+    parser.add_argument("--ini_file", help="Name of the ini file")
+    parser.add_argument("--model_profile_directory",help="Name of the model profile directory")
+
+    # output arguments
     parser.add_argument("--dvpi",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
+    parser.add_argument("--log_file", help="Name of the report file (defaults to filename + .dvpdc.log")
+    parser.add_argument("--summary_file", help="Name of the summary file")
+
     #parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
     args = parser.parse_args()
     try:
