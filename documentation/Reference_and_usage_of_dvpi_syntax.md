@@ -487,8 +487,8 @@ Json Path: $.parse_sets[].load_operations[]
 **stage_column_name**
 <br>Name of the stage column, the hash can be taken from, when using stage table approach
 
-### data_mapping[]
-(will be renamed to "field_mappings" in 0.6.1)
+### field_mappings[]
+(formely known as "data_mapping" in 0.6.0)
 
 Json Path: $.parse_sets[].load_operations[]
 

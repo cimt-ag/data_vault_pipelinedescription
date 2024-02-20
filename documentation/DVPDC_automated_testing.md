@@ -25,7 +25,8 @@ Execution and evaluaton of the tests is implemented in the modul "test_dvpdc", w
 section "dvpdc_test".
 The process calls the dvpdc for every test case, and compares the result log and dvpi with the reference data.
 
-- With the parameter -f <dvpd filename> you can run the automated test for a specific test case.
+- With the parameter -t <testnumber> you can run the automated test for a specific test number.
+- With the parameter -f <dvpd filename> you can run the automated test for a specific file in the test cases.
 - Without explicit declaration of a file, dvpcd_test runs all tests, that are declared in its internal list.
 
 # Conventions for tests content

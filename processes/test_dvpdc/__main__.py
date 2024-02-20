@@ -192,6 +192,20 @@ def check_reference_values(reference_object,test_object,path=""):
 
 
 ############ My MAIN ############
+def search_for_testfile(testnumber):
+    params = configuration_load_ini('dvpdc.ini', 'dvpdc', ['dvpd_model_profile_directory'])
+    dvpd_directory = Path(params['dvpd_default_directory'])
+
+    fileprefix="t{:04d}".format(testnumber)
+
+    for file in sorted(dvpd_directory.iterdir()):
+        if (file.is_file()
+            and file.stem.startswith(fileprefix)):
+            return file.name
+
+    return None
+
+
 if __name__ == "__main__":
 
     #todo scan reference data directory and call compio
@@ -210,13 +224,22 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--dvpd_filename","-f", required=False, help="Name of the dvpd file to test")
+    parser.add_argument("--testnumber","-t", required=False, type=int, help="Number of the test")
     args = parser.parse_args()
 
-    if args.dvpd_filename!=None:
-        if run_test_for_file(args.dvpd_filename) == 0:
-            successful_file_list.append(args.dvpd_filename)
+    explicit_file = None
+    if args.testnumber is not None:
+        explicit_file=search_for_testfile(args.testnumber)
+        if explicit_file is None:
+            raise Exception(f"Could not find test file for testnumber {args.testnumber}")
+    elif args.dvpd_filename!=None:
+        explicit_file=args.dvpd_filename
+
+    if  explicit_file is not None:
+        if run_test_for_file(explicit_file) == 0:
+            successful_file_list.append(explicit_file)
         else:
-            failing_file_list.append(args.dvpd_filename)
+            failing_file_list.append(explicit_file)
     else:               # no filename given, process the internal list
         for filename in dvpd_file_list:
             print(f"\n------------------ Testing:{filename} ---------------------------")
