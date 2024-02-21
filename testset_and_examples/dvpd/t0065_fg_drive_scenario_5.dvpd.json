@@ -15,9 +15,9 @@
 																					,"column_name": "F1F2_AAA_BK1F"
 																				 	,"relation_names":["uuu"]}]}		 	  
 		      ,{"field_name": "F3_BBB_BK1F", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_65_bbb_hub"}]}
-		      ,{"field_name": "F4_AAA_BBB_TTT_C1","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_65_aaa_bbb_sat"
+		      ,{"field_name": "F4_AAA_BBB_C1_TTT","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_65_aaa_bbb_sat"
 																				 	,"relation_names":["ttt"]}]}		 
-		      ,{"field_name": "F5_AAA_BBB_TTT_C2F","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_65_aaa_bbb_sat"
+		      ,{"field_name": "F5_AAA_BBB_C2F_TTT","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_65_aaa_bbb_sat"
 																				 	,"relation_names":["ttt"]}]}		 		 
 			 ],
 	"data_vault_model": [

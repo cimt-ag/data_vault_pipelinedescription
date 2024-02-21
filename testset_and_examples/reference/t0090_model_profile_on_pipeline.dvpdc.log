@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-02-21 12:59:01
+Compiling t0090_model_profile_on_pipeline.dvpd.json
+
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t0090_model_profile_on_pipeline.dvpi.json
+--- Compile successfull ---

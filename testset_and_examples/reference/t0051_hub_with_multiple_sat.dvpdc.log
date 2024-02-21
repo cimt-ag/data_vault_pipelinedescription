@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-02-21 10:06:42
+Compiling t0051_hub_with_multiple_sat.dvpd.json
+
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t0051_hub_with_multiple_sat.dvpi.json
+--- Compile successfull ---
