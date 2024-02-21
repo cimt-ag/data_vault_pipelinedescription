@@ -53,13 +53,16 @@ def run_test_for_file(dvpd_filename):
     try:
         dvpdc(dvpd_filename)
         compare_dvpdc_log_with_reference(dvpd_filename)
-        compare_dvpi_with_reference(dvpd_filename)
+        if dvpd_filename[5]!="c":
+            compare_dvpi_with_reference(dvpd_filename)
     except DvpdcError:
-        print("Compile failed. But this might be on purpose")
         compare_dvpdc_log_with_reference(dvpd_filename)
+        if dvpd_filename[5] == "c":
+            print("Compile failed, but should not")
+            g_difference_count += 1
         return g_difference_count
     except FileNotFoundError:
-        print("Probably some reference files are missing")
+        print("Could not confirm correctness. Some reference files are missing")
         return g_difference_count
 
     return g_difference_count
