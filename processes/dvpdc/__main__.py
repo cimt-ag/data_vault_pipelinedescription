@@ -1344,7 +1344,7 @@ def renderHashFieldAssembly(parse_set_entry,hash_name):
     raise(f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
 
 
-def dvpdc(dvpd_filename,dvpi_filename=None, dvpdc_log_filename=None):
+def dvpdc(dvpd_filename,dvpi_filename=None, dvpdc_log_directory=None):
     """ this function is a wrapper around the real compiler to initialize the log file"""
     global g_logfile
 
@@ -1352,9 +1352,9 @@ def dvpdc(dvpd_filename,dvpi_filename=None, dvpdc_log_filename=None):
     dvpdc_report_directory=Path(params['dvpdc_report_directory'])
     dvpdc_report_directory.mkdir(parents=True, exist_ok=True)
 
-    if dvpdc_log_filename == None:
-        dvpdc_log_filename= dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpdc.log"
-    dvpdc_log_file_path = dvpdc_report_directory.joinpath(dvpdc_log_filename)
+    if dvpdc_log_directory == None:
+        dvpdc_log_directory= dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpdc.log"
+    dvpdc_log_file_path = dvpdc_report_directory.joinpath(dvpdc_log_directory)
 
 
     with open(dvpdc_log_file_path,"w") as g_logfile:
@@ -1485,14 +1485,13 @@ if __name__ == "__main__":
     parser.add_argument("--model_profile_directory",help="Name of the model profile directory")
 
     # output arguments
-    parser.add_argument("--dvpi",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
-    parser.add_argument("--log_file", help="Name of the report file (defaults to filename + .dvpdc.log")
-    parser.add_argument("--summary_file", help="Name of the summary file")
+    parser.add_argument("--dvpi_directory",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
+    parser.add_argument("--log_directory", help="Name of the report file (defaults to filename + .dvpdc.log")
 
     #parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
     args = parser.parse_args()
     try:
-        dvpdc(dvpd_filename=args.dvpd_filename, dvpi_filename=args.dvpi, dvpdc_log_filename=args.log_file)
+        dvpdc(dvpd_filename=args.dvpd_filename, dvpi_filename=args.dvpi_directory, dvpdc_log_directory=args.log_directory)
         print_the_brain()
     except DvpdcError:
         print_the_brain()
