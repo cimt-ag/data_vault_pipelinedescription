@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-02-21 19:32:47
+Compiling t0007c_collect_table_properties_transform_sat.dvpd.json
+
+satellite_parent_table is not declared for satellite table rtjj_aaa_07_pxxx_sat
+*** Compilation ended with errors ***

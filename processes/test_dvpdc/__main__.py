@@ -52,6 +52,7 @@ def run_test_for_file(dvpd_filename):
 
     try:
         dvpdc(dvpd_filename)
+        print("\n--- Comparing result with reference ---")
         compare_dvpdc_log_with_reference(dvpd_filename)
         if dvpd_filename[5]!="c":
             compare_dvpi_with_reference(dvpd_filename)
@@ -62,7 +63,7 @@ def run_test_for_file(dvpd_filename):
             g_difference_count += 1
         return g_difference_count
     except FileNotFoundError:
-        print("Could not confirm correctness. Some reference files are missing")
+        print("**** Could not confirm correctness. Some reference files are missing ****")
         return g_difference_count
 
     return g_difference_count
@@ -251,7 +252,7 @@ if __name__ == "__main__":
             else:
                 failing_file_list.append(filename)
 
-    print("\n ==================== Test Summary ================================")
+    print("\n==================== Test Summary ================================")
     print("\nvvv---Passed tests---vvv")
     for filename in successful_file_list:
         print(filename)
