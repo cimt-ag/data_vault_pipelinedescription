@@ -1344,16 +1344,19 @@ def renderHashFieldAssembly(parse_set_entry,hash_name):
     raise(f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
 
 
-def dvpdc(dvpd_filename,dvpi_filename=None, dvpdc_log_directory=None):
+def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_log_directory=None, ini_file=None):
     """ this function is a wrapper around the real compiler to initialize the log file"""
     global g_logfile
 
-    params = configuration_load_ini('dvpdc.ini', 'dvpdc',['dvpd_model_profile_directory'])
-    dvpdc_report_directory=Path(params['dvpdc_report_directory'])
-    dvpdc_report_directory.mkdir(parents=True, exist_ok=True)
+    params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
 
     if dvpdc_log_directory == None:
-        dvpdc_log_directory= dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpdc.log"
+        dvpdc_report_directory=Path(params['dvpdc_report_directory'])
+        dvpdc_report_directory.mkdir(parents=True, exist_ok=True)
+    else:
+        dvpdc_report_directory = Path(dvpdc_log_directory)
+
+    dvpdc_log_directory= dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpdc.log"
     dvpdc_log_file_path = dvpdc_report_directory.joinpath(dvpdc_log_directory)
 
 
@@ -1364,11 +1367,11 @@ def dvpdc(dvpd_filename,dvpi_filename=None, dvpdc_log_directory=None):
         g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         log_progress(f"Compiling {dvpd_filename}\n")
         try:
-            dvpdc_worker(dvpd_filename, dvpi_filename)
+            dvpdc_worker(dvpd_filename, dvpi_directory, dvpdc_report_directory)
         except DvpdcError:
             log_progress("*** Compilation ended with errors ***")
 
-def dvpdc_worker(dvpd_filename,dvpi_filename=None):
+def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = None):
 
     global g_table_dict
     global g_dvpi_document
@@ -1390,9 +1393,6 @@ def dvpdc_worker(dvpd_filename,dvpi_filename=None):
     params = configuration_load_ini('dvpdc.ini', 'dvpdc',['dvpd_model_profile_directory'])
 
     dvpd_file_path = Path(params['dvpd_default_directory']).joinpath(dvpd_filename)
-
-    if dvpi_filename == None:
-        dvpi_filename=dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpi.json"
 
     if not os.path.exists(dvpd_file_path):
         raise Exception(f'could not find dvpd file: {dvpd_file_path}')
@@ -1450,10 +1450,13 @@ def dvpdc_worker(dvpd_filename,dvpi_filename=None):
     #print_dvpi_document()
 
     # write DVPI to file
-    dvpi_directory=Path(params['dvpi_default_directory'])
-    dvpi_directory.mkdir(parents=True, exist_ok=True)
+    if dvpi_directory == None:
+        dvpi_directory = Path(params['dvpi_default_directory'])
+        dvpi_directory.mkdir(parents=True, exist_ok=True)
+    else:
+        dvpi_directory = Path(dvpi_directory)
+    dvpi_filename=dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpi.json"
     dvpi_file_path = dvpi_directory.joinpath(dvpi_filename)
-
 
     log_progress("Writing DVPI to " + dvpi_file_path.as_posix())
 
@@ -1467,7 +1470,7 @@ def dvpdc_worker(dvpd_filename,dvpi_filename=None):
 
     log_progress("--- Compile successfull ---")
 
-    writeDvpiSummary(params['dvpdc_report_directory'],dvpd_file_path)
+    writeDvpiSummary(dvpdc_report_directory,dvpd_file_path)
 
 ########################################################################################################################
 if __name__ == "__main__":
@@ -1491,7 +1494,11 @@ if __name__ == "__main__":
     #parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
     args = parser.parse_args()
     try:
-        dvpdc(dvpd_filename=args.dvpd_filename, dvpi_filename=args.dvpi_directory, dvpdc_log_directory=args.log_directory)
+        dvpdc(dvpd_filename=args.dvpd_filename,
+              dvpi_directory=args.dvpi_directory,
+              dvpdc_log_directory=args.log_directory,
+              ini_file=args.ini_file
+              )
         print_the_brain()
     except DvpdcError:
         print_the_brain()
