@@ -1,0 +1,12 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-02-26 18:16:39
+Compiling t0009c_collect_field_properties_1.dvpd.json
+
+Duplicate field_name declared: F1_XXX_DUPLICATE_FIELD
+Can't map field F1_YYY_MAPPED_TO_UNKNOWN_TABLE to table rtjj_xxx_unknown_table. Table is not declared in the model
+Error when reading numerical properties from  mapping of field 'F1_ZZZ_BAD_PRIO_IN_KEY_HASH' to table 'rtjj_zzz_09_sat':invalid literal for int() with base 10: 'XXnot a numberXXX'
+Error when reading numerical properties from  mapping of field 'F1_ZZZ_BAD_PRIO_FOR_COLUMN_POSITION' to table 'rtjj_zzz_09_sat':invalid literal for int() with base 10: 'XXnot a numberXXX'
+Error when reading numerical properties from  mapping of field 'F1_ZZZ_BAD_PRIO_FOR_ROW_ORDER' to table 'rtjj_zzz_09_sat':invalid literal for int() with base 10: 'XXnot a numberXXX'
+Error when reading numerical properties from  mapping of field 'F1_ZZZ_BAD_PRIO_IN_DIFF_HASH' to table 'rtjj_zzz_09_sat':invalid literal for int() with base 10: 'XXnot a numberXXX'
+*** Compilation ended with errors ***
