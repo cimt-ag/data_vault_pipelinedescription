@@ -240,6 +240,8 @@ if __name__ == "__main__":
         explicit_file=args.dvpd_filename
 
     if  explicit_file is not None:
+        dvpd_file_list=[]
+        dvpd_file_list.append(explicit_file)
         if run_test_for_file(explicit_file) == 0:
             successful_file_list.append(explicit_file)
         else:
