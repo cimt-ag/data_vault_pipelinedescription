@@ -10,14 +10,14 @@
 	"fields": [
 		        {"field_name": "F1_XXX_DUPLICATE_FIELD", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_aaa_09_hub"}]}
 		       ,{"field_name": "F1_XXX_DUPLICATE_FIELD", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_aaa_09_hub"}]}
-		       ,{"field_name": "F1_YYY_MAPPED_TO_UNKNOWN_TABLE", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_xxx_unknown_table"}]}
-		       ,{"field_name": "F1_ZZZ_BAD_PRIO_IN_KEY_HASH", 		"field_type": "Varchar(20)"
+		       ,{"field_name": "F3_YYY_MAPPED_TO_UNKNOWN_TABLE", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_xxx_unknown_table"}]}
+		       ,{"field_name": "F4_ZZZ_BAD_PRIO_IN_KEY_HASH", 		"field_type": "Varchar(20)"
 																	,	"targets": [{"table_name": "rtjj_zzz_09_sat","prio_in_key_hash":"XXnot a numberXXX"}]}
-		       ,{"field_name": "F1_ZZZ_BAD_PRIO_FOR_COLUMN_POSITION", 		"field_type": "Varchar(20)"
+		       ,{"field_name": "F5_ZZZ_BAD_PRIO_FOR_COLUMN_POSITION", 		"field_type": "Varchar(20)"
 																	,	"targets": [{"table_name": "rtjj_zzz_09_sat","prio_for_column_position":"XXnot a numberXXX"}]}
-		       ,{"field_name": "F1_ZZZ_BAD_PRIO_FOR_ROW_ORDER", 		"field_type": "Varchar(20)"
+		       ,{"field_name": "F6_ZZZ_BAD_PRIO_FOR_ROW_ORDER", 		"field_type": "Varchar(20)"
 																	,	"targets": [{"table_name": "rtjj_zzz_09_sat","prio_for_row_order":"XXnot a numberXXX"}]}
-		       ,{"field_name": "F1_ZZZ_BAD_PRIO_IN_DIFF_HASH", 		"field_type": "Varchar(20)"
+		       ,{"field_name": "F7_ZZZ_BAD_PRIO_IN_DIFF_HASH", 		"field_type": "Varchar(20)"
 																	,	"targets": [{"table_name": "rtjj_zzz_09_sat","prio_in_diff_hash":"XXnot a numberXXX"}]}
 		 ],
 	"data_vault_model": [
