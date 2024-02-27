@@ -1504,6 +1504,3 @@ if __name__ == "__main__":
         print_the_brain()
         print("*** stopped compilation due to errors in input ***")
         exit(5)
-
-
-

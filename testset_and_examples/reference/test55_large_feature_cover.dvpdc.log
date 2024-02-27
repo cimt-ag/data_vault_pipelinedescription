@@ -1,7 +1,0 @@
-Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2023-12-08 11:48:57
-Compiling test55_large_feature_cover.dvpd.json
-
-Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/test55_large_feature_cover.dvpi.json
---- Compile successfull ---

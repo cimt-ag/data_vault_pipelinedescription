@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-02-21 12:10:13
+Compiling t0100_r_topo_2_to_2.dvpd.json
+
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t0100_r_topo_2_to_2.dvpi.json
+--- Compile successfull ---

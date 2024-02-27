@@ -10,3 +10,4 @@ experimental/java-dvpi-consumer/target/
 .vscode/
 .vscode/launch.json
 .venv/
+*.bak

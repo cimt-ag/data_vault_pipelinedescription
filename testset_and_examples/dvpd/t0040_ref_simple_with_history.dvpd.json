@@ -1,0 +1,23 @@
+{
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t0040_ref_simple_with_history",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+	"fields": [
+		      {"field_name": "F1_AAA_RC1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_40_aaa_ref"}]},
+		 	  {"field_name": "F2_AAA_RC2",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_40_aaa_ref"}]},
+		 	  {"field_name": "F3XX_AAA_RC3",		"field_type": "DATE",			"targets": [{"table_name": "rtjj_40_aaa_ref"
+																											,"column_name":"F3_AAA_RC3"}]},
+			  {"field_name": "F4_AAA_RC4F",		"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_40_aaa_ref","exclude_from_change_detection": "true"}]}
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_40_aaa_ref",		"table_stereotype": "ref","diff_hash_column_name": "RH_rtjj_40_aaa_ref"}
+				]
+		}
+	]
+}
