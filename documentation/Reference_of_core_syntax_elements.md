@@ -244,7 +244,7 @@ same values for all columns, except the update_every_load columns.
 Fieldsmappings with update_on_every_load set to true, will be excluded from the diff hash calculation,
 regardless of the exclude_from_change_detection setting.
 
-**column_content_comment**
+**column_comment**
 (optional, default=comment of the field)
 *defines: documentation, table DDL*
 <br>comment that will be added to the column in the data vault model. Default is the comment of the field
@@ -299,7 +299,7 @@ Json Path : /data_vault_mode[]/
 
 Satellites without any mapped content column are allowed (effectivity satellites). 
 
-**table_content_comment**
+**table_comment**
 (optional)
 *defines: documentation, table ddl*
 <br>Comment to add to the table in the database
