@@ -167,25 +167,31 @@ These should be managed by normal configuation concepts (e.g. loading of propert
 ### Deletion detection
 Deletion detection is necessary for every source that
 - deletes data from its own dataset
-- does not provide explicit and reliable information about the deletion of objects
+- does **not** provide explicit and reliable information about the deletion of objects in the interface
 
-When deletion events are explitly delivered,this does not need a deletion detection, but will be processd
-as normal data input, resulting in deletion flagging on the mentioned objects.
+In contrast, when deletion events are explicitly delivered the parsing module is responsible 
+for the interpretation and transformation into deletion flagged data rows in the data vault. 
 
-Wihtout explist deletion information, the method of detecting the deletion of data in the source
-needs some extra processing depending on the method, that can be applied on the specific source. 
+Without explicit deletion information, the method of detecting the deletion of data in the source
+needs some extra processing. The proper method depends on the available delivery pattern of the source 
+(full / incremental / partitioned). In general, data sources with high volume, will be delivered
+incrementally or partitioned to minimize the effort for every load. 
 
-Due to the high number of possible models and methods, not every theoretically possible kind of deletion detection 
-can be described by a general set of parameters. DVPD core syntax focuses on the most common patterns. 
+Not every theoretically possible kind of deletion detection 
+can be described by a general set of parameters, since the possible varations are nearly endless.
+DVPD core syntax focuses on the most common patterns. 
 More patterns can be added through the extendability. 
 The following common patterns must be supported
-- Receiving an **explicit "deletion indication** for an object" from the source   &rarr; creating deletion stage records for the deleted key
 - **Comparing full or partitioned lists of** existing **business keys** between source and vault &rarr; creating deletion stage records for now missing keys
 - Retreiving and staging the **full or partitioned dataset** &rarr; creating deletion records by comparing stage with vault
 
-The term "partitioned" in this context means, that only an identifiable part of the full dataset is delivered completely and can be compared. The relevant partition is identified by content in one or more fields of the source (e.g. "All contracts of a single company", "all revenues of a specific month"). These columns might not be located in the same table in the data vault model (see [Deletion Detection Catalog](./deletion_detection_catalog.md) for more insight ). The procedure of a partitioned deletion detection for a satellite works as follows:
+The term "partitioned" in this context means, that only an identifiable part of the full dataset is delivered completely and can be compared. The relevant partition is identified by content in one or more fields of the source (e.g. "All contracts of a single company", "all revenues of a specific month").
+The procedure of a partitioned deletion detection for a satellite works as follows:
 - collect all keys in the satellite of active records that belong to the staged partition
 - create deletion records for all of collected satellite keys, when they are not in the stage table 
+
+A deeper investigation about patterns of deletion detection is provided in
+ [Deletion Detection Catalog](./deletion_detection_catalog.md).
 
 
 ## Scope limitation

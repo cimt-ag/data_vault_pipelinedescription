@@ -208,6 +208,8 @@ data, expressed by the parent link, is in the currently staged dataset
 **uses_diff_hash**
 <br>Indicates the existence and usage of a diff hash, for comparison of satellite data during the loading
 
+**table_comment**
+<br>Contains the table comment, that should be added to the table in the database
 
 **columns[]**
 <br>→ see "columns[]"
@@ -221,7 +223,7 @@ Json Path: $.tables[]
 **column_type**
 <br>Datatype of the column in the table. Should be used in DDL generation.
 
-**column_content_comment**
+**column_comment**
 <br>Comment provided for the column. Should be used in DDL generation.
 
 **is_nullable**
@@ -323,6 +325,9 @@ Provides all necessary declarations how to parse every field from the source dat
 
 **field_type**
 <br>Datatype of the field. Depending on the parsing module, this might be the type of the incoming data. A type deviation to the target column will result in a type conversion.
+
+**field_comment**
+<br>Comment about the field for pure documentation. 
 
 **field_position**
 <br>This is the position of the field in the DVDP field list. It might be relevant for the parsing (e.g. when field order in DVPD represents the order of CSV columns).
@@ -487,8 +492,8 @@ Json Path: $.parse_sets[].load_operations[]
 **stage_column_name**
 <br>Name of the stage column, the hash can be taken from, when using stage table approach
 
-### data_mapping[]
-(will be renamed to "field_mappings" in 0.6.1)
+### field_mappings[]
+(formely known as "data_mapping" in 0.6.0)
 
 Json Path: $.parse_sets[].load_operations[]
 
@@ -515,6 +520,8 @@ on every load (diff hash can be used as shortcut when available)
  
 
 ### deletion_detection_rules[]
+Json Path: $.parse_sets[].load_operations[]
+
 Contains all deletion detection rules, that have to be applied to the table of this load operation.
 
 **procedure**
@@ -526,12 +533,11 @@ Contains all deletion detection rules, that have to be applied to the table of t
 
 **rule_comment**
 (optional)
-*defines: documentation*
 <br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
 <br>*“All satellites of customer”*
 
 ##### properties for other procedure 
-Please check out the definition in the dvpd specification for the following key words
+Please check out the definition in the dvpd specification for the following keywords
 - key_fields[]
 - partitioning_fields[]
 - join_path[]
