@@ -1466,7 +1466,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     try:
         dvpdc(dvpd_filename=args.dvpd_filename, dvpi_filename=args.dvpi)
-        print_the_brain()
+       # print_the_brain()
     except DvpdcError:
         print_the_brain()
         print("*** stopped compilation due to errors in input ***")
