@@ -187,6 +187,9 @@ def transform_hub_table(dvpd_table_entry, schema_name, storage_component):
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
 
+    if 'table_comment' in dvpd_table_entry:
+        table_properties['table_comment'] = dvpd_table_entry['table_comment']
+
     if 'hub_key_column_name' in dvpd_table_entry:
         table_properties['hub_key_column_name'] = dvpd_table_entry['hub_key_column_name'].upper()
     else:
@@ -203,6 +206,9 @@ def transform_lnk_table(dvpd_table_entry, schema_name, storage_component):
                        'model_profile_name': model_profile_name}
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
+
+    if 'table_comment' in dvpd_table_entry:
+        table_properties['table_comment'] = dvpd_table_entry['table_comment']
 
     if 'link_key_column_name' in dvpd_table_entry:
         table_properties['link_key_column_name'] = dvpd_table_entry['link_key_column_name'].upper()
@@ -257,6 +263,9 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component):
         return
     model_profile=g_model_profile_dict[model_profile_name]
 
+    if 'table_comment' in dvpd_table_entry:
+        table_properties['table_comment'] = dvpd_table_entry['table_comment']
+
     if 'satellite_parent_table' in dvpd_table_entry:
         table_properties['satellite_parent_table'] = dvpd_table_entry['satellite_parent_table'].lower()
     else:
@@ -298,6 +307,9 @@ def transform_ref_table(dvpd_table_entry, schema_name, storage_component):
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
         return
+
+    if 'table_comment' in dvpd_table_entry:
+        table_properties['table_comment'] = dvpd_table_entry['table_comment']
 
     model_profile=g_model_profile_dict[model_profile_name]
 
@@ -370,7 +382,7 @@ def create_columns_from_field_mapping(field_entry, field_position):
         column_map_entry['row_order_direction'] = table_mapping.get('row_order_direction','ASC')  # defaults to ASC
         column_map_entry['exclude_from_key_hash'] = table_mapping.get('exclude_from_key_hash',False)  # defaults to False
         column_map_entry['exclude_from_change_detection'] = table_mapping.get('exclude_from_change_detection',False)  # defaults to False
-        column_map_entry['column_content_comment'] = table_mapping.get('column_content_comment',field_entry.get('field_comment'))
+        column_map_entry['column_comment'] = table_mapping.get('column_comment',field_entry.get('field_comment'))
         column_map_entry['update_on_every_load'] = table_mapping.get('update_on_every_load',False)  # defaults to False
         try:
             column_map_entry['prio_in_key_hash'] = int(table_mapping.get('prio_in_key_hash',0) ) # defaults to 0
@@ -448,7 +460,7 @@ def derive_content_dependent_hub_properties(table_name,table_entry):
             column_properties['column_class']='business_key'
             has_business_key=True
         column_properties['field_mapping_count']=len(column_properties['field_mappings'])
-        for property_name in ['column_type','prio_for_column_position','field_position','prio_in_key_hash','exclude_from_key_hash','column_content_comment']:
+        for property_name in ['column_type','prio_for_column_position','field_position','prio_in_key_hash','exclude_from_key_hash','column_comment']:
             column_properties[property_name]=first_field[property_name]
         derive_implicit_relations(column_properties)
 
@@ -476,7 +488,7 @@ def derive_content_dependent_lnk_properties(table_name, table_entry):
             else:
                 column_properties['column_class'] = 'dependent_child_key'
             column_properties['field_mapping_count'] = len(column_properties['field_mappings'])
-            for property_name in ['column_type','prio_for_column_position', 'field_position','prio_in_key_hash', 'exclude_from_key_hash','column_content_comment']:
+            for property_name in ['column_type','prio_for_column_position', 'field_position','prio_in_key_hash', 'exclude_from_key_hash','column_comment']:
                 column_properties[property_name] = first_field[property_name]
             derive_implicit_relations(column_properties)
 
@@ -505,7 +517,7 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
         else:
             column_properties['column_class']='content'
         column_properties['field_mapping_count']=len(column_properties['field_mappings'])
-        for property_name in ['column_type','column_content_comment','prio_for_column_position','prio_for_row_order','row_order_direction','exclude_from_change_detection','prio_in_diff_hash']:
+        for property_name in ['column_type','column_comment','prio_for_column_position','prio_for_row_order','row_order_direction','exclude_from_change_detection','prio_in_diff_hash']:
             column_properties[property_name]=first_field[property_name]
         derive_implicit_relations(column_properties)
 
@@ -517,7 +529,7 @@ def derive_content_dependent_ref_properties(table_name, table_entry):
         else:
             column_properties['column_class'] = 'content'
         column_properties['field_mapping_count'] = len(column_properties['field_mappings'])
-        for property_name in ['column_type', 'column_content_comment','prio_for_column_position',
+        for property_name in ['column_type', 'column_comment','prio_for_column_position',
                               'exclude_from_change_detection', 'prio_in_diff_hash']:
             column_properties[property_name] = first_field[property_name]
         derive_implicit_relations(column_properties)
@@ -1040,7 +1052,7 @@ def assemble_dvpi(dvpd_object, dvpd_filename):
     dvpi_parse_sets.append(assemble_dvpi_parse_set(dvpd_object))
 
 def assemble_dvpi_table_entry(table_name,table_entry):
-    table_properties_to_copy=['table_stereotype','schema_name','storage_component','has_deletion_flag','is_effectivity_sat','is_enddated','is_multiactive','compare_criteria','uses_diff_hash']
+    table_properties_to_copy=['table_stereotype','schema_name','storage_component','has_deletion_flag','is_effectivity_sat','is_enddated','is_multiactive','compare_criteria','uses_diff_hash','table_comment']
     dvpi_table_entry={'table_name':table_name}
     for table_property in table_properties_to_copy:
         if table_property in table_entry:
@@ -1080,7 +1092,7 @@ def assemble_dvpi_table_entry(table_name,table_entry):
                 dvpi_column_entry[column_property] = column_entry[column_property]
 
     # add data columns to columns
-    data_column_properties_to_copy=['column_class','column_type','column_content_comment','exclude_from_change_detection','prio_for_column_position']
+    data_column_properties_to_copy=['column_class','column_type','column_comment','exclude_from_change_detection','prio_for_column_position']
     if 'data_columns' in table_entry:
         for column_name,column_entry in table_entry['data_columns'].items():
             dvpi_column_entry = {'column_name': column_name,'is_nullable':True,}
