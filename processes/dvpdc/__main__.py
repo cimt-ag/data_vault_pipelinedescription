@@ -1348,7 +1348,7 @@ def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_log_directory=None, ini_file=
     """ this function is a wrapper around the real compiler to initialize the log file"""
     global g_logfile
 
-    params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
+    params = configuration_load_ini('dvpdc.ini', 'dvpdc', ['dvpd_model_profile_directory'])
 
     if dvpdc_log_directory == None:
         dvpdc_report_directory=Path(params['dvpdc_report_directory'])
