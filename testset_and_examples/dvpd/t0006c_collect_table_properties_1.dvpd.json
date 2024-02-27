@@ -1,0 +1,37 @@
+{
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "test06c_collect_table_properties",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields": [
+		        {"field_name": "F1_xxx_BK1F", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtxx_xxx_06_p1_sat"}]}
+		 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_xxx_06_double",			"table_stereotype": "hub"
+																						 ,"hub_key_column_name": "hk_rtjj_xxx_06"}
+			,	{"table_name": "rtjj_xxx_06_double",			"table_stereotype": "sat"
+																						 ,"satellite_parent_table": "rtjj_xxx_06_double"
+																						 ,"diff_hash_column_name": "rtjj_xxx_06_p1_sat"}
+			,	{"table_name": "rtjj_yyy_06_bad_stereotype",			"table_stereotype": "XXXbad stereotypeXXX"}	
+			,	{"table_name": "rtjj_xxx_06_bad_model_profile"  ,"table_stereotype": "sat"
+																						 ,"model_profile_name":"XXXbad profileXXX"
+																					   ,"satellite_parent_table": "rtjj_xxx_01_hub"
+																					   ,"diff_hash_column_name": "rtjj_xxx_01_p1_sat"}
+			,	{"table_name": "rtjj_aaa_06_hub",			"table_stereotype": "hub"
+																						 ,"hub_key_column_name_XXmissingXX_": "hk_rtjj_aaa_06"}																				
+			,	{"table_name": "rtjj_aaa_yyy_06_lnk",			"table_stereotype": "lnk"
+																						 , "link_parent_tables_XXmissingXX_": ["rtjj_06_aaa_hub","rtjj_06_yyy_hub"]
+																						 ,"link_key_column_name": "lk_rtjj_aaa_xxx_06"}		
+			,	{"table_name": "rtjj_aaa_zzz_06_lnk",			"table_stereotype": "lnk"
+																						 , "link_parent_tables": [{"table_name":"rtjj_06_aaa_hub"},{"table_name_XXmissingXX_":"rtjj_06_zzz_hub"}]
+																						 ,"link_key_column_name": "lk_rtjj_aaa_xxx_06"}																							 
+				]
+		}
+	]
+}

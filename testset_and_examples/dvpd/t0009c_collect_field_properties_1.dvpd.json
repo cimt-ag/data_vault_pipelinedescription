@@ -1,0 +1,34 @@
+{
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t0009c_collect_field_properties_1",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields": [
+		        {"field_name": "F1_XXX_DUPLICATE_FIELD", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_aaa_09_hub"}]}
+		       ,{"field_name": "F1_XXX_DUPLICATE_FIELD", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_aaa_09_hub"}]}
+		       ,{"field_name": "F3_YYY_MAPPED_TO_UNKNOWN_TABLE", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_xxx_unknown_table"}]}
+		       ,{"field_name": "F4_ZZZ_BAD_PRIO_IN_KEY_HASH", 		"field_type": "Varchar(20)"
+																	,	"targets": [{"table_name": "rtjj_zzz_09_sat","prio_in_key_hash":"XXnot a numberXXX"}]}
+		       ,{"field_name": "F5_ZZZ_BAD_PRIO_FOR_COLUMN_POSITION", 		"field_type": "Varchar(20)"
+																	,	"targets": [{"table_name": "rtjj_zzz_09_sat","prio_for_column_position":"XXnot a numberXXX"}]}
+		       ,{"field_name": "F6_ZZZ_BAD_PRIO_FOR_ROW_ORDER", 		"field_type": "Varchar(20)"
+																	,	"targets": [{"table_name": "rtjj_zzz_09_sat","prio_for_row_order":"XXnot a numberXXX"}]}
+		       ,{"field_name": "F7_ZZZ_BAD_PRIO_IN_DIFF_HASH", 		"field_type": "Varchar(20)"
+																	,	"targets": [{"table_name": "rtjj_zzz_09_sat","prio_in_diff_hash":"XXnot a numberXXX"}]}
+		 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_aaa_09_hub",			"table_stereotype": "hub"
+																						 ,"hub_key_column_name": "hk_rtjj_aaa_09"}
+				,{"table_name": "rtjj_zzz_09_sat",			"table_stereotype": "sat"
+																						,"satellite_parent_table": "rtxx_xxx_01_hub"
+																						,"diff_hash_column_name": "rh_rtjj_zzz_09_sat"}
+				]
+		}
+	]
+}

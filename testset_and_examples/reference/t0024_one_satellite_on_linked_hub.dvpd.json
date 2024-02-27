@@ -1,0 +1,33 @@
+{
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t0024_one_satellite_on_linked_hub",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields": [
+		      {"field_name": "F1_AAA_BK1F", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_24_aaa_hub"}]}
+		 	  ,{"field_name": "F2_BBB_BK1F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_24_bbb_hub"}]}
+		 	  ,{"field_name": "F3_AAA_P1_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_24_aaa_p1_sat"}]}
+			  ,{"field_name": "F4_AAA_P1_C2",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_24_aaa_p1_sat"}]}
+			  ,{"field_name": "F5XX_AAA_P1_C3F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_24_aaa_p1_sat",
+																									 "column_name":"F5_AAA_P1_C3F"}]}
+		 	  ,{"field_name": "F6_BBB_P1_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_24_bbb_p1_sat"}]}
+			  ,{"field_name": "F7_BBB_P1_C2F",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_24_bbb_p1_sat"}]}
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_24_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_24_aaa"}
+				,{"table_name": "rtjj_24_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_24_aaa_hub","diff_hash_column_name": "RH_rtjj_24_aaa_p1_sat"}
+				,{"table_name": "rtjj_24_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_24_aaa_bbb",
+																				"link_parent_tables": ["rtjj_24_aaa_hub","rtjj_24_bbb_hub"]}
+				,{"table_name": "rtjj_24_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_24_aaa_bbb_lnk"}
+				,{"table_name": "rtjj_24_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_24_bbb"}
+				,{"table_name": "rtjj_24_bbb_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_24_bbb_hub","diff_hash_column_name": "RH_rtjj_24_bbb_p1_sat"}
+				]
+		}
+	]
+}

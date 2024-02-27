@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-02-21 08:49:43
+Compiling t0064_fg_drive_scenario_4.dvpd.json
+
+Hub 'rtjj_64_aaa_hub' has no business key mapping for relation '/' needed for link 'rtjj_64_aaa_bbb_lnk'
+*** Compilation ended with errors ***

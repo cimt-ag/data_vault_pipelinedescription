@@ -1,0 +1,22 @@
+{
+	"dvpd_version_missing": "0.6.0",
+	"stage_properties_missing" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t0000c_check_json_format_error",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction_missing": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields":[
+		      , {"field_name": "F1_AAA_BK1F", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_00_FFF_HUB"}]}
+		      , {"field_name": "F2_AAA_P1_C1F", 		"field_type": "Varchar(20)",	"targets": [{"table_name_missing": "rtjj_00_GGG_HUB"}]}
+			 ]
+	"data_vault_model": [
+		{"schema_name_missing": "rvlt_test_jj", 
+		 "tables": [
+			,	{"table_name": "THIS WILL NEVER BE SEEN SINCE JSON",		"table_stereotype_missing": "hub"}
+			,	{"table_name": "SINCE JSON HAS A FORMAT ERROR",	"table_stereotype": "sat","diff_hash_column_name": "rtjj_00_XX_SAT_WITHOUT_PARENT"}
+				]
+		}
+	]
+}

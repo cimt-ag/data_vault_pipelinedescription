@@ -1,0 +1,34 @@
+{
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t0031_two_links_with_esat",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields": [
+		      {"field_name": "F1_AAA_BK1F", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_31_aaa_hub"}]}
+		 	  ,{"field_name": "F2_BBB_BK1",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_31_bbb_hub"}]}
+		 	  ,{"field_name": "F3_CCC_BK1", 	"field_type": "Varchar(10)",	"targets": [{"table_name": "rtjj_31_ccc_hub"}]}
+		 	  ,{"field_name": "F4_BBB_CCC_BK2F", 	"field_type": "Varchar(10)",	"targets": [{"table_name": "rtjj_31_ccc_hub"},{"table_name": "rtjj_31_bbb_hub"}]}
+		 	  ,{"field_name": "F5_AAA_P1_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_31_aaa_p1_sat"}]}
+			  ,{"field_name": "F6_AAA_P1_C2F",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_31_aaa_p1_sat"}]}
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_31_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_31_aaa"}
+				,{"table_name": "rtjj_31_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_31_aaa_HUB","diff_hash_column_name": "RH_rtjj_31_aaa_P1_SAT"}
+				,{"table_name": "rtjj_31_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_31_bbb"}
+				,{"table_name": "rtjj_31_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_31_aaa_bbb",
+																				"link_parent_tables": ["rtjj_31_aaa_hub","rtjj_31_bbb_hub"]}
+				,{"table_name": "rtjj_31_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_31_aaa_bbb_lnk"}
+				,{"table_name": "rtjj_31_ccc_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_31_ccc"}
+				,{"table_name": "rtjj_31_aaa_ccc_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_31_aaa_ccc",
+																				"link_parent_tables": ["rtjj_31_aaa_hub","rtjj_31_ccc_hub"]}
+				,{"table_name": "rtjj_31_aaa_ccc_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_31_aaa_ccc_lnk"}
+				]
+		}
+	]
+}
