@@ -4,7 +4,7 @@
   "compile_timestamp": "2024-02-21 12:54:04",
   "dvpd_version": "0.6.0",
   "pipeline_name": "test90_model_profile_on_pipeline",
-  "dvpd_filemame": "t0090_model_profile_on_pipeline.dvpd.json",
+  "dvpd_filename": "t0090_model_profile_on_pipeline.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_90_aaa_hub",

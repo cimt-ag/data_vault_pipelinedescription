@@ -4,7 +4,7 @@
   "compile_timestamp": "2024-02-21 10:04:08",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0026_link_with_satellite_and_driving_key",
-  "dvpd_filemame": "t0026_link_with_satellite_and_driving_key.dvpd.json",
+  "dvpd_filename": "t0026_link_with_satellite_and_driving_key.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_26_aaa_hub",

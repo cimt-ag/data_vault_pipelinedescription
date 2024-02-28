@@ -4,7 +4,7 @@
   "compile_timestamp": "2024-02-21 08:54:40",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0082_double_recursion_and_link",
-  "dvpd_filemame": "t0082_double_recursion_and_link.dvpd.json",
+  "dvpd_filename": "t0082_double_recursion_and_link.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_82_aaa_hub",
