@@ -208,6 +208,8 @@ data, expressed by the parent link, is in the currently staged dataset
 **uses_diff_hash**
 <br>Indicates the existence and usage of a diff hash, for comparison of satellite data during the loading
 
+**table_comment**
+<br>Contains the table comment, that should be added to the table in the database
 
 **columns[]**
 <br>→ see "columns[]"
@@ -221,7 +223,7 @@ Json Path: $.tables[]
 **column_type**
 <br>Datatype of the column in the table. Should be used in DDL generation.
 
-**column_content_comment**
+**column_comment**
 <br>Comment provided for the column. Should be used in DDL generation.
 
 **is_nullable**
@@ -323,6 +325,9 @@ Provides all necessary declarations how to parse every field from the source dat
 
 **field_type**
 <br>Datatype of the field. Depending on the parsing module, this might be the type of the incoming data. A type deviation to the target column will result in a type conversion.
+
+**field_comment**
+<br>Comment about the field for pure documentation. 
 
 **field_position**
 <br>This is the position of the field in the DVDP field list. It might be relevant for the parsing (e.g. when field order in DVPD represents the order of CSV columns).

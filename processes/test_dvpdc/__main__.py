@@ -52,14 +52,18 @@ def run_test_for_file(dvpd_filename):
 
     try:
         dvpdc(dvpd_filename)
+        print("\n--- Comparing result with reference ---")
         compare_dvpdc_log_with_reference(dvpd_filename)
-        compare_dvpi_with_reference(dvpd_filename)
+        if dvpd_filename[5]!="c":
+            compare_dvpi_with_reference(dvpd_filename)
     except DvpdcError:
-        print("Compile failed. But this might be on purpose")
         compare_dvpdc_log_with_reference(dvpd_filename)
+        if dvpd_filename[5] == "c":
+            print("Compile failed, but should not")
+            g_difference_count += 1
         return g_difference_count
     except FileNotFoundError:
-        print("Probably some reference files are missing")
+        print("**** Could not confirm correctness. Some reference files are missing ****")
         return g_difference_count
 
     return g_difference_count
@@ -236,6 +240,8 @@ if __name__ == "__main__":
         explicit_file=args.dvpd_filename
 
     if  explicit_file is not None:
+        dvpd_file_list=[]
+        dvpd_file_list.append(explicit_file)
         if run_test_for_file(explicit_file) == 0:
             successful_file_list.append(explicit_file)
         else:
@@ -248,7 +254,7 @@ if __name__ == "__main__":
             else:
                 failing_file_list.append(filename)
 
-    print("\n ==================== Test Summary ================================")
+    print("\n==================== Test Summary ================================")
     print("\nvvv---Passed tests---vvv")
     for filename in successful_file_list:
         print(filename)

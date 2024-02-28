@@ -1,0 +1,25 @@
+{
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "test03c_check_essential_elements_3",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields": [
+		        {"field_name_XXmissingXX_": "F1_AAA_BK1F", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_AAA_01_hub"}]}
+		      , {"field_name": "F2_BBB_BK1F", 		"field_type_XXmissingXX_": "Varchar(20)",	"targets": [{"table_name": "rtjj_BBB_01_hub"}]}
+		      , {"field_name": "F3_AAA_P1_C1F", 		"field_type": "Varchar(20)",	"targets_XXmissingXX_": [{"table_name_missing": "rtjj_AAA_01_p1_sat"}]}			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_xx", 
+		 "tables": [
+				{"table_name_XXmissingXX_": "rtxx_xxx_01_hub",			"table_stereotype": "hub"
+																						 ,"hub_key_column_name": "hk_rtxx_xxx_01"}
+			,	{"table_name": "rtxx_xxx_01_p1_sat"  ,"table_stereotype_XXmissingXX_": "sat"
+																					   ,"satellite_parent_table": "rtxx_xxx_01_hub"
+																					   ,"diff_hash_column_name": "rtxx_xxx_01_p1_sat"}
+				]
+		}
+	]
+}
