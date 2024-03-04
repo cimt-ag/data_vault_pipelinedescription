@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-03-04 10:21:43
+Compiling t0102.dvpd.json
+
+Hub 'rtjj_102_bbb_hub' has no business key mapping for relation '/' needed for link 'rtjj_102_aaa_bbb_lnk'
+*** Compilation ended with errors ***
