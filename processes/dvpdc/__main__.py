@@ -1344,9 +1344,10 @@ def renderHashFieldAssembly(parse_set_entry,hash_name):
     raise(f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
 
 
-def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_log_directory=None, ini_file=None):
+def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_log_directory=None, ini_file=None, model_profile_directory=None):
     """ this function is a wrapper around the real compiler to initialize the log file"""
     global g_logfile
+
 
     params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
 
@@ -1367,11 +1368,11 @@ def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_log_directory=None, ini_file=
         g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         log_progress(f"Compiling {dvpd_filename}\n")
         try:
-            dvpdc_worker(dvpd_filename, dvpi_directory, dvpdc_report_directory, ini_file)
+            dvpdc_worker(dvpd_filename, dvpi_directory, dvpdc_report_directory, ini_file, model_profile_directory)
         except DvpdcError:
             log_progress("*** Compilation ended with errors ***")
 
-def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = None, ini_file = None):
+def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = None, ini_file = None, model_profile_directory=None):
 
     global g_table_dict
     global g_dvpi_document
@@ -1397,7 +1398,10 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
     if not os.path.exists(dvpd_file_path):
         raise Exception(f'could not find dvpd file: {dvpd_file_path}')
 
-    load_model_profiles(params['dvpd_model_profile_directory']);
+    if model_profile_directory==None:
+        load_model_profiles(params['dvpd_model_profile_directory'])
+    else:
+        load_model_profiles(model_profile_directory)
 
     try:
         with open(dvpd_file_path, "r") as dvpd_file:
@@ -1497,7 +1501,8 @@ if __name__ == "__main__":
         dvpdc(dvpd_filename=args.dvpd_filename,
               dvpi_directory=args.dvpi_directory,
               dvpdc_log_directory=args.log_directory,
-              ini_file=args.ini_file
+              ini_file=args.ini_file,
+              model_profile_directory=args.model_profile_directory
               )
         print_the_brain()
     except DvpdcError:
