@@ -34,8 +34,10 @@ def configuration_load_ini(filename=None, section=None, mandatory_elements=None)
         config directory and returns a dictionary with all found key values"""
     # todo move responsibility for full path to caller
 
-    # read config file
-    file_path = Path(os.path.dirname(os.path.realpath(__file__))+'/../config').joinpath(filename)
+    if os.path.isfile(filename):
+        print("---- WORKING ----")
+        # read config file
+        file_path = Path(Path(os.getcwd()).joinpath(filename))
     if not os.path.exists(file_path):
         raise Exception(f'could not find configuration file: {file_path}')
     parser = ConfigParser()

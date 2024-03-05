@@ -1348,7 +1348,7 @@ def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_log_directory=None, ini_file=
     """ this function is a wrapper around the real compiler to initialize the log file"""
     global g_logfile
 
-    params = configuration_load_ini('dvpdc.ini', 'dvpdc', ['dvpd_model_profile_directory'])
+    params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
 
     if dvpdc_log_directory == None:
         dvpdc_report_directory=Path(params['dvpdc_report_directory'])
@@ -1367,11 +1367,11 @@ def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_log_directory=None, ini_file=
         g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         log_progress(f"Compiling {dvpd_filename}\n")
         try:
-            dvpdc_worker(dvpd_filename, dvpi_directory, dvpdc_report_directory)
+            dvpdc_worker(dvpd_filename, dvpi_directory, dvpdc_report_directory, ini_file)
         except DvpdcError:
             log_progress("*** Compilation ended with errors ***")
 
-def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = None):
+def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = None, ini_file = None):
 
     global g_table_dict
     global g_dvpi_document
@@ -1390,7 +1390,7 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
     g_pipeline_model_profile_name=""
 
 
-    params = configuration_load_ini('dvpdc.ini', 'dvpdc',['dvpd_model_profile_directory'])
+    params = configuration_load_ini(ini_file, 'dvpdc',['dvpd_model_profile_directory'])
 
     dvpd_file_path = Path(params['dvpd_default_directory']).joinpath(dvpd_filename)
 
