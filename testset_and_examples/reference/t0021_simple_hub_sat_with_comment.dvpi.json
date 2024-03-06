@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
   "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-02-27 08:43:32",
+  "compile_timestamp": "2024-03-06 11:46:23",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0021_simple_hub_sat_with_comment",
   "dvpd_filename": "t0021_simple_hub_sat_with_comment.dvpd.json",
@@ -117,7 +117,6 @@
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(200)",
-          "column_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         },
