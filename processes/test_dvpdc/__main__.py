@@ -243,18 +243,20 @@ def search_for_testfile(testnumber, directory):
         return None
 """
 
-def find_dvpd_files(directory):
-        dvpd_files = []
-        for file in sorted(directory.iterdir()):
-            if file.is_file() and file.suffix == '.json':
-                dvpd_files.append(file.name)
-        return dvpd_files
+def find_dvpd_files():
+    params = configuration_load_ini('dvpdc.ini', 'dvpdc', ['dvpd_model_profile_directory'])
+    directory = Path(params['dvpd_default_directory'])
+    dvpd_files = []
+    for file in sorted(directory.iterdir()):
+        if file.is_file() and file.suffix == '.json':
+            dvpd_files.append(file.name)
+    return dvpd_files
 
 
 if __name__ == "__main__":
-    reference_directory = Path("C:/git_ordner/dvpd/testset_and_examples/dvpd")
 
-    dvpd_file_list = find_dvpd_files(reference_directory)
+
+    dvpd_file_list = find_dvpd_files()
     successful_file_list=[]
     failing_file_list=[]
 
