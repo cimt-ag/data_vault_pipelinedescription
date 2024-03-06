@@ -1098,7 +1098,7 @@ def assemble_dvpi_table_entry(table_name,table_entry):
             dvpi_column_entry = {'column_name': column_name,'is_nullable':True,}
             dvpi_columns.append(dvpi_column_entry)
             for column_property in data_column_properties_to_copy:
-                if column_property in column_entry:
+                if column_property in column_entry and column_entry[column_property] != None:
                     dvpi_column_entry[column_property] = column_entry[column_property]
 
     # final check for double column names
