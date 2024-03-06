@@ -1,27 +1,27 @@
 {
 	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "test_703_topo_abcl_abl_1_common_key",
+	"pipeline_name": "t0703_topo_abcl_abl_1_common_key",
 	"purpose":"Test dvpd transformation for multilayered field groups",
 	"record_source_name_expression": "knuppisoft.artikel",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 	"fields": [
-		       {"field_name": "ID_ABC",   "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_aaa_hub"}
+		       {"field_name": "F1_AAA_BBB_CCC_BK1",   "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_aaa_hub"}
 																						,{"table_name": "rtjj_703_bbb_hub"}
 																						,{"table_name": "rtjj_703_ccc_hub"}	]}
-		      ,{"field_name": "ID_AAA2", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_aaa_hub"}]}	 	  
-		      ,{"field_name": "ID_BBB2_T", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_bbb_hub"
-																						,"column_name": "ID_BBB2"
+		      ,{"field_name": "F2_AAA_BK2F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_aaa_hub"}]}	 	  
+		      ,{"field_name": "F3XX_BBB_BK2F_TTT", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_bbb_hub"
+																						,"column_name": "F3F4_BBB_BK2F"
 																				 		,"relation_names":["TTT"]} ] }	 	  
-		      ,{"field_name": "ID_BBB2_U", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_bbb_hub"
-																						,"column_name": "ID_BBB2"
+		      ,{"field_name": "F4XX_BBB_BK2F_UUU", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_bbb_hub"
+																						,"column_name": "F3F4_BBB_BK2F"
 																				 		,"relation_names":["UUU"]} ] }	 	  
-		      ,{"field_name": "ID_CCC2", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_ccc_hub"}]}	 	  
-		      ,{"field_name": "DT_AAA1", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_aaa_sat"}]}	 	  
-		      ,{"field_name": "DT_BBB1", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_bbb_sat"}]}	 	  
-		      ,{"field_name": "DT_CCC1", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_ccc_sat"}]}	 	  
+		      ,{"field_name": "F5_CCC_BK2F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_ccc_hub"}]}	 	  
+		      ,{"field_name": "F6_AAA_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_aaa_sat"}]}	 	  
+		      ,{"field_name": "F7_BBB_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_bbb_sat"}]}	 	  
+		      ,{"field_name": "F8_CCC_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_703_ccc_sat"}]}	 	  
 
 			 ],
 	"data_vault_model": [

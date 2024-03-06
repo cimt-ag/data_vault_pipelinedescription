@@ -4,7 +4,7 @@
   "compile_timestamp": "2024-02-14 19:12:33",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0055_broad_relation_feature_cover",
-  "dvpd_filemame": "t0055_broad_relation_feature_cover.dvpd.json",
+  "dvpd_filename": "t0055_broad_relation_feature_cover.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_55_aaa_hub",

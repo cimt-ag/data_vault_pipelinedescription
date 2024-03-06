@@ -4,7 +4,7 @@
   "compile_timestamp": "2024-02-21 08:53:13",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0070_fg_drive_scenario_10",
-  "dvpd_filemame": "t0070_fg_drive_scenario_10.dvpd.json",
+  "dvpd_filename": "t0070_fg_drive_scenario_10.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_70_aaa_hub",

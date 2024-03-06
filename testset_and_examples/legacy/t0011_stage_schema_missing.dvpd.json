@@ -1,0 +1,28 @@
+{
+	"dvpd_version": "0.6.0",
+	"pipeline_name": "t0011_stage_schema_missing",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields": [
+		      {"field_name": "F1_AAA_BK1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_10_aaa_hub"}]},
+		 	  {"field_name": "F2_AAA_BK2F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_10_aaa_hub"}]},
+		 	  {"field_name": "F3_AAA_P1_C1",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_10_aaa_p1_sat"}]},
+			  {"field_name": "F4_AAA_P1_C2",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_10_aaa_p1_sat"}]},
+			  {"field_name": "F5XX_AAA_P1_C3",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_10_aaa_p1_sat",
+																									 "column_name":"F5_AAA_P1_C3"}]},
+			  {"field_name": "F6_AAA_P1_C4F",	"field_type": "TIMESTAMP",		"targets": [{"table_name": "rtjj_10_aaa_p1_sat","exclude_from_change_detection": "true"}]}
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_10_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_10_aaa"},
+				{"table_name": "rtjj_10_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_10_aaa_HUB","diff_hash_column_name": "RH_rtjj_10_aaa_P1_SAT"}
+				]
+		}
+	]
+}
+
+

@@ -65,6 +65,10 @@ def run_test_for_file(dvpd_filename):
     except FileNotFoundError:
         print("**** Could not confirm correctness. Some reference files are missing ****")
         return g_difference_count
+    except :
+        print("**** DVPDC crashed ****")
+        g_difference_count += 1
+        return g_difference_count
 
     return g_difference_count
 
@@ -209,7 +213,7 @@ def search_for_testfile(testnumber):
 
     return None
 
-
+"""
 if __name__ == "__main__":
 
     #todo scan reference data directory and call compio
@@ -223,6 +227,36 @@ if __name__ == "__main__":
                      't0025_one_link_one_esat_three_hubs.dvpd.json',
                      't0055_broad_relation_feature_cover.dvpd.json'
                      ]
+
+
+def search_for_testfile(testnumber, directory):
+        fileprefix = "t{}".format(testnumber)
+
+        for file in sorted(directory.iterdir()):
+            if file.is_file() and file.stem.startswith(fileprefix):
+                index_of_t = file.stem.index("t")
+
+                test_num_from_filename = file.stem[index_of_t + 1:index_of_t + 5]
+                if test_num_from_filename == str(testnumber):
+                    return file.name
+
+        return None
+"""
+
+def find_dvpd_files():
+    params = configuration_load_ini('dvpdc.ini', 'dvpdc', ['dvpd_model_profile_directory'])
+    directory = Path(params['dvpd_default_directory'])
+    dvpd_files = []
+    for file in sorted(directory.iterdir()):
+        if file.is_file() and file.suffix == '.json':
+            dvpd_files.append(file.name)
+    return dvpd_files
+
+
+if __name__ == "__main__":
+
+
+    dvpd_file_list = find_dvpd_files()
     successful_file_list=[]
     failing_file_list=[]
 

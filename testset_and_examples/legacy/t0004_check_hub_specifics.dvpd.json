@@ -1,15 +1,15 @@
 {
 	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "test04_check_hub_specifics",
+	"pipeline_name": "t0004_check_hub_specifics",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 
 	"fields": [
-		 	  {"field_name": "F5_BK_BBB_VARCHAR",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_04_bbb_xxx_same_hk_hub"}]}
-  		 	  ,{"field_name": "F6_BK_CCC_VARCHAR",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_04_ccc_xxx_same_hk_hub"}]}
+		 	  {"field_name": "F5_BBB_BK1F",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_04_bbb_xxx_same_hk_hub"}]}
+  		 	  ,{"field_name": "F6_CCC_BK1F",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_04_ccc_xxx_same_hk_hub"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

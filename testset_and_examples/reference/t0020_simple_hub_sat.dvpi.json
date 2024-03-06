@@ -4,7 +4,7 @@
   "compile_timestamp": "2024-02-15 15:54:41",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0020_simple_hub_sat",
-  "dvpd_filemame": "t0020_simple_hub_sat.dvpd.json",
+  "dvpd_filename": "t0020_simple_hub_sat.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_20_aaa_hub",

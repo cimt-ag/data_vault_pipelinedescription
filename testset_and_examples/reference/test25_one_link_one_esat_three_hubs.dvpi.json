@@ -4,7 +4,7 @@
   "compile_timestamp": "2024-02-06 11:59:37",
   "dvpd_version": "0.6.0",
   "pipeline_name": "test25_one_link_one_esat_three_hubs",
-  "dvpd_filemame": "test25_one_link_one_esat_three_hubs.dvpd.json",
+  "dvpd_filename": "test25_one_link_one_esat_three_hubs.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_25_aaa_hub",
