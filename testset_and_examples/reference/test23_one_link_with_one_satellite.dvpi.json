@@ -4,7 +4,7 @@
   "compile_timestamp": "2023-12-08 11:57:53",
   "dvpd_version": "0.6.0",
   "pipeline_name": "test23_one_link_with_one_satellite",
-  "dvpd_filemame": "test23_one_link_with_one_satellite.dvpd.json",
+  "dvpd_filename": "test23_one_link_with_one_satellite.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_23_aaa_hub",

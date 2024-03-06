@@ -4,7 +4,7 @@
   "compile_timestamp": "2024-02-19 12:34:07",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0022_one_link_one_esat",
-  "dvpd_filemame": "t0022_one_link_one_esat.dvpd.json",
+  "dvpd_filename": "t0022_one_link_one_esat.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_22_aaa_hub",

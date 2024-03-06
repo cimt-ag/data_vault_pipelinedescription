@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-02-27 12:50:21
+Compiling t0220_r_topo_sat.dvpd.json
+
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t0220_r_topo_sat.dvpi.json
+--- Compile successfull ---

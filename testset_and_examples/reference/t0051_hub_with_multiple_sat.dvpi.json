@@ -4,7 +4,7 @@
   "compile_timestamp": "2024-02-21 10:07:18",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0051_hub_with_multiple_sat",
-  "dvpd_filemame": "t0051_hub_with_multiple_sat.dvpd.json",
+  "dvpd_filename": "t0051_hub_with_multiple_sat.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_51_aaa_hub",
