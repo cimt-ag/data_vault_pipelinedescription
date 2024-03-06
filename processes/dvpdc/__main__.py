@@ -1068,9 +1068,17 @@ def assemble_dvpi_table_entry(table_name,table_entry):
     
     # Driving Keys
     if 'driving_keys' in table_entry:
+        if table_entry['table_stereotype'] != 'sat':
+            register_error(f"Driving Keys defined for Table {table_name} even though Table is not a Satellite")
+        parent = table_entry['satellite_parent_table']
+        parent_hash_columns = g_table_dict[parent]['hash_columns']
+        parent_data_coolumns = g_table_dict[parent]['data_columns']
         #TODO: check if driving keys are contained in parent Link:
         for driving_key in table_entry['driving_keys']:
-            x = 1 # Platzhalter
+            if driving_key not in parent_hash_columns and driving_key not in parent_data_coolumns:
+                register_error(f"Driving Key {driving_key} not in Parent {parent} Columns")
+        # if checks successfull -> add to dvpi
+        dvpi_table_entry['driving_keys'] = table_entry['driving_keys']
 
     dvpi_columns=[]
     dvpi_table_entry['columns']=dvpi_columns
