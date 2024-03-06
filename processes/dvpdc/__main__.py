@@ -501,11 +501,19 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
     table_entry['is_effectivity_sat'] = not 'data_columns' in table_entry  # determine is_effectivity_sat
 
     parent_table = g_table_dict[table_entry['satellite_parent_table']]
+    parent_table_stereotype = 'lnk'
     if parent_table['table_stereotype'] == 'hub':
+        parent_table_stereotype = 'hub'
         if table_entry['is_effectivity_sat']:
             register_error(f"Parent table '{table_entry['satellite_parent_table']}' of effectivity sat '{table_name}' is not a link")
     elif parent_table['table_stereotype'] != 'lnk':
         register_error(f"Parent table '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is not a link or hub")
+
+    # Driving Key Check
+    if 'driving_keys' in table_entry:
+        if parent_table_stereotype != 'lnk':
+            register_error(f"Satellite {table_name} contains Driving Key entry, even though Parent is HUB. Driving Keys are only allowed for Satellites on Links.")
+        
 
     if table_entry['is_effectivity_sat']:
         return  # without any columns, we are done here
@@ -1057,6 +1065,12 @@ def assemble_dvpi_table_entry(table_name,table_entry):
     for table_property in table_properties_to_copy:
         if table_property in table_entry:
             dvpi_table_entry[table_property]=table_entry[table_property]
+    
+    # Driving Keys
+    if 'driving_keys' in table_entry:
+        #TODO: check if driving keys are contained in parent Link:
+        for driving_key in table_entry['driving_keys']:
+            x = 1 # Platzhalter
 
     dvpi_columns=[]
     dvpi_table_entry['columns']=dvpi_columns
