@@ -283,13 +283,12 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component):
             table_properties['diff_hash_column_name'] = 'RH_' + table_name.upper()
 
     table_properties['has_deletion_flag']=cast2Bool(dvpd_table_entry.get('has_deletion_flag', model_profile['has_deletion_flag_default']))  # default is profile
-    cleansed_driving_keys=[]
     if 'driving_keys' in dvpd_table_entry:
         #todo check if driving keys is a list
         cleansed_driving_keys=[]
         for driving_key in dvpd_table_entry['driving_keys']:
             cleansed_driving_keys.append(driving_key.upper())
-    table_properties['driving_keys']=cleansed_driving_keys
+        table_properties['driving_keys']=cleansed_driving_keys
     if 'tracked_relation_name' in dvpd_table_entry:
         table_properties['tracked_relation_name'] = dvpd_table_entry.get('tracked_relation_name')  # default is None
 
