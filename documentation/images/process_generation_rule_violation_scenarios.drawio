@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2024-03-14T10:35:42.051Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="b-JL_oBCJltuAek0ezwQ" version="21.6.1" type="device">
+<mxfile host="Electron" modified="2024-03-14T12:04:34.174Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="xqK02TAyLywBnpDZ-WWh" version="21.6.1" type="device">
   <diagram id="S8_EbyP6fOLFSmQk0vZv" name="Seite-1">
     <mxGraphModel dx="1356" dy="868" grid="1" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#FFFFFF" math="0" shadow="0">
       <root>
@@ -137,8 +137,8 @@
         <mxCell id="cFV7ejBLRMOV1y-EgFsQ-150" value="Load operations, created from explicit declarations" style="shape=rect;shadow=0;strokeWidth=0;strokeColor=none;fillColor=#cccccc;opacity=100.0;html=1;nl2Br=0;verticalAlign=top;align=left;spacingLeft=10;spacingRight=0;spacingTop=0;spacingBottom=0;whiteSpace=wrap;gliffyId=345;spacing=0;" parent="2" vertex="1">
           <mxGeometry x="130" y="138.5" width="480" height="30.25" as="geometry" />
         </mxCell>
-        <mxCell id="cFV7ejBLRMOV1y-EgFsQ-151" value="Load operations, induced by specific constellations(Star = general)" style="shape=rect;shadow=0;strokeWidth=0;strokeColor=none;fillColor=#cccccc;opacity=100.0;html=1;nl2Br=0;verticalAlign=top;align=left;spacingLeft=10;spacingRight=0;spacingTop=0;spacingBottom=0;whiteSpace=wrap;gliffyId=345;spacing=0;" parent="2" vertex="1">
-          <mxGeometry x="131.25" y="188.5" width="480" height="30.25" as="geometry" />
+        <mxCell id="cFV7ejBLRMOV1y-EgFsQ-151" value="Load operations, induced by specific constellations(Star = main/universal, Diamond =&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;Link with explicit relation mappings)" style="shape=rect;shadow=0;strokeWidth=0;strokeColor=none;fillColor=#cccccc;opacity=100.0;html=1;nl2Br=0;verticalAlign=top;align=left;spacingLeft=10;spacingRight=0;spacingTop=0;spacingBottom=0;whiteSpace=wrap;gliffyId=345;spacing=0;" parent="2" vertex="1">
+          <mxGeometry x="131.25" y="188.5" width="480" height="41.5" as="geometry" />
         </mxCell>
         <mxCell id="cFV7ejBLRMOV1y-EgFsQ-156" value="" style="group" parent="2" vertex="1" connectable="0">
           <mxGeometry x="110" y="190" width="10" height="11.25" as="geometry" />
@@ -844,6 +844,9 @@
         </mxCell>
         <mxCell id="BHV4HIjAjoOKH4ibJQ7y-320" value="No relation overlap in parent hubs" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;direction=west;position2=0.43;fillColor=#FFFF66;size=20;position=0.43;base=20;" vertex="1" parent="2">
           <mxGeometry x="190" y="1190" width="80" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="BHV4HIjAjoOKH4ibJQ7y-321" value="" style="rhombus;whiteSpace=wrap;html=1;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=default;strokeWidth=2;" vertex="1" parent="2">
+          <mxGeometry x="108" y="207" width="14" height="13" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
