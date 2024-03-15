@@ -244,16 +244,16 @@ hub, or by modelling two links, keeping the pairs.
 
 ## Observerations and conclusions
 
-1-Multiple relations are only possible with multiple sets of business key fields for the hub, they refer.
-<br>2-From 1. -> every kind of multi relation to a hub needs at least one business key field mapping, that are restricted to a specific relation
-<br>3-hubs need to be loaded for every relation declared by their business key mappings
-<br>4-links can only contribute to relations, that are declared in the hubs they connect
+1-Multiple relations are only possible with multiple sets of key fields for at lest one hub(busniess key) or link (dependent child key).
+<br>2-Relations in child tables must be supported by their parent, otherwise there would be no key to connect it 
+<br>3-all tables need to be loaded for every relation declared in their field mappings
 <br>5-a link with multiple references to the same hub, needs relation specific hub key columns
 <br>6-a link with multiple references to the same hub, can only have satellites
 that contribute to the whole relation set, expressed by the link.
-<br>7-satellites on links contribute to every relation, they have a field mapping for 
 <br>8-effectivity satellites need to declare the relation they track, due to the lack
 of a field, that would declare it
+
+
 <br>9-link satellites can only contribute to relations, the link can 
 contribute according to its parents
 
@@ -346,7 +346,7 @@ specific relations, the table is involved in.
 ## Deduce load operations
 
 ### Step 1 - Determine operation from explicit field relation 
-- for every column in the table there can be one default mapping `*` or one to many explicit mappings (including the explicit declaration of the unnamed relation `/`)
+- for every column in the table there can be one default field mapping `*` or one to many explicit mappings (including the explicit declaration of the main relation `/`)
 - a mapping to a column without a relation name is counts as default`*`
 - compiler check: Every explicitly declared relation (Even when `/` is declared) must have a mapping for all columns (consisting of the relation specific or the default)
 - a table will have an operation for every explicitly declared relation

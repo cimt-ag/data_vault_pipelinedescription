@@ -55,14 +55,18 @@ Tests are grouped by number ranges. See test list at the end of this article.
     - \<identifier for hubs> 3 times a letter from A to G (e.g. AAA,BBB)
     - \<identifier for links> identifiers of all connected hubs separated by "_" + optional \<identifier for relation>
     - \<identifier for sattelites> identifier of parent + part identification (p1, p2, ...) or optional \<identifier for relation>
-    - \<identifier for relations> 3 times a letter from T to W (e.g. TTT,UUU)
     - \<stereotype> extended stereotype postfix (e.g. hub, sat, lnk, dlnk, esat,msat,...)
     - **examples: rtjj_55_aaa_hub, rtjj_22_aaa_bbb_lnk, rtjj_20_aaa_p1_sat, rtjj_55_aaa_bbb_ttt_esat**
+
 - name for the key columns are equal to their table as follows.
     - a 2 letter prefix declares if it is a key of a hub (HK) or a key of a link (LK)
     - name of the table, without the stereotype postfix
     - **examples**: HK_rtjj_64_aaa, LK_rtjj_22_aaa_bbb
-    - 
+
+**Relation specific names**
+- \<identifier for relations> 3 times a letter from T to W (e.g. TTT,UUU)
+- \<identifier for parent paths when different to relation> 3 times a letter from P to R (e.g. PPP,QQQ)
+ 
 **Field names and mappings**
 Fieldnames express the target of the field, to provide easy control of the correct mapping.  
 - format \<field position>\[\<rename trigger>]_\<target table identifier>_\<column class>\<sequence>\[F]\[_\<identifier for relation>]
