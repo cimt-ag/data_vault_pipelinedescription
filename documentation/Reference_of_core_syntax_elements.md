@@ -184,6 +184,7 @@ module, responsible for calculating the group hash.
 
 **relation_names[]**
 (optional) *defines: mapping, data model, load operations*
+<br>*will be replaced by "key_sets[]" in release 0.7.0*
 <br>Declares this mapping to be used only in specific relations. It should be valid as a SQL name, since it 
 will be used as name extension for staging columns.
 
@@ -201,6 +202,25 @@ When ommitting this property, the field mapping participates in relations as fol
 * when there are multiple fields mapped to a target column, the mapping is used only in the main (unnamed) relation. 
 
 <br>*["parent"] , ["child1","child2"], ["/","Sibling"]*
+
+**key_sets[]**
+(optional) *defines: mapping, data model, load operations, hash key composition*
+<br>***announced for release 0.7.0** as part of the keyset syntax refactoring*
+<br>Declares this mapping to be used only for a specific key set. It should be valid as a SQL name, since it 
+will be used as name extension for staging columns.
+
+Depending on the target, the declaration will modify the mapping as follows:
+* Business Key - The mapping declares key set names for a hub, where the source field will be used
+* Dependent child key - The mapping declares key set names for a link, where the source field will be used
+* Data excluded from key for hub or link - The mapping will be used in combination with buisness key, that belong to the key set
+* Satellite content - The mapping will be used in combination with a satellite parent key, that is created from keys from that key set
+
+To explicitly declare participation in the main (unnamend) key set use ´/´ as name. 
+This is the only way to declare the participation in a subset of key set that contains the unnamed key set.
+
+When ommitting this property, the field mapping participates in key sets as follows:
+* when the field is the only field mapped to a target column, the mapping is used in all key sets
+* when there are multiple fields mapped to a target column, the mapping is used only in the main (unnamed) key set. 
 
 
 **exclude_from_key_hash**
@@ -354,8 +374,48 @@ The order of the tables in the list can be relevant to the hashing order of the 
 <br>must be set to true, to avoid warnings for links without an esat or sat.
 
 **link_key_sets[]**
-(optional)*defines: hash key content, load operations, field mapping*
-<br>*announced for release 0.7.0 (see long change announcement in relation_name below*
+(situational)*defines: hash key content, load operations, field mapping*
+<br>*announced for release 0.7.0 as part of the keyset syntax refactoring*
+
+Defines the number of load operations and  key sets of the link. The number of elements must be equal to the number of 
+elements in key_sets of link_parent_table declaration with more then one element.
+Every load operation will use the element with the same position in the link_key_sets[] list and the key_sets[] list.
+
+For the hub key, the link_key_sets[] key set will be used  as long as there is no dedicated key_sets[] list given in the link parent tables entry.
+
+Dependent child keys with no declaration about a key set, will be loaded for all key sets in the list.
+
+Attached satellites with no declaration about a key set, will be loaded for all key sets in the list.
+
+"link_key_sets[]" must be defined explicitly when:
+- key_sets used on the same position in different key_sets[] in the link_parent_tables[] create ambiguity for the attached satellites or contained dependent child keys 
+- key_sets used in dependent child key mappings or attached satellites are not covered in the key_sets[] in the link_parent_tables[]
+
+When declaration of "link_key_sets[]" is optional and omitted , it defaults to the first option of these:
+- the union of all parent mapping key_sets[]    
+- all key sets of dependent child keys
+- all key sets that are defined in field mappings or declared to be tracked by attached satellites
+- all key sets that are common to all attached hubs
+- the single element `/`
+
+This default behaviour reduces the need for declaration of link_key_sets to a minimum. 
+It might reveal violations of rules, that demand explicit declaration.
+
+A compile error will be reported when:
+- a hub does not support the demanded key set
+- the specific key set for a dependent child key is not in the final list
+- the specific key set for an attached satellite is not in the final list
+
+Example of union of parent mapping key_sets
+```
+[A,B,C] & [A,B,C]= [A,B,C]
+[A,B,C] & [/] = [A,B,C]
+[A,/,/] & [/,B,C] = [A,B,C]
+[A,/,/] & [/,/,C] = [A,/,C]
+[A,B,C] & [D,E,F]= invalid
+[A,B,C] & [A] = invalid
+ ```
+
 
 ### link_parent_tables[]
 
@@ -370,32 +430,33 @@ By using the full property declaration syntax for parent tables, multiple relati
 
 **relation_name**
 (mandatory for every table, declared more then once in the list)
-*defines: model structure, loading operations*
+<br>*defines: model structure, loading operations*
 <br>Name of the relation. The name should be usable to extend the hub key column names.
+<br>*will be replaced by "parent_relation_name" in release 0.7.0*
 The name is referenced by the "relation_name" property of a field, 
 to declare the field to be used for this relation.
 <br>*"master"|"parent"|"duplicate"*
 
-Announcement for Release 0.7.0: To express test scenarios 3370 - 3390 and 3450,3550,3560 following will be changed:
-- in link parent mappings  new keyword "parent_relation_name" will be added. It is used to generate different hub key and stage column names. It defaults to "/"
-- "relation_names" in links and satellites will be changed to "key_sets[]" 
-- In link parent mappings the key_sets[] will default to a one element list containing the "parent_relation_name"
-- In link parent mappings the key_sets[] must have one element (general key set) or the same number of elements like all other parent mappings
-- the highest number of elements in the key set of a link, defines the number of load operations needed
-- In link a new keyword "link_key_sets[]" will be added. It is only used, when there are multiple key sets in the parent mapping.
-- "link_key_sets[]" declares the key_set, to be used for every entry in the key_set list of the parent mappings. It must have the same number of elements.
-- "link_key_sets[]" defaults to a declared parent mapping key_set[], if that is the only one with declarations to other key sets then `/` 
-- else "link_key_sets[]" defaults to all key sets of dependend child keys, if there are any
-- else "link_key_sets[]" defaults to all key sets that are defined in field mappings or declared to be tracked by attached satellites
-- else "link_key_sets[]" defaults to all key sets that are common to all attached hubs
-- else "link_key_sets[]" defaults to the element `/`
-- The link will be processed for every entry in the "link_key_sets[]". The value in the list defines the keyset of the dependent child keys and the hubs unless the hub is attached with a dedicated key_sets[] list
- 
-
+**parent_relation_name**
+(mandatory for 2 and more relations to the same hub)
+<br>*defines: model structure*
+<br>*announced for release 0.7.0 as part of the key_set syntax refactoring*
+It is used to generate different hub key and stage column names. Is source for the default content of "key_sets[]" It defaults to "/".
 
 **hub_key_column_name_in_link**
 (optional)*defines: db element naming*
 <br>Name of the hub key columns, to be used for the mapping of this relation. If ommitted the hub key column name will be generated by adding the relation name to the original hub key column name
+
+**key_sets[]**
+(optional, defaults to 1 element using the parent_relation_name)
+<br>*defines: loading operations, hash keys*
+<br>*announced for release 0.7.0 as part of the key_set syntax refactoring*
+
+Defines the key set to be used from the parent hub, for a specific load operation. With only one element,it will be applied
+to every load operation. When having multiple elements, it must have the same number of elements like all 
+key_sets[] from the other link_parent_table declaraions, that have more then one element.
+The number of elements define the number of loading operations.
+
 
 ### "sat" specific properties
 
@@ -459,7 +520,7 @@ In general, the name must match the final name of a hub key column in the link. 
 whithout any field mapping. The relation name must be valid for the satellites parent.
 
 Announcement for Release 0.7.0: To express test scenarios 3370-34230,3550,3560 "tracked_relation_name" 
-will be changed to "tracked_key_sets[]", allowing the declaration of a key set combination .
+will be changed to "tracked_key_set".
 
 **history_depth_criteria**
 (mandatory when history_depth_limit is set)
