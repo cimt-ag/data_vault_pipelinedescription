@@ -353,6 +353,10 @@ The order of the tables in the list can be relevant to the hashing order of the 
 (optional)*defines: compiler behaviour*
 <br>must be set to true, to avoid warnings for links without an esat or sat.
 
+**link_key_sets[]**
+(optional)*defines: hash key content, load operations, field mapping*
+<br>*announced for release 0.7.0 (see long change announcement in relation_name below*
+
 ### link_parent_tables[]
 
 Json Path : /data_vault_mode[]/tables[]
@@ -372,14 +376,21 @@ The name is referenced by the "relation_name" property of a field,
 to declare the field to be used for this relation.
 <br>*"master"|"parent"|"duplicate"*
 
-Announcement for Release 6.2: To express test scenarios 3370,3380,3450,3550,3560 "relation_name" 
-will be changed to parent_path_name and an additional key word "relation_names[]"
-will be added.  "relation_names[]" allows to declare the relation, to be used on a specific link path to the parent.
-"Relation_names[]" is optional an defaults to a list with one entry, that is the same as the parent_path_name.
-
-Thinking this one step further  we should rename "relation_name" to "keyset_name" since it 
-represents a specific set of keys to be used to store the data?
-In that case we could use "relation_name" in the link parent declaration 
+Announcement for Release 0.7.0: To express test scenarios 3370 - 3390 and 3450,3550,3560 following will be changed:
+- in link parent mappings  new keyword "parent_relation_name" will be added. It is used to generate different hub key and stage column names. It defaults to "/"
+- "relation_names" in links and satellites will be changed to "key_sets[]" 
+- In link parent mappings the key_sets[] will default to a one element list containing the "parent_relation_name"
+- In link parent mappings the key_sets[] must have one element (general key set) or the same number of elements like all other parent mappings
+- the highest number of elements in the key set of a link, defines the number of load operations needed
+- In link a new keyword "link_key_sets[]" will be added. It is only used, when there are multiple key sets in the parent mapping.
+- "link_key_sets[]" declares the key_set, to be used for every entry in the key_set list of the parent mappings. It must have the same number of elements.
+- "link_key_sets[]" defaults to a declared parent mapping key_set[], if that is the only one with declarations to other key sets then `/` 
+- else "link_key_sets[]" defaults to all key sets of dependend child keys, if there are any
+- else "link_key_sets[]" defaults to all key sets that are defined in field mappings or declared to be tracked by attached satellites
+- else "link_key_sets[]" defaults to all key sets that are common to all attached hubs
+- else "link_key_sets[]" defaults to the element `/`
+- The link will be processed for every entry in the "link_key_sets[]". The value in the list defines the keyset of the dependent child keys and the hubs unless the hub is attached with a dedicated key_sets[] list
+ 
 
 
 **hub_key_column_name_in_link**
@@ -446,6 +457,9 @@ In general, the name must match the final name of a hub key column in the link. 
 *defines: loading operations*
 <br>Name of the relation this satellite will track the validity for. This is only used for satellites
 whithout any field mapping. The relation name must be valid for the satellites parent.
+
+Announcement for Release 0.7.0: To express test scenarios 3370-34230,3550,3560 "tracked_relation_name" 
+will be changed to "tracked_key_sets[]", allowing the declaration of a key set combination .
 
 **history_depth_criteria**
 (mandatory when history_depth_limit is set)

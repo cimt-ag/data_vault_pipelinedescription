@@ -242,19 +242,19 @@ hub, or by modelling two links, keeping the pairs.
 
 # Relation participation
 
+**This chapter needs some alignment to the "keyset + link parent path differentiation". This will be done in release 0.7.0** 
+
 ## Observerations and conclusions
 
 1-Multiple relations are only possible with multiple sets of key fields for at lest one hub(busniess key) or link (dependent child key).
 <br>2-Relations in child tables must be supported by their parent, otherwise there would be no key to connect it 
-<br>3-all tables need to be loaded for every relation declared in their field mappings
-<br>5-a link with multiple references to the same hub, needs relation specific hub key columns
-<br>6-a link with multiple references to the same hub, can only have satellites
-that contribute to the whole relation set, expressed by the link.
-<br>8-effectivity satellites need to declare the relation they track, due to the lack
+<br>3-all tables need to be loaded for every key set declared in their field mappings
+<br>4-a link with multiple references to the same hub, needs relation specific hub key columns
+<br>5-a link with multiple references to the same hub, can only have satellites
+that contribute to the key sets, expressed by the link.
+<br>6-effectivity satellites need to declare the relation they track, due to the lack
 of a field, that would declare it
-
-
-<br>9-link satellites can only contribute to relations, the link can 
+<br>7-satellites can only contribute to relations, the link can 
 contribute according to its parents
 
 ![relation_conclusions.png](./images%2Fmapping_relations%2Frelation_conclusions.png)
@@ -345,6 +345,8 @@ specific relations, the table is involved in.
 
 ## Deduce load operations
 
+**This chapter will get some rewriting, when the "keyset + link parent path differentiation" is added in release 0.7.0** 
+
 ### Step 1 - Determine operation from explicit field relation 
 - for every column in the table there can be one default field mapping `*` or one to many explicit mappings (including the explicit declaration of the main relation `/`)
 - a mapping to a column without a relation name is counts as default`*`
@@ -418,6 +420,9 @@ This only applies to links without a `+` operation
 - use the relation specific hub or link key calculation from the parent 
 
 # Catalog of field mappings
+
+**This chapter will get some rewriting, when the "keyset + link parent path differentiation" is added in release 0.7.0** 
+
 To setup a test suite for all combinations of topologies and field mappings, the follwing will provide a notation description method and a table of combinations
 
 - **Model**: Short notation of the model topology by specifying the links as list of the connected (single letter A-D) hub name. Every hub is preceeded by the number of connections from the link to the hub, when the number is greater then 1. The name of the ends with the relation model approach<br> \<multiplicity>\<Hub>\[\<multiplicity>\<hub>]...\<approach (indicated by [R,L,E,D,S])> + ....  <br>(multiplicity is only provided when greater then 1)

@@ -1,5 +1,5 @@
 {
-	"dvpd_version": "0.6.0",
+	"dvpd_version": "0.7.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "t003370_fg_drive_scenario_9_simple_hierarchy",
 	"record_source_name_expression":"dvpd implementation test",
@@ -16,10 +16,10 @@
 																					,"column_name": "F1F2F3_BK1F","relation_names": ["VVV"]}]}
 		      ,{"field_name": "F4_AAA_AAA_C1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_3370_aaa_aaa_p1_sat"]}		  
 		      ,{"field_name": "F5XX_AAA_AAA_C2F_UUU", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_3370_aaa_aaa_p1_sat"
-																					,"column_name": "F5F6_C2F"
+																					,"column_name": "F5F6_AAA_P1_C2F"
 																					,"relation_names": ["UUU"]}]}		  
 		      ,{"field_name": "F6XX_AAA_AAA_C2F_VVV", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_3370_aaa_aaa_p1_sat"
-																					,"column_name": "F5F6_C2F"
+																					,"column_name": "F5F6_AAA_P1_C2F"
 																					,"relation_names": ["VVV"]}]}		  
 			 ],
 	"data_vault_model": [
