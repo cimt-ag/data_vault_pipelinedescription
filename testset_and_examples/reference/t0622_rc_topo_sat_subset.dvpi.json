@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
   "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-03-14 11:59:42",
+  "compile_timestamp": "2024-03-26 12:50:08",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0622_rc_topo_sat_subset",
   "dvpd_filename": "t0622_rc_topo_sat_subset.dvpd.json",
@@ -301,13 +301,13 @@
           "field_type": "decimal(12,2)",
           "field_position": 9,
           "needs_encryption": false,
-          "field_name": "F09_BBB_C2F"
+          "field_name": "F9XX_BBB_C2F"
         },
         {
           "field_type": "decimal(12,2)",
           "field_position": 10,
           "needs_encryption": false,
-          "field_name": "F10_BBB_C2F_UUU_VVV"
+          "field_name": "F10XX_BBB_C2F_UUU_VVV"
         }
       ],
       "hashes": [
@@ -464,7 +464,7 @@
               "field_target_column": "F7F8_BBB_C1"
             },
             {
-              "field_name": "F09_BBB_C2F",
+              "field_name": "F9XX_BBB_C2F",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_622_bbb_sat",
@@ -495,7 +495,7 @@
               "field_target_column": "F7F8_BBB_C1"
             },
             {
-              "field_name": "F10_BBB_C2F_UUU_VVV",
+              "field_name": "F10XX_BBB_C2F_UUU_VVV",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_622_bbb_sat",
@@ -526,7 +526,7 @@
               "field_target_column": "F7F8_BBB_C1"
             },
             {
-              "field_name": "F10_BBB_C2F_UUU_VVV",
+              "field_name": "F10XX_BBB_C2F_UUU_VVV",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_622_bbb_sat",
@@ -664,10 +664,10 @@
             },
             {
               "column_name": "F9F10_BBB_C2F",
-              "field_name": "F09_BBB_C2F",
+              "field_name": "F9XX_BBB_C2F",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F09_BBB_C2F"
+              "stage_column_name": "F9XX_BBB_C2F"
             }
           ]
         },
@@ -701,10 +701,10 @@
             },
             {
               "column_name": "F9F10_BBB_C2F",
-              "field_name": "F10_BBB_C2F_UUU_VVV",
+              "field_name": "F10XX_BBB_C2F_UUU_VVV",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F10_BBB_C2F_UUU_VVV"
+              "stage_column_name": "F10XX_BBB_C2F_UUU_VVV"
             }
           ]
         },
@@ -738,10 +738,10 @@
             },
             {
               "column_name": "F9F10_BBB_C2F",
-              "field_name": "F10_BBB_C2F_UUU_VVV",
+              "field_name": "F10XX_BBB_C2F_UUU_VVV",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F10_BBB_C2F_UUU_VVV"
+              "stage_column_name": "F10XX_BBB_C2F_UUU_VVV"
             }
           ]
         },
@@ -950,9 +950,9 @@
           ]
         },
         {
-          "stage_column_name": "F09_BBB_C2F",
+          "stage_column_name": "F9XX_BBB_C2F",
           "stage_column_class": "data",
-          "field_name": "F09_BBB_C2F",
+          "field_name": "F9XX_BBB_C2F",
           "is_nullable": true,
           "column_type": "decimal(12,2)",
           "column_classes": [
@@ -960,9 +960,9 @@
           ]
         },
         {
-          "stage_column_name": "F10_BBB_C2F_UUU_VVV",
+          "stage_column_name": "F10XX_BBB_C2F_UUU_VVV",
           "stage_column_class": "data",
-          "field_name": "F10_BBB_C2F_UUU_VVV",
+          "field_name": "F10XX_BBB_C2F_UUU_VVV",
           "is_nullable": true,
           "column_type": "decimal(12,2)",
           "column_classes": [
