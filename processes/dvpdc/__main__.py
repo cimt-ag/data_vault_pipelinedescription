@@ -1,3 +1,4 @@
+#!/usr/bin/env python310
 # =====================================================================
 # Part of the Data Vault Pipeline Description Reference Implementation
 #
@@ -19,6 +20,13 @@
 import argparse
 import copy
 import os
+import sys
+
+
+# Include data_vault_pipelinedescription folder into
+project_directory = os.path.dirname(os.path.dirname(sys.path[0]))
+sys.path.insert(0,project_directory)
+
 import re
 
 from pathlib import Path
@@ -26,6 +34,7 @@ from lib.configuration import configuration_load_ini
 from lib.exceptions import DvpdcError
 import json
 from datetime import datetime
+from tkinter import filedialog
 
 
 
@@ -187,9 +196,6 @@ def transform_hub_table(dvpd_table_entry, schema_name, storage_component):
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
 
-    if 'table_comment' in dvpd_table_entry:
-        table_properties['table_comment'] = dvpd_table_entry['table_comment']
-
     if 'hub_key_column_name' in dvpd_table_entry:
         table_properties['hub_key_column_name'] = dvpd_table_entry['hub_key_column_name'].upper()
     else:
@@ -206,9 +212,6 @@ def transform_lnk_table(dvpd_table_entry, schema_name, storage_component):
                        'model_profile_name': model_profile_name}
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
-
-    if 'table_comment' in dvpd_table_entry:
-        table_properties['table_comment'] = dvpd_table_entry['table_comment']
 
     if 'link_key_column_name' in dvpd_table_entry:
         table_properties['link_key_column_name'] = dvpd_table_entry['link_key_column_name'].upper()
@@ -263,9 +266,6 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component):
         return
     model_profile=g_model_profile_dict[model_profile_name]
 
-    if 'table_comment' in dvpd_table_entry:
-        table_properties['table_comment'] = dvpd_table_entry['table_comment']
-
     if 'satellite_parent_table' in dvpd_table_entry:
         table_properties['satellite_parent_table'] = dvpd_table_entry['satellite_parent_table'].lower()
     else:
@@ -307,9 +307,6 @@ def transform_ref_table(dvpd_table_entry, schema_name, storage_component):
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
         return
-
-    if 'table_comment' in dvpd_table_entry:
-        table_properties['table_comment'] = dvpd_table_entry['table_comment']
 
     model_profile=g_model_profile_dict[model_profile_name]
 
@@ -382,7 +379,7 @@ def create_columns_from_field_mapping(field_entry, field_position):
         column_map_entry['row_order_direction'] = table_mapping.get('row_order_direction','ASC')  # defaults to ASC
         column_map_entry['exclude_from_key_hash'] = table_mapping.get('exclude_from_key_hash',False)  # defaults to False
         column_map_entry['exclude_from_change_detection'] = table_mapping.get('exclude_from_change_detection',False)  # defaults to False
-        column_map_entry['column_comment'] = table_mapping.get('column_comment',field_entry.get('field_comment'))
+        column_map_entry['column_content_comment'] = table_mapping.get('column_content_comment',field_entry.get('field_comment'))
         column_map_entry['update_on_every_load'] = table_mapping.get('update_on_every_load',False)  # defaults to False
         try:
             column_map_entry['prio_in_key_hash'] = int(table_mapping.get('prio_in_key_hash',0) ) # defaults to 0
@@ -460,7 +457,7 @@ def derive_content_dependent_hub_properties(table_name,table_entry):
             column_properties['column_class']='business_key'
             has_business_key=True
         column_properties['field_mapping_count']=len(column_properties['field_mappings'])
-        for property_name in ['column_type','prio_for_column_position','field_position','prio_in_key_hash','exclude_from_key_hash','column_comment']:
+        for property_name in ['column_type','prio_for_column_position','field_position','prio_in_key_hash','exclude_from_key_hash','column_content_comment']:
             column_properties[property_name]=first_field[property_name]
         derive_implicit_relations(column_properties)
 
@@ -488,7 +485,7 @@ def derive_content_dependent_lnk_properties(table_name, table_entry):
             else:
                 column_properties['column_class'] = 'dependent_child_key'
             column_properties['field_mapping_count'] = len(column_properties['field_mappings'])
-            for property_name in ['column_type','prio_for_column_position', 'field_position','prio_in_key_hash', 'exclude_from_key_hash','column_comment']:
+            for property_name in ['column_type','prio_for_column_position', 'field_position','prio_in_key_hash', 'exclude_from_key_hash','column_content_comment']:
                 column_properties[property_name] = first_field[property_name]
             derive_implicit_relations(column_properties)
 
@@ -517,7 +514,7 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
         else:
             column_properties['column_class']='content'
         column_properties['field_mapping_count']=len(column_properties['field_mappings'])
-        for property_name in ['column_type','column_comment','prio_for_column_position','prio_for_row_order','row_order_direction','exclude_from_change_detection','prio_in_diff_hash']:
+        for property_name in ['column_type','column_content_comment','prio_for_column_position','prio_for_row_order','row_order_direction','exclude_from_change_detection','prio_in_diff_hash']:
             column_properties[property_name]=first_field[property_name]
         derive_implicit_relations(column_properties)
 
@@ -529,7 +526,7 @@ def derive_content_dependent_ref_properties(table_name, table_entry):
         else:
             column_properties['column_class'] = 'content'
         column_properties['field_mapping_count'] = len(column_properties['field_mappings'])
-        for property_name in ['column_type', 'column_comment','prio_for_column_position',
+        for property_name in ['column_type', 'column_content_comment','prio_for_column_position',
                               'exclude_from_change_detection', 'prio_in_diff_hash']:
             column_properties[property_name] = first_field[property_name]
         derive_implicit_relations(column_properties)
@@ -1032,7 +1029,7 @@ def assemble_dvpi(dvpd_object, dvpd_filename):
                      'compile_timestamp':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'dvpd_version':dvpd_object['dvpd_version'],
                      'pipeline_name':dvpd_object['pipeline_name'],
-                     'dvpd_filename':dvpd_filename}
+                     'dvpd_filemame':dvpd_filename}
 
     # add tables
     dvpi_tables=[]
@@ -1052,7 +1049,7 @@ def assemble_dvpi(dvpd_object, dvpd_filename):
     dvpi_parse_sets.append(assemble_dvpi_parse_set(dvpd_object))
 
 def assemble_dvpi_table_entry(table_name,table_entry):
-    table_properties_to_copy=['table_stereotype','schema_name','storage_component','has_deletion_flag','is_effectivity_sat','is_enddated','is_multiactive','compare_criteria','uses_diff_hash','table_comment']
+    table_properties_to_copy=['table_stereotype','schema_name','storage_component','has_deletion_flag','is_effectivity_sat','is_enddated','is_multiactive','compare_criteria','uses_diff_hash']
     dvpi_table_entry={'table_name':table_name}
     for table_property in table_properties_to_copy:
         if table_property in table_entry:
@@ -1092,7 +1089,7 @@ def assemble_dvpi_table_entry(table_name,table_entry):
                 dvpi_column_entry[column_property] = column_entry[column_property]
 
     # add data columns to columns
-    data_column_properties_to_copy=['column_class','column_type','column_comment','exclude_from_change_detection','prio_for_column_position']
+    data_column_properties_to_copy=['column_class','column_type','column_content_comment','exclude_from_change_detection','prio_for_column_position']
     if 'data_columns' in table_entry:
         for column_name,column_entry in table_entry['data_columns'].items():
             dvpi_column_entry = {'column_name': column_name,'is_nullable':True,}
@@ -1347,16 +1344,22 @@ def renderHashFieldAssembly(parse_set_entry,hash_name):
     raise(f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
 
 
-def dvpdc(dvpd_filename,dvpi_filename=None):
-    """ this function is a wrapper arounf the real compiler to initialize the log file"""
+def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_file=None, model_profile_directory=None):
+    """ this function is a wrapper around the real compiler to initialize the log file"""
     global g_logfile
 
-    params = configuration_load_ini('dvpdc.ini', 'dvpdc',['dvpd_model_profile_directory'])
-    dvpdc_report_directory=Path(params['dvpdc_report_directory'])
-    dvpdc_report_directory.mkdir(parents=True, exist_ok=True)
 
-    dvpdc_log_filename= dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpdc.log"
-    dvpdc_log_file_path = dvpdc_report_directory.joinpath(dvpdc_log_filename)
+    params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
+
+    if dvpdc_report_directory == None:
+        dvpdc_report_directory_path=Path(params['dvpdc_report_default_directory'])
+    else:
+        dvpdc_report_directory_path = Path(dvpdc_report_directory)
+
+    dvpdc_report_directory_path.mkdir(parents=True, exist_ok=True)
+    dvpdc_log_file_name= dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpdc.log"
+    dvpdc_log_file_path = dvpdc_report_directory_path.joinpath(dvpdc_log_file_name)
+
 
     with open(dvpdc_log_file_path,"w") as g_logfile:
         g_logfile.write(f"Data vault pipeline description compiler log \n")
@@ -1365,11 +1368,11 @@ def dvpdc(dvpd_filename,dvpi_filename=None):
         g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         log_progress(f"Compiling {dvpd_filename}\n")
         try:
-            dvpdc_worker(dvpd_filename, dvpi_filename)
+            dvpdc_worker(dvpd_filename, dvpi_directory, dvpdc_report_directory_path, ini_file, model_profile_directory)
         except DvpdcError:
             log_progress("*** Compilation ended with errors ***")
 
-def dvpdc_worker(dvpd_filename,dvpi_filename=None):
+def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = None, ini_file = None, model_profile_directory=None):
 
     global g_table_dict
     global g_dvpi_document
@@ -1388,17 +1391,17 @@ def dvpdc_worker(dvpd_filename,dvpi_filename=None):
     g_pipeline_model_profile_name=""
 
 
-    params = configuration_load_ini('dvpdc.ini', 'dvpdc',['dvpd_model_profile_directory'])
+    params = configuration_load_ini(ini_file, 'dvpdc',['dvpd_model_profile_directory'])
 
     dvpd_file_path = Path(params['dvpd_default_directory']).joinpath(dvpd_filename)
-
-    if dvpi_filename == None:
-        dvpi_filename=dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpi.json"
 
     if not os.path.exists(dvpd_file_path):
         raise Exception(f'could not find dvpd file: {dvpd_file_path}')
 
-    load_model_profiles(params['dvpd_model_profile_directory']);
+    if model_profile_directory==None:
+        load_model_profiles(params['dvpd_model_profile_directory'])
+    else:
+        load_model_profiles(model_profile_directory)
 
     try:
         with open(dvpd_file_path, "r") as dvpd_file:
@@ -1451,8 +1454,12 @@ def dvpdc_worker(dvpd_filename,dvpi_filename=None):
     #print_dvpi_document()
 
     # write DVPI to file
-    dvpi_directory=Path(params['dvpi_default_directory'])
+    if dvpi_directory == None:
+        dvpi_directory = Path(params['dvpi_default_directory'])
+    else:
+        dvpi_directory = Path(dvpi_directory)
     dvpi_directory.mkdir(parents=True, exist_ok=True)
+    dvpi_filename=dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpi.json"
     dvpi_file_path = dvpi_directory.joinpath(dvpi_filename)
 
     log_progress("Writing DVPI to " + dvpi_file_path.as_posix())
@@ -1467,22 +1474,41 @@ def dvpdc_worker(dvpd_filename,dvpi_filename=None):
 
     log_progress("--- Compile successfull ---")
 
-    writeDvpiSummary(params['dvpdc_report_directory'],dvpd_file_path)
+    writeDvpiSummary(dvpdc_report_directory,dvpd_file_path)
 
 ########################################################################################################################
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    description_for_terminal = "Cimt AG reccommends to follow the instruction before starting the script. If you run your script from command line, it should look" \
+                               " like this: python __main__.py inputFile"
+    usage_for_terminal = "Type: python __main__.py --h for further instruction"
+
+    parser = argparse.ArgumentParser(
+        description=description_for_terminal,
+        usage= usage_for_terminal
+    )
+    # input Arguments
     parser.add_argument("dvpd_filename", help="Name of the dvpd file to compile")
-    parser.add_argument("--dvpi",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
+    parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
+    parser.add_argument("--model_profile_directory",help="Name of the model profile directory")
+
+    # output arguments
+    parser.add_argument("--dvpi_directory",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
+    parser.add_argument("--report_directory", help="Name of the report file (defaults to filename + .dvpdc.log")
+    parser.add_argument("--print_brain", help="When set, the compiler will print its internal data structure to stdout", action='store_true')
+
     #parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
     args = parser.parse_args()
     try:
-        dvpdc(dvpd_filename=args.dvpd_filename, dvpi_filename=args.dvpi)
-       # print_the_brain()
+        dvpdc(dvpd_filename=args.dvpd_filename,
+              dvpi_directory=args.dvpi_directory,
+              dvpdc_report_directory=args.report_directory,
+              ini_file=args.ini_file,
+              model_profile_directory=args.model_profile_directory
+              )
+        if args.print_brain:
+            print_the_brain()
     except DvpdcError:
-        print_the_brain()
+        if args.print_brain:
+            print_the_brain()
         print("*** stopped compilation due to errors in input ***")
         exit(5)
-
-
-

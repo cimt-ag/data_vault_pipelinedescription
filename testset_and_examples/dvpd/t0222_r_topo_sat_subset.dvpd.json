@@ -43,8 +43,7 @@
 												"link_parent_tables": [	{"table_name":"rtjj_222_aaa_hub"}
 																	   ,{"table_name":"rtjj_222_bbb_hub","relation_name":"TTT"}
 																	   ,{"table_name":"rtjj_222_bbb_hub","relation_name":"UUU"}
-																	   ,{"table_name":"rtjj_222_bbb_hub","relation_name":"VVV"
-																			,"hub_key_column_name_in_link":"HK_rtjj_222_bbb_VVV"}  ]}
+																	   ,{"table_name":"rtjj_222_bbb_hub","relation_name":"VVV"}  ]}
 				,{"table_name": "rtjj_222_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_222_aaa_bbb_lnk"}
 				,{"table_name": "rtjj_222_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_222_bbb"}
 				,{"table_name": "rtjj_222_bbb_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_222_bbb_hub"

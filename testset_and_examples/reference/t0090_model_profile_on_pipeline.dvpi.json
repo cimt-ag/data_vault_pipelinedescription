@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
   "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-02-21 12:54:04",
+  "compile_timestamp": "2024-03-06 12:05:59",
   "dvpd_version": "0.6.0",
   "pipeline_name": "test90_model_profile_on_pipeline",
   "dvpd_filename": "t0090_model_profile_on_pipeline.dvpd.json",
@@ -41,7 +41,6 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         },
         {
@@ -49,7 +48,6 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "DECIMAL(20,0)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         }
       ]
@@ -109,7 +107,6 @@
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(200)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         },
@@ -118,7 +115,6 @@
           "is_nullable": true,
           "column_class": "content",
           "column_type": "DECIMAL(5,0)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         },
@@ -127,7 +123,6 @@
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(200)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         },
@@ -136,7 +131,6 @@
           "is_nullable": true,
           "column_class": "content_untracked",
           "column_type": "TIMESTAMP",
-          "column_content_comment": null,
           "exclude_from_change_detection": "true",
           "prio_for_column_position": 50000
         }

@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
   "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-02-21 10:07:18",
+  "compile_timestamp": "2024-03-14 12:05:32",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0051_hub_with_multiple_sat",
   "dvpd_filename": "t0051_hub_with_multiple_sat.dvpd.json",
@@ -41,7 +41,6 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         },
         {
@@ -49,7 +48,6 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         },
         {
@@ -57,7 +55,6 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(2)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         }
       ]
@@ -123,7 +120,6 @@
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(200)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         }
