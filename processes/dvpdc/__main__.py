@@ -1368,7 +1368,7 @@ def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_fi
         g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         log_progress(f"Compiling {dvpd_filename}\n")
         try:
-            dvpdc_worker(dvpd_filename, dvpi_directory, dvpdc_report_directory, ini_file, model_profile_directory)
+            dvpdc_worker(dvpd_filename, dvpi_directory, dvpdc_report_directory_path, ini_file, model_profile_directory)
         except DvpdcError:
             log_progress("*** Compilation ended with errors ***")
 

@@ -108,7 +108,7 @@ def compare_dvpdc_log_with_reference(dvpd_filename):
     dvpdc_params = configuration_load_ini(args.ini_file, 'dvpdc')
     dvpdc_test_params = configuration_load_ini(args.ini_file, 'dvpdc_test')
 
-    dvpdc_report_directory = Path(dvpdc_params['dvpdc_report_directory'])
+    dvpdc_report_directory = Path(dvpdc_params['dvpdc_report_default_directory'])
 
     dvpdc_log_filename = dvpd_filename.replace('.json', '').replace('.dvpd', '') + ".dvpdc.log"
     dvpdc_log_file_path = dvpdc_report_directory.joinpath(dvpdc_log_filename)
@@ -361,7 +361,7 @@ if __name__ == "__main__":
         for filename in crashed_file_list:
             print(filename)
 
-
+    print(f"\n**** {len(successful_file_list)} of {len(dvpd_file_list)} tests passed ****")
     print(f"\n**** {len(failing_file_list)} of {len(dvpd_file_list)} tests failed ****")
     print(f"\n**** {len(reference_missing_list)} of {len(dvpd_file_list)} are reference missing tests ****")
     print(f"\n**** {len(crashed_file_list)} of {len(dvpd_file_list)} tests crashed ****")
