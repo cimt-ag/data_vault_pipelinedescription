@@ -46,58 +46,38 @@ def report_value_difference(expected_value, found_value, path):
     print(f"Different value. Found '{found_value}' Expected '{expected_value}' at /{path}")
     g_difference_count += 1
 
-def run_test_for_file(dvpd_filename):
+def run_test_for_file(dvpd_filename, raise_on_crash=False):
     global g_difference_count
-    g_difference_count=0
 
     try:
         dvpdc(dvpd_filename, ini_file=args.ini_file)
-        print("\n--- Comparing result with reference ---")
-        print(args.ini_file)
+
+    except DvpdcError:
+        if dvpd_filename[5] != "c":
+            return "fail"
+
+    except Exception as e:
+        print("****Compiler Crashed****")
+        if raise_on_crash:
+            raise
+        return "crash"
+
+    print("\n--- Comparing result with reference ---")
+    print(args.ini_file)
+    g_difference_count=0
+
+    try:
         compare_dvpdc_log_with_reference(dvpd_filename)
         if dvpd_filename[5]!="c":
             compare_dvpi_with_reference(dvpd_filename)
 
-        #Successfully tested cases
-        if g_difference_count == 0:
-            print("****Successfully tested cases****")
-            return "success"
-
-    except DvpdcError:
-        #print("****Execution of dvpdc resulted in a crash****")
-        print("****Failing****")
-        g_difference_count +=1
-        return "fail"
-
     except FileNotFoundError:
         print("****Missing reference data. There is no reference data available for the test case****")
-        g_difference_count +=1
         return "no_reference"
 
-    except Exception as e:
-        #print("****Failed test cases. Comparison with reference data revealed differences****")
-        print("****Crashed****")
-        g_difference_count +=1
-        return "crash"
-
-
-    return g_difference_count
-
-"""      
-    except DvpdcError:
-        compare_dvpdc_log_with_reference(dvpd_filename)
-        if dvpd_filename[5] == "c":
-            print("Compile failed, but should not")
-            g_difference_count += 1
-        return g_difference_count
-    except FileNotFoundError:
-        print("**** Could not confirm correctness. Some reference files are missing ****")
-        return g_difference_count
-    except :
-        print("**** DVPDC crashed ****")
-        g_difference_count += 1
-        return g_difference_count
-"""
+    if g_difference_count == 0:
+            return "success"
+    return "fail"
 
 
 
@@ -241,35 +221,7 @@ def search_for_testfile(testnumber):
 
     return None
 
-"""
-if __name__ == "__main__":
 
-    #todo scan reference data directory and call compio
-
-    dvpd_file_list= [#'test00_check_essential_elements.dvpd.json',
-                     #'test01_check_model_relations.dvpd.json',
-                     't0020_simple_hub_sat.dvpd.json',
-                     't0022_one_link_one_esat.dvpd.json',
-                     't0023_one_link_with_one_satellite.dvpd.json',
-                     't0024_one_satellite_on_linked_hub.dvpd.json',
-                     't0025_one_link_one_esat_three_hubs.dvpd.json',
-                     't0055_broad_relation_feature_cover.dvpd.json'
-                     ]
-
-
-def search_for_testfile(testnumber, directory):
-        fileprefix = "t{}".format(testnumber)
-
-        for file in sorted(directory.iterdir()):
-            if file.is_file() and file.stem.startswith(fileprefix):
-                index_of_t = file.stem.index("t")
-
-                test_num_from_filename = file.stem[index_of_t + 1:index_of_t + 5]
-                if test_num_from_filename == str(testnumber):
-                    return file.name
-
-        return None
-"""
 
 def find_dvpd_files(ini_file):
     params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
@@ -294,7 +246,6 @@ if __name__ == "__main__":
     parser.add_argument("--ini_file", help="Name of the ini file")
     args = parser.parse_args()
 
-    dvpd_file_list = find_dvpd_files(ini_file=args.ini_file)
 
     explicit_file = None
     if args.testnumber is not None:
@@ -304,50 +255,36 @@ if __name__ == "__main__":
     elif args.dvpd_filename!=None:
         explicit_file=args.dvpd_filename
 
+    raise_on_crash=False
     if  explicit_file is not None:
         dvpd_file_list=[]
         dvpd_file_list.append(explicit_file)
-        result = run_test_for_file(explicit_file) #zwischenvariable
-        #if run_test_for_file(explicit_file) == 0:
-        #    successful_file_list.append(explicit_file)
-        #else:
-        #    failing_file_list.append(explicit_file)
+        raise_on_crash=True
+    else:
+        dvpd_file_list = find_dvpd_files(ini_file=args.ini_file)
+
+    for filename in dvpd_file_list:
+        print(f"\n------------------ Testing:{filename} ---------------------------")
+        result = run_test_for_file(filename,raise_on_crash)
 
         if result == "success":
-            successful_file_list.append(explicit_file)
+            successful_file_list.append(filename)
         elif result == "fail":
-            failing_file_list.append(explicit_file)
+            failing_file_list.append(filename)
         elif result == "no_reference":
-            reference_missing_list.append(explicit_file)
+            reference_missing_list.append(filename)
         elif result == "crash":
-            crashed_file_list.append(explicit_file)
-    else:               # no filename given, process the internal list
-        for filename in dvpd_file_list:
-            print(f"\n------------------ Testing:{filename} ---------------------------")
-            result = run_test_for_file(filename)
-            #if run_test_for_file(filename) == 0:
-            #    successful_file_list.append(filename)
-            #else:
-            #    failing_file_list.append(filename)
-            if result == "success":
-                successful_file_list.append(filename)
-            elif result == "fail":
-                failing_file_list.append(filename)
-            elif result == "no_reference":
-                reference_missing_list.append(filename)
-            elif result == "crash":
-                crashed_file_list.append(filename)
+            crashed_file_list.append(filename)
+        else:
+            print(f"Unhandled test result: {result}")
 
     print("\n==================== Test Summary ================================")
     print("\nvvv---Passed tests---vvv")
     for filename in successful_file_list:
         print(filename)
 
-    if len(failing_file_list)==0:
-        print(f"\n---- All {len(successful_file_list)} tests completed sucessfully ----")
-        #exit(0)
-    else:
-        print("\nvvv---Failed test---vvv")
+    if len(failing_file_list)>0:
+        print("\nvvv---Failed tests---vvv")
         for filename in failing_file_list:
             print(filename)
 
@@ -361,8 +298,13 @@ if __name__ == "__main__":
         for filename in crashed_file_list:
             print(filename)
 
-    print(f"\n**** {len(successful_file_list)} of {len(dvpd_file_list)} tests passed ****")
-    print(f"\n**** {len(failing_file_list)} of {len(dvpd_file_list)} tests failed ****")
-    print(f"\n**** {len(reference_missing_list)} of {len(dvpd_file_list)} are reference missing tests ****")
-    print(f"\n**** {len(crashed_file_list)} of {len(dvpd_file_list)} tests crashed ****")
+    print(f"\n**** Number of tests: {len(dvpd_file_list)} ****")
+
+    print(f"** {len(successful_file_list)} tests passed ")
+    if len(failing_file_list)>0:
+        print(f"** {len(failing_file_list)} tests failed ")
+    if len(reference_missing_list) > 0:
+        print(f"** {len(reference_missing_list)} tests have no reference data  ")
+    if len(crashed_file_list) > 0:
+        print(f"** {len(crashed_file_list)} tests crashed ****")
     exit(5)

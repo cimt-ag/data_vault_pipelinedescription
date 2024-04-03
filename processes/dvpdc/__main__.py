@@ -1029,7 +1029,7 @@ def assemble_dvpi(dvpd_object, dvpd_filename):
                      'compile_timestamp':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'dvpd_version':dvpd_object['dvpd_version'],
                      'pipeline_name':dvpd_object['pipeline_name'],
-                     'dvpd_filemame':dvpd_filename}
+                     'dvpd_filename':dvpd_filename}
 
     # add tables
     dvpi_tables=[]
@@ -1371,6 +1371,7 @@ def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_fi
             dvpdc_worker(dvpd_filename, dvpi_directory, dvpdc_report_directory_path, ini_file, model_profile_directory)
         except DvpdcError:
             log_progress("*** Compilation ended with errors ***")
+            raise
 
 def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = None, ini_file = None, model_profile_directory=None):
 
