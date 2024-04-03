@@ -51,8 +51,9 @@ def run_test_for_file(dvpd_filename):
     g_difference_count=0
 
     try:
-        dvpdc(dvpd_filename)
+        dvpdc(dvpd_filename, ini_file=args.ini_file)
         print("\n--- Comparing result with reference ---")
+        print(args.ini_file)
         compare_dvpdc_log_with_reference(dvpd_filename)
         if dvpd_filename[5]!="c":
             compare_dvpi_with_reference(dvpd_filename)
@@ -104,8 +105,8 @@ def compare_dvpdc_log_with_reference(dvpd_filename):
     global g_difference_count
 
 
-    dvpdc_params = configuration_load_ini('dvpdc.ini', 'dvpdc')
-    dvpdc_test_params = configuration_load_ini('dvpdc.ini', 'dvpdc_test')
+    dvpdc_params = configuration_load_ini(args.ini_file, 'dvpdc')
+    dvpdc_test_params = configuration_load_ini(args.ini_file, 'dvpdc_test')
 
     dvpdc_report_directory = Path(dvpdc_params['dvpdc_report_directory'])
 
@@ -160,8 +161,8 @@ def compare_dvpdc_log_with_reference(dvpd_filename):
 def compare_dvpi_with_reference(dvpd_filename):
     global g_difference_count
 
-    dvpdc_params = configuration_load_ini('dvpdc.ini', 'dvpdc')
-    dvpdc_test_params = configuration_load_ini('dvpdc.ini', 'dvpdc_test')
+    dvpdc_params = configuration_load_ini(args.ini_file, 'dvpdc')
+    dvpdc_test_params = configuration_load_ini(args.ini_file, 'dvpdc_test')
 
     dvpi_filename = dvpd_filename.replace('.json', '').replace('.dvpd', '') + ".dvpi.json"
     dvpi_file_path = Path(dvpdc_params['dvpi_default_directory']).joinpath(dvpi_filename)
@@ -228,7 +229,7 @@ def check_reference_values(reference_object,test_object,path=""):
 
 ############ My MAIN ############
 def search_for_testfile(testnumber):
-    params = configuration_load_ini('dvpdc.ini', 'dvpdc', ['dvpd_model_profile_directory'])
+    params = configuration_load_ini(args.ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
     dvpd_directory = Path(params['dvpd_default_directory'])
 
     fileprefix="t{:04d}".format(testnumber)
@@ -292,6 +293,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dvpd_filename","-f", required=False, help="Name of the dvpd file to test")
     parser.add_argument("--testnumber","-t", required=False, type=int, help="Number of the test")
+    parser.add_argument("--ini_file", help="Name of the ini file")
     args = parser.parse_args()
 
     explicit_file = None
@@ -364,7 +366,3 @@ if __name__ == "__main__":
     print(f"\n**** {len(reference_missing_list)} of {len(dvpd_file_list)} are reference missing tests ****")
     print(f"\n**** {len(crashed_file_list)} of {len(dvpd_file_list)} tests crashed ****")
     exit(5)
-
-
-
-
