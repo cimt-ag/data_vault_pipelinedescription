@@ -1494,6 +1494,7 @@ if __name__ == "__main__":
     # output arguments
     parser.add_argument("--dvpi_directory",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
     parser.add_argument("--log_directory", help="Name of the report file (defaults to filename + .dvpdc.log")
+    parser.add_argument("--print_brain", help="When set, the compiler will print it internal data structure to stdout")
 
     #parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
     args = parser.parse_args()
@@ -1504,7 +1505,7 @@ if __name__ == "__main__":
               ini_file=args.ini_file,
               model_profile_directory=args.model_profile_directory
               )
-        print_the_brain()
+        #print_the_brain()
     except DvpdcError:
         print_the_brain()
         print("*** stopped compilation due to errors in input ***")

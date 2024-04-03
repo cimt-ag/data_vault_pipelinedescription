@@ -271,8 +271,8 @@ def search_for_testfile(testnumber, directory):
         return None
 """
 
-def find_dvpd_files():
-    params = configuration_load_ini('dvpdc.ini', 'dvpdc', ['dvpd_model_profile_directory'])
+def find_dvpd_files(ini_file):
+    params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
     directory = Path(params['dvpd_default_directory'])
     dvpd_files = []
     for file in sorted(directory.iterdir()):
@@ -283,8 +283,6 @@ def find_dvpd_files():
 
 if __name__ == "__main__":
 
-
-    dvpd_file_list = find_dvpd_files()
     successful_file_list=[]
     failing_file_list=[]
     reference_missing_list=[]
@@ -295,6 +293,8 @@ if __name__ == "__main__":
     parser.add_argument("--testnumber","-t", required=False, type=int, help="Number of the test")
     parser.add_argument("--ini_file", help="Name of the ini file")
     args = parser.parse_args()
+
+    dvpd_file_list = find_dvpd_files(ini_file=args.ini_file)
 
     explicit_file = None
     if args.testnumber is not None:
