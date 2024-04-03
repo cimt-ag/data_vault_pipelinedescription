@@ -13,10 +13,10 @@
 																						,{"table_name": "rtjj_704_ccc_hub"}	]}
 		      ,{"field_name": "F2_AAA_BK2F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_704_aaa_hub"}]}	 	  
 		      ,{"field_name": "F3XX_BBB_BK2F_TTT", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_704_bbb_hub"
-																						,"column_name": "ID_BBB2"
+																						,"column_name": "F3F4_BBB_BK2F"
 																				 		,"relation_names":["TTT"]} ] }	 	  
 		      ,{"field_name": "F4XX_BBB_BK2F_UUU", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_704_bbb_hub"
-																						,"column_name": "ID_BBB2"
+																						,"column_name": "F3F4_BBB_BK2F"
 																				 		,"relation_names":["UUU"]} ] }	 	  
 		      ,{"field_name": "F5_CCC_BK2F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_704_ccc_hub"}]}	 	  
 		      ,{"field_name": "F6_AAA_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_704_aaa_sat"}]}	 	  

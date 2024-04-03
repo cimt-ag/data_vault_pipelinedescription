@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
   "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-02-21 10:41:48",
+  "compile_timestamp": "2024-03-14 12:03:53",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0061_fg_drive_scenario_1",
   "dvpd_filename": "t0061_fg_drive_scenario_1.dvpd.json",
@@ -41,7 +41,6 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         }
       ]
@@ -103,38 +102,18 @@
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "F4_AAA_P1_C1_TTT",
+          "column_name": "F4F6_AAA_P1_C1",
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         },
         {
-          "column_name": "F5_AAA_P1_C2F_TTT",
+          "column_name": "F5F7_AAA_P1_C2F",
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
-          "exclude_from_change_detection": false,
-          "prio_for_column_position": 50000
-        },
-        {
-          "column_name": "F6F7_AAA_P1_C1",
-          "is_nullable": true,
-          "column_class": "content",
-          "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
-          "exclude_from_change_detection": false,
-          "prio_for_column_position": 50000
-        },
-        {
-          "column_name": "F6F7_AAA_P1_C2F",
-          "is_nullable": true,
-          "column_class": "content",
-          "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         }
@@ -177,13 +156,13 @@
           "field_type": "Varchar(20)",
           "field_position": 4,
           "needs_encryption": false,
-          "field_name": "F4_AAA_P1_C1_TTT"
+          "field_name": "F4XX_AAA_P1_C1_TTT"
         },
         {
           "field_type": "Varchar(20)",
           "field_position": 5,
           "needs_encryption": false,
-          "field_name": "F5_AAA_P1_C2F_TTT"
+          "field_name": "F5XX_AAA_P1_C2F_TTT"
         },
         {
           "field_type": "Varchar(20)",
@@ -270,18 +249,18 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "F4_AAA_P1_C1_TTT",
+              "field_name": "F4XX_AAA_P1_C1_TTT",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_61_aaa_p1_sat",
-              "field_target_column": "F4_AAA_P1_C1_TTT"
+              "field_target_column": "F4F6_AAA_P1_C1"
             },
             {
-              "field_name": "F5_AAA_P1_C2F_TTT",
+              "field_name": "F5XX_AAA_P1_C2F_TTT",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_61_aaa_p1_sat",
-              "field_target_column": "F5_AAA_P1_C2F_TTT"
+              "field_target_column": "F5F7_AAA_P1_C2F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -305,14 +284,14 @@
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_61_aaa_p1_sat",
-              "field_target_column": "F6F7_AAA_P1_C1"
+              "field_target_column": "F4F6_AAA_P1_C1"
             },
             {
               "field_name": "F7XX_AAA_P1_C2F_UUU",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_61_aaa_p1_sat",
-              "field_target_column": "F6F7_AAA_P1_C2F"
+              "field_target_column": "F5F7_AAA_P1_C2F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -417,18 +396,18 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F4_AAA_P1_C1_TTT",
-              "field_name": "F4_AAA_P1_C1_TTT",
+              "column_name": "F4F6_AAA_P1_C1",
+              "field_name": "F4XX_AAA_P1_C1_TTT",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F4_AAA_P1_C1_TTT"
+              "stage_column_name": "F4XX_AAA_P1_C1_TTT"
             },
             {
-              "column_name": "F5_AAA_P1_C2F_TTT",
-              "field_name": "F5_AAA_P1_C2F_TTT",
+              "column_name": "F5F7_AAA_P1_C2F",
+              "field_name": "F5XX_AAA_P1_C2F_TTT",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F5_AAA_P1_C2F_TTT"
+              "stage_column_name": "F5XX_AAA_P1_C2F_TTT"
             }
           ]
         },
@@ -454,14 +433,14 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F6F7_AAA_P1_C1",
+              "column_name": "F4F6_AAA_P1_C1",
               "field_name": "F6XX_AAA_P1_C1_UUU",
               "column_class": "content",
               "is_nullable": true,
               "stage_column_name": "F6XX_AAA_P1_C1_UUU"
             },
             {
-              "column_name": "F6F7_AAA_P1_C2F",
+              "column_name": "F5F7_AAA_P1_C2F",
               "field_name": "F7XX_AAA_P1_C2F_UUU",
               "column_class": "content",
               "is_nullable": true,
@@ -561,9 +540,9 @@
           ]
         },
         {
-          "stage_column_name": "F4_AAA_P1_C1_TTT",
+          "stage_column_name": "F4XX_AAA_P1_C1_TTT",
           "stage_column_class": "data",
-          "field_name": "F4_AAA_P1_C1_TTT",
+          "field_name": "F4XX_AAA_P1_C1_TTT",
           "is_nullable": true,
           "column_type": "Varchar(20)",
           "column_classes": [
@@ -571,9 +550,9 @@
           ]
         },
         {
-          "stage_column_name": "F5_AAA_P1_C2F_TTT",
+          "stage_column_name": "F5XX_AAA_P1_C2F_TTT",
           "stage_column_class": "data",
-          "field_name": "F5_AAA_P1_C2F_TTT",
+          "field_name": "F5XX_AAA_P1_C2F_TTT",
           "is_nullable": true,
           "column_type": "Varchar(20)",
           "column_classes": [

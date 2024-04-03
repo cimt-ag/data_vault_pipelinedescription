@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
   "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-02-21 08:49:15",
+  "compile_timestamp": "2024-03-06 12:05:59",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0063_fg_drive_scenario_3",
   "dvpd_filename": "t0063_fg_drive_scenario_3.dvpd.json",
@@ -41,7 +41,6 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         }
       ]
@@ -129,7 +128,6 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         }
       ]

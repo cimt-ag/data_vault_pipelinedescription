@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
   "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-02-21 08:53:13",
+  "compile_timestamp": "2024-03-14 12:05:32",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0070_fg_drive_scenario_10",
   "dvpd_filename": "t0070_fg_drive_scenario_10.dvpd.json",
@@ -41,7 +41,6 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         }
       ]
@@ -203,7 +202,7 @@
           "hash_name": "KEY_OF_RTJJ_70_AAA_HUB"
         },
         {
-          "stage_column_name": "HK_RTJJ_70_AAA_R222",
+          "stage_column_name": "HK_RTJJ_70_AAA_UUU",
           "hash_origin_table": "rtjj_70_aaa_hub",
           "column_class": "key",
           "hash_fields": [
@@ -221,7 +220,7 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTJJ_70_AAA_HUB__FOR__R222"
+          "hash_name": "KEY_OF_RTJJ_70_AAA_HUB__FOR__UUU"
         },
         {
           "stage_column_name": "HK_RTJJ_70_AAA_TTT",
@@ -300,15 +299,15 @@
         },
         {
           "table_name": "rtjj_70_aaa_hub",
-          "relation_name": "R222",
+          "relation_name": "UUU",
           "operation_origin": "explicit field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_70_AAA",
-              "hash_name": "KEY_OF_RTJJ_70_AAA_HUB__FOR__R222",
+              "hash_name": "KEY_OF_RTJJ_70_AAA_HUB__FOR__UUU",
               "is_nullable": false,
-              "stage_column_name": "HK_RTJJ_70_AAA_R222"
+              "stage_column_name": "HK_RTJJ_70_AAA_UUU"
             }
           ],
           "data_mapping": [
@@ -420,10 +419,10 @@
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "HK_RTJJ_70_AAA_R222",
+          "stage_column_name": "HK_RTJJ_70_AAA_UUU",
           "stage_column_class": "hash",
           "is_nullable": false,
-          "hash_name": "KEY_OF_RTJJ_70_AAA_HUB__FOR__R222",
+          "hash_name": "KEY_OF_RTJJ_70_AAA_HUB__FOR__UUU",
           "column_type": "CHAR(28)"
         },
         {

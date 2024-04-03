@@ -20,8 +20,8 @@
 																				 	,"relation_names":["/","UUU"]} ]}
 		      ,{"field_name": "F8XX_BBB_C1_VVV",  "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_622_bbb_sat" ,"column_name": "F7F8_BBB_C1"
 																				 	,"relation_names":["VVV"]} ]}
-		      ,{"field_name": "F09_BBB_C2F",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_622_bbb_sat" ,"column_name": "F9F10_BBB_C2F"} ]}
-		      ,{"field_name": "F10_BBB_C2F_UUU_VVV",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_622_bbb_sat" ,"column_name": "F9F10_BBB_C2F"
+		      ,{"field_name": "F9XX_BBB_C2F",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_622_bbb_sat" ,"column_name": "F9F10_BBB_C2F"} ]}
+		      ,{"field_name": "F10XX_BBB_C2F_UUU_VVV",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_622_bbb_sat" ,"column_name": "F9F10_BBB_C2F"
 																				 	,"relation_names":["UUU","VVV"]} ]}
  
 			 ],

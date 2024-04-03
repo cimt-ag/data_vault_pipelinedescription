@@ -56,6 +56,33 @@ def run_test_for_file(dvpd_filename):
         compare_dvpdc_log_with_reference(dvpd_filename)
         if dvpd_filename[5]!="c":
             compare_dvpi_with_reference(dvpd_filename)
+
+        #Successfully tested cases
+        if g_difference_count == 0:
+            print("****Successfully tested cases****")
+            return "success"
+
+    except DvpdcError:
+        #print("****Execution of dvpdc resulted in a crash****")
+        print("****Failing****")
+        g_difference_count +=1
+        return "fail"
+
+    except FileNotFoundError:
+        print("****Missing reference data. There is no reference data available for the test case****")
+        g_difference_count +=1
+        return "no_reference"
+
+    except Exception as e:
+        #print("****Failed test cases. Comparison with reference data revealed differences****")
+        print("****Crashed****")
+        g_difference_count +=1
+        return "crash"
+
+
+    return g_difference_count
+
+"""      
     except DvpdcError:
         compare_dvpdc_log_with_reference(dvpd_filename)
         if dvpd_filename[5] == "c":
@@ -69,8 +96,8 @@ def run_test_for_file(dvpd_filename):
         print("**** DVPDC crashed ****")
         g_difference_count += 1
         return g_difference_count
+"""
 
-    return g_difference_count
 
 
 def compare_dvpdc_log_with_reference(dvpd_filename):
@@ -259,6 +286,8 @@ if __name__ == "__main__":
     dvpd_file_list = find_dvpd_files()
     successful_file_list=[]
     failing_file_list=[]
+    reference_missing_list=[]
+    crashed_file_list=[]
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--dvpd_filename","-f", required=False, help="Name of the dvpd file to test")
@@ -276,17 +305,36 @@ if __name__ == "__main__":
     if  explicit_file is not None:
         dvpd_file_list=[]
         dvpd_file_list.append(explicit_file)
-        if run_test_for_file(explicit_file) == 0:
+        result = run_test_for_file(explicit_file) #zwischenvariable
+        #if run_test_for_file(explicit_file) == 0:
+        #    successful_file_list.append(explicit_file)
+        #else:
+        #    failing_file_list.append(explicit_file)
+
+        if result == "success":
             successful_file_list.append(explicit_file)
-        else:
+        elif result == "fail":
             failing_file_list.append(explicit_file)
+        elif result == "no_reference":
+            reference_missing_list.append(explicit_file)
+        elif result == "crash":
+            crashed_file_list.append(explicit_file)
     else:               # no filename given, process the internal list
         for filename in dvpd_file_list:
             print(f"\n------------------ Testing:{filename} ---------------------------")
-            if run_test_for_file(filename) == 0:
+            result = run_test_for_file(filename)
+            #if run_test_for_file(filename) == 0:
+            #    successful_file_list.append(filename)
+            #else:
+            #    failing_file_list.append(filename)
+            if result == "success":
                 successful_file_list.append(filename)
-            else:
+            elif result == "fail":
                 failing_file_list.append(filename)
+            elif result == "no_reference":
+                reference_missing_list.append(filename)
+            elif result == "crash":
+                crashed_file_list.append(filename)
 
     print("\n==================== Test Summary ================================")
     print("\nvvv---Passed tests---vvv")
@@ -295,13 +343,26 @@ if __name__ == "__main__":
 
     if len(failing_file_list)==0:
         print(f"\n---- All {len(successful_file_list)} tests completed sucessfully ----")
-        exit(0)
+        #exit(0)
+    else:
+        print("\nvvv---Failed test---vvv")
+        for filename in failing_file_list:
+            print(filename)
 
-    print("\nvvv---Failed test---vvv")
-    for filename in failing_file_list:
-        print(filename)
+    if len(reference_missing_list) > 0:
+        print("\nvvv---Tests with missing reference---vvv")
+        for filename in reference_missing_list:
+            print(filename)
+
+    if len(crashed_file_list) > 0:
+        print("\nvvv---Tests that crashed---vvv")
+        for filename in crashed_file_list:
+            print(filename)
+
 
     print(f"\n**** {len(failing_file_list)} of {len(dvpd_file_list)} tests failed ****")
+    print(f"\n**** {len(reference_missing_list)} of {len(dvpd_file_list)} are reference missing tests ****")
+    print(f"\n**** {len(crashed_file_list)} of {len(dvpd_file_list)} tests crashed ****")
     exit(5)
 
 
