@@ -1,5 +1,5 @@
 {
-	"dvpd_version": "0.6.0",
+	"dvpd_version": "0.7.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "t3380_multi_relation_on_both_paths_in_recursive_link",
 	"record_source_name_expression":"dvpd implementation test",
