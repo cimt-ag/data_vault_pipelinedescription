@@ -1344,21 +1344,21 @@ def renderHashFieldAssembly(parse_set_entry,hash_name):
     raise(f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
 
 
-def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_log_directory=None, ini_file=None, model_profile_directory=None):
+def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_file=None, model_profile_directory=None):
     """ this function is a wrapper around the real compiler to initialize the log file"""
     global g_logfile
 
 
     params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
 
-    if dvpdc_log_directory == None:
-        dvpdc_report_directory=Path(params['dvpdc_report_directory'])
-        dvpdc_report_directory.mkdir(parents=True, exist_ok=True)
+    if dvpdc_report_directory == None:
+        dvpdc_report_directory_path=Path(params['dvpdc_report_default_directory'])
     else:
-        dvpdc_report_directory = Path(dvpdc_log_directory)
+        dvpdc_report_directory_path = Path(dvpdc_report_directory)
 
-    dvpdc_log_directory= dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpdc.log"
-    dvpdc_log_file_path = dvpdc_report_directory.joinpath(dvpdc_log_directory)
+    dvpdc_report_directory_path.mkdir(parents=True, exist_ok=True)
+    dvpdc_log_file_name= dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpdc.log"
+    dvpdc_log_file_path = dvpdc_report_directory_path.joinpath(dvpdc_log_file_name)
 
 
     with open(dvpdc_log_file_path,"w") as g_logfile:
@@ -1456,9 +1456,9 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
     # write DVPI to file
     if dvpi_directory == None:
         dvpi_directory = Path(params['dvpi_default_directory'])
-        dvpi_directory.mkdir(parents=True, exist_ok=True)
     else:
         dvpi_directory = Path(dvpi_directory)
+    dvpi_directory.mkdir(parents=True, exist_ok=True)
     dvpi_filename=dvpd_filename.replace('.json','').replace('.dvpd','')+".dvpi.json"
     dvpi_file_path = dvpi_directory.joinpath(dvpi_filename)
 
@@ -1488,12 +1488,12 @@ if __name__ == "__main__":
     )
     # input Arguments
     parser.add_argument("dvpd_filename", help="Name of the dvpd file to compile")
-    parser.add_argument("--ini_file", help="Name of the ini file")
+    parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
     parser.add_argument("--model_profile_directory",help="Name of the model profile directory")
 
     # output arguments
     parser.add_argument("--dvpi_directory",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
-    parser.add_argument("--log_directory", help="Name of the report file (defaults to filename + .dvpdc.log")
+    parser.add_argument("--report_directory", help="Name of the report file (defaults to filename + .dvpdc.log")
     parser.add_argument("--print_brain", help="When set, the compiler will print its internal data structure to stdout", action='store_true')
 
     #parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
@@ -1501,7 +1501,7 @@ if __name__ == "__main__":
     try:
         dvpdc(dvpd_filename=args.dvpd_filename,
               dvpi_directory=args.dvpi_directory,
-              dvpdc_log_directory=args.log_directory,
+              dvpdc_report_directory=args.report_directory,
               ini_file=args.ini_file,
               model_profile_directory=args.model_profile_directory
               )
