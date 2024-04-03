@@ -8,7 +8,7 @@
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 	"fields": [
-		       {"field_name": "F1XX_BBB_BK1_/_UUU", "field_type": "Varchar(20)","targets": [{"table_name": "rtjj_627_bbb_hub" ,"column_name": "FIF2_BBB_BK1" ,"relation_names":["/", "UUU"]} ]}		 	  
+		       {"field_name": "F1XX_BBB_BK1_DFT_UUU", "field_type": "Varchar(20)","targets": [{"table_name": "rtjj_627_bbb_hub" ,"column_name": "FIF2_BBB_BK1" ,"relation_names":["/", "UUU"]} ]}		 	  
 		      ,{"field_name": "F2XX_BBB_BK1_VVV","field_type": "Varchar(20)",   "targets": [{"table_name": "rtjj_627_bbb_hub" ,"column_name": "FIF2_BBB_BK1","relation_names":["VVV"]} ]}		 	  
 
 		      ,{"field_name": "F3XX_BBB_BK2F", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_627_bbb_hub" ,"column_name": "F3F4F5_BBB_BK2F"} ]}
