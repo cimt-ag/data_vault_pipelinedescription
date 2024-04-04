@@ -83,7 +83,7 @@ When source data contains multiple fields, which target the same satellite colum
 different business keys, this might look like denormalized data and trigger the desire to normalize it into a 
 multiactive satellite. 
 
-Data vault highly recommends to keep the denormalized structure in the raw vault to allow full auditability. 
+Data vault  recommends to keep the denormalized structure in the raw vault to allow full auditability. 
 That's why DVPD core will not support any explicit syntax that allows denormalization in the 
 load phase.
 
@@ -157,10 +157,10 @@ in chapter 4.4.4 of the Data Vault 2.0 Book of Dan Linstedt)
 ![topo_multi_link.png](images%2Fmapping_relations%2Ftopo_multi_link.png)
 
 ### Single link table with relation specific effectivity satellites (Type-E)
-This method reduced the number of link tables, without loosing the flexibility 
+This method reduced the number of link tables, without losing the flexibility 
 of the multi link approach.  It suffers from the same "phanton relation" issue as Type-L.  
 - the link only contains one reference to each hub but gathers data about all relations
-- for every relation, there must be a separate the link key calculation only using
+- for every relation, there must be a separate  link key calculation only using
 the business key fields for the specific relation
 - every Esat must be loaded once 
 - The link and the multi referenced hub needs a load operation for every relation
@@ -170,8 +170,7 @@ the business key fields for the specific relation
 
 ### Single link table with a dependent child key declaring the relation type (Type-D)
 This method uses the minimal amount of tables and allows extension of relations 
-without any structure modification. It even can be extented without change
-of running pipelines, by just adding a new pipeline  for the new relations. The downside beeing, that
+without any structure modification. It even can be extented without change, by just adding a new pipeline  for the new relations. The downside beeing, that
 it hides the different kind of relations in the data, instead of communicating
 it through model elements.
 - the link only contains one reference to each hub
@@ -186,7 +185,7 @@ dependent child key
 This approach omits any kind of structure to distinguish the different relations presented 
 by the fields the same source row. This reduces the number of tables and connections 
 to a simple model but will prevent a full reconstruction of the source dataset, since 
-the precises field origin of the data gets lost. It is the less  recommended approaches.
+the precise field origin of the data gets lost. It is the less  recommended approaches.
 - the link only contains one reference to each hub
 - Link, esat and the multi referenced hub need a load pass for every reference 
 
@@ -276,8 +275,10 @@ can contain
 - part of a links satellite data (ls)
  
 Participation to a relation is declared at every table mapping of the field.
-If not declared, a field is considerd to participate in every relation of that table, when it is the only field mapped to the target, else it will be assigned only to the "main"(unnamed) relation.
-To declare the participation on a subset, that contains the "main" (unnamed) relation and another one, the syntax provides the reserved relation name "/" for the unnamed relation.
+If no relatio is declared, a field is considered to be the default source in every relation of that table.
+
+To declare the participation on a subset, that contains the "unnamed" relation and another one,
+the syntax provides the reserved relation name "/" for the unnamed relation.
 
 A target column must only have one field mapped in every specific relation. 
 
@@ -347,50 +348,61 @@ specific relations, the table is involved in.
 
 **This chapter will get some rewriting, when the "keyset + link parent path differentiation" is added in release 0.7.0** 
 
-### Step 1 - Determine operation from explicit field relation 
-- for every column in the table there can be one default field mapping `*` or one to many explicit mappings (including the explicit declaration of the main relation `/`)
-- a mapping to a column without a relation name is counts as default`*`
-- compiler check: Every explicitly declared relation (Even when `/` is declared) must have a mapping for all columns (consisting of the relation specific or the default)
-- a table will have an operation for every explicitly declared relation
-- a table with a full column set of default mappings will implicitply have a load operation for the main relation `/` additionally to the explicit relation
-- a table with only a partial set of default mappings only participates in all explicitly declared relations
-- a table with only default mappings counts to pariticipate in all relations`*`
-As a result, for all tables with field mappings we know their explicit relation participations
-or their participation to every thing `*`
+- Every table must have a load operation, for every set of keys (every kind of hash key assembly) it participating in.
+- Every field mapping to a table must belong to one or many set of keys 
+
+### Step 1 - Determine field mapping restrictions and load operation from explicit field relation 
+- field mappings will be restricted to the relation names that are explicitly declared in the mapping
+- field mappings without any relation name are set to be default mappings `*`, that can be used for any relation 
+- a table will have an operation for every explicitly declared mapping relation(this might already include the unnamed relation `/` , when explicitly declared)
+- a table with explicit relations will have an operation for the unnamed relation `/` when there is a default mapping for all columns available
+- a hub table with only default mappings will have an operation for the generic relation `*` 
+- compiler check: For every load operation there must have a valid mapping for all columns (either one explicit or the default)
+Result:
+- All field mappings are defined 
+- Hub tables will have all load operations defined
+- Sat and link tables will have load operations, that are the result of explicit mappings
+- Completeness of the mappings is checked
 
 ### Step 2 - Determine operation for links with explict parent mappings
 This only applies to links with an explicit relation declaration in the parent hub mapping:
-- Compiler check: The link must not have an explicit relation through field mappings
-- this link will be loaded as explict link load operation `+`
-- Compiler check: The connected hubs must support the relations, that are declared in the parent hub mapping. A parent with `*` only supports the main relation `/`
-- the links load operation will use the relation specific filed mappings of the hub keys
-As a result, links with explicit relations in the hub mapping are tagged with the `+` load operation 
+- Compiler check: The link must not already have a load operation, that was deduced in previous steps (Tgus Restricion will be removed in 0.7.x)
+- The link will have an "explicit relation" load operation `+`
+- Table relations without an explicit relation name are defined to be the unnamed relation `/`
+- Compiler check: The relation of the parent connections must be supported by the operations(= field mappings) of the connected hubs (A `*` hub supports `/` only)
+Result:
+- links with explicit relations in the hub mapping are tagged with the `+` load operation
+- The relation names in the hub relations are checked
 
-### Step 3 - Determine tracked relations of effecitivity satellite
-- Compiler check: Table must be an effectivity satellite
+### Step 3 - Determine operation from tracked relations of effecitivity satellite
+This only applies to effectivity satellites
 - Compiler check: When the parent link is tagged with the `+` load operation, the declaration of a tracked relation is not allowed 
-- If tracked relation is declared, the tables relation participation will be restricted to that relation
-As a result effectivtiy satellites with legal tracked relation declaration are tagged with the relation specific load operation
+- If a tracked relation is declared, it will be the only load operation
+Result:
+- effectivtiy satellites with legal tracked relation declaration are tagged with the relation specific load operation
 
-### Step 4 - Satellite to Link deduction
+### Step 4 - Satellite to Link operation deduction
 Must be applied to all links, that have no operation yet:
 - get all load operations from load operations of its children that are not `*`
 - compiler check: The load operation must be explicitly supported by at least one parent hub 
 - compiler check: The load operation must be supported by all parent hubs, either explicitly or due to the hubs `*` operation
+Result:
+- Links who's operation are driven by the satellites have a operaion list
 
 ### Step 5 - Hub to Link deduction
 Must be applied to all links, that have no operation yet:
-- determine the load operations, that all parent hubs have in common (`*` matches everything) 
-- Should the result only be `*`, set the load operation of the link to be `\`
+- determine the load operations, that all parent hubs have in common 
+- Should the result only be `*`, set the load operation of the link to be `/`
 
 ### Step 6 - Parent to Satellite deduction
-Must be applied to all satellites, that have a `*` operation:
-- replace `*` operation by all operations of the parent unless the parent itself has a `*` operation
-- this will not change the relation mapping of the fields but only the relation of operation is determined for
+Must be applied to all satellites, that have no operation yet:
+- Add all operations of the parent 
+Result:
+- every table should have its appropriate list of load operations now
 
-### Step 7 - Final consistency check
-For every satellite
-- compiler check: All operations of the satellites must be directly supported by their parent (`*` in parent is no wildcard)
+### Step 7 - Final check
+- compiler crosscheck: all tables must have at least one load operation. Single `*` or one or more relation names
+
 
 ## Rules for the field assembly for every load operation
 ### Hub load operation
@@ -398,25 +410,29 @@ For every satellite
 - for all columns, where possible: use the field mappings, that match the relation of the operation
 - for columns without relation specific mappings: use the default mapping
 - for the hub key: use the columns as mapped above
+- In the stage table this will result in a hub key column for every load operation
 
 ### link load operation with explicit parent hub relations
-This only applies to links with a `+` operation
+This only applies to links `+` load operation
 - determine the relation from the hub key mapping for every hub key
 - use the relation specific business key field mappings of the parents to calculate link key (`/` is solved by `*` in the hub, when missing)
 - use the relation specific hub key calculation of the parents(`/` is solved by `*` in the hub, when missing)
-- dependent child keys will not be relation specific and can be mapped directly 
+- dependent child keys will not be relation specific and can be mapped directly (this will change in 0.7.x)
+- In the stage table this will result one link key column
+
 
 ### link load operation without explicit parent hub relations
-This only applies to links without a `+` operation
+This only applies to link load operations that are not `+`
 - the relation to load is defined by the load operation
 - use the relation specific business key field mappings of the parents to calculate link key (`/` is solved by `*` in the hub, when missing)
 - use the relation specific hub key calculation of the parents(`/` is solved by `*` in the hub, when missing)
 - dependent child keys must be mapped  relation specific, with default mappings as fallback
+- In the stage table this will result link key columns for every load operation
 
 ### Satellite load operation
 - the relation to load is defined by the load operation
-- for all columns, where possible: use the field mappings, that match the relation of the operation
-- for columns without relation specific mappings: use the default mapping
+- for all columns, where possible: use the field mappings, that match the relation of the operationm else use the default mapping
+- in the stage table, this will result in a diff hash for every field mapping variation
 - use the relation specific hub or link key calculation from the parent 
 
 # Catalog of field mappings
