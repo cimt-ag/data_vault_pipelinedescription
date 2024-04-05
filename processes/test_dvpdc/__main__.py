@@ -311,7 +311,7 @@ if __name__ == "__main__":
 
     print(f"\n**** Number of tests: {len(dvpd_file_list)} ****")
 
-    file_list_fp=assemble_file_list_fingerprint(dvpd_file_list)
+    file_list_fp=assemble_file_list_fingerprint(successful_file_list)
     print(f"** {len(successful_file_list)} tests passed ({file_list_fp})")
     if len(failing_file_list)>0:
         file_list_fp=assemble_file_list_fingerprint(failing_file_list)

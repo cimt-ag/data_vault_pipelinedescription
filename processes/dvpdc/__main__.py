@@ -1198,6 +1198,8 @@ def assemble_dvpi_parse_set(dvpd_object):
 
 def assemble_dvpi_hash_mappings(load_operation_entry):
     dvpi_hash_mappings=[]
+    if not 'hash_mapping_dict' in load_operation_entry:
+        return dvpi_hash_mappings
     for hash_class,load_operation_hash_dict_entry in load_operation_entry['hash_mapping_dict'].items():
         dvpi_hash_mapping_entry={'hash_class':hash_class,
                                 'column_name':load_operation_hash_dict_entry['hash_column_name'],
