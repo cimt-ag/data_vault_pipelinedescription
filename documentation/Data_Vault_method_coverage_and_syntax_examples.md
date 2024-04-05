@@ -770,7 +770,11 @@ In this example, the CDC information contains a change timestamp from the source
 "tables": [
 		    {	"table_name": "employee_tracksat",
 				"table_stereotype": "sat",
-				"satellite_parent_table": "employee_hub","uses_diff_hash":"false"
+				"satellite_parent_table": "employee_hub",
+                "compare_criteria":"key+data",
+                "is_enddated" : "false"
+                "uses_diff_hash":"false",
+                "has_deletion_flag":"false"
 			},
 			{	"table_name": "employee_hub",
 				"table_stereotype": "hub",
@@ -779,9 +783,10 @@ In this example, the CDC information contains a change timestamp from the source
 		]
 ```
 Note:<br>
-Disabling the diff hash in this satellite, is more a performance optimization then really necessary. Without a diff hash, the columns of the satelltie must be compared directly. This can be much faster, when there are only two columns with a total witdh of 11 Bytes (against 20 Bytes for a sha-1 hash). 
-
-Also by leaving out the diff hash column, this is a structural indicator for the user of the data, that this there is some special data in the satellite.
+- The compare criteria prevent double insertion of the same information. 
+- Deletion flag and enddate are removed, since this satellite conatains events and not states
+- Disabling the diff hash in this satellite, is more a performance optimization then really necessary. Without a diff hash, the columns of the satelltie must be compared directly. This can be much faster, when there are only two columns with a total witdh of 11 Bytes (against 20 Bytes for a sha-1 hash). 
+leaving out the deletion flag, enddate and diff hash column, this is a structural indicator for the user of the data, that this there is some special data in the satellite.
 
 ### Tracking satellite without sequence information
 In this example, the CDC information contains no data about the sequence of events. Incoming events must always be stored. The load timestamp in the satellite will be the only indicator about the sequence of events. Duplication of data by reloading the same events must be prevented by the loading process.  

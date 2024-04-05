@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-04-05 17:09:49
+Compiling t0035_tracking_sat_with_sequence_information.dvpd.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t0035_tracking_sat_with_sequence_information.dvpi.json
+--- Compile successfull ---
