@@ -53,7 +53,7 @@ Tests are grouped by number ranges. See test list at the end of this article.
 - table names are structured as follows: \<schema shortcut>_\<testnumber>_\<identifier>_\<stereotype>
     - \<schema_shortcut>: rtjj, rtkk, rtll ...
     - \<identifier for hubs> 3 times a letter from A to G (e.g. AAA,BBB)
-    - \<identifier for links> identifiers of all connected hubs separated by "_" + optional \<identifier for relation>
+    - \<identifier for links> identifiers of all connected hubs separated by + optional "_" \<identifier for relation> + optional "_" \<identifier for parent paths when different to relation>
     - \<identifier for sattelites> identifier of parent + part identification (p1, p2, ...) or optional \<identifier for relation>
     - \<stereotype> extended stereotype postfix (e.g. hub, sat, lnk, dlnk, esat,msat,...)
     - **examples: rtjj_55_aaa_hub, rtjj_22_aaa_bbb_lnk, rtjj_20_aaa_p1_sat, rtjj_55_aaa_bbb_ttt_esat**
