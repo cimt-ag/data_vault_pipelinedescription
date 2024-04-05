@@ -1,0 +1,36 @@
+{
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t0013c_derive_content_dependent_properties_1.dvpd.json",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields": [
+		         {"field_name": "F1_AAA_BK1F", 		"field_type": "Varchar(20)"
+							,	"targets": [{"table_name": "rtjj_18_aaa_hub"}]}
+		        ,{"field_name": "F2_BBB_BK1F", 		"field_type": "Varchar(20)"
+							,	"targets": [{"table_name": "rtjj_18_bbb_hub"}]}
+		        ,{"field_name": "F3_AAA_BBB_DC1F", 		"field_type": "Varchar(20)"
+							,	"targets": [{"table_name": "rtjj_18_aaa_bbb_dlnk"}]}
+		 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				 {"table_name": "rtjj_18_aaa_hub",			"table_stereotype": "hub"}
+				,{"table_name": "rtjj_18_bbb_hub",			"table_stereotype": "hub"}
+				,{"table_name": "rtjj_18_aaa_bbb_lnk",			"table_stereotype": "lnk","link_parent_tables": ["rtjj_18_aaa_hub","rtjj_18_aaa_hub"]}
+				,{"table_name": "rtjj_18_aaa_bbb_dlnk",			"table_stereotype": "lnk","link_parent_tables": ["rtjj_18_aaa_hub","rtjj_18_aaa_hub"]}
+				,{"table_name": "rtjj_18_aaa_bbb_driving_hub_key_missing_sat",			"table_stereotype": "sat"
+																						,"satellite_parent_table": "rtjj_18_aaa_bbb_lnk"
+																						,"driving_keys": ["HK_rtjj_18_XXX"]
+																						,"diff_hash_column_name": "rh_rtjj_18_aaa_bbb_driving_hub_key_missing_sat"}																						
+				,{"table_name": "rtjj_18_aaa_bbb_driving_child_key_missing_sat",			"table_stereotype": "sat"
+																						,"satellite_parent_table": "rtjj_18_aaa_bbb_dlnk"
+																						,"driving_keys": ["F3_XXX"]
+																						,"diff_hash_column_name": "rh_rtjj_18_aaa_bbb_driving_hub_key_missing_sat"}																						
+				]
+		}
+	]
+}

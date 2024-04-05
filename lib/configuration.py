@@ -37,7 +37,7 @@ def configuration_load_ini(filename=None, section=None, mandatory_elements=None)
     if filename == None:
         raise Exception("No .ini file declaraion found")
     file_path = Path(Path(os.getcwd()).joinpath(filename))
-    print(file_path)
+    # print(file_path)  # for debug only
     if  os.path.isdir(file_path):
         Exception(f"{file_path} is not a file, but declared as ini file")
 

@@ -1026,13 +1026,27 @@ def copy_data_column_properties_to_operation_mapping(data_mapping_dict,data_colu
         if relevant_key in data_column:
             data_mapping_dict[relevant_key]=data_column[relevant_key]
 
+def check_intertable_structure_constraints():
+
+    # Driving Keys must be resolvable (this can only be checked after all hahs derivation)
+    for table_name, table_entry in g_table_dict.items():
+        if 'driving_keys' in table_entry and table_entry['table_stereotype']=='sat':
+            parent = table_entry['satellite_parent_table']
+            parent_hash_columns = g_table_dict[parent]['hash_columns']
+            parent_data_columns=[]
+            if 'data_columns' in g_table_dict[parent]:
+                parent_data_columns= g_table_dict[parent]['data_columns']
+            for driving_key in table_entry['driving_keys']:
+                if driving_key not in parent_hash_columns and driving_key not in parent_data_columns:
+                    register_error(f"Driving Key '{driving_key}' is not a key hash or dependent child key in parent '{parent}'")
+
 
 def assemble_dvpi(dvpd_object, dvpd_filename):
     global g_dvpi_document
 
     # add meta declaration and dpvd meta data
-    g_dvpi_document={'dvdp_compiler':'dvpdc reference compiler,  release 0.6.0',
-                     'dvpi_version': '0.6.0',
+    g_dvpi_document={'dvdp_compiler':'dvpdc reference compiler,  release 0.6.1',
+                     'dvpi_version': '0.6.1',
                      'compile_timestamp':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'dvpd_version':dvpd_object['dvpd_version'],
                      'pipeline_name':dvpd_object['pipeline_name'],
@@ -1063,16 +1077,7 @@ def assemble_dvpi_table_entry(table_name,table_entry):
             dvpi_table_entry[table_property]=table_entry[table_property]
     
     # Driving Keys
-    if 'driving_keys' in table_entry:
-        if table_entry['table_stereotype'] != 'sat':
-            register_error(f"Driving Keys defined for Table {table_name} even though Table is not a Satellite")
-        parent = table_entry['satellite_parent_table']
-        parent_hash_columns = g_table_dict[parent]['hash_columns']
-        parent_data_columns = g_table_dict[parent]['data_columns']
-        for driving_key in table_entry['driving_keys']:
-            if driving_key not in parent_hash_columns and driving_key not in parent_data_columns:
-                register_error(f"Driving Key {driving_key} not in parent {parent} columns")
-        # if checks successfull -> add to dvpi
+    if 'driving_keys' in table_entry and table_entry['table_stereotype']=='sat':
         dvpi_table_entry['driving_keys'] = table_entry['driving_keys']
 
     dvpi_columns=[]
@@ -1393,6 +1398,9 @@ def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_fi
             log_progress("*** Compilation ended with errors ***")
             raise
 
+
+
+
 def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = None, ini_file = None, model_profile_directory=None):
 
     global g_table_dict
@@ -1468,6 +1476,10 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
         raise DvpdcError
 
     add_hash_columns()
+    if g_error_count > 0:
+        raise DvpdcError
+
+    check_intertable_structure_constraints()
     if g_error_count > 0:
         raise DvpdcError
 
