@@ -16,6 +16,8 @@
 #  limitations under the License.
 #  =====================================================================
 import argparse
+import base64
+import hashlib
 
 from processes.dvpdc.__main__ import dvpdc
 from pathlib import Path
@@ -233,6 +235,14 @@ def find_dvpd_files(ini_file):
             dvpd_files.append(file.name)
     return dvpd_files
 
+def assemble_file_list_fingerprint(file_list):
+    """Calculates a datavault hash from all attributes in the list. Order of attributes is essential"""
+    separator='|'
+    stringified=separator.join(file_list)
+    md5_hash=hashlib.md5(stringified.encode('utf-8')).digest()
+    file_listfp_b32=base64.b32encode(md5_hash).decode('utf-8')
+    return file_listfp_b32[:8]
+
 
 if __name__ == "__main__":
 
@@ -301,11 +311,15 @@ if __name__ == "__main__":
 
     print(f"\n**** Number of tests: {len(dvpd_file_list)} ****")
 
-    print(f"** {len(successful_file_list)} tests passed ")
+    file_list_fp=assemble_file_list_fingerprint(dvpd_file_list)
+    print(f"** {len(successful_file_list)} tests passed ({file_list_fp})")
     if len(failing_file_list)>0:
-        print(f"** {len(failing_file_list)} tests failed ")
+        file_list_fp=assemble_file_list_fingerprint(failing_file_list)
+        print(f"** {len(failing_file_list)} tests failed ({file_list_fp})")
     if len(reference_missing_list) > 0:
-        print(f"** {len(reference_missing_list)} tests have no reference data  ")
+        file_list_fp = assemble_file_list_fingerprint(reference_missing_list)
+        print(f"** {len(reference_missing_list)} tests have no reference data ({file_list_fp})")
     if len(crashed_file_list) > 0:
-        print(f"** {len(crashed_file_list)} tests crashed ****")
+        file_list_fp = assemble_file_list_fingerprint(crashed_file_list)
+        print(f"** {len(crashed_file_list)} tests crashed ({file_list_fp}) **** ")
     exit(5)
