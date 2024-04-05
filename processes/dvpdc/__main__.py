@@ -147,7 +147,7 @@ def check_essential_element(dvpd_object):
 
     global g_pipeline_model_profile
 
-    root_keys=['pipeline_name','dvpd_version','stage_properties','data_extraction','fields']
+    root_keys=['pipeline_name','dvpd_version','stage_properties','data_extraction','fields','record_source_name_expression']
     for key_name in root_keys:
         if dvpd_object.get(key_name) is None:
             register_error (f"missing declaration of root property '{key_name}'")
