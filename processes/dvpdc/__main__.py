@@ -147,11 +147,13 @@ def check_essential_element(dvpd_object):
 
     global g_pipeline_model_profile
 
-    root_keys=['pipeline_name','dvpd_version','stage_properties','data_extraction','fields','record_source_name_expression']
+    root_keys=['pipeline_name','dvpd_version','stage_properties','data_extraction','fields','record_source_name_expression','data_vault_model']
     for key_name in root_keys:
         if dvpd_object.get(key_name) is None:
             register_error (f"missing declaration of root property '{key_name}'")
 
+    if g_error_count>0:
+        return
 
     # Check essential keys of data model declaration
     table_keys=['table_name','table_stereotype']
@@ -159,13 +161,14 @@ def check_essential_element(dvpd_object):
     for schema_index,schema_entry in enumerate(dvpd_object['data_vault_model'],start=1):
         if schema_entry.get('schema_name') is None:
             register_error(f"missing declaration of 'schema_name' for data_vault_model entry [{schema_index}]")
-
-
-        for table_entry in schema_entry['tables']:
-            table_count+=1
-            for key_name in table_keys:
-                if table_entry.get(key_name) is None:
-                    register_error(f"missing declaration of essential table property '{key_name}' for table entry [{str(table_count)}]")
+        if  schema_entry.get('tables') is None:
+            register_error(f"missing declaration of 'tables' for data_vault_model entry [{schema_index}]")
+        else:
+            for table_entry in schema_entry['tables']:
+                table_count+=1
+                for key_name in table_keys:
+                    if table_entry.get(key_name) is None:
+                        register_error(f"missing declaration of essential table property '{key_name}' for table entry [{str(table_count)}]")
 
     if table_count == 0:
         register_error("No table declared")
