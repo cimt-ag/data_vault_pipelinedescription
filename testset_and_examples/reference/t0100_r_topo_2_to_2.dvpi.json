@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
-  "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-02-21 12:10:13",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
+  "dvpi_version": "0.6.1",
+  "compile_timestamp": "2024-04-05 16:13:35",
   "dvpd_version": "0.6.0",
   "pipeline_name": "etst_100_r_topo_2_to_2",
   "dvpd_filename": "t0100_r_topo_2_to_2.dvpd.json",
@@ -41,7 +41,6 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         }
       ]
@@ -107,7 +106,6 @@
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         }
@@ -187,7 +185,7 @@
       "is_enddated": true,
       "is_multiactive": false,
       "compare_criteria": "key+current",
-      "uses_diff_hash": true,
+      "uses_diff_hash": false,
       "columns": [
         {
           "column_name": "MD_INSERTED_AT",
@@ -264,7 +262,6 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         },
         {
@@ -272,7 +269,6 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         }
       ]
@@ -338,7 +334,6 @@
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         },
@@ -347,7 +342,6 @@
           "is_nullable": true,
           "column_class": "content",
           "column_type": "DECIMAL(12,2)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         }

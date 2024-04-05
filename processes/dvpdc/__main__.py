@@ -147,11 +147,13 @@ def check_essential_element(dvpd_object):
 
     global g_pipeline_model_profile
 
-    root_keys=['pipeline_name','dvpd_version','stage_properties','data_extraction','fields']
+    root_keys=['pipeline_name','dvpd_version','stage_properties','data_extraction','fields','record_source_name_expression','data_vault_model']
     for key_name in root_keys:
         if dvpd_object.get(key_name) is None:
             register_error (f"missing declaration of root property '{key_name}'")
 
+    if g_error_count>0:
+        return
 
     # Check essential keys of data model declaration
     table_keys=['table_name','table_stereotype']
@@ -159,13 +161,14 @@ def check_essential_element(dvpd_object):
     for schema_index,schema_entry in enumerate(dvpd_object['data_vault_model'],start=1):
         if schema_entry.get('schema_name') is None:
             register_error(f"missing declaration of 'schema_name' for data_vault_model entry [{schema_index}]")
-
-
-        for table_entry in schema_entry['tables']:
-            table_count+=1
-            for key_name in table_keys:
-                if table_entry.get(key_name) is None:
-                    register_error(f"missing declaration of essential table property '{key_name}' for table entry [{str(table_count)}]")
+        if  schema_entry.get('tables') is None:
+            register_error(f"missing declaration of 'tables' for data_vault_model entry [{schema_index}]")
+        else:
+            for table_entry in schema_entry['tables']:
+                table_count+=1
+                for key_name in table_keys:
+                    if table_entry.get(key_name) is None:
+                        register_error(f"missing declaration of essential table property '{key_name}' for table entry [{str(table_count)}]")
 
     if table_count == 0:
         register_error("No table declared")
@@ -283,13 +286,12 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component):
             table_properties['diff_hash_column_name'] = 'RH_' + table_name.upper()
 
     table_properties['has_deletion_flag']=cast2Bool(dvpd_table_entry.get('has_deletion_flag', model_profile['has_deletion_flag_default']))  # default is profile
-    cleansed_driving_keys=[]
     if 'driving_keys' in dvpd_table_entry:
         #todo check if driving keys is a list
         cleansed_driving_keys=[]
         for driving_key in dvpd_table_entry['driving_keys']:
             cleansed_driving_keys.append(driving_key.upper())
-    table_properties['driving_keys']=cleansed_driving_keys
+        table_properties['driving_keys']=cleansed_driving_keys
     if 'tracked_relation_name' in dvpd_table_entry:
         table_properties['tracked_relation_name'] = dvpd_table_entry.get('tracked_relation_name')  # default is None
 
@@ -498,11 +500,19 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
     table_entry['is_effectivity_sat'] = not 'data_columns' in table_entry  # determine is_effectivity_sat
 
     parent_table = g_table_dict[table_entry['satellite_parent_table']]
+    parent_table_stereotype = 'lnk'
     if parent_table['table_stereotype'] == 'hub':
+        parent_table_stereotype = 'hub'
         if table_entry['is_effectivity_sat']:
             register_error(f"Parent table '{table_entry['satellite_parent_table']}' of effectivity sat '{table_name}' is not a link")
     elif parent_table['table_stereotype'] != 'lnk':
         register_error(f"Parent table '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is not a link or hub")
+
+    # Driving Key Check
+    if 'driving_keys' in table_entry:
+        if parent_table_stereotype != 'lnk':
+            register_error(f"Satellite '{table_name}' declares driving Key, but parent is not a link")
+        
 
     if table_entry['is_effectivity_sat']:
         return  # without any columns, we are done here
@@ -876,6 +886,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         # if not needed, skip diff hash
         if table_entry['is_effectivity_sat'] or table_entry['compare_criteria'] == 'key' or table_entry[
             'compare_criteria'] == 'none' or not  table_entry['uses_diff_hash']:
+                table_entry['uses_diff_hash']=False
                 continue
 
         # add diff hash
@@ -1019,17 +1030,31 @@ def copy_data_column_properties_to_operation_mapping(data_mapping_dict,data_colu
         if relevant_key in data_column:
             data_mapping_dict[relevant_key]=data_column[relevant_key]
 
+def check_intertable_structure_constraints():
+
+    # Driving Keys must be resolvable (this can only be checked after all hahs derivation)
+    for table_name, table_entry in g_table_dict.items():
+        if 'driving_keys' in table_entry and table_entry['table_stereotype']=='sat':
+            parent = table_entry['satellite_parent_table']
+            parent_hash_columns = g_table_dict[parent]['hash_columns']
+            parent_data_columns=[]
+            if 'data_columns' in g_table_dict[parent]:
+                parent_data_columns= g_table_dict[parent]['data_columns']
+            for driving_key in table_entry['driving_keys']:
+                if driving_key not in parent_hash_columns and driving_key not in parent_data_columns:
+                    register_error(f"Driving Key '{driving_key}' is not a key hash or dependent child key in parent '{parent}'")
+
 
 def assemble_dvpi(dvpd_object, dvpd_filename):
     global g_dvpi_document
 
     # add meta declaration and dpvd meta data
-    g_dvpi_document={'dvdp_compiler':'dvpdc reference compiler,  release 0.6.0',
-                     'dvpi_version': '0.6.0',
+    g_dvpi_document={'dvdp_compiler':'dvpdc reference compiler,  release 0.6.1',
+                     'dvpi_version': '0.6.1',
                      'compile_timestamp':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'dvpd_version':dvpd_object['dvpd_version'],
                      'pipeline_name':dvpd_object['pipeline_name'],
-                     'dvpd_filemame':dvpd_filename}
+                     'dvpd_filename':dvpd_filename}
 
     # add tables
     dvpi_tables=[]
@@ -1054,6 +1079,10 @@ def assemble_dvpi_table_entry(table_name,table_entry):
     for table_property in table_properties_to_copy:
         if table_property in table_entry:
             dvpi_table_entry[table_property]=table_entry[table_property]
+    
+    # Driving Keys
+    if 'driving_keys' in table_entry and table_entry['table_stereotype']=='sat':
+        dvpi_table_entry['driving_keys'] = table_entry['driving_keys']
 
     dvpi_columns=[]
     dvpi_table_entry['columns']=dvpi_columns
@@ -1170,6 +1199,8 @@ def assemble_dvpi_parse_set(dvpd_object):
 
 def assemble_dvpi_hash_mappings(load_operation_entry):
     dvpi_hash_mappings=[]
+    if not 'hash_mapping_dict' in load_operation_entry:
+        return dvpi_hash_mappings
     for hash_class,load_operation_hash_dict_entry in load_operation_entry['hash_mapping_dict'].items():
         dvpi_hash_mapping_entry={'hash_class':hash_class,
                                 'column_name':load_operation_hash_dict_entry['hash_column_name'],
@@ -1371,6 +1402,10 @@ def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_fi
             dvpdc_worker(dvpd_filename, dvpi_directory, dvpdc_report_directory_path, ini_file, model_profile_directory)
         except DvpdcError:
             log_progress("*** Compilation ended with errors ***")
+            raise
+
+
+
 
 def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = None, ini_file = None, model_profile_directory=None):
 
@@ -1447,6 +1482,10 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
         raise DvpdcError
 
     add_hash_columns()
+    if g_error_count > 0:
+        raise DvpdcError
+
+    check_intertable_structure_constraints()
     if g_error_count > 0:
         raise DvpdcError
 

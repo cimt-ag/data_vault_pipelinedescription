@@ -11,7 +11,7 @@
 		      {"field_name": "F1_AAA_BK1F", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_31_aaa_hub"}]}
 		 	  ,{"field_name": "F2_BBB_BK1",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_31_bbb_hub"}]}
 		 	  ,{"field_name": "F3_CCC_BK1", 	"field_type": "Varchar(10)",	"targets": [{"table_name": "rtjj_31_ccc_hub"}]}
-		 	  ,{"field_name": "F4_BBB_CCC_BK2F", 	"field_type": "Varchar(10)",	"targets": [{"table_name": "rtjj_31_ccc_hub"},{"table_name": "rtjj_31_bbb_hub"}]}
+		 	  ,{"field_name": "F4_BBBCCC_BK2F", 	"field_type": "Varchar(10)",	"targets": [{"table_name": "rtjj_31_ccc_hub"},{"table_name": "rtjj_31_bbb_hub"}]}
 		 	  ,{"field_name": "F5_AAA_P1_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_31_aaa_p1_sat"}]}
 			  ,{"field_name": "F6_AAA_P1_C2F",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_31_aaa_p1_sat"}]}
 			 ],

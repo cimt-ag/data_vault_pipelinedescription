@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-04-05 11:58:07
+Compiling t0032_hub_dlink_sat_driving_key.dvpd.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t0032_hub_dlink_sat_driving_key.dvpi.json
+--- Compile successfull ---

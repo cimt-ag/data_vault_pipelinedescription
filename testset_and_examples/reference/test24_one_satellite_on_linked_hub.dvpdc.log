@@ -1,7 +1,0 @@
-Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2023-12-08 11:52:54
-Compiling test24_one_satellite_on_linked_hub.dvpd.json
-
-Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/test24_one_satellite_on_linked_hub.dvpi.json
---- Compile successfull ---

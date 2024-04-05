@@ -8,12 +8,12 @@
 	},
 
 	"fields": [
-		{"field_name": "F1_AAA_BBB_BK1",			"field_type": "Varchar(20)",  "field_position": "1", "uniqueness_groups": ["key"],
+		{"field_name": "F1_AAABBB_BK1",			"field_type": "Varchar(20)",  "field_position": "1", "uniqueness_groups": ["key"],
 								"targets": [{"table_name": "rtjj_50_aaa_hub"},
 									        {"table_name": "rtkk_50_bbb_hub"}]}
 
- 		,{"field_name": "F2XX_AAA_BK2",	"field_type": "Decimal(10,0)", "field_position": "2","uniqueness_groups": ["key"],
-								"targets": [{"table_name": "rtjj_50_aaa_hub","column_name": "F2_AAA_BK2"}]}
+ 		,{"field_name": "F2_AAA_BK2F",	"field_type": "Decimal(10,0)", "field_position": "2","uniqueness_groups": ["key"],
+								"targets": [{"table_name": "rtjj_50_aaa_hub"}]}
 
 		,{"field_name": "F3_AAA_P1_C1",	"field_type": "Varchar(20)",	"field_position": "6",
 								"targets": [{"table_name": "rtjj_50_aaa_p1_sat"}]}
@@ -27,14 +27,14 @@
 		,{"field_name": "F6_AAA_P1_C4F",	"field_type": "TIMESTAMP",		"field_position": "9",	
 								"targets": [{"table_name": "rtjj_50_aaa_p1_sat","exclude_from_change_detection": "true"}]}
 
-		,{"field_name": "F7XX_BBB_BK3",		"field_type": "DECIMAL(10,0)", "field_position": "3",
-								"targets": [{"table_name": "rtkk_50_bbb_hub","column_name": "F7_BBB_BK3","relation_names": ["R111"]}]}
+		,{"field_name": "F7_BBB_BK2F_TTT",		"field_type": "DECIMAL(10,0)", "field_position": "3",
+								"targets": [{"table_name": "rtkk_50_bbb_hub","column_name": "F7F8_BBB_BK2F","relation_names": ["TTT"]}]}
 
-		,{"field_name": "F8XX_BBB_BK4F",	"field_type": "DECIMAL(10,0)",	"field_position": "4",
-								"targets": [{"table_name": "rtkk_50_bbb_hub","column_name": "F8_BBB_BK4F","relation_names": ["R222"]}]}
+		,{"field_name": "F8_BBB_BK2F_UUU",	"field_type": "DECIMAL(10,0)",	"field_position": "4",
+								"targets": [{"table_name": "rtkk_50_bbb_hub","column_name": "F7F8_BBB_BK2F","relation_names": ["UUU"]}]}
 
-		,{"field_name": "F9_BBB_P1_C1F",		"field_type": "VARCHAR(200)", "field_position": "5",
-								"targets": [{"table_name": "rtkk_50_bbb_p1_sat","relation_names": ["R111"]}]}
+		,{"field_name": "F9_BBB_P1_C1F_TTT",		"field_type": "VARCHAR(200)", "field_position": "5",
+								"targets": [{"table_name": "rtkk_50_bbb_p1_sat","column_name": "F9_BBB_P1_C1F","relation_names": ["TTT"]}]}
 
 	],
 	"data_vault_model": [{
@@ -44,11 +44,11 @@
  				,{"table_name": "rtjj_50_aaa_p1_sat","table_stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_hub","diff_hash_column_name": "RH_rtjj_50_aaa_p1_sat"}
 				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_lnk","table_stereotype": "lnk","link_key_column_name": "LK_rtjj_50_aaa_rtjkk_bbb"
 																	,	"link_parent_tables": ["rtjj_50_aaa_hub","rtkk_50_bbb_hub"]}
-				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g1_esat","table_stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
-																		"tracked_relation_name": "R111",
+				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_ttt_esat","table_stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
+																		"tracked_relation_name": "TTT",
 																		"driving_keys": ["HK_rtjj_50_aaa"]}
-				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_g2_esat","table_stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
-																		"tracked_relation_name": "R222",
+				,{"table_name": "rtjj_50_aaa_rtjkk_bbb_uuu_esat","table_stereotype": "sat","satellite_parent_table": "rtjj_50_aaa_rtjkk_bbb_lnk",
+																		"tracked_relation_name": "UUU",
 																		"driving_keys": ["HK_rtjj_50_aaa"]}
 			]
 		},

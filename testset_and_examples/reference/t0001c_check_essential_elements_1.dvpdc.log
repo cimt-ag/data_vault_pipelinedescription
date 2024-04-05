@@ -1,0 +1,12 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-04-05 12:45:42
+Compiling t0001c_check_essential_elements_1.dvpd.json
+
+missing declaration of root property 'pipeline_name'
+missing declaration of root property 'dvpd_version'
+missing declaration of root property 'stage_properties'
+missing declaration of root property 'data_extraction'
+missing declaration of root property 'fields'
+missing declaration of root property 'data_vault_model'
+*** Compilation ended with errors ***
