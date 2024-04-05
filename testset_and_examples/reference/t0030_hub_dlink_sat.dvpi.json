@@ -1,13 +1,13 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-05 13:18:04",
+  "compile_timestamp": "2024-04-05 15:58:04",
   "dvpd_version": "0.6.0",
-  "pipeline_name": "t0021_simple_hub_sat_with_comment",
-  "dvpd_filename": "t0021_simple_hub_sat_with_comment.dvpd.json",
+  "pipeline_name": "t0030_hub_dlink_sat",
+  "dvpd_filename": "t0030_hub_dlink_sat.dvpd.json",
   "tables": [
     {
-      "table_name": "rtjj_21_aaa_hub",
+      "table_name": "rtjj_30_aaa_hub",
       "table_stereotype": "hub",
       "schema_name": "rvlt_test_jj",
       "storage_component": "",
@@ -31,7 +31,7 @@
           "column_type": "VARCHAR(255)"
         },
         {
-          "column_name": "HK_RTJJ_21_AAA",
+          "column_name": "HK_RTJJ_30_AAA",
           "is_nullable": false,
           "column_class": "key",
           "column_type": "CHAR(28)"
@@ -41,7 +41,6 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": "field_comment_F1",
           "prio_for_column_position": 50000
         },
         {
@@ -49,13 +48,59 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "DECIMAL(20,0)",
-          "column_content_comment": "field_comment_F2",
           "prio_for_column_position": 50000
         }
       ]
     },
     {
-      "table_name": "rtjj_21_aaa_p1_sat",
+      "table_name": "rtjj_30_aaa_dlnk",
+      "table_stereotype": "lnk",
+      "schema_name": "rvlt_test_jj",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_RTJJ_30_AAA",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_RTJJ_30_AAA",
+          "parent_table_name": "rtjj_30_aaa_hub"
+        },
+        {
+          "column_name": "LK_RTJJ_30_AAA_DLNK",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "F3_AAA_DDD_DC1F",
+          "is_nullable": true,
+          "column_class": "dependent_child_key",
+          "column_type": "DATE",
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "rtjj_30_aaa_dlnk_p1_sat",
       "table_stereotype": "sat",
       "schema_name": "rvlt_test_jj",
       "storage_component": "",
@@ -97,42 +142,32 @@
           "column_type": "TIMESTAMP"
         },
         {
-          "column_name": "HK_RTJJ_21_AAA",
+          "column_name": "LK_RTJJ_30_AAA_DLNK",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
-          "parent_key_column_name": "HK_RTJJ_21_AAA",
-          "parent_table_name": "rtjj_21_aaa_hub"
+          "parent_key_column_name": "LK_RTJJ_30_AAA_DLNK",
+          "parent_table_name": "rtjj_30_aaa_dlnk"
         },
         {
-          "column_name": "RH_RTJJ_21_AAA_P1_SAT",
+          "column_name": "RH_RTJJ_30_AAA_DLNK_P1_SAT",
           "is_nullable": false,
           "column_class": "diff_hash",
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "F3_AAA_P1_C1",
-          "is_nullable": true,
-          "column_class": "content",
-          "column_type": "VARCHAR(200)",
-          "exclude_from_change_detection": false,
-          "prio_for_column_position": 50000
-        },
-        {
-          "column_name": "F4_AAA_P1_C2",
+          "column_name": "F4_AAA_DDD_P1_C1",
           "is_nullable": true,
           "column_class": "content",
           "column_type": "DECIMAL(5,0)",
-          "column_content_comment": "field_comment_F4",
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         },
         {
-          "column_name": "F5_AAA_P1_C3F",
+          "column_name": "F5_AAA_DDD_P1_C2F",
           "is_nullable": true,
           "column_class": "content",
-          "column_type": "VARCHAR(200)",
-          "column_content_comment": "field_comment_F5XX",
+          "column_type": "DECIMAL(5,0)",
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         }
@@ -147,7 +182,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "srtjj_20",
+          "stage_table_name": "st0030_hub_dlink_sat",
           "storage_component": ""
         }
       ],
@@ -155,55 +190,51 @@
       "fields": [
         {
           "field_type": "Varchar(20)",
-          "field_comment": "field_comment_F1",
           "field_position": 1,
           "needs_encryption": false,
           "field_name": "F1_AAA_BK1"
         },
         {
           "field_type": "Decimal(20,0)",
-          "field_comment": "field_comment_F2",
           "field_position": 2,
           "needs_encryption": false,
           "field_name": "F2_AAA_BK2F"
         },
         {
-          "field_type": "VARCHAR(200)",
+          "field_type": "DATE",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "F3_AAA_P1_C1"
+          "field_name": "F3_AAA_DDD_DC1F"
         },
         {
           "field_type": "DECIMAL(5,0)",
-          "field_comment": "field_comment_F4",
           "field_position": 4,
           "needs_encryption": false,
-          "field_name": "F4XX_AAA_P1_C2"
+          "field_name": "F4_AAA_DDD_P1_C1"
         },
         {
-          "field_type": "VARCHAR(200)",
-          "field_comment": "field_comment_F5XX",
+          "field_type": "DECIMAL(5,0)",
           "field_position": 5,
           "needs_encryption": false,
-          "field_name": "F5XX_AAA_P1_C3F"
+          "field_name": "F5_AAA_DDD_P1_C2F"
         }
       ],
       "hashes": [
         {
-          "stage_column_name": "HK_RTJJ_21_AAA",
-          "hash_origin_table": "rtjj_21_aaa_hub",
+          "stage_column_name": "HK_RTJJ_30_AAA",
+          "hash_origin_table": "rtjj_30_aaa_hub",
           "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F1_AAA_BK1",
               "prio_in_key_hash": 0,
-              "field_target_table": "rtjj_21_aaa_hub",
+              "field_target_table": "rtjj_30_aaa_hub",
               "field_target_column": "F1_AAA_BK1"
             },
             {
               "field_name": "F2_AAA_BK2F",
               "prio_in_key_hash": 0,
-              "field_target_table": "rtjj_21_aaa_hub",
+              "field_target_table": "rtjj_30_aaa_hub",
               "field_target_column": "F2_AAA_BK2F"
             }
           ],
@@ -214,35 +245,32 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTJJ_21_AAA_HUB"
+          "hash_name": "KEY_OF_RTJJ_30_AAA_HUB"
         },
         {
-          "stage_column_name": "RH_RTJJ_21_AAA_P1_SAT",
-          "hash_origin_table": "rtjj_21_aaa_p1_sat",
-          "multi_row_content": false,
-          "related_key_hash": "KEY_OF_RTJJ_21_AAA_HUB",
-          "column_class": "diff_hash",
+          "stage_column_name": "LK_RTJJ_30_AAA_DLNK",
+          "hash_origin_table": "rtjj_30_aaa_dlnk",
+          "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "F3_AAA_P1_C1",
-              "prio_in_diff_hash": 0,
-              "prio_for_row_order": 50000,
-              "field_target_table": "rtjj_21_aaa_p1_sat",
-              "field_target_column": "F3_AAA_P1_C1"
+              "field_name": "F1_AAA_BK1",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_30_aaa_hub",
+              "field_target_column": "F1_AAA_BK1",
+              "parent_declaration_position": 1
             },
             {
-              "field_name": "F4XX_AAA_P1_C2",
-              "prio_in_diff_hash": 0,
-              "prio_for_row_order": 50000,
-              "field_target_table": "rtjj_21_aaa_p1_sat",
-              "field_target_column": "F4_AAA_P1_C2"
+              "field_name": "F2_AAA_BK2F",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_30_aaa_hub",
+              "field_target_column": "F2_AAA_BK2F",
+              "parent_declaration_position": 1
             },
             {
-              "field_name": "F5XX_AAA_P1_C3F",
-              "prio_in_diff_hash": 0,
-              "prio_for_row_order": 50000,
-              "field_target_table": "rtjj_21_aaa_p1_sat",
-              "field_target_column": "F5_AAA_P1_C3F"
+              "field_name": "F3_AAA_DDD_DC1F",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_30_aaa_dlnk",
+              "field_target_column": "F3_AAA_DDD_DC1F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -252,21 +280,52 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "DIFF_OF_RTJJ_21_AAA_P1_SAT"
+          "hash_name": "KEY_OF_RTJJ_30_AAA_DLNK"
+        },
+        {
+          "stage_column_name": "RH_RTJJ_30_AAA_DLNK_P1_SAT",
+          "hash_origin_table": "rtjj_30_aaa_dlnk_p1_sat",
+          "multi_row_content": false,
+          "related_key_hash": "KEY_OF_RTJJ_30_AAA_DLNK",
+          "column_class": "diff_hash",
+          "hash_fields": [
+            {
+              "field_name": "F4_AAA_DDD_P1_C1",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rtjj_30_aaa_dlnk_p1_sat",
+              "field_target_column": "F4_AAA_DDD_P1_C1"
+            },
+            {
+              "field_name": "F5_AAA_DDD_P1_C2F",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rtjj_30_aaa_dlnk_p1_sat",
+              "field_target_column": "F5_AAA_DDD_P1_C2F"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "DIFF_OF_RTJJ_30_AAA_DLNK_P1_SAT"
         }
       ],
       "load_operations": [
         {
-          "table_name": "rtjj_21_aaa_hub",
+          "table_name": "rtjj_30_aaa_hub",
           "relation_name": "*",
           "operation_origin": "implicit universal relation of hub",
           "hash_mappings": [
             {
               "hash_class": "key",
-              "column_name": "HK_RTJJ_21_AAA",
-              "hash_name": "KEY_OF_RTJJ_21_AAA_HUB",
+              "column_name": "HK_RTJJ_30_AAA",
+              "hash_name": "KEY_OF_RTJJ_30_AAA_HUB",
               "is_nullable": false,
-              "stage_column_name": "HK_RTJJ_21_AAA"
+              "stage_column_name": "HK_RTJJ_30_AAA"
             }
           ],
           "data_mapping": [
@@ -287,46 +346,69 @@
           ]
         },
         {
-          "table_name": "rtjj_21_aaa_p1_sat",
-          "relation_name": "*",
-          "operation_origin": "following parent operation list",
+          "table_name": "rtjj_30_aaa_dlnk",
+          "relation_name": "/",
+          "operation_origin": "induced from satellite rtjj_30_aaa_dlnk_p1_sat",
           "hash_mappings": [
             {
-              "hash_class": "parent_key",
-              "column_name": "HK_RTJJ_21_AAA",
-              "hash_name": "KEY_OF_RTJJ_21_AAA_HUB",
+              "hash_class": "parent_key_1",
+              "column_name": "HK_RTJJ_30_AAA",
+              "hash_name": "KEY_OF_RTJJ_30_AAA_HUB",
               "is_nullable": false,
-              "stage_column_name": "HK_RTJJ_21_AAA"
+              "stage_column_name": "HK_RTJJ_30_AAA"
             },
             {
-              "hash_class": "diff_hash",
-              "column_name": "RH_RTJJ_21_AAA_P1_SAT",
-              "hash_name": "DIFF_OF_RTJJ_21_AAA_P1_SAT",
+              "hash_class": "key",
+              "column_name": "LK_RTJJ_30_AAA_DLNK",
+              "hash_name": "KEY_OF_RTJJ_30_AAA_DLNK",
               "is_nullable": false,
-              "stage_column_name": "RH_RTJJ_21_AAA_P1_SAT"
+              "stage_column_name": "LK_RTJJ_30_AAA_DLNK"
             }
           ],
           "data_mapping": [
             {
-              "column_name": "F3_AAA_P1_C1",
-              "field_name": "F3_AAA_P1_C1",
-              "column_class": "content",
+              "column_name": "F3_AAA_DDD_DC1F",
+              "field_name": "F3_AAA_DDD_DC1F",
+              "column_class": "dependent_child_key",
               "is_nullable": true,
-              "stage_column_name": "F3_AAA_P1_C1"
+              "stage_column_name": "F3_AAA_DDD_DC1F"
+            }
+          ]
+        },
+        {
+          "table_name": "rtjj_30_aaa_dlnk_p1_sat",
+          "relation_name": "/",
+          "operation_origin": "implicit unnamed relation operation",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key",
+              "column_name": "LK_RTJJ_30_AAA_DLNK",
+              "hash_name": "KEY_OF_RTJJ_30_AAA_DLNK",
+              "is_nullable": false,
+              "stage_column_name": "LK_RTJJ_30_AAA_DLNK"
             },
             {
-              "column_name": "F4_AAA_P1_C2",
-              "field_name": "F4XX_AAA_P1_C2",
+              "hash_class": "diff_hash",
+              "column_name": "RH_RTJJ_30_AAA_DLNK_P1_SAT",
+              "hash_name": "DIFF_OF_RTJJ_30_AAA_DLNK_P1_SAT",
+              "is_nullable": false,
+              "stage_column_name": "RH_RTJJ_30_AAA_DLNK_P1_SAT"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "F4_AAA_DDD_P1_C1",
+              "field_name": "F4_AAA_DDD_P1_C1",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F4XX_AAA_P1_C2"
+              "stage_column_name": "F4_AAA_DDD_P1_C1"
             },
             {
-              "column_name": "F5_AAA_P1_C3F",
-              "field_name": "F5XX_AAA_P1_C3F",
+              "column_name": "F5_AAA_DDD_P1_C2F",
+              "field_name": "F5_AAA_DDD_P1_C2F",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F5XX_AAA_P1_C3F"
+              "stage_column_name": "F5_AAA_DDD_P1_C2F"
             }
           ]
         }
@@ -357,17 +439,24 @@
           "column_type": "BOOLEAN"
         },
         {
-          "stage_column_name": "HK_RTJJ_21_AAA",
+          "stage_column_name": "HK_RTJJ_30_AAA",
           "stage_column_class": "hash",
           "is_nullable": false,
-          "hash_name": "KEY_OF_RTJJ_21_AAA_HUB",
+          "hash_name": "KEY_OF_RTJJ_30_AAA_HUB",
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "RH_RTJJ_21_AAA_P1_SAT",
+          "stage_column_name": "LK_RTJJ_30_AAA_DLNK",
           "stage_column_class": "hash",
           "is_nullable": false,
-          "hash_name": "DIFF_OF_RTJJ_21_AAA_P1_SAT",
+          "hash_name": "KEY_OF_RTJJ_30_AAA_DLNK",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "RH_RTJJ_30_AAA_DLNK_P1_SAT",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "DIFF_OF_RTJJ_30_AAA_DLNK_P1_SAT",
           "column_type": "CHAR(28)"
         },
         {
@@ -391,19 +480,19 @@
           ]
         },
         {
-          "stage_column_name": "F3_AAA_P1_C1",
+          "stage_column_name": "F3_AAA_DDD_DC1F",
           "stage_column_class": "data",
-          "field_name": "F3_AAA_P1_C1",
+          "field_name": "F3_AAA_DDD_DC1F",
           "is_nullable": true,
-          "column_type": "VARCHAR(200)",
+          "column_type": "DATE",
           "column_classes": [
-            "content"
+            "dependent_child_key"
           ]
         },
         {
-          "stage_column_name": "F4XX_AAA_P1_C2",
+          "stage_column_name": "F4_AAA_DDD_P1_C1",
           "stage_column_class": "data",
-          "field_name": "F4XX_AAA_P1_C2",
+          "field_name": "F4_AAA_DDD_P1_C1",
           "is_nullable": true,
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
@@ -411,11 +500,11 @@
           ]
         },
         {
-          "stage_column_name": "F5XX_AAA_P1_C3F",
+          "stage_column_name": "F5_AAA_DDD_P1_C2F",
           "stage_column_class": "data",
-          "field_name": "F5XX_AAA_P1_C3F",
+          "field_name": "F5_AAA_DDD_P1_C2F",
           "is_nullable": true,
-          "column_type": "VARCHAR(200)",
+          "column_type": "DECIMAL(5,0)",
           "column_classes": [
             "content"
           ]

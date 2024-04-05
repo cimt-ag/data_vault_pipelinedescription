@@ -309,17 +309,23 @@ if __name__ == "__main__":
         for filename in crashed_file_list:
             print(filename)
 
+    report_line=f"{len(dvpd_file_list)} = "
     print(f"\n**** Number of tests: {len(dvpd_file_list)} ****")
 
     file_list_fp=assemble_file_list_fingerprint(successful_file_list)
+    report_line+=f"success {len(successful_file_list)} ({file_list_fp})"
     print(f"** {len(successful_file_list)} tests passed ({file_list_fp})")
     if len(failing_file_list)>0:
         file_list_fp=assemble_file_list_fingerprint(failing_file_list)
+        report_line += f"+ fail {len(failing_file_list)} ({file_list_fp})"
         print(f"** {len(failing_file_list)} tests failed ({file_list_fp})")
     if len(reference_missing_list) > 0:
         file_list_fp = assemble_file_list_fingerprint(reference_missing_list)
+        report_line += f"+ no ref {len(reference_missing_list)} ({file_list_fp})"
         print(f"** {len(reference_missing_list)} tests have no reference data ({file_list_fp})")
     if len(crashed_file_list) > 0:
         file_list_fp = assemble_file_list_fingerprint(crashed_file_list)
+        report_line += f"+ crash {len(crashed_file_list)} ({file_list_fp})"
         print(f"** {len(crashed_file_list)} tests crashed ({file_list_fp}) **** ")
-    exit(5)
+
+    print("\n"+report_line)

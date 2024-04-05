@@ -886,6 +886,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         # if not needed, skip diff hash
         if table_entry['is_effectivity_sat'] or table_entry['compare_criteria'] == 'key' or table_entry[
             'compare_criteria'] == 'none' or not  table_entry['uses_diff_hash']:
+                table_entry['uses_diff_hash']=False
                 continue
 
         # add diff hash
