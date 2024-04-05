@@ -283,13 +283,12 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component):
             table_properties['diff_hash_column_name'] = 'RH_' + table_name.upper()
 
     table_properties['has_deletion_flag']=cast2Bool(dvpd_table_entry.get('has_deletion_flag', model_profile['has_deletion_flag_default']))  # default is profile
-    cleansed_driving_keys=[]
     if 'driving_keys' in dvpd_table_entry:
         #todo check if driving keys is a list
         cleansed_driving_keys=[]
         for driving_key in dvpd_table_entry['driving_keys']:
             cleansed_driving_keys.append(driving_key.upper())
-    table_properties['driving_keys']=cleansed_driving_keys
+        table_properties['driving_keys']=cleansed_driving_keys
     if 'tracked_relation_name' in dvpd_table_entry:
         table_properties['tracked_relation_name'] = dvpd_table_entry.get('tracked_relation_name')  # default is None
 
@@ -498,11 +497,19 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
     table_entry['is_effectivity_sat'] = not 'data_columns' in table_entry  # determine is_effectivity_sat
 
     parent_table = g_table_dict[table_entry['satellite_parent_table']]
+    parent_table_stereotype = 'lnk'
     if parent_table['table_stereotype'] == 'hub':
+        parent_table_stereotype = 'hub'
         if table_entry['is_effectivity_sat']:
             register_error(f"Parent table '{table_entry['satellite_parent_table']}' of effectivity sat '{table_name}' is not a link")
     elif parent_table['table_stereotype'] != 'lnk':
         register_error(f"Parent table '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is not a link or hub")
+
+    # Driving Key Check
+    if 'driving_keys' in table_entry:
+        if parent_table_stereotype != 'lnk':
+            register_error(f"Satellite {table_name} contains Driving Key entry, even though Parent is HUB. Driving Keys are only allowed for Satellites on Links.")
+        
 
     if table_entry['is_effectivity_sat']:
         return  # without any columns, we are done here
@@ -1054,6 +1061,20 @@ def assemble_dvpi_table_entry(table_name,table_entry):
     for table_property in table_properties_to_copy:
         if table_property in table_entry:
             dvpi_table_entry[table_property]=table_entry[table_property]
+    
+    # Driving Keys
+    if 'driving_keys' in table_entry:
+        if table_entry['table_stereotype'] != 'sat':
+            register_error(f"Driving Keys defined for Table {table_name} even though Table is not a Satellite")
+        parent = table_entry['satellite_parent_table']
+        parent_hash_columns = g_table_dict[parent]['hash_columns']
+        parent_data_coolumns = g_table_dict[parent]['data_columns']
+        #TODO: check if driving keys are contained in parent Link:
+        for driving_key in table_entry['driving_keys']:
+            if driving_key not in parent_hash_columns and driving_key not in parent_data_coolumns:
+                register_error(f"Driving Key {driving_key} not in Parent {parent} Columns")
+        # if checks successfull -> add to dvpi
+        dvpi_table_entry['driving_keys'] = table_entry['driving_keys']
 
     dvpi_columns=[]
     dvpi_table_entry['columns']=dvpi_columns
