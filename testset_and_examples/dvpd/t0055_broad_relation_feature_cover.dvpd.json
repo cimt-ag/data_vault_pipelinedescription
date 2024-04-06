@@ -44,6 +44,11 @@
 																																											"column_name":"F19_eee_SP1_C2F"}]}
 		    ,{"field_name": "F20_CCC_BK2F", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_55_ccc_hub"}]}
 		    ,{"field_name": "F21_CCC_CU1F", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_55_ccc_hub","exclude_from_key_hash":true}]}
+				,{"field_name": "F22_BBB_P1_C1F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p1_sat",
+																																												"column_name":"F22F23_BBB_P1_C1F"}]}
+				,{"field_name": "F23_BBB_P1_C1F_UUU",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p1_sat",
+																																												"column_name":"F22F23_BBB_P1_C1F",
+																																												"relation_names":["UUU"]}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
@@ -127,7 +132,13 @@
 		},
 		{"schema_name": "rvlt_test_kk", 
 		 "tables": [
-				{"table_name": "rtkk_55_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtkk_55_bbb"}
+				{"table_name": "rtkk_55_bbb_hub",	"table_stereotype": "hub"
+					,"hub_key_column_name": "HK_rtkk_55_bbb"
+				}
+				,{"table_name": "rtkk_55_bbb_p1_sat",	"table_stereotype": "sat",
+					"satellite_parent_table": "rtkk_55_bbb_HUB",
+					"diff_hash_column_name": "RH_rtkk_55_bbb_P1_SAT"
+					}
 		]
 	}]
 }

@@ -351,9 +351,10 @@ specific relations, the table is involved in.
 - Every table must have a load operation, for every set of keys (every kind of hash key assembly) it participating in.
 - Every field mapping to a table must belong to one or many set of keys 
 
-### Step 1 - Determine field mapping restrictions and load operation from explicit field relation 
-- field mappings will be restricted to the relation names that are explicitly declared in the mapping
+### Step 1 - Determine field mapping restrictions 
 - field mappings without any relation name are set to be default mappings `*`, that can be used for any relation 
+
+### Step 2 - Determine load operation from explicit field relation 
 - a table will have an operation for every explicitly declared mapping relation(this might already include the unnamed relation `/` , when explicitly declared)
 - a table with explicit relations will have an operation for the unnamed relation `/` when there is a default mapping for all columns available
 - a hub table with only default mappings will have an operation for the generic relation `*` 
@@ -364,7 +365,9 @@ Result:
 - Sat and link tables will have load operations, that are the result of explicit mappings
 - Completeness of the mappings is checked
 
-### Step 2 - Determine operation for links with explict parent mappings
+
+
+### Step 3 - Determine operation for links with explict parent mappings
 This only applies to links with an explicit relation declaration in the parent hub mapping:
 - Compiler check: The link must not already have a load operation, that was deduced in previous steps (Tgus Restricion will be removed in 0.7.x)
 - The link will have an "explicit relation" load operation `+`
@@ -374,14 +377,15 @@ Result:
 - links with explicit relations in the hub mapping are tagged with the `+` load operation
 - The relation names in the hub relations are checked
 
-### Step 3 - Determine operation from tracked relations of effecitivity satellite
+### Step 4 - Determine operation from tracked relations of effecitivity satellite
 This only applies to effectivity satellites
 - Compiler check: When the parent link is tagged with the `+` load operation, the declaration of a tracked relation is not allowed 
 - If a tracked relation is declared, it will be the only load operation
 Result:
 - effectivtiy satellites with legal tracked relation declaration are tagged with the relation specific load operation
 
-### Step 4 - Satellite to Link operation deduction
+
+### Step 5 - Satellite to Link operation deduction
 Must be applied to all links, that have no operation yet:
 - get all load operations from load operations of its children that are not `*`
 - compiler check: The load operation must be explicitly supported by at least one parent hub 
@@ -389,18 +393,18 @@ Must be applied to all links, that have no operation yet:
 Result:
 - Links who's operation are driven by the satellites have a operaion list
 
-### Step 5 - Hub to Link deduction
+### Step 6 - Hub to Link deduction
 Must be applied to all links, that have no operation yet:
 - determine the load operations, that all parent hubs have in common 
 - Should the result only be `*`, set the load operation of the link to be `/`
 
-### Step 6 - Parent to Satellite deduction
+### Step 7 - Parent to Satellite deduction
 Must be applied to all satellites, that have no operation yet:
 - Add all operations of the parent 
 Result:
 - every table should have its appropriate list of load operations now
 
-### Step 7 - Final check
+### Step 8 - Final check
 - compiler crosscheck: all tables must have at least one load operation. Single `*` or one or more relation names
 
 
