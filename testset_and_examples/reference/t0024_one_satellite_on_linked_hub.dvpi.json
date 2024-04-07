@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-05 16:13:34",
+  "compile_timestamp": "2024-04-07 20:02:06",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0024_one_satellite_on_linked_hub",
   "dvpd_filename": "t0024_one_satellite_on_linked_hub.dvpd.json",
@@ -611,7 +611,7 @@
         {
           "table_name": "rtjj_24_aaa_bbb_lnk",
           "relation_name": "/",
-          "operation_origin": "induced from satellite rtjj_24_aaa_bbb_esat",
+          "operation_origin": "implicit unnamed relation, since all parents are universal",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -639,7 +639,7 @@
         {
           "table_name": "rtjj_24_aaa_bbb_esat",
           "relation_name": "/",
-          "operation_origin": "implicit unnamed relation operation",
+          "operation_origin": "following parent operation list",
           "hash_mappings": [
             {
               "hash_class": "parent_key",

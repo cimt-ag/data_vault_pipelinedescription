@@ -79,9 +79,11 @@ def run_test_for_file(dvpd_filename, raise_on_crash=False):
         return "no_reference"
 
     if g_difference_count == 0:
+            print("\n--- Test OK ---")
             return "success"
-    return "fail"
 
+    print("\n****Result differs from reference****")
+    return "fail"
 
 
 def compare_dvpdc_log_with_reference(dvpd_filename):

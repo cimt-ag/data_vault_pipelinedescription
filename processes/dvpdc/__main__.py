@@ -261,7 +261,7 @@ def transform_lnk_table(dvpd_table_entry, schema_name, storage_component):
             table_properties['link_parent_tables'].append(cleansed_parent_entry)
             table_properties['has_explicit_link_parent_relations'] = has_explicit_link_parent_relations
     else:
-        register_error(f"Declaration of 'link_parent_tables' is missing for lnk table '{table_name}'")
+        register_error(f"Declaration of 'link_parent_tables' clause is missing for lnk table '{table_name}'")
 
 
     # finally add this to the global table dictionary

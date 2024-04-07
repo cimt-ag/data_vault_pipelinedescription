@@ -1,11 +1,11 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2024-02-21 19:42:15
+Compiler Version 0.6.1
+Compile time: 2024-04-07 20:02:05
 Compiling t0006c_collect_table_properties_1.dvpd.json
 
 table_name 'rtjj_xxx_06_double' has already been defined. table_name must be unique in the model
 Unknown table stereotype 'XXXbad stereotypeXXX' declared for table rtjj_yyy_06_bad_stereotype
 model profile 'XXXbad profileXXX' for table 'rtjj_xxx_06_bad_model_profile' is not defined
-link_parent_tables is not declared for lnk table rtjj_aaa_yyy_06_lnk
+Declaration of 'link_parent_tables' clause is missing for lnk table 'rtjj_aaa_yyy_06_lnk'
 table_name is not declared in link_parent_tables for lnk table rtjj_aaa_zzz_06_lnk
 *** Compilation ended with errors ***
