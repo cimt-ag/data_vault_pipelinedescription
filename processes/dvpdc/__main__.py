@@ -730,7 +730,7 @@ def pull_hub_load_operations_into_links():
                 continue # universal hubs dont count here
             relevant_hub_count+=1
             hub_load_operations=hub_table['load_operations']
-            for hub_load_operation_name in hub_load_operations.key():
+            for hub_load_operation_name in hub_load_operations.keys():
                 if first_relevant_hub:
                     load_operation_collection[hub_load_operation_name]=1
                 elif hub_load_operation_name in load_operation_collection:
@@ -810,9 +810,11 @@ def add_hash_column_mappings_for_hub(table_name,table_entry):
 
     hash_base_name = "KEY_OF_"+table_name.upper()
     key_column_name = table_entry['hub_key_column_name']
-    # create a hash for every operation
+
+    # create a hash for every load operation of the hub (wich is a differen key set by definition)
     load_operations=table_entry['load_operations']
     for load_operation_name, load_operation_entry in load_operations.items():
+        #render internal hash name
         if load_operation_name == "*" or load_operation_name == "/" or len(load_operations) == 1:
             hash_name = hash_base_name
             stage_column_name = key_column_name
@@ -820,6 +822,7 @@ def add_hash_column_mappings_for_hub(table_name,table_entry):
             hash_name = hash_base_name + "__FOR__" + load_operation_name.upper()
             stage_column_name = key_column_name + "_" + load_operation_name.upper()
 
+        #assemble the columns and fields for this hash from the load operations data_mapping_dict
         hash_fields=[]
         for column_name,column_entry in load_operation_entry['data_mapping_dict'].items():
             if column_entry['exclude_from_key_hash'] :
@@ -868,22 +871,22 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
         table_entry['hash_columns']={}
     table_hash_columns= table_entry['hash_columns']
 
-    for load_operation_name, load_operation_entry in load_operations.items():
+    for link_load_operation_name, link_load_operation_entry in load_operations.items():
         hash_mapping_dict = {}
-        load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
-        mapping_set=load_operation_entry['mapping_set']
+        link_load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
+        #link_mapping_set=link_load_operation_entry['mapping_set']
 
-        # render link key names according to load_operation_name
-        if load_operation_name == "*" or load_operation_name == "/" or len(load_operations) == 1:
+        # render link key names according to link_load_operation_name
+        if link_load_operation_name == "*" or link_load_operation_name == "/" or len(load_operations) == 1:
             link_hash_name = link_hash_base_name
             stage_column_name = link_key_column_name
         else:
-            link_hash_name = link_hash_base_name + "_" + load_operation_name.upper()
-            stage_column_name = link_key_column_name + "_" + load_operation_name
+            link_hash_name = link_hash_base_name + "_" + link_load_operation_name.upper()
+            stage_column_name = link_key_column_name + "_" + link_load_operation_name
 
         link_hash_fields=[]
 
-        # add parent hash key fields for this relation
+        # add parent hash key fields for this operation
         link_parent_count=0
         for link_parent_entry in table_entry['link_parent_tables']:
             link_parent_count+=1
@@ -891,25 +894,27 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
             parent_model_profile=g_model_profile_dict[parent_table_entry['model_profile_name']]
             parent_table_key_column_type=parent_model_profile['table_key_column_type']
             parent_load_operations=parent_table_entry['load_operations']
-            if link_parent_entry['relation_name'] != '*':
-                parent_relation= link_parent_entry['relation_name']  # the parent must provide operation of explicitly declared relation
-            elif '*' in parent_load_operations:
-                parent_relation = '*'  # the parent only has a universal relation
-            else:
-                parent_relation=load_operation_name  # the parent must provide the relation of the process of the link
 
-            if not parent_relation in parent_load_operations:
-                register_error(f"Hub '{link_parent_entry['table_name']}' has no business key mapping for relation '{parent_relation}' needed for link '{table_name}'"  )
+            #determine the parent (hub) key set ot use
+            if link_parent_entry['relation_name'] != '*':
+                parent_key_set= link_parent_entry['relation_name']  # the parent must provide keyset of explicitly declared relation
+            elif '*' in parent_load_operations:
+                parent_key_set = '*'  # the parent only has a universal relation
+            else:
+                parent_key_set=link_load_operation_name  # the parent must provide the relation of the process of the link
+
+            if not parent_key_set in parent_load_operations:
+                register_error(f"Hub '{link_parent_entry['table_name']}' has no business key mapping for relation '{parent_key_set}' needed for link '{table_name}'"  )
                 return
-            parent_load_operation=parent_load_operations[parent_relation]
+            parent_load_operation=parent_load_operations[parent_key_set]
             parent_hash_reference_dict=parent_load_operation['hash_mapping_dict']
             parent_key_hash_reference=parent_hash_reference_dict['key']
 
             # assemble the column name for the hub key in the link
             if link_parent_entry['hub_key_column_name_in_link'] != None:
                 hub_key_column_name_in_link=link_parent_entry['hub_key_column_name_in_link']
-            elif parent_relation !="/" and parent_relation != '*':
-                hub_key_column_name_in_link=parent_key_hash_reference['hash_column_name']+"_"+parent_relation.upper()
+            elif parent_key_set !="/" and parent_key_set != '*' and link_load_operation_name == "+":
+                hub_key_column_name_in_link=parent_key_hash_reference['hash_column_name']+"_"+parent_key_set.upper()
                 link_parent_entry['hub_key_column_name_in_link']=hub_key_column_name_in_link
             else:
                 hub_key_column_name_in_link = parent_key_hash_reference['hash_column_name']
@@ -937,8 +942,8 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
 
 
         # add dependent child keys if exist
-        if 'data_mapping_dict' in load_operation_entry:
-            for column_name,column_entry in load_operation_entry['data_mapping_dict'].items():
+        if 'data_mapping_dict' in link_load_operation_entry:
+            for column_name,column_entry in link_load_operation_entry['data_mapping_dict'].items():
                 if column_entry['exclude_from_key_hash']:
                     continue
                 hash_field={'field_name':column_entry['field_name'],
@@ -1559,7 +1564,7 @@ def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_fi
     with open(dvpdc_log_file_path,"w") as g_logfile:
         g_logfile.write(f"Data vault pipeline description compiler log \n")
         print("---")
-        log_progress(f"Compiler Version 0.6.0")
+        log_progress(f"Compiler Version 0.6.1")
         g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         log_progress(f"Compiling {dvpd_filename}\n")
         try:
