@@ -612,7 +612,7 @@ def determine_load_operations_from_relations_in_mappings():
 
             # add special operation, when scanning revealed special conditions
             if len(load_operations)>0  and has_default_mapping_for_all_columns and '/' not in load_operations:
-                    load_operations['/'] = {"operation_origin": "default field mapping for all columns","mapping_set":"*"}
+                    load_operations['/'] = {"operation_origin": "induced by default field mapping for all columns","mapping_set":"*"}
             elif  table_entry['table_stereotype']=='hub' and has_default_mapping_for_all_columns:
                 load_operations['*'] = {"operation_origin": "implicit universal relation of hub","mapping_set":"*"}
                 table_entry['is_hub_with_universaL_load_operation']=True
@@ -997,19 +997,20 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
 
     load_operations= table_entry['load_operations']
 
-    for relation_name, load_operation_entry in load_operations.items():
+
+    for load_operation_name, load_operation_entry in load_operations.items():
         hash_mapping_dict = {}
         load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
         # add parent key hash to hash reference list
         parent_load_operations = satellite_parent_table['load_operations']
 
-        if not relation_name in parent_load_operations:
+        if not load_operation_name in parent_load_operations:
             #todo: create compiler check test case to trigger this message
             register_error(
-                f"Parent table '{table_entry['satellite_parent_table']}' has no load operation for relation '{relation_name}' requiered for satellite '{table_name}'")
+                f"Parent table '{table_entry['satellite_parent_table']}' has no load operation for relation '{load_operation_name}' requiered for satellite '{table_name}'")
             return
 
-        parent_load_operation = parent_load_operations[relation_name]
+        parent_load_operation = parent_load_operations[load_operation_name]
         parent_hash_reference_dict = parent_load_operation['hash_mapping_dict']
         parent_key_hash_reference = parent_hash_reference_dict['key']
 
@@ -1033,19 +1034,23 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                 table_entry['uses_diff_hash']=False
                 continue
 
-        # add diff hash
+        if not table_entry['uses_diff_hash']:
+            return # without diff hash we are done here
+
+        # add diff hash for the mapping set
+        mapping_set=load_operation_entry['mapping_set']
 
         diff_hash_base_name="DIFF_OF_"+table_name.upper()
         diff_hash_column_name = table_entry['diff_hash_column_name']
         model_profile = g_model_profile_dict[table_entry['model_profile_name']]
         diff_hash_column_type = model_profile['diff_hash_column_type']
 
-        if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
+        if mapping_set == "*" or mapping_set == "/" :
             hash_name = diff_hash_base_name
             stage_column_name = diff_hash_column_name
         else:
-            hash_name = diff_hash_base_name + "__FOR__" + relation_name.upper()
-            stage_column_name = diff_hash_column_name + "_" + relation_name.upper()
+            hash_name = diff_hash_base_name + "__FOR__" + mapping_set.upper()
+            stage_column_name = diff_hash_column_name + "_" + mapping_set.upper()
 
         hash_fields = []
         for column_name, column_entry in load_operation_entry['data_mapping_dict'].items():
@@ -1081,7 +1086,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         hash_mapping_dict['diff_hash']={"hash_name": hash_name,
                                          "hash_column_name": diff_hash_column_name }
 
-        # put hash column in table hash list
+        # put diff hash column in table hash list
         if diff_hash_column_name not in table_hash_columns:
             table_hash_columns[diff_hash_column_name] = {"column_class": "diff_hash",
                                                                "column_type": diff_hash_column_type}
