@@ -56,7 +56,7 @@ def run_test_for_file(dvpd_filename, raise_on_crash=False):
 
     except DvpdcError:
         if dvpd_filename[5] != "c":
-            print("****Compiling failed, but should not****")
+            print("****fail: Compiling failed, but should not****")
             return "fail"
 
     except Exception as e:
@@ -82,7 +82,7 @@ def run_test_for_file(dvpd_filename, raise_on_crash=False):
             print("\n--- Test OK ---")
             return "success"
 
-    print("\n****Result differs from reference****")
+    print("\n****fail:Result differs from reference****")
     return "fail"
 
 

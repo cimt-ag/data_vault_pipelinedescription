@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
-  "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-03-14 12:05:32",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
+  "dvpi_version": "0.6.1",
+  "compile_timestamp": "2024-04-07 20:28:29",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0065_fg_drive_scenario_5",
   "dvpd_filename": "t0065_fg_drive_scenario_5.dvpd.json",
@@ -70,7 +70,7 @@
           "column_type": "VARCHAR(255)"
         },
         {
-          "column_name": "HK_RTJJ_65_AAA_TTT",
+          "column_name": "HK_RTJJ_65_AAA",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
@@ -431,7 +431,7 @@
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
-              "column_name": "HK_RTJJ_65_AAA_TTT",
+              "column_name": "HK_RTJJ_65_AAA",
               "hash_name": "KEY_OF_RTJJ_65_AAA_HUB__FOR__TTT",
               "is_nullable": false,
               "stage_column_name": "HK_RTJJ_65_AAA_TTT"

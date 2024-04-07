@@ -896,25 +896,30 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
             parent_load_operations=parent_table_entry['load_operations']
 
             #determine the parent (hub) key set ot use
-            if link_parent_entry['relation_name'] != '*':
-                parent_key_set= link_parent_entry['relation_name']  # the parent must provide keyset of explicitly declared relation
+            if link_parent_entry['relation_name'] != '*' :
+                needed_key_set= link_parent_entry['relation_name']  # the parent must provide keyset of explicitly declared relation
+            elif link_parent_entry['relation_name'] == '*' and  link_load_operation_name=='+':
+                if  parent_table_entry['is_hub_with_universaL_load_operation']:
+                    needed_key_set = '*'
+                else:
+                    needed_key_set = '/'
             elif '*' in parent_load_operations:
-                parent_key_set = '*'  # the parent only has a universal relation
+                needed_key_set = '*'  # the parent only has a universal relation
             else:
-                parent_key_set=link_load_operation_name  # the parent must provide the relation of the process of the link
+                needed_key_set=link_load_operation_name  # the parent must provide the relation of the process of the link
 
-            if not parent_key_set in parent_load_operations:
-                register_error(f"Hub '{link_parent_entry['table_name']}' has no business key mapping for relation '{parent_key_set}' needed for link '{table_name}'"  )
+            if not needed_key_set in parent_load_operations :
+                register_error(f"Hub '{link_parent_entry['table_name']}' has no business key mapping for relation '{needed_key_set}' needed for link '{table_name}'"  )
                 return
-            parent_load_operation=parent_load_operations[parent_key_set]
+            parent_load_operation=parent_load_operations[needed_key_set]
             parent_hash_reference_dict=parent_load_operation['hash_mapping_dict']
             parent_key_hash_reference=parent_hash_reference_dict['key']
 
             # assemble the column name for the hub key in the link
             if link_parent_entry['hub_key_column_name_in_link'] != None:
                 hub_key_column_name_in_link=link_parent_entry['hub_key_column_name_in_link']
-            elif parent_key_set !="/" and parent_key_set != '*' and link_load_operation_name == "+":
-                hub_key_column_name_in_link=parent_key_hash_reference['hash_column_name']+"_"+parent_key_set.upper()
+            elif needed_key_set !="/" and needed_key_set != '*' and link_load_operation_name == "+":
+                hub_key_column_name_in_link=parent_key_hash_reference['hash_column_name']+"_"+needed_key_set.upper()
                 link_parent_entry['hub_key_column_name_in_link']=hub_key_column_name_in_link
             else:
                 hub_key_column_name_in_link = parent_key_hash_reference['hash_column_name']
@@ -997,6 +1002,12 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
 
     load_operations= table_entry['load_operations']
 
+    # determine the distinct mapping sets over all load operations of the table
+    mapping_set_dict={}
+    for load_operation_name, load_operation_entry in load_operations.items():
+        mapping_set = load_operation_entry['mapping_set']
+        if not mapping_set in mapping_set_dict:
+            mapping_set_dict[mapping_set]=1
 
     for load_operation_name, load_operation_entry in load_operations.items():
         hash_mapping_dict = {}
@@ -1045,7 +1056,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         model_profile = g_model_profile_dict[table_entry['model_profile_name']]
         diff_hash_column_type = model_profile['diff_hash_column_type']
 
-        if mapping_set == "*" or mapping_set == "/" :
+        if mapping_set == "*" or mapping_set == "/" or len(mapping_set_dict)==1 :
             hash_name = diff_hash_base_name
             stage_column_name = diff_hash_column_name
         else:
