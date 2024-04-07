@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-05 16:13:35",
+  "compile_timestamp": "2024-04-07 21:15:19",
   "dvpd_version": "0.6.1",
   "pipeline_name": "t0083_recursive_link_with_driving_key",
   "dvpd_filename": "t0083_recursive_link_with_driving_key.json",
@@ -191,33 +191,6 @@
       ],
       "hashes": [
         {
-          "stage_column_name": "HK_RTJJ_83_AAA",
-          "hash_origin_table": "rtjj_83_aaa_hub",
-          "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "F1XX_AAA_BK1",
-              "prio_in_key_hash": 0,
-              "field_target_table": "rtjj_83_aaa_hub",
-              "field_target_column": "F1_AAA_BK1F"
-            },
-            {
-              "field_name": "F2XX_AAA_BK2F",
-              "prio_in_key_hash": 0,
-              "field_target_table": "rtjj_83_aaa_hub",
-              "field_target_column": "F2F3_AAA_BK2F"
-            }
-          ],
-          "column_type": "CHAR(28)",
-          "hash_encoding": "BASE64",
-          "hash_function": "sha-1",
-          "hash_concatenation_seperator": "|",
-          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
-          "hash_null_value_string": "",
-          "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTJJ_83_AAA_HUB"
-        },
-        {
           "stage_column_name": "HK_RTJJ_83_AAA_TTT",
           "hash_origin_table": "rtjj_83_aaa_hub",
           "column_class": "key",
@@ -243,6 +216,33 @@
           "hash_null_value_string": "",
           "model_profile_name": "_default",
           "hash_name": "KEY_OF_RTJJ_83_AAA_HUB__FOR__TTT"
+        },
+        {
+          "stage_column_name": "HK_RTJJ_83_AAA",
+          "hash_origin_table": "rtjj_83_aaa_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F1XX_AAA_BK1",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_83_aaa_hub",
+              "field_target_column": "F1_AAA_BK1F"
+            },
+            {
+              "field_name": "F2XX_AAA_BK2F",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_83_aaa_hub",
+              "field_target_column": "F2F3_AAA_BK2F"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_RTJJ_83_AAA_HUB"
         },
         {
           "stage_column_name": "LK_RTJJ_83_AAA_RECU",
@@ -291,36 +291,6 @@
       "load_operations": [
         {
           "table_name": "rtjj_83_aaa_hub",
-          "relation_name": "/",
-          "operation_origin": "explicit field mapping relation",
-          "hash_mappings": [
-            {
-              "hash_class": "key",
-              "column_name": "HK_RTJJ_83_AAA",
-              "hash_name": "KEY_OF_RTJJ_83_AAA_HUB",
-              "is_nullable": false,
-              "stage_column_name": "HK_RTJJ_83_AAA"
-            }
-          ],
-          "data_mapping": [
-            {
-              "column_name": "F1_AAA_BK1F",
-              "field_name": "F1XX_AAA_BK1",
-              "column_class": "business_key",
-              "is_nullable": true,
-              "stage_column_name": "F1XX_AAA_BK1"
-            },
-            {
-              "column_name": "F2F3_AAA_BK2F",
-              "field_name": "F2XX_AAA_BK2F",
-              "column_class": "business_key",
-              "is_nullable": true,
-              "stage_column_name": "F2XX_AAA_BK2F"
-            }
-          ]
-        },
-        {
-          "table_name": "rtjj_83_aaa_hub",
           "relation_name": "TTT",
           "operation_origin": "explicit field mapping relation",
           "hash_mappings": [
@@ -350,9 +320,39 @@
           ]
         },
         {
-          "table_name": "rtjj_83_aaa_recu_lnk",
+          "table_name": "rtjj_83_aaa_hub",
           "relation_name": "/",
-          "operation_origin": "unnamed relation of link due to explict link relations",
+          "operation_origin": "induced by default field mapping for all columns",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_RTJJ_83_AAA",
+              "hash_name": "KEY_OF_RTJJ_83_AAA_HUB",
+              "is_nullable": false,
+              "stage_column_name": "HK_RTJJ_83_AAA"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "F1_AAA_BK1F",
+              "field_name": "F1XX_AAA_BK1",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "F1XX_AAA_BK1"
+            },
+            {
+              "column_name": "F2F3_AAA_BK2F",
+              "field_name": "F2XX_AAA_BK2F",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "F2XX_AAA_BK2F"
+            }
+          ]
+        },
+        {
+          "table_name": "rtjj_83_aaa_recu_lnk",
+          "relation_name": "+",
+          "operation_origin": "fixed '+' operation due to explicit parent relation declaration",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -379,7 +379,7 @@
         },
         {
           "table_name": "rtjj_83_aaa_recu_esat",
-          "relation_name": "/",
+          "relation_name": "+",
           "operation_origin": "following parent operation list",
           "hash_mappings": [
             {
@@ -418,17 +418,17 @@
           "column_type": "BOOLEAN"
         },
         {
-          "stage_column_name": "HK_RTJJ_83_AAA",
-          "stage_column_class": "hash",
-          "is_nullable": false,
-          "hash_name": "KEY_OF_RTJJ_83_AAA_HUB",
-          "column_type": "CHAR(28)"
-        },
-        {
           "stage_column_name": "HK_RTJJ_83_AAA_TTT",
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_83_AAA_HUB__FOR__TTT",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "HK_RTJJ_83_AAA",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_RTJJ_83_AAA_HUB",
           "column_type": "CHAR(28)"
         },
         {
