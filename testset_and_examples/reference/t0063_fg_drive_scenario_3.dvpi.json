@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
-  "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-03-06 12:05:59",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
+  "dvpi_version": "0.6.1",
+  "compile_timestamp": "2024-04-07 20:02:12",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0063_fg_drive_scenario_3",
   "dvpd_filename": "t0063_fg_drive_scenario_3.dvpd.json",
@@ -310,7 +310,7 @@
         {
           "table_name": "rtjj_63_aaa_bbb_lnk",
           "relation_name": "/",
-          "operation_origin": "implicit unnamed relation of link, that has no sat",
+          "operation_origin": "following parent hub common operation list",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",

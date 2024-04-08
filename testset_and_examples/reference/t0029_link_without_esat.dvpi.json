@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-05 13:18:05",
+  "compile_timestamp": "2024-04-07 20:02:07",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0029_link_without_esat",
   "dvpd_filename": "t0029_link_without_esat.dvpd.json",
@@ -437,7 +437,7 @@
         {
           "table_name": "rtjj_29_aaa_bbb_lnk",
           "relation_name": "/",
-          "operation_origin": "implicit unnamed relation of link, that has no sat",
+          "operation_origin": "implicit unnamed relation, since all parents are universal",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",

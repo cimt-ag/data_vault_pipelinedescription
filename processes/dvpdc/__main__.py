@@ -34,7 +34,7 @@ from lib.configuration import configuration_load_ini
 from lib.exceptions import DvpdcError
 import json
 from datetime import datetime
-from tkinter import filedialog
+
 
 
 
@@ -45,6 +45,7 @@ g_hash_dict={}
 g_dvpi_document={}
 g_model_profile_dict={}
 g_pipeline_model_profile_name=""
+g_verbose_logging=False
 
 g_logfile=None
 
@@ -65,6 +66,13 @@ def print_dvpi_document():
     print("DVPI :")
     print(json.dumps(g_dvpi_document, indent=2))
 
+def log_function_step(function_name, message):
+    if not g_verbose_logging:
+        return
+    log_text=f"{function_name}: {message}"
+    print(log_text)
+    g_logfile.write(log_text)
+    g_logfile.write("\n")
 
 def register_error(message):
     global g_error_count
@@ -225,6 +233,7 @@ def transform_lnk_table(dvpd_table_entry, schema_name, storage_component):
 
     if 'link_parent_tables' in dvpd_table_entry:
         list_position=0
+        has_explicit_link_parent_relations=False
         table_properties['link_parent_tables']=[]
         for parent_entry in dvpd_table_entry['link_parent_tables']:
             cleansed_parent_entry={}
@@ -233,6 +242,8 @@ def transform_lnk_table(dvpd_table_entry, schema_name, storage_component):
                 if 'table_name' in parent_entry:
                     cleansed_parent_entry['table_name']=parent_entry['table_name' ].lower()
                     cleansed_parent_entry['relation_name']=parent_entry.get('relation_name','*')
+                    if cleansed_parent_entry['relation_name'] != '*':
+                        has_explicit_link_parent_relations = True
                     if 'hub_key_column_name_in_link' in parent_entry:
                         cleansed_parent_entry['hub_key_column_name_in_link']=parent_entry.get('hub_key_column_name_in_link').upper()
                     else:
@@ -248,8 +259,9 @@ def transform_lnk_table(dvpd_table_entry, schema_name, storage_component):
             #else:
             #    register_error(f'link_parent_tables has bad syntax for lnk table {table_name}')
             table_properties['link_parent_tables'].append(cleansed_parent_entry)
+            table_properties['has_explicit_link_parent_relations'] = has_explicit_link_parent_relations
     else:
-        register_error(f'link_parent_tables is not declared for lnk table {table_name}')
+        register_error(f"Declaration of 'link_parent_tables' clause is missing for lnk table '{table_name}'")
 
 
     # finally add this to the global table dictionary
@@ -260,7 +272,7 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component):
     """Cleanse check and add table declaration for a satellite table"""
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
-    model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name);
+    model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
     table_properties= {'table_stereotype': 'sat','schema_name':schema_name,'storage_component':storage_component,
                        'model_profile_name': model_profile_name}
 
@@ -365,6 +377,7 @@ def collect_field_properties(dvpd_object):
 
 
 def create_columns_from_field_mapping(field_entry, field_position):
+    """Adds data column entries to all tables the field is mapped to."""
     global g_table_dict
 
     field_name=field_entry['field_name'].upper()
@@ -391,7 +404,7 @@ def create_columns_from_field_mapping(field_entry, field_position):
         except ValueError as ve:
             register_error(f"Error when reading numerical properties from  mapping of field '{field_name}' to table '{table_name}':"+str(ve))
 
-        relation_names_cleansed = []
+        relation_names_cleansed = []  # of no relation is declared, at least an empty array will be attached as 'relation_names'
         if 'relation_names' in table_mapping:
             for relation_name in  table_mapping['relation_names']:
                 #todo test if relation_name is a string object
@@ -399,7 +412,7 @@ def create_columns_from_field_mapping(field_entry, field_position):
         column_map_entry['relation_names']=relation_names_cleansed
         # announced property: hash_cleansing_rules
 
-        # finally add this to the table
+        # finally add this field mapping to the columns array of the table in g_table_dict
         table_entry=g_table_dict[table_name]
         if not 'data_columns' in table_entry:
             table_entry['data_columns']={}
@@ -461,7 +474,7 @@ def derive_content_dependent_hub_properties(table_name,table_entry):
         column_properties['field_mapping_count']=len(column_properties['field_mappings'])
         for property_name in ['column_type','prio_for_column_position','field_position','prio_in_key_hash','exclude_from_key_hash','column_content_comment']:
             column_properties[property_name]=first_field[property_name]
-        derive_implicit_relations(column_properties)
+        add_generic_relation_mappings(column_properties)
 
     if not has_business_key:
         register_error(f"Hub table {table_name} has no business key assigned")
@@ -489,7 +502,7 @@ def derive_content_dependent_lnk_properties(table_name, table_entry):
             column_properties['field_mapping_count'] = len(column_properties['field_mappings'])
             for property_name in ['column_type','prio_for_column_position', 'field_position','prio_in_key_hash', 'exclude_from_key_hash','column_content_comment']:
                 column_properties[property_name] = first_field[property_name]
-            derive_implicit_relations(column_properties)
+            add_generic_relation_mappings(column_properties)
 
 
 def derive_content_dependent_sat_properties(table_name, table_entry):
@@ -526,7 +539,7 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
         column_properties['field_mapping_count']=len(column_properties['field_mappings'])
         for property_name in ['column_type','column_content_comment','prio_for_column_position','prio_for_row_order','row_order_direction','exclude_from_change_detection','prio_in_diff_hash']:
             column_properties[property_name]=first_field[property_name]
-        derive_implicit_relations(column_properties)
+        add_generic_relation_mappings(column_properties)
 
 def derive_content_dependent_ref_properties(table_name, table_entry):
     for column_name, column_properties in table_entry['data_columns'].items():
@@ -539,98 +552,220 @@ def derive_content_dependent_ref_properties(table_name, table_entry):
         for property_name in ['column_type', 'column_content_comment','prio_for_column_position',
                               'exclude_from_change_detection', 'prio_in_diff_hash']:
             column_properties[property_name] = first_field[property_name]
-        derive_implicit_relations(column_properties)
+        add_generic_relation_mappings(column_properties)
 
-def derive_implicit_relations(column_properties):
-    has_multiple_field_mappings= len(column_properties['field_mappings']) > 1
+def add_generic_relation_mappings(column_properties):
+    """Field mappings, that have no relation names, are declared to be the default mappings(STEP 1 of Deduction procedure)"""
     for field_entry in  column_properties['field_mappings']:
         if len(field_entry['relation_names']) == 0:
-            if has_multiple_field_mappings:
-                field_entry['relation_names'].append('/')
-            else:
-                field_entry['relation_names'].append('*')
-
-
+             field_entry['relation_names'].append('*')
 
 def derive_load_operations():
     global g_table_dict
 
-    # collect declared relations
+    # add load operations dict to every table
     for table_name,table_entry in g_table_dict.items():
         load_operations={}
+        table_entry['load_operations'] = load_operations
+
+    set_load_operations_for_reference_tables()
+    determine_load_operations_from_relations_in_mappings()
+    determine_load_operations_for_links_with_parent_relation_directives()
+    determine_load_operations_from_tracking_directive()
+    pull_satellite_load_operations_into_links()
+    pull_hub_load_operations_into_links()
+    pull_parent_operations_into_sat()
+    #todo final_load_operation_crosscheck()
+
+def set_load_operations_for_reference_tables():
+    # ref tables always only have  "/" operation
+    for table_name,table_entry in g_table_dict.items():
+        if table_entry['table_stereotype'] == 'ref':
+                load_operations = table_entry['load_operations']
+                load_operations ['/']={"operation_origin":"ref table load operation","mapping_set":"*"}
+
+
+def determine_load_operations_from_relations_in_mappings():
+    """Add load operations for all explicitly mapped relations, tracked relations and for hubs with defaults Step 2"""
+    # collect declared relations
+    for table_name,table_entry in g_table_dict.items():
+        load_operations=table_entry['load_operations']
+
+        if table_entry['table_stereotype']=='hub':
+            table_entry['is_hub_with_universaL_load_operation'] = False
+
+        has_default_mapping_for_all_columns=True
         if 'data_columns' in table_entry:
+
+            # add operations by scanning all columns and their mappings
             for data_column in table_entry['data_columns'].values():
+                has_default_for_column=False
                 for field_mapping in data_column['field_mappings']:
                     for relation_name in field_mapping['relation_names']:
                         if relation_name != '*':
-                            load_operations[relation_name]={"operation_origin":"explicit field mapping relation"}
-        if 'tracked_relation_name' in table_entry:
-            load_operations[table_entry['tracked_relation_name']] = {"operation_origin": "explicitly tracked relation"}
-        if len(load_operations)>0:
-            table_entry['load_operations']=load_operations
-        link_relation_list=[]
-        if 'link_parent_tables' in table_entry:
-            for link_parent_entry in table_entry['link_parent_tables']:
-                if link_parent_entry['relation_name'] != '*' and link_parent_entry['relation_name'] is not None :
-                    link_relation_list.append(link_parent_entry['relation_name'])
-        if len(link_relation_list)>0:
-            table_entry['link_relations'] = link_relation_list
-            if 'load_operations' not in table_entry:
-                load_operations = {"/":{"operation_origin":"unnamed relation of link due to explict link relations"}}
-                table_entry['load_operations'] = load_operations
+                            load_operations[relation_name]={"operation_origin":"explicit field mapping relation","mapping_set":relation_name
+                                                            }
+                        else:
+                            has_default_for_column=True
+                if not has_default_for_column:
+                    has_default_mapping_for_all_columns =False
+
+            # add special operation, when scanning revealed special conditions
+            if len(load_operations)>0  and has_default_mapping_for_all_columns and '/' not in load_operations:
+                    load_operations['/'] = {"operation_origin": "induced by default field mapping for all columns","mapping_set":"*"}
+            elif  table_entry['table_stereotype']=='hub' and has_default_mapping_for_all_columns:
+                load_operations['*'] = {"operation_origin": "implicit universal relation of hub","mapping_set":"*"}
+                table_entry['is_hub_with_universaL_load_operation']=True
+
+            # crosscheck completness of mappings for all determined load operations
+            for load_operation_name,load_operation in load_operations.items():
+                for data_column_name, data_column in table_entry['data_columns'].items():
+                    count_matches=0
+                    default_available=False
+                    for field_mapping in data_column['field_mappings']:
+                        for relation_name in field_mapping['relation_names']:
+                            if relation_name == load_operation_name:
+                                count_matches+=1
+                            if relation_name == '*':
+                                default_available=True
+                    if count_matches>1:
+                        #todo add compiler test to trigger this error
+                        register_error(
+                            f"There are multiple explicit mappings for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
+                    if count_matches==0 and not default_available:
+                        #todo add compiler test to trigger this error
+                        register_error(
+                            f"There is no field mapping for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
 
 
-    # hub tables, without explicit relations have the universal relation "*"
-    for table_name,table_entry in g_table_dict.items():
-        if table_entry['table_stereotype'] == 'hub':
-           if 'load_operations' not in table_entry:
-                load_operations = {"*":{"operation_origin":"implicit universal relation of hub"}}
-                table_entry['load_operations'] = load_operations
-
-
-    # sat table without explicit relations, use the operations of their parent
+def determine_load_operations_for_links_with_parent_relation_directives():
+    """Step 3"""
     for table_name, table_entry in g_table_dict.items():
-        if table_entry['table_stereotype'] == 'sat':
-            if 'load_operations' not in table_entry:
-                parent_table=g_table_dict[table_entry['satellite_parent_table']]
-                if 'load_operations' in parent_table:
-                    load_operations = {}
-                    for parent_operation in parent_table['load_operations']:
-                        load_operations[parent_operation] = {"operation_origin":"following parent operation list"}
-                else:
-                    load_operations = {
-                        "/": {"operation_origin": "implicit unnamed relation operation"}}
-                table_entry['load_operations'] = load_operations
+        if table_entry['table_stereotype'] != 'lnk' or not table_entry['has_explicit_link_parent_relations']:
+            continue  # we are only interested in links with explicitc parent relations
 
-    # link without specific relation use relations of all their satellites (which at this point must have one)
-    for link_table_name, link_table_entry in g_table_dict.items():
-        if link_table_entry['table_stereotype'] == 'lnk':
-            if 'load_operations' not in link_table_entry:
-                load_operations = {}
-                for sat_table_name,sat_table_entry in g_table_dict.items():
-                    if sat_table_entry.get('satellite_parent_table') == link_table_name:
-                        for sat_load_operation in sat_table_entry['load_operations']:
-                            load_operations[sat_load_operation]={"operation_origin":f"induced from satellite {sat_table_name}"}
-                if len(load_operations) > 0:
-                    link_table_entry['load_operations'] = load_operations
-                else:
-                    load_operations = {"/": {"operation_origin": "implicit unnamed relation of link, that has no sat"}}
-                    link_table_entry['load_operations'] = load_operations
+        load_operations = table_entry['load_operations']
+        if len(load_operations) > 0:
+            # todo add compiler test to trigger this error
+            register_error(
+                f"parent table relations can't be used, when expliciv field mapping relations are already defined. Table: '{table_name}'")
 
-    # ref tables alswys only have  "/" operation
-    for table_name,table_entry in g_table_dict.items():
-        if table_entry['table_stereotype'] == 'ref':
-           if 'load_operations' not in table_entry:
-                load_operations = {"/":{"operation_origin":"ref table load operation"}}
-                table_entry['load_operations'] = load_operations
+        load_operations['+'] = {"operation_origin":"fixed '+' operation due to explicit parent relation declaration","mapping_set":"*"}
+
+def determine_load_operations_from_tracking_directive():
+    for table_name, table_entry in g_table_dict.items():
+        load_operations = table_entry['load_operations']
+        if 'tracked_relation_name' in table_entry:
+            if len(load_operations) > 0:
+                # todo add compiler test to trigger this error
+                register_error(
+                    f"You cannot define a tracked relation, when you declared relations in data mappings. Table: '{table_name}'")
+            load_operations[table_entry['tracked_relation_name']] = {
+                "operation_origin": "explicitly tracked relation","mapping_set":"*"}
+
+def pull_satellite_load_operations_into_links():
+    """STEP 5"""
+    for link_table_name,link_table in g_table_dict.items():
+        link_load_operations=link_table['load_operations']
+        if link_table['table_stereotype'] != 'lnk' or len(link_load_operations)>0:
+            continue # only links without load operation yet
+
+        for sat_table_name, sat_table in g_table_dict.items():
+            sat_load_operations = sat_table['load_operations']
+            if sat_table['table_stereotype'] != 'sat' or len(sat_load_operations)==0:
+                continue # only sattllites with load operations
+
+            if link_table_name != sat_table['satellite_parent_table']:
+                continue  # only sattllites that are children of the link
+
+            for load_operation_name,load_operation in sat_load_operations.items():
+                # todo add testcase where multiple sats on the link induce the same load operation
+                if load_operation_name != '*':
+                    link_load_operations[load_operation_name]={"operation_origin":f"induced from satellite {sat_table_name}","mapping_set":"*"}
+                if not is_operation_supported_by_link_hubs(link_table_name,load_operation_name):
+                    # todo add compiler test to trigger this error
+                    register_error(
+                        f"operation '{load_operation_name} induced by satellite '{sat_table_name}' to link {sat_table['satellite_parent_table']} is not supported by the hubs of the link")
+
+
+def is_operation_supported_by_link_hubs(link_table_name,load_operation_name):
+    """Delivers true, when at least one hub of the link explicitly supports the load operation and all hubs are
+    able to support the operation"""
+    link_table = g_table_dict[link_table_name]
+
+    if link_table['has_explicit_link_parent_relations']:
+        raise f"This function cant be called for links with explicit parent relations. Table: {link_table_name}"
+
+    is_supported_by_all_hubs=True
+    hubs_with_operation=0
+    for link_parent_table_entry in link_table['link_parent_tables']:
+        hub_table=g_table_dict[link_parent_table_entry['table_name']]
+        is_supported_by_hub=False
+        for hub_load_operation_name in hub_table['load_operations'].keys():
+            if hub_load_operation_name == '*':
+                is_supported_by_hub = True
+                continue
+            if hub_load_operation_name == load_operation_name:
+                hubs_with_operation+=1
+                is_supported_by_hub=True
+        if not is_supported_by_hub:
+            is_supported_by_all_hubs=False
+
+    return is_supported_by_all_hubs and hubs_with_operation>0
+
+def pull_hub_load_operations_into_links():
+    """STEP 6"""
+    for link_table_name,link_table in g_table_dict.items():
+        link_load_operations=link_table['load_operations']
+        if link_table['table_stereotype'] != 'lnk' or len(link_load_operations)>0:
+            continue # only links without load operations yet
+
+        #collect the operations, all hubs have in common
+        load_operation_collection={}
+        relevant_hub_count=0
+        first_relevant_hub=True
+        for link_parent_table in link_table['link_parent_tables']:
+            hub_table=g_table_dict[link_parent_table['table_name']]
+            if hub_table['is_hub_with_universaL_load_operation']:
+                continue # universal hubs dont count here
+            relevant_hub_count+=1
+            hub_load_operations=hub_table['load_operations']
+            for hub_load_operation_name in hub_load_operations.keys():
+                if first_relevant_hub:
+                    load_operation_collection[hub_load_operation_name]=1
+                elif hub_load_operation_name in load_operation_collection:
+                    load_operation_collection[hub_load_operation_name] += 1
+            first_relevant_hub=False
+
+        if relevant_hub_count > 0:
+            for collected_operation_name,collected_operation_count in load_operation_collection.items():
+                if collected_operation_count == relevant_hub_count:
+                    link_load_operations[collected_operation_name]={"operation_origin":"following parent hub common operation list","mapping_set":"*"}
+        else:
+            link_load_operations['/'] = {
+                "operation_origin": "implicit unnamed relation, since all parents are universal","mapping_set":"*"}
+
+def pull_parent_operations_into_sat():
+
+    for sat_table_name,sat_table in g_table_dict.items():
+        sat_load_operations=sat_table['load_operations']
+        if sat_table['table_stereotype'] != 'sat' or len(sat_load_operations)>0:
+            continue # only sats without load operations yet
+
+        parent_table=g_table_dict[sat_table['satellite_parent_table']]
+        parent_load_operations=parent_table['load_operations']
+        for parent_operation in parent_table['load_operations']:
+            sat_load_operations[parent_operation] = {"operation_origin":"following parent operation list","mapping_set":"*"}
+
 
 
 def add_data_mapping_dict_to_load_operations():
     global g_table_dict
     for table_name,table_entry in g_table_dict.items():
-        for relation_name,load_operation in table_entry['load_operations'].items():
+        for load_operation_name,load_operation in table_entry['load_operations'].items():
+            log_function_step('add_data_mapping_dict_to_load_operations', f"{table_name}:{load_operation_name}")
             if 'data_columns' in table_entry:
-                add_data_mapping_dict_for_one_load_operation(table_name, table_entry, relation_name, load_operation)
+                add_data_mapping_dict_for_one_load_operation(table_name, table_entry, load_operation['mapping_set'], load_operation)
 
 def add_hash_columns():
     # all hubs hashes first
@@ -675,16 +810,19 @@ def add_hash_column_mappings_for_hub(table_name,table_entry):
 
     hash_base_name = "KEY_OF_"+table_name.upper()
     key_column_name = table_entry['hub_key_column_name']
-    # create a hash for every operation
+
+    # create a hash for every load operation of the hub (wich is a differen key set by definition)
     load_operations=table_entry['load_operations']
-    for relation_name, load_operation_entry in load_operations.items():
-        if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
+    for load_operation_name, load_operation_entry in load_operations.items():
+        #render internal hash name
+        if load_operation_name == "*" or load_operation_name == "/" or len(load_operations) == 1:
             hash_name = hash_base_name
             stage_column_name = key_column_name
         else:
-            hash_name = hash_base_name + "__FOR__" + relation_name.upper()
-            stage_column_name = key_column_name + "_" + relation_name.upper()
+            hash_name = hash_base_name + "__FOR__" + load_operation_name.upper()
+            stage_column_name = key_column_name + "_" + load_operation_name.upper()
 
+        #assemble the columns and fields for this hash from the load operations data_mapping_dict
         hash_fields=[]
         for column_name,column_entry in load_operation_entry['data_mapping_dict'].items():
             if column_entry['exclude_from_key_hash'] :
@@ -733,21 +871,22 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
         table_entry['hash_columns']={}
     table_hash_columns= table_entry['hash_columns']
 
-    for relation_name, load_operation_entry in load_operations.items():
+    for link_load_operation_name, link_load_operation_entry in load_operations.items():
         hash_mapping_dict = {}
-        load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
+        link_load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
+        #link_mapping_set=link_load_operation_entry['mapping_set']
 
-        # render names according to relation
-        if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
+        # render link key names according to link_load_operation_name
+        if link_load_operation_name == "*" or link_load_operation_name == "/" or len(load_operations) == 1:
             link_hash_name = link_hash_base_name
             stage_column_name = link_key_column_name
         else:
-            link_hash_name = link_hash_base_name + "_" + relation_name.upper()
-            stage_column_name = link_key_column_name + "_" + relation_name
+            link_hash_name = link_hash_base_name + "_" + link_load_operation_name.upper()
+            stage_column_name = link_key_column_name + "_" + link_load_operation_name
 
         link_hash_fields=[]
 
-        # add parent hash key fields for this relation
+        # add parent hash key fields for this operation
         link_parent_count=0
         for link_parent_entry in table_entry['link_parent_tables']:
             link_parent_count+=1
@@ -755,25 +894,32 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
             parent_model_profile=g_model_profile_dict[parent_table_entry['model_profile_name']]
             parent_table_key_column_type=parent_model_profile['table_key_column_type']
             parent_load_operations=parent_table_entry['load_operations']
-            if link_parent_entry['relation_name'] != '*':
-                parent_relation= link_parent_entry['relation_name']  # the parent must provide operation of explicitly declared relation
-            elif '*' in parent_load_operations:
-                parent_relation = '*'  # the parent only has a universal relation
-            else:
-                parent_relation=relation_name  # the parent must provide the relation of the process of the link
 
-            if not parent_relation in parent_load_operations:
-                register_error(f"Hub '{link_parent_entry['table_name']}' has no business key mapping for relation '{parent_relation}' needed for link '{table_name}'"  )
+            #determine the parent (hub) key set ot use
+            if link_parent_entry['relation_name'] != '*' :
+                needed_key_set= link_parent_entry['relation_name']  # the parent must provide keyset of explicitly declared relation
+            elif link_parent_entry['relation_name'] == '*' and  link_load_operation_name=='+':
+                if  parent_table_entry['is_hub_with_universaL_load_operation']:
+                    needed_key_set = '*'
+                else:
+                    needed_key_set = '/'
+            elif '*' in parent_load_operations:
+                needed_key_set = '*'  # the parent only has a universal relation
+            else:
+                needed_key_set=link_load_operation_name  # the parent must provide the relation of the process of the link
+
+            if not needed_key_set in parent_load_operations :
+                register_error(f"Hub '{link_parent_entry['table_name']}' has no business key mapping for relation '{needed_key_set}' needed for link '{table_name}'"  )
                 return
-            parent_load_operation=parent_load_operations[parent_relation]
+            parent_load_operation=parent_load_operations[needed_key_set]
             parent_hash_reference_dict=parent_load_operation['hash_mapping_dict']
             parent_key_hash_reference=parent_hash_reference_dict['key']
 
             # assemble the column name for the hub key in the link
             if link_parent_entry['hub_key_column_name_in_link'] != None:
                 hub_key_column_name_in_link=link_parent_entry['hub_key_column_name_in_link']
-            elif parent_relation !="/" and parent_relation != '*':
-                hub_key_column_name_in_link=parent_key_hash_reference['hash_column_name']+"_"+parent_relation.upper()
+            elif needed_key_set !="/" and needed_key_set != '*' and link_load_operation_name == "+":
+                hub_key_column_name_in_link=parent_key_hash_reference['hash_column_name']+"_"+needed_key_set.upper()
                 link_parent_entry['hub_key_column_name_in_link']=hub_key_column_name_in_link
             else:
                 hub_key_column_name_in_link = parent_key_hash_reference['hash_column_name']
@@ -801,8 +947,8 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
 
 
         # add dependent child keys if exist
-        if 'data_mapping_dict' in load_operation_entry:
-            for column_name,column_entry in load_operation_entry['data_mapping_dict'].items():
+        if 'data_mapping_dict' in link_load_operation_entry:
+            for column_name,column_entry in link_load_operation_entry['data_mapping_dict'].items():
                 if column_entry['exclude_from_key_hash']:
                     continue
                 hash_field={'field_name':column_entry['field_name'],
@@ -845,6 +991,8 @@ def add_hash_column_mappings_for_lnk(table_name,table_entry):
 
 def add_hash_column_mappings_for_sat(table_name,table_entry):
 
+    log_function_step('add_hash_column_mappings_for_sat',str(table_name))
+
     if 'hash_columns' not in table_entry:
         table_entry['hash_columns']={}
     table_hash_columns= table_entry['hash_columns']
@@ -854,18 +1002,26 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
 
     load_operations= table_entry['load_operations']
 
-    for relation_name, load_operation_entry in load_operations.items():
+    # determine the distinct mapping sets over all load operations of the table
+    mapping_set_dict={}
+    for load_operation_name, load_operation_entry in load_operations.items():
+        mapping_set = load_operation_entry['mapping_set']
+        if not mapping_set in mapping_set_dict:
+            mapping_set_dict[mapping_set]=1
+
+    for load_operation_name, load_operation_entry in load_operations.items():
         hash_mapping_dict = {}
         load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
         # add parent key hash to hash reference list
         parent_load_operations = satellite_parent_table['load_operations']
 
-        if not relation_name in parent_load_operations:
+        if not load_operation_name in parent_load_operations:
+            #todo: create compiler check test case to trigger this message
             register_error(
-                f"Parent table '{satellite_parent_table['table_name']}' has no load operation for relation '{relation_name}' requiered for satellite '{table_name}'")
+                f"Parent table '{table_entry['satellite_parent_table']}' has no load operation for relation '{load_operation_name}' requiered for satellite '{table_name}'")
             return
 
-        parent_load_operation = parent_load_operations[relation_name]
+        parent_load_operation = parent_load_operations[load_operation_name]
         parent_hash_reference_dict = parent_load_operation['hash_mapping_dict']
         parent_key_hash_reference = parent_hash_reference_dict['key']
 
@@ -889,19 +1045,23 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                 table_entry['uses_diff_hash']=False
                 continue
 
-        # add diff hash
+        if not table_entry['uses_diff_hash']:
+            return # without diff hash we are done here
+
+        # add diff hash for the mapping set
+        mapping_set=load_operation_entry['mapping_set']
 
         diff_hash_base_name="DIFF_OF_"+table_name.upper()
         diff_hash_column_name = table_entry['diff_hash_column_name']
         model_profile = g_model_profile_dict[table_entry['model_profile_name']]
         diff_hash_column_type = model_profile['diff_hash_column_type']
 
-        if relation_name == "*" or relation_name == "/" or len(load_operations) == 1:
+        if mapping_set == "*" or mapping_set == "/" or len(mapping_set_dict)==1 :
             hash_name = diff_hash_base_name
             stage_column_name = diff_hash_column_name
         else:
-            hash_name = diff_hash_base_name + "__FOR__" + relation_name.upper()
-            stage_column_name = diff_hash_column_name + "_" + relation_name.upper()
+            hash_name = diff_hash_base_name + "__FOR__" + mapping_set.upper()
+            stage_column_name = diff_hash_column_name + "_" + mapping_set.upper()
 
         hash_fields = []
         for column_name, column_entry in load_operation_entry['data_mapping_dict'].items():
@@ -937,7 +1097,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         hash_mapping_dict['diff_hash']={"hash_name": hash_name,
                                          "hash_column_name": diff_hash_column_name }
 
-        # put hash column in table hash list
+        # put diff hash column in table hash list
         if diff_hash_column_name not in table_hash_columns:
             table_hash_columns[diff_hash_column_name] = {"column_class": "diff_hash",
                                                                "column_type": diff_hash_column_type}
@@ -1002,23 +1162,45 @@ def add_hash_column_mappings_for_ref(table_name,table_entry):
             table_hash_columns[diff_hash_column_name] = {"column_class": "diff_hash",
                                                                "column_type": diff_hash_column_type}
 
-def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, relation_name, load_operation):
+def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, mapping_set_name, load_operation):
     data_mapping_dict={}
     for data_column_name, data_column in table_entry['data_columns'].items():
-        for field_mapping in data_column['field_mappings']:
-            field_name = field_mapping['field_name']
-            use_field=False
-            for mapping_relation_name in field_mapping['relation_names']:
-                if mapping_relation_name == relation_name or mapping_relation_name=='*':
-                    use_field=True
-            if not use_field:
-                continue
-            if data_column_name not in data_mapping_dict:
-                data_mapping_dict[data_column_name]={"field_name":field_name}
-                copy_data_column_properties_to_operation_mapping(data_mapping_dict[data_column_name],data_column)
-            else:
-                register_error(f"Duplicate field mappings for column {data_column_name} in relation {relation_name} for table {table_name}")
+        default_field_name=None
+        explicit_mapped_field_name=None
 
+        # search in all field mappings of the column for the specified mapping set
+        for field_mapping in data_column['field_mappings']:
+            for mapping_relation_name in field_mapping['relation_names']:
+
+                if mapping_relation_name == mapping_set_name:
+                    if explicit_mapped_field_name == None:
+                        explicit_mapped_field_name = field_mapping['field_name']
+                    else:
+                        register_error(
+                            f"Found more then one field mapping for column {data_column_name} in relation {mapping_set_name} for table {table_name}")
+
+                if mapping_relation_name == "*":
+                    if default_field_name == None:
+                        default_field_name = field_mapping['field_name']
+                    else:
+                        register_error(
+                            f"Duplicate default field mappings for column {data_column_name} for table {table_name}")
+
+        # Add the identified field name
+        if explicit_mapped_field_name != None:
+                data_mapping_dict[data_column_name]={"field_name":explicit_mapped_field_name}
+                copy_data_column_properties_to_operation_mapping(data_mapping_dict[data_column_name],data_column)
+                continue # we prefer the explicit, so continue with next data column
+
+        if default_field_name != None:
+                data_mapping_dict[data_column_name]={"field_name":default_field_name}
+                copy_data_column_properties_to_operation_mapping(data_mapping_dict[data_column_name],data_column)
+                continue # we prefer the explicit, so continue with next data column
+
+        # when we reach this point, we have not found a valid mapping for the column
+        register_error(f"No valid mapping found for Column {data_column_name} in relation {mapping_set_name} for table {table_name}")
+
+    # finally add the data mapping dict to the load operation, when mappings have been found
     if len(data_mapping_dict)>0:
         load_operation['data_mapping_dict']=data_mapping_dict
 
@@ -1375,9 +1557,12 @@ def renderHashFieldAssembly(parse_set_entry,hash_name):
     raise(f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
 
 
-def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_file=None, model_profile_directory=None):
+def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_file=None, model_profile_directory=None,verbose_logging=False):
     """ this function is a wrapper around the real compiler to initialize the log file"""
     global g_logfile
+    global g_verbose_logging
+
+    g_verbose_logging=verbose_logging
 
 
     params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
@@ -1395,7 +1580,7 @@ def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_fi
     with open(dvpdc_log_file_path,"w") as g_logfile:
         g_logfile.write(f"Data vault pipeline description compiler log \n")
         print("---")
-        log_progress(f"Compiler Version 0.6.0")
+        log_progress(f"Compiler Version 0.6.1")
         g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         log_progress(f"Compiling {dvpd_filename}\n")
         try:
@@ -1534,6 +1719,7 @@ if __name__ == "__main__":
     parser.add_argument("--dvpi_directory",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
     parser.add_argument("--report_directory", help="Name of the report file (defaults to filename + .dvpdc.log")
     parser.add_argument("--print_brain", help="When set, the compiler will print its internal data structure to stdout", action='store_true')
+    parser.add_argument("--verbose", help="Log more information about progress", action='store_true')
 
     #parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
     args = parser.parse_args()
@@ -1542,7 +1728,8 @@ if __name__ == "__main__":
               dvpi_directory=args.dvpi_directory,
               dvpdc_report_directory=args.report_directory,
               ini_file=args.ini_file,
-              model_profile_directory=args.model_profile_directory
+              model_profile_directory=args.model_profile_directory,
+              verbose_logging=args.verbose
               )
         if args.print_brain:
             print_the_brain()
@@ -1551,3 +1738,8 @@ if __name__ == "__main__":
             print_the_brain()
         print("*** stopped compilation due to errors in input ***")
         exit(5)
+
+    except Exception :
+        if args.print_brain:
+            print_the_brain()
+        raise

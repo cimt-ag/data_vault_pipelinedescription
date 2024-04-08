@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-05 15:58:04",
+  "compile_timestamp": "2024-04-07 20:02:08",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0030_hub_dlink_sat",
   "dvpd_filename": "t0030_hub_dlink_sat.dvpd.json",
@@ -348,7 +348,7 @@
         {
           "table_name": "rtjj_30_aaa_dlnk",
           "relation_name": "/",
-          "operation_origin": "induced from satellite rtjj_30_aaa_dlnk_p1_sat",
+          "operation_origin": "implicit unnamed relation, since all parents are universal",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -378,7 +378,7 @@
         {
           "table_name": "rtjj_30_aaa_dlnk_p1_sat",
           "relation_name": "/",
-          "operation_origin": "implicit unnamed relation operation",
+          "operation_origin": "following parent operation list",
           "hash_mappings": [
             {
               "hash_class": "parent_key",

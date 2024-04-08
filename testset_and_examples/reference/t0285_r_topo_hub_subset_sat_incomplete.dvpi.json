@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-05 16:13:36",
+  "compile_timestamp": "2024-04-07 20:02:18",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0285_r_topo_hub_subset_sat_incomplete",
   "dvpd_filename": "t0285_r_topo_hub_subset_sat_incomplete.dvpd.json",
@@ -739,8 +739,8 @@
         },
         {
           "table_name": "rtjj_285_aaa_bbb_lnk",
-          "relation_name": "/",
-          "operation_origin": "unnamed relation of link due to explict link relations",
+          "relation_name": "+",
+          "operation_origin": "fixed '+' operation due to explicit parent relation declaration",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -781,7 +781,7 @@
         },
         {
           "table_name": "rtjj_285_aaa_bbb_esat",
-          "relation_name": "/",
+          "relation_name": "+",
           "operation_origin": "following parent operation list",
           "hash_mappings": [
             {

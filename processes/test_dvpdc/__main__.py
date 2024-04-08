@@ -56,7 +56,7 @@ def run_test_for_file(dvpd_filename, raise_on_crash=False):
 
     except DvpdcError:
         if dvpd_filename[5] != "c":
-            print("****Compiling failed, but should not****")
+            print("****fail: Compiling failed, but should not****")
             return "fail"
 
     except Exception as e:
@@ -79,9 +79,11 @@ def run_test_for_file(dvpd_filename, raise_on_crash=False):
         return "no_reference"
 
     if g_difference_count == 0:
+            print("\n--- Test OK ---")
             return "success"
-    return "fail"
 
+    print("\n****fail:Result differs from reference****")
+    return "differ"
 
 
 def compare_dvpdc_log_with_reference(dvpd_filename):
@@ -247,6 +249,7 @@ def assemble_file_list_fingerprint(file_list):
 if __name__ == "__main__":
 
     successful_file_list=[]
+    difference_file_list = []
     failing_file_list=[]
     reference_missing_list=[]
     crashed_file_list=[]
@@ -280,6 +283,8 @@ if __name__ == "__main__":
 
         if result == "success":
             successful_file_list.append(filename)
+        if result == "differ":
+            difference_file_list.append(filename)
         elif result == "fail":
             failing_file_list.append(filename)
         elif result == "no_reference":
@@ -294,8 +299,14 @@ if __name__ == "__main__":
     for filename in successful_file_list:
         print(filename)
 
+    if len(difference_file_list)>0:
+        print("\nvvv---Result differs---vvv")
+        for filename in difference_file_list:
+            print(filename)
+
+
     if len(failing_file_list)>0:
-        print("\nvvv---Failed tests---vvv")
+        print("\nvvv---Compile Failed---vvv")
         for filename in failing_file_list:
             print(filename)
 
@@ -315,10 +326,14 @@ if __name__ == "__main__":
     file_list_fp=assemble_file_list_fingerprint(successful_file_list)
     report_line+=f"success {len(successful_file_list)} ({file_list_fp})"
     print(f"** {len(successful_file_list)} tests passed ({file_list_fp})")
+    if len(difference_file_list)>0:
+        file_list_fp=assemble_file_list_fingerprint(difference_file_list)
+        report_line += f"+ difference {len(difference_file_list)} ({file_list_fp})"
+        print(f"** {len(difference_file_list)} tests with differences ({file_list_fp})")
     if len(failing_file_list)>0:
         file_list_fp=assemble_file_list_fingerprint(failing_file_list)
         report_line += f"+ fail {len(failing_file_list)} ({file_list_fp})"
-        print(f"** {len(failing_file_list)} tests failed ({file_list_fp})")
+        print(f"** {len(failing_file_list)} tests with failed compile ({file_list_fp})")
     if len(reference_missing_list) > 0:
         file_list_fp = assemble_file_list_fingerprint(reference_missing_list)
         report_line += f"+ no ref {len(reference_missing_list)} ({file_list_fp})"
