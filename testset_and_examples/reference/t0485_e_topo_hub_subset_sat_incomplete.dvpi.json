@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
-  "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-03-20 11:00:17",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
+  "dvpi_version": "0.6.1",
+  "compile_timestamp": "2024-04-08 09:54:53",
   "dvpd_version": "0.6.0",
   "pipeline_name": "test_485_e_topo_hub_subset_sat_incomplete",
   "dvpd_filename": "t0485_e_topo_hub_subset_sat_incomplete.dvpd.json",
@@ -144,7 +144,7 @@
           "parent_table_name": "rtjj_485_aaa_hub"
         },
         {
-          "column_name": "HK_RTJJ_485_BBB_TTT",
+          "column_name": "HK_RTJJ_485_BBB",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
@@ -160,7 +160,7 @@
       ]
     },
     {
-      "table_name": "rtjj_485_aaa_bbb_r111_esat",
+      "table_name": "rtjj_485_aaa_bbb_ttt_esat",
       "table_stereotype": "sat",
       "schema_name": "rvlt_test_jj",
       "storage_component": "",
@@ -169,7 +169,7 @@
       "is_enddated": true,
       "is_multiactive": false,
       "compare_criteria": "key+current",
-      "uses_diff_hash": true,
+      "uses_diff_hash": false,
       "columns": [
         {
           "column_name": "MD_INSERTED_AT",
@@ -212,7 +212,7 @@
       ]
     },
     {
-      "table_name": "rtjj_485_aaa_bbb_r222_esat",
+      "table_name": "rtjj_485_aaa_bbb_uuu_esat",
       "table_stereotype": "sat",
       "schema_name": "rvlt_test_jj",
       "storage_component": "",
@@ -221,7 +221,7 @@
       "is_enddated": true,
       "is_multiactive": false,
       "compare_criteria": "key+current",
-      "uses_diff_hash": true,
+      "uses_diff_hash": false,
       "columns": [
         {
           "column_name": "MD_INSERTED_AT",
@@ -264,7 +264,7 @@
       ]
     },
     {
-      "table_name": "rtjj_485_aaa_bbb_r333_esat",
+      "table_name": "rtjj_485_aaa_bbb_vvv_esat",
       "table_stereotype": "sat",
       "schema_name": "rvlt_test_jj",
       "storage_component": "",
@@ -273,7 +273,7 @@
       "is_enddated": true,
       "is_multiactive": false,
       "compare_criteria": "key+current",
-      "uses_diff_hash": true,
+      "uses_diff_hash": false,
       "columns": [
         {
           "column_name": "MD_INSERTED_AT",
@@ -872,7 +872,7 @@
         {
           "table_name": "rtjj_485_aaa_bbb_lnk",
           "relation_name": "TTT",
-          "operation_origin": "induced from satellite rtjj_485_aaa_bbb_r111_esat",
+          "operation_origin": "induced from satellite rtjj_485_aaa_bbb_ttt_esat",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -883,7 +883,7 @@
             },
             {
               "hash_class": "parent_key_2",
-              "column_name": "HK_RTJJ_485_BBB_TTT",
+              "column_name": "HK_RTJJ_485_BBB",
               "hash_name": "KEY_OF_RTJJ_485_BBB_HUB__FOR__TTT",
               "is_nullable": false,
               "stage_column_name": "HK_RTJJ_485_BBB_TTT"
@@ -900,7 +900,7 @@
         {
           "table_name": "rtjj_485_aaa_bbb_lnk",
           "relation_name": "UUU",
-          "operation_origin": "induced from satellite rtjj_485_aaa_bbb_r222_esat",
+          "operation_origin": "induced from satellite rtjj_485_aaa_bbb_uuu_esat",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -911,7 +911,7 @@
             },
             {
               "hash_class": "parent_key_2",
-              "column_name": "HK_RTJJ_485_BBB_TTT",
+              "column_name": "HK_RTJJ_485_BBB",
               "hash_name": "KEY_OF_RTJJ_485_BBB_HUB__FOR__UUU",
               "is_nullable": false,
               "stage_column_name": "HK_RTJJ_485_BBB_UUU"
@@ -928,7 +928,7 @@
         {
           "table_name": "rtjj_485_aaa_bbb_lnk",
           "relation_name": "VVV",
-          "operation_origin": "induced from satellite rtjj_485_aaa_bbb_r333_esat",
+          "operation_origin": "induced from satellite rtjj_485_aaa_bbb_vvv_esat",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -939,7 +939,7 @@
             },
             {
               "hash_class": "parent_key_2",
-              "column_name": "HK_RTJJ_485_BBB_TTT",
+              "column_name": "HK_RTJJ_485_BBB",
               "hash_name": "KEY_OF_RTJJ_485_BBB_HUB__FOR__VVV",
               "is_nullable": false,
               "stage_column_name": "HK_RTJJ_485_BBB_VVV"
@@ -954,7 +954,7 @@
           ]
         },
         {
-          "table_name": "rtjj_485_aaa_bbb_r111_esat",
+          "table_name": "rtjj_485_aaa_bbb_ttt_esat",
           "relation_name": "TTT",
           "operation_origin": "explicitly tracked relation",
           "hash_mappings": [
@@ -968,7 +968,7 @@
           ]
         },
         {
-          "table_name": "rtjj_485_aaa_bbb_r222_esat",
+          "table_name": "rtjj_485_aaa_bbb_uuu_esat",
           "relation_name": "UUU",
           "operation_origin": "explicitly tracked relation",
           "hash_mappings": [
@@ -982,7 +982,7 @@
           ]
         },
         {
-          "table_name": "rtjj_485_aaa_bbb_r333_esat",
+          "table_name": "rtjj_485_aaa_bbb_vvv_esat",
           "relation_name": "VVV",
           "operation_origin": "explicitly tracked relation",
           "hash_mappings": [

@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-05 16:13:38",
+  "compile_timestamp": "2024-04-08 10:07:21",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0622_rc_topo_sat_subset",
   "dvpd_filename": "t0622_rc_topo_sat_subset.dvpd.json",
@@ -167,7 +167,7 @@
           "parent_table_name": "rtjj_622_bbb_hub"
         },
         {
-          "column_name": "HK_RTJJ_622_BBB_VVVEXTRA",
+          "column_name": "HK_RTJJ_622_BBB_VVV",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
@@ -312,33 +312,6 @@
       ],
       "hashes": [
         {
-          "stage_column_name": "HK_RTJJ_622_BBB",
-          "hash_origin_table": "rtjj_622_bbb_hub",
-          "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "F1XX_BBB_BK1",
-              "prio_in_key_hash": 0,
-              "field_target_table": "rtjj_622_bbb_hub",
-              "field_target_column": "FIF2F3_BBB_BK1"
-            },
-            {
-              "field_name": "F4XX_BBB_BK2F",
-              "prio_in_key_hash": 0,
-              "field_target_table": "rtjj_622_bbb_hub",
-              "field_target_column": "F4F5F6_BBB_BK2F"
-            }
-          ],
-          "column_type": "CHAR(28)",
-          "hash_encoding": "BASE64",
-          "hash_function": "sha-1",
-          "hash_concatenation_seperator": "|",
-          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
-          "hash_null_value_string": "",
-          "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTJJ_622_BBB_HUB"
-        },
-        {
           "stage_column_name": "HK_RTJJ_622_BBB_UUU",
           "hash_origin_table": "rtjj_622_bbb_hub",
           "column_class": "key",
@@ -391,6 +364,33 @@
           "hash_null_value_string": "",
           "model_profile_name": "_default",
           "hash_name": "KEY_OF_RTJJ_622_BBB_HUB__FOR__VVV"
+        },
+        {
+          "stage_column_name": "HK_RTJJ_622_BBB",
+          "hash_origin_table": "rtjj_622_bbb_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F1XX_BBB_BK1",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_622_bbb_hub",
+              "field_target_column": "FIF2F3_BBB_BK1"
+            },
+            {
+              "field_name": "F4XX_BBB_BK2F",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_622_bbb_hub",
+              "field_target_column": "F4F5F6_BBB_BK2F"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_RTJJ_622_BBB_HUB"
         },
         {
           "stage_column_name": "LK_RTJJ_622_AAA_BBB",
@@ -546,36 +546,6 @@
       "load_operations": [
         {
           "table_name": "rtjj_622_bbb_hub",
-          "relation_name": "/",
-          "operation_origin": "explicit field mapping relation",
-          "hash_mappings": [
-            {
-              "hash_class": "key",
-              "column_name": "HK_RTJJ_622_BBB",
-              "hash_name": "KEY_OF_RTJJ_622_BBB_HUB",
-              "is_nullable": false,
-              "stage_column_name": "HK_RTJJ_622_BBB"
-            }
-          ],
-          "data_mapping": [
-            {
-              "column_name": "FIF2F3_BBB_BK1",
-              "field_name": "F1XX_BBB_BK1",
-              "column_class": "business_key",
-              "is_nullable": true,
-              "stage_column_name": "F1XX_BBB_BK1"
-            },
-            {
-              "column_name": "F4F5F6_BBB_BK2F",
-              "field_name": "F4XX_BBB_BK2F",
-              "column_class": "business_key",
-              "is_nullable": true,
-              "stage_column_name": "F4XX_BBB_BK2F"
-            }
-          ]
-        },
-        {
-          "table_name": "rtjj_622_bbb_hub",
           "relation_name": "UUU",
           "operation_origin": "explicit field mapping relation",
           "hash_mappings": [
@@ -631,6 +601,36 @@
               "column_class": "business_key",
               "is_nullable": true,
               "stage_column_name": "F6XX_BBB_BK2F_VVV"
+            }
+          ]
+        },
+        {
+          "table_name": "rtjj_622_bbb_hub",
+          "relation_name": "/",
+          "operation_origin": "induced by default field mapping for all columns",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_RTJJ_622_BBB",
+              "hash_name": "KEY_OF_RTJJ_622_BBB_HUB",
+              "is_nullable": false,
+              "stage_column_name": "HK_RTJJ_622_BBB"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "FIF2F3_BBB_BK1",
+              "field_name": "F1XX_BBB_BK1",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "F1XX_BBB_BK1"
+            },
+            {
+              "column_name": "F4F5F6_BBB_BK2F",
+              "field_name": "F4XX_BBB_BK2F",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "F4XX_BBB_BK2F"
             }
           ]
         },
@@ -747,8 +747,8 @@
         },
         {
           "table_name": "rtjj_622_aaa_bbb_lnk",
-          "relation_name": "/",
-          "operation_origin": "unnamed relation of link due to explict link relations",
+          "relation_name": "+",
+          "operation_origin": "fixed '+' operation due to explicit parent relation declaration",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -766,7 +766,7 @@
             },
             {
               "hash_class": "parent_key_3",
-              "column_name": "HK_RTJJ_622_BBB_VVVEXTRA",
+              "column_name": "HK_RTJJ_622_BBB_VVV",
               "hash_name": "KEY_OF_RTJJ_622_BBB_HUB__FOR__VVV",
               "is_nullable": false,
               "stage_column_name": "HK_RTJJ_622_BBB_VVV"
@@ -782,7 +782,7 @@
         },
         {
           "table_name": "rtjj_622_aaa_bbb_esat",
-          "relation_name": "/",
+          "relation_name": "+",
           "operation_origin": "following parent operation list",
           "hash_mappings": [
             {
@@ -821,13 +821,6 @@
           "column_type": "BOOLEAN"
         },
         {
-          "stage_column_name": "HK_RTJJ_622_BBB",
-          "stage_column_class": "hash",
-          "is_nullable": false,
-          "hash_name": "KEY_OF_RTJJ_622_BBB_HUB",
-          "column_type": "CHAR(28)"
-        },
-        {
           "stage_column_name": "HK_RTJJ_622_BBB_UUU",
           "stage_column_class": "hash",
           "is_nullable": false,
@@ -839,6 +832,13 @@
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_622_BBB_HUB__FOR__VVV",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "HK_RTJJ_622_BBB",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_RTJJ_622_BBB_HUB",
           "column_type": "CHAR(28)"
         },
         {
