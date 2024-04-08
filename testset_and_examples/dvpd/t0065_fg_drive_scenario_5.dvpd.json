@@ -16,9 +16,9 @@
 																				 	,"relation_names":["uuu"]}]}		 	  
 		      ,{"field_name": "F3_BBB_BK1F", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_65_bbb_hub"}]}
 		      ,{"field_name": "F4_AAA_BBB_C1_TTT","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_65_aaa_bbb_sat"
-																				 	,"relation_names":["ttt"]}]}		 
+																				 	,"relation_names":["ttt"],"column_name": "F4_AAA_BBB_C1"}]}		 
 		      ,{"field_name": "F5_AAA_BBB_C2F_TTT","field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_65_aaa_bbb_sat"
-																				 	,"relation_names":["ttt"]}]}		 		 
+																				 	,"relation_names":["ttt"],"column_name": "F5_AAA_BBB_C2F"}]}		 		 
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
