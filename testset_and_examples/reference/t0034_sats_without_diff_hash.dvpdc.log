@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-04-05 16:44:24
+Compiling t0034_sats_without_diff_hash.dvpd.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t0034_sats_without_diff_hash.dvpi.json
+--- Compile successfull ---

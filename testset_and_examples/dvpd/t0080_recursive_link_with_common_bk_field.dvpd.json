@@ -2,14 +2,14 @@
  	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
  	"pipeline_name": "t0080_recursive_link_with_common_bk_field",
+	"record_source_name_expression":"dvpd implementation test",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
  	"fields": [
-		      {"field_name": "F1XX_AAA_BK1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
-																					,"column_name": "F1_AAA_BK1"}]}
-		      ,{"field_name": "F2XX_AAA_BK2F_DFT", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
-																					,"column_name": "F2F3_AAA_BK2F","relation_names": ["/"]}]}		 	  
+		      {"field_name": "F1XX_AAA_BK1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"}]}
+		      ,{"field_name": "F2XX_AAA_BK2F", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
+																					,"column_name": "F2F3_AAA_BK2F"}]}		 	  
 		      ,{"field_name": "F3XX_AAA_BK2F_TTT", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_80_aaa_hub"
 																					,"column_name": "F2F3_AAA_BK2F"
 																					,"relation_names": ["TTT"]}]}		  

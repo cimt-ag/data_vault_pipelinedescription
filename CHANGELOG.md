@@ -1,3 +1,13 @@
+# release 0.6.1
+In this release, we completly switch from the PostgreSQL implementation of compiler to the python implementation.
+Also the testset will be massivly extended. Some minor feature extentions will be added
+
+### features
+- python implementation of dvpd compiler(DVPDC) including its automated testset
+- python example of a documentation generator, generating mapping documentation in HTML
+- Introduction of the data vault pipelein instruction (DVPI) syntax as result of the compiler output
+- python example of a ddl generator, generating DDL scripts from DVPI
+
 # release 0.6.0
 
 ### features

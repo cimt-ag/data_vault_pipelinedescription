@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
-  "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-03-20 11:18:38",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
+  "dvpi_version": "0.6.1",
+  "compile_timestamp": "2024-04-07 20:02:17",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0220_r_topo_sat",
   "dvpd_filename": "t0220_r_topo_sat.dvpd.json",
@@ -185,7 +185,7 @@
       "is_enddated": true,
       "is_multiactive": false,
       "compare_criteria": "key+current",
-      "uses_diff_hash": true,
+      "uses_diff_hash": false,
       "columns": [
         {
           "column_name": "MD_INSERTED_AT",
@@ -788,8 +788,8 @@
         },
         {
           "table_name": "rtjj_220_aaa_bbb_lnk",
-          "relation_name": "/",
-          "operation_origin": "unnamed relation of link due to explict link relations",
+          "relation_name": "+",
+          "operation_origin": "fixed '+' operation due to explicit parent relation declaration",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -830,7 +830,7 @@
         },
         {
           "table_name": "rtjj_220_aaa_bbb_esat",
-          "relation_name": "/",
+          "relation_name": "+",
           "operation_origin": "following parent operation list",
           "hash_mappings": [
             {

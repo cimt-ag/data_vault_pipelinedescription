@@ -1,8 +1,7 @@
 Data vault pipeline description compiler log 
 Compiler Version 0.6.0
-Compile time: 2024-02-21 08:53:40
+Compile time: 2024-04-05 16:34:14
 Compiling t0080_recursive_link_with_common_bk_field.dvpd.json
 
-Duplicate field mappings for column F1F2F3_AAA_BK1F in relation / for table rtjj_80_aaa_hub
-Duplicate field mappings for column F1F2F3_AAA_BK1F in relation TTT for table rtjj_80_aaa_hub
-*** Compilation ended with errors ***
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t0080_recursive_link_with_common_bk_field.dvpi.json
+--- Compile successfull ---

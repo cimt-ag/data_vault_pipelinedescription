@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-04-05 12:23:57
+Compiling t0083_recursive_link_with_driving_key.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t0083_recursive_link_with_driving_key.dvpi.json
+--- Compile successfull ---

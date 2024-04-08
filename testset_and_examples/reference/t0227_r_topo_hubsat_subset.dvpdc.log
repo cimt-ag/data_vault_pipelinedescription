@@ -1,8 +1,7 @@
 Data vault pipeline description compiler log 
 Compiler Version 0.6.0
-Compile time: 2024-02-27 13:00:07
+Compile time: 2024-04-05 17:43:27
 Compiling t0227_r_topo_hubsat_subset.dvpd.json
 
-ERROR: JSON Parsing error of file /git_ordner/dvpd/testset_and_examples/dvpd/t0227_r_topo_hubsat_subset.dvpd.json
-Expecting value in line 1 column 1
-*** Compilation ended with errors ***
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t0227_r_topo_hubsat_subset.dvpi.json
+--- Compile successfull ---

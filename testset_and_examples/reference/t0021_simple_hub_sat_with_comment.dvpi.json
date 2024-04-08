@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
-  "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-03-06 11:46:23",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
+  "dvpi_version": "0.6.1",
+  "compile_timestamp": "2024-04-05 13:18:04",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0021_simple_hub_sat_with_comment",
   "dvpd_filename": "t0021_simple_hub_sat_with_comment.dvpd.json",
@@ -11,7 +11,6 @@
       "table_stereotype": "hub",
       "schema_name": "rvlt_test_jj",
       "storage_component": "",
-      "table_comment": "table comment rtjj_21_aaa_hub",
       "columns": [
         {
           "column_name": "MD_INSERTED_AT",
@@ -42,7 +41,7 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
-          "column_comment": "field_comment_F1",
+          "column_content_comment": "field_comment_F1",
           "prio_for_column_position": 50000
         },
         {
@@ -50,7 +49,7 @@
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "DECIMAL(20,0)",
-          "column_comment": "column_comment F2_AAA_BK2F",
+          "column_content_comment": "field_comment_F2",
           "prio_for_column_position": 50000
         }
       ]
@@ -66,7 +65,6 @@
       "is_multiactive": false,
       "compare_criteria": "key+current",
       "uses_diff_hash": true,
-      "table_comment": "table comment rtjj_21_aaa_p1_sat",
       "columns": [
         {
           "column_name": "MD_INSERTED_AT",
@@ -125,7 +123,7 @@
           "is_nullable": true,
           "column_class": "content",
           "column_type": "DECIMAL(5,0)",
-          "column_comment": "field_comment_F4",
+          "column_content_comment": "field_comment_F4",
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         },
@@ -134,7 +132,7 @@
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(200)",
-          "column_comment": "column_comment F5_AAA_P1_C3F",
+          "column_content_comment": "field_comment_F5XX",
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         }

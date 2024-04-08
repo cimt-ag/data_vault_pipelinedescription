@@ -1,10 +1,10 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
-  "dvpi_version": "0.6.0",
-  "compile_timestamp": "2023-12-08 11:52:54",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
+  "dvpi_version": "0.6.1",
+  "compile_timestamp": "2024-04-07 20:02:06",
   "dvpd_version": "0.6.0",
-  "pipeline_name": "test24_one_satellite_on_linked_hub",
-  "dvpd_filename": "test24_one_satellite_on_linked_hub.dvpd.json",
+  "pipeline_name": "t0024_one_satellite_on_linked_hub",
+  "dvpd_filename": "t0024_one_satellite_on_linked_hub.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_24_aaa_hub",
@@ -37,11 +37,10 @@
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "F1_BK_AAA_VARCHAR",
+          "column_name": "F1_AAA_BK1F",
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         }
       ]
@@ -103,29 +102,26 @@
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "F3_AAA_SP1_VARCHAR",
+          "column_name": "F3_AAA_P1_C1",
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(200)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         },
         {
-          "column_name": "F4_AAA_SP1_DECIMAL",
+          "column_name": "F4_AAA_P1_C2",
           "is_nullable": true,
           "column_class": "content",
           "column_type": "DECIMAL(5,0)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         },
         {
-          "column_name": "F5_AAA_SP1_VARCHAR",
+          "column_name": "F5_AAA_P1_C3F",
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(200)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         }
@@ -189,7 +185,7 @@
       "is_enddated": true,
       "is_multiactive": false,
       "compare_criteria": "key+current",
-      "uses_diff_hash": true,
+      "uses_diff_hash": false,
       "columns": [
         {
           "column_name": "MD_INSERTED_AT",
@@ -262,11 +258,10 @@
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "F2_BK_BBB_DECIMAL",
+          "column_name": "F2_BBB_BK1F",
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "DECIMAL(20,0)",
-          "column_content_comment": null,
           "prio_for_column_position": 50000
         }
       ]
@@ -328,20 +323,18 @@
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "F6_BBB_SP1_VARCHAR",
+          "column_name": "F6_BBB_P1_C1",
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(200)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         },
         {
-          "column_name": "F7_BBB_SP1_DECIMAL",
+          "column_name": "F7_BBB_P1_C2F",
           "is_nullable": true,
           "column_class": "content",
           "column_type": "DECIMAL(5,0)",
-          "column_content_comment": null,
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         }
@@ -356,7 +349,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "stest24_one_satellite_on_linked_hub",
+          "stage_table_name": "st0024_one_satellite_on_linked_hub",
           "storage_component": ""
         }
       ],
@@ -366,43 +359,43 @@
           "field_type": "Varchar(20)",
           "field_position": 1,
           "needs_encryption": false,
-          "field_name": "F1_BK_AAA_VARCHAR"
+          "field_name": "F1_AAA_BK1F"
         },
         {
           "field_type": "Decimal(20,0)",
           "field_position": 2,
           "needs_encryption": false,
-          "field_name": "F2_BK_BBB_DECIMAL"
+          "field_name": "F2_BBB_BK1F"
         },
         {
           "field_type": "VARCHAR(200)",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "F3_AAA_SP1_VARCHAR"
+          "field_name": "F3_AAA_P1_C1"
         },
         {
           "field_type": "DECIMAL(5,0)",
           "field_position": 4,
           "needs_encryption": false,
-          "field_name": "F4_AAA_SP1_DECIMAL"
+          "field_name": "F4_AAA_P1_C2"
         },
         {
           "field_type": "VARCHAR(200)",
           "field_position": 5,
           "needs_encryption": false,
-          "field_name": "F5__FIELD_NAME"
+          "field_name": "F5XX_AAA_P1_C3F"
         },
         {
           "field_type": "VARCHAR(200)",
           "field_position": 6,
           "needs_encryption": false,
-          "field_name": "F6_BBB_SP1_VARCHAR"
+          "field_name": "F6_BBB_P1_C1"
         },
         {
           "field_type": "DECIMAL(5,0)",
           "field_position": 7,
           "needs_encryption": false,
-          "field_name": "F7_BBB_SP1_DECIMAL"
+          "field_name": "F7_BBB_P1_C2F"
         }
       ],
       "hashes": [
@@ -412,10 +405,10 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "F1_BK_AAA_VARCHAR",
+              "field_name": "F1_AAA_BK1F",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_24_aaa_hub",
-              "field_target_column": "F1_BK_AAA_VARCHAR"
+              "field_target_column": "F1_AAA_BK1F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -433,10 +426,10 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "F2_BK_BBB_DECIMAL",
+              "field_name": "F2_BBB_BK1F",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_24_bbb_hub",
-              "field_target_column": "F2_BK_BBB_DECIMAL"
+              "field_target_column": "F2_BBB_BK1F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -454,17 +447,17 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "F1_BK_AAA_VARCHAR",
+              "field_name": "F1_AAA_BK1F",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_24_aaa_hub",
-              "field_target_column": "F1_BK_AAA_VARCHAR",
+              "field_target_column": "F1_AAA_BK1F",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "F2_BK_BBB_DECIMAL",
+              "field_name": "F2_BBB_BK1F",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_24_bbb_hub",
-              "field_target_column": "F2_BK_BBB_DECIMAL",
+              "field_target_column": "F2_BBB_BK1F",
               "parent_declaration_position": 2
             }
           ],
@@ -485,25 +478,25 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "F3_AAA_SP1_VARCHAR",
+              "field_name": "F3_AAA_P1_C1",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_24_aaa_p1_sat",
-              "field_target_column": "F3_AAA_SP1_VARCHAR"
+              "field_target_column": "F3_AAA_P1_C1"
             },
             {
-              "field_name": "F4_AAA_SP1_DECIMAL",
+              "field_name": "F4_AAA_P1_C2",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_24_aaa_p1_sat",
-              "field_target_column": "F4_AAA_SP1_DECIMAL"
+              "field_target_column": "F4_AAA_P1_C2"
             },
             {
-              "field_name": "F5__FIELD_NAME",
+              "field_name": "F5XX_AAA_P1_C3F",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_24_aaa_p1_sat",
-              "field_target_column": "F5_AAA_SP1_VARCHAR"
+              "field_target_column": "F5_AAA_P1_C3F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -523,18 +516,18 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "F6_BBB_SP1_VARCHAR",
+              "field_name": "F6_BBB_P1_C1",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_24_bbb_p1_sat",
-              "field_target_column": "F6_BBB_SP1_VARCHAR"
+              "field_target_column": "F6_BBB_P1_C1"
             },
             {
-              "field_name": "F7_BBB_SP1_DECIMAL",
+              "field_name": "F7_BBB_P1_C2F",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_24_bbb_p1_sat",
-              "field_target_column": "F7_BBB_SP1_DECIMAL"
+              "field_target_column": "F7_BBB_P1_C2F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -563,11 +556,11 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F1_BK_AAA_VARCHAR",
-              "field_name": "F1_BK_AAA_VARCHAR",
+              "column_name": "F1_AAA_BK1F",
+              "field_name": "F1_AAA_BK1F",
               "column_class": "business_key",
               "is_nullable": true,
-              "stage_column_name": "F1_BK_AAA_VARCHAR"
+              "stage_column_name": "F1_AAA_BK1F"
             }
           ]
         },
@@ -593,32 +586,32 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F3_AAA_SP1_VARCHAR",
-              "field_name": "F3_AAA_SP1_VARCHAR",
+              "column_name": "F3_AAA_P1_C1",
+              "field_name": "F3_AAA_P1_C1",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F3_AAA_SP1_VARCHAR"
+              "stage_column_name": "F3_AAA_P1_C1"
             },
             {
-              "column_name": "F4_AAA_SP1_DECIMAL",
-              "field_name": "F4_AAA_SP1_DECIMAL",
+              "column_name": "F4_AAA_P1_C2",
+              "field_name": "F4_AAA_P1_C2",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F4_AAA_SP1_DECIMAL"
+              "stage_column_name": "F4_AAA_P1_C2"
             },
             {
-              "column_name": "F5_AAA_SP1_VARCHAR",
-              "field_name": "F5__FIELD_NAME",
+              "column_name": "F5_AAA_P1_C3F",
+              "field_name": "F5XX_AAA_P1_C3F",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F5__FIELD_NAME"
+              "stage_column_name": "F5XX_AAA_P1_C3F"
             }
           ]
         },
         {
           "table_name": "rtjj_24_aaa_bbb_lnk",
           "relation_name": "/",
-          "operation_origin": "induced from satellite rtjj_24_aaa_bbb_esat",
+          "operation_origin": "implicit unnamed relation, since all parents are universal",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -646,7 +639,7 @@
         {
           "table_name": "rtjj_24_aaa_bbb_esat",
           "relation_name": "/",
-          "operation_origin": "implicit unnamed relation operation",
+          "operation_origin": "following parent operation list",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
@@ -672,11 +665,11 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F2_BK_BBB_DECIMAL",
-              "field_name": "F2_BK_BBB_DECIMAL",
+              "column_name": "F2_BBB_BK1F",
+              "field_name": "F2_BBB_BK1F",
               "column_class": "business_key",
               "is_nullable": true,
-              "stage_column_name": "F2_BK_BBB_DECIMAL"
+              "stage_column_name": "F2_BBB_BK1F"
             }
           ]
         },
@@ -702,18 +695,18 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F6_BBB_SP1_VARCHAR",
-              "field_name": "F6_BBB_SP1_VARCHAR",
+              "column_name": "F6_BBB_P1_C1",
+              "field_name": "F6_BBB_P1_C1",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F6_BBB_SP1_VARCHAR"
+              "stage_column_name": "F6_BBB_P1_C1"
             },
             {
-              "column_name": "F7_BBB_SP1_DECIMAL",
-              "field_name": "F7_BBB_SP1_DECIMAL",
+              "column_name": "F7_BBB_P1_C2F",
+              "field_name": "F7_BBB_P1_C2F",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F7_BBB_SP1_DECIMAL"
+              "stage_column_name": "F7_BBB_P1_C2F"
             }
           ]
         }
@@ -779,9 +772,9 @@
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "F1_BK_AAA_VARCHAR",
+          "stage_column_name": "F1_AAA_BK1F",
           "stage_column_class": "data",
-          "field_name": "F1_BK_AAA_VARCHAR",
+          "field_name": "F1_AAA_BK1F",
           "is_nullable": true,
           "column_type": "Varchar(20)",
           "column_classes": [
@@ -789,9 +782,9 @@
           ]
         },
         {
-          "stage_column_name": "F2_BK_BBB_DECIMAL",
+          "stage_column_name": "F2_BBB_BK1F",
           "stage_column_class": "data",
-          "field_name": "F2_BK_BBB_DECIMAL",
+          "field_name": "F2_BBB_BK1F",
           "is_nullable": true,
           "column_type": "Decimal(20,0)",
           "column_classes": [
@@ -799,9 +792,9 @@
           ]
         },
         {
-          "stage_column_name": "F3_AAA_SP1_VARCHAR",
+          "stage_column_name": "F3_AAA_P1_C1",
           "stage_column_class": "data",
-          "field_name": "F3_AAA_SP1_VARCHAR",
+          "field_name": "F3_AAA_P1_C1",
           "is_nullable": true,
           "column_type": "VARCHAR(200)",
           "column_classes": [
@@ -809,9 +802,9 @@
           ]
         },
         {
-          "stage_column_name": "F4_AAA_SP1_DECIMAL",
+          "stage_column_name": "F4_AAA_P1_C2",
           "stage_column_class": "data",
-          "field_name": "F4_AAA_SP1_DECIMAL",
+          "field_name": "F4_AAA_P1_C2",
           "is_nullable": true,
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
@@ -819,9 +812,9 @@
           ]
         },
         {
-          "stage_column_name": "F5__FIELD_NAME",
+          "stage_column_name": "F5XX_AAA_P1_C3F",
           "stage_column_class": "data",
-          "field_name": "F5__FIELD_NAME",
+          "field_name": "F5XX_AAA_P1_C3F",
           "is_nullable": true,
           "column_type": "VARCHAR(200)",
           "column_classes": [
@@ -829,9 +822,9 @@
           ]
         },
         {
-          "stage_column_name": "F6_BBB_SP1_VARCHAR",
+          "stage_column_name": "F6_BBB_P1_C1",
           "stage_column_class": "data",
-          "field_name": "F6_BBB_SP1_VARCHAR",
+          "field_name": "F6_BBB_P1_C1",
           "is_nullable": true,
           "column_type": "VARCHAR(200)",
           "column_classes": [
@@ -839,9 +832,9 @@
           ]
         },
         {
-          "stage_column_name": "F7_BBB_SP1_DECIMAL",
+          "stage_column_name": "F7_BBB_P1_C2F",
           "stage_column_class": "data",
-          "field_name": "F7_BBB_SP1_DECIMAL",
+          "field_name": "F7_BBB_P1_C2F",
           "is_nullable": true,
           "column_type": "DECIMAL(5,0)",
           "column_classes": [

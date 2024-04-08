@@ -297,14 +297,24 @@ def parse_json_to_ddl(filepath, ddl_render_path):
 
 
 if __name__ == '__main__':
-    params = configuration_load_ini('dvpdc.ini', 'rendering', ['ddl_root_directory', 'dvpi_default_directory'])
+    description_for_terminal = "Process dvpi at the given location to render the ddl statements."
+    usage_for_terminal = "Type: python __main__.py --h for further instruction"
+
+    parser = argparse.ArgumentParser(
+        description=description_for_terminal,
+        usage= usage_for_terminal
+    )
+    # input Arguments
+    parser.add_argument('dvpi_file_name', nargs='?', help='Path to the file to process.')
+    parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
+    args = parser.parse_args()
+
+    params = configuration_load_ini(args.ini_file, 'rendering', ['ddl_root_directory', 'dvpi_default_directory'])
 
     ddl_render_path = Path(params['ddl_root_directory'], fallback=None)
     dvpi_default_directory = Path(params['dvpi_default_directory'], fallback=None)
     
-    parser = argparse.ArgumentParser(description='Process dvpi at the given location to render the ddl statements.')
-     # Define the filepath argument, set a default, and provide a helpful description.
-    parser.add_argument('dvpi_file_name', nargs='?', help='Path to the file to process.')
+
     args = parser.parse_args()
     dvpi_file_path = Path(args.dvpi_file_name)
     if not dvpi_file_path.exists():
