@@ -1,8 +1,8 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2024-02-21 14:34:20
+Compiler Version 0.6.1
+Compile time: 2024-04-09 13:14:02
 Compiling t0000c_check_json_format_error.dvpd.json
 
-ERROR: JSON Parsing error of file /aa_gitBox/data_vault_pipeline_description_poc/testset_and_examples/dvpd/t0000c_check_json_format_error.dvpd.json
+ERROR: JSON Parsing error of file t0000c_check_json_format_error.dvpd.json
 Expecting value in line 11 column 9
 *** Compilation ended with errors ***

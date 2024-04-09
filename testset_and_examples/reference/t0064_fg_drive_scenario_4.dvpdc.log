@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-04-09 12:26:53
+Compiling t0064_fg_drive_scenario_4.dvpd.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t0064_fg_drive_scenario_4.dvpi.json
+--- Compile successfull ---

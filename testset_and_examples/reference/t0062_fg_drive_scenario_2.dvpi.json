@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
-  "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-03-06 12:05:59",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
+  "dvpi_version": "0.6.1",
+  "compile_timestamp": "2024-04-09 12:59:29",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0062_fg_drive_scenario_2",
   "dvpd_filename": "t0062_fg_drive_scenario_2.dvpd.json",
@@ -37,14 +37,7 @@
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "F1F2_AAA_BK1",
-          "is_nullable": true,
-          "column_class": "business_key",
-          "column_type": "VARCHAR(20)",
-          "prio_for_column_position": 50000
-        },
-        {
-          "column_name": "F1F2_AAA_BK2F",
+          "column_name": "F1F2_AAA_BK1F",
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
@@ -176,7 +169,7 @@
               "field_name": "F1XX_AAA_BK1F_TTT",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_62_aaa_hub",
-              "field_target_column": "F1F2_AAA_BK1"
+              "field_target_column": "F1F2_AAA_BK1F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -197,7 +190,7 @@
               "field_name": "F2XX_AAA_BK1F_UUU",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_62_aaa_hub",
-              "field_target_column": "F1F2_AAA_BK2F"
+              "field_target_column": "F1F2_AAA_BK1F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -210,7 +203,7 @@
           "hash_name": "KEY_OF_RTJJ_62_AAA_HUB__FOR__UUU"
         },
         {
-          "stage_column_name": "RH_RTJJ_62_AAA_P1_SAT_TTT",
+          "stage_column_name": "RH_RTJJ_62_AAA_P1_SAT",
           "hash_origin_table": "rtjj_62_aaa_p1_sat",
           "multi_row_content": false,
           "related_key_hash": "KEY_OF_RTJJ_62_AAA_HUB__FOR__TTT",
@@ -238,38 +231,7 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "DIFF_OF_RTJJ_62_AAA_P1_SAT__FOR__TTT"
-        },
-        {
-          "stage_column_name": "RH_RTJJ_62_AAA_P1_SAT_UUU",
-          "hash_origin_table": "rtjj_62_aaa_p1_sat",
-          "multi_row_content": false,
-          "related_key_hash": "KEY_OF_RTJJ_62_AAA_HUB__FOR__UUU",
-          "column_class": "diff_hash",
-          "hash_fields": [
-            {
-              "field_name": "F3_AAA_P1_C1",
-              "prio_in_diff_hash": 0,
-              "prio_for_row_order": 50000,
-              "field_target_table": "rtjj_62_aaa_p1_sat",
-              "field_target_column": "F3_AAA_P1_C1"
-            },
-            {
-              "field_name": "F4_AAA_P1_C2F",
-              "prio_in_diff_hash": 0,
-              "prio_for_row_order": 50000,
-              "field_target_table": "rtjj_62_aaa_p1_sat",
-              "field_target_column": "F4_AAA_P1_C2F"
-            }
-          ],
-          "column_type": "CHAR(28)",
-          "hash_encoding": "BASE64",
-          "hash_function": "sha-1",
-          "hash_concatenation_seperator": "|",
-          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
-          "hash_null_value_string": "",
-          "model_profile_name": "_default",
-          "hash_name": "DIFF_OF_RTJJ_62_AAA_P1_SAT__FOR__UUU"
+          "hash_name": "DIFF_OF_RTJJ_62_AAA_P1_SAT"
         }
       ],
       "load_operations": [
@@ -288,7 +250,7 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F1F2_AAA_BK1",
+              "column_name": "F1F2_AAA_BK1F",
               "field_name": "F1XX_AAA_BK1F_TTT",
               "column_class": "business_key",
               "is_nullable": true,
@@ -311,7 +273,7 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F1F2_AAA_BK2F",
+              "column_name": "F1F2_AAA_BK1F",
               "field_name": "F2XX_AAA_BK1F_UUU",
               "column_class": "business_key",
               "is_nullable": true,
@@ -334,9 +296,9 @@
             {
               "hash_class": "diff_hash",
               "column_name": "RH_RTJJ_62_AAA_P1_SAT",
-              "hash_name": "DIFF_OF_RTJJ_62_AAA_P1_SAT__FOR__TTT",
+              "hash_name": "DIFF_OF_RTJJ_62_AAA_P1_SAT",
               "is_nullable": false,
-              "stage_column_name": "RH_RTJJ_62_AAA_P1_SAT_TTT"
+              "stage_column_name": "RH_RTJJ_62_AAA_P1_SAT"
             }
           ],
           "data_mapping": [
@@ -371,9 +333,9 @@
             {
               "hash_class": "diff_hash",
               "column_name": "RH_RTJJ_62_AAA_P1_SAT",
-              "hash_name": "DIFF_OF_RTJJ_62_AAA_P1_SAT__FOR__UUU",
+              "hash_name": "DIFF_OF_RTJJ_62_AAA_P1_SAT",
               "is_nullable": false,
-              "stage_column_name": "RH_RTJJ_62_AAA_P1_SAT_UUU"
+              "stage_column_name": "RH_RTJJ_62_AAA_P1_SAT"
             }
           ],
           "data_mapping": [
@@ -434,17 +396,10 @@
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "RH_RTJJ_62_AAA_P1_SAT_TTT",
+          "stage_column_name": "RH_RTJJ_62_AAA_P1_SAT",
           "stage_column_class": "hash",
           "is_nullable": false,
-          "hash_name": "DIFF_OF_RTJJ_62_AAA_P1_SAT__FOR__TTT",
-          "column_type": "CHAR(28)"
-        },
-        {
-          "stage_column_name": "RH_RTJJ_62_AAA_P1_SAT_UUU",
-          "stage_column_class": "hash",
-          "is_nullable": false,
-          "hash_name": "DIFF_OF_RTJJ_62_AAA_P1_SAT__FOR__UUU",
+          "hash_name": "DIFF_OF_RTJJ_62_AAA_P1_SAT",
           "column_type": "CHAR(28)"
         },
         {
