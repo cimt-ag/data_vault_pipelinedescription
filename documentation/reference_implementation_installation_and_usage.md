@@ -64,12 +64,12 @@ Example structure
 ### Test the compiler
 - place a dvpd file in the directory for the dvpd files
 - open a command line
-- run "dvdpc <name of the dvpd file> --ini_file="<path to the ini file>"
+- run "dvdpc <name of the dvpd file> --ini_file="\<path to the ini file>"
 - This should write out its messages and success state to the console and a log file in the log output directory
 - if the compile is successfull you should have a dvpi file in the directory for dvpi
 
 ### Test the ddl generator
-- run "dvdp_ddl_render <name of the dvpi file> --ini_file="<path to the ini file>"
+- run "dvdp_ddl_render \<name of the dvpi file> --ini_file="\<path to the ini file>"
 - all ddl scripts for the pipeline in the dvpi file should be written to subdirectoreis of th configured "ddl_root_directory"
 
 # Usage Guide
@@ -79,10 +79,10 @@ The dvpdc compiler is started on the command line with
 ```dvdpc <name of the dvpd file> options```
 
 Options:
-- --ini_file=<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
-- --model_profile_directory=<directory>: Sets the location of the model profile directory (instead of the location configured by the ini file)
-- --dvpi_directory=<directory>: Sets the location for the output of the dvpi file (instead of the location configured by the ini file)
-- --report_directory=<directory>: Sets the location for the log and report file (instead of the location configured by the ini file)
+- --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
+- --model_profile_directory=\<directory>: Sets the location of the model profile directory (instead of the location configured by the ini file)
+- --dvpi_directory=\<directory>: Sets the location for the output of the dvpi file (instead of the location configured by the ini file)
+- --report_directory=\<directory>: Sets the location for the log and report file (instead of the location configured by the ini file)
 - --verbose: prints some internal progress messages to the console 
 - --print_brain: prints the internal "memory" of the compiler
 
@@ -104,4 +104,4 @@ The ddl generator is started on the command line with
 ```dvdp_ddl_render <name of the dvpi file> options```
 
 Options:
-- --ini_file=<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
+- --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
