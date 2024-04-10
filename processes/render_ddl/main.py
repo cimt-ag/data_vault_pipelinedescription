@@ -1,9 +1,15 @@
 import json
 #import configparser
 import os
+import sys
 import argparse
 from pathlib import Path
 import re
+
+# Include data_vault_pipelinedescription folder into
+project_directory = os.path.dirname(os.path.dirname(sys.path[0]))
+sys.path.insert(0,project_directory)
+
 from lib.configuration import configuration_load_ini
 
 class MissingFieldError(Exception):
@@ -305,7 +311,7 @@ if __name__ == '__main__':
         usage= usage_for_terminal
     )
     # input Arguments
-    parser.add_argument('dvpi_file_name', nargs='?', help='Path to the file to process.')
+    parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory')
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
     args = parser.parse_args()
 
