@@ -1627,7 +1627,7 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
         with open(dvpd_file_path, "r") as dvpd_file:
             dvpd_object=json.load(dvpd_file)
     except json.JSONDecodeError as e:
-        register_error("ERROR: JSON Parsing error of file "+ dvpd_file_path.as_posix())
+        register_error("ERROR: JSON Parsing error of file "+ dvpd_file_path.name)
         log_progress(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
         raise DvpdcError
 

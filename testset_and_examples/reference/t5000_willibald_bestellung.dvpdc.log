@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-04-09 18:53:53
+Compiling t5000_willibald_bestellung.dvpd.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t5000_willibald_bestellung.dvpi.json
+--- Compile successfull ---

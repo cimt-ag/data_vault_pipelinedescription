@@ -1,7 +1,7 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2024-02-21 08:51:56
+Compiler Version 0.6.1
+Compile time: 2024-04-09 13:06:32
 Compiling t0067_fg_drive_scenario_7.dvpd.json
 
-Hub 'rtjj_67_aaa_hub' has no business key mapping for relation 'ttt' needed for link 'rtjj_67_aaa_bbb_lnk'
-*** Compilation ended with errors ***
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t0067_fg_drive_scenario_7.dvpi.json
+--- Compile successfull ---

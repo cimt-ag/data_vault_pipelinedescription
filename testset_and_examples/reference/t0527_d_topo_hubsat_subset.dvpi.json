@@ -1,10 +1,10 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
   "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-03-14 11:59:42",
+  "compile_timestamp": "2024-04-03 15:13:02",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0527_d_topo_hubsat_subset",
-  "dvpd_filename": "t0527_d_topo_hubsat_subset.json",
+  "dvpd_filename": "t0527_d_topo_hubsat_subset.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_527_aaa_hub",
