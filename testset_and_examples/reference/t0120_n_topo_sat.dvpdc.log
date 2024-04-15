@@ -1,7 +1,7 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2024-02-27 12:47:26
+Compiler Version 0.6.1
+Compile time: 2024-04-15 11:49:10
 Compiling t0120_n_topo_sat.dvpd.json
 
-Hub 'rtjj_120_bbb_hub' has no business key mapping for relation '/' needed for link 'rtjj_120_aaa_bbb_lnk'
-*** Compilation ended with errors ***
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t0120_n_topo_sat.dvpi.json
+--- Compile successfull ---
