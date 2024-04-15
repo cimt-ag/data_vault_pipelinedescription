@@ -1,0 +1,47 @@
+{
+  "dvpd_version": "0.6.1",
+  "stage_properties" : [{"stage_schema":"stage_rvlt"}],
+  "pipeline_name": "t5000_willibald_bestellung",
+  "pipeline_comment":"example from ddvug gartencenter willibald",
+  "record_source_name_expression": "willibald.bestellung",
+  "data_extraction": {
+    "fetch_module_name":"none - this is a pure generator test case"
+  },
+
+  "fields": [
+         {"field_name": "BestellungID",   "field_type": "integer",      "targets": [{"table_name": "bestellung_hub"}]}
+        ,{"field_name": "KundeID",        "field_type": "integer",      "targets": [{"table_name": "kunde_hub"}]}
+        ,{"field_name": "AllgLieferAdrID","field_type": "integer",      "targets": [{"table_name": "lieferadresse_hub"
+                                                                                    ,"column_name":"LieferAdrID"}]}
+        ,{"field_name": "Bestelldatum",   "field_type": "DATE",         "targets": [{"table_name": "bestellung_sat"}]}
+        ,{"field_name": "Wunschdatum",    "field_type": "DATE",         "targets": [{"table_name": "bestellung_sat"}]}
+        ,{"field_name": "Rabatt",         "field_type": "DECIMAL(8,3)", "targets": [{"table_name": "bestellung_sat"}]}
+       ],
+  "data_vault_model": [
+    {"schema_name": "rvlt_willibald", 
+     "tables": [
+         {"table_name": "bestellung_hub", "table_stereotype": "hub"
+                                        , "hub_key_column_name": "hk_bestellung"}
+        ,{"table_name": "bestellung_sat", "table_stereotype": "sat"
+                                        , "satellite_parent_table": "bestellung_hub"
+                                        , "diff_hash_column_name": "diff_bestellung_sat"}
+        ,{"table_name": "kunde_hub"     , "table_stereotype": "hub"
+                                        , "hub_key_column_name": "hk_kunde"}
+        ,{"table_name": "bestellung_kunde_lnk", "table_stereotype": "lnk"
+                                              , "link_key_column_name": "lk_bestellung_kunde"
+                                              , "link_parent_tables": ["bestellung_hub","kunde_hub"]}
+        ,{"table_name": "bestellung_kunde_esat", "table_stereotype": "sat"
+                                               , "satellite_parent_table": "bestellung_kunde_lnk"
+                                               , "driving_keys":["hk_bestellung"]}
+        ,{"table_name": "lieferadresse_hub", "table_stereotype": "hub"
+                                           , "hub_key_column_name": "hk_lieferadresse"}
+        ,{"table_name": "bestellung_lieferadresse_lnk", "table_stereotype": "lnk"
+                                                      , "link_key_column_name": "lk_bestellung_lieferadresse"
+                                                      , "link_parent_tables": ["bestellung_hub","kunde_hub"]}
+        ,{"table_name": "bestellung_lieferadresse_esat", "table_stereotype": "sat"
+                                                       , "satellite_parent_table": "bestellung_lieferadresse_lnk"
+                                                       , "driving_keys":["hk_bestellung"]}
+      ]
+    }
+  ]
+}

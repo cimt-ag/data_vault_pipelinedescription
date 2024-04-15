@@ -1,18 +1,18 @@
 {
 	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "test28_transactional_link_with_non_historized_satellite",
+	"pipeline_name": "t0028_transactional_link_with_non_historized_satellite",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 
 	"fields": [
-		      {"field_name": "F1_BK_AAA_VARCHAR", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_28_aaa_hub"}]}
-		 	  ,{"field_name": "F2_BK_BBB_DECIMAL",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_28_bbb_hub"}]}
-		 	  ,{"field_name": "F3_AAA_SP1_VARCHAR",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_28_aaa_bbb_tlsat"}]}
-			  ,{"field_name": "F4_AAA_SP1_DECIMAL",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_28_aaa_bbb_tlsat"}]}
-			  ,{"field_name": "F5__FIELD_NAME",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_28_aaa_bbb_tlsat",
+		      {"field_name": "F1_AAA_BK1F", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_28_aaa_hub"}]}
+		 	  ,{"field_name": "F2_BBB_BK1F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_28_bbb_hub"}]}
+		 	  ,{"field_name": "F3_AAA_BBB_P1_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_28_aaa_bbb_tlsat"}]}
+			  ,{"field_name": "F4_AAA_BBB_P1_C2",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_28_aaa_bbb_tlsat"}]}
+			  ,{"field_name": "F5_AAA_BBB_P1_C3F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_28_aaa_bbb_tlsat",
 																									 "column_name":"F5_AAA_SP1_VARCHAR"}]}
 			 ],
 	"data_vault_model": [
