@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-04-04T10:55:20.202Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="u_yvKhEIBPu4Zo4QhcWa" version="21.6.1" type="device">
+<mxfile host="Electron" modified="2024-04-22T10:44:04.082Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="GppVCX-Q3x30EIHuZdyH" version="21.6.1" type="device">
   <diagram id="S8_EbyP6fOLFSmQk0vZv" name="Seite-1">
-    <mxGraphModel dx="1595" dy="809" grid="1" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#FFFFFF" math="0" shadow="0">
+    <mxGraphModel dx="775" dy="496" grid="1" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#FFFFFF" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="MhMX6n-4osd3CMCWlbSx-218" value="Background" style="locked=1;" parent="0" />
@@ -1212,7 +1212,7 @@
           <mxGeometry x="857.9099999999999" y="1200.25" width="10" height="11" as="geometry" />
         </mxCell>
         <mxCell id="cFV7ejBLRMOV1y-EgFsQ-681" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#7f00ff;" parent="2" vertex="1">
-          <mxGeometry x="883.53" y="1199.5" width="10" height="11" as="geometry" />
+          <mxGeometry x="870" y="1199.5" width="10" height="11" as="geometry" />
         </mxCell>
         <mxCell id="cFV7ejBLRMOV1y-EgFsQ-683" value="&lt;div style=&quot;width: 93.0px;height:auto;word-break: break-word;&quot;&gt;&lt;div&gt;&lt;span style=&quot;font-family: Arial; font-size: 12px; text-decoration: none; line-height: 0;&quot;&gt;&lt;span style=&quot;text-decoration: none; line-height: 14px;&quot; class=&quot;&quot;&gt;A_B_ESAT_T&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;rounded=1;arcSize=15;absoluteArcSize=1;shadow=0;strokeWidth=2;fillColor=#E6E6E6;strokeColor=#333333;opacity=100.0;html=1;nl2Br=0;verticalAlign=top;align=center;spacingLeft=2.0;spacingRight=10;whiteSpace=wrap;gliffyId=15;" parent="2" vertex="1">
           <mxGeometry x="892.01" y="1081.63" width="85.93" height="50" as="geometry" />
@@ -4841,6 +4841,9 @@
         </mxCell>
         <mxCell id="EsEU9lXer-4xsi07snjI-133" value="" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;fixedSize=1;size=2.9999999999999716;fillColor=default;strokeColor=#000000;shadow=0;strokeWidth=2;opacity=100;spacingLeft=0.6;spacingRight=0;" parent="2" vertex="1">
           <mxGeometry x="875" y="6245" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="jdSlgbH00VGpfEnMQqdT-105" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#CC0000;" vertex="1" parent="2">
+          <mxGeometry x="889.9999999999998" y="1200" width="10" height="11" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
