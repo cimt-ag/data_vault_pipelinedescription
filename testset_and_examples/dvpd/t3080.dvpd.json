@@ -1,0 +1,25 @@
+{
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t3080",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields": [
+		      {"field_name": "F1_AAA_BK1F", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_3080_aaa_hub"}]}
+		 	  ,{"field_name": "F2_BBB_BK1F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_3080_bbb_hub"}]}
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				 {"table_name": "rtjj_3080_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_3080_aaa"}
+				,{"table_name": "rtjj_3080_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_3080_bbb"}
+				,{"table_name": "rtjj_3080_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_3080_aaa_bbb",
+																				"link_parent_tables": ["rtjj_3080_aaa_hub","rtjj_3080_bbb_hub"]}
+				,{"table_name": "rtjj_3080_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_3080_aaa_bbb_lnk"}
+				]
+		}
+	]
+}
