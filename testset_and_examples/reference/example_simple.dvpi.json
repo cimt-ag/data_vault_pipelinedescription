@@ -1,0 +1,382 @@
+{
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
+  "dvpi_version": "0.6.1",
+  "compile_timestamp": "2024-04-15 11:49:08",
+  "dvpd_version": "0.6.0",
+  "pipeline_name": "example_simple",
+  "dvpd_filename": "example_simple.dvpd.json",
+  "tables": [
+    {
+      "table_name": "person_hub",
+      "table_stereotype": "hub",
+      "schema_name": "raw_vault",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_PERSON",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "COMPANY",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "VARCHAR(5)",
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "PERSON_ID",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "VARCHAR(10)",
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "person_sat",
+      "table_stereotype": "sat",
+      "schema_name": "raw_vault",
+      "storage_component": "",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": false,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "compare_criteria": "key+current",
+      "uses_diff_hash": true,
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "column_name": "MD_VALID_BEFORE",
+          "is_nullable": false,
+          "column_class": "meta_load_enddate",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "HK_PERSON",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_PERSON",
+          "parent_table_name": "person_hub"
+        },
+        {
+          "column_name": "RH_PERSON_SAT",
+          "is_nullable": false,
+          "column_class": "diff_hash",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "NAME",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(250)",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "JOB",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(250)",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        }
+      ]
+    }
+  ],
+  "data_extraction": {
+    "fetch_module_name": "database_table_full",
+    "source_table": "person",
+    "source_schema": "example"
+  },
+  "parse_sets": [
+    {
+      "stage_properties": [
+        {
+          "stage_schema": "stage_rvlt",
+          "stage_table_name": "example_person",
+          "storage_component": ""
+        }
+      ],
+      "record_source_name_expression": "example.person",
+      "fields": [
+        {
+          "field_type": "varchar(5)",
+          "field_position": 1,
+          "needs_encryption": false,
+          "field_name": "COMPANY"
+        },
+        {
+          "field_type": "varchar(10)",
+          "field_position": 2,
+          "needs_encryption": false,
+          "field_name": "PERSON_ID"
+        },
+        {
+          "field_type": "varchar(250)",
+          "field_position": 3,
+          "needs_encryption": false,
+          "field_name": "NAME"
+        },
+        {
+          "field_type": "varchar(250)",
+          "field_position": 4,
+          "needs_encryption": false,
+          "field_name": "JOB"
+        }
+      ],
+      "hashes": [
+        {
+          "stage_column_name": "HK_PERSON",
+          "hash_origin_table": "person_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "COMPANY",
+              "prio_in_key_hash": 0,
+              "field_target_table": "person_hub",
+              "field_target_column": "COMPANY"
+            },
+            {
+              "field_name": "PERSON_ID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "person_hub",
+              "field_target_column": "PERSON_ID"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_PERSON_HUB"
+        },
+        {
+          "stage_column_name": "RH_PERSON_SAT",
+          "hash_origin_table": "person_sat",
+          "multi_row_content": false,
+          "related_key_hash": "KEY_OF_PERSON_HUB",
+          "column_class": "diff_hash",
+          "hash_fields": [
+            {
+              "field_name": "NAME",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "person_sat",
+              "field_target_column": "NAME"
+            },
+            {
+              "field_name": "JOB",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "person_sat",
+              "field_target_column": "JOB"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "DIFF_OF_PERSON_SAT"
+        }
+      ],
+      "load_operations": [
+        {
+          "table_name": "person_hub",
+          "relation_name": "*",
+          "operation_origin": "implicit universal relation of hub",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_PERSON",
+              "hash_name": "KEY_OF_PERSON_HUB",
+              "is_nullable": false,
+              "stage_column_name": "HK_PERSON"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "COMPANY",
+              "field_name": "COMPANY",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "COMPANY"
+            },
+            {
+              "column_name": "PERSON_ID",
+              "field_name": "PERSON_ID",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "PERSON_ID"
+            }
+          ]
+        },
+        {
+          "table_name": "person_sat",
+          "relation_name": "*",
+          "operation_origin": "following parent operation list",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key",
+              "column_name": "HK_PERSON",
+              "hash_name": "KEY_OF_PERSON_HUB",
+              "is_nullable": false,
+              "stage_column_name": "HK_PERSON"
+            },
+            {
+              "hash_class": "diff_hash",
+              "column_name": "RH_PERSON_SAT",
+              "hash_name": "DIFF_OF_PERSON_SAT",
+              "is_nullable": false,
+              "stage_column_name": "RH_PERSON_SAT"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "NAME",
+              "field_name": "NAME",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "NAME"
+            },
+            {
+              "column_name": "JOB",
+              "field_name": "JOB",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "JOB"
+            }
+          ]
+        }
+      ],
+      "stage_columns": [
+        {
+          "stage_column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "stage_column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "stage_column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "stage_column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "stage_column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "stage_column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "stage_column_name": "HK_PERSON",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_PERSON_HUB",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "RH_PERSON_SAT",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "DIFF_OF_PERSON_SAT",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "COMPANY",
+          "stage_column_class": "data",
+          "field_name": "COMPANY",
+          "is_nullable": true,
+          "column_type": "varchar(5)",
+          "column_classes": [
+            "business_key"
+          ]
+        },
+        {
+          "stage_column_name": "PERSON_ID",
+          "stage_column_class": "data",
+          "field_name": "PERSON_ID",
+          "is_nullable": true,
+          "column_type": "varchar(10)",
+          "column_classes": [
+            "business_key"
+          ]
+        },
+        {
+          "stage_column_name": "NAME",
+          "stage_column_class": "data",
+          "field_name": "NAME",
+          "is_nullable": true,
+          "column_type": "varchar(250)",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "JOB",
+          "stage_column_class": "data",
+          "field_name": "JOB",
+          "is_nullable": true,
+          "column_type": "varchar(250)",
+          "column_classes": [
+            "content"
+          ]
+        }
+      ]
+    }
+  ]
+}

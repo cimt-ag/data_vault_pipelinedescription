@@ -8,7 +8,7 @@
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 	"fields": [
-		       {"field_name": "F1XX_BBB_BK1_/_UUU", "field_type": "Varchar(20)","targets": [{"table_name": "rtjj_702_bbb_hub" ,"column_name": "FIF2_BBB_BK1"} ]}		 	  
+		       {"field_name": "F1XX_BBB_BK1_DFT_UUU", "field_type": "Varchar(20)","targets": [{"table_name": "rtjj_702_bbb_hub" ,"column_name": "FIF2_BBB_BK1","relation_names":["/","UUU"]} ]}		 	  
 		      ,{"field_name": "F2XX_BBB_BK1_VVV","field_type": "Varchar(20)",  "targets": [{"table_name": "rtjj_702_bbb_hub" ,"column_name": "FIF2_BBB_BK1","relation_names":["VVV"]} ]}		 	  
 
 		      ,{"field_name": "F3XX_BBB_BK2F", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_702_bbb_hub" ,"column_name": "F3F4F5_BBB_BK2F"} ]}
@@ -22,12 +22,12 @@
 				{"table_name": "rtjj_702_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_702_bbb"}
 				,{"table_name": "rtjj_702_bbb_uuu_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_702_bbb_uuu",
 												"link_parent_tables": [	{"table_name":"rtjj_702_bbb_hub"}
-																	   ,{"table_name":"rtjj_702_bbb_hub","relation_name":"UUU"}  ]}
+																	   ,{"table_name":"rtjj_702_bbb_hub"}  ]}
 				,{"table_name": "rtjj_702_bbb_uuu_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_702_bbb_uuu_lnk"
 																						,"tracked_relation_name":"UUU"}
 				,{"table_name": "rtjj_702_bbb_vvv_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_702_bbb_vvv",
 												"link_parent_tables": [	{"table_name":"rtjj_702_bbb_hub"}
-																	   ,{"table_name":"rtjj_702_bbb_hub","relation_name":"VVV"}  ]}
+																	   ,{"table_name":"rtjj_702_bbb_hub"}  ]}
 				,{"table_name": "rtjj_702_bbb_vvv_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_702_bbb_vvv_lnk"
 																						,"tracked_relation_name":"VVV"}
 				
