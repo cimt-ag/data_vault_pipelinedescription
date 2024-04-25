@@ -136,7 +136,7 @@ def create_ghost_records(full_name, columns):
 
 
 
-def parse_json_to_ddl(filepath, ddl_render_path):
+def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False):
     with open(filepath, 'r') as file:
         data = json.load(file)
 
@@ -190,8 +190,10 @@ def parse_json_to_ddl(filepath, ddl_render_path):
             column_statements.append("{} {} {}".format(col_name, col_type, nullable))
         column_statements = ',\n'.join(column_statements)
         ddl = f"-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
-        
-        ddl += create_ghost_records(full_name, columns)
+
+        if add_ghost_records:
+            ddl += create_ghost_records(full_name, columns)
+
         ddl_statements.append(ddl)
 
         # create schema dir if not exists
@@ -202,6 +204,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
         
         # save ddl in directory
         table_ddl_path = schema_path / f"table_{table_name}.sql"
+        print(table_ddl_path.stem)
         with open(table_ddl_path, 'w') as file:
           file.write(ddl)
         
@@ -217,7 +220,7 @@ def parse_json_to_ddl(filepath, ddl_render_path):
         # Filter schema_sat to keep only schemas with max counts
         filtered_schemas = {key: schema_sats[key] for key in schema_sats if key in schema_with_max_count}
         stage_schema_dir = max(filtered_schemas, key=filtered_schemas.get)
-    print(f'stage_schema_dir: {stage_schema_dir}')
+    #print(f'stage_schema_dir: {stage_schema_dir}')
 
 
     for parse_set in parse_sets:
@@ -296,12 +299,27 @@ def parse_json_to_ddl(filepath, ddl_render_path):
         
         # save ddl in directory
         table_ddl_path = schema_path / f"table_{table_name}.sql"
+        print(table_ddl_path.stem)
         with open(table_ddl_path, 'w') as file:
           file.write(ddl)
 
     return "\n\n".join(ddl_statements)
 
 
+def get_name_of_youngest_dvpi_file(dvpi_default_directory):
+
+    max_mtime=0
+    youngest_file=''
+
+    for file_name in os.listdir( dvpi_default_directory):
+        file_mtime=os.path.getmtime( dvpi_default_directory+'/'+file_name)
+        if file_mtime>max_mtime:
+            youngest_file=file_name
+            max_mtime=file_mtime
+
+    return youngest_file
+
+########################   MAIN ################################
 if __name__ == '__main__':
     description_for_terminal = "Process dvpi at the given location to render the ddl statements."
     usage_for_terminal = "Type: python __main__.py --h for further instruction"
@@ -313,6 +331,8 @@ if __name__ == '__main__':
     # input Arguments
     parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory')
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
+    parser.add_argument("--print", help="print the generated ddl to the console",  action='store_true')
+    parser.add_argument("--add_ghost_records", help="Add ghost record inserts to every script",  action='store_true')
     args = parser.parse_args()
 
     params = configuration_load_ini(args.ini_file, 'rendering', ['ddl_root_directory', 'dvpi_default_directory'])
@@ -322,11 +342,19 @@ if __name__ == '__main__':
     
 
     args = parser.parse_args()
-    dvpi_file_path = Path(args.dvpi_file_name)
+
+    dvpi_file_name=args.dvpi_file_name
+    if dvpi_file_name == '@youngest':
+        dvpi_file_name = get_name_of_youngest_dvpi_file(params['dvpi_default_directory'])
+
+    dvpi_file_path = Path(dvpi_file_name)
     if not dvpi_file_path.exists():
-       dvpi_file_path = dvpi_default_directory.joinpath(args.dvpi_file_name)
+       dvpi_file_path = dvpi_default_directory.joinpath(dvpi_file_name)
        if not dvpi_file_path.exists():
             print(f"could not find file {args.dvpi_file_name}")
 
-    ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path)
-    print(ddl_output)
+    ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path, add_ghost_records=args.add_ghost_records)
+    if args.print:
+        print(ddl_output)
+
+    print("--- ddl render complete ---")
