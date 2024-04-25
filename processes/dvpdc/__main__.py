@@ -1707,7 +1707,24 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
 
     writeDvpiSummary(dvpdc_report_directory,dvpd_file_path)
 
+def get_name_of_youngest_dvpd_file(ini_file):
+    params = configuration_load_ini(ini_file, 'dvpdc',['dvpd_model_profile_directory'])
+
+    max_mtime=0
+    youngest_file=''
+
+    for file_name in os.listdir( params['dvpd_default_directory']):
+        file_mtime=os.path.getmtime( params['dvpd_default_directory']+'/'+file_name)
+        if file_mtime>max_mtime:
+            youngest_file=file_name
+            max_mtime=file_mtime
+
+    return youngest_file
+
 ########################################################################################################################
+
+
+
 if __name__ == "__main__":
     description_for_terminal = "Cimt AG reccommends to follow the instruction before starting the script. If you run your script from command line, it should look" \
                                " like this: python __main__.py inputFile"
@@ -1718,7 +1735,7 @@ if __name__ == "__main__":
         usage= usage_for_terminal
     )
     # input Arguments
-    parser.add_argument("dvpd_filename", help="Name of the dvpd file to compile")
+    parser.add_argument("dvpd_filename", help="Name of the dvpd file to compile. Set this to '@youngest' to compile the youngest file in your dvpd directory")
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
     parser.add_argument("--model_profile_directory",help="Name of the model profile directory")
 
@@ -1730,8 +1747,14 @@ if __name__ == "__main__":
 
     #parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
     args = parser.parse_args()
+
+    dvpd_filename = args.dvpd_filename
+
+    if dvpd_filename == '@youngest':
+        dvpd_filename = get_name_of_youngest_dvpd_file(ini_file=args.ini_file)
+
     try:
-        dvpdc(dvpd_filename=args.dvpd_filename,
+        dvpdc(dvpd_filename=dvpd_filename,
               dvpi_directory=args.dvpi_directory,
               dvpdc_report_directory=args.report_directory,
               ini_file=args.ini_file,

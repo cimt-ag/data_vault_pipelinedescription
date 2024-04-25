@@ -125,6 +125,8 @@ The dvpdc compiler is started on the command line with
 
 ```dvdpc <name of the dvpd file> options```
 
+When using the file name "@youngest", the compiler uses the youngest file in the dvdp default directory
+
 Options:
 - --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
 - --model_profile_directory=\<directory>: Sets the location of the model profile directory (instead of the location configured by the ini file)
