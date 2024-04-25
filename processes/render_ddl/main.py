@@ -132,11 +132,31 @@ def create_ghost_records(full_name, columns):
 
     result = '\n\n' + ddl_null + '\n\n' + ddl_missing
     return result
-        
 
 
+def render_primary_key_clause(table):
 
-def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False):
+    table_stereotype=table['table_stereotype']
+    if table_stereotype in ('sat') and table['is_multiactive']:
+        return ""  ## no pk for multiactive satellites
+
+    pk_column_list=[]
+    for column in table['columns']:
+        column_class=column['column_class']
+        if table_stereotype in ('hub', 'lnk') and column_class=='key':
+            pk_column_list.append(column['column_name'])
+        if table_stereotype == 'sat' and column_class in ('parent_key','meta_load_date'):
+            pk_column_list.append(column['column_name'])
+
+    ddl_text=""
+    if len(pk_column_list)>0:
+        full_name = "{}.{}".format(table['schema_name'], table['table_name'])
+        pk_name= table['table_name']+"_PK"
+        ddl_text= f"\n\nALTER TABLE {full_name} ADD CONSTRAINT {pk_name} PRIMARY KEY({','.join(pk_column_list)});"
+    return ddl_text
+
+
+def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_primary_keys=True):
     with open(filepath, 'r') as file:
         data = json.load(file)
 
@@ -189,10 +209,16 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False):
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
             column_statements.append("{} {} {}".format(col_name, col_type, nullable))
         column_statements = ',\n'.join(column_statements)
-        ddl = f"-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+        ddl = f"-- generated script for {full_name}"
+        ddl += f"\n\n-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+
+        if add_primary_keys:
+            ddl += render_primary_key_clause(table)
 
         if add_ghost_records:
             ddl += create_ghost_records(full_name, columns)
+
+        ddl +="\n-- end of script --"
 
         ddl_statements.append(ddl)
 
@@ -288,7 +314,9 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False):
             column_statements += ["--content"] + content
 
         column_statements = ',\n'.join(column_statements)
-        ddl = f"-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+        ddl = f"-- generated script for {full_name}"
+        ddl += f"\n\n-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+        ddl += "\n-- end of script --"
         ddl_statements.append(ddl)
 
         # create schema dir if not  exists
@@ -333,6 +361,7 @@ if __name__ == '__main__':
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
     parser.add_argument("--print", help="print the generated ddl to the console",  action='store_true')
     parser.add_argument("--add_ghost_records", help="Add ghost record inserts to every script",  action='store_true')
+    parser.add_argument("--no_primary_keys", help="omit rendering of primary key constraints ",  action='store_true')
     args = parser.parse_args()
 
     params = configuration_load_ini(args.ini_file, 'rendering', ['ddl_root_directory', 'dvpi_default_directory'])
@@ -353,7 +382,9 @@ if __name__ == '__main__':
        if not dvpi_file_path.exists():
             print(f"could not find file {args.dvpi_file_name}")
 
-    ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path, add_ghost_records=args.add_ghost_records)
+    ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path
+                                        , add_ghost_records=args.add_ghost_records
+                                        , add_primary_keys=not args.no_primary_keys)
     if args.print:
         print(ddl_output)
 

@@ -154,3 +154,6 @@ The ddl generator is started on the command line with
 
 Options:
 - --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
+- --print: prints the full ddl set to the console
+- --add_ghost_records: adds ghost record inserts to the script 
+- --no_primary_keys: omit rendering of primary key constraints
