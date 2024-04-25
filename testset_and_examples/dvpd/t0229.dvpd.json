@@ -21,12 +21,12 @@
 		      ,{"field_name": "F7XX_BBB_BK2F_VVV", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_229_bbb_hub" ,"column_name": "F5F6F7_BBB_BK2F"
 																				 	,"relation_names":["VVV"]} ]}
 	 
-		      ,{"field_name": "F8_BBB_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_229_aaa_sat"}]}
-		      ,{"field_name": "F9XX_BBB_C2F_TTT",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_229_bbb_sat" ,"column_name": "F09F10F11_BBB_C2F"
+		      ,{"field_name": "F8_BBB_C1", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_229_bbb_sat"}]}
+		      ,{"field_name": "F9XX_BBB_C2F_TTT",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_229_bbb_sat" ,"column_name": "F9F10F11_BBB_C2F"
 																				 	,"relation_names":["TTT"]} ]}
-		      ,{"field_name": "F10XX_BBB_C2F_UUU",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_229_bbb_sat" ,"column_name": "F09F10F11_BBB_C2F"
+		      ,{"field_name": "F10XX_BBB_C2F_UUU",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_229_bbb_sat" ,"column_name": "F9F10F11_BBB_C2F"
 																				 	,"relation_names":["UUU"]} ]}
-			  ,{"field_name": "F11XX_BBB_C2F_VVV",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_229_bbb_sat" ,"column_name": "F09F10F11_BBB_C2F"
+			  ,{"field_name": "F11XX_BBB_C2F_VVV",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_229_bbb_sat" ,"column_name": "F9F10F11_BBB_C2F"
 																				 	,"relation_names":["VVV"]} ]}
  
 			 ],
