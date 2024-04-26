@@ -21,7 +21,7 @@
 		      ,{"field_name": "F7XX_BBB_BK2F_VVV", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_486_bbb_hub" ,"column_name": "F5F6F7_BBB_BK2F"
 																				 	,"relation_names":["VVV"]} ]}
 	 
-		      ,{"field_name": "F8_BBB_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_486_bbb_sat"}]}
+		      ,{"field_name": "F8_BBB_C1", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_486_bbb_sat"}]}
 		      ,{"field_name": "F9XX_BBB_C2F_TTT",  "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_486_bbb_sat" ,"column_name": "F9F10_BBB_C2F"
 																				 	,"relation_names":["TTT"]} ]}
 		      ,{"field_name": "F10XX_BBB_C2F_UUU",  "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_486_bbb_sat" ,"column_name": "F9F10_BBB_C2F"
