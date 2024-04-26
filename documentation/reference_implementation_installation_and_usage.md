@@ -171,3 +171,4 @@ The "combined" stage column naming rule resolves this as follows:
 - multiple target columns with different names have the same single source field: stage column name = all target field names concatinated
 - multiple target columns sharing the same name using different source fields: stage column name = field name
 
+ 
