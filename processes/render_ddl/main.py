@@ -155,8 +155,78 @@ def render_primary_key_clause(table):
         ddl_text= f"\n\nALTER TABLE {full_name} ADD CONSTRAINT {pk_name} PRIMARY KEY({','.join(pk_column_list)});"
     return ddl_text
 
+def assemble_column_name_and_stage_name_dict(parse_set):
+    """Collect the stage names for every target column name and vice versa over all load operations"""
+    column_name_to_stage_name_dict = {}
+    stage_name_to_column_name_dict ={}
+    for load_operation in parse_set['load_operations']:
+        if 'data_mapping' in load_operation:
+            for column in load_operation['data_mapping']:
+                column_name=column['column_name']
+                stage_name=column['stage_column_name']
+                if column_name not in column_name_to_stage_name_dict:
+                    column_name_to_stage_name_dict[column_name]=[stage_name]
+                elif stage_name not in  column_name_to_stage_name_dict[column_name]:
+                    column_name_to_stage_name_dict[column_name].append(stage_name)
+                if stage_name not in stage_name_to_column_name_dict:
+                    stage_name_to_column_name_dict[stage_name]=[column_name]
+                elif column_name not in stage_name_to_column_name_dict[stage_name]:
+                    stage_name_to_column_name_dict[stage_name].append(column_name)
 
-def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_primary_keys=True):
+    return column_name_to_stage_name_dict,stage_name_to_column_name_dict
+
+
+
+def deterine_combined_stage_column_name(stage_column_name, stage_name_to_column_name_dict,
+                                        column_name_to_stage_name_dict):
+    """
+                Stage     Target     Result
+    1:1         BK1  (1)  BK1   (1)  BK1
+
+    1:1         BK2  (1)  BK2a  (1)  BK2a
+
+    n:1         BK3a (1)  t.BK3 (2)  BK3_BK3a
+                BK3b (1)  u.BK3 (2)  BK3_BK3b
+
+    1:n         BK4  (2)  BK4a  (1)  BK4a_BK4b
+                BK4  (2)  BK4b  (1)  BK4a_BK4b
+
+    m:n         BK5a (2)  t.BK5 (2)  BK5a
+                BK5b (2)  t.BK5 (2)  BK5b
+                BK5a (2)  u.BK5 (2)
+                BK5b (2)  u.BK5 (2)
+    """
+
+    if len(stage_name_to_column_name_dict[stage_column_name]) == 1:    # stage column has only one target
+        target_column_name = stage_name_to_column_name_dict[stage_column_name][0]
+        if len(column_name_to_stage_name_dict[target_column_name]) == 1:    # target name is unique (1:1)
+            final_column_name = target_column_name
+        else:                                                          # different targets take same source (1:n)
+            final_column_name = target_column_name+"__"+stage_column_name
+    else:                                                              # stage column has multiple targets
+        all_targets_have_single_source=True
+        for target_column_name in stage_name_to_column_name_dict[stage_column_name]:
+            if len(column_name_to_stage_name_dict[target_column_name]) > 1:
+                all_targets_have_single_source = False
+                break
+        if all_targets_have_single_source:                             # n:1
+            final_column_name = "__".join(stage_name_to_column_name_dict[stage_column_name])
+        else:                                                          # m:n
+            final_column_name = stage_column_name
+
+    return final_column_name
+
+
+def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_primary_keys=True,stage_column_naming_rule='stage'):
+    """creates all ddl scripts and stres them in files
+    special parameter: stage column naming , field= use field name, when available, stage=use stagename (might create duplicates), combine=combine stage and field name, when different
+    combined stage column mappings tries to name the stage column like the target column. To prevent using the same stage column name for different content
+    the following scenarios are mitigated as follows:
+    single stage column -> equally named target columns: use target column name
+    single stage column -> multiple differently named target columns: use concatinated target column names
+    multiple stage columns -> equally named target column(s): use target column name_append stage column name
+
+    """
     with open(filepath, 'r') as file:
         data = json.load(file)
 
@@ -204,10 +274,10 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
         # print(f"columns:\n{columns}")
         column_statements = []
         for column in columns:
-            col_name = column['column_name']
+            stage_column_name = column['column_name']
             col_type = column['column_type']
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
-            column_statements.append("{} {} {}".format(col_name, col_type, nullable))
+            column_statements.append("{} {} {}".format(stage_column_name, col_type, nullable))
         column_statements = ',\n'.join(column_statements)
         ddl = f"-- generated script for {full_name}"
         ddl += f"\n\n-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
@@ -269,32 +339,48 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
         business_keys = []
         content = []
         content_untracked = []
+
+        column_name_to_stage_name={}
+        stage_name_to_column_name_dict={}
+        if stage_column_naming_rule=='combined':
+            column_name_to_stage_name_dict,stage_name_to_column_name_dict=assemble_column_name_and_stage_name_dict(parse_set)
+
         for column in columns:
-            col_name = column['stage_column_name']
+            stage_column_name = column['stage_column_name']
             stage_column_class = column['stage_column_class']
             col_type=column['column_type']
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
             match stage_column_class:
                 case 'meta_load_date':
-                    meta_load_date_column = "{} {} {}".format(col_name, col_type, nullable)
+                    meta_load_date_column = "{} {} {}".format(stage_column_name, col_type, nullable)
                 case 'meta_load_process':
-                    meta_load_date_column = "{} {} {}".format(col_name, col_type, nullable)
+                    meta_load_date_column = "{} {} {}".format(stage_column_name, col_type, nullable)
                 case 'meta_load_process_id':
-                    meta_load_process_id_column = "{} {} {}".format(col_name, col_type, nullable) 
+                    meta_load_process_id_column = "{} {} {}".format(stage_column_name, col_type, nullable)
                 case 'meta_record_source':
-                    meta_record_source_column = "{} {} {}".format(col_name, col_type, nullable)
+                    meta_record_source_column = "{} {} {}".format(stage_column_name, col_type, nullable)
                 case 'meta_deletion_flag':
-                    meta_deletion_flag_column = "{} {} {}".format(col_name, col_type, nullable)
+                    meta_deletion_flag_column = "{} {} {}".format(stage_column_name, col_type, nullable)
                 case 'hash':
-                    hashkeys.append("{} {} {}".format(col_name, col_type, nullable))
+                    hashkeys.append("{} {} {}".format(stage_column_name, col_type, nullable))
                 case 'data':
+                    final_column_name=stage_column_name
+                    match stage_column_naming_rule:
+                        case 'stage':
+                            final_column_name=stage_column_name
+                        case 'combined':
+                            final_column_name=deterine_combined_stage_column_name(stage_column_name,stage_name_to_column_name_dict,column_name_to_stage_name_dict)
+
+                        case _:
+                            raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
+
                     column_classes = column['column_classes']
                     if 'business_key' in column_classes or 'dependent_child_key' in column_classes:
-                        business_keys.append("{} {} {}".format(col_name, col_type, nullable))
+                        business_keys.append("{} {} {}".format(final_column_name, col_type, nullable))
                     elif 'content_untracked' in column_classes:
-                        content_untracked.append("{} {} {}".format(col_name, col_type, nullable))
+                        content_untracked.append("{} {} {}".format(final_column_name, col_type, nullable))
                     elif 'content' in column_classes:
-                        content.append("{} {} {}".format(col_name, col_type, nullable))
+                        content.append("{} {} {}".format(final_column_name, col_type, nullable))
                     else:
                         raise AssertionError(f"unexpected column class! {column_classes} are currently not supported!")
             
@@ -362,19 +448,23 @@ if __name__ == '__main__':
     parser.add_argument("--print", help="print the generated ddl to the console",  action='store_true')
     parser.add_argument("--add_ghost_records", help="Add ghost record inserts to every script",  action='store_true')
     parser.add_argument("--no_primary_keys", help="omit rendering of primary key constraints ",  action='store_true')
+    parser.add_argument("--stage_column_naming_rule", help="Rule to use for stage column naming [stage,target]", default='#notset#')
     args = parser.parse_args()
 
     params = configuration_load_ini(args.ini_file, 'rendering', ['ddl_root_directory', 'dvpi_default_directory'])
 
+    if args.stage_column_naming_rule =='#notset#':
+        stage_column_naming_rule=params.get('stage_column_naming_rule','stage')
+    else:
+        stage_column_naming_rule=args.stage_column_naming_rule
+
     ddl_render_path = Path(params['ddl_root_directory'], fallback=None)
     dvpi_default_directory = Path(params['dvpi_default_directory'], fallback=None)
     
-
-    args = parser.parse_args()
-
     dvpi_file_name=args.dvpi_file_name
     if dvpi_file_name == '@youngest':
         dvpi_file_name = get_name_of_youngest_dvpi_file(params['dvpi_default_directory'])
+        print(f"Rendering from file {dvpi_file_name}")
 
     dvpi_file_path = Path(dvpi_file_name)
     if not dvpi_file_path.exists():
@@ -384,7 +474,8 @@ if __name__ == '__main__':
 
     ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path
                                         , add_ghost_records=args.add_ghost_records
-                                        , add_primary_keys=not args.no_primary_keys)
+                                        , add_primary_keys=not args.no_primary_keys
+                                   , stage_column_naming_rule=stage_column_naming_rule)
     if args.print:
         print(ddl_output)
 

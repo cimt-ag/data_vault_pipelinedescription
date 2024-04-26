@@ -157,3 +157,17 @@ Options:
 - --print: prints the full ddl set to the console
 - --add_ghost_records: adds ghost record inserts to the script 
 - --no_primary_keys: omit rendering of primary key constraints
+- --stage_column_naming_rule={stage|combined} : stage = pure genrated stage column names are used in the stage combined= combination of target column names and stage column names
+
+### Purpose of the "combined" stage table generation rule
+Some data vault loading frameworks use similariy of column names between stage table and target
+table for automatic mapping. In that case it is more convinient to generate a stage table
+with the target column names. This will work well, until the same column name for different content is used
+in different tables of the pipeline or different source fields are mapped to the same target.
+
+The "combined" stage column naming rule resolves this as follows:
+- one or more target columns with same name and same single source field: stage column name = Target name
+- one target column with a unique name and multiple source fields: stage column name = Target name + field name
+- multiple target columns with different names have the same single source field: stage column name = all target field names concatinated
+- multiple target columns sharing the same name using different source fields: stage column name = field name
+
