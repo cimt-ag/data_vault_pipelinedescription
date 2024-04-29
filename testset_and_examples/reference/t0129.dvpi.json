@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-15 11:49:10",
+  "compile_timestamp": "2024-04-26 15:28:29",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0129",
   "dvpd_filename": "t0129.dvpd.json",
@@ -103,14 +103,6 @@
         },
         {
           "column_name": "F2_AAA_C1F",
-          "is_nullable": true,
-          "column_class": "content",
-          "column_type": "VARCHAR(20)",
-          "exclude_from_change_detection": false,
-          "prio_for_column_position": 50000
-        },
-        {
-          "column_name": "F8_BBB_C1F",
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(20)",
@@ -322,7 +314,15 @@
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "F09F10F11_BBB_C2F",
+          "column_name": "F8_BBB_C1",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(20)",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "F9F10F11_BBB_C2F",
           "is_nullable": true,
           "column_class": "content",
           "column_type": "DECIMAL(12,2)",
@@ -392,7 +392,7 @@
           "field_type": "Varchar(20)",
           "field_position": 8,
           "needs_encryption": false,
-          "field_name": "F8_BBB_C1F"
+          "field_name": "F8_BBB_C1"
         },
         {
           "field_type": "decimal(12,2)",
@@ -637,13 +637,6 @@
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_129_aaa_sat",
               "field_target_column": "F2_AAA_C1F"
-            },
-            {
-              "field_name": "F8_BBB_C1F",
-              "prio_in_diff_hash": 0,
-              "prio_for_row_order": 50000,
-              "field_target_table": "rtjj_129_aaa_sat",
-              "field_target_column": "F8_BBB_C1F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -663,11 +656,18 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
+              "field_name": "F8_BBB_C1",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rtjj_129_bbb_sat",
+              "field_target_column": "F8_BBB_C1"
+            },
+            {
               "field_name": "F9XX_BBB_C2F_TTT",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_129_bbb_sat",
-              "field_target_column": "F09F10F11_BBB_C2F"
+              "field_target_column": "F9F10F11_BBB_C2F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -687,11 +687,18 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
+              "field_name": "F8_BBB_C1",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rtjj_129_bbb_sat",
+              "field_target_column": "F8_BBB_C1"
+            },
+            {
               "field_name": "F10XX_BBB_C2F_UUU",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_129_bbb_sat",
-              "field_target_column": "F09F10F11_BBB_C2F"
+              "field_target_column": "F9F10F11_BBB_C2F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -711,11 +718,18 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
+              "field_name": "F8_BBB_C1",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rtjj_129_bbb_sat",
+              "field_target_column": "F8_BBB_C1"
+            },
+            {
               "field_name": "F11XX_BBB_C2F_VVV",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_129_bbb_sat",
-              "field_target_column": "F09F10F11_BBB_C2F"
+              "field_target_column": "F9F10F11_BBB_C2F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -779,13 +793,6 @@
               "column_class": "content",
               "is_nullable": true,
               "stage_column_name": "F2_AAA_C1F"
-            },
-            {
-              "column_name": "F8_BBB_C1F",
-              "field_name": "F8_BBB_C1F",
-              "column_class": "content",
-              "is_nullable": true,
-              "stage_column_name": "F8_BBB_C1F"
             }
           ]
         },
@@ -1027,7 +1034,14 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F09F10F11_BBB_C2F",
+              "column_name": "F8_BBB_C1",
+              "field_name": "F8_BBB_C1",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "F8_BBB_C1"
+            },
+            {
+              "column_name": "F9F10F11_BBB_C2F",
               "field_name": "F9XX_BBB_C2F_TTT",
               "column_class": "content",
               "is_nullable": true,
@@ -1057,7 +1071,14 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F09F10F11_BBB_C2F",
+              "column_name": "F8_BBB_C1",
+              "field_name": "F8_BBB_C1",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "F8_BBB_C1"
+            },
+            {
+              "column_name": "F9F10F11_BBB_C2F",
               "field_name": "F10XX_BBB_C2F_UUU",
               "column_class": "content",
               "is_nullable": true,
@@ -1087,7 +1108,14 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F09F10F11_BBB_C2F",
+              "column_name": "F8_BBB_C1",
+              "field_name": "F8_BBB_C1",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "F8_BBB_C1"
+            },
+            {
+              "column_name": "F9F10F11_BBB_C2F",
               "field_name": "F11XX_BBB_C2F_VVV",
               "column_class": "content",
               "is_nullable": true,
@@ -1269,9 +1297,9 @@
           ]
         },
         {
-          "stage_column_name": "F8_BBB_C1F",
+          "stage_column_name": "F8_BBB_C1",
           "stage_column_class": "data",
-          "field_name": "F8_BBB_C1F",
+          "field_name": "F8_BBB_C1",
           "is_nullable": true,
           "column_type": "Varchar(20)",
           "column_classes": [
