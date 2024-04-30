@@ -33,11 +33,11 @@
 																				 	,"relation_names":["UUU"]} ]}
 			  
 		      ,{"field_name": "RELATION_TTT",  "field_type": "VARCHAR(255)", "field_value":"TTT"
-																, "targets": [{"table_name": "rtjj_582_aaa_bbb_dlnk","relation_names":["TTT"]} ]}
+																, "targets": [{"table_name": "rtjj_582_aaa_bbb_dlnk"} ]}
 		      ,{"field_name": "RELATION_UUU",  "field_type": "VARCHAR(255)", "field_value":"UUU"
-																, "targets": [{"table_name": "rtjj_582_aaa_bbb_dlnk","relation_names":["UUU"]} ]}
+																, "targets": [{"table_name": "rtjj_582_aaa_bbb_dlnk"} ]}
 		      ,{"field_name": "RELATION_VVV",  "field_type": "VARCHAR(255)", "field_value":"VVV"
-																, "targets": [{"table_name": "rtjj_582_aaa_bbb_dlnk","relation_names":["VVV"]} ]}
+																, "targets": [{"table_name": "rtjj_582_aaa_bbb_dlnk"} ]}
  
 			 ],
 	"data_vault_model": [

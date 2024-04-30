@@ -283,7 +283,7 @@ if __name__ == "__main__":
 
         if result == "success":
             successful_file_list.append(filename)
-        if result == "differ":
+        elif result == "differ":
             difference_file_list.append(filename)
         elif result == "fail":
             failing_file_list.append(filename)

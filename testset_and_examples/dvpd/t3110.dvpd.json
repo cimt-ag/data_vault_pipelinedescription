@@ -1,0 +1,39 @@
+{
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t3110",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+	
+	"fields": [
+			   {"field_name": "F1XX_AAA_BK1F_TTT", "field_type": "Varchar(20)","targets": [{"table_name": "rtjj_3110_aaa_hub" ,"column_name": "F1F2_AAA_BK1F"
+																				 	,"relation_names":["TTT"]} ]}																			
+		      ,{"field_name": "F2XX_AAA_BK1F_UUU", "field_type": "Varchar(20)","targets": [{"table_name": "rtjj_3110_aaa_hub" ,"column_name": "F1F2_AAA_BK1F"
+																				 	,"relation_names":["UUU"]} ]}
+		      ,{"field_name": "F3XX_BBB_BK1F_TTT", "field_type": "Varchar(20)","targets": [{"table_name": "rtjj_3110_bbb_hub" ,"column_name": "F3_BBB_BK1F"
+																				 	,"relation_names":["TTT"]} ]}																			
+		      ,{"field_name": "F4XX_CCC_BK1F_UUU", "field_type": "Varchar(20)","targets": [{"table_name": "rtjj_3110_ccc_hub" ,"column_name": "F4_BBB_BK1F"
+																				 	,"relation_names":["UUU"]} ]}
+	 
+		      
+ 
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables":  [
+				{"table_name": "rtjj_3110_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_3110_aaa"}
+				,{"table_name": "rtjj_3110_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_3110_aaa_bbb",
+												"link_parent_tables": [	"rtjj_3110_aaa_hub","rtjj_3110_bbb_hub"]}
+				,{"table_name": "rtjj_3110_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_3110_aaa_bbb_lnk"}
+				,{"table_name": "rtjj_3110_aaa_ccc_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_3110_aaa_ccc",
+												"link_parent_tables": [	"rtjj_3110_aaa_hub","rtjj_3110_ccc_hub"]}
+				,{"table_name": "rtjj_3110_aaa_ccc_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_3110_aaa_ccc_lnk"}
+				,{"table_name": "rtjj_3110_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_3110_bbb"}
+				,{"table_name": "rtjj_3110_ccc_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_3110_ccc"}														
+				]
+		}
+	]
+}	
+	
