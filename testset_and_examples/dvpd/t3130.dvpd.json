@@ -22,9 +22,7 @@
 																				 	,"relation_names":["UUU"]} ]}																				
 		      ,{"field_name": "F7XX_CCC_BK1F_VVV", "field_type": "Varchar(20)","targets": [{"table_name": "rtjj_3130_ccc_hub" ,"column_name": "F6F7_BBB_BK1F"
 																				 	,"relation_names":["VVV"]} ]}
-	 
-		      
- 
+
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

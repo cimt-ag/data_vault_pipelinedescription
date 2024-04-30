@@ -1,0 +1,26 @@
+{
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t3360",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields": [
+		      {"field_name": "F1XX_AAA_BK1F_TTT", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_3360_aaa_hub", "column_name": "F1_AAA_BK1F"
+																				 	   ,"relation_names":["TTT"]}]}
+			  ,{"field_name": "F2XX_AAA_AAA_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_3360_aaa_ttt_sat" ,"column_name": "F2_AAA_AAA_C1"}]}
+			  ,{"field_name": "F3XX_AAA_AAA_C2F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_3360_aaa_ttt_sat" ,"column_name": "F3_AAA_AAA_C2F"}]}
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				 {"table_name": "rtjj_3360_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_3360_aaa"}
+				,{"table_name": "rtjj_3360_aaa_ttt_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_3360_aaa_ttt",
+												"link_parent_tables": [	{"table_name":"rtjj_3360_aaa_hub","relation_name":"TTT"} ]}
+				,{"table_name": "rtjj_3360_aaa_ttt_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_3360_aaa_ttt_lnk"}
+				]
+		}
+	]
+}

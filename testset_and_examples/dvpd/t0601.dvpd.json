@@ -22,7 +22,7 @@
 		{"schema_name": "rvlt_test_jj", 
 		 "tables":  [
 				{"table_name": "rtjj_601_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_601_bbb"}
-				,{"table_name": "rtjj_601_bbb_uuu_vvv_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_686_bbb_uuu_vvv",
+				,{"table_name": "rtjj_601_bbb_uuu_vvv_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_601_bbb_uuu_vvv",
 												"link_parent_tables": [	{"table_name":"rtjj_601_bbb_hub"}
 																	   ,{"table_name":"rtjj_601_bbb_hub","relation_name":"UUU"}
 																	   ,{"table_name":"rtjj_601_bbb_hub","relation_name":"VVV"}  ]}
