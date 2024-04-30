@@ -1,0 +1,5 @@
+Former versions of the dvpd compiler used a database as implementation platform.
+Although a lot of that was replaced by the python compiler version, some libraries and utitly
+scripts are kept here in the attic, to be not forgotten.
+
+Nevertheless, everything here is not functioning, not documented and not needed for the dvpd implementation to run.

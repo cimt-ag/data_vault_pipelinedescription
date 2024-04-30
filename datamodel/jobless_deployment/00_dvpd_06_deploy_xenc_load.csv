@@ -1,7 +1,0 @@
-mandantory,type,schema_name,name
-
-1,view,dv_pipeline_description,XENC_TRANSFORM_TO_PIPELINE_DV_TABLE_RAW
-1,view,dv_pipeline_description,XENC_TRANSFORM_TO_PIPELINE_DV_TABLE_PROPERTIES_RAW
-1,view,dv_pipeline_description,XENC_TRANSFORM_TO_PIPELINE_STAGE_PROPERTIES_RAW
-
-1,function,dv_pipeline_description,XENC_LOAD_PIPELINE_TO_RAW

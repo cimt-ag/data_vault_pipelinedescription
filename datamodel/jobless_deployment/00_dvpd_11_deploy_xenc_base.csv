@@ -1,6 +1,0 @@
-mandantory,type,schema_name,name
-
-1,view,dv_pipeline_description,xenc_pipeline_dv_table_properties
-1,view,dv_pipeline_description,xenc_pipeline_dv_column
-1,view,dv_pipeline_description,XENC_PIPELINE_STAGE_PROPERTIES
-

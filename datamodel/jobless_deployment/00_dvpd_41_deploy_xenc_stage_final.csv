@@ -1,4 +1,0 @@
-mandantory,type,schema_name,name
-
-1,view,dv_pipeline_description,XENC_PIPELINE_STAGE_TABLE_COLUMN
-1,view,dv_pipeline_description,XENC_PIPELINE_STAGE_HASH_INPUT_FIELD

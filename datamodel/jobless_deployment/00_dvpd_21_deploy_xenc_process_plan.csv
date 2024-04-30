@@ -1,6 +1,0 @@
-mandantory,type,schema_name,name
-
-1,view,dv_pipeline_description,XENC_PIPELINE_PROCESS_STAGE_TO_ENC_MODEL_MAPPING
-1,view,dv_pipeline_description,XENC_PIPELINE_PROCESS_FIELD_TO_ENCRYPTION_KEY_MAPPING
-1,view,dv_pipeline_description,XENC_PIPELINE_PROCESS_STAGE_TO_DV_MODEL_MAPPING_ADDITION
-
