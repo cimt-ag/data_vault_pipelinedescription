@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-15 11:41:10",
+  "compile_timestamp": "2024-04-30 10:44:47",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0601",
   "dvpd_filename": "t0601.dvpd.json",
@@ -101,7 +101,7 @@
           "parent_table_name": "rtjj_601_bbb_hub"
         },
         {
-          "column_name": "LK_RTJJ_686_BBB_UUU_VVV",
+          "column_name": "LK_RTJJ_601_BBB_UUU_VVV",
           "is_nullable": false,
           "column_class": "key",
           "column_type": "CHAR(28)"
@@ -151,11 +151,11 @@
           "column_type": "TIMESTAMP"
         },
         {
-          "column_name": "LK_RTJJ_686_BBB_UUU_VVV",
+          "column_name": "LK_RTJJ_601_BBB_UUU_VVV",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
-          "parent_key_column_name": "LK_RTJJ_686_BBB_UUU_VVV",
+          "parent_key_column_name": "LK_RTJJ_601_BBB_UUU_VVV",
           "parent_table_name": "rtjj_601_bbb_uuu_vvv_lnk"
         }
       ]
@@ -295,7 +295,7 @@
           "hash_name": "KEY_OF_RTJJ_601_BBB_HUB"
         },
         {
-          "stage_column_name": "LK_RTJJ_686_BBB_UUU_VVV",
+          "stage_column_name": "LK_RTJJ_601_BBB_UUU_VVV",
           "hash_origin_table": "rtjj_601_bbb_uuu_vvv_lnk",
           "column_class": "key",
           "hash_fields": [
@@ -471,10 +471,10 @@
             },
             {
               "hash_class": "key",
-              "column_name": "LK_RTJJ_686_BBB_UUU_VVV",
+              "column_name": "LK_RTJJ_601_BBB_UUU_VVV",
               "hash_name": "KEY_OF_RTJJ_601_BBB_UUU_VVV_LNK",
               "is_nullable": false,
-              "stage_column_name": "LK_RTJJ_686_BBB_UUU_VVV"
+              "stage_column_name": "LK_RTJJ_601_BBB_UUU_VVV"
             }
           ]
         },
@@ -485,10 +485,10 @@
           "hash_mappings": [
             {
               "hash_class": "parent_key",
-              "column_name": "LK_RTJJ_686_BBB_UUU_VVV",
+              "column_name": "LK_RTJJ_601_BBB_UUU_VVV",
               "hash_name": "KEY_OF_RTJJ_601_BBB_UUU_VVV_LNK",
               "is_nullable": false,
-              "stage_column_name": "LK_RTJJ_686_BBB_UUU_VVV"
+              "stage_column_name": "LK_RTJJ_601_BBB_UUU_VVV"
             }
           ]
         }
@@ -540,7 +540,7 @@
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "LK_RTJJ_686_BBB_UUU_VVV",
+          "stage_column_name": "LK_RTJJ_601_BBB_UUU_VVV",
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_601_BBB_UUU_VVV_LNK",

@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-15 11:37:58",
+  "compile_timestamp": "2024-04-26 15:28:30",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0783",
   "dvpd_filename": "t0783.dvpd.json",
@@ -117,7 +117,7 @@
           "prio_for_column_position": 50000
         },
         {
-          "column_name": "F9F10_BBB_C2F",
+          "column_name": "F9_BBB_C2F",
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(20))",
@@ -567,7 +567,7 @@
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_783_bbb_sat",
-              "field_target_column": "F9F10_BBB_C2F"
+              "field_target_column": "F9_BBB_C2F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -598,7 +598,7 @@
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_783_bbb_sat",
-              "field_target_column": "F9F10_BBB_C2F"
+              "field_target_column": "F9_BBB_C2F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -731,7 +731,7 @@
               "stage_column_name": "F8XX_BBB_C1_UUU"
             },
             {
-              "column_name": "F9F10_BBB_C2F",
+              "column_name": "F9_BBB_C2F",
               "field_name": "F9XX_BBB_C2F",
               "column_class": "content",
               "is_nullable": true,
@@ -768,7 +768,7 @@
               "stage_column_name": "F7XX_BBB_C1"
             },
             {
-              "column_name": "F9F10_BBB_C2F",
+              "column_name": "F9_BBB_C2F",
               "field_name": "F9XX_BBB_C2F",
               "column_class": "content",
               "is_nullable": true,

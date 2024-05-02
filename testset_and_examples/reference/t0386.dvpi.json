@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-15 11:44:46",
+  "compile_timestamp": "2024-04-26 15:28:30",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0386_l_topo_hubsat_subset",
   "dvpd_filename": "t0386.dvpd.json",
@@ -514,7 +514,7 @@
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "F8_BBB_C1F",
+          "column_name": "F8_BBB_C1",
           "is_nullable": true,
           "column_class": "content",
           "column_type": "VARCHAR(20)",
@@ -592,7 +592,7 @@
           "field_type": "Varchar(20)",
           "field_position": 8,
           "needs_encryption": false,
-          "field_name": "F8_BBB_C1F"
+          "field_name": "F8_BBB_C1"
         },
         {
           "field_type": "Varchar(20)",
@@ -850,11 +850,11 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "F8_BBB_C1F",
+              "field_name": "F8_BBB_C1",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_386_bbb_sat",
-              "field_target_column": "F8_BBB_C1F"
+              "field_target_column": "F8_BBB_C1"
             },
             {
               "field_name": "F9XX_BBB_C2F_TTT",
@@ -881,11 +881,11 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "F8_BBB_C1F",
+              "field_name": "F8_BBB_C1",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_386_bbb_sat",
-              "field_target_column": "F8_BBB_C1F"
+              "field_target_column": "F8_BBB_C1"
             },
             {
               "field_name": "F10XX_BBB_C2F_UUU",
@@ -1197,11 +1197,11 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F8_BBB_C1F",
-              "field_name": "F8_BBB_C1F",
+              "column_name": "F8_BBB_C1",
+              "field_name": "F8_BBB_C1",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F8_BBB_C1F"
+              "stage_column_name": "F8_BBB_C1"
             },
             {
               "column_name": "F9F10_BBB_C2F",
@@ -1234,11 +1234,11 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F8_BBB_C1F",
-              "field_name": "F8_BBB_C1F",
+              "column_name": "F8_BBB_C1",
+              "field_name": "F8_BBB_C1",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F8_BBB_C1F"
+              "stage_column_name": "F8_BBB_C1"
             },
             {
               "column_name": "F9F10_BBB_C2F",
@@ -1416,9 +1416,9 @@
           ]
         },
         {
-          "stage_column_name": "F8_BBB_C1F",
+          "stage_column_name": "F8_BBB_C1",
           "stage_column_class": "data",
-          "field_name": "F8_BBB_C1F",
+          "field_name": "F8_BBB_C1",
           "is_nullable": true,
           "column_type": "Varchar(20)",
           "column_classes": [

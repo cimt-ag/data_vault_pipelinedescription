@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-15 11:49:10",
+  "compile_timestamp": "2024-04-26 14:51:46",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0103",
   "dvpd_filename": "t0103.dvpd.json",
@@ -242,7 +242,7 @@
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "F3_BBB_BK1F",
+          "column_name": "F3_BBB_BK1",
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
@@ -288,7 +288,7 @@
           "field_type": "Varchar(20)",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "F3_BBB_BK1F"
+          "field_name": "F3_BBB_BK1"
         },
         {
           "field_type": "Varchar(20)",
@@ -337,10 +337,10 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "F3_BBB_BK1F",
+              "field_name": "F3_BBB_BK1",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_103_bbb_hub",
-              "field_target_column": "F3_BBB_BK1F"
+              "field_target_column": "F3_BBB_BK1"
             },
             {
               "field_name": "F4XX_BBB_BK2F_TTT",
@@ -364,10 +364,10 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "F3_BBB_BK1F",
+              "field_name": "F3_BBB_BK1",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_103_bbb_hub",
-              "field_target_column": "F3_BBB_BK1F"
+              "field_target_column": "F3_BBB_BK1"
             },
             {
               "field_name": "F5XX_BBB_BK2F_UUU",
@@ -391,10 +391,10 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "F3_BBB_BK1F",
+              "field_name": "F3_BBB_BK1",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_103_bbb_hub",
-              "field_target_column": "F3_BBB_BK1F"
+              "field_target_column": "F3_BBB_BK1"
             },
             {
               "field_name": "F6XX_BBB_BK2F_VVV",
@@ -425,10 +425,10 @@
               "parent_declaration_position": 1
             },
             {
-              "field_name": "F3_BBB_BK1F",
+              "field_name": "F3_BBB_BK1",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_103_bbb_hub",
-              "field_target_column": "F3_BBB_BK1F",
+              "field_target_column": "F3_BBB_BK1",
               "parent_declaration_position": 2
             },
             {
@@ -461,10 +461,10 @@
               "parent_declaration_position": 1
             },
             {
-              "field_name": "F3_BBB_BK1F",
+              "field_name": "F3_BBB_BK1",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_103_bbb_hub",
-              "field_target_column": "F3_BBB_BK1F",
+              "field_target_column": "F3_BBB_BK1",
               "parent_declaration_position": 2
             },
             {
@@ -497,10 +497,10 @@
               "parent_declaration_position": 1
             },
             {
-              "field_name": "F3_BBB_BK1F",
+              "field_name": "F3_BBB_BK1",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_103_bbb_hub",
-              "field_target_column": "F3_BBB_BK1F",
+              "field_target_column": "F3_BBB_BK1",
               "parent_declaration_position": 2
             },
             {
@@ -740,11 +740,11 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F3_BBB_BK1F",
-              "field_name": "F3_BBB_BK1F",
+              "column_name": "F3_BBB_BK1",
+              "field_name": "F3_BBB_BK1",
               "column_class": "business_key",
               "is_nullable": true,
-              "stage_column_name": "F3_BBB_BK1F"
+              "stage_column_name": "F3_BBB_BK1"
             },
             {
               "column_name": "F4F5F6_BBB_BK2F",
@@ -770,11 +770,11 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F3_BBB_BK1F",
-              "field_name": "F3_BBB_BK1F",
+              "column_name": "F3_BBB_BK1",
+              "field_name": "F3_BBB_BK1",
               "column_class": "business_key",
               "is_nullable": true,
-              "stage_column_name": "F3_BBB_BK1F"
+              "stage_column_name": "F3_BBB_BK1"
             },
             {
               "column_name": "F4F5F6_BBB_BK2F",
@@ -800,11 +800,11 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F3_BBB_BK1F",
-              "field_name": "F3_BBB_BK1F",
+              "column_name": "F3_BBB_BK1",
+              "field_name": "F3_BBB_BK1",
               "column_class": "business_key",
               "is_nullable": true,
-              "stage_column_name": "F3_BBB_BK1F"
+              "stage_column_name": "F3_BBB_BK1"
             },
             {
               "column_name": "F4F5F6_BBB_BK2F",
@@ -918,9 +918,9 @@
           ]
         },
         {
-          "stage_column_name": "F3_BBB_BK1F",
+          "stage_column_name": "F3_BBB_BK1",
           "stage_column_class": "data",
-          "field_name": "F3_BBB_BK1F",
+          "field_name": "F3_BBB_BK1",
           "is_nullable": true,
           "column_type": "Varchar(20)",
           "column_classes": [

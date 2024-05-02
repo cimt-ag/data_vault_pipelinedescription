@@ -448,7 +448,7 @@ if __name__ == '__main__':
     parser.add_argument("--print", help="print the generated ddl to the console",  action='store_true')
     parser.add_argument("--add_ghost_records", help="Add ghost record inserts to every script",  action='store_true')
     parser.add_argument("--no_primary_keys", help="omit rendering of primary key constraints ",  action='store_true')
-    parser.add_argument("--stage_column_naming_rule", help="Rule to use for stage column naming [stage,target]", default='#notset#')
+    parser.add_argument("--stage_column_naming_rule", help="Rule to use for stage column naming [stage,combined]", default='#notset#')
     args = parser.parse_args()
 
     params = configuration_load_ini(args.ini_file, 'rendering', ['ddl_root_directory', 'dvpi_default_directory'])
