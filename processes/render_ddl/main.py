@@ -436,14 +436,14 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
 ########################   MAIN ################################
 if __name__ == '__main__':
     description_for_terminal = "Process dvpi at the given location to render the ddl statements."
-    usage_for_terminal = "Type: python __main__.py --h for further instruction"
+    usage_for_terminal = "Add option -h for further instruction"
 
     parser = argparse.ArgumentParser(
         description=description_for_terminal,
         usage= usage_for_terminal
     )
     # input Arguments
-    parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory')
+    parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory.Use @youngest to parse the youngest.')
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
     parser.add_argument("--print", help="print the generated ddl to the console",  action='store_true')
     parser.add_argument("--add_ghost_records", help="Add ghost record inserts to every script",  action='store_true')

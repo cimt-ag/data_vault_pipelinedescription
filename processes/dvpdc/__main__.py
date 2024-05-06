@@ -1728,7 +1728,7 @@ def get_name_of_youngest_dvpd_file(ini_file):
 if __name__ == "__main__":
     description_for_terminal = "Cimt AG reccommends to follow the instruction before starting the script. If you run your script from command line, it should look" \
                                " like this: python __main__.py inputFile"
-    usage_for_terminal = "Type: python __main__.py --h for further instruction"
+    usage_for_terminal = "Add option -h for further instruction"
 
     parser = argparse.ArgumentParser(
         description=description_for_terminal,

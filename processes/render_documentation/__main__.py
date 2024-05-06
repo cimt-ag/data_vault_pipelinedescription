@@ -142,8 +142,11 @@ def get_name_of_youngest_dvpd_file(ini_file):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description="Create specification documentation snippet from DVDP file")
-    parser.add_argument("dvpd_file_name", help="Path to the DVPD file to parse")
+    parser = argparse.ArgumentParser(
+            description="Create specification documentation snippet from DVDP file",
+            usage = "Add option -h for further instruction"
+    )
+    parser.add_argument("dvpd_file_name", help="Path to the DVPD file to parse. Use @youngest to parse the youngest.")
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
 
     args = parser.parse_args()
