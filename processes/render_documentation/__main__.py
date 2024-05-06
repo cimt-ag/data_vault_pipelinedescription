@@ -95,7 +95,7 @@ def create_documentation(pipeline_name, column_labels, fields):
 
 
 def main(dvpd_filename,
-              ini_file):
+              ini_file,print_html):
 
     params = configuration_load_ini(ini_file, 'rendering',['dvpd_default_directory','documentation_directory'])
     dvpd_file_path = Path(params['dvpd_default_directory']).joinpath(dvpd_filename)
@@ -112,7 +112,8 @@ def main(dvpd_filename,
     (pipeline_name, fields) = parse_json_file(dvpd_file_path)
     if isinstance(fields, (dict, list)):
         html = create_documentation(pipeline_name,column_labels,fields)
-        print(html)
+        if print_html:
+            print(html)
         target_directory=Path(params['documentation_directory'])
         if not target_directory.exists():
             target_directory.mkdir(parents=True)
@@ -148,6 +149,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("dvpd_file_name", help="Path to the DVPD file to parse. Use @youngest to parse the youngest.")
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
+    parser.add_argument("--print", help="Print html to console",  action='store_true')
 
     args = parser.parse_args()
     dvpd_filename = args.dvpd_file_name
@@ -156,4 +158,5 @@ if __name__ == "__main__":
         dvpd_filename = get_name_of_youngest_dvpd_file(ini_file=args.ini_file)
 
     main(dvpd_filename=dvpd_filename,
-              ini_file=args.ini_file)
+              ini_file=args.ini_file,
+                print_html=args.print)
