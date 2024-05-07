@@ -1510,7 +1510,7 @@ def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
                     dvpisum_file.write(f"      {column_entry['column_class'].ljust(20)}| {column_entry['column_name'].ljust(max_column_name_length)}  {column_entry['column_type']}\n")
                 dvpisum_file.write("\n")
 
-            ## ------------------- Parese sets
+            ## ------------------- Parse sets
             for parse_set_index,parse_set_entry in enumerate(g_dvpi_document['parse_sets'],start=1):
                 dvpisum_file.write(f"\nParse set {parse_set_index}\n")
                 dvpisum_file.write("--------------------------------------------------\n")
@@ -1554,7 +1554,7 @@ def renderHashFieldAssembly(parse_set_entry,hash_name):
     for hash_entry in parse_set_entry['hashes']:
         if hash_entry['hash_name'] == hash_name:
             if hash_entry['column_class']=='key':
-                hash_fields_sorted = sorted(hash_entry['hash_fields'], key=lambda d: str(d.get('parent_declaration_position',''))+'_/_'+d['field_target_table']+'_/_'+str(d['prio_in_key_hash'])+'_/_'+d['field_target_column'])
+                hash_fields_sorted = sorted(hash_entry['hash_fields'], key=lambda d: "{:03d}".format(d.get('parent_declaration_position',0))+'_/_'+d['field_target_table']+'_/_'+str(d['prio_in_key_hash'])+'_/_'+d['field_target_column'])
             else:
                 hash_fields_sorted = sorted(hash_entry['hash_fields'], key=lambda d: '_'+str(d['prio_in_diff_hash'])+'_/_'+d['field_target_column'])
             fields = []

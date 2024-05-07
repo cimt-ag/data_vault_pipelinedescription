@@ -199,7 +199,7 @@ def deterine_combined_stage_column_name(stage_column_name, stage_name_to_column_
 
     if len(stage_name_to_column_name_dict[stage_column_name]) == 1:    # stage column has only one target
         target_column_name = stage_name_to_column_name_dict[stage_column_name][0]
-        if len(column_name_to_stage_name_dict[target_column_name]) == 1:    # target name is unique (1:1)
+        if len(column_name_to_stage_name_dict[target_column_name]) == 1 or target_column_name==stage_column_name:    # target name is unique (1:1) or same
             final_column_name = target_column_name
         else:                                                          # different targets take same source (1:n)
             final_column_name = target_column_name+"__"+stage_column_name
@@ -384,7 +384,7 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
                     else:
                         raise AssertionError(f"unexpected column class! {column_classes} are currently not supported!")
             
-        # sort the arrays
+        # sort the arrays of the stage columns
         hashkeys.sort()
         business_keys.sort()
         content.sort()
