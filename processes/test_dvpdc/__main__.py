@@ -53,6 +53,9 @@ def run_test_for_file(dvpd_filename, raise_on_crash=False):
 
     try:
         dvpdc(dvpd_filename, ini_file=args.ini_file)
+        if dvpd_filename[5] == "c":
+            print("****fail: Compiling successfull, but should not****")
+            return "fail"
 
     except DvpdcError:
         if dvpd_filename[5] != "c":

@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-05-07 10:56:59
+Compiling t3031c.dvpd.json
+
+There is no field mapping for relation 'TTT' into column 'F7_AAA_C2F' of table 'rtjj_3031_aaa_sat'
+*** Compilation ended with errors ***

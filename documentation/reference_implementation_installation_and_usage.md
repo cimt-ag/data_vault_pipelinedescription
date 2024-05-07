@@ -88,8 +88,7 @@ Example structure
 - adapt all properties "ddl_root_directory" and "dvpi_default_directory" of the \[rendering] section in the "dvpdc.ini" file entries to point to the desired directories
 - copy the file "default.model_profile.json" from "testset_and_examples\model_profiles" to your desired location for model profiles
 - adapt the model profile to your project needs (see [Reference_of_model_profile_syntax.md](Reference_of_model_profile_syntax.md))
-- add the directory "/processes/dvpdc" from the compiler project to your path environment variable
-- add the directory "/processes/render_ddl" from the compiler project to your path environment variable
+- add the directory "/commands" from the compiler project to your path environment variable
 - open a command line and run "dvpdc -h" in any directory. This should show the help text of the compiler
 
 ### Test the compiler
@@ -102,6 +101,11 @@ Example structure
 ### Test the ddl generator
 - run "dvdp_ddl_render \<name of the dvpi file> --ini_file="\<path to the ini file>"
 - all ddl scripts for the pipeline in the dvpi file should be written to subdirectoreis of th configured "ddl_root_directory"
+
+### Test the documentation generator
+- run "dvdp_doc_render \<name of the dvpd file> --ini_file="\<path to the ini file>"
+- a html file, containing a formatted the mapping tabl should be written to subdirectoreis of the configured "documentation_directory"
+
 
 ## Create some shortcuts or convinience wrapper
 Since declaration of the ini files will mostly be the same in every call, you might want to create some wrapper script, that inserts this
@@ -143,7 +147,7 @@ The compiler creates a log file and, when compilation is successfull 2 result fi
 - dvpi directory:
     - dvpi file: Contains the dvpi json file, that has been generated from the dvpd. This can be used as a base for all further generators (see [Reference_and_usage_of_dvpi_syntax.md](Reference_and_usage_of_dvpi_syntax.md))
     
-## ddl_generator
+## ddl generator (dvpd_ddl_render)
 The ddl generator renders all create statements for a given dvpi file. Since this is an example and not
 core part of the dvpd concept, syntax and structure are also only example (mainly taken from a current project).
 To adapt this to your needs, you should copy and adapt the script.
@@ -151,6 +155,8 @@ To adapt this to your needs, you should copy and adapt the script.
 The ddl generator is started on the command line with
 
 ```dvdp_ddl_render <name of the dvpi file> options```
+
+When using the file name "@youngest", the script uses the youngest file in the dvdi default directory
 
 Options:
 - --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
@@ -171,4 +177,23 @@ The "combined" stage column naming rule resolves this as follows:
 - multiple target columns with different names have the same single source field: stage column name = all target field names concatinated
 - multiple target columns sharing the same name using different source fields: stage column name = field name
 
- 
+## Documentation generator (dvdp_doc_render)
+The documentation generator creates a simple html table of the field mapping,
+ready to be copied into a documentain tool of your choice (confluence, one Note / Word, ...)
+
+The documentation generator is started on the command line with:
+
+```dvpd_doc_render <name of the dvpd file> options ```
+
+When using the file name "@youngest", the script uses the youngest file in the dvdp default directory
+
+Options:
+- --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
+- --print: prints the html text to the console
+
+
+## Full compile and render for youngest dvpd (dvpd_all_youngest)
+This command call all steps with the "@youngest" directive a  file name parameter. Therefore it
+compiles the youngest dvdp and generates ddls and documentation, when compilation was successfull. 
+
+It a first rough example, how to create a ci pipeline.

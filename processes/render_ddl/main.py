@@ -199,7 +199,7 @@ def deterine_combined_stage_column_name(stage_column_name, stage_name_to_column_
 
     if len(stage_name_to_column_name_dict[stage_column_name]) == 1:    # stage column has only one target
         target_column_name = stage_name_to_column_name_dict[stage_column_name][0]
-        if len(column_name_to_stage_name_dict[target_column_name]) == 1:    # target name is unique (1:1)
+        if len(column_name_to_stage_name_dict[target_column_name]) == 1 or target_column_name==stage_column_name:    # target name is unique (1:1) or same
             final_column_name = target_column_name
         else:                                                          # different targets take same source (1:n)
             final_column_name = target_column_name+"__"+stage_column_name
@@ -384,7 +384,7 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
                     else:
                         raise AssertionError(f"unexpected column class! {column_classes} are currently not supported!")
             
-        # sort the arrays
+        # sort the arrays of the stage columns
         hashkeys.sort()
         business_keys.sort()
         content.sort()
@@ -436,19 +436,19 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
 ########################   MAIN ################################
 if __name__ == '__main__':
     description_for_terminal = "Process dvpi at the given location to render the ddl statements."
-    usage_for_terminal = "Type: python __main__.py --h for further instruction"
+    usage_for_terminal = "Add option -h for further instruction"
 
     parser = argparse.ArgumentParser(
         description=description_for_terminal,
         usage= usage_for_terminal
     )
     # input Arguments
-    parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory')
+    parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory.Use @youngest to parse the youngest.')
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
     parser.add_argument("--print", help="print the generated ddl to the console",  action='store_true')
     parser.add_argument("--add_ghost_records", help="Add ghost record inserts to every script",  action='store_true')
     parser.add_argument("--no_primary_keys", help="omit rendering of primary key constraints ",  action='store_true')
-    parser.add_argument("--stage_column_naming_rule", help="Rule to use for stage column naming [stage,target]", default='#notset#')
+    parser.add_argument("--stage_column_naming_rule", help="Rule to use for stage column naming [stage,combined]", default='#notset#')
     args = parser.parse_args()
 
     params = configuration_load_ini(args.ini_file, 'rendering', ['ddl_root_directory', 'dvpi_default_directory'])
