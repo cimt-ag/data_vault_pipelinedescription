@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-05-07 10:56:59
+Compiling t3032c.dvpd.json
+
+Parent table 'rtjj_3032_aaa_hub' has no load operation for relation 'TTT' requiered for satellite 'rtjj_3032_aaa_sat'
+*** Compilation ended with errors ***
