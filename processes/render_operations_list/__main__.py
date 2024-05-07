@@ -1,6 +1,11 @@
 import argparse
 import json
+import os
+import sys
 from pathlib import Path
+
+project_directory = os.path.dirname(os.path.dirname(sys.path[0]))
+sys.path.insert(0,project_directory)
 from lib.configuration import configuration_load_ini
 
 def create_op_list(dvpi):
@@ -67,29 +72,69 @@ def create_op_list(dvpi):
     return (dvpi['pipeline_name'],"\n".join(op_list))
             
 
-def main():
-    parser = argparse.ArgumentParser(description="Create operations list from DVPI file")
-    parser.add_argument("dvpi_file_name", help="DVPI filename")
-    dvpi_filename = parser.parse_args().dvpi_file_name
-    params = configuration_load_ini('dvpdc.ini', 'rendering', ['dvpi_default_directory', 'operations_list_directory'])
-    dvpi_file_path = Path(params['dvpi_default_directory']).joinpath(dvpi_filename)
-    op_list_dir = Path(params['operations_list_directory'])
-
-    if not dvpi_file_path.exists():
-        raise Exception(f'fiel not found {dvpi_file_path.as_posix()}')
-    print(f"Rendering operations list from {dvpi_file_path.name}")
+def process_file(dvpi_file_path,op_list_dir,print_result=False):
 
     try:
         with open(dvpi_file_path, 'r') as file:
             dvpd = json.load(file)
             (pipeline_name, op_list) = create_op_list(dvpd)
-            print(op_list)
+            if print_result:
+                print(op_list)
+            if not os.path.isdir(op_list_dir):
+                print(f"creating dir: {op_list_dir}")
+                op_list_dir.mkdir()
             target_file_path = op_list_dir.joinpath(f"{pipeline_name}.list.txt")
             with open(target_file_path, "w") as file:
                 file.write(op_list)
     except json.JSONDecodeError as e:
         print(f"Error parsing JSON: {str(e)}")    
     
+def get_name_of_youngest_dvpi_file(dvpi_default_directory):
+
+    max_mtime=0
+    youngest_file=''
+
+    for file_name in os.listdir( dvpi_default_directory):
+        file_mtime=os.path.getmtime( dvpi_default_directory+'/'+file_name)
+        if file_mtime>max_mtime:
+            youngest_file=file_name
+            max_mtime=file_mtime
+
+    return youngest_file
+
+########################   MAIN ################################
 
 if __name__ == "__main__":
-    main()
+    description_for_terminal = "Process dvpi at the given location to render the ddl statements."
+    usage_for_terminal = "Add option -h for further instruction"
+
+    parser = argparse.ArgumentParser(
+        description=description_for_terminal,
+        usage= usage_for_terminal
+    )
+    # input Arguments
+    parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory.Use @youngest to parse the youngest.')
+    parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
+    parser.add_argument("--print", help="print the generated list to the console",  action='store_true')
+    args = parser.parse_args()
+
+    params = configuration_load_ini(args.ini_file, 'rendering', ['operations_list_directory', 'dvpi_default_directory'])
+
+    op_list_dir = Path(params['operations_list_directory'])
+    dvpi_default_directory = Path(params['dvpi_default_directory'], fallback=None)
+
+    dvpi_file_name=args.dvpi_file_name
+    if dvpi_file_name == '@youngest':
+        dvpi_file_name = get_name_of_youngest_dvpi_file(params['dvpi_default_directory'])
+        print(f"Rendering from file {dvpi_file_name}")
+
+    dvpi_file_path = Path(dvpi_file_name)
+    if not dvpi_file_path.exists():
+       dvpi_file_path = dvpi_default_directory.joinpath(dvpi_file_name)
+       if not dvpi_file_path.exists():
+            print(f"could not find file {args.dvpi_file_name}")
+
+
+    process_file(dvpi_file_path,op_list_dir,args.print)
+
+    print("--- operations list render complete ---")

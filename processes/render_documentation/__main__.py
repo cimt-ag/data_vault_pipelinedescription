@@ -162,3 +162,5 @@ if __name__ == "__main__":
     main(dvpd_filename=dvpd_filename,
               ini_file=args.ini_file,
                 print_html=args.print)
+
+    print("--- documentation render complete ---")
