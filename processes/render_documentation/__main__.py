@@ -106,7 +106,7 @@ def main(dvpd_filename,
         raise Exception(f"file not found {dvpd_file_path.as_posix()}")
     print(f"Rendering documentation from {dvpd_file_path.name}")
 
-    column_labels='Field Type,Field Name,Data Vault Target(s)'
+    column_labels='Field Name,Field Type,Data Vault Target(s)'
     if 'documentation_column_labels' in params:
         column_labels=params['documentation_column_labels']
 
