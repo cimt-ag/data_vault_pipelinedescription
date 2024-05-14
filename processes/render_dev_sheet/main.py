@@ -112,6 +112,32 @@ def determine_combined_stage_column_name(stage_column_name, stage_name_to_column
     return final_column_name
 
 
+def operation_loadable_by_convention(load_operation,stage_column_to_final_column_name_dict):
+    for hash_mapping in load_operation['hash_mappings']:
+        if hash_mapping['column_name']!=hash_mapping['stage_column_name']:
+            return False
+
+    if 'data_mapping' not in load_operation:
+        return True
+    for data_mapping in load_operation['data_mapping']:
+        if data_mapping['column_name']!=stage_column_to_final_column_name_dict[data_mapping['stage_column_name']]:
+            return False
+    return True
+
+
+def get_load_description(load_operation, stage_column_to_final_column_name_dict):
+    description_rows=[]
+    for hash_mapping in load_operation['hash_mappings']:
+        description_rows.append("\t\t{}  >  {}".format(hash_mapping['stage_column_name'], hash_mapping['column_name']))
+
+    if 'data_mapping' in load_operation:
+        description_rows.append("\n")
+        for data_mapping in load_operation['data_mapping']:
+            description_rows.append(
+                "\t\t{}: {}  >  {} ".format(data_mapping['column_class'],stage_column_to_final_column_name_dict[data_mapping['stage_column_name']], data_mapping['column_name']))
+    return "\n".join(description_rows)
+
+
 def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_naming_rule='stage'):
     """
     renders a cheat sheet, that contains all crucial information for the developer
@@ -149,7 +175,8 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
 
             g_report_file.write(f"Source fields:\n")
             max_name_length = 0
-            for field in parse_set['fields']:
+            fields=parse_set['fields']
+            for field in fields:
                 if len(field['field_name']) > max_name_length:
                     max_name_length = len(field['field_name'])
             for field in parse_set['fields']:
@@ -185,6 +212,8 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
             business_keys = []
             content = []
             content_untracked = []
+            field_to_stage_dict={}
+            stage_column_to_final_column_name_dict = {}
 
             for column in columns:
                 stage_column_name = column['stage_column_name']
@@ -202,6 +231,8 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
 
                     column_classes = column['column_classes']
                     field_name=column['field_name']
+                    field_to_stage_dict[field_name]=final_column_name # add the fineal column name to the field dict for later use
+                    stage_column_to_final_column_name_dict[stage_column_name]=final_column_name
                     if 'business_key' in column_classes or 'dependent_child_key' in column_classes:
                         business_keys.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
                     elif 'content_untracked' in column_classes:
@@ -239,8 +270,20 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                                                 key=lambda d: '_' + str(d['prio_in_diff_hash']) + '_/_' + d[
                                                     'field_target_column'])
                 for hash_field in hash_fields_sorted:
-                    g_report_file.write(f"\t\t{hash_field['field_name']} \n")
+                    g_report_file.write(f"\t\t{field_to_stage_dict[hash_field['field_name']]} \n")
 
+            # finally list the load operations and annotate special constellations
+            g_report_file.write("\n\nTable load method\n----------------------\n")
+            g_report_file.write("(STAGE >  VAULT)\n\n")
+            for load_operation in parse_set['load_operations']:
+                table_name=load_operation['table_name']
+                relation_name=load_operation['relation_name']
+                if operation_loadable_by_convention(load_operation,stage_column_to_final_column_name_dict):
+                    g_report_file.write(f"{table_name} ({relation_name}) can be loaded by convention\n\n")
+                else:
+                    g_report_file.write(f"{table_name} ({relation_name}) needs explicit loading:\n")
+                    load_description=get_load_description(load_operation,stage_column_to_final_column_name_dict)
+                    g_report_file.write(f"{load_description}\n\n")
 
 
 def get_name_of_youngest_dvpi_file(dvpi_default_directory):
