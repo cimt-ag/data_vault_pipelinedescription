@@ -1,5 +1,5 @@
 # Render Operations List User Guide
-The render operations list module exists, to create a a list of load-opeations needed for a pipeline in a format we used at cimt.
+The render operations list module exists, to create a a list of load-operations needed for a pipeline in a format we used at cimt.
 
 # Explanation of list format
 For DWH-Projects at CIMT-AG, we use a list of tables to be processed from a DataVault-Pipeline as input in our ETL-Jobs.

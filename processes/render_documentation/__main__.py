@@ -1,6 +1,13 @@
 import argparse
 import json
+import os
+import sys
+
 from pathlib import Path
+
+project_directory = os.path.dirname(os.path.dirname(sys.path[0]))
+sys.path.insert(0,project_directory)
+
 from lib.configuration import configuration_load_ini
 
 def parse_json_file(file_path):
@@ -44,21 +51,27 @@ def parse_target(target):
 
 
 
-def create_documentation(pipeline_name, fields):
+def create_documentation(pipeline_name, column_labels, fields):
+    header_text=column_labels.split(',')
+    if len(header_text)<3:
+        print(f"Not enough header labels given in 'documentation_column_labels'. Need 3 got {len(header_text)}: >>{column_labels}<< ")
+        exit()
     html = "<!DOCTYPE html>\n<html>\n"
     html += "<head>\n"
     html += "<style>\n"
     html += "table, th, td {border: 1px solid;}\n"
     html += "table {border-collapse: collapse;}\n"
+    html += "body { font-family: Verdana, Geneva, Tahoma, sans-serif;}"
     html += "</style>\n"
     html += f"   <title>{pipeline_name}</title>\n"
     html += "</head>\n"
     html += "<body>\n"
+    html += f"<h1>Pipeline: {pipeline_name}\n</h1>"
     html += "   <table>\n"
     html += "       <tr>\n"
-    html += "           <th>field name</th>\n"
-    html += "           <th>field type</th>\n"
-    html += "           <th>data vault target(s)</th>\n"
+    html += f"           <th>{header_text[0]}</th>\n"
+    html += f"           <th>{header_text[1]}</th>\n"
+    html += f"           <th>{header_text[2]}</th>\n"
     html += "       </tr>\n"
     for field in fields:
         field_name = field["field_name"]
@@ -83,23 +96,26 @@ def create_documentation(pipeline_name, fields):
 
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Create specification documentation snippet from DVDP file")
-    parser.add_argument("dvpd_file_name", help="Path to the DVPD file to parse")
-    args = parser.parse_args()
-    dvpd_filename = args.dvpd_file_name
+def main(dvpd_filename,
+              ini_file,print_html):
 
-    params = configuration_load_ini('dvpdc.ini', 'rendering',['dvpd_default_directory','documentation_directory'])
+    params = configuration_load_ini(ini_file, 'rendering',['dvpd_default_directory','documentation_directory'])
     dvpd_file_path = Path(params['dvpd_default_directory']).joinpath(dvpd_filename)
-
+    print(params['dvpd_default_directory'])
     if not dvpd_file_path.exists():
         raise Exception(f"file not found {dvpd_file_path.as_posix()}")
     print(f"Rendering documentation from {dvpd_file_path.name}")
 
+    column_labels='Field Name,Field Type,Data Vault Target(s)'
+    if 'documentation_column_labels' in params:
+        column_labels=params['documentation_column_labels']
+
+
     (pipeline_name, fields) = parse_json_file(dvpd_file_path)
     if isinstance(fields, (dict, list)):
-        html = create_documentation(pipeline_name,fields)
-        print(html)
+        html = create_documentation(pipeline_name,column_labels,fields)
+        if print_html:
+            print(html)
         target_directory=Path(params['documentation_directory'])
         if not target_directory.exists():
             target_directory.mkdir(parents=True)
@@ -111,5 +127,40 @@ def main():
 
     print (f"Completed rendering documentation from {dvpd_file_path.name}")
 
+def get_name_of_youngest_dvpd_file(ini_file):
+    params = configuration_load_ini(ini_file, 'dvpdc',['dvpd_model_profile_directory'])
+
+    max_mtime=0
+    youngest_file=''
+
+    for file_name in os.listdir( params['dvpd_default_directory']):
+        file_mtime=os.path.getmtime( params['dvpd_default_directory']+'/'+file_name)
+        if file_mtime>max_mtime:
+            youngest_file=file_name
+            max_mtime=file_mtime
+
+    return youngest_file
+
+########################################################################################################################
+
 if __name__ == "__main__":
-    main()
+
+    parser = argparse.ArgumentParser(
+            description="Create specification documentation snippet from DVDP file",
+            usage = "Add option -h for further instruction"
+    )
+    parser.add_argument("dvpd_file_name", help="Path to the DVPD file to parse. Use @youngest to parse the youngest.")
+    parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
+    parser.add_argument("--print", help="Print html to console",  action='store_true')
+
+    args = parser.parse_args()
+    dvpd_filename = args.dvpd_file_name
+
+    if dvpd_filename == '@youngest':
+        dvpd_filename = get_name_of_youngest_dvpd_file(ini_file=args.ini_file)
+
+    main(dvpd_filename=dvpd_filename,
+              ini_file=args.ini_file,
+                print_html=args.print)
+
+    print("--- documentation render complete ---")

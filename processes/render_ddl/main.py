@@ -175,10 +175,42 @@ def assemble_column_name_and_stage_name_dict(parse_set):
 
     return column_name_to_stage_name_dict,stage_name_to_column_name_dict
 
+def assemble_stage_with_target_column_type_dict(parse_set,tables):
+    stage_with_target_column_type_dict={}
+    for stage_column in parse_set["stage_columns"]:
+        if stage_column['stage_column_class'] != "data":
+            continue
+        table_name = None
+        column_name = None
+        for load_operation in parse_set['load_operations']:  # scan all operations for a mapping the current stage column
+            if 'data_mapping' not in load_operation:
+                continue
+            for column_mapping in load_operation['data_mapping']:
+                if column_mapping['stage_column_name']==stage_column['stage_column_name']:
+                    table_name=load_operation['table_name']
+                    column_name=column_mapping['column_name']
+                    break
+            if table_name != None:
+                break
+        # at this point we should have a hit, so search for the column type definition
+        if table_name == None:
+            raise Exception(f"Stage column '{stage_column['stage_column_name']}' is not mapped in any operation. This should not happen")
+        column_type=None
+        for table in tables:
+            if table['table_name']==table_name:
+                for column in table['columns']:
+                    if column['column_name']==column_name: #gotcha
+                        column_type=column['column_type']
+                        break
+                if column_type != None:
+                    break
+        stage_with_target_column_type_dict[stage_column['stage_column_name']]=column_type #finally we know
+
+    return stage_with_target_column_type_dict
 
 
-def deterine_combined_stage_column_name(stage_column_name, stage_name_to_column_name_dict,
-                                        column_name_to_stage_name_dict):
+def determine_combined_stage_column_name(stage_column_name, stage_name_to_column_name_dict,
+                                         column_name_to_stage_name_dict):
     """
                 Stage     Target     Result
     1:1         BK1  (1)  BK1   (1)  BK1
@@ -199,7 +231,7 @@ def deterine_combined_stage_column_name(stage_column_name, stage_name_to_column_
 
     if len(stage_name_to_column_name_dict[stage_column_name]) == 1:    # stage column has only one target
         target_column_name = stage_name_to_column_name_dict[stage_column_name][0]
-        if len(column_name_to_stage_name_dict[target_column_name]) == 1:    # target name is unique (1:1)
+        if len(column_name_to_stage_name_dict[target_column_name]) == 1 or target_column_name==stage_column_name:    # target name is unique (1:1) or same
             final_column_name = target_column_name
         else:                                                          # different targets take same source (1:n)
             final_column_name = target_column_name+"__"+stage_column_name
@@ -225,7 +257,6 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
     single stage column -> equally named target columns: use target column name
     single stage column -> multiple differently named target columns: use concatinated target column names
     multiple stage columns -> equally named target column(s): use target column name_append stage column name
-
     """
     with open(filepath, 'r') as file:
         data = json.load(file)
@@ -262,8 +293,6 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
                 schema_sats[schema_name] += 1
             else:
                 schema_sats[schema_name] = 1
-
-
 
         if 'table_name' not in table:
             raise MissingFieldError("The field 'table_name' is missing from the DVPI.")
@@ -340,10 +369,12 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
         content = []
         content_untracked = []
 
-        column_name_to_stage_name={}
+        column_name_to_stage_name_dict={}
         stage_name_to_column_name_dict={}
+        stage_with_target_column_type_dict={}
         if stage_column_naming_rule=='combined':
             column_name_to_stage_name_dict,stage_name_to_column_name_dict=assemble_column_name_and_stage_name_dict(parse_set)
+            stage_with_target_column_type_dict=assemble_stage_with_target_column_type_dict(parse_set,tables)
 
         for column in columns:
             stage_column_name = column['stage_column_name']
@@ -369,8 +400,8 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
                         case 'stage':
                             final_column_name=stage_column_name
                         case 'combined':
-                            final_column_name=deterine_combined_stage_column_name(stage_column_name,stage_name_to_column_name_dict,column_name_to_stage_name_dict)
-
+                            final_column_name=determine_combined_stage_column_name(stage_column_name, stage_name_to_column_name_dict, column_name_to_stage_name_dict)
+                            col_type=stage_with_target_column_type_dict[stage_column_name]
                         case _:
                             raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
 
@@ -384,7 +415,7 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
                     else:
                         raise AssertionError(f"unexpected column class! {column_classes} are currently not supported!")
             
-        # sort the arrays
+        # sort the arrays of the stage columns
         hashkeys.sort()
         business_keys.sort()
         content.sort()
@@ -436,19 +467,19 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
 ########################   MAIN ################################
 if __name__ == '__main__':
     description_for_terminal = "Process dvpi at the given location to render the ddl statements."
-    usage_for_terminal = "Type: python __main__.py --h for further instruction"
+    usage_for_terminal = "Add option -h for further instruction"
 
     parser = argparse.ArgumentParser(
         description=description_for_terminal,
         usage= usage_for_terminal
     )
     # input Arguments
-    parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory')
+    parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory.Use @youngest to parse the youngest.')
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
     parser.add_argument("--print", help="print the generated ddl to the console",  action='store_true')
     parser.add_argument("--add_ghost_records", help="Add ghost record inserts to every script",  action='store_true')
     parser.add_argument("--no_primary_keys", help="omit rendering of primary key constraints ",  action='store_true')
-    parser.add_argument("--stage_column_naming_rule", help="Rule to use for stage column naming [stage,target]", default='#notset#')
+    parser.add_argument("--stage_column_naming_rule", help="Rule to use for stage column naming [stage,combined]", default='#notset#')
     args = parser.parse_args()
 
     params = configuration_load_ini(args.ini_file, 'rendering', ['ddl_root_directory', 'dvpi_default_directory'])
