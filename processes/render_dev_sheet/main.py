@@ -258,7 +258,7 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
 
 ########################   MAIN ################################
 if __name__ == '__main__':
-    description_for_terminal = "Process dvpi at the given location to render the ddl statements."
+    description_for_terminal = "Process dvpi at the given location to render the developer sheet."
     usage_for_terminal = "Add option -h for further instruction"
 
     parser = argparse.ArgumentParser(
@@ -268,7 +268,6 @@ if __name__ == '__main__':
     # input Arguments
     parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory.Use @youngest to parse the youngest.')
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
-    parser.add_argument("--print", help="print the generated ddl to the console",  action='store_true')
     parser.add_argument("--stage_column_naming_rule", help="Rule to use for stage column naming [stage,combined]", default='#notset#')
     args = parser.parse_args()
 
@@ -296,4 +295,4 @@ if __name__ == '__main__':
     render_dev_cheat_sheet(dvpi_file_path, documentation_directory
                                         , stage_column_naming_rule=stage_column_naming_rule)
 
-    print("--- dev cheat sheet render complete ---")
+    print("--- dev developers sheet render complete ---")
