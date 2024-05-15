@@ -157,7 +157,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
     tables = dvpi.get('tables', [])
     parse_sets = dvpi.get('parse_sets', [])
 
-    report_file_name = dvpi['pipeline_name']+".devcheat.txt"
+    report_file_name = dvpi['pipeline_name']+".devsheet.txt"
     report_sheet_file_path = documentation_directory.joinpath(report_file_name)
 
     with open(report_sheet_file_path, "w") as g_report_file:
