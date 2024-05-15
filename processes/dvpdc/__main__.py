@@ -241,7 +241,7 @@ def transform_lnk_table(dvpd_table_entry, schema_name, storage_component):
             if isinstance(parent_entry,dict):
                 if 'table_name' in parent_entry:
                     cleansed_parent_entry['table_name']=parent_entry['table_name' ].lower()
-                    cleansed_parent_entry['relation_name']=parent_entry.get('relation_name','*')
+                    cleansed_parent_entry['relation_name']=parent_entry.get('relation_name','*').upper()
                     if cleansed_parent_entry['relation_name'] != '*':
                         has_explicit_link_parent_relations = True
                     if 'hub_key_column_name_in_link' in parent_entry:
@@ -305,7 +305,7 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component):
             cleansed_driving_keys.append(driving_key.upper())
         table_properties['driving_keys']=cleansed_driving_keys
     if 'tracked_relation_name' in dvpd_table_entry:
-        table_properties['tracked_relation_name'] = dvpd_table_entry.get('tracked_relation_name')  # default is None
+        table_properties['tracked_relation_name'] = dvpd_table_entry.get('tracked_relation_name').upper()  # default is None
 
     # finally add the cleansed properties to the table dictionary
     g_table_dict[table_name] = table_properties
