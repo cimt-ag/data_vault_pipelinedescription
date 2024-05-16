@@ -125,16 +125,84 @@ def operation_loadable_by_convention(load_operation,stage_column_to_final_column
     return True
 
 
+def create_op_list(dvpi):
+    """
+    this function renders a operations list from a given dvpi
+    :param dvpi: json of the dvpi
+    :return: rendered_operations_list
+    """
+    schema_tables = {}  # dict which stores tables per schema
+    schema_sats = {}  # dict which stores satellites per schema
+    op_list = []
+    table_dict = {}  # key: table-name | value: schema_name
+
+    # Get Table-Info from .tables - except relations-info
+    for table in dvpi['tables']:
+        schema_name = table['schema_name']
+        schema_tables[schema_name] = 0
+        schema_sats[schema_name] = 0
+        table_name = table['table_name']
+        schema_tables[schema_name] += 1
+        if table['table_stereotype'] == "sat":
+            schema_sats[schema_name] += 1
+
+        table_dict[table_name] = schema_name
+
+    # Get Op-List & Relation-Info from .parse_sets[].load_operations
+    for parse_set in dvpi['parse_sets']:
+        table_op_dict = {}
+        # TODO: In the future add functionaility for multiple parse sets
+        for load_op in parse_set['load_operations']:
+            table_name = load_op['table_name']
+            table_op_dict[table_name] = 1 if table_name not in table_op_dict else table_op_dict[table_name] + 1
+
+        for load_op in parse_set['load_operations']:
+            table_name = load_op['table_name']
+            schema_name = table_dict[table_name]
+            if table_op_dict[table_name] == 1:
+                op_list.append(f"table.{schema_name}.{table_name}")
+            else:
+                relation_name = load_op['relation_name']
+                op_list.append(f"table.{schema_name}.{table_name}.[{relation_name}]")
+
+    # Generate DDL for stage tables
+    max_count = max(schema_tables.values())
+    # Identify all schemas with the maximum count
+    schema_with_max_count = [schema for schema, count in schema_tables.items() if count == max_count]
+    schema_name = None
+    if len(schema_with_max_count) == 1:
+        schema_name = schema_with_max_count[0]
+    else:
+        # Filter schema_sat to keep only schemas with max counts
+        filtered_schemas = {key: schema_sats[key] for key in schema_sats if key in schema_with_max_count}
+        schema_name = max(filtered_schemas, key=filtered_schemas.get)
+
+    # Get StageTable from .parse_sets[].stage_properties
+    # TODO: In the future add functionality for mutliple parse-sets & multiple stage_tables
+    for stage_table in dvpi['parse_sets'][0]['stage_properties']:
+        stage_table_name = stage_table['stage_table_name']
+        op_list.insert(0, f"stage_table.{schema_name}.{stage_table_name}")
+
+    return  "\n".join(op_list)
+
+
 def get_load_description(load_operation, stage_column_to_final_column_name_dict):
     description_rows=[]
     for hash_mapping in load_operation['hash_mappings']:
-        description_rows.append("\t\t{}  >  {}".format(hash_mapping['stage_column_name'], hash_mapping['column_name']))
+        change_marker = " "
+        if hash_mapping['stage_column_name'] != hash_mapping['column_name']:
+            change_marker = "*"
+        description_rows.append("\t\t{} {}: {}  >  {}".format(change_marker, hash_mapping['hash_class'],hash_mapping['stage_column_name'], hash_mapping['column_name']))
 
     if 'data_mapping' in load_operation:
-        description_rows.append("\n")
+        #description_rows.append("\n")
         for data_mapping in load_operation['data_mapping']:
+            stage_coulumn_name=stage_column_to_final_column_name_dict[data_mapping['stage_column_name']]
+            change_marker=" "
+            if stage_coulumn_name!=data_mapping['column_name']:
+                change_marker="*"
             description_rows.append(
-                "\t\t{}: {}  >  {} ".format(data_mapping['column_class'],stage_column_to_final_column_name_dict[data_mapping['stage_column_name']], data_mapping['column_name']))
+                "\t\t{} {}: {}  >  {} ".format(change_marker,data_mapping['column_class'],stage_coulumn_name, data_mapping['column_name']))
     return "\n".join(description_rows)
 
 
@@ -183,7 +251,9 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                 g_report_file.write(
                     f"       {field['field_name'].ljust(max_name_length)}  {field['field_type']}\n")
 
-
+            g_report_file.write("\n\n------------------------------------------------------\n")
+            g_report_file.write(f"Table List:\n")
+            g_report_file.write(create_op_list(dvpi))
 
             stage_properties = parse_set['stage_properties']
             if len(stage_properties) == 1:
@@ -195,8 +265,8 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                 raise AssertionError("Currently only one stage properties object is supportet!")
                 # TODO: implement this case
 
-
-            g_report_file.write(f"\n\nstage table:  {full_name}\n")
+            g_report_file.write("\n\n------------------------------------------------------\n")
+            g_report_file.write(f"stage table:  {full_name}\n")
 
             g_report_file.write(f"Field to Stage mapping:\n")
 
@@ -258,7 +328,8 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
             g_report_file.write(stage_column_info)
 
             # now provide the hash composition information
-            g_report_file.write("\n\nHash value composition\n----------------------\n")
+            g_report_file.write("\n\n------------------------------------------------------\n")
+            g_report_file.write("Hash value composition\n")
             for hash_value in parse_set['hashes']:
                 g_report_file.write(f"\n{hash_value['stage_column_name']} ({hash_value['column_class']})\n")
                 if hash_value['column_class'] == 'key':
@@ -273,17 +344,18 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                     g_report_file.write(f"\t\t{field_to_stage_dict[hash_field['field_name']]} \n")
 
             # finally list the load operations and annotate special constellations
-            g_report_file.write("\n\nTable load method\n----------------------\n")
+            g_report_file.write("\n\n------------------------------------------------------\n")
+            g_report_file.write("Table load method\n")
             g_report_file.write("(STAGE >  VAULT)\n\n")
             for load_operation in parse_set['load_operations']:
                 table_name=load_operation['table_name']
                 relation_name=load_operation['relation_name']
                 if operation_loadable_by_convention(load_operation,stage_column_to_final_column_name_dict):
-                    g_report_file.write(f"{table_name} ({relation_name}) can be loaded by convention\n\n")
+                    g_report_file.write(f"{table_name} ({relation_name}) can be loaded by convention\n")
                 else:
                     g_report_file.write(f"{table_name} ({relation_name}) needs explicit loading:\n")
-                    load_description=get_load_description(load_operation,stage_column_to_final_column_name_dict)
-                    g_report_file.write(f"{load_description}\n\n")
+                load_description=get_load_description(load_operation,stage_column_to_final_column_name_dict)
+                g_report_file.write(f"{load_description}\n\n")
 
 
 def get_name_of_youngest_dvpi_file(dvpi_default_directory):
