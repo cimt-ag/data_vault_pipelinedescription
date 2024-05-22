@@ -206,6 +206,14 @@ def get_load_description(load_operation, stage_column_to_final_column_name_dict)
     return "\n".join(description_rows)
 
 
+def get_table_from_tables(tables, table_name):
+    for table in tables:
+        if table['table_name']==table_name:
+            return table
+    raise Exception(f"dvpi is inconsistent. Table '{table_name}' referenced but not defined.")
+
+
+
 def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_naming_rule='stage'):
     """
     renders a cheat sheet, that contains all crucial information for the developer
@@ -224,7 +232,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
     # Extract tables and stage tables
     tables = dvpi.get('tables', [])
     parse_sets = dvpi.get('parse_sets', [])
-
+    tables=dvpi['tables']
     report_file_name = dvpi['pipeline_name']+".devsheet.txt"
     report_sheet_file_path = documentation_directory.joinpath(report_file_name)
 
@@ -349,11 +357,15 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
             g_report_file.write("(STAGE >  VAULT)\n\n")
             for load_operation in parse_set['load_operations']:
                 table_name=load_operation['table_name']
+                table=get_table_from_tables(tables,table_name)
                 relation_name=load_operation['relation_name']
                 if operation_loadable_by_convention(load_operation,stage_column_to_final_column_name_dict):
                     g_report_file.write(f"{table_name} ({relation_name}) can be loaded by convention\n")
                 else:
                     g_report_file.write(f"{table_name} ({relation_name}) needs explicit loading:\n")
+                if 'driving_keys' in table:
+                    driving_key_string=",".join(table['driving_keys'])
+                    g_report_file.write(f"\t\t! Driving keys: {driving_key_string} \n")
                 load_description=get_load_description(load_operation,stage_column_to_final_column_name_dict)
                 g_report_file.write(f"{load_description}\n\n")
 
