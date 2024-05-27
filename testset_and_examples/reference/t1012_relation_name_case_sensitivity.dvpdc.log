@@ -1,5 +1,7 @@
 Data vault pipeline description compiler log 
 Compiler Version 0.6.1
-Compile time: 2024-05-15 13:07:58
+Compile time: 2024-05-27 16:03:38
 Compiling t1012_relation_name_case_sensitivity.dvpd.json
 
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t1012_relation_name_case_sensitivity.dvpi.json
+--- Compile successfull ---
