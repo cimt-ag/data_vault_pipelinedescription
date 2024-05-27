@@ -1,10 +1,10 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
-  "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-03-14 12:05:32",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
+  "dvpi_version": "0.6.1",
+  "compile_timestamp": "2024-05-14 14:01:42",
   "dvpd_version": "0.6.0",
-  "pipeline_name": "t0051_hub_with_multiple_sat",
-  "dvpd_filename": "t0051_hub_with_multiple_sat.dvpd.json",
+  "pipeline_name": "t0051_hub_with_multiple_sat_column",
+  "dvpd_filename": "t0051_hub_with_multiple_sat_column.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_51_aaa_hub",
@@ -134,7 +134,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st0051_hub_with_multiple_sat",
+          "stage_table_name": "st0051_hub_with_multiple_sat_column",
           "storage_component": ""
         }
       ],
