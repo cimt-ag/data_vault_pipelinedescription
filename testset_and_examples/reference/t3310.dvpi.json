@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-30 10:55:52",
+  "compile_timestamp": "2024-05-14 08:49:44",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t3310",
   "dvpd_filename": "t3310.dvpd.json",
@@ -228,13 +228,13 @@
           "field_type": "VARCHAR(200)",
           "field_position": 7,
           "needs_encryption": false,
-          "field_name": "F7XX_AAA_AAA_C2F"
+          "field_name": "F7XX_AAA_AAA_C2F_TTT"
         },
         {
           "field_type": "VARCHAR(200)",
           "field_position": 8,
           "needs_encryption": false,
-          "field_name": "F8XX_AAA_AAA_C2F"
+          "field_name": "F8XX_AAA_AAA_C2F_UUU"
         }
       ],
       "hashes": [
@@ -377,7 +377,7 @@
               "field_target_column": "F6_AAA_AAA_C1"
             },
             {
-              "field_name": "F7XX_AAA_AAA_C2F",
+              "field_name": "F7XX_AAA_AAA_C2F_TTT",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_3310_aaa_aaa_sat",
@@ -408,7 +408,7 @@
               "field_target_column": "F6_AAA_AAA_C1"
             },
             {
-              "field_name": "F8XX_AAA_AAA_C2F",
+              "field_name": "F8XX_AAA_AAA_C2F_UUU",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_3310_aaa_aaa_sat",
@@ -590,10 +590,10 @@
             },
             {
               "column_name": "F7F8_AAA_AAA_C2F",
-              "field_name": "F7XX_AAA_AAA_C2F",
+              "field_name": "F7XX_AAA_AAA_C2F_TTT",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F7XX_AAA_AAA_C2F"
+              "stage_column_name": "F7XX_AAA_AAA_C2F_TTT"
             }
           ]
         },
@@ -627,10 +627,10 @@
             },
             {
               "column_name": "F7F8_AAA_AAA_C2F",
-              "field_name": "F8XX_AAA_AAA_C2F",
+              "field_name": "F8XX_AAA_AAA_C2F_UUU",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "F8XX_AAA_AAA_C2F"
+              "stage_column_name": "F8XX_AAA_AAA_C2F_UUU"
             }
           ]
         }
@@ -763,9 +763,9 @@
           ]
         },
         {
-          "stage_column_name": "F7XX_AAA_AAA_C2F",
+          "stage_column_name": "F7XX_AAA_AAA_C2F_TTT",
           "stage_column_class": "data",
-          "field_name": "F7XX_AAA_AAA_C2F",
+          "field_name": "F7XX_AAA_AAA_C2F_TTT",
           "is_nullable": true,
           "column_type": "VARCHAR(200)",
           "column_classes": [
@@ -773,9 +773,9 @@
           ]
         },
         {
-          "stage_column_name": "F8XX_AAA_AAA_C2F",
+          "stage_column_name": "F8XX_AAA_AAA_C2F_UUU",
           "stage_column_class": "data",
-          "field_name": "F8XX_AAA_AAA_C2F",
+          "field_name": "F8XX_AAA_AAA_C2F_UUU",
           "is_nullable": true,
           "column_type": "VARCHAR(200)",
           "column_classes": [

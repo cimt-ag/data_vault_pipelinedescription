@@ -129,7 +129,7 @@ The dvpdc compiler is started on the command line with
 
 ```dvdpc <name of the dvpd file> options```
 
-When using the file name "@youngest", the compiler uses the youngest file in the dvdp default directory
+When using the file name "@youngest", the compiler uses the youngest file in the dvpd default directory
 
 Options:
 - --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
@@ -156,7 +156,7 @@ The ddl generator is started on the command line with
 
 ```dvdp_ddl_render <name of the dvpi file> options```
 
-When using the file name "@youngest", the script uses the youngest file in the dvdi default directory
+When using the file name "@youngest", the script uses the youngest file in the dvpi default directory
 
 Options:
 - --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
@@ -165,11 +165,17 @@ Options:
 - --no_primary_keys: omit rendering of primary key constraints
 - --stage_column_naming_rule={stage|combined} : stage = pure genrated stage column names are used in the stage combined= combination of target column names and stage column names
 
+Settings read from .ini file:
+- dvpi_default_directory
+- ddl_root_directory
+- stage_column_naming_rule
+
 ### Purpose of the "combined" stage table generation rule
-Some data vault loading frameworks use similariy of column names between stage table and target
-table for automatic mapping. In that case it is more convinient to generate a stage table
-with the target column names. This will work well, until the same column name for different content is used
-in different tables of the pipeline or different source fields are mapped to the same target.
+Some data vault loading frameworks (e.g. cimt talend framework) use similariy of column names between stage table and target
+table for automatic mapping. In that case it is more convenient to generate a stage table
+with the target column names. This will work well, until the same column name for different
+content is used in different tables of the pipeline or different source fields are 
+mapped to the same target.
 
 The "combined" stage column naming rule resolves this as follows:
 - one or more target columns with same name and same single source field: stage column name = Target name
@@ -185,11 +191,38 @@ The documentation generator is started on the command line with:
 
 ```dvpd_doc_render <name of the dvpd file> options ```
 
-When using the file name "@youngest", the script uses the youngest file in the dvdp default directory
+When using the file name "@youngest", the script uses the youngest file in the dvpd default directory
 
 Options:
 - --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
 - --print: prints the html text to the console
+
+## Developer sheet generator (dvpd_devsheet_render)
+The developert sheet is a human readable text file, providing the essential key information
+needed to implement the loading process.
+- pipeline name
+- record source
+- source field structure
+- formatted list of tables involved (targets + stage)
+- stage table structure and mapping of fields to stage table
+- hash columns and how to assemble it
+- load operations for every table and the stage column to target column mapping
+
+The developer sheet generator is started on the command line with:
+
+```dvpd_devsheet_render <name of the dvpi file> options ```
+
+When using the file name "@youngest", the script uses the youngest file in the dvpi default directory
+
+Options:
+- --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
+- --stage_column_naming_rule={stage|combined} : stage = pure generated stage column names are used in the stage combined= combination of target column names and stage column names
+
+see "stage_column_naming_rule" in the ddl generator for explanation of the naming rules.
+
+Settings read from .ini file:
+- dvpi_default_directory
+- stage_column_naming_rule
 
 
 ## Full compile and render for youngest dvpd (dvpd_all_youngest)

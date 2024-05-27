@@ -14,9 +14,9 @@
 			  ,{"field_name": "F4XX_AAA_AAA_DC2F_UUU",		"field_type": "DATE",			"targets": [{"table_name": "rtjj_3280_aaa_aaa_dlnk" ,"column_name": "F3F4_AAA_AAA_DC2F"
 																								,"relation_names":["UUU"]}]}
 			  ,{"field_name": "F5XX_AAA_AAA_C1",	"field_type": "VARCHAR(200)",	        "targets": [{"table_name": "rtjj_3280_aaa_aaa_sat" ,"column_name": "F5_AAA_AAA_C1"}]}
-			  ,{"field_name": "F6XX_AAA_AAA_C2F",	"field_type": "VARCHAR(200)",	        "targets": [{"table_name": "rtjj_3280_aaa_aaa_sat" ,"column_name": "F6F7_AAA_AAA_C2F"
+			  ,{"field_name": "F6XX_AAA_AAA_C2F_TTT",	"field_type": "VARCHAR(200)",	        "targets": [{"table_name": "rtjj_3280_aaa_aaa_sat" ,"column_name": "F6F7_AAA_AAA_C2F"
 																								,"relation_names":["TTT"]}]}
-			  ,{"field_name": "F7XX_AAA_AAA_C2F",	"field_type": "VARCHAR(200)",	        "targets": [{"table_name": "rtjj_3280_aaa_aaa_sat" ,"column_name": "F6F7_AAA_AAA_C2F"
+			  ,{"field_name": "F7XX_AAA_AAA_C2F_UUU",	"field_type": "VARCHAR(200)",	        "targets": [{"table_name": "rtjj_3280_aaa_aaa_sat" ,"column_name": "F6F7_AAA_AAA_C2F"
 																							    ,"relation_names":["UUU"]}]}
 			 ],
 			 

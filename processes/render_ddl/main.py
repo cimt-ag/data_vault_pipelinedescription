@@ -175,10 +175,42 @@ def assemble_column_name_and_stage_name_dict(parse_set):
 
     return column_name_to_stage_name_dict,stage_name_to_column_name_dict
 
+def assemble_stage_with_target_column_type_dict(parse_set,tables):
+    stage_with_target_column_type_dict={}
+    for stage_column in parse_set["stage_columns"]:
+        if stage_column['stage_column_class'] != "data":
+            continue
+        table_name = None
+        column_name = None
+        for load_operation in parse_set['load_operations']:  # scan all operations for a mapping the current stage column
+            if 'data_mapping' not in load_operation:
+                continue
+            for column_mapping in load_operation['data_mapping']:
+                if column_mapping['stage_column_name']==stage_column['stage_column_name']:
+                    table_name=load_operation['table_name']
+                    column_name=column_mapping['column_name']
+                    break
+            if table_name != None:
+                break
+        # at this point we should have a hit, so search for the column type definition
+        if table_name == None:
+            raise Exception(f"Stage column '{stage_column['stage_column_name']}' is not mapped in any operation. This should not happen")
+        column_type=None
+        for table in tables:
+            if table['table_name']==table_name:
+                for column in table['columns']:
+                    if column['column_name']==column_name: #gotcha
+                        column_type=column['column_type']
+                        break
+                if column_type != None:
+                    break
+        stage_with_target_column_type_dict[stage_column['stage_column_name']]=column_type #finally we know
+
+    return stage_with_target_column_type_dict
 
 
-def deterine_combined_stage_column_name(stage_column_name, stage_name_to_column_name_dict,
-                                        column_name_to_stage_name_dict):
+def determine_combined_stage_column_name(stage_column_name, stage_name_to_column_name_dict,
+                                         column_name_to_stage_name_dict):
     """
                 Stage     Target     Result
     1:1         BK1  (1)  BK1   (1)  BK1
@@ -225,7 +257,6 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
     single stage column -> equally named target columns: use target column name
     single stage column -> multiple differently named target columns: use concatinated target column names
     multiple stage columns -> equally named target column(s): use target column name_append stage column name
-
     """
     with open(filepath, 'r') as file:
         data = json.load(file)
@@ -262,8 +293,6 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
                 schema_sats[schema_name] += 1
             else:
                 schema_sats[schema_name] = 1
-
-
 
         if 'table_name' not in table:
             raise MissingFieldError("The field 'table_name' is missing from the DVPI.")
@@ -340,10 +369,12 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
         content = []
         content_untracked = []
 
-        column_name_to_stage_name={}
+        column_name_to_stage_name_dict={}
         stage_name_to_column_name_dict={}
+        stage_with_target_column_type_dict={}
         if stage_column_naming_rule=='combined':
             column_name_to_stage_name_dict,stage_name_to_column_name_dict=assemble_column_name_and_stage_name_dict(parse_set)
+            stage_with_target_column_type_dict=assemble_stage_with_target_column_type_dict(parse_set,tables)
 
         for column in columns:
             stage_column_name = column['stage_column_name']
@@ -369,8 +400,8 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
                         case 'stage':
                             final_column_name=stage_column_name
                         case 'combined':
-                            final_column_name=deterine_combined_stage_column_name(stage_column_name,stage_name_to_column_name_dict,column_name_to_stage_name_dict)
-
+                            final_column_name=determine_combined_stage_column_name(stage_column_name, stage_name_to_column_name_dict, column_name_to_stage_name_dict)
+                            col_type=stage_with_target_column_type_dict[stage_column_name]
                         case _:
                             raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
 

@@ -13,8 +13,8 @@ from lib.configuration import configuration_load_ini
 def parse_json_file(file_path):
     try:
         with open(file_path, 'r') as file:
-            data = json.load(file)
-            return (data["pipeline_name"], data["fields"])
+            dvpd = json.load(file)
+            return dvpd
     except FileNotFoundError:
         return f"File not found: {file_path}"
     except json.JSONDecodeError as e:
@@ -51,7 +51,10 @@ def parse_target(target):
 
 
 
-def create_documentation(pipeline_name, column_labels, fields):
+def create_documentation(dvpd,column_labels):
+    pipeline_name=dvpd["pipeline_name"]
+    fields= dvpd["fields"]
+    record_source=dvpd["record_source_name_expression"]
     header_text=column_labels.split(',')
     if len(header_text)<3:
         print(f"Not enough header labels given in 'documentation_column_labels'. Need 3 got {len(header_text)}: >>{column_labels}<< ")
@@ -67,6 +70,7 @@ def create_documentation(pipeline_name, column_labels, fields):
     html += "</head>\n"
     html += "<body>\n"
     html += f"<h1>Pipeline: {pipeline_name}\n</h1>"
+    html += f"<p>Record source: {record_source}\n</p>"
     html += "   <table>\n"
     html += "       <tr>\n"
     html += f"           <th>{header_text[0]}</th>\n"
@@ -106,14 +110,14 @@ def main(dvpd_filename,
         raise Exception(f"file not found {dvpd_file_path.as_posix()}")
     print(f"Rendering documentation from {dvpd_file_path.name}")
 
-    column_labels='Field Type,Field Name,Data Vault Target(s)'
+    column_labels='Field Name,Field Type,Data Vault Target(s)'
     if 'documentation_column_labels' in params:
         column_labels=params['documentation_column_labels']
 
-
-    (pipeline_name, fields) = parse_json_file(dvpd_file_path)
-    if isinstance(fields, (dict, list)):
-        html = create_documentation(pipeline_name,column_labels,fields)
+    dvpd = parse_json_file(dvpd_file_path)
+    pipeline_name = dvpd["pipeline_name"]
+    if isinstance(dvpd['fields'], (dict, list)):
+        html = create_documentation(dvpd,column_labels)
         if print_html:
             print(html)
         target_directory=Path(params['documentation_directory'])
