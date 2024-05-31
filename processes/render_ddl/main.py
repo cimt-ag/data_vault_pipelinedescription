@@ -489,6 +489,12 @@ if __name__ == '__main__':
     else:
         stage_column_naming_rule=args.stage_column_naming_rule
 
+    if args.no_primary_keys == False:
+        no_primary_keys=params.get('no_primary_keys',False) == ('True' or 'true')
+        
+    else:
+        no_primary_keys=args.no_primary_keys
+
     ddl_render_path = Path(params['ddl_root_directory'], fallback=None)
     dvpi_default_directory = Path(params['dvpi_default_directory'], fallback=None)
     
@@ -505,7 +511,7 @@ if __name__ == '__main__':
 
     ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path
                                         , add_ghost_records=args.add_ghost_records
-                                        , add_primary_keys=not args.no_primary_keys
+                                        , add_primary_keys=not no_primary_keys
                                    , stage_column_naming_rule=stage_column_naming_rule)
     if args.print:
         print(ddl_output)
