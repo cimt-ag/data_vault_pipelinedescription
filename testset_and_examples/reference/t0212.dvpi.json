@@ -5,6 +5,7 @@
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0212",
   "dvpd_filename": "t0212.dvpd.json",
+	"result_with_bug_in_test_case":"yes",
   "tables": [
     {
       "table_name": "rtjj_212_aaa_hub",
