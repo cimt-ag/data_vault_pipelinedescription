@@ -306,10 +306,17 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
             stage_column_name = column['column_name']
             col_type = column['column_type']
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
-            column_statements.append("{} {} {}".format(stage_column_name, col_type, nullable))
+            comment = column['column_content_comment'] if 'column_content_comment' in column else None
+            column_statement = "{} {} {}".format(stage_column_name, col_type, nullable)
+            if comment is not None:
+                column_statement = "{} COMMENT '{}'".format(column_statement, comment)
+            column_statements.append(column_statement)
         column_statements = ',\n'.join(column_statements)
+
+        table_comment = f"COMMENT='{table['table_comment']}'" if 'table_comment' in table else ''
+
         ddl = f"-- generated script for {full_name}"
-        ddl += f"\n\n-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+        ddl += f"\n\n-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} {table_comment} (\n{column_statements}\n);"
 
         if add_primary_keys:
             ddl += render_primary_key_clause(table)
