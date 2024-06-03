@@ -1262,7 +1262,7 @@ def assemble_dvpi_table_entry(table_name,table_entry):
     table_properties_to_copy=['table_stereotype', 'table_comment', 'schema_name','storage_component','has_deletion_flag','is_effectivity_sat','is_enddated','is_multiactive','compare_criteria','uses_diff_hash']
     dvpi_table_entry={'table_name':table_name}
     for table_property in table_properties_to_copy:
-        if table_property in table_entry:
+        if table_property in table_entry and table_entry[table_property] != None:
             dvpi_table_entry[table_property]=table_entry[table_property]
     
     # Driving Keys
