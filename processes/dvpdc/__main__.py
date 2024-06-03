@@ -197,13 +197,13 @@ def check_essential_element(dvpd_object):
                     register_error(f"missing declaration of 'table_name' for field [{field_count}], target [{target_count}] ")
 
 
-def transform_hub_table(dvpd_table_entry, schema_name, storage_component):
+def transform_hub_table(dvpd_table_entry, schema_name, storage_component, table_comment):
     """Cleanse check and add table declaration for a hub table"""
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
     model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
     table_properties= {'table_stereotype': 'hub', 'schema_name': schema_name, 'storage_component': storage_component,
-                       'model_profile_name': model_profile_name}
+                       'model_profile_name': model_profile_name, 'table_comment': table_comment}
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
 
@@ -214,13 +214,13 @@ def transform_hub_table(dvpd_table_entry, schema_name, storage_component):
         #register_error(f'hub_key_column_name is not declared for hub table {table_name}')
     g_table_dict[table_name] = table_properties
 
-def transform_lnk_table(dvpd_table_entry, schema_name, storage_component):
+def transform_lnk_table(dvpd_table_entry, schema_name, storage_component, table_comment):
     """Cleanse check and add table declaration for a lnk table"""
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
     model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
     table_properties= {'table_stereotype': 'lnk','schema_name':schema_name,'storage_component':storage_component,
-                       'model_profile_name': model_profile_name}
+                       'model_profile_name': model_profile_name, 'table_comment': table_comment}
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
 
@@ -268,13 +268,13 @@ def transform_lnk_table(dvpd_table_entry, schema_name, storage_component):
     g_table_dict[table_name] = table_properties
 
 
-def transform_sat_table(dvpd_table_entry, schema_name, storage_component):
+def transform_sat_table(dvpd_table_entry, schema_name, storage_component, table_comment):
     """Cleanse check and add table declaration for a satellite table"""
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
     model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
     table_properties= {'table_stereotype': 'sat','schema_name':schema_name,'storage_component':storage_component,
-                       'model_profile_name': model_profile_name}
+                       'model_profile_name': model_profile_name, 'table_comment': table_comment}
 
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
@@ -310,13 +310,13 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component):
     # finally add the cleansed properties to the table dictionary
     g_table_dict[table_name] = table_properties
 
-def transform_ref_table(dvpd_table_entry, schema_name, storage_component):
+def transform_ref_table(dvpd_table_entry, schema_name, storage_component, table_comment):
     """Cleanse check and add table declaration for a satellite table"""
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
     model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
     table_properties={'table_stereotype': 'ref','schema_name':schema_name,'storage_component':storage_component,
-                       'model_profile_name': model_profile_name}
+                       'model_profile_name': model_profile_name, 'table_comment': table_comment}
 
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
@@ -343,15 +343,18 @@ def collect_table_properties(dvpd_object):
             if g_table_dict.get(table_entry['table_name'].lower()):
                 register_error(f"table_name '{table_entry['table_name']}' has already been defined. table_name must be unique in the model")
                 continue
+
+            table_comment = table_entry['table_comment'] if 'table_comment' in table_entry else None
+
             match table_entry['table_stereotype'].lower():
                 case 'hub':
-                    transform_hub_table(table_entry,schema_name,storage_component)
+                    transform_hub_table(table_entry,schema_name,storage_component, table_comment)
                 case 'lnk':
-                    transform_lnk_table(table_entry,schema_name,storage_component)
+                    transform_lnk_table(table_entry,schema_name,storage_component, table_comment)
                 case 'sat':
-                    transform_sat_table(table_entry,schema_name,storage_component)
+                    transform_sat_table(table_entry,schema_name,storage_component, table_comment)
                 case 'ref':
-                    transform_ref_table(table_entry,schema_name,storage_component)
+                    transform_ref_table(table_entry,schema_name,storage_component, table_comment)
                 case _:
                     register_error(f"Unknown table stereotype '{table_entry['table_stereotype']}' declared for table {table_entry['table_name']}")
 
@@ -1256,7 +1259,7 @@ def assemble_dvpi(dvpd_object, dvpd_filename):
     dvpi_parse_sets.append(assemble_dvpi_parse_set(dvpd_object))
 
 def assemble_dvpi_table_entry(table_name,table_entry):
-    table_properties_to_copy=['table_stereotype','schema_name','storage_component','has_deletion_flag','is_effectivity_sat','is_enddated','is_multiactive','compare_criteria','uses_diff_hash']
+    table_properties_to_copy=['table_stereotype', 'table_comment', 'schema_name','storage_component','has_deletion_flag','is_effectivity_sat','is_enddated','is_multiactive','compare_criteria','uses_diff_hash']
     dvpi_table_entry={'table_name':table_name}
     for table_property in table_properties_to_copy:
         if table_property in table_entry:
