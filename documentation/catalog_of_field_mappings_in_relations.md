@@ -322,22 +322,20 @@ a sattelite contributes to the main (unnamed) relation wich will place the link 
 
 
 ## Participation of satellites
-Satellites contribute to all relations that contain a full set of fields, 
-mapped with relation declaration to the satellite.
+Satellites contribute to all relations that are declared by their incomping field mappings. Without any declaration
+the mappings are used for the "unnamed" mapping only.
 
-- The full set of satellite columns is determined from the relation with the most columns.
+- The set of columns for a satellite is dermined by all mappings, regardless of the annotated relation
+- All announced relations must have a mapping for every columns
 - relations with different column outcome will fail the consistency check
 - all relations a satellite contributes to, must be supported by the parent
 
-The simple common model use case is covered by participating on the
-main (unnamed) relation when without any declaration.
 
 ## Participation of effectivity satellites
-Effectivity satellites contribute to the main relation unless a tracked relation is declared.
+Unlass a tracked relation name is declared, effectivity satellites contribute all relations of the link.
 
 - the relation an effectivity satellite participates in must be known by the parent link
 
-The simple common model use case is covered by participating in the relation of the link.
 
 # Procedure to generate relation specific load operations
 Every table must be loaded by one or more loading operations. The field combination, of every load operation
@@ -352,27 +350,26 @@ specific relations, the table is involved in.
 - Every field mapping to a table must belong to one or many set of keys 
 
 ### Step 1 - Determine field mapping restrictions 
-- field mappings without any relation name are set to be default mappings `*`, that can be used for any relation 
+- field mappings, without a relation name are set to belong to the  unnamed relation `/` 
+- field mappings, with  relaion_names =["*"] do not define a relation, but will participate in any relation
+- a table with only "*" field mappings is not valid
 
 ### Step 2 - Determine load operation from explicit field relation 
-- a table will have an operation for every explicitly declared mapping relation(this might already include the unnamed relation `/` , when explicitly declared)
-- a table with explicit relations will have an operation for the unnamed relation `/` when there is a default mapping for all columns available
-- a hub table with only default mappings will have an operation for the generic relation `*` 
-- compiler check: For every load operation there must have a valid mapping for all columns (either one explicit or the default)
+- a table will have an operation for every mapping relation (this includes the unnamed relation `/`, even when it is not declared)
+- a hub, with only an unnamed relation "/" operation, that has not been induced by any field, sets the load operation name to "*" (universal) 
+- compiler check: For every load operation there must be a valid mapping for all columns (either by relation name or "*")
 Result:
 - All field mappings are defined 
-- Hub tables will have all load operations defined
-- Sat and link tables will have load operations, that are the result of explicit mappings
+- Hub and Sat tables will have all load operations defined
+- link tables will have load operations, that are the result of explicit mappings
 - Completeness of the mappings is checked
 
-
-
 ### Step 3 - Determine operation for links with explict parent mappings
-This only applies to links with an explicit relation declaration in the parent hub mapping:
-- Compiler check: The link must not already have a load operation, that was deduced in previous steps (Tgus Restricion will be removed in 0.7.x)
+This only applies to links with at least one explicit relation declaration in the parent hub mapping:
+- Compiler check: The link must not already have a load operation, that was deduced in previous steps (This Restricion will be removed in 0.7.x)
 - The link will have an "explicit relation" load operation `+`
 - Table relations without an explicit relation name are defined to be the unnamed relation `/`
-- Compiler check: The relation of the parent connections must be supported by the operations(= field mappings) of the connected hubs (A `*` hub supports `/` only)
+- Compiler check: The relation of the parent connections must be supported by the operations(= field mappings) of the connected hubs 
 Result:
 - links with explicit relations in the hub mapping are tagged with the `+` load operation
 - The relation names in the hub relations are checked
@@ -387,7 +384,7 @@ Result:
 
 ### Step 5 - Satellite to Link operation deduction
 Must be applied to all links, that have no operation yet:
-- get all load operations from load operations of its children that are not `*`
+- get all load operations from load operations of its children 
 - compiler check: The load operation must be explicitly supported by at least one parent hub 
 - compiler check: The load operation must be supported by all parent hubs, either explicitly or due to the hubs `*` operation
 Result:
@@ -411,8 +408,7 @@ Result:
 ## Rules for the field assembly for every load operation
 ### Hub load operation
 - the relation to load is defined by the load operation
-- for all columns, where possible: use the field mappings, that match the relation of the operation
-- for columns without relation specific mappings: use the default mapping
+- for all columns, where possible: use the field mappings, that match the relation of the operation and the "*" mapping as fallback
 - for the hub key: use the columns as mapped above
 - In the stage table this will result in a hub key column for every load operation
 
@@ -423,7 +419,6 @@ This only applies to links `+` load operation
 - use the relation specific hub key calculation of the parents(`/` is solved by `*` in the hub, when missing)
 - dependent child keys will not be relation specific and can be mapped directly (this will change in 0.7.x)
 - In the stage table this will result one link key column
-
 
 ### link load operation without explicit parent hub relations
 This only applies to link load operations that are not `+`
