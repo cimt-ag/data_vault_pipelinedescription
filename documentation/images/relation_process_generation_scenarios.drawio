@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+<mxfile host="Electron" modified="2024-04-08T08:01:06.607Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="ZZ2lrW2E_5jomXSWj9P_" version="21.6.1" type="device">
+=======
 <mxfile host="Electron" modified="2024-04-29T08:22:38.841Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="a2_0m8OdKNqSOBQG3HNv" version="21.6.1" type="device">
+>>>>>>> afb7967 (Aligned test specs to pricniple of explicit universal mapping declaration for b keys and dc)
   <diagram id="S8_EbyP6fOLFSmQk0vZv" name="Seite-1">
     <mxGraphModel dx="1957" dy="723" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="#FFFFFF" math="0" shadow="0">
       <root>
@@ -162,7 +166,7 @@
         <mxCell id="keQ0cRB9MPPr5G5kg9qf-179" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
           <mxGeometry x="-27" y="571" width="10" height="11" as="geometry" />
         </mxCell>
-        <mxCell id="keQ0cRB9MPPr5G5kg9qf-180" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;fillStyle=auto;gradientColor=#FCFCFC;gradientDirection=radial;" parent="2" vertex="1">
+        <mxCell id="keQ0cRB9MPPr5G5kg9qf-180" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
           <mxGeometry x="-22" y="515" width="10" height="11" as="geometry" />
         </mxCell>
         <mxCell id="keQ0cRB9MPPr5G5kg9qf-182" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;fontSize=11;" parent="2" vertex="1">
@@ -253,7 +257,7 @@
         <mxCell id="keQ0cRB9MPPr5G5kg9qf-205" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
           <mxGeometry x="547.63" y="580.5" width="10" height="11" as="geometry" />
         </mxCell>
-        <mxCell id="keQ0cRB9MPPr5G5kg9qf-206" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;fillStyle=auto;gradientColor=#FCFCFC;gradientDirection=radial;" parent="2" vertex="1">
+        <mxCell id="keQ0cRB9MPPr5G5kg9qf-206" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
           <mxGeometry x="552.63" y="524.5" width="10" height="11" as="geometry" />
         </mxCell>
         <mxCell id="keQ0cRB9MPPr5G5kg9qf-207" value="&lt;div style=&quot;width: 93.0px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;rounded=1;arcSize=15;absoluteArcSize=1;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#00c74c;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=15;" parent="2" vertex="1">
@@ -378,7 +382,7 @@
         <mxCell id="keQ0cRB9MPPr5G5kg9qf-253" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
           <mxGeometry x="835.13" y="585" width="10" height="11" as="geometry" />
         </mxCell>
-        <mxCell id="keQ0cRB9MPPr5G5kg9qf-254" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;fillStyle=auto;gradientColor=#FCFCFC;gradientDirection=radial;" parent="2" vertex="1">
+        <mxCell id="keQ0cRB9MPPr5G5kg9qf-254" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
           <mxGeometry x="840.13" y="529" width="10" height="11" as="geometry" />
         </mxCell>
         <mxCell id="keQ0cRB9MPPr5G5kg9qf-255" value="&lt;div style=&quot;width: 93.0px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;rounded=1;arcSize=15;absoluteArcSize=1;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#00c74c;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=15;" parent="2" vertex="1">
@@ -467,7 +471,7 @@
         <mxCell id="keQ0cRB9MPPr5G5kg9qf-290" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
           <mxGeometry x="1127.13" y="580.5" width="10" height="11" as="geometry" />
         </mxCell>
-        <mxCell id="keQ0cRB9MPPr5G5kg9qf-291" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;fillStyle=auto;gradientColor=#FCFCFC;gradientDirection=radial;" parent="2" vertex="1">
+        <mxCell id="keQ0cRB9MPPr5G5kg9qf-291" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
           <mxGeometry x="1132.13" y="524.5" width="10" height="11" as="geometry" />
         </mxCell>
         <mxCell id="keQ0cRB9MPPr5G5kg9qf-294" style="edgeStyle=orthogonalEdgeStyle;shape=filledEdge;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeColor=#000000;strokeWidth=2;fontFamily=Helvetica;fontSize=11;fontColor=default;startArrow=none;startFill=0;endArrow=none;endFill=0;startSize=6;endSize=6;fillColor=none;" parent="2" source="keQ0cRB9MPPr5G5kg9qf-275" target="keQ0cRB9MPPr5G5kg9qf-282" edge="1">
@@ -2713,7 +2717,7 @@
         <mxCell id="oT5UWOcOgZpQtLDSOPW6-130" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
           <mxGeometry x="260.48" y="577.75" width="10" height="11" as="geometry" />
         </mxCell>
-        <mxCell id="oT5UWOcOgZpQtLDSOPW6-131" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;fillStyle=auto;gradientColor=#FCFCFC;gradientDirection=radial;" parent="2" vertex="1">
+        <mxCell id="oT5UWOcOgZpQtLDSOPW6-131" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#cc0000;" parent="2" vertex="1">
           <mxGeometry x="265.48" y="521.75" width="10" height="11" as="geometry" />
         </mxCell>
         <mxCell id="oT5UWOcOgZpQtLDSOPW6-132" value="&lt;div style=&quot;width: 93.0px;height:auto;word-break: break-word;&quot;&gt;&lt;div align=&quot;center&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=rect;rounded=1;arcSize=15;absoluteArcSize=1;shadow=0;strokeWidth=2;fillColor=#FFFFFF;strokeColor=#333333;opacity=100.0;html=1;nl2Br=0;verticalAlign=middle;align=center;spacingLeft=2.0;spacingRight=0;whiteSpace=wrap;gliffyId=15;" parent="2" vertex="1">
@@ -2904,6 +2908,8 @@
         <mxCell id="gqcA6MjpNpb2ejCJztwm-135" value="" style="ellipse;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#00c74c;" parent="2" vertex="1">
           <mxGeometry x="-140.5" y="1064.25" width="10" height="11" as="geometry" />
         </mxCell>
+<<<<<<< HEAD
+=======
         <mxCell id="o2Zczj0NqCSFDD4gwr2i-111" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.star;fillColor=#000000;strokeColor=none;direction=east;" parent="2" vertex="1">
           <mxGeometry x="1295" y="292.12" width="10" height="10" as="geometry" />
         </mxCell>
@@ -2956,6 +2962,7 @@
         <mxCell id="PeQ4_ZyebATOnk6LtSin-120" value="#271" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;direction=east;fontStyle=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontColor=#FF3333;base=13;position2=0.56;size=20;position=0.41;" vertex="1" parent="o2Zczj0NqCSFDD4gwr2i-112">
           <mxGeometry x="190" y="1247.5" width="60" height="42.5" as="geometry" />
         </mxCell>
+>>>>>>> afb7967 (Aligned test specs to pricniple of explicit universal mapping declaration for b keys and dc)
       </root>
     </mxGraphModel>
   </diagram>

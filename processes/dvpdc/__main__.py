@@ -241,7 +241,7 @@ def transform_lnk_table(dvpd_table_entry, schema_name, storage_component):
             if isinstance(parent_entry,dict):
                 if 'table_name' in parent_entry:
                     cleansed_parent_entry['table_name']=parent_entry['table_name' ].lower()
-                    cleansed_parent_entry['relation_name']=parent_entry.get('relation_name','*')
+                    cleansed_parent_entry['relation_name']=parent_entry.get('relation_name','*').upper()
                     if cleansed_parent_entry['relation_name'] != '*':
                         has_explicit_link_parent_relations = True
                     if 'hub_key_column_name_in_link' in parent_entry:
@@ -305,7 +305,7 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component):
             cleansed_driving_keys.append(driving_key.upper())
         table_properties['driving_keys']=cleansed_driving_keys
     if 'tracked_relation_name' in dvpd_table_entry:
-        table_properties['tracked_relation_name'] = dvpd_table_entry.get('tracked_relation_name')  # default is None
+        table_properties['tracked_relation_name'] = dvpd_table_entry.get('tracked_relation_name').upper()  # default is None
 
     # finally add the cleansed properties to the table dictionary
     g_table_dict[table_name] = table_properties
@@ -1510,7 +1510,7 @@ def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
                     dvpisum_file.write(f"      {column_entry['column_class'].ljust(20)}| {column_entry['column_name'].ljust(max_column_name_length)}  {column_entry['column_type']}\n")
                 dvpisum_file.write("\n")
 
-            ## ------------------- Parese sets
+            ## ------------------- Parse sets
             for parse_set_index,parse_set_entry in enumerate(g_dvpi_document['parse_sets'],start=1):
                 dvpisum_file.write(f"\nParse set {parse_set_index}\n")
                 dvpisum_file.write("--------------------------------------------------\n")
@@ -1554,7 +1554,7 @@ def renderHashFieldAssembly(parse_set_entry,hash_name):
     for hash_entry in parse_set_entry['hashes']:
         if hash_entry['hash_name'] == hash_name:
             if hash_entry['column_class']=='key':
-                hash_fields_sorted = sorted(hash_entry['hash_fields'], key=lambda d: str(d.get('parent_declaration_position',''))+'_/_'+d['field_target_table']+'_/_'+str(d['prio_in_key_hash'])+'_/_'+d['field_target_column'])
+                hash_fields_sorted = sorted(hash_entry['hash_fields'], key=lambda d: "{:03d}".format(d.get('parent_declaration_position',0))+'_/_'+d['field_target_table']+'_/_'+str(d['prio_in_key_hash'])+'_/_'+d['field_target_column'])
             else:
                 hash_fields_sorted = sorted(hash_entry['hash_fields'], key=lambda d: '_'+str(d['prio_in_diff_hash'])+'_/_'+d['field_target_column'])
             fields = []
@@ -1728,7 +1728,7 @@ def get_name_of_youngest_dvpd_file(ini_file):
 if __name__ == "__main__":
     description_for_terminal = "Cimt AG reccommends to follow the instruction before starting the script. If you run your script from command line, it should look" \
                                " like this: python __main__.py inputFile"
-    usage_for_terminal = "Type: python __main__.py --h for further instruction"
+    usage_for_terminal = "Add option -h for further instruction"
 
     parser = argparse.ArgumentParser(
         description=description_for_terminal,

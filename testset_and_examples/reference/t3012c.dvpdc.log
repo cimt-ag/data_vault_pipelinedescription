@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-05-07 10:56:59
+Compiling t3012c.dvpd.json
+
+There is no field mapping for relation 'UUU' into column 'F1_AAA_BK1' of table 'rtjj_3012_aaa_hub'
+*** Compilation ended with errors ***

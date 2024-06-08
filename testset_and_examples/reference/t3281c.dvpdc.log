@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-05-14 08:51:36
+Compiling t3281c.dvpd.json
+
+Parent table 'rtjj_3281_aaa_aaa_dlnk' has no load operation for relation 'UUU' requiered for satellite 'rtjj_3281_aaa_aaa_sat'
+*** Compilation ended with errors ***
