@@ -56,10 +56,10 @@
 																																								 ]}
 
 				,{"field_name": "F16_AAA_BBB_DFT_C1F",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_aaa_bbb_sat"} ]}
-				,{"field_name": "F17_AAA_BBB_DFT_C1F",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_aaa_bbb_ttt_sat","relation_names":["TTT"]} ]}
-				,{"field_name": "F18_AAA_BBB_DFT_C1F",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_aaa_bbb_ttt_sat","relation_names":["*"]} ]}
+				,{"field_name": "F17_AAA_BBB_TTT_C1F",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_aaa_bbb_ttt_sat","relation_names":["TTT"]} ]}
+				,{"field_name": "F18_AAA_BBB_ALL_C1F",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_aaa_bbb_all_sat","relation_names":["*"]} ]}
 
-				,{"field_name": "F19_AAA_CCCUUU_C1F",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_aaa_cccuuu_sat"} ]}
+				,{"field_name": "F19_AAA_CCCUUU_C1F",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_aaa_cccuuu_sat"} ]} 
 
 
 		],

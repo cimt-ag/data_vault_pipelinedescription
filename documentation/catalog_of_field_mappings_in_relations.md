@@ -361,7 +361,7 @@ specific relations, the table is involved in.
 Result:
 - All field mappings are defined 
 - Hub tables will have all load operations defined
-- sat tables will have load operations defined, except if all mappings are "*"
+- sat tables will have load operations defined
 - link tables will have load operations, that are the result of explicit mappings
 - Completeness of the mappings is checked
 
@@ -397,8 +397,9 @@ Must be applied to all links, that have no operation yet:
 - Should the result only be `*`, set the load operation of the link to be `/`
 
 ### Step 7 - Parent to Satellite deduction
-Must be applied to all satellites, that have no operation yet ( satellites with only "*" mappings):
+Must be applied to all satellites, that have a "*" operation
 - Add all operations of the parent 
+- remove the * operation
 Result:
 - every table should now have its appropriate list of load operations
 
