@@ -352,15 +352,16 @@ specific relations, the table is involved in.
 ### Step 1 - Determine field mapping restrictions 
 - field mappings, without a relation name are set to belong to the  unnamed relation `/` 
 - field mappings, with  relaion_names =["*"] do not define a relation, but will participate in any relation
-- a table with only "*" field mappings is not valid
+- a hub table with only "*" field mappings is not valid
 
 ### Step 2 - Determine load operation from explicit field relation 
-- a table will have an operation for every mapping relation (this includes the unnamed relation `/`, even when it is not declared)
+- a table will have an operation for every mapping relation, except "*" relation (this includes the unnamed relation `/`, even when it is not declared)
 - a hub, with only an unnamed relation "/" operation, that has not been induced by any field, sets the load operation name to "*" (universal) 
 - compiler check: For every load operation there must be a valid mapping for all columns (either by relation name or "*")
 Result:
 - All field mappings are defined 
-- Hub and Sat tables will have all load operations defined
+- Hub tables will have all load operations defined
+- sat tables will have load operations defined, except if all mappings are "*"
 - link tables will have load operations, that are the result of explicit mappings
 - Completeness of the mappings is checked
 
@@ -396,10 +397,10 @@ Must be applied to all links, that have no operation yet:
 - Should the result only be `*`, set the load operation of the link to be `/`
 
 ### Step 7 - Parent to Satellite deduction
-Must be applied to all satellites, that have no operation yet:
+Must be applied to all satellites, that have no operation yet ( satellites with only "*" mappings):
 - Add all operations of the parent 
 Result:
-- every table should have its appropriate list of load operations now
+- every table should now have its appropriate list of load operations
 
 ### Step 8 - Final check
 - compiler crosscheck: all tables must have at least one load operation. Single `*` or one or more relation names
