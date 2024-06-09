@@ -1,7 +1,7 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2024-03-06 12:06:51
+Compiler Version 0.6.1
+Compile time: 2024-06-03 13:31:44
 Compiling t0021_simple_hub_sat_with_comment.dvpd.json
 
-Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t0021_simple_hub_sat_with_comment.dvpi.json
+Writing DVPI to /git_projects/dwh_resources/dvpi/t0021_simple_hub_sat_with_comment.dvpi.json
 --- Compile successfull ---

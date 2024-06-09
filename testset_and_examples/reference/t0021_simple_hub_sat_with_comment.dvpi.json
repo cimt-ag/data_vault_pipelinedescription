@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-05 13:18:04",
+  "compile_timestamp": "2024-06-03 12:27:05",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0021_simple_hub_sat_with_comment",
   "dvpd_filename": "t0021_simple_hub_sat_with_comment.dvpd.json",
@@ -9,6 +9,7 @@
     {
       "table_name": "rtjj_21_aaa_hub",
       "table_stereotype": "hub",
+      "table_comment": "table comment rtjj_21_aaa_hub",
       "schema_name": "rvlt_test_jj",
       "storage_component": "",
       "columns": [
@@ -57,6 +58,7 @@
     {
       "table_name": "rtjj_21_aaa_p1_sat",
       "table_stereotype": "sat",
+      "table_comment": "table comment rtjj_21_aaa_p1_sat",
       "schema_name": "rvlt_test_jj",
       "storage_component": "",
       "has_deletion_flag": true,
