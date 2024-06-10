@@ -728,13 +728,12 @@ def is_operation_supported_by_link_hubs(link_table_name,load_operation_name):
     for link_parent_table_entry in link_table['link_parent_tables']:
         hub_table=g_table_dict[link_parent_table_entry['table_name']]
         is_supported_by_hub=False
-        if hub_table['is_hub_with_universaL_load_operation']:
-            is_supported_by_hub = True
-        else:
-            for hub_load_operation_name in hub_table['load_operations'].keys():
+        for hub_load_operation_name in hub_table['load_operations'].keys():
                 if hub_load_operation_name == load_operation_name:
                     hubs_with_operation+=1
                     is_supported_by_hub=True
+        if hub_table['is_hub_with_universaL_load_operation']: # is supported but probably not explicitly
+            is_supported_by_hub = True
         if not is_supported_by_hub:
             is_supported_by_all_hubs=False
             break
