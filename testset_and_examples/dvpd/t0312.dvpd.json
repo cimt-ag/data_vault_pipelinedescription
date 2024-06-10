@@ -8,12 +8,12 @@
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 	"fields": [
-		       {"field_name": "F1XX_AAA_BBB_BK1_TTT_UUU",   "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_312_aaa_hub"}
-																					,{"table_name": "rtjj_312_bbb_hub"	,"column_name": "F1F4_AAA_BBB_BK1"
+		       {"field_name": "F1XX_AAA_BBB_BK1_TTT_UUU",   "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_312_aaa_hub","column_name": "F1_AAA_BK1"}
+																					,{"table_name": "rtjj_312_bbb_hub"	,"column_name": "F1F4_BBB_BK1"
 																					,"relation_names":["TTT", "UUU"]}]}
               ,{"field_name": "F2_AAA_BK2F",   "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_312_aaa_hub"}]}																						
 		      ,{"field_name": "F3_AAA_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_312_aaa_sat"}]}	 
-		      ,{"field_name": "F4XX_BBB_BK1_VVV", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_312_bbb_hub" ,"column_name": "F1F4_AAA_BBB_BK1"
+		      ,{"field_name": "F4XX_BBB_BK1_VVV", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_312_bbb_hub" ,"column_name": "F1F4_BBB_BK1"
 																				 	,"relation_names":["VVV"]} ]}
 			  ,{"field_name": "F5XX_BBB_BK2F_TTT", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_312_bbb_hub" ,"column_name": "F5F6F7_BBB_BK2F"
 																				 	,"relation_names":["TTT"]} ]}	 

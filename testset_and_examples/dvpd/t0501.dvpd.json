@@ -26,10 +26,10 @@
 		      ,{"field_name": "F9XX_AAA_BBB_DC1F_TTT",  "field_type": "VARCHAR(255)", "field_value":"TTT"
 																, "targets": [{"table_name": "rtjj_501_aaa_bbb_dlnk","column_name":"F9F10F11_AAA_BBB_DC1F"
 																							,"relation_names":["TTT"]} ]}
-		      ,{"field_name": "F10_AAA_BBB_DC1F_UUU",  "field_type": "VARCHAR(255)", "field_value":"UUU"
+		      ,{"field_name": "F10XX_AAA_BBB_DC1F_UUU",  "field_type": "VARCHAR(255)", "field_value":"UUU"
 																, "targets": [{"table_name": "rtjj_501_aaa_bbb_dlnk","column_name":"F9F10F11_AAA_BBB_DC1F"
 																							,"relation_names":["UUU"]} ]}
-		      ,{"field_name": "F11_AAA_BBB_DC1F_VVV",  "field_type": "VARCHAR(255)", "field_value":"VVV"
+		      ,{"field_name": "F11XX_AAA_BBB_DC1F_VVV",  "field_type": "VARCHAR(255)", "field_value":"VVV"
 																, "targets": [{"table_name": "rtjj_501_aaa_bbb_dlnk","column_name":"F9F10F11_AAA_BBB_DC1F"
 																							,"relation_names":["VVV"]} ]}
  
