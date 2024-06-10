@@ -302,14 +302,27 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
         columns = table['columns']
         # print(f"columns:\n{columns}")
         column_statements = []
+        comment_statements = []
+
         for column in columns:
-            stage_column_name = column['column_name']
+            column_name = column['column_name']
             col_type = column['column_type']
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
-            column_statements.append("{} {} {}".format(stage_column_name, col_type, nullable))
+            comment = column['column_content_comment'] if 'column_content_comment' in column else None
+            column_statement = "{} {} {}".format(column_name, col_type, nullable)
+            column_statements.append(column_statement)
+            if comment is not None:
+                comment_statements.append("COMMENT ON COLUMN {}.{}.{} IS '{}';".format(schema_name, table_name, column_name, comment))
+
         column_statements = ',\n'.join(column_statements)
+        if 'table_comment' in table:
+            comment_statements.insert(0, f"COMMENT ON TABLE {schema_name}.{table_name} IS '{table['table_comment']}';")
+
+        comment_statements = '\n'.join(comment_statements)
+        
+
         ddl = f"-- generated script for {full_name}"
-        ddl += f"\n\n-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+        ddl += f"\n\n-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);\n\n--COMMENT STATEMENTS\n{comment_statements}"
 
         if add_primary_keys:
             ddl += render_primary_key_clause(table)
@@ -489,6 +502,12 @@ if __name__ == '__main__':
     else:
         stage_column_naming_rule=args.stage_column_naming_rule
 
+    if args.no_primary_keys == False:
+        no_primary_keys=params.get('no_primary_keys',False) == ('True' or 'true')
+        
+    else:
+        no_primary_keys=args.no_primary_keys
+
     ddl_render_path = Path(params['ddl_root_directory'], fallback=None)
     dvpi_default_directory = Path(params['dvpi_default_directory'], fallback=None)
     
@@ -505,7 +524,7 @@ if __name__ == '__main__':
 
     ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path
                                         , add_ghost_records=args.add_ghost_records
-                                        , add_primary_keys=not args.no_primary_keys
+                                        , add_primary_keys=not no_primary_keys
                                    , stage_column_naming_rule=stage_column_naming_rule)
     if args.print:
         print(ddl_output)

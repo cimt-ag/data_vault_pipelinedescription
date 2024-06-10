@@ -11,8 +11,8 @@
 	"fields": [
 		     {"field_name": "F1_AAABBBCCC_BK1", 	"field_type": "Varchar(20)",	"some_fancy_property":"fancy", "targets": 
 																																										[{"table_name": "rtjj_55_aaa_hub"},
-																																										{"table_name": "rtkk_55_bbb_hub"},
-																																										{"table_name": "rtjj_55_ccc_hub"}]}
+																																										{"table_name": "rtkk_55_bbb_hub","relation_names":["*"]},
+																																										{"table_name": "rtjj_55_ccc_hub","relation_names":["*"]}]}
 		    ,{"field_name": "F2_AAA_BK2F", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_55_aaa_hub"}]}
 		 	  ,{"field_name": "F3_BBB_BK2F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_hub","column_name":"F3F4F5F6_BBB_BK2F"}]}
 				,{"field_name": "F4_BBB_BK2F_TTT",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_hub","column_name":"F3F4F5F6_BBB_BK2F","relation_names":["TTT"]}]}
@@ -44,14 +44,15 @@
 																																											"column_name":"F19_ggg_SP1_C2F"}]}
 		    ,{"field_name": "F20_CCC_BK2F", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_55_ccc_hub"}]}
 		    ,{"field_name": "F21_CCC_CU1F", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_55_ccc_hub","exclude_from_key_hash":true}]}
-				,{"field_name": "F22_BBB_P1_C1",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p1_sat",
-																																												"column_name":"F22F23_BBB_P1_C1"}]}
-				,{"field_name": "F23_BBB_P1_C1_UUU",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p1_sat",
+				,{"field_name": "F22XX_BBB_P1_C1",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p1_sat",
+																																												"column_name":"F22F23_BBB_P1_C1", "relation_names":["/","TTT"]}
+																																												]}
+				,{"field_name": "F23XX_BBB_P1_C1_UUU",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p1_sat",
 																																												"column_name":"F22F23_BBB_P1_C1",
 																																												"relation_names":["UUU"]}]}
-				,{"field_name": "F24_BBB_P1_C2F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p1_sat",
-																																												"column_name":"F24F25_BBB_P1_C2F"}]}
-				,{"field_name": "F25_BBB_P1_C2F_TTT",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p1_sat",
+				,{"field_name": "F24XX_BBB_P1_C2F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p1_sat",
+																																												"column_name":"F24F25_BBB_P1_C2F", "relation_names":["*"]}]}
+				,{"field_name": "F25XX_BBB_P1_C2F_TTT",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p1_sat",
 																																												"column_name":"F24F25_BBB_P1_C2F",
 																																												"relation_names":["TTT"]}]}
 				,{"field_name": "F26_EEE_BK1F",	"field_type": "VARCHAR(20)",	"targets": [{"table_name": "rtkk_55_eee_hub",
@@ -71,7 +72,7 @@
 				,{"field_name": "F31_FFF_BK1F_VVV",	"field_type": "VARCHAR(20)",	"targets": [{"table_name": "rtkk_55_fff_hub",
 																																												"column_name":"F29F30F31_FFF_BK1F",
 																																												"relation_names":["VVV"]}]}		
-        ,{"field_name": "F32_BBB_P2_C1F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p2_sat"}]}
+        ,{"field_name": "F32_BBB_P2_C1F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p2_sat","relation_names":["*"]}]}
 		],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

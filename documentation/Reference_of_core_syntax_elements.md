@@ -194,12 +194,14 @@ The name must be a valid ***relation_name*** depending on the role of the field.
 * Data excluded from key for hub or link - The name must match a relation name, supported by the target
 * Satellite Content - The name must match a relation name, supported by the parent
 
-To explicitly declare participation in the main (unnamend) relation use "/" as name. 
-This is the only way to declare the participation in a subset of relations that contains the unnamed relation.
+When ommitting this property, the mapping counts only to the "unnamed" relation. 
+You can explicitly declare participation in the main (unnamend) relation with  "/" as name. This allows a mapping to
+be used in mulitple relations that include the unnamed relation.
 
-When ommitting this property, the field mapping participates in relations as follows:
-* when the field is the only field mapped to a target column, the mapping is used in all relations
-* when there are multiple fields mapped to a target column, the mapping is used only in the main (unnamed) relation. 
+By setting the property to \["*"], you declare the mapping to be used in all relations of the table.
+Declaring '*' for all mappings of a table, will use the mappings for all relations of the parent tabled. This can not be
+applied to hubs, since they don't have a parent.
+ 
 
 <br>*["parent"] , ["child1","child2"], ["/","Sibling"]*
 
@@ -215,12 +217,13 @@ Depending on the target, the declaration will modify the mapping as follows:
 * Data excluded from key for hub or link - The mapping will be used in combination with buisness key, that belong to the key set
 * Satellite content - The mapping will be used in combination with a satellite parent key, that is created from keys from that key set
 
-To explicitly declare participation in the main (unnamend) key set use ´/´ as name. 
-This is the only way to declare the participation in a subset of key set that contains the unnamed key set.
+When ommitting this property, the mapping counts only to the "unnamed" key set. 
+You can explicitly declare participation in the "unnamend" key set with  "/" as name. This allows a mapping to
+be used in mulitple key sets together with the unnamed relation.
 
-When ommitting this property, the field mapping participates in key sets as follows:
-* when the field is the only field mapped to a target column, the mapping is used in all key sets
-* when there are multiple fields mapped to a target column, the mapping is used only in the main (unnamed) key set. 
+By setting the property to \["*"], you declare the mapping to be used in all relations of the table.
+Declaring '*' for all mappings of a table, will use the mappings for all relations of the parent tabled. This can not be
+applied to hubs, since they don't have a parent.
 
 
 **exclude_from_key_hash**

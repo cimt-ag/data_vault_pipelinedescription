@@ -10,7 +10,7 @@
 	"fields": [
 		{"field_name": "F1_AAABBB_BK1",			"field_type": "Varchar(20)",  "field_position": "1", "uniqueness_groups": ["key"],
 								"targets": [{"table_name": "rtjj_50_aaa_hub"},
-									        {"table_name": "rtkk_50_bbb_hub"}]}
+									        {"table_name": "rtkk_50_bbb_hub","relation_names":["*"]}]}
 
  		,{"field_name": "F2_AAA_BK2F",	"field_type": "Decimal(10,0)", "field_position": "2","uniqueness_groups": ["key"],
 								"targets": [{"table_name": "rtjj_50_aaa_hub"}]}

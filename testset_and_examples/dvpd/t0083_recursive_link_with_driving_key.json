@@ -7,8 +7,7 @@
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
  	"fields": [
-		      {"field_name": "F1XX_AAA_BK1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_83_aaa_hub"
-																					,"column_name": "F1_AAA_BK1F"}]}
+		      {"field_name": "F1_AAA_BK1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_83_aaa_hub","relation_names": ["*"]}]}
 		      ,{"field_name": "F2XX_AAA_BK2F", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_83_aaa_hub"
 																					,"column_name": "F2F3_AAA_BK2F"}]}		 	  
 		      ,{"field_name": "F3XX_AAA_BK2F_TTT", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_83_aaa_hub"
