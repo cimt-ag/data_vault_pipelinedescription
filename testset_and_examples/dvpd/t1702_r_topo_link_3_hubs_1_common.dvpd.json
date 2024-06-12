@@ -8,9 +8,9 @@
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 	"fields": [
-		       {"field_name": "F1_AAA_BBB_CCC_BK1",   "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1702_aaa_hub"}
-																						,{"table_name": "rtjj_1702_bbb_hub"}
-																						,{"table_name": "rtjj_1702_ccc_hub"}	]}
+		       {"field_name": "F1_AAA_BBB_CCC_BK1",   "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1702_aaa_hub", "relation_names":["*"]}
+																						,{"table_name": "rtjj_1702_bbb_hub", "relation_names":["*"]}
+																						,{"table_name": "rtjj_1702_ccc_hub", "relation_names":["*"]}	]}
 		      ,{"field_name": "F2_AAA_BK2F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1702_aaa_hub"}]}	 	  
 		      ,{"field_name": "F3XX_BBB_BK2F_TTT", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1702_bbb_hub"
 																						,"column_name": "F3F4_BBB_BK2F"
@@ -19,9 +19,9 @@
 																						,"column_name": "F3F4_BBB_BK2F"
 																				 		,"relation_names":["UUU"]} ] }	 	  
 		      ,{"field_name": "F5_CCC_BK2F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1702_ccc_hub"}]}	 	  
-		      ,{"field_name": "F6_AAA_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1702_aaa_sat"}]}	 	  
-		      ,{"field_name": "F7_BBB_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1702_bbb_sat"}]}	 	  
-		      ,{"field_name": "F8_CCC_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1702_ccc_sat"}]}	 	  
+		      ,{"field_name": "F6_AAA_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1702_aaa_sat", "relation_names":["*"]}]}	 	  
+		      ,{"field_name": "F7_BBB_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1702_bbb_sat", "relation_names":["*"]}]}	 	  
+		      ,{"field_name": "F8_CCC_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1702_ccc_sat", "relation_names":["*"]}]}	 	  
 
 			 ],
 	"data_vault_model": [

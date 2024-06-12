@@ -13,7 +13,7 @@
 																				 	,"relation_names":["TTT"]} ]}
 			  ,{"field_name": "F3XX_BBB_BK1F_UUU","field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_3250_bbb_hub" ,"column_name": "F2F3_BBB_BK1"
 																				 	,"relation_names":["UUU"]} ]}	
-			  ,{"field_name": "F4XX_AAA_BBB_DC1",		"field_type": "DATE",			"targets": [{"table_name": "rtjj_3250_aaa_bbb_dlnk" ,"column_name": "F4_AAA_BBB_DC1"}]}																		
+			  ,{"field_name": "F4XX_AAA_BBB_DC1",		"field_type": "DATE",			"targets": [{"table_name": "rtjj_3250_aaa_bbb_dlnk" ,"column_name": "F4_AAA_BBB_DC1", "relation_names":["*"]}]}																		
 		 	  ,{"field_name": "F5XX_AAA_BBB_DC2F_TTT",		"field_type": "DATE",			"targets": [{"table_name": "rtjj_3250_aaa_bbb_dlnk" ,"column_name": "F5F6_AAA_BBB_DC2F"
 																					,"relation_names":["TTT"]}]}
 			  ,{"field_name": "F6XX_AAA_BBB_DC2F_UUU",		"field_type": "DATE",			"targets": [{"table_name": "rtjj_3250_aaa_bbb_dlnk" ,"column_name": "F5F6_AAA_BBB_DC2F"

@@ -13,8 +13,8 @@
 																				 	,"relation_names":["TTT"]} ]}
 			  ,{"field_name": "F3XX_BBB_BK1F_UUU", "field_type": "Varchar(20)","targets": [{"table_name": "rtjj_3150_bbb_hub" ,"column_name": "F3F4_BBB_BK1F"
 																				 	,"relation_names":["UUU"]} ]}	
-		 	  ,{"field_name": "F4XX_AAA_BBB_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_3150_aaa_bbb_sat" ,"column_name": "F4_AAA_BBB_C1"}]}
-			  ,{"field_name": "F5XX_AAA_BBB_C2F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_3150_aaa_bbb_sat" ,"column_name": "F5_AAA_BBB_C2F"}]}
+		 	  ,{"field_name": "F4XX_AAA_BBB_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_3150_aaa_bbb_sat" ,"column_name": "F4_AAA_BBB_C1", "relation_names":["*"]}]}
+			  ,{"field_name": "F5XX_AAA_BBB_C2F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_3150_aaa_bbb_sat" ,"column_name": "F5_AAA_BBB_C2F", "relation_names":["*"]}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
