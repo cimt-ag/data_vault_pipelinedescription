@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-26 15:28:29",
+  "compile_timestamp": "2024-06-13 12:17:29",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0229",
   "dvpd_filename": "t0229.dvpd.json",
@@ -717,8 +717,8 @@
       "load_operations": [
         {
           "table_name": "rtjj_229_aaa_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -740,8 +740,8 @@
         },
         {
           "table_name": "rtjj_229_aaa_sat",
-          "relation_name": "*",
-          "operation_origin": "following parent operation list",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
@@ -770,8 +770,8 @@
         },
         {
           "table_name": "rtjj_229_aaa_bbb_lnk",
-          "relation_name": "+",
-          "operation_origin": "fixed '+' operation due to explicit parent relation declaration",
+          "relation_name": "/",
+          "operation_origin": "fixed '/' operation due to explicit parent relation declaration",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -812,7 +812,7 @@
         },
         {
           "table_name": "rtjj_229_aaa_bbb_esat",
-          "relation_name": "+",
+          "relation_name": "/",
           "operation_origin": "following parent operation list",
           "hash_mappings": [
             {
@@ -827,7 +827,7 @@
         {
           "table_name": "rtjj_229_bbb_hub",
           "relation_name": "TTT",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -857,7 +857,7 @@
         {
           "table_name": "rtjj_229_bbb_hub",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -887,7 +887,7 @@
         {
           "table_name": "rtjj_229_bbb_hub",
           "relation_name": "VVV",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -917,7 +917,7 @@
         {
           "table_name": "rtjj_229_bbb_sat",
           "relation_name": "TTT",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
@@ -954,7 +954,7 @@
         {
           "table_name": "rtjj_229_bbb_sat",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
@@ -991,7 +991,7 @@
         {
           "table_name": "rtjj_229_bbb_sat",
           "relation_name": "VVV",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",

@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-05 16:13:39",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
+  "dvpi_version": "0.6.0",
+  "compile_timestamp": "2024-04-03 13:20:04",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0703_topo_abcl_abl_1_common_key",
   "dvpd_filename": "t0703_topo_abcl_abl_1_common_key.dvpd.json",
@@ -456,7 +456,7 @@
       "is_enddated": true,
       "is_multiactive": false,
       "compare_criteria": "key+current",
-      "uses_diff_hash": false,
+      "uses_diff_hash": true,
       "columns": [
         {
           "column_name": "MD_INSERTED_AT",
@@ -508,7 +508,7 @@
       "is_enddated": true,
       "is_multiactive": false,
       "compare_criteria": "key+current",
-      "uses_diff_hash": false,
+      "uses_diff_hash": true,
       "columns": [
         {
           "column_name": "MD_INSERTED_AT",

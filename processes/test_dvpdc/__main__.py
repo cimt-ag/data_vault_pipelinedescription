@@ -55,7 +55,8 @@ def run_test_for_file(dvpd_filename, raise_on_crash=False):
         dvpdc(dvpd_filename, ini_file=args.ini_file)
         if dvpd_filename[5] == "c":
             print("****fail: Compiling successfull, but should not****")
-            return "fail"
+            #return "fail"
+            return "incorrect"
 
     except DvpdcError:
         if dvpd_filename[5] != "c":
@@ -256,6 +257,7 @@ if __name__ == "__main__":
     failing_file_list=[]
     reference_missing_list=[]
     crashed_file_list=[]
+    incorrect_file_list=[]
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--dvpd_filename","-f", required=False, help="Name of the dvpd file to test")
@@ -294,6 +296,8 @@ if __name__ == "__main__":
             reference_missing_list.append(filename)
         elif result == "crash":
             crashed_file_list.append(filename)
+        elif result == "incorrect":
+            incorrect_file_list.append(filename)
         else:
             print(f"Unhandled test result: {result}")
 
@@ -323,6 +327,11 @@ if __name__ == "__main__":
         for filename in crashed_file_list:
             print(filename)
 
+    if len(incorrect_file_list) > 0:
+        print("\nvvv---Incorrect tests---vvv")
+        for filename in incorrect_file_list:
+            print(filename)
+
     report_line=f"{len(dvpd_file_list)} = "
     print(f"\n**** Number of tests: {len(dvpd_file_list)} ****")
 
@@ -345,5 +354,9 @@ if __name__ == "__main__":
         file_list_fp = assemble_file_list_fingerprint(crashed_file_list)
         report_line += f"+ crash {len(crashed_file_list)} ({file_list_fp})"
         print(f"** {len(crashed_file_list)} tests crashed ({file_list_fp}) **** ")
+    if len(incorrect_file_list) > 0:  # Add incorrect to report
+        file_list_fp = assemble_file_list_fingerprint(incorrect_file_list)
+        report_line += f"+ incorrect {len(incorrect_file_list)} ({file_list_fp})"
+        print(f"** {len(incorrect_file_list)} incorrect tests ({file_list_fp})")
 
     print("\nTest state:"+report_line)

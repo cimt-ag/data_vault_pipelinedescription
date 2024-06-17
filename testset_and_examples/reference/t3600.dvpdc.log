@@ -1,6 +1,6 @@
 Data vault pipeline description compiler log 
 Compiler Version 0.6.1
-Compile time: 2024-05-07 08:28:26
+Compile time: 2024-06-13 11:57:31
 Compiling t3600.dvpd.json
 
 Writing DVPI to /git_ordner/dvpd/var/dvpi/t3600.dvpi.json

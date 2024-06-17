@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-09 12:26:53",
+  "compile_timestamp": "2024-06-13 12:17:28",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0064_fg_drive_scenario_4",
   "dvpd_filename": "t0064_fg_drive_scenario_4.dvpd.json",
@@ -293,7 +293,7 @@
         {
           "table_name": "rtjj_64_aaa_hub",
           "relation_name": "TTT",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -316,7 +316,7 @@
         {
           "table_name": "rtjj_64_aaa_hub",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -394,8 +394,8 @@
         },
         {
           "table_name": "rtjj_64_bbb_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",

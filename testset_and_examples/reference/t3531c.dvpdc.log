@@ -1,7 +1,7 @@
 Data vault pipeline description compiler log 
 Compiler Version 0.6.1
-Compile time: 2024-05-14 11:22:43
+Compile time: 2024-06-13 11:57:31
 Compiling t3531c.dvpd.json
 
-Hub 'rtjj_3531_aaa_hub' has no business key mapping for relation 'TTT' needed for link 'rtjj_3531_aaa_aaa_ttt_dlnk'
+parent table relations can't be used, when expliciv field mapping relations are already defined. Table: 'rtjj_3531_aaa_aaa_ttt_dlnk'
 *** Compilation ended with errors ***

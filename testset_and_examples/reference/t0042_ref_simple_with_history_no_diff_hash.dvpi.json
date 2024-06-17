@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-05 13:13:03",
+  "compile_timestamp": "2024-06-13 12:17:28",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0042_ref_simple_with_history_no_diff_hash",
   "dvpd_filename": "t0042_ref_simple_with_history_no_diff_hash.dvpd.json",
@@ -117,7 +117,7 @@
         {
           "table_name": "rtjj_42_aaa_ref",
           "relation_name": "/",
-          "operation_origin": "ref table load operation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [],
           "data_mapping": [
             {

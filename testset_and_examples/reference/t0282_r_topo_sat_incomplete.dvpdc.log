@@ -1,6 +1,6 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2024-02-27 13:01:19
+Compiler Version 0.6.1
+Compile time: 2024-06-13 11:57:28
 Compiling t0282_r_topo_sat_incomplete.dvpd.json
 
 Writing DVPI to /git_ordner/dvpd/var/dvpi/t0282_r_topo_sat_incomplete.dvpi.json

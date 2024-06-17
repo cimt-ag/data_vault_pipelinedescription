@@ -1,7 +1,12 @@
 Data vault pipeline description compiler log 
 Compiler Version 0.6.1
-Compile time: 2024-05-14 08:51:36
+Compile time: 2024-06-13 11:57:31
 Compiling t3281c.dvpd.json
 
-Parent table 'rtjj_3281_aaa_aaa_dlnk' has no load operation for relation 'UUU' requiered for satellite 'rtjj_3281_aaa_aaa_sat'
+There is no field mapping for relation '/' into column 'F3F4_AAA_AAA_DC2F' of table 'rtjj_3281_aaa_aaa_dlnk'
+There is no field mapping for relation 'TTT' into column 'F2_AAA_AAA_DC1' of table 'rtjj_3281_aaa_aaa_dlnk'
+There is no field mapping for relation 'VVV' into column 'F2_AAA_AAA_DC1' of table 'rtjj_3281_aaa_aaa_dlnk'
+There is no field mapping for relation '/' into column 'F6F7_AAA_AAA_C2F' of table 'rtjj_3281_aaa_aaa_sat'
+There is no field mapping for relation 'TTT' into column 'F5_AAA_AAA_C1' of table 'rtjj_3281_aaa_aaa_sat'
+There is no field mapping for relation 'UUU' into column 'F5_AAA_AAA_C1' of table 'rtjj_3281_aaa_aaa_sat'
 *** Compilation ended with errors ***

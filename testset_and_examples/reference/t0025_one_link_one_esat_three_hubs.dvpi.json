@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-07 20:02:06",
+  "compile_timestamp": "2024-06-13 12:17:27",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0025_one_link_one_esat_three_hubs",
   "dvpd_filename": "t0025_one_link_one_esat_three_hubs.dvpd.json",
@@ -486,8 +486,8 @@
       "load_operations": [
         {
           "table_name": "rtjj_25_aaa_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -509,8 +509,8 @@
         },
         {
           "table_name": "rtjj_25_aaa_p1_sat",
-          "relation_name": "*",
-          "operation_origin": "following parent operation list",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
@@ -546,8 +546,8 @@
         },
         {
           "table_name": "rtjj_25_bbb_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -569,8 +569,8 @@
         },
         {
           "table_name": "rtjj_25_ccc_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
