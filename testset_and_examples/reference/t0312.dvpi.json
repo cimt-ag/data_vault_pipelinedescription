@@ -1,11 +1,10 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-15 09:00:53",
+  "compile_timestamp": "2024-06-10 11:23:04",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0312",
   "dvpd_filename": "t0312.dvpd.json",
-	"result_with_bug_in_test_case":"yes",
   "tables": [
     {
       "table_name": "rtjj_312_aaa_hub",
@@ -38,7 +37,7 @@
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "F1XX_AAA_BBB_BK1_TTT_UUU",
+          "column_name": "F1_AAA_BK1",
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
@@ -450,7 +449,7 @@
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "F1F4_AAA_BBB_BK1",
+          "column_name": "F1F4_BBB_BK1",
           "is_nullable": true,
           "column_class": "business_key",
           "column_type": "VARCHAR(20)",
@@ -533,7 +532,7 @@
               "field_name": "F1XX_AAA_BBB_BK1_TTT_UUU",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_312_aaa_hub",
-              "field_target_column": "F1XX_AAA_BBB_BK1_TTT_UUU"
+              "field_target_column": "F1_AAA_BK1"
             },
             {
               "field_name": "F2_AAA_BK2F",
@@ -560,7 +559,7 @@
               "field_name": "F1XX_AAA_BBB_BK1_TTT_UUU",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_312_bbb_hub",
-              "field_target_column": "F1F4_AAA_BBB_BK1"
+              "field_target_column": "F1F4_BBB_BK1"
             },
             {
               "field_name": "F5XX_BBB_BK2F_TTT",
@@ -587,7 +586,7 @@
               "field_name": "F1XX_AAA_BBB_BK1_TTT_UUU",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_312_bbb_hub",
-              "field_target_column": "F1F4_AAA_BBB_BK1"
+              "field_target_column": "F1F4_BBB_BK1"
             },
             {
               "field_name": "F6XX_BBB_BK2F_UUU",
@@ -614,7 +613,7 @@
               "field_name": "F4XX_BBB_BK1_VVV",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_312_bbb_hub",
-              "field_target_column": "F1F4_AAA_BBB_BK1"
+              "field_target_column": "F1F4_BBB_BK1"
             },
             {
               "field_name": "F7XX_BBB_BK2F_VVV",
@@ -641,7 +640,7 @@
               "field_name": "F1XX_AAA_BBB_BK1_TTT_UUU",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_312_aaa_hub",
-              "field_target_column": "F1XX_AAA_BBB_BK1_TTT_UUU",
+              "field_target_column": "F1_AAA_BK1",
               "parent_declaration_position": 1
             },
             {
@@ -655,7 +654,7 @@
               "field_name": "F1XX_AAA_BBB_BK1_TTT_UUU",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_312_bbb_hub",
-              "field_target_column": "F1F4_AAA_BBB_BK1",
+              "field_target_column": "F1F4_BBB_BK1",
               "parent_declaration_position": 2
             },
             {
@@ -684,7 +683,7 @@
               "field_name": "F1XX_AAA_BBB_BK1_TTT_UUU",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_312_aaa_hub",
-              "field_target_column": "F1XX_AAA_BBB_BK1_TTT_UUU",
+              "field_target_column": "F1_AAA_BK1",
               "parent_declaration_position": 1
             },
             {
@@ -698,7 +697,7 @@
               "field_name": "F1XX_AAA_BBB_BK1_TTT_UUU",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_312_bbb_hub",
-              "field_target_column": "F1F4_AAA_BBB_BK1",
+              "field_target_column": "F1F4_BBB_BK1",
               "parent_declaration_position": 2
             },
             {
@@ -727,7 +726,7 @@
               "field_name": "F1XX_AAA_BBB_BK1_TTT_UUU",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_312_aaa_hub",
-              "field_target_column": "F1XX_AAA_BBB_BK1_TTT_UUU",
+              "field_target_column": "F1_AAA_BK1",
               "parent_declaration_position": 1
             },
             {
@@ -741,7 +740,7 @@
               "field_name": "F4XX_BBB_BK1_VVV",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_312_bbb_hub",
-              "field_target_column": "F1F4_AAA_BBB_BK1",
+              "field_target_column": "F1F4_BBB_BK1",
               "parent_declaration_position": 2
             },
             {
@@ -802,7 +801,7 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F1XX_AAA_BBB_BK1_TTT_UUU",
+              "column_name": "F1_AAA_BK1",
               "field_name": "F1XX_AAA_BBB_BK1_TTT_UUU",
               "column_class": "business_key",
               "is_nullable": true,
@@ -988,7 +987,7 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F1F4_AAA_BBB_BK1",
+              "column_name": "F1F4_BBB_BK1",
               "field_name": "F1XX_AAA_BBB_BK1_TTT_UUU",
               "column_class": "business_key",
               "is_nullable": true,
@@ -1018,7 +1017,7 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F1F4_AAA_BBB_BK1",
+              "column_name": "F1F4_BBB_BK1",
               "field_name": "F1XX_AAA_BBB_BK1_TTT_UUU",
               "column_class": "business_key",
               "is_nullable": true,
@@ -1048,7 +1047,7 @@
           ],
           "data_mapping": [
             {
-              "column_name": "F1F4_AAA_BBB_BK1",
+              "column_name": "F1F4_BBB_BK1",
               "field_name": "F4XX_BBB_BK1_VVV",
               "column_class": "business_key",
               "is_nullable": true,

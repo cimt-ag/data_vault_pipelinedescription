@@ -10,7 +10,7 @@
 	"fields": [
 		       {"field_name": "F1_AAA_BK1F",   "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_103_aaa_hub"}]}
 		      ,{"field_name": "F2_AAA_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_103_aaa_sat"}]}
-			  ,{"field_name": "F3_BBB_BK1",   "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_103_bbb_hub"}]}
+			  ,{"field_name": "F3_BBB_BK1",   "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_103_bbb_hub","relation_names":["*"]}]}
 			  ,{"field_name": "F4XX_BBB_BK2F_TTT", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_103_bbb_hub" ,"column_name": "F4F5F6_BBB_BK2F"
 																				 	,"relation_names":["TTT"]} ]}	 
 		      ,{"field_name": "F5XX_BBB_BK2F_UUU", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_103_bbb_hub" ,"column_name": "F4F5F6_BBB_BK2F"

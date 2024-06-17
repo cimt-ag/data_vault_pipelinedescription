@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-06-10 11:23:05
+Compiling t0527_d_topo_hubsat_subset.dvpd.json
+
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t0527_d_topo_hubsat_subset.dvpi.json
+--- Compile successfull ---

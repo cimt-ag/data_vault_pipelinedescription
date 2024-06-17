@@ -21,7 +21,7 @@
 		      ,{"field_name": "F7XX_BBB_BK2F_VVV", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_529_bbb_hub" ,"column_name": "F5F6F7_BBB_BK2F"
 																				 	,"relation_names":["VVV"]} ]}
 	 
-		      ,{"field_name": "F8_BBB_C1", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_529_bbb_sat"}]}
+		      ,{"field_name": "F8_BBB_C1", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_529_bbb_sat", "relation_names":["*"]}]}
 		      ,{"field_name": "F9XX_BBB_C2F_TTT",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_529_bbb_sat" ,"column_name": "F9F10F11_BBB_C2F"
 																				 	,"relation_names":["TTT"]} ]}
 		      ,{"field_name": "F10XX_BBB_C2F_UUU",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_529_bbb_sat" ,"column_name": "F9F10F11_BBB_C2F"
@@ -29,12 +29,15 @@
 			  ,{"field_name": "F11XX_BBB_C2F_UUU",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_529_bbb_sat" ,"column_name": "F9F10F11_BBB_C2F"
 																				 	,"relation_names":["VVV"]} ]}
 			  
-		      ,{"field_name": "RELATION_TTT",  "field_type": "VARCHAR(255)", "field_value":"TTT"
-																, "targets": [{"table_name": "rtjj_529_aaa_bbb_dlnk"} ]}
-		      ,{"field_name": "RELATION_UUU",  "field_type": "VARCHAR(255)", "field_value":"UUU"
-																, "targets": [{"table_name": "rtjj_529_aaa_bbb_dlnk"} ]}
-		      ,{"field_name": "RELATION_VVV",  "field_type": "VARCHAR(255)", "field_value":"VVV"
-																, "targets": [{"table_name": "rtjj_529_aaa_bbb_dlnk"} ]}
+		      ,{"field_name": "F12XX_AAA_BBB_DC1F_TTT",  "field_type": "VARCHAR(255)", "field_value":"TTT"
+																, "targets": [{"table_name": "rtjj_529_aaa_bbb_dlnk","column_name":"F12F13F14_AAA_BBB_DC1F"
+																							,"relation_names":["TTT"]} ]}
+		      ,{"field_name": "F13XX_AAA_BBB_DC1F_UUU",  "field_type": "VARCHAR(255)", "field_value":"UUU"
+																, "targets": [{"table_name": "rtjj_529_aaa_bbb_dlnk","column_name":"F12F13F14_AAA_BBB_DC1F"
+																							,"relation_names":["UUU"]} ]}
+		      ,{"field_name": "F14XX_AAA_BBB_DC1F_VVV",  "field_type": "VARCHAR(255)", "field_value":"VVV"
+																, "targets": [{"table_name": "rtjj_529_aaa_bbb_dlnk","column_name":"F12F13F14_AAA_BBB_DC1F"
+																							,"relation_names":["VVV"]} ]}
  
 			 ],
 	"data_vault_model": [

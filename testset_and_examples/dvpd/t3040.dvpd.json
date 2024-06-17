@@ -8,12 +8,12 @@
 	},
 
 	"fields": [
-			   {"field_name": "F1XX_AAA_BK1","field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_3040_aaa_hub" ,"column_name": "F1_AAA_BK1" } ]}																					
+			   {"field_name": "F1XX_AAA_BK1","field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_3040_aaa_hub" ,"column_name": "F1_AAA_BK1", "relation_names":["*"]} ]}																					
 			  ,{"field_name": "F2XX_AAA_BK2F_TTT", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_3040_aaa_hub" ,"column_name": "F2F3_AAA_BK2F"
 																				 	,"relation_names":["TTT"]} ]}	 
 		      ,{"field_name": "F3XX_AAA_BK2F_UUU", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_3040_aaa_hub" ,"column_name": "F2F3_AAA_BK2F"
 																				 	,"relation_names":["UUU"]} ]}	
-		 	  ,{"field_name": "F4XX_AAA_C1_TTT",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_3040_aaa_sat" ,"column_name": "F4_AAA_C1" }]}
+		 	  ,{"field_name": "F4XX_AAA_C1_TTT",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_3040_aaa_sat" ,"column_name": "F4_AAA_C1", "relation_names":["*"] }]}
 			  ,{"field_name": "F5XX_AAA_C2F_TTT",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_3040_aaa_sat" ,"column_name": "F5F6_AAA_C2F"
 																					,"relation_names":["TTT"]}]}																	
 			  ,{"field_name": "F6XX_AAA_C2F_UUU",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_3040_aaa_sat" ,"column_name": "F5F6_AAA_C2F"

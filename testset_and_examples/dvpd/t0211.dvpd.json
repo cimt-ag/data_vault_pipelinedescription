@@ -8,15 +8,15 @@
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 	"fields": [
-		       {"field_name": "F1XX_AAABBB_BK1_TTT",   "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_211_aaa_hub","column_name": "F1F2_AAA_BK1"}
-																					,{"table_name": "rtjj_211_bbb_hub"	,"column_name": "F2F4F5_BBB_BK1"
+		       {"field_name": "F1XX_AAA_BBB_BK1_TTT",   "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_211_aaa_hub","column_name": "F1_AAA_BK1"}
+																					,{"table_name": "rtjj_211_bbb_hub"	,"column_name": "F1F4F5_BBB_BK1"
 																					,"relation_names":["TTT"]} ]}
-           ,{"field_name": "F2XX_AAA_BK2F",   "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_211_aaa_hub" }]}
+              ,{"field_name": "F2_AAA_BK2F",   "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_211_aaa_hub" }]}
 																					
 		      ,{"field_name": "F3_AAA_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_211_aaa_sat"}]}
-			  ,{"field_name": "F4XX_BBB_BK1_UUU", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_211_bbb_hub" ,"column_name": "F2F4F5_BBB_BK1"
+			  ,{"field_name": "F4XX_BBB_BK1_UUU", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_211_bbb_hub" ,"column_name": "F1F4F5_BBB_BK1"
 																				 	,"relation_names":["UUU"]} ]}	 
-		      ,{"field_name": "F5XX_BBB_BK1_VVV", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_211_bbb_hub" ,"column_name": "F2F4F5_BBB_BK1"
+		      ,{"field_name": "F5XX_BBB_BK1_VVV", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_211_bbb_hub" ,"column_name": "F1F4F5_BBB_BK1"
 																				 	,"relation_names":["VVV"]} ]}
 			  ,{"field_name": "F6XX_BBB_BK2F_TTT", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_211_bbb_hub" ,"column_name": "F6F7F8_BBB_BK2F"
 																				 	,"relation_names":["TTT"]} ]}	 
