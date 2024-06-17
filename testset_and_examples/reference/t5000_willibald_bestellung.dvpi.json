@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-09 18:53:53",
+  "compile_timestamp": "2024-06-13 12:17:32",
   "dvpd_version": "0.6.1",
   "pipeline_name": "t5000_willibald_bestellung",
   "dvpd_filename": "t5000_willibald_bestellung.dvpd.json",
@@ -627,8 +627,8 @@
       "load_operations": [
         {
           "table_name": "bestellung_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -650,8 +650,8 @@
         },
         {
           "table_name": "bestellung_sat",
-          "relation_name": "*",
-          "operation_origin": "following parent operation list",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
@@ -694,8 +694,8 @@
         },
         {
           "table_name": "kunde_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -759,8 +759,8 @@
         },
         {
           "table_name": "lieferadresse_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",

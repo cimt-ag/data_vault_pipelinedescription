@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-09 14:16:08",
+  "compile_timestamp": "2024-06-13 12:17:27",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0028_transactional_link_with_non_historized_satellite",
   "dvpd_filename": "t0028_transactional_link_with_non_historized_satellite.dvpd.json",
@@ -318,8 +318,8 @@
       "load_operations": [
         {
           "table_name": "rtjj_28_aaa_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -341,8 +341,8 @@
         },
         {
           "table_name": "rtjj_28_bbb_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -365,7 +365,7 @@
         {
           "table_name": "rtjj_28_aaa_bbb_tlnk",
           "relation_name": "/",
-          "operation_origin": "implicit unnamed relation, since all parents are universal",
+          "operation_origin": "induced from satellite rtjj_28_aaa_bbb_tlsat",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -393,7 +393,7 @@
         {
           "table_name": "rtjj_28_aaa_bbb_tlsat",
           "relation_name": "/",
-          "operation_origin": "following parent operation list",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",

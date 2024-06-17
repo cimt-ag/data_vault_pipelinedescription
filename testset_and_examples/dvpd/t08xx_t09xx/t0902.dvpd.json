@@ -15,10 +15,12 @@
 		      ,{"field_name": "F4XX_BBB_BK2F_UUU", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_902_bbb_hub" ,"column_name": "F3F4F5_BBB_BK2F","relation_names":["UUU"]} ]}	 
 		      ,{"field_name": "F5XX_BBB_BK2F_VVV", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_902_bbb_hub" ,"column_name": "F3F4F5_BBB_BK2F","relation_names":["VVV"]} ]}
 			  
-		      ,{"field_name": "RELATION_UUU",  "field_type": "VARCHAR(255)", "field_value":"UUU"
-																, "targets": [{"table_name": "rtjj_902_bbb_bbb_dlnk"} ]}
-		      ,{"field_name": "RELATION_VVV",  "field_type": "VARCHAR(255)", "field_value":"VVV"
-																, "targets": [{"table_name": "rtjj_902_bbb_bbb_dlnk"} ]}
+		      ,{"field_name": "F6XX_BBB_DC1F_UUU",  "field_type": "VARCHAR(255)", "field_value":"UUU"
+																, "targets": [{"table_name": "rtjj_902_bbb_bbb_dlnk", "column_name":"F6F7_BBB_DC1F"
+																							,"relation_names":["UUU"]} ]}																							
+		      ,{"field_name": "F7XX_BBB_DC1F_VVV",  "field_type": "VARCHAR(255)", "field_value":"VVV"
+																, "targets": [{"table_name": "rtjj_902_bbb_bbb_dlnk", "column_name":"F6F7_BBB_DC1F"
+																							,"relation_names":["VVV"]} ]}
  
 			 ],
 	"data_vault_model": [

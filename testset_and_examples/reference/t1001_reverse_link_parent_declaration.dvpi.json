@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-24 18:18:13",
+  "compile_timestamp": "2024-06-13 12:17:31",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t1001_reverse_link_parent_declaration",
   "dvpd_filename": "t1001_reverse_link_parent_declaration.dvpd.json",
@@ -570,8 +570,8 @@
         },
         {
           "table_name": "rtjj_1001_bbb_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -600,8 +600,8 @@
         },
         {
           "table_name": "rtkk_1001_aaa_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -637,8 +637,8 @@
         },
         {
           "table_name": "rtkk_1001_aaa_p1_sat",
-          "relation_name": "*",
-          "operation_origin": "following parent operation list",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",

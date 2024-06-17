@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-30 11:10:17",
+  "compile_timestamp": "2024-06-13 12:17:31",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t3190",
   "dvpd_filename": "t3190.dvpd.json",
@@ -669,7 +669,7 @@
         {
           "table_name": "rtjj_3190_aaa_hub",
           "relation_name": "TTT",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -692,7 +692,7 @@
         {
           "table_name": "rtjj_3190_aaa_hub",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -771,7 +771,7 @@
         {
           "table_name": "rtjj_3190_aaa_bbb_sat",
           "relation_name": "TTT",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
@@ -808,7 +808,7 @@
         {
           "table_name": "rtjj_3190_aaa_bbb_sat",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
@@ -887,7 +887,7 @@
         {
           "table_name": "rtjj_3190_bbb_hub",
           "relation_name": "TTT",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -910,7 +910,7 @@
         {
           "table_name": "rtjj_3190_bbb_hub",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -933,7 +933,7 @@
         {
           "table_name": "rtjj_3190_ccc_hub",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",

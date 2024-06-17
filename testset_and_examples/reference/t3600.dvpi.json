@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-05-07 08:28:26",
+  "compile_timestamp": "2024-06-13 12:17:32",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t3600",
   "dvpd_filename": "t3600.dvpd.json",
@@ -369,7 +369,7 @@
         {
           "table_name": "rtjj_3600_aaa_hub",
           "relation_name": "TTT",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -392,7 +392,7 @@
         {
           "table_name": "rtjj_3600_aaa_hub",
           "relation_name": "/",
-          "operation_origin": "induced by default field mapping for all columns",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -414,8 +414,8 @@
         },
         {
           "table_name": "rtjj_3600_aaa_aaa_bbb_ttt_dlnk",
-          "relation_name": "+",
-          "operation_origin": "fixed '+' operation due to explicit parent relation declaration",
+          "relation_name": "/",
+          "operation_origin": "fixed '/' operation due to explicit parent relation declaration",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -465,7 +465,7 @@
         },
         {
           "table_name": "rtjj_3600_aaa_aaa_bbb_ttt_esat",
-          "relation_name": "+",
+          "relation_name": "/",
           "operation_origin": "following parent operation list",
           "hash_mappings": [
             {
@@ -479,8 +479,8 @@
         },
         {
           "table_name": "rtjj_3600_bbb_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",

@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-05-14 14:01:42",
+  "compile_timestamp": "2024-06-13 12:17:28",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0051_hub_with_multiple_sat_column",
   "dvpd_filename": "t0051_hub_with_multiple_sat_column.dvpd.json",
@@ -372,7 +372,7 @@
         {
           "table_name": "rtjj_51_aaa_hub",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -409,7 +409,7 @@
         {
           "table_name": "rtjj_51_aaa_hub",
           "relation_name": "VVV",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -446,7 +446,7 @@
         {
           "table_name": "rtjj_51_aaa_hub",
           "relation_name": "WWW",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -483,7 +483,7 @@
         {
           "table_name": "rtjj_51_aaa_p1_sat",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
@@ -513,7 +513,7 @@
         {
           "table_name": "rtjj_51_aaa_p1_sat",
           "relation_name": "VVV",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
@@ -543,7 +543,7 @@
         {
           "table_name": "rtjj_51_aaa_p1_sat",
           "relation_name": "WWW",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",

@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-10 11:23:05",
+  "compile_timestamp": "2024-06-13 12:17:30",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0502",
   "dvpd_filename": "t0502.dvpd.json",
@@ -600,8 +600,8 @@
       "load_operations": [
         {
           "table_name": "rtjj_502_aaa_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -623,8 +623,8 @@
         },
         {
           "table_name": "rtjj_502_aaa_sat",
-          "relation_name": "*",
-          "operation_origin": "following parent operation list",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
@@ -654,7 +654,7 @@
         {
           "table_name": "rtjj_502_aaa_bbb_dlnk",
           "relation_name": "TTT",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -691,7 +691,7 @@
         {
           "table_name": "rtjj_502_aaa_bbb_dlnk",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -728,7 +728,7 @@
         {
           "table_name": "rtjj_502_aaa_bbb_dlnk",
           "relation_name": "VVV",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -807,7 +807,7 @@
         {
           "table_name": "rtjj_502_bbb_hub",
           "relation_name": "TTT",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -837,7 +837,7 @@
         {
           "table_name": "rtjj_502_bbb_hub",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -867,7 +867,7 @@
         {
           "table_name": "rtjj_502_bbb_hub",
           "relation_name": "VVV",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",

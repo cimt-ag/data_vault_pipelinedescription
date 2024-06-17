@@ -1,7 +1,8 @@
 Data vault pipeline description compiler log 
 Compiler Version 0.6.1
-Compile time: 2024-05-14 09:10:15
+Compile time: 2024-06-13 11:57:30
 Compiling t3011c.dvpd.json
 
-Writing DVPI to /git_ordner/dvpd/var/dvpi/t3011c.dvpi.json
---- Compile successfull ---
+There is no field mapping for relation '/' into column 'F3F4_AAA_BK2F' of table 'rtjj_3011_aaa_hub'
+There is no field mapping for relation 'UUU' into column 'F1F2_AAA_BK1' of table 'rtjj_3011_aaa_hub'
+*** Compilation ended with errors ***

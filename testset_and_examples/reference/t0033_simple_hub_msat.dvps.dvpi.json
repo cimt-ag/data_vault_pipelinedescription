@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-05 13:18:05",
+  "compile_timestamp": "2024-06-13 12:17:28",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0033_simple_hub_msat",
   "dvpd_filename": "t0033_simple_hub_msat.dvps.json",
@@ -264,8 +264,8 @@
       "load_operations": [
         {
           "table_name": "rtjj_33_aaa_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -294,8 +294,8 @@
         },
         {
           "table_name": "rtjj_33_aaa_p1_msat",
-          "relation_name": "*",
-          "operation_origin": "following parent operation list",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",

@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.0",
-  "dvpi_version": "0.6.0",
-  "compile_timestamp": "2024-03-14 12:03:53",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
+  "dvpi_version": "0.6.1",
+  "compile_timestamp": "2024-06-13 12:17:28",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0061_fg_drive_scenario_1",
   "dvpd_filename": "t0061_fg_drive_scenario_1.dvpd.json",
@@ -308,7 +308,7 @@
         {
           "table_name": "rtjj_61_aaa_hub",
           "relation_name": "TTT",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -331,7 +331,7 @@
         {
           "table_name": "rtjj_61_aaa_hub",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -354,7 +354,7 @@
         {
           "table_name": "rtjj_61_aaa_hub",
           "relation_name": "VVV",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -377,7 +377,7 @@
         {
           "table_name": "rtjj_61_aaa_p1_sat",
           "relation_name": "TTT",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
@@ -414,7 +414,7 @@
         {
           "table_name": "rtjj_61_aaa_p1_sat",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",

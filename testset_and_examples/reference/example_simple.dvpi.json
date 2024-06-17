@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-15 11:49:08",
+  "compile_timestamp": "2024-06-13 12:17:27",
   "dvpd_version": "0.6.0",
   "pipeline_name": "example_simple",
   "dvpd_filename": "example_simple.dvpd.json",
@@ -231,8 +231,8 @@
       "load_operations": [
         {
           "table_name": "person_hub",
-          "relation_name": "*",
-          "operation_origin": "implicit universal relation of hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -261,8 +261,8 @@
         },
         {
           "table_name": "person_sat",
-          "relation_name": "*",
-          "operation_origin": "following parent operation list",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",

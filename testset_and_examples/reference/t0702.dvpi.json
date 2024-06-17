@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-15 11:37:58",
+  "compile_timestamp": "2024-06-13 12:17:30",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0702",
   "dvpd_filename": "t0702.dvpd.json",
@@ -455,7 +455,7 @@
         {
           "table_name": "rtjj_702_bbb_hub",
           "relation_name": "/",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -485,7 +485,7 @@
         {
           "table_name": "rtjj_702_bbb_hub",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -515,7 +515,7 @@
         {
           "table_name": "rtjj_702_bbb_hub",
           "relation_name": "VVV",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",

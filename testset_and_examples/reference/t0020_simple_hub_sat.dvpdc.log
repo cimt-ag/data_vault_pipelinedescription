@@ -1,6 +1,6 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2024-02-15 15:54:41
+Compiler Version 0.6.1
+Compile time: 2024-06-13 11:57:27
 Compiling t0020_simple_hub_sat.dvpd.json
 
 Writing DVPI to /git_ordner/dvpd/var/dvpi/t0020_simple_hub_sat.dvpi.json
