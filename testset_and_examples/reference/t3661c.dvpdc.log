@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-06-18 19:14:29
+Compiling t3661c.dvpd.json
+
+there is no commonly supported relation between all hubs of the link 'rtjj_3661_aaa_bbb_lnk'
+*** Compilation ended with errors ***

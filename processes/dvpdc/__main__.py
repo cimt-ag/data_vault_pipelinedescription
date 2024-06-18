@@ -617,20 +617,18 @@ def determine_load_operations_from_relations_in_mappings():
         if table_entry['table_stereotype']=='hub':
             table_entry['is_hub_with_universaL_load_operation'] = False
 
-        has_universal_mapping_for_all_columns=True
+        has_implicit_unnamed_mapping_for_all_columns=True
         if 'data_columns' in table_entry:
 
             # add operations by scanning all columns and their mappings
             for data_column in table_entry['data_columns'].values():
-                has_universal_mapping_for_column=True
+
                 for field_mapping in data_column['field_mappings']:
                     for relation_name in field_mapping['relation_names']:
                         if relation_name != '*':
                             load_operations[relation_name]={"operation_origin":"field mapping relation","mapping_set":relation_name}
-                            has_universal_mapping_for_column = False
-
-                if not has_universal_mapping_for_column:
-                    has_universal_mapping_for_all_columns =False
+                            if not field_mapping['implict_unnamed_relation']:
+                                has_implicit_unnamed_mapping_for_all_columns = False
 
             # crosscheck completness of mappings for all determined load operations
             for load_operation_name,load_operation in load_operations.items():
@@ -653,7 +651,7 @@ def determine_load_operations_from_relations_in_mappings():
                             f"There is no field mapping for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
 
         # Set universal flag for hub,s that have only a "/" operation
-        if table_entry['table_stereotype'] == 'hub' and len(load_operations) == 1 and '/' in load_operations :
+        if table_entry['table_stereotype'] == 'hub' and len(load_operations) == 1 and '/' in load_operations and has_implicit_unnamed_mapping_for_all_columns :
             table_entry['is_hub_with_universaL_load_operation'] = True
 
 
