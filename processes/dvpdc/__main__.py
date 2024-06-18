@@ -566,6 +566,9 @@ def add_generic_relation_mappings(column_properties):
     for field_entry in  column_properties['field_mappings']:
         if len(field_entry['relation_names']) == 0:
              field_entry['relation_names'].append('/')
+             field_entry['implict_unnamed_relation']=True
+        else:
+            field_entry['implict_unnamed_relation'] = False
         if '*' in field_entry['relation_names'] and len(field_entry['relation_names'])>1:
             register_error(
                 f"When using '*' as relation names, this must be the only relation in the 'relation_names' for a table mapping. This is violated by  '{field_entry['field_name']}'")
@@ -771,6 +774,11 @@ def pull_hub_load_operations_into_links():
         else:
             link_load_operations['/'] = {
                 "operation_origin": "implicit unnamed relation, since all parents are universal","mapping_set":"*"}
+
+        if len(link_load_operations)==0:
+            register_error(
+                f"there is no commonly supported relation between all hubs of the link '{link_table_name}'")
+
 
 def pull_parent_operations_into_sat():
     """STEP 6"""
