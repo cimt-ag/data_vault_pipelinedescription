@@ -138,6 +138,8 @@ def get_name_of_youngest_dvpd_file(ini_file):
     youngest_file=''
 
     for file_name in os.listdir( params['dvpd_default_directory']):
+        if not os.path. isfile(params['dvpd_default_directory']+'/'+file_name):
+            continue
         file_mtime=os.path.getmtime( params['dvpd_default_directory']+'/'+file_name)
         if file_mtime>max_mtime:
             youngest_file=file_name

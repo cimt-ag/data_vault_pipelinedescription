@@ -470,6 +470,8 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
     youngest_file=''
 
     for file_name in os.listdir( dvpi_default_directory):
+        if not os.path. isfile( dvpi_default_directory+'/'+file_name):
+            continue
         file_mtime=os.path.getmtime( dvpi_default_directory+'/'+file_name)
         if file_mtime>max_mtime:
             youngest_file=file_name
