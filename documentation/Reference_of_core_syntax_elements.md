@@ -237,6 +237,15 @@ is rare but possible).
 *defines: key hash assembly*
 <br>This property provides explicit control over the order of concatination of fields for the key hash calculation. It will overrule the implicit ordering, that is defined by the implementation. Implicit ordering will still be applied to columns of the same prio. 
 
+**use_as_key_hash**
+(optional, default=false)
+*defines: key hash assembly, load process validation*
+<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
+<br>Setting this to true, defines the field to contain a key_hash for the table. The field/column name must be equal to
+the name, given by the model structure. It can be applied to parent keys of satellites or links and instructs the staging
+phase to just copy the value from the source into the stage table.
+
+
 **exclude_from_change_detection**
 (optional, default=false, only useful on mappings to historized satellites)
 *defines: satellite load, diff hash assembly*
@@ -321,6 +330,14 @@ Json Path : /data_vault_mode[]/
 **ref**: mapped field is part of the reference table
 
 Satellites without any mapped content column are allowed (effectivity satellites). 
+
+**is_only_structural_element**
+(optional, default=false)
+*defines: hash calculation, loading procedure*
+<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
+Defines the table to be only declared for structural completenes. The table will not be loaded, and the key_hash will not
+be calculated. If not one other table needs the business keys / dependent child keys of this table (happens, when 
+child tables copy key hashes directly from source), the business keys can be omitted. 
 
 **table_comment**
 (optional)

@@ -111,3 +111,25 @@ The following number ranges are defined (a legacy from the proof the development
 | **7xxx-9xxx**    | **Compiler rule checks, based on cases in 100-999. Using the same 3 digit numbers**                  |
 |                  |                                                                                                      |
 
+## Collection without central topic
+Test numbers 1000 to 2999 canbe used for singular or very small groups of tests, for any topic, not targeted by the big
+test fields. It is requiered to declare the test target in the file name.
+
+Some smaller groups are listed here
+
+1020-1039 - Tests for interpretation of "use_as_key_hash" and "is_only_structural_element"
+- 1020 - Multiple sat variants in one case
+- 1021 - Multiple link variants in one case
+- 1022 - Business Vault sat at Hub
+- 1023 - Business Vault sat on link
+- 1024 - business vault link on 2 hubs
+- 1025 - business vault link on 4 hubs
+- 1026 - business vault link with recursive relation
+- 1027 - business vault link with recursive relation and other hub
+- 1028 - business vault link with dependent child key and 2 hubs
+- 1029 - business vault link with dependent child key and recurive relation
+- 1030 - business vault link with dependent child key, recurive relation and other hub
+- 1031c - Multiple "use_as_key_hash" mappings to same target column
+- 1032c - "use_as_key_hash" mapping to unknown key hash column
+- 1033c - "is_only_structural_element" declared child has no "use_as_key_hash" mapping (trigger a warning that this might result in orphan entries)
+- 103x - Behaviour using relations (first we need to investigate if this can be really a use case)
