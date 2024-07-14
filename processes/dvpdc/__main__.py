@@ -202,8 +202,10 @@ def transform_hub_table(dvpd_table_entry, schema_name, storage_component, table_
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
     model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
+    is_only_structural_element=dvpd_table_entry.get('is_only_structural_element', False)
     table_properties= {'table_stereotype': 'hub', 'schema_name': schema_name, 'storage_component': storage_component,
-                       'model_profile_name': model_profile_name, 'table_comment': table_comment}
+                       'model_profile_name': model_profile_name, 'table_comment': table_comment
+                        ,'is_only_structural_element':is_only_structural_element}
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
 
@@ -219,8 +221,10 @@ def transform_lnk_table(dvpd_table_entry, schema_name, storage_component, table_
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
     model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
+    is_only_structural_element = dvpd_table_entry.get('is_only_structural_element', False)
     table_properties= {'table_stereotype': 'lnk','schema_name':schema_name,'storage_component':storage_component,
-                       'model_profile_name': model_profile_name, 'table_comment': table_comment}
+                       'model_profile_name': model_profile_name, 'table_comment': table_comment
+                        ,'is_only_structural_element':is_only_structural_element}
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
 
@@ -396,18 +400,20 @@ def create_columns_from_field_mapping(field_entry, field_position):
         column_map_entry['field_name']=field_name
         column_map_entry['field_position']=field_position
         column_map_entry['column_type'] = table_mapping.get('column_type',field_entry['field_type']).upper()  # defaults to field type
-        column_map_entry['row_order_direction'] = table_mapping.get('row_order_direction','ASC')  # defaults to ASC
-        column_map_entry['exclude_from_key_hash'] = table_mapping.get('exclude_from_key_hash',False)  # defaults to False
-        column_map_entry['exclude_from_change_detection'] = table_mapping.get('exclude_from_change_detection',False)  # defaults to False
-        column_map_entry['column_content_comment'] = table_mapping.get('column_content_comment',field_entry.get('field_comment'))
-        column_map_entry['update_on_every_load'] = table_mapping.get('update_on_every_load',False)  # defaults to False
-        try:
-            column_map_entry['prio_in_key_hash'] = int(table_mapping.get('prio_in_key_hash',0) ) # defaults to 0
-            column_map_entry['prio_for_column_position'] = int(table_mapping.get('prio_for_column_position',50000))  # defaults to 50000
-            column_map_entry['prio_for_row_order'] = int(table_mapping.get('prio_for_row_order',50000) ) # defaults to 50000
-            column_map_entry['prio_in_diff_hash'] = int(table_mapping.get('prio_in_diff_hash',0))  # defaults to 0
-        except ValueError as ve:
-            register_error(f"Error when reading numerical properties from  mapping of field '{field_name}' to table '{table_name}':"+str(ve))
+        column_map_entry['use_as_key_hash'] = table_mapping.get('use_as_key_hash',False)  # defaults to False
+        if not column_map_entry['use_as_key_hash'] :
+            column_map_entry['row_order_direction'] = table_mapping.get('row_order_direction','ASC')  # defaults to ASC
+            column_map_entry['exclude_from_key_hash'] = table_mapping.get('exclude_from_key_hash',False)  # defaults to False
+            column_map_entry['exclude_from_change_detection'] = table_mapping.get('exclude_from_change_detection',False)  # defaults to False
+            column_map_entry['column_content_comment'] = table_mapping.get('column_content_comment',field_entry.get('field_comment'))
+            column_map_entry['update_on_every_load'] = table_mapping.get('update_on_every_load',False)  # defaults to False
+            try:
+                column_map_entry['prio_in_key_hash'] = int(table_mapping.get('prio_in_key_hash',0) ) # defaults to 0
+                column_map_entry['prio_for_column_position'] = int(table_mapping.get('prio_for_column_position',50000))  # defaults to 50000
+                column_map_entry['prio_for_row_order'] = int(table_mapping.get('prio_for_row_order',50000) ) # defaults to 50000
+                column_map_entry['prio_in_diff_hash'] = int(table_mapping.get('prio_in_diff_hash',0))  # defaults to 0
+            except ValueError as ve:
+                register_error(f"Error when reading numerical properties from  mapping of field '{field_name}' to table '{table_name}':"+str(ve))
 
         relation_names_cleansed = []  # of no relation is declared, at least an empty array will be attached as 'relation_names'
         if 'relation_names' in table_mapping:
@@ -419,9 +425,15 @@ def create_columns_from_field_mapping(field_entry, field_position):
 
         # finally add this field mapping to the columns array of the table in g_table_dict
         table_entry=g_table_dict[table_name]
-        if not 'data_columns' in table_entry:
-            table_entry['data_columns']={}
-        column_dict=table_entry['data_columns']
+        if not column_map_entry['use_as_key_hash']:
+            if not 'data_columns' in table_entry:
+                table_entry['data_columns'] = {}
+            column_dict = table_entry['data_columns']
+        else:
+            if not 'key_hash_field_mappings' in table_entry:
+                table_entry['key_hash_field_mappings'] = {}
+            column_dict = table_entry['key_hash_field_mappings']
+
         if not column_name in column_dict:
             column_dict[column_name] = {}
         theColumn=column_dict[column_name]
@@ -464,24 +476,22 @@ def derive_content_dependent_table_properties():
                     f"!!! Something bad happened !!! cleansed stereotype {table_entry['table_stereotype']} has no rule in derive_content_dependent_table_properties()")
 
 def derive_content_dependent_hub_properties(table_name,table_entry):
-    if not 'data_columns' in table_entry:
-        register_error(f"Hub table {table_name} has no field mapping. A hub without a business key makes no sense")
-        return
-
     has_business_key=False
-    for column_name,column_properties in table_entry['data_columns'].items():
-        first_field=column_properties['field_mappings'][0]
-        if first_field['exclude_from_key_hash']:
-            column_properties['column_class'] = 'content_untracked'
-        else:
-            column_properties['column_class']='business_key'
-            has_business_key=True
-        column_properties['field_mapping_count']=len(column_properties['field_mappings'])
-        for property_name in ['column_type','prio_for_column_position','field_position','prio_in_key_hash','exclude_from_key_hash','column_content_comment']:
-            column_properties[property_name]=first_field[property_name]
-        add_generic_relation_mappings(column_properties)
+    if 'data_columns' in table_entry:
+        for column_name,column_properties in table_entry['data_columns'].items():
+            first_field=column_properties['field_mappings'][0]
+            if first_field['exclude_from_key_hash']:
+                column_properties['column_class'] = 'content_untracked'
+            else:
+                column_properties['column_class']='business_key'
+                has_business_key=True
+            column_properties['field_mapping_count']=len(column_properties['field_mappings'])
+            for property_name in ['column_type','prio_for_column_position','field_position','prio_in_key_hash','exclude_from_key_hash','column_content_comment']:
+                column_properties[property_name]=first_field[property_name]
+            add_generic_relation_mappings(column_properties)
 
-    if not has_business_key:
+    table_entry['has_business_key']=has_business_key
+    if not has_business_key and not table_entry['is_only_structural_element']:
         register_error(f"Hub table {table_name} has no business key assigned")
 
 def derive_content_dependent_lnk_properties(table_name, table_entry):
@@ -662,8 +672,10 @@ def determine_load_operations_for_links_with_parent_relation_directives():
         All other links will not get a load operation here
     """
     for table_name, table_entry in g_table_dict.items():
-        if table_entry['table_stereotype'] != 'lnk' or not table_entry['has_explicit_link_parent_relations']:
-            continue  # we are only interested in links with explicitc parent relations
+        if table_entry['table_stereotype'] != 'lnk' \
+            or not table_entry['has_explicit_link_parent_relations'] \
+            or table_entry['is_only_structural_element']:
+            continue  # we are only interested in links with explicitc parent relations that are  not only structural elemets
 
         load_operations = table_entry['load_operations']
         if len(load_operations) > 0:
@@ -695,8 +707,10 @@ def pull_satellite_load_operations_into_links():
     """
     for link_table_name,link_table in g_table_dict.items():
         link_load_operations=link_table['load_operations']
-        if link_table['table_stereotype'] != 'lnk' or len(link_load_operations)>0:
-            continue # only links without load operation yet
+        if link_table['table_stereotype'] != 'lnk' \
+               or len(link_load_operations)>0 \
+               or link_table['is_only_structural_element'] :
+            continue # only links without load operation yet and no structural only elements
 
         for sat_table_name, sat_table in g_table_dict.items():
             if sat_table['table_stereotype'] != 'sat':
@@ -745,7 +759,9 @@ def pull_hub_load_operations_into_links():
     """STEP 6 of load operation determination procedure"""
     for link_table_name,link_table in g_table_dict.items():
         link_load_operations=link_table['load_operations']
-        if link_table['table_stereotype'] != 'lnk' or len(link_load_operations)>0:
+        if link_table['table_stereotype'] != 'lnk' \
+                or len(link_load_operations)>0\
+                or link_table['is_only_structural_element'] :
             continue # only links without load operations yet
 
         #collect the operations, all hubs have in common
@@ -844,7 +860,7 @@ def add_hash_column_mappings_for_hub(table_name,table_entry):
     hash_base_name = "KEY_OF_"+table_name.upper()
     key_column_name = table_entry['hub_key_column_name']
 
-    # create a hash for every load operation of the hub (wich is a differen key set by definition)
+    # create a hash for every load operation of the hub (which is a different key set by definition)
     load_operations=table_entry['load_operations']
     for load_operation_name, load_operation_entry in load_operations.items():
         #render internal hash name
@@ -1039,9 +1055,17 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         if not mapping_set in mapping_set_dict:
             mapping_set_dict[mapping_set]=1
 
+    # add a key and diff hash for every load operation of the satellite
     for load_operation_name, load_operation_entry in load_operations.items():
         hash_mapping_dict = {}
         load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
+
+        #if 'key_hash_field_mappings' in table_entry:
+            # hash value is delivered directly from source
+            # need to create a own hash name
+            # need to decide the result in the dvpi first
+
+
         # add parent key hash to hash reference list
         parent_load_operations = satellite_parent_table['load_operations']
 
@@ -1054,9 +1078,11 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         parent_load_operation = parent_load_operations[load_operation_name]
         parent_hash_reference_dict = parent_load_operation['hash_mapping_dict']
         parent_key_hash_reference = parent_hash_reference_dict['key']
+        satellite_parent_table_key_column_name =parent_key_hash_reference['hash_column_name']
 
-        sat_key_column_name=parent_key_hash_reference['hash_column_name']
+        sat_key_column_name=parent_key_hash_reference['hash_column_name'] # currently the same as parent. Might be overwritten by sat propetery later
 
+        # put reference to hash description in load operation hash list
         sat_key_hash_reference = {"hash_name": parent_key_hash_reference['hash_name'],
                                           "hash_column_name": sat_key_column_name}
         hash_mapping_dict['parent_key'] = sat_key_hash_reference
@@ -1065,8 +1091,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         if sat_key_column_name not in table_hash_columns:
             table_hash_columns[sat_key_column_name] = {"column_class": "parent_key",
                                                                "parent_table_name": table_entry['satellite_parent_table'],
-                                                               "parent_key_column_name": parent_key_hash_reference[
-                                                                   'hash_column_name'],
+                                                               "parent_key_column_name": satellite_parent_table_key_column_name,
                                                                "column_type":satellite_parent_table_key_column_type}
 
         # if not needed, skip diff hash
@@ -1076,7 +1101,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                 continue
 
         if not table_entry['uses_diff_hash']:
-            return # without diff hash we are done here
+            continue # without diff hash we are done here
 
         # add diff hash for the mapping set
         mapping_set=load_operation_entry['mapping_set']
@@ -1694,6 +1719,7 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
     derive_content_dependent_table_properties()
     if g_error_count > 0:
         raise DvpdcError
+
 
     derive_load_operations()
     if g_error_count > 0:

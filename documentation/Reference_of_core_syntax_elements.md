@@ -331,13 +331,7 @@ Json Path : /data_vault_mode[]/
 
 Satellites without any mapped content column are allowed (effectivity satellites). 
 
-**is_only_structural_element**
-(optional, default=false)
-*defines: hash calculation, loading procedure*
-<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
-Defines the table to be only declared for structural completenes. The table will not be loaded, and the key_hash will not
-be calculated. If not one other table needs the business keys / dependent child keys of this table (happens, when 
-child tables copy key hashes directly from source), the business keys can be omitted. 
+
 
 **table_comment**
 (optional)
@@ -364,6 +358,14 @@ Json Path : /data_vault_mode[]/tables[]
 <br>Name of the hub key in the table. (Currently this name must be unique over all tables in the declared model. Future versions will extend the syntax to allow the same name in different tables, even though it is highly recommended to have unique hub key names)
 <br>*"hk_raccn_account"*
 
+**is_only_structural_element**
+(optional, default=false)
+*defines: hash calculation, loading procedure*
+<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
+Defines the hub to be only declared for structural completeness. The table will not be loaded, and the key_hash will not
+be calculated but must be provided to child tables via "use_as_key_hash" mappings.
+If there are no link children, that need to calculate their link key, the business keys can be omitted.
+
 ### "lnk" specific properties
 
 Json Path : /data_vault_mode[]/tables[]
@@ -376,6 +378,13 @@ Depending on mapped fields and the properties, this can be a
 (mandatory)*defines: model structure*
 <br>Name of the link key in the table
 <br>*"lk_raccn_account_department"*
+
+**is_only_structural_element**
+(optional, default=false)
+*defines: hash calculation, loading procedure*
+<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
+Defines the link to be only declared for structural completeness. The table will not be loaded, and the link_key will not
+be calculated. The link key values for the children must be provided via "use_as_key_hash" mappings. 
 
 **link_parent_tables[]**
 (mandatory)*defines: model structure*

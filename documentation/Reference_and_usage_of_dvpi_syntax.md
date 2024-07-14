@@ -357,7 +357,7 @@ transformation of the source data, should be done before the staging.
 ### hashes[]
 Json Path: $.parse_sets[]
 
-Provides all necessary declarations, how to assemble and calculate the hash value.
+Provides all necessary declarations, how to assemble and calculate the hash values.
 
 **hash_name**
 <br>Identfication of the hash. This is used to identify the hash in the mappings.
@@ -484,10 +484,13 @@ Json Path: $.parse_sets[].load_operations[]
 <br>Name of the target column in the table
 
 **hash_name**
-<br>Identification of the hash in the hashes[] list.
+<br>Identification of the hash in the hashes[] list. In case of a direct field mapping, the hash_name will not be set.
 
 **hash_class**
 <br>Class of the hash: key, parent_key, diff_hash. Needed to identify the special columns for the loading procedure, depending on the table_stereotype.
+
+**field_name**
+<br>Name of the field, containing the precalculated value in the source data set. Must only be set, when hash_name is not set.
 
 **stage_column_name**
 <br>Name of the stage column, the hash can be taken from, when using stage table approach

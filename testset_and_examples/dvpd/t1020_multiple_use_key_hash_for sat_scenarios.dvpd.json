@@ -18,9 +18,8 @@
 																																											]}
 		 	  ,{"field_name": "F3_AAA_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1020_aaa_sat"}]}
 			  ,{"field_name": "F4_AAA_BBB_C1",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_1020_aaa_bbb_sat"}]}
-			  ,{"field_name": "F5_AAA_BBB_C2F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1020_aaa_bbb_sat",
-																									 "column_name":"F5_AAA_BBB_C3F"}]}
-			 ],
+			  ,{"field_name": "F5_AAA_BBB_C2F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1020_aaa_bbb_sat"}]}
+			 ], 
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
