@@ -1062,8 +1062,9 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
 
         #if 'key_hash_field_mappings' in table_entry:
             # hash value is delivered directly from source
-            # need to create a own hash name
-            # need to decide the result in the dvpi first
+            # hash column name must be key name of satellite (default ist the key name of the  parent)
+            # Load operation must be covered exactly once in key_hash_field_mapping
+
 
 
         # add parent key hash to hash reference list
