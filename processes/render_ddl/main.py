@@ -160,7 +160,8 @@ def assemble_column_name_and_stage_name_dict(parse_set):
     column_name_to_stage_name_dict = {}
     stage_name_to_column_name_dict ={}
     for load_operation in parse_set['load_operations']:
-        if 'data_mapping' in load_operation:
+
+        if 'data_mapping' in load_operation:        # collect the mappings from the data_mappings
             for column in load_operation['data_mapping']:
                 column_name=column['column_name']
                 stage_name=column['stage_column_name']
@@ -173,6 +174,20 @@ def assemble_column_name_and_stage_name_dict(parse_set):
                 elif column_name not in stage_name_to_column_name_dict[stage_name]:
                     stage_name_to_column_name_dict[stage_name].append(column_name)
 
+        for column in load_operation['hash_mappings']: # collect the mappings from the hash_mappings
+            if not 'field_name' in column:             # where the hash is provided by a source field
+                continue
+            column_name=column['column_name']
+            stage_name=column['stage_column_name']
+            if column_name not in column_name_to_stage_name_dict:
+                column_name_to_stage_name_dict[column_name]=[stage_name]
+            elif stage_name not in  column_name_to_stage_name_dict[column_name]:
+                column_name_to_stage_name_dict[column_name].append(stage_name)
+            if stage_name not in stage_name_to_column_name_dict:
+                stage_name_to_column_name_dict[stage_name]=[column_name]
+            elif column_name not in stage_name_to_column_name_dict[stage_name]:
+                stage_name_to_column_name_dict[stage_name].append(column_name)
+
     return column_name_to_stage_name_dict,stage_name_to_column_name_dict
 
 def assemble_stage_with_target_column_type_dict(parse_set,tables):
@@ -183,6 +198,11 @@ def assemble_stage_with_target_column_type_dict(parse_set,tables):
         table_name = None
         column_name = None
         for load_operation in parse_set['load_operations']:  # scan all operations for a mapping the current stage column
+            for column_mapping in load_operation['hash_mappings']:
+                if column_mapping['stage_column_name']==stage_column['stage_column_name']:
+                    table_name=load_operation['table_name']
+                    column_name=column_mapping['column_name']
+                    break
             if 'data_mapping' not in load_operation:
                 continue
             for column_mapping in load_operation['data_mapping']:
@@ -419,7 +439,9 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
                             raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
 
                     column_classes = column['column_classes']
-                    if 'business_key' in column_classes or 'dependent_child_key' in column_classes:
+                    if 'parent_key'  in column_classes:
+                        hashkeys.append("{} {} {}".format(final_column_name, col_type, nullable))
+                    elif 'business_key' in column_classes or 'dependent_child_key' in column_classes:
                         business_keys.append("{} {} {}".format(final_column_name, col_type, nullable))
                     elif 'content_untracked' in column_classes:
                         content_untracked.append("{} {} {}".format(final_column_name, col_type, nullable))

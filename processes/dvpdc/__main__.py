@@ -545,6 +545,7 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
 
     if 'direct_key_hash_columns' in table_entry:
         for column_name, column_properties in table_entry['direct_key_hash_columns'].items():
+            column_properties['column_class'] = 'parent_key'
             add_generic_relation_mappings(column_properties)
 
     if table_entry['is_effectivity_sat']:
@@ -1571,14 +1572,21 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
 
 def collect_column_classes_for_field(field_name):
     column_classes=[]
+
     for table_name,table_entry in g_table_dict.items():
-        if 'data_columns' not in table_entry:
-            continue
-        for column_name,data_column_entry in table_entry['data_columns'].items():
-            for field_mapping_entry in data_column_entry['field_mappings']:
-                if field_mapping_entry['field_name']==field_name:
-                    if data_column_entry['column_class'] not in column_classes:
-                        column_classes.append(data_column_entry['column_class'])
+        if 'direct_key_hash_columns' in table_entry:
+            for column_name,hash_column_entry in table_entry['direct_key_hash_columns'].items():
+                for field_mapping_entry in hash_column_entry['field_mappings']:
+                    if field_mapping_entry['field_name']==field_name:
+                        if hash_column_entry['column_class'] not in column_classes:
+                            column_classes.append(hash_column_entry['column_class'])
+
+        if 'data_columns'  in table_entry:
+            for column_name,data_column_entry in table_entry['data_columns'].items():
+                for field_mapping_entry in data_column_entry['field_mappings']:
+                    if field_mapping_entry['field_name']==field_name:
+                        if data_column_entry['column_class'] not in column_classes:
+                            column_classes.append(data_column_entry['column_class'])
 
     return column_classes
 

@@ -1,10 +1,10 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-07-15 12:53:28",
+  "compile_timestamp": "2024-07-15 15:28:01",
   "dvpd_version": "0.6.1",
-  "pipeline_name": "t1020_one_link_with_one_satellite",
-  "dvpd_filename": "t1020_multiple_use_key_hash_for sat_scenarios.dvpd.json",
+  "pipeline_name": "t1020_multiple_use_key_hash_for_sat_scenarios",
+  "dvpd_filename": "t1020_multiple_use_key_hash_for_sat_scenarios.dvpd.json",
   "tables": [
     {
       "table_name": "rtjj_1020_aaa_sat",
@@ -207,7 +207,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st1020_one_link_with_one_satellite",
+          "stage_table_name": "st1020_multiple_use_key_hash_for_sat_scenarios",
           "storage_component": ""
         }
       ],
@@ -427,7 +427,9 @@
           "field_name": "HK_RTJJ_1020_AAA",
           "is_nullable": true,
           "column_type": "CHAR(28)",
-          "column_classes": []
+          "column_classes": [
+            "parent_key"
+          ]
         },
         {
           "stage_column_name": "LK_RTJJ_1020_AAA_BBB",
@@ -435,7 +437,9 @@
           "field_name": "LK_RTJJ_1020_AAA_BBB",
           "is_nullable": true,
           "column_type": "CHAR(28)",
-          "column_classes": []
+          "column_classes": [
+            "parent_key"
+          ]
         },
         {
           "stage_column_name": "F3_AAA_C1",

@@ -1,7 +1,7 @@
 {
 	"dvpd_version": "0.6.1",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "t1020_one_link_with_one_satellite",
+	"pipeline_name": "t1020_multiple_use_key_hash_for_sat_scenarios",
 	"record_source_name_expression": "dvpd implementation test",
 	"pipeline_comment":"Multi case test for 'use_as_key_hash' on satellites.",
 	"data_extraction": {
