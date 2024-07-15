@@ -1105,7 +1105,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
             sat_key_hash_reference = {"field_name":field_mapping_to_use['field_name'],
                                           "hash_column_name": sat_key_column_name}
 
-        else:   # hash value must be taken from parent
+        else:   # hash value must be defined by parent
 
             parent_load_operations = satellite_parent_table['load_operations']
 
@@ -1180,7 +1180,6 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         hash_description = {"stage_column_name": stage_column_name,
                             "hash_origin_table": table_name,
                             "multi_row_content" : table_entry['is_multiactive'],
-                            "related_key_hash" : parent_key_hash_reference['hash_name'],
                             "column_class": "diff_hash",
                             "hash_fields": hash_fields,
                             "column_type": diff_hash_column_type,
@@ -1191,6 +1190,8 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                             "hash_null_value_string": model_profile['hash_null_value_string'],
                             "model_profile_name": table_entry['model_profile_name']
                             }
+        if 'hash_name' in sat_key_hash_reference:  # hash value is defined by hash calculation of parent
+            hash_description["related_key_hash"] = parent_key_hash_reference['hash_name']
 
         if hash_name not in g_hash_dict:
             g_hash_dict[hash_name] = hash_description

@@ -337,7 +337,7 @@ Provides all necessary declarations how to parse every field from the source dat
 <br>Allows the declaration of a constant value or a placeholder, that inject data from, that is not directly in the dataset.
 Valid settings depend on the generator/execution module. 
 General syntax for data placeholder is "${<name of placeholder}". The following placeholders are expected to be available:
-- <value> - this value will be taken as field value
+- \<value> - this value will be taken as field value
 - ${CURRENT_TIMESTAMP} - Timestamp of the current load process
 - ${ROW_NUMBER_OVER_BUSINESSKEY(list of business keys)} - The numerical position of the row in the defined business key  
 - ${ROW_NUMBER_OVER_KEY(data vaut key)} - The numerical position of the row in the declared data vault key (e.g. the hub key) 
@@ -376,7 +376,8 @@ Provides all necessary declarations, how to assemble and calculate the hash valu
 
 **related_key_hash**(diff hash only)
 <br>Name of the hash, that defines the the key, the diff hash is referring to. This can be used to
-identify all rows for the same multi row diff hash
+identify all rows for the same multi row diff hash. This property is not available, when the key hash of the
+table is delivered by a source field.
 
 **hash_fields[]**
 <br>List of the fields, that need to be concatenated for the hash.
