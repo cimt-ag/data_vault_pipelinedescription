@@ -36,6 +36,8 @@ def parse_target(target):
         in_brackets.append("not in key hash") 
     if 'exclude_from_change_detection' in target and is_json_true(target['exclude_from_change_detection']):
         in_brackets.append("not in comparison")
+    if 'use_as_key_hash' in target:
+        in_brackets.append("as key hash")
     if 'relation_names' in target:
         relation_names = target["relation_names"] 
         if len(relation_names) == 1:
@@ -91,7 +93,7 @@ def create_documentation(dvpd,column_labels):
             t = []
             for target in targets:
                 t.append(parse_target(target))
-            html += "               <td>[" + ", ".join(t) + "]</td>\n"
+            html += "               <td>" + ",<br/> ".join(t) + "</td>\n"
         html += "       </tr>\n"
 
     html += "   </table>\n"
