@@ -9,6 +9,7 @@ Also the testset will be massively extended. Some minor feature extensions will 
 - python example of a documentation generator, generating mapping documentation in HTML
 - python example of a developmer instruction sheet generator
 - command examples to use all tools on the command line including a build all script
+- experimental: syntax to declare source fields to contain precalculated hash values (use_as_hash_key, is_only_structural_element)
 
 ### DVPD syntax changes
 - Field mappings to tables now default to the "unnamed relation". To trigger the usage of mappings in all relations "*" must be declared as reltion name
