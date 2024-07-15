@@ -280,7 +280,8 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component, table_
     table_name = dvpd_table_entry['table_name'].lower()
     model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
     table_properties= {'table_stereotype': 'sat','schema_name':schema_name,'storage_component':storage_component,
-                       'model_profile_name': model_profile_name, 'table_comment': table_comment}
+                       'model_profile_name': model_profile_name, 'table_comment': table_comment
+                       ,'is_only_structural_element':False}
 
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
@@ -322,7 +323,8 @@ def transform_ref_table(dvpd_table_entry, schema_name, storage_component, table_
     table_name = dvpd_table_entry['table_name'].lower()
     model_profile_name=dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
     table_properties={'table_stereotype': 'ref','schema_name':schema_name,'storage_component':storage_component,
-                       'model_profile_name': model_profile_name, 'table_comment': table_comment}
+                       'model_profile_name': model_profile_name, 'table_comment': table_comment
+                        , 'is_only_structural_element': False  }
 
     if model_profile_name not in g_model_profile_dict:
         register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
@@ -430,9 +432,9 @@ def create_columns_from_field_mapping(field_entry, field_position):
                 table_entry['data_columns'] = {}
             column_dict = table_entry['data_columns']
         else:
-            if not 'key_hash_field_mappings' in table_entry:
-                table_entry['key_hash_field_mappings'] = {}
-            column_dict = table_entry['key_hash_field_mappings']
+            if not 'direct_key_hash_columns' in table_entry:
+                table_entry['direct_key_hash_columns'] = {}
+            column_dict = table_entry['direct_key_hash_columns']
 
         if not column_name in column_dict:
             column_dict[column_name] = {}
@@ -540,7 +542,10 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
     if 'driving_keys' in table_entry:
         if parent_table_stereotype != 'lnk':
             register_error(f"Satellite '{table_name}' declares driving Key, but parent is not a link")
-        
+
+    if 'direct_key_hash_columns' in table_entry:
+        for column_name, column_properties in table_entry['direct_key_hash_columns'].items():
+            add_generic_relation_mappings(column_properties)
 
     if table_entry['is_effectivity_sat']:
         return  # without any columns, we are done here
@@ -555,6 +560,8 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
         for property_name in ['column_type','column_content_comment','prio_for_column_position','prio_for_row_order','row_order_direction','exclude_from_change_detection','prio_in_diff_hash']:
             column_properties[property_name]=first_field[property_name]
         add_generic_relation_mappings(column_properties)
+
+
 
 def derive_content_dependent_ref_properties(table_name, table_entry):
     for column_name, column_properties in table_entry['data_columns'].items():
@@ -1060,32 +1067,71 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         hash_mapping_dict = {}
         load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
 
-        #if 'key_hash_field_mappings' in table_entry:
-            # hash value is delivered directly from source
+        if 'direct_key_hash_columns' in table_entry:   # hash value is delivered directly from source
+
             # hash column name must be key name of satellite (default ist the key name of the  parent)
-            # Load operation must be covered exactly once in key_hash_field_mapping
+            if satellite_parent_table['table_stereotype']=='hub':
+                sat_key_column_name = satellite_parent_table['hub_key_column_name']
+            elif satellite_parent_table['table_stereotype']=='lnk':
+                sat_key_column_name = satellite_parent_table['link_key_column_name']
+            else:
+                register_error(
+                    f"Could not determine key column name of  '{table_entry['satellite_parent_table']}' when checking use_as_key_hash declaration of satellite '{table_name}'")
+                return
 
+            # The column name must be addressd by the use_as_key_hash mapping
+            if sat_key_column_name not in table_entry['direct_key_hash_columns']:
+                # todo: add test case for this check
+                register_error(
+                    f"The key column '{sat_key_column_name}' of satellite '{table_name}' has no 'use_as_key_hash' field mapping")
+                return
 
+            # The Load operation must be covered exactly once in key_hash_field_mapping
+            field_mapping_to_use=None
+            for field_mapping in   table_entry['direct_key_hash_columns'][sat_key_column_name]['field_mappings']:
+                if load_operation_name in field_mapping['relation_names'] or '*' in field_mapping['relation_names']:
+                    if field_mapping_to_use == None:
+                        field_mapping_to_use=field_mapping
+                    else:
+                        register_error(
+                            f"Duplicate field mapping to '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
+                        return
+            if field_mapping_to_use==None:
+                register_error(
+                    f"Missing field mapping to '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
+                return
 
-        # add parent key hash to hash reference list
-        parent_load_operations = satellite_parent_table['load_operations']
-
-        if not load_operation_name in parent_load_operations:
-            #todo: create compiler check test case to trigger this message
-            register_error(
-                f"Parent table '{table_entry['satellite_parent_table']}' has no load operation for relation '{load_operation_name}' requiered for satellite '{table_name}'")
-            return
-
-        parent_load_operation = parent_load_operations[load_operation_name]
-        parent_hash_reference_dict = parent_load_operation['hash_mapping_dict']
-        parent_key_hash_reference = parent_hash_reference_dict['key']
-        satellite_parent_table_key_column_name =parent_key_hash_reference['hash_column_name']
-
-        sat_key_column_name=parent_key_hash_reference['hash_column_name'] # currently the same as parent. Might be overwritten by sat propetery later
-
-        # put reference to hash description in load operation hash list
-        sat_key_hash_reference = {"hash_name": parent_key_hash_reference['hash_name'],
+            satellite_parent_table_key_column_name=sat_key_column_name
+            sat_key_hash_reference = {"field_name":field_mapping_to_use['field_name'],
                                           "hash_column_name": sat_key_column_name}
+
+        else:   # hash value must be taken from parent
+
+            parent_load_operations = satellite_parent_table['load_operations']
+
+            if not load_operation_name in parent_load_operations:
+                #todo: create compiler check test case to trigger this message
+                register_error(
+                    f"Parent table '{table_entry['satellite_parent_table']}' has no load operation for relation '{load_operation_name}' requiered for satellite '{table_name}'")
+                return
+
+            parent_load_operation = parent_load_operations[load_operation_name]
+            parent_hash_reference_dict = parent_load_operation['hash_mapping_dict']
+            parent_key_hash_reference = parent_hash_reference_dict['key']
+            satellite_parent_table_key_column_name =parent_key_hash_reference['hash_column_name']
+
+            sat_key_column_name=parent_key_hash_reference['hash_column_name'] # currently the same as parent. Might be overwritten by sat propetery later
+
+            if 'hash_name' not in parent_key_hash_reference:
+                #todo: create compiler check test case to trigger this message
+                register_error(
+                    f"Parent table '{table_entry['satellite_parent_table']}' for satellite '{table_name}' has no hash calculation for {satellite_parent_table_key_column_name}. You may need a 'use_as_key_hash' mapping to the satellite.")
+                return
+
+            # put reference to hash description in load operation hash list
+            sat_key_hash_reference = {"hash_name": parent_key_hash_reference['hash_name'],
+                                              "hash_column_name": sat_key_column_name}
+
         hash_mapping_dict['parent_key'] = sat_key_hash_reference
 
         # put hash column in table hash list
@@ -1095,7 +1141,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                                                                "parent_key_column_name": satellite_parent_table_key_column_name,
                                                                "column_type":satellite_parent_table_key_column_type}
 
-        # if not needed, skip diff hash
+        # skip diff hash logic if not needed
         if table_entry['is_effectivity_sat'] or table_entry['compare_criteria'] == 'key' or table_entry[
             'compare_criteria'] == 'none' or not  table_entry['uses_diff_hash']:
                 table_entry['uses_diff_hash']=False
@@ -1298,6 +1344,8 @@ def assemble_dvpi(dvpd_object, dvpd_filename):
     dvpi_tables=[]
     g_dvpi_document['tables']=dvpi_tables
     for table_name, table_entry in g_table_dict.items():
+        if table_entry['is_only_structural_element']:  # we dont care about sctructural elements
+            continue
         dvpi_tables_entry=assemble_dvpi_table_entry(table_name,table_entry)
         dvpi_tables.append(dvpi_tables_entry)
 
@@ -1442,10 +1490,19 @@ def assemble_dvpi_hash_mappings(load_operation_entry):
     for hash_class,load_operation_hash_dict_entry in load_operation_entry['hash_mapping_dict'].items():
         dvpi_hash_mapping_entry={'hash_class':hash_class,
                                 'column_name':load_operation_hash_dict_entry['hash_column_name'],
-                                'hash_name':load_operation_hash_dict_entry['hash_name'],
                                 'is_nullable':False,
-                                'stage_column_name':g_hash_dict[load_operation_hash_dict_entry['hash_name']]['stage_column_name']
                     }
+        if 'hash_name' in load_operation_hash_dict_entry:
+            dvpi_hash_mapping_entry['hash_name']=load_operation_hash_dict_entry['hash_name']
+            dvpi_hash_mapping_entry['stage_column_name']= g_hash_dict[load_operation_hash_dict_entry['hash_name']]['stage_column_name']
+
+        elif 'field_name' in load_operation_hash_dict_entry:
+            dvpi_hash_mapping_entry['field_name']=load_operation_hash_dict_entry['field_name']
+            dvpi_hash_mapping_entry['stage_column_name']=dvpi_hash_mapping_entry['field_name']
+        else:
+            raise (
+                f"!!! Something bad happened !!! Neither 'hash_name' nor 'field_name' determined for {load_operation_hash_dict_entry['hash_column_name']} ")
+
         dvpi_hash_mappings.append(dvpi_hash_mapping_entry)
     return dvpi_hash_mappings
 
@@ -1573,9 +1630,10 @@ def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
                 for load_operation_entry in parse_set_entry['load_operations']:
                     dvpisum_file.write(f"\n{load_operation_entry['table_name']} [{load_operation_entry['relation_name']}] {load_operation_entry['operation_origin']} \n")
                     for hash_mapping_entry in load_operation_entry['hash_mappings']:
-                        dvpisum_file.write(f"     {hash_mapping_entry['hash_class']}:  {hash_mapping_entry['stage_column_name']} >> {hash_mapping_entry['column_name']}  [")
-                        dvpisum_file.write(renderHashFieldAssembly(parse_set_entry,hash_mapping_entry['hash_name']))
-                        dvpisum_file.write("]\n")
+                        dvpisum_file.write(f"     {hash_mapping_entry['hash_class']}:  {hash_mapping_entry['stage_column_name']} >> {hash_mapping_entry['column_name']}")
+                        if 'hash_name' in hash_mapping_entry:
+                            dvpisum_file.write("  ["+renderHashFieldAssembly(parse_set_entry,hash_mapping_entry)+"]")
+                        dvpisum_file.write("\n")
 
                     if 'data_mapping' not in load_operation_entry:
                         continue
@@ -1606,18 +1664,25 @@ def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
         log_progress("ERROR: writing dvpi summary " + dvpisum_file_path.as_posix())
         raise
 
-def renderHashFieldAssembly(parse_set_entry,hash_name):
-    for hash_entry in parse_set_entry['hashes']:
-        if hash_entry['hash_name'] == hash_name:
-            if hash_entry['column_class']=='key':
-                hash_fields_sorted = sorted(hash_entry['hash_fields'], key=lambda d: "{:03d}".format(d.get('parent_declaration_position',0))+'_/_'+d['field_target_table']+'_/_'+str(d['prio_in_key_hash'])+'_/_'+d['field_target_column'])
-            else:
-                hash_fields_sorted = sorted(hash_entry['hash_fields'], key=lambda d: '_'+str(d['prio_in_diff_hash'])+'_/_'+d['field_target_column'])
-            fields = []
-            for field_entry in hash_fields_sorted:
-                fields.append(field_entry['field_name'])
-            return hash_entry['hash_concatenation_seperator'].join(fields)
-    raise(f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
+def renderHashFieldAssembly(parse_set_entry,hash_mapping_entry):
+    if 'hash_name' in hash_mapping_entry:   # hash is caclulated
+        hash_name=hash_mapping_entry['hash_name']
+        for hash_entry in parse_set_entry['hashes']:
+            if hash_entry['hash_name'] == hash_name:
+                if hash_entry['column_class']=='key':
+                    hash_fields_sorted = sorted(hash_entry['hash_fields'], key=lambda d: "{:03d}".format(d.get('parent_declaration_position',0))+'_/_'+d['field_target_table']+'_/_'+str(d['prio_in_key_hash'])+'_/_'+d['field_target_column'])
+                else:
+                    hash_fields_sorted = sorted(hash_entry['hash_fields'], key=lambda d: '_'+str(d['prio_in_diff_hash'])+'_/_'+d['field_target_column'])
+                fields = []
+                for field_entry in hash_fields_sorted:
+                    fields.append(field_entry['field_name'])
+                return hash_entry['hash_concatenation_seperator'].join(fields)
+        raise(f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
+
+    elif 'field_name' in hash_mapping_entry:  # hash is deliverd in a source field
+        return hash_mapping_entry['field_name']
+    else:
+        raise ("Neither 'hash_name' nor 'field_name' given in hash_mapping_entry")
 
 
 def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_file=None, model_profile_directory=None,verbose_logging=False):
