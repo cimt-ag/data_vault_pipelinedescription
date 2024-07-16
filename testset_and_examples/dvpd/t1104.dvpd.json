@@ -1,0 +1,23 @@
+{
+	"dvpd_version": "0.6.1",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t1104",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields": [
+			   {"field_name": "F1XX_AAA_BK1F_TTT", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_1104_aaa_hub" ,"column_name": "F1F2_AAA_BK1F"
+																				 	,"relation_names":["TTT"]} ]}
+		 	  ,{"field_name": "F2XX_AAA_BK1F_UUU", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_1104_aaa_hub" ,"column_name": "F1F2_AAA_BK1F"
+																				 	,"relation_names":["UUU"]} ]}
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_1104_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_1104_aaa"}
+				]
+		}
+	]
+}
