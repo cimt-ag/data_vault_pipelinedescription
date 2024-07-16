@@ -36,6 +36,21 @@ def assemble_column_name_and_stage_name_dict(parse_set):
                 elif column_name not in stage_name_to_column_name_dict[stage_name]:
                     stage_name_to_column_name_dict[stage_name].append(column_name)
 
+        for column in load_operation['hash_mappings']: # collect the mappings from the hash_mappings
+            if not 'field_name' in column:             # where the hash is provided by a source field
+                continue
+            column_name=column['column_name']
+            stage_name=column['stage_column_name']
+            if column_name not in column_name_to_stage_name_dict:
+                column_name_to_stage_name_dict[column_name]=[stage_name]
+            elif stage_name not in  column_name_to_stage_name_dict[column_name]:
+                column_name_to_stage_name_dict[column_name].append(stage_name)
+            if stage_name not in stage_name_to_column_name_dict:
+                stage_name_to_column_name_dict[stage_name]=[column_name]
+            elif column_name not in stage_name_to_column_name_dict[stage_name]:
+                stage_name_to_column_name_dict[stage_name].append(column_name)
+
+
     return column_name_to_stage_name_dict,stage_name_to_column_name_dict
 
 def assemble_stage_with_target_column_type_dict(parse_set,tables):
@@ -46,13 +61,19 @@ def assemble_stage_with_target_column_type_dict(parse_set,tables):
         table_name = None
         column_name = None
         for load_operation in parse_set['load_operations']:  # scan all operations for a mapping the current stage column
-            if 'data_mapping' not in load_operation:
-                continue
-            for column_mapping in load_operation['data_mapping']:
-                if column_mapping['stage_column_name']==stage_column['stage_column_name']:
-                    table_name=load_operation['table_name']
-                    column_name=column_mapping['column_name']
-                    break
+            if 'data_mapping' in load_operation:
+                for column_mapping in load_operation['data_mapping']:
+                    if column_mapping['stage_column_name']==stage_column['stage_column_name']:
+                        table_name=load_operation['table_name']
+                        column_name=column_mapping['column_name']
+                        break
+            for hash_mapping in load_operation['hash_mappings']:  # scan the  hash_mappings
+                if not 'field_name' in hash_mapping:  # where the hash is provided by a source field
+                    continue
+                if hash_mapping['stage_column_name']==stage_column['stage_column_name']:
+                     table_name=load_operation['table_name']
+                     column_name=hash_mapping['column_name']
+                     break
             if table_name != None:
                 break
         # at this point we should have a hit, so search for the column type definition
@@ -287,6 +308,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                 column_name_to_stage_name_dict,stage_name_to_column_name_dict=assemble_column_name_and_stage_name_dict(parse_set)
                 stage_with_target_column_type_dict=assemble_stage_with_target_column_type_dict(parse_set,tables)
 
+            hash_keys = []
             business_keys = []
             content = []
             content_untracked = []
@@ -311,7 +333,9 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                     field_name=column['field_name']
                     field_to_stage_dict[field_name]=final_column_name # add the fineal column name to the field dict for later use
                     stage_column_to_final_column_name_dict[stage_column_name]=final_column_name
-                    if 'business_key' in column_classes or 'dependent_child_key' in column_classes:
+                    if 'parent_key'  in column_classes:
+                        hash_keys.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
+                    elif 'business_key' in column_classes or 'dependent_child_key' in column_classes:
                         business_keys.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
                     elif 'content_untracked' in column_classes:
                         content_untracked.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
@@ -321,10 +345,13 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                         raise AssertionError(f"unexpected column class! {column_classes} are currently not supported!")
             
             # sort the arrays of the stage columns
+            hash_keys.sort()
             business_keys.sort()
             content.sort()
             content_untracked.sort()
             stage_column_info = []
+            if len(hash_keys) > 0:
+                stage_column_info += ["\t--hash keys"] + hash_keys
             if len(business_keys) > 0:
                 stage_column_info += ["\t--business keys"] + business_keys
             if len(content) > 0:
@@ -376,6 +403,8 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
     youngest_file=''
 
     for file_name in os.listdir( dvpi_default_directory):
+        if not os.path. isfile(dvpi_default_directory+'/'+file_name):
+            continue
         file_mtime=os.path.getmtime( dvpi_default_directory+'/'+file_name)
         if file_mtime>max_mtime:
             youngest_file=file_name

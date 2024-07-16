@@ -237,6 +237,15 @@ is rare but possible).
 *defines: key hash assembly*
 <br>This property provides explicit control over the order of concatination of fields for the key hash calculation. It will overrule the implicit ordering, that is defined by the implementation. Implicit ordering will still be applied to columns of the same prio. 
 
+**use_as_key_hash**
+(optional, default=false)
+*defines: key hash assembly, load process validation*
+<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
+<br>Setting this to true, defines the field to contain a key_hash for the table. The field/column name must be equal to
+the name, given by the model structure. It can be applied to parent keys of satellites or links and instructs the staging
+phase to just copy the value from the source into the stage table.
+
+
 **exclude_from_change_detection**
 (optional, default=false, only useful on mappings to historized satellites)
 *defines: satellite load, diff hash assembly*
@@ -322,6 +331,8 @@ Json Path : /data_vault_mode[]/
 
 Satellites without any mapped content column are allowed (effectivity satellites). 
 
+
+
 **table_comment**
 (optional)
 *defines: documentation, table ddl*
@@ -347,6 +358,14 @@ Json Path : /data_vault_mode[]/tables[]
 <br>Name of the hub key in the table. (Currently this name must be unique over all tables in the declared model. Future versions will extend the syntax to allow the same name in different tables, even though it is highly recommended to have unique hub key names)
 <br>*"hk_raccn_account"*
 
+**is_only_structural_element**
+(optional, default=false)
+*defines: hash calculation, loading procedure*
+<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
+Defines the hub to be only declared for structural completeness. The table will not be loaded, and the key_hash will not
+be calculated but must be provided to child tables via "use_as_key_hash" mappings.
+If there are no link children, that need to calculate their link key, the business keys can be omitted.
+
 ### "lnk" specific properties
 
 Json Path : /data_vault_mode[]/tables[]
@@ -359,6 +378,13 @@ Depending on mapped fields and the properties, this can be a
 (mandatory)*defines: model structure*
 <br>Name of the link key in the table
 <br>*"lk_raccn_account_department"*
+
+**is_only_structural_element**
+(optional, default=false)
+*defines: hash calculation, loading procedure*
+<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
+Defines the link to be only declared for structural completeness. The table will not be loaded, and the link_key will not
+be calculated. The link key values for the children must be provided via "use_as_key_hash" mappings. 
 
 **link_parent_tables[]**
 (mandatory)*defines: model structure*

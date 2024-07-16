@@ -36,6 +36,8 @@ def parse_target(target):
         in_brackets.append("not in key hash") 
     if 'exclude_from_change_detection' in target and is_json_true(target['exclude_from_change_detection']):
         in_brackets.append("not in comparison")
+    if 'use_as_key_hash' in target:
+        in_brackets.append("as key hash")
     if 'relation_names' in target:
         relation_names = target["relation_names"] 
         if len(relation_names) == 1:
@@ -91,7 +93,7 @@ def create_documentation(dvpd,column_labels):
             t = []
             for target in targets:
                 t.append(parse_target(target))
-            html += "               <td>[" + ", ".join(t) + "]</td>\n"
+            html += "               <td>" + ",<br/> ".join(t) + "</td>\n"
         html += "       </tr>\n"
 
     html += "   </table>\n"
@@ -138,6 +140,8 @@ def get_name_of_youngest_dvpd_file(ini_file):
     youngest_file=''
 
     for file_name in os.listdir( params['dvpd_default_directory']):
+        if not os.path. isfile(params['dvpd_default_directory']+'/'+file_name):
+            continue
         file_mtime=os.path.getmtime( params['dvpd_default_directory']+'/'+file_name)
         if file_mtime>max_mtime:
             youngest_file=file_name

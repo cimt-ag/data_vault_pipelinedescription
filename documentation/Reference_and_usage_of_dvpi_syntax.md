@@ -337,7 +337,7 @@ Provides all necessary declarations how to parse every field from the source dat
 <br>Allows the declaration of a constant value or a placeholder, that inject data from, that is not directly in the dataset.
 Valid settings depend on the generator/execution module. 
 General syntax for data placeholder is "${<name of placeholder}". The following placeholders are expected to be available:
-- <value> - this value will be taken as field value
+- \<value> - this value will be taken as field value
 - ${CURRENT_TIMESTAMP} - Timestamp of the current load process
 - ${ROW_NUMBER_OVER_BUSINESSKEY(list of business keys)} - The numerical position of the row in the defined business key  
 - ${ROW_NUMBER_OVER_KEY(data vaut key)} - The numerical position of the row in the declared data vault key (e.g. the hub key) 
@@ -357,7 +357,7 @@ transformation of the source data, should be done before the staging.
 ### hashes[]
 Json Path: $.parse_sets[]
 
-Provides all necessary declarations, how to assemble and calculate the hash value.
+Provides all necessary declarations, how to assemble and calculate the hash values.
 
 **hash_name**
 <br>Identfication of the hash. This is used to identify the hash in the mappings.
@@ -376,7 +376,8 @@ Provides all necessary declarations, how to assemble and calculate the hash valu
 
 **related_key_hash**(diff hash only)
 <br>Name of the hash, that defines the the key, the diff hash is referring to. This can be used to
-identify all rows for the same multi row diff hash
+identify all rows for the same multi row diff hash. This property is not available, when the key hash of the
+table is delivered by a source field.
 
 **hash_fields[]**
 <br>List of the fields, that need to be concatenated for the hash.
@@ -484,10 +485,13 @@ Json Path: $.parse_sets[].load_operations[]
 <br>Name of the target column in the table
 
 **hash_name**
-<br>Identification of the hash in the hashes[] list.
+<br>Identification of the hash in the hashes[] list. In case of a direct field mapping, the hash_name will not be set.
 
 **hash_class**
 <br>Class of the hash: key, parent_key, diff_hash. Needed to identify the special columns for the loading procedure, depending on the table_stereotype.
+
+**field_name**
+<br>Name of the field, containing the precalculated value in the source data set. Must only be set, when hash_name is not set.
 
 **stage_column_name**
 <br>Name of the stage column, the hash can be taken from, when using stage table approach

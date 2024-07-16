@@ -42,9 +42,10 @@ When describing the data we classify the elements as follows:
 # Property of the source data
 
 ## Tabularized
-Data can be complex in multiple ways, especially when it comes
-to hierarchical data or document formats. The following approach requires
+The following approach requires
 the source data representation to be tabularized (all data is organized in Rows, every row contains all fields).
+Hierarchical data formats express some relation information throught he hierarchical structure. When getting
+tablularized, this must be taken into account.
 
 ## Information types of data
 To define the variety of mappings, it is necessary to clarify the types of information, 
@@ -63,9 +64,23 @@ hub=object / link=relation / satellite=attribution.*
 of a link counts also as identification, since it is needed to address 
 attributes, that are attached by the satellite*
 
+## Mapping of attribute fields to key sets
+When the source row contains data of multiple keys for the same object and fields with attributes or measures of that object
+it is necessary, to define, which set of attributes belong to wich set of keys. 
+
+The following scenarios can appear on key level:
+- Distinct key fields for every set
+- Some common and some distinct key fields for every set (e.g. in "multi client" applications, having the client field in every table)
+
+On attribute level, there are these scenarios possible (most likely options listed first)
+- Attribute fields only belong to one defined key set (Often the "primary" key set)
+- distinct attribute fields for all or a subset of key sets
+- some common and some distinct attribute fields for all or a subset of key sets
+- one set of attribute fields, that has to be applied for all key sets
+
 ## Properties of relation data
-* Relation data always must contain the business key columns of all participants. 
-* Data sets with multiple relations to the same object must contain multiple instances of 
+- Relation data always must contain the business key columns of all participants. 
+- Data sets with multiple relations to the same object must contain multiple instances of 
 the business key fields. It might (but must not) contain multiple instances of content data fields.
 
 There are two *flavours* for relations in the source data.
@@ -77,14 +92,13 @@ without any known business relation meaning
 Unit of work relations might be misread as a lack of normalization in the source data. But as the 
 words "without any known" indicate, it might just be a lack of knowledge about a hidden meaning.
 
-
 ## Denormalized data
 When source data contains multiple fields, which target the same satellite columns without any
 different business keys, this might look like denormalized data and trigger the desire to normalize it into a 
 multiactive satellite. 
 
 Data vault  recommends to keep the denormalized structure in the raw vault to allow full auditability. 
-That's why DVPD core will not support any explicit syntax that allows denormalization in the 
+That's why DVPD core will not support any explicit syntax that expresses denormalization in the 
 load phase.
 
 # Model topologies 
@@ -275,10 +289,12 @@ can contain
 - part of a links satellite data (ls)
  
 Participation to a relation is declared at every table mapping of the field.
-If no relatio is declared, a field is considered to be the default source in every relation of that table.
+If no relatio is declared, a field is considered to be in the "unnamed" relation.
 
 To declare the participation on a subset, that contains the "unnamed" relation and another one,
 the syntax provides the reserved relation name "/" for the unnamed relation.
+
+A mapping to all relations of the satellite (or parent) con be declared by using "*" as relation name.
 
 A target column must only have one field mapped in every specific relation. 
 

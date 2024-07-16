@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-07-16 10:13:54
+Compiling t1105c.dvpd.json
+
+There are multiple explicit mappings for relation 'TTT' into column 'F1F2_AAA_BK1F' of table 'rtjj_1105_aaa_hub'
+*** Compilation ended with errors ***
