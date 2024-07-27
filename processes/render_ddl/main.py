@@ -501,6 +501,19 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
 
     return youngest_file
 
+def search_for_dvpifile_of_test(testnumber):
+    params = configuration_load_ini(args.ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
+    dvpi_directory = Path(params['dvpi_default_directory'])
+
+    fileprefix="t{:04d}".format(int(testnumber))
+
+    for file in sorted(dvpi_directory.iterdir()):
+        if (file.is_file()
+            and file.stem.startswith(fileprefix)):
+            return file.name
+
+    return None
+
 ########################   MAIN ################################
 if __name__ == '__main__':
     description_for_terminal = "Process dvpi at the given location to render the ddl statements."
@@ -511,7 +524,7 @@ if __name__ == '__main__':
         usage= usage_for_terminal
     )
     # input Arguments
-    parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory.Use @youngest to parse the youngest.')
+    parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory.Use @youngest to parse the youngest. @t<number> to use a test result file starting')
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
     parser.add_argument("--print", help="print the generated ddl to the console",  action='store_true')
     parser.add_argument("--add_ghost_records", help="Add ghost record inserts to every script",  action='store_true')
@@ -539,7 +552,14 @@ if __name__ == '__main__':
     if dvpi_file_name == '@youngest':
         dvpi_file_name = get_name_of_youngest_dvpi_file(params['dvpi_default_directory'])
         print(f"Rendering from file {dvpi_file_name}")
+    if dvpi_file_name[:2]=='@t':
+        testnumber=dvpi_file_name[2:]
+        dvpi_file_name=search_for_dvpifile_of_test(testnumber)
+        if dvpi_file_name is None:
+            raise Exception(f"Could not find test file for testnumber {testnumber}")
 
+    print("-- Render DDL --")
+    print("Reading dvpi file "+dvpi_file_name)
     dvpi_file_path = Path(dvpi_file_name)
     if not dvpi_file_path.exists():
        dvpi_file_path = dvpi_default_directory.joinpath(dvpi_file_name)
