@@ -76,7 +76,7 @@ def log_function_step(function_name, message):
 
 def register_error(message):
     global g_error_count
-    print(message)
+    print("compile error:"+message)
     g_logfile.write(message)
     g_logfile.write("\n")
     g_error_count += 1
@@ -312,7 +312,7 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component, table_
             cleansed_driving_keys.append(driving_key.upper())
         table_properties['driving_keys']=cleansed_driving_keys
     if 'tracked_relation_name' in dvpd_table_entry:
-        table_properties['tracked_relation_name'] = dvpd_table_entry.get('tracked_relation_name').upper()  # default is None
+        table_properties['tracked_relation_name'] = dvpd_table_entry.get('tracked_relation_name').upper()
 
     # finally add the cleansed properties to the table dictionary
     g_table_dict[table_name] = table_properties
@@ -704,8 +704,9 @@ def determine_load_operations_from_tracking_directive():
                 # todo add compiler test to trigger this error
                 register_error(
                     f"You cannot define a tracked relation, when you declared relations in data mappings other then ['*']. Table: '{table_name}'")
-            load_operations[table_entry['tracked_relation_name']] = {
-                "operation_origin": "explicitly tracked relation","mapping_set":"*"}
+            if table_entry['tracked_relation_name'] != '*':
+                load_operations[table_entry['tracked_relation_name']] = {
+                    "operation_origin": "explicitly tracked relation","mapping_set":"*"}
 
 def pull_satellite_load_operations_into_links():
     """STEP 5 of load operation determination procedure
@@ -809,11 +810,14 @@ def pull_parent_operations_into_sat():
         if sat_table['table_stereotype'] != 'sat' or len(sat_load_operations)>0:
             continue # only sats without load operations yet
 
+        # this satellite has not load operation.
+        # that can be the result of leaving out the declaration or
+        # by declaring the '*' relation in all field relations or as tracked relation
+
         parent_table=g_table_dict[sat_table['satellite_parent_table']]
         parent_load_operations=parent_table['load_operations']
-        for parent_operation in parent_table['load_operations']:
+        for parent_operation in parent_load_operations:
             sat_load_operations[parent_operation] = {"operation_origin":"following parent operation list","mapping_set":"*"}
-
 
 
 def add_data_mapping_dict_to_load_operations():

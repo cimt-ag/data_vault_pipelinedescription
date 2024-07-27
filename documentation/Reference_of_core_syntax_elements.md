@@ -219,7 +219,7 @@ Depending on the target, the declaration will modify the mapping as follows:
 
 When ommitting this property, the mapping counts only to the "unnamed" key set. 
 You can explicitly declare participation in the "unnamend" key set with  "/" as name. This allows a mapping to
-be used in mulitple key sets together with the unnamed relation.
+to inlucde the unnamed relation with other specific named relations.
 
 By setting the property to \["*"], you declare the mapping to be used in all relations of the table.
 Declaring '*' for all mappings of a table, will use the mappings for all relations of the parent tabled. This can not be
@@ -545,10 +545,10 @@ In general, the name must match the final name of a hub key column in the link. 
 **tracked_relation_name**
 (optional, only valid on effectivity satellites)
 *defines: loading operations*
-<br>Name of the relation this satellite will track the validity for. This is only used for satellites
-whithout any field mapping. The relation name must be valid for the satellites parent.
+<br>Name of the relation this satellite will track the validity for.  
+This property can only be used for satellites without any field mapping. The relation name must be valid for the satellites parent.
 
-Announcement for Release 0.7.0: To express test scenarios 3370-34230,3550,3560 "tracked_relation_name" 
+Announcement for release 0.7.0: To express test scenarios 3370-34230,3550,3560 "tracked_relation_name" 
 will be changed to "tracked_key_set".
 
 **history_depth_criteria**
