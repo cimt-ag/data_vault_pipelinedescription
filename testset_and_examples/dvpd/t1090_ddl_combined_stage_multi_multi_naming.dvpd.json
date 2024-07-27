@@ -16,7 +16,7 @@
 				,{"field_name": "F3XX_AAA_BBB_BK2F",	"field_type": "Decimal(10,0)",	"targets": [{"table_name": "rtjj_1090_aaa_hub"
 																																													,"column_name":"F3_AAA_BK2F"}
 																																												 ,{"table_name": "rtjj_1090_bbb_hub"
-																																													,"column_name":"F3_BBB_BK2F"}]}																																								
+																																													,"column_name":"F3_BBB_BK2F"}]}	
 		 	  ,{"field_name": "F4_AAA_P1_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1090_aaa_p1_sat"}
 																																									 ,{"table_name": "rtjj_1090_aaa_p1_sat"
 																																										,"column_name":"F4_AAA_P1_C2F"}]}
