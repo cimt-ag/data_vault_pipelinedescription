@@ -1,11 +1,11 @@
 Data vault pipeline description compiler log 
 Compiler Version 0.6.1
-Compile time: 2024-07-28 12:46:11
+Compile time: 2024-07-28 18:10:23
 Compiling t3161c.dvpd.json
 
 DLO-21:There is no field mapping for relation '/' into column 'F4F5_AAA_BBB_C2F' of table 'rtjj_3161_aaa_bbb_sat'
 DLO-21:There is no field mapping for relation 'TTT' into column 'F3_AAA_BBB_C1' of table 'rtjj_3161_aaa_bbb_sat'
 DLO-21:There is no field mapping for relation 'UUU' into column 'F3_AAA_BBB_C1' of table 'rtjj_3161_aaa_bbb_sat'
-DLO-50:operation '/ induced by satellite 'rtjj_3161_aaa_bbb_sat' to link rtjj_3161_aaa_bbb_lnk is not supported by the hubs of the link
-DLO-50:operation 'UUU induced by satellite 'rtjj_3161_aaa_bbb_sat' to link rtjj_3161_aaa_bbb_lnk is not supported by the hubs of the link
+DLO-50:operation '/' induced by satellite 'rtjj_3161_aaa_bbb_sat' to link rtjj_3161_aaa_bbb_lnk is not supported by the hubs of the link
+DLO-50:operation 'UUU' induced by satellite 'rtjj_3161_aaa_bbb_sat' to link rtjj_3161_aaa_bbb_lnk is not supported by the hubs of the link
 *** Compilation ended with errors ***

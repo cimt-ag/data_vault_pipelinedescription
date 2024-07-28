@@ -14,7 +14,7 @@
 		      ,{"field_name": "F2XX_AAA_BK1F_UUU", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_64_aaa_hub"
 																					,"column_name": "F1F2_AAA_BK1F"
 																				 	,"relation_names":["uuu"]}]}		 	  
-		      ,{"field_name": "F3_BBB_BK1F", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_64_bbb_hub","relation_names":["*"]}]}		 
+		      ,{"field_name": "F3_BBB_BK1F", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_64_bbb_hub"}]}		 
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

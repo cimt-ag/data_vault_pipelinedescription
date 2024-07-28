@@ -643,7 +643,7 @@ def determine_load_operations_from_relations_in_mappings():
 
                 for field_mapping in data_column['field_mappings']:
                     for relation_name in field_mapping['relation_names']:
-                        if relation_name != '*' or table_entry['table_stereotype']=='hub':
+                        if relation_name != '*' :
                             load_operations[relation_name]={"operation_origin":"field mapping relation","mapping_set":relation_name}
                             if not field_mapping['implict_unnamed_relation']:
                                 has_implicit_unnamed_mapping_for_all_columns = False
@@ -704,9 +704,9 @@ def determine_load_operations_from_tracking_directive():
                 # todo add compiler test to trigger this error
                 register_error(
                     f"DLO-40:You cannot define a tracked relation, when you declared relations in data mappings other then ['*']. Table: '{table_name}'")
-            #if table_entry['tracked_relation_name'] != '*':
-            load_operations[table_entry['tracked_relation_name']] = {
-                    "operation_origin": "explicitly tracked relation","mapping_set":"*"}
+            if table_entry['tracked_relation_name'] != '*':
+                load_operations[table_entry['tracked_relation_name']] = {
+                        "operation_origin": "explicitly tracked relation","mapping_set":"*"}
 
 def pull_satellite_load_operations_into_links():
     """STEP 5 of load operation determination procedure
@@ -736,7 +736,7 @@ def pull_satellite_load_operations_into_links():
                 if not is_operation_supported_by_link_hubs(link_table_name,sat_load_operation_name):
                     # todo add compiler test to trigger this error
                     register_error(
-                        f"DLO-50:operation '{sat_load_operation_name} induced by satellite '{sat_table_name}' to link {sat_table['satellite_parent_table']} is not supported by the hubs of the link")
+                        f"DLO-50:operation '{sat_load_operation_name}' induced by satellite '{sat_table_name}' to link {sat_table['satellite_parent_table']} is not supported by the hubs of the link")
 
 
 def is_operation_supported_by_link_hubs(link_table_name,load_operation_name):
@@ -783,10 +783,8 @@ def pull_hub_load_operations_into_links():
             if hub_table['is_hub_with_universal_load_operation']:
                 universal_load_operation_involved=True
                 continue # universal hubs dont count here
-            hub_load_operations=hub_table['load_operations']
-            if '*' in hub_load_operations:
-                continue # hubs with '*' operation have been explicitly mapped but not universal
             relevant_hub_count+=1
+            hub_load_operations=hub_table['load_operations']
             for hub_load_operation_name in hub_load_operations.keys():
                 if first_relevant_hub:
                     load_operation_collection[hub_load_operation_name]=1
@@ -805,10 +803,6 @@ def pull_hub_load_operations_into_links():
         if len(link_load_operations)==0:
             register_error(
                 f"DLO-60: there is no commonly supported relation between all hubs of the link '{link_table_name}'")
-        if len(link_load_operations)>1 and universal_load_operation_involved:
-            link_operation_list_string="','".join(link_load_operations)
-            register_error(
-                f"DLO-61: Link '{link_table_name}' got multiple induced relations ('{link_operation_list_string}'),but some parents have no explicit relation assignment")
 
 
 def pull_parent_operations_into_sat():
@@ -818,7 +812,7 @@ def pull_parent_operations_into_sat():
         if sat_table['table_stereotype'] != 'sat' or len(sat_load_operations)>0:
             continue # only sats without load operations yet
 
-        # this satellite has not load operation.
+        # this satellite has no load operation yet.
         # that can be the result of leaving out the declaration or
         # by declaring the '*' relation in all field relations or as tracked relation
 
@@ -826,6 +820,13 @@ def pull_parent_operations_into_sat():
         parent_load_operations=parent_table['load_operations']
         for parent_operation in parent_load_operations:
             sat_load_operations[parent_operation] = {"operation_origin":"following parent operation list","mapping_set":"*"}
+
+        if len(sat_load_operations)>1 :
+            tracked_relation_name=sat_table.get('tracked_relation_name',None)
+            if tracked_relation_name != '*':
+                sat_operation_list_string="','".join(sat_load_operations)
+                register_error(
+                     f"DLO-70: Sat '{sat_table_name}' got multiple induced relations ('{sat_operation_list_string}') from parent,but have no '*' relation set. ")
 
 
 def add_data_mapping_dict_to_load_operations():

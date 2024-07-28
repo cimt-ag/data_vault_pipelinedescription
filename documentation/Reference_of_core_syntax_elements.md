@@ -548,6 +548,9 @@ In general, the name must match the final name of a hub key column in the link. 
 <br>Name of the relation this satellite will track the validity for.  
 This property can only be used for satellites without any field mapping. The relation name must be valid for the satellites parent.
 
+Setting tracked_relation_name to '*' allows the satellite to follow multiple relations of its parent. If not set, when 
+multiple relations are induced by the parent, this will result in an error, to prevent unintended process generation.
+
 Announcement for release 0.7.0: To express test scenarios 3370-34230,3550,3560 "tracked_relation_name" 
 will be changed to "tracked_key_set".
 
