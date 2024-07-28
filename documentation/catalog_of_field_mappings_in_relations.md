@@ -329,7 +329,7 @@ These links have no explicit relation declaration to a hub (and therefore only o
 - these links participate in all relations that are
     - declared at the mapping of their dependent child keys
     - declared at their satellites
-    - If neither satellites nor dependent child key mappings declare an explicit relation, links belong to all relations, that are common in all connected hubs. In that case participation in multiple relations is only allowed, when theses relations are explicitly declared on all hubs.
+    - If neither satellites nor dependent child key mappings declare an explicit relation, links belong to all relations, that are common in all connected hubs. 
 - each relation the link contributes to, must supported by all connected hubs and must be known explicitily by at 
 least one connecting hub 
   
@@ -341,6 +341,9 @@ a sattelite contributes to the main (unnamed) relation wich will place the link 
 Satellites contribute to all relations that are declared by their incomping field mappings. Without any declaration
 the mappings are used for the "unnamed" mapping only.
 
+Mappings can be declared to be fully generic regarding the relation by setting the relation name to '*'. If all mappings are declared to be generic
+the satellite will follow all relations of its parent.
+
 - The set of columns for a satellite is dermined by all mappings, regardless of the annotated relation
 - All announced relations must have a mapping for every columns
 - relations with different column outcome will fail the consistency check
@@ -348,9 +351,14 @@ the mappings are used for the "unnamed" mapping only.
 
 
 ## Participation of effectivity satellites
-Unlass a tracked relation name is declared, effectivity satellites contribute all relations of the link.
+Unless a tracked relation name is declared, effectivity satellites contribute all relations of the link, as long
+as it is only one. 
 
-- the relation an effectivity satellite participates in must be known by the parent link
+When the link has multiple relations, this might be the result of an unintended relation induction
+through the hubs of the link. Therefore the situation must be clarified by declaring an explicit relation, the satellite will
+track or explicitly allow the satellite to follow all relations by setting the tracked relation  '*'.
+
+- the relation an effectivity satellite is tracking, in must be known by the parent link
 
 
 # Procedure to generate relation specific load operations
@@ -414,14 +422,14 @@ Must be applied to all links, that have no operation yet:
 - Should the result only be `*`, set the load operation of the link to be `/`
 
 ### Step 7 - Parent to Satellite deduction
-Must be applied to all satellites, that have a "*" operation
+Must be applied to all satellites, that have no operation yet
 - Add all operations of the parent 
-- remove the * operation
+- Allow usage of multiple relations from the parent only when satellite ist tracking '\*' relation or has only '\*' mappings 
 Result:
 - every table should now have its appropriate list of load operations
 
 ### Step 8 - Final check
-- compiler crosscheck: all tables must have at least one load operation. Single `*` or one or more relation names
+- compiler crosscheck: all tables must have at least one load operation. Single `\*` or one or more relation names
 
 
 ## Rules for the field assembly for every load operation
