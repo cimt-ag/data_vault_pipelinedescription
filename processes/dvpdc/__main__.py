@@ -622,7 +622,7 @@ def determine_load_operations_from_relations_in_mappings():
     """Step 2 of load operation determination procedure
         Every table, with a field mapping will get a load operation for every distinct relation in the mappings
         This will include a "/" operation, for the mappings that defaulted to the  "/" relation
-        Hubs with only "/" relation, will get a "is_hub_with_universaL_load_operation" flag
+        Hubs with only "/" relation, will get a "is_hub_with_universal_load_operation" flag
         Tables with only a "*" relation, will not have an operation added.
         The name of the load operation will be the name of the keyset, to be used. (this is probably the keyset in the parent)
         the load operation will have a 'mapping_set' property.
@@ -633,7 +633,7 @@ def determine_load_operations_from_relations_in_mappings():
         load_operations=table_entry['load_operations']
 
         if table_entry['table_stereotype']=='hub':
-            table_entry['is_hub_with_universaL_load_operation'] = False
+            table_entry['is_hub_with_universal_load_operation'] = False
 
         has_implicit_unnamed_mapping_for_all_columns=True
         if 'data_columns' in table_entry:
@@ -643,7 +643,7 @@ def determine_load_operations_from_relations_in_mappings():
 
                 for field_mapping in data_column['field_mappings']:
                     for relation_name in field_mapping['relation_names']:
-                        if relation_name != '*':
+                        if relation_name != '*' or table_entry['table_stereotype']=='hub':
                             load_operations[relation_name]={"operation_origin":"field mapping relation","mapping_set":relation_name}
                             if not field_mapping['implict_unnamed_relation']:
                                 has_implicit_unnamed_mapping_for_all_columns = False
@@ -670,7 +670,7 @@ def determine_load_operations_from_relations_in_mappings():
 
         # Set universal flag for hub,s that have only a "/" operation
         if table_entry['table_stereotype'] == 'hub' and len(load_operations) == 1 and '/' in load_operations and has_implicit_unnamed_mapping_for_all_columns :
-            table_entry['is_hub_with_universaL_load_operation'] = True
+            table_entry['is_hub_with_universal_load_operation'] = True
 
 
 def determine_load_operations_for_links_with_parent_relation_directives():
@@ -756,7 +756,7 @@ def is_operation_supported_by_link_hubs(link_table_name,load_operation_name):
                 if hub_load_operation_name == load_operation_name:
                     hubs_with_operation+=1
                     is_supported_by_hub=True
-        if hub_table['is_hub_with_universaL_load_operation']: # is supported but probably not explicitly
+        if hub_table['is_hub_with_universal_load_operation']: # is supported but probably not explicitly
             is_supported_by_hub = True
         if not is_supported_by_hub:
             is_supported_by_all_hubs=False
@@ -780,11 +780,13 @@ def pull_hub_load_operations_into_links():
         universal_load_operation_involved=False
         for link_parent_table in link_table['link_parent_tables']:
             hub_table=g_table_dict[link_parent_table['table_name']]
-            if hub_table['is_hub_with_universaL_load_operation']:
+            if hub_table['is_hub_with_universal_load_operation']:
                 universal_load_operation_involved=True
                 continue # universal hubs dont count here
-            relevant_hub_count+=1
             hub_load_operations=hub_table['load_operations']
+            if '*' in hub_load_operations:
+                continue # hubs with '*' operation have been explicitly mapped but not universal
+            relevant_hub_count+=1
             for hub_load_operation_name in hub_load_operations.keys():
                 if first_relevant_hub:
                     load_operation_collection[hub_load_operation_name]=1
@@ -967,13 +969,13 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
                 needed_key_set= link_parent_entry['relation_name']  # the parent must provide keyset of explicitly declared relation
             elif  link_table_entry['has_explicit_link_parent_relations']: # If relation name to parent is not decided, and part on explicit relation set
                     needed_key_set = '/'
-            elif parent_table_entry['is_hub_with_universaL_load_operation'] : # the parent only has a universal relation
+            elif parent_table_entry['is_hub_with_universal_load_operation'] : # the parent only has a universal relation
                 needed_key_set = '/'
             else:
                 needed_key_set=link_load_operation_name  # the parent must provide the relation of the process of the link
 
             if not needed_key_set in parent_load_operations :
-                register_error(f"Hub '{link_parent_entry['table_name']}' has no business key mapping for relation '{needed_key_set}' needed for link '{link_table_name}'")
+                register_error(f"AHS-L1: Hub '{link_parent_entry['table_name']}' has no business key mapping for relation '{needed_key_set}' needed for link '{link_table_name}'")
                 return
             parent_load_operation=parent_load_operations[needed_key_set]
             parent_hash_reference_dict=parent_load_operation['hash_mapping_dict']
@@ -1087,14 +1089,14 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                 sat_key_column_name = satellite_parent_table['link_key_column_name']
             else:
                 register_error(
-                    f"Could not determine key column name of  '{table_entry['satellite_parent_table']}' when checking use_as_key_hash declaration of satellite '{table_name}'")
+                    f"AHS-S1: Could not determine key column name of  '{table_entry['satellite_parent_table']}' when checking use_as_key_hash declaration of satellite '{table_name}'")
                 return
 
             # The column name must be addressd by the use_as_key_hash mapping
             if sat_key_column_name not in table_entry['direct_key_hash_columns']:
                 # todo: add test case for this check
                 register_error(
-                    f"The key column '{sat_key_column_name}' of satellite '{table_name}' has no 'use_as_key_hash' field mapping")
+                    f"AHS-S2: The key column '{sat_key_column_name}' of satellite '{table_name}' has no 'use_as_key_hash' field mapping")
                 return
 
             # The Load operation must be covered exactly once in key_hash_field_mapping
@@ -1105,11 +1107,11 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                         field_mapping_to_use=field_mapping
                     else:
                         register_error(
-                            f"Duplicate field mapping to '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
+                            f"AHS-S3: Duplicate field mapping to '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
                         return
             if field_mapping_to_use==None:
                 register_error(
-                    f"Missing field mapping to '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
+                    f"AHS-S4: Missing field mapping to '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
                 return
 
             satellite_parent_table_key_column_name=sat_key_column_name
@@ -1123,7 +1125,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
             if not load_operation_name in parent_load_operations:
                 #todo: create compiler check test case to trigger this message
                 register_error(
-                    f"Parent table '{table_entry['satellite_parent_table']}' has no load operation for relation '{load_operation_name}' requiered for satellite '{table_name}'")
+                    f"AHS-S5: Parent table '{table_entry['satellite_parent_table']}' has no load operation for relation '{load_operation_name}' requiered for satellite '{table_name}'")
                 return
 
             parent_load_operation = parent_load_operations[load_operation_name]
@@ -1136,7 +1138,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
             if 'hash_name' not in parent_key_hash_reference:
                 #todo: create compiler check test case to trigger this message
                 register_error(
-                    f"Parent table '{table_entry['satellite_parent_table']}' for satellite '{table_name}' has no hash calculation for {satellite_parent_table_key_column_name}. You may need a 'use_as_key_hash' mapping to the satellite.")
+                    f"AHS-S6: Parent table '{table_entry['satellite_parent_table']}' for satellite '{table_name}' has no hash calculation for {satellite_parent_table_key_column_name}. You may need a 'use_as_key_hash' mapping to the satellite.")
                 return
 
             # put reference to hash description in load operation hash list
