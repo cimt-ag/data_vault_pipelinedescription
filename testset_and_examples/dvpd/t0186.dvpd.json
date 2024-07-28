@@ -36,7 +36,8 @@
 																				,"diff_hash_column_name": "RH_rtjj_186_aaa_sat"}
 				,{"table_name": "rtjj_186_aaa_bbb_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_186_aaa_bbb",
 												"link_parent_tables": [	"rtjj_186_aaa_hub","rtjj_186_bbb_hub"]}
-				,{"table_name": "rtjj_186_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_186_aaa_bbb_lnk"}
+				,{"table_name": "rtjj_186_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_186_aaa_bbb_lnk"
+																																					,"tracked_relation_name":"*"}
 				,{"table_name": "rtjj_186_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_186_bbb"}
 				,{"table_name": "rtjj_186_bbb_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_186_bbb_hub"
 																			,"diff_hash_column_name": "RH_rtjj_186_bbb_sat"}
