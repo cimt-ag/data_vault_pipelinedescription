@@ -12,7 +12,8 @@ Also the testset will be massively extended. Some minor feature extensions will 
 - experimental: syntax to declare source fields to contain precalculated hash values (use_as_hash_key, is_only_structural_element)
 
 ### DVPD syntax changes
-- Field mappings to tables now default to the "unnamed relation". To trigger the usage of mappings in all relations "*" must be declared as reltion name
+- Field mappings to tables now default to the "unnamed relation". To trigger the usage of mappings in all relations "*" must be declared as relation name
+- Effecitivty Satellites throw an error, when the link has more then one load operation and the satellite has no tracked_relation_name declaration 
 
 ATTENTION: The syntax change will result in DVPDC Compile errors, for dvpd with relation names, that use generic field mappings, since
 there will be fields missing the namend relations. Also Satellites without a relation declaration will now only be bound to the unnamed relation.
