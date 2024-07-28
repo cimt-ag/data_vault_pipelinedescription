@@ -662,11 +662,11 @@ def determine_load_operations_from_relations_in_mappings():
                     if count_matches>1:
                         #todo add compiler test to trigger this error
                         register_error(
-                            f"There are multiple explicit mappings for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
+                            f"DLO-20:There are multiple explicit mappings for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
                     if count_matches==0 and not default_available:
                         #todo add compiler test to trigger this error
                         register_error(
-                            f"There is no field mapping for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
+                            f"DLO-21:There is no field mapping for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
 
         # Set universal flag for hub,s that have only a "/" operation
         if table_entry['table_stereotype'] == 'hub' and len(load_operations) == 1 and '/' in load_operations and has_implicit_unnamed_mapping_for_all_columns :
@@ -689,7 +689,7 @@ def determine_load_operations_for_links_with_parent_relation_directives():
         if len(load_operations) > 0:
             # todo add compiler test to trigger this error
             register_error(
-                f"parent table relations can't be used, when expliciv field mapping relations are already defined. Table: '{table_name}'")
+                f"DLO-30:parent table relations can't be used, when expliciv field mapping relations are already defined. Table: '{table_name}'")
 
         load_operations['/'] = {"operation_origin":"fixed '/' operation due to explicit parent relation declaration","mapping_set":"*"}
 
@@ -703,9 +703,9 @@ def determine_load_operations_from_tracking_directive():
             if len(load_operations) > 0:
                 # todo add compiler test to trigger this error
                 register_error(
-                    f"You cannot define a tracked relation, when you declared relations in data mappings other then ['*']. Table: '{table_name}'")
-            if table_entry['tracked_relation_name'] != '*':
-                load_operations[table_entry['tracked_relation_name']] = {
+                    f"DLO-40:You cannot define a tracked relation, when you declared relations in data mappings other then ['*']. Table: '{table_name}'")
+            #if table_entry['tracked_relation_name'] != '*':
+            load_operations[table_entry['tracked_relation_name']] = {
                     "operation_origin": "explicitly tracked relation","mapping_set":"*"}
 
 def pull_satellite_load_operations_into_links():
@@ -736,7 +736,7 @@ def pull_satellite_load_operations_into_links():
                 if not is_operation_supported_by_link_hubs(link_table_name,sat_load_operation_name):
                     # todo add compiler test to trigger this error
                     register_error(
-                        f"operation '{sat_load_operation_name} induced by satellite '{sat_table_name}' to link {sat_table['satellite_parent_table']} is not supported by the hubs of the link")
+                        f"DLO-50:operation '{sat_load_operation_name} induced by satellite '{sat_table_name}' to link {sat_table['satellite_parent_table']} is not supported by the hubs of the link")
 
 
 def is_operation_supported_by_link_hubs(link_table_name,load_operation_name):
@@ -777,9 +777,11 @@ def pull_hub_load_operations_into_links():
         load_operation_collection={}
         relevant_hub_count=0
         first_relevant_hub=True
+        universal_load_operation_involved=False
         for link_parent_table in link_table['link_parent_tables']:
             hub_table=g_table_dict[link_parent_table['table_name']]
             if hub_table['is_hub_with_universaL_load_operation']:
+                universal_load_operation_involved=True
                 continue # universal hubs dont count here
             relevant_hub_count+=1
             hub_load_operations=hub_table['load_operations']
@@ -800,11 +802,15 @@ def pull_hub_load_operations_into_links():
 
         if len(link_load_operations)==0:
             register_error(
-                f"there is no commonly supported relation between all hubs of the link '{link_table_name}'")
+                f"DLO-60: there is no commonly supported relation between all hubs of the link '{link_table_name}'")
+        if len(link_load_operations)>1 and universal_load_operation_involved:
+            link_operation_list_string="','".join(link_load_operations)
+            register_error(
+                f"DLO-61: Link '{link_table_name}' got multiple induced relations ('{link_operation_list_string}'),but some parents have no explicit relation assignment")
 
 
 def pull_parent_operations_into_sat():
-    """STEP 6"""
+    """STEP 7"""
     for sat_table_name,sat_table in g_table_dict.items():
         sat_load_operations=sat_table['load_operations']
         if sat_table['table_stereotype'] != 'sat' or len(sat_load_operations)>0:

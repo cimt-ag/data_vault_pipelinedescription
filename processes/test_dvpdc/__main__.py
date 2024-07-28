@@ -54,17 +54,17 @@ def run_test_for_file(dvpd_filename, raise_on_crash=False):
     try:
         dvpdc(dvpd_filename, ini_file=args.ini_file)
         if dvpd_filename[5] == "c":
-            print("****fail: Compiling successfull, but should not****")
+            print("ATSTMSG: ** test failed **: Compiling successfull, but should not****")
             #return "fail"
             return "incorrect"
 
     except DvpdcError:
         if dvpd_filename[5] != "c":
-            print("****fail: Compiling failed, but should not****")
+            print("ATSTMSG: ** test failed **: Compiling failed, but should not****")
             return "fail"
 
     except Exception as e:
-        print("****Compiler Crashed****")
+        print("ATSTMSG: ** test failed **: Compiler Crashed****")
         if raise_on_crash:
             raise
         return "crash"
@@ -79,14 +79,14 @@ def run_test_for_file(dvpd_filename, raise_on_crash=False):
             compare_dvpi_with_reference(dvpd_filename)
 
     except FileNotFoundError:
-        print("****Missing reference data. There is no reference data available for the test case****")
+        print("ATSTMSG: ** test failed **: Missing reference data. There is no reference data available for the test case****")
         return "no_reference"
 
     if g_difference_count == 0:
             print("\n--- Test OK ---")
             return "success"
 
-    print("\n****fail:Result differs from reference****")
+    print("\nATSTMSG: * test failed **:Result differs from reference****")
     return "differ"
 
 
@@ -108,14 +108,14 @@ def compare_dvpdc_log_with_reference(dvpd_filename):
         with open(dvpdc_log_file_path, "r") as dvpdc_log_file:
             log_file_lines=dvpdc_log_file.read().splitlines()
     except Exception:
-        print("ERROR: reading "+ dvpdc_log_file_path.as_posix())
+        print("ATSTMSG: ERROR reading "+ dvpdc_log_file_path.as_posix())
         raise
 
     try:
         with open(dvpdc_log_file_reference_file_path, "r") as dvpdc_log_file_reference:
             reference_log_file_lines=dvpdc_log_file_reference.read().splitlines()
     except FileNotFoundError:
-        print("Reference file not found " + dvpdc_log_file_reference_file_path.as_posix())
+        print("ATSTMSG: Reference file not found " + dvpdc_log_file_reference_file_path.as_posix())
         g_difference_count+=1
         raise
 
@@ -130,7 +130,7 @@ def compare_dvpdc_log_with_reference(dvpd_filename):
                 message_found=True
                 break
         if not message_found:
-            print(f"missing in log >>{reference_line}")
+            print(f"ATSTMSG: missing in log >>{reference_line}")
             g_difference_count+=1
 
     for index, log_line in enumerate(log_file_lines):
@@ -142,7 +142,7 @@ def compare_dvpdc_log_with_reference(dvpd_filename):
                 message_found=True
                 break
         if not message_found:
-            print(f"not in reference >>{log_line}")
+            print(f"ATSTMSG: not in reference >>{log_line}")
             g_difference_count+=1
 
 
@@ -161,7 +161,7 @@ def compare_dvpi_with_reference(dvpd_filename):
         with open(dvpi_file_path, "r") as dvpi_file:
             dvpi_object=json.load(dvpi_file)
     except json.JSONDecodeError as e:
-        print("ERROR: JSON Parsing error of file "+ dvpi_file_path.as_posix())
+        print("ATSTMSG: JSON Parsing error of file "+ dvpi_file_path.as_posix())
         print(print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno)))
         raise
 
@@ -169,12 +169,12 @@ def compare_dvpi_with_reference(dvpd_filename):
         with open(dvpi_reference_file_path, "r") as dvpi_reference_file:
             dvpi_reference_object=json.load(dvpi_reference_file)
     except json.JSONDecodeError as e:
-        print("ERROR: JSON Parsing error of file "+ dvpi_reference_file_path.as_posix())
+        print("ATSTMSG: JSON Parsing error of file "+ dvpi_reference_file_path.as_posix())
         print(print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno)))
         g_difference_count+=1
         return
     except FileNotFoundError:
-        print("Reference file is missing " + dvpi_reference_file_path.as_posix())
+        print("ATSTMSG: Reference file is missing " + dvpi_reference_file_path.as_posix())
         g_difference_count+=1
         raise
 
@@ -185,7 +185,7 @@ def compare_dvpi_with_reference(dvpd_filename):
     print("Comparing DVPI")
     check_reference_values(dvpi_reference_object, dvpi_object)
     if g_difference_count > 0:
-        print(f"*** Identified {g_difference_count} differences *** ")
+        print(f"ATSTMSG: *** Identified {g_difference_count} differences *** ")
     else:
         print("---- result acceptable ----")
     return g_difference_count
@@ -215,8 +215,6 @@ def check_reference_values(reference_object,test_object,path=""):
             report_value_difference(reference_object, test_object, path)
             return
 
-
-############ My MAIN ############
 def search_for_testfile(testnumber):
     params = configuration_load_ini(args.ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
     dvpd_directory = Path(params['dvpd_default_directory'])
@@ -242,14 +240,15 @@ def find_dvpd_files(ini_file):
     return dvpd_files
 
 def assemble_file_list_fingerprint(file_list):
-    """Calculates a datavault hash from all attributes in the list. Order of attributes is essential"""
+    """Calculates an 8 character fingerprint hash value  from all attributes in the list
+      Order of attributes is essential"""
     separator='|'
     stringified=separator.join(file_list)
     md5_hash=hashlib.md5(stringified.encode('utf-8')).digest()
     file_listfp_b32=base64.b32encode(md5_hash).decode('utf-8')
     return file_listfp_b32[:8]
 
-
+################################  Main ########################################
 if __name__ == "__main__":
 
     successful_file_list=[]
