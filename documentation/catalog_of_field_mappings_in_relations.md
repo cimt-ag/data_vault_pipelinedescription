@@ -324,12 +324,12 @@ These links have at least one explicit relation declaration in their parent mapp
  participate to the main (unnamed) or the universal relation
 - Satellites on these kind of link are not allowed to declare an explicit relation, except the "main" relation
 
-## Participation of simple links
+## Participation of induced relation links
 These links have no explicit relation declaration to a hub (and therefore only one reference column for every hub). 
 - these links participate in all relations that are
-    - declared at their satellites
     - declared at the mapping of their dependent child keys
-    - If neither satellites nor dependent child key mappings declare an explicit relation, links belong to all relations, that are common in all connected hubs
+    - declared at their satellites
+    - If neither satellites nor dependent child key mappings declare an explicit relation, links belong to all relations, that are common in all connected hubs. In that case participation in multiple relations is only allowed, when theses relations are explicitly declared on all hubs.
 - each relation the link contributes to, must supported by all connected hubs and must be known explicitily by at 
 least one connecting hub 
   
@@ -400,12 +400,13 @@ Result:
 
 
 ### Step 5 - Satellite to Link operation deduction
-Must be applied to all links, that have no operation yet:
+Must be applied to all links, that have no operation yet
+ Links that already have operations are driven by the satellites or by their own relation declartions.
 - get all load operations from load operations of its children 
 - compiler check: The load operation must be explicitly supported by at least one parent hub 
 - compiler check: The load operation must be supported by all parent hubs, either explicitly or due to the hubs `*` operation
 Result:
-- Links who's operation are driven by the satellites have a operaion list
+- compiler check: In case multiple operations have been induced by the parent hubs, none of the hubs must have an "universal" relation
 
 ### Step 6 - Hub to Link deduction
 Must be applied to all links, that have no operation yet:
