@@ -635,18 +635,28 @@ def determine_load_operations_from_relations_in_mappings():
         if table_entry['table_stereotype']=='hub':
             table_entry['is_hub_with_universal_load_operation'] = False
 
+        table_entry['data_is_mapped_to_generic_relation'] = False
+
         has_implicit_unnamed_mapping_for_all_columns=True
         if 'data_columns' in table_entry:
+            has_generic_mapping_for_all_columns = True
 
             # add operations by scanning all columns and their mappings
             for data_column in table_entry['data_columns'].values():
-
+                has_generic_mapping=False
                 for field_mapping in data_column['field_mappings']:
                     for relation_name in field_mapping['relation_names']:
                         if relation_name != '*' :
                             load_operations[relation_name]={"operation_origin":"field mapping relation","mapping_set":relation_name}
                             if not field_mapping['implict_unnamed_relation']:
                                 has_implicit_unnamed_mapping_for_all_columns = False
+                        else:
+                            has_generic_mapping=True
+                if not has_generic_mapping:
+                    has_generic_mapping_for_all_columns=False
+
+            if len(load_operations)==0:   # no mapping generated a load operation (all mappings are * mappings)
+                table_entry['data_is_mapped_to_generic_relation']=True
 
             # crosscheck completness of mappings for all determined load operations
             for load_operation_name,load_operation in load_operations.items():
@@ -823,7 +833,7 @@ def pull_parent_operations_into_sat():
 
         if len(sat_load_operations)>1 :
             tracked_relation_name=sat_table.get('tracked_relation_name',None)
-            if tracked_relation_name != '*':
+            if tracked_relation_name != '*' and not sat_table['data_is_mapped_to_generic_relation']:
                 sat_operation_list_string="','".join(sat_load_operations)
                 register_error(
                      f"DLO-70: Sat '{sat_table_name}' got multiple induced relations ('{sat_operation_list_string}') from parent,but have no '*' relation set. ")
