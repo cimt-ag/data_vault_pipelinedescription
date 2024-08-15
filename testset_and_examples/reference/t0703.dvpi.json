@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:30",
+  "compile_timestamp": "2024-08-15 18:18:41",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0703",
   "dvpd_filename": "t0703.dvpd.json",
@@ -78,6 +78,14 @@
         },
         {
           "column_name": "HK_RTJJ_703_BBB",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_RTJJ_703_BBB",
+          "parent_table_name": "rtjj_703_bbb_hub"
+        },
+        {
+          "column_name": "HK_RTJJ_703_BBB_UUU",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
@@ -170,6 +178,14 @@
         },
         {
           "column_name": "HK_RTJJ_703_BBB",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_RTJJ_703_BBB",
+          "parent_table_name": "rtjj_703_bbb_hub"
+        },
+        {
+          "column_name": "HK_RTJJ_703_BBB_VVV",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
@@ -371,7 +387,7 @@
               "parent_declaration_position": 1
             },
             {
-              "field_name": "F3XX_BBB_BK2F_UUU",
+              "field_name": "F2XX_BBB_BK2F",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_703_bbb_hub",
               "field_target_column": "F2F3F4_BBB_BK2F",
@@ -414,7 +430,7 @@
               "parent_declaration_position": 1
             },
             {
-              "field_name": "F4XX_BBB_BK2F_VVV",
+              "field_name": "F2XX_BBB_BK2F",
               "prio_in_key_hash": 0,
               "field_target_table": "rtjj_703_bbb_hub",
               "field_target_column": "F2F3F4_BBB_BK2F",
@@ -454,8 +470,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_703_BBB",
-              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB",
               "stage_column_name": "HK_RTJJ_703_BBB"
             }
           ],
@@ -484,8 +500,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_703_BBB",
-              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB__FOR__UUU",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB__FOR__UUU",
               "stage_column_name": "HK_RTJJ_703_BBB_UUU"
             }
           ],
@@ -514,8 +530,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_703_BBB",
-              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB__FOR__VVV",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB__FOR__VVV",
               "stage_column_name": "HK_RTJJ_703_BBB_VVV"
             }
           ],
@@ -538,84 +554,84 @@
         },
         {
           "table_name": "rtjj_703_bbb_uuu_lnk",
-          "relation_name": "UUU",
-          "operation_origin": "induced from satellite rtjj_703_bbb_uuu_esat",
+          "relation_name": "/",
+          "operation_origin": "fixed '/' operation due to explicit parent relation declaration",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_RTJJ_703_BBB",
-              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB__FOR__UUU",
               "is_nullable": false,
-              "stage_column_name": "HK_RTJJ_703_BBB_UUU"
+              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB",
+              "stage_column_name": "HK_RTJJ_703_BBB"
             },
             {
               "hash_class": "parent_key_2",
-              "column_name": "HK_RTJJ_703_BBB",
-              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB__FOR__UUU",
+              "column_name": "HK_RTJJ_703_BBB_UUU",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB__FOR__UUU",
               "stage_column_name": "HK_RTJJ_703_BBB_UUU"
             },
             {
               "hash_class": "key",
               "column_name": "LK_RTJJ_703_BBB_UUU",
-              "hash_name": "KEY_OF_RTJJ_703_BBB_UUU_LNK",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_703_BBB_UUU_LNK",
               "stage_column_name": "LK_RTJJ_703_BBB_UUU"
             }
           ]
         },
         {
           "table_name": "rtjj_703_bbb_uuu_esat",
-          "relation_name": "UUU",
-          "operation_origin": "explicitly tracked relation",
+          "relation_name": "/",
+          "operation_origin": "following parent operation list",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_703_BBB_UUU",
-              "hash_name": "KEY_OF_RTJJ_703_BBB_UUU_LNK",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_703_BBB_UUU_LNK",
               "stage_column_name": "LK_RTJJ_703_BBB_UUU"
             }
           ]
         },
         {
           "table_name": "rtjj_703_bbb_vvv_lnk",
-          "relation_name": "VVV",
-          "operation_origin": "induced from satellite rtjj_703_bbb_vvv_esat",
+          "relation_name": "/",
+          "operation_origin": "fixed '/' operation due to explicit parent relation declaration",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_RTJJ_703_BBB",
-              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB__FOR__VVV",
               "is_nullable": false,
-              "stage_column_name": "HK_RTJJ_703_BBB_VVV"
+              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB",
+              "stage_column_name": "HK_RTJJ_703_BBB"
             },
             {
               "hash_class": "parent_key_2",
-              "column_name": "HK_RTJJ_703_BBB",
-              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB__FOR__VVV",
+              "column_name": "HK_RTJJ_703_BBB_VVV",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_703_BBB_HUB__FOR__VVV",
               "stage_column_name": "HK_RTJJ_703_BBB_VVV"
             },
             {
               "hash_class": "key",
               "column_name": "LK_RTJJ_703_BBB_VVV",
-              "hash_name": "KEY_OF_RTJJ_703_BBB_VVV_LNK",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_703_BBB_VVV_LNK",
               "stage_column_name": "LK_RTJJ_703_BBB_VVV"
             }
           ]
         },
         {
           "table_name": "rtjj_703_bbb_vvv_esat",
-          "relation_name": "VVV",
-          "operation_origin": "explicitly tracked relation",
+          "relation_name": "/",
+          "operation_origin": "following parent operation list",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_703_BBB_VVV",
-              "hash_name": "KEY_OF_RTJJ_703_BBB_VVV_LNK",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_703_BBB_VVV_LNK",
               "stage_column_name": "LK_RTJJ_703_BBB_VVV"
             }
           ]
