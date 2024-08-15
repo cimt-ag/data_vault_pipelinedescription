@@ -26,7 +26,7 @@
 																				 	,"relation_names":["TTT"]} ]}
 		      ,{"field_name": "F10XX_BBB_C2F_UUU",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_529_bbb_sat" ,"column_name": "F9F10F11_BBB_C2F"
 																				 	,"relation_names":["UUU"]} ]}
-			  ,{"field_name": "F11XX_BBB_C2F_UUU",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_529_bbb_sat" ,"column_name": "F9F10F11_BBB_C2F"
+			  ,{"field_name": "F11XX_BBB_C2F_VVV",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_529_bbb_sat" ,"column_name": "F9F10F11_BBB_C2F"
 																				 	,"relation_names":["VVV"]} ]}
 			  
 		      ,{"field_name": "F12XX_AAA_BBB_DC1F_TTT",  "field_type": "VARCHAR(255)", "field_value":"TTT"
