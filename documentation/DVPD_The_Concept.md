@@ -148,6 +148,16 @@ A complete investigation and catalog of possible combinations is specified seper
 
 (Yes, it currently takes two documents to get this into perspective)
 
+## Business vault object mapping capabilities
+Even though, the processing of raw vault data into the business vault could be implemented like normal loading of the result of a query to the raw vault,  the implementation and processing can be made easier and faster, when already existing hash values of the raw vault can be reused, where possible. 
+
+Example: when calculating new information for a product,and storing this in a satellite of the raw vault product hub, it is not necessary to calculate the the hub key again, since the hub keys can already be part of the resultset as identifiers. Detailled declartion about the busienss key and its composition rules is not needen. Still the diff hash must be determined for the newly won information).
+
+Scenarios, that must be supported by the syntax, are described here:
+* [Hash source scenarios](./images/hash_source_scenarios.drawio.png)
+
+This will result in dvpds, that contain incomplete table declarations. It es expected, that incomplete tables, will distinguishalbel from tables, that are will be loaded. Also the hash calculation rules should only be defined for the hashes, that have to be build by the pipeline. 
+
 ## Loading processes
 In addition to the structure, mapping and parsing description,  processing specific declarations are needed for the loading process (or at least the coding of it).
 To determine the requirements for the loading process, the following overall phase structure assumed:
