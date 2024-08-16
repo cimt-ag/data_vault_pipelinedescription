@@ -64,20 +64,6 @@ hub=object / link=relation / satellite=attribution.*
 of a link counts also as identification, since it is needed to address 
 attributes, that are attached by the satellite*
 
-## Mapping of attribute fields to key sets
-When the source row contains data of multiple keys for the same object and fields with attributes or measures of that object
-it is necessary, to define, which set of attributes belong to wich set of keys. 
-
-The following scenarios can appear on key level:
-- Distinct key fields for every set
-- Some common and some distinct key fields for every set (e.g. in "multi client" applications, having the client field in every table)
-
-On attribute level, there are these scenarios possible (most likely options listed first)
-- Attribute fields only belong to one defined key set (Often the "primary" key set)
-- distinct attribute fields for all or a subset of key sets
-- some common and some distinct attribute fields for all or a subset of key sets
-- one set of attribute fields, that has to be applied for all key sets
-
 ## Properties of relation data
 - Relation data always must contain the business key columns of all participants. 
 - Data sets with multiple relations to the same object must contain multiple instances of 
@@ -91,6 +77,21 @@ without any known business relation meaning
 
 Unit of work relations might be misread as a lack of normalization in the source data. But as the 
 words "without any known" indicate, it might just be a lack of knowledge about a hidden meaning.
+
+## Mapping of attribute fields to key sets
+When the source row contains data of multiple keys for the same object and fields with attributes or measures of that object
+it is necessary, to define, which set of attributes belong to wich set of keys. 
+
+The following scenarios can appear on key level:
+- Distinct key fields for every set
+- Some common and some distinct key fields for every set (e.g. in "multi client" applications, having the client field in every table)
+
+On attribute level, there are these scenarios possible (most likely options listed first)
+- Attribute fields only belong to one defined key set (Often the "primary" key set)
+- distinct attribute fields for all or a subset of key sets
+- some common and some distinct attribute fields for all or a subset of key sets
+- only a single set of attribute fields, that has to be applied for all key sets
+
 
 ## Denormalized data
 When source data contains multiple fields, which target the same satellite columns without any
@@ -126,9 +127,9 @@ The following approaches are available to represent multiple relations
 - dedicated links to the hub for every kind of relation
 - a single link but dedicated effectivity satellites for every kind of relation
 - a single link with a dependent child key, declaring the relation type
-- a single link with a multi active satellite, that contains a column to store the currenty valid relation types (not recommended)
+- a single link with a multi active satellite, that contains a column to store the currenty valid relation types (really really not recommended)
 
-These approaches can also be mixed up, which might happen on purpose or due to legacy. 
+These approaches can also be mixed up, which might happen on purpose or due to legacy over time. 
 
 *side note: When the relation type is declared in a field in the data (not by the field structure),
 this "just data" from the perspective of the data vault. 
