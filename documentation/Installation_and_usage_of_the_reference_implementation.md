@@ -1,5 +1,5 @@
-DVPDC Reference Implementation Installation And Users Guide
-===========================================================
+Installation and users Guide for the reference implementation
+==============================================================
 
 ## Licence and Credits
 

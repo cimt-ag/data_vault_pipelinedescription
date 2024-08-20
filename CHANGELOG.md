@@ -5,17 +5,18 @@ Also the testset will be massively extended. Some minor feature extensions will 
 ### features
 - python implementation of dvpd compiler(DVPDC) including its automated testset
 - Introduction of the data vault pipeline instruction (DVPI) syntax as result of the compiler output
-- python example of a ddl generator, generating DDL scripts from DVPI
+- python example of a **ddl generator**, generating DDL scripts from DVPI
 - python example of a documentation generator, generating mapping documentation in HTML
-- python example of a developmer instruction sheet generator
+- python example of a **developmer instruction sheet generator**
 - command examples to use all tools on the command line including a build all script
 - experimental: syntax to declare source fields to contain precalculated hash values (use_as_hash_key, is_only_structural_element)
+- hughe extention of the testset
 
 ### DVPD syntax changes
 - Field mappings to tables now default to the "unnamed relation". To trigger the usage of mappings in all relations "*" must be declared as relation name
 - Effecitivty Satellites throw an error, when the link has more then one load operation and the satellite has no tracked_relation_name declaration 
 
-ATTENTION: The syntax change will result in DVPDC Compile errors, for dvpd with relation names, that use generic field mappings, since
+ATTENTION: The syntax change will result in DVPDC compile errors, for dvpd with relation names, that use generic field mappings, since
 there will be fields missing the namend relations. Also Satellites without a relation declaration will now only be bound to the unnamed relation.
 This will trigger "unsupported relation" errors, when the parent has no "unnamed relation"
 
