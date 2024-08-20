@@ -1,4 +1,6 @@
  # DVPDC Code Structure
+
+ **!! This artice is work in progess !!** Therfore it is incolmplete and probably wrong in some aspects.
  
 ## dvpdc:
 

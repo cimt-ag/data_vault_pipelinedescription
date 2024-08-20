@@ -493,12 +493,12 @@ The generic cases all use a 1:1 field distribution. Every field is mapped to onl
 | Model          | A3BR    | A3BL    | A3BE    | A3BD    | 3AR     | A3BN   | 
 |----------------|---------|---------|---------|---------|---------|--------| 
 | overlap scenario|         |         |         |         |         |        | 
-| BK1+           | *201*   | *301*   | *401*   | *501*   | *601*   | *101*  | 
-| BK1~           | *202*   | *302*   | *402*   | *502*   | -       | *102*  | 
-| BK1*           | *203*   | *303*   | *403*   | *503*   | *603*   | *103*  | 
-| BK2+           | *211*   | *311*   | *411*   | *511*   | -       | *111*  | 
-| BK2~           | *212*   | *312*   | *412*   | *512*   | -       | *112*  | 
-| BK2*           | *213*   | *313*   | *413*   | *513*   | -       | *113*  | 
+| BK1+           | *201*   | *301*   | *401*   | *501*   | *601*   | **101**| 
+| BK1~           | *202*   | *302*   | *402*   | *502*   | -       | **102**| 
+| BK1*           | *203*   | *303*   | *403*   | *503*   | *603*   | **103**| 
+| BK2+           | *211*   | *311*   | *411*   | *511*   | -       | **111**| 
+| BK2~           | *212*   | *312*   | *412*   | *512*   | -       | **112**| 
+| BK2*           | *213*   | *313*   | *413*   | *513*   | -       | **113**| 
 | BK2* & BK1+    | *215*   | *315*   | *415*   | *515*   | -       | *115*  | 
 | BK2* & BK1~    | *216*   | *316*   | *416*   | *516*   | -       | *116*  | 
 | BK2* & BK1*    | *217*   | *317*   | *417*   | *517*   | -       | *117*  | 
@@ -562,3 +562,8 @@ Designed cases are created to test common and edge cases. They use the previous 
 |  A2BCR         | ABC,A,B:t,B:u,C,a,b,c  |**702** |
 |  ABCL+ABL      | ABC,A,B:t,B:u,C,a,b,c  |**703** |
 |  A2BR+ACL      | ABC,A,B:t,B:u,C,a,b,c  |**704** |
+
+# More combinatorical exampes
+The vastness of combinatorical possibilites is also explored in the test cases, described in:
+- [Process generation rules](images/process_generation_rules.drawio.pdf)
+- [Process generation rule violations](images/process_generation_rule_violation_scenarios.drawio.pdf)

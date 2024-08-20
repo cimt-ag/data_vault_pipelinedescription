@@ -7,10 +7,10 @@ Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-
 ---------
 
 To verify the DVPD usablitiy and DVPDC functionality, various scenarios are implemented
-as testsets. Paired with a referece resultset, these allow to check 
-- if DVDP syntax is able to express all variants of data vault modells and mappings
-- if the DVPDC is able to transform all valid DVPD into a DVPI
-- if the DVPDC is able to detect and report rule violations in the DVPD
+as testsets. Paired with a referece resultset, these allow to check if 
+- DVDP syntax is able to express all variants of data vault modells and mappings
+- the DVPDC is able to transform all valid DVPD into a DVPI
+- the DVPDC is able to detect and report syntax and rule violations in the DVPD
 
 # Setup 
 
@@ -21,13 +21,13 @@ All testsets are stored in the repository directory "testsets_and_example" as fo
 - reference: the logfile of the compiler for every test and the expected dvpi file, for valid dvpd
 
 ## test process
-Execution and evaluaton of the tests is implemented in the modul "test_dvpdc", wich is configured via "dvpdc.ini"
+Execution and evaluaton of the tests is implemented in the module "test_dvpdc", wich is configured via "dvpdc.ini"
 section "dvpdc_test".
 The process calls the dvpdc for every test case, and compares the result log and dvpi with the reference data.
 
 - With the parameter -t <testnumber> you can run the automated test for a specific test number.
 - With the parameter -f <dvpd filename> you can run the automated test for a specific file in the test cases.
-- Without explicit declaration of a file, dvpcd_test runs all tests, that are declared in its internal list.
+- Without explicit declaration of a file, dvpcd_test runs all tests in the test case directory.
 
 # Conventions for tests content
 The content of all  core testsets must follow the naming rules, described below. The goal of the rules is
@@ -107,7 +107,7 @@ The following number ranges are defined (a legacy from the proof the development
 | **100-999**      | see  [catalog_of_field_mappings_in_relations.md](catalog_of_field_mappings_in_relations.md)          |                                                        |
 | **1000-2999**    | **Collection without central topic**                                                                 |
 | **300x-499x**    | **process generation variations** with x = 0 for basic tests and x>0 for violations of comiler rules |
-| **5000-5099**    | **DDVUG Test Usecase "Gartenscenter willibald"                                                       |
+| **5000-5099**    | **DDVUG Test Usecase "Gartenscenter** willibald"                                                       |
 | **7xxx-9xxx**    | **Compiler rule checks, based on cases in 100-999. Using the same 3 digit numbers**                  |
 |                  |                                                                                                      |
 

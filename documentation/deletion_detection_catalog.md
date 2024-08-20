@@ -18,9 +18,9 @@ The basic prerequisits for using a partitioned deletion detection are:
 
 The procedure for a single satellite is as follows (please read it slow and with precision):
 - select all active "keys" from the satellite that belong to the partition by
-    - Join the satllite to the data vault tables, that contain the partitioning fields
+    - Joining the satllite to the data vault tables, that contain the partitioning fields
 	- and constrain the partitioning field to the set of available partitioning values in the current source increment
-- create deletion records for all "keys" of the target satellit, that are missing in the current source increment
+- create deletion records for all "keys" of the target satellite, that are missing in the current source increment
 - apply enddating (when used)
 
 Selecting all active keys that belong to the partition can be a complex task, depending on the distribution of the partitioning columns in the data vault model.
@@ -163,4 +163,4 @@ Satellites are enddated. The currently active rows are indicated by setting the 
     - HK_ prefix indicates the hash key of a hub
     - LK_ prefix indicates the hash key of a link
 - table names of satellites begin with the table name of their parent
-- table names of links contain all table names of the hubs, that are connected by the
+- table names of links contain all table names of the hubs, that are connected by them
