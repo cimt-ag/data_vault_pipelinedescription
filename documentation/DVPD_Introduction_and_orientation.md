@@ -84,7 +84,7 @@ placed in this document to shorten the central concept article.
 To proof the validity of the concept, this git procject contains a reference implementation of a DVDP Compiler and examples 
 for scripts to render various code and documentation files from the DVPD or its compiled version, the DVPI.
 
-### [Reference implementaion installation and usage](./reference_implementation_installation_and_usage.md)
+### [installation and usage of the reference implementation](Installation_and_usage_of_the_reference_implementation.md)
 Instructions how to install and use all the provided scripts.
 
 ### [DVPDC automated testing](DVPDC_automated_testing.md)
