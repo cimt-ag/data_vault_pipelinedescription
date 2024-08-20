@@ -14,7 +14,7 @@ as testsets. Paired with a referece resultset, these allow to check if
 
 # Setup 
 
-# test data
+## test data
 All testsets are stored in the repository directory "testsets_and_example" as follows
 - dvdp: all dvpd files
 - model_profiles: the model profiles used by the dvpd of the testset
@@ -23,11 +23,34 @@ All testsets are stored in the repository directory "testsets_and_example" as fo
 ## test process
 Execution and evaluaton of the tests is implemented in the module "test_dvpdc", wich is configured via "dvpdc.ini"
 section "dvpdc_test".
-The process calls the dvpdc for every test case, and compares the result log and dvpi with the reference data.
+The test_dvpdc process calls the dvpdc for every test case, and compares the result log and result dvpi with the reference data.
 
 - With the parameter -t <testnumber> you can run the automated test for a specific test number.
 - With the parameter -f <dvpd filename> you can run the automated test for a specific file in the test cases.
 - Without explicit declaration of a file, dvpcd_test runs all tests in the test case directory.
+
+To support an efficient verification of the automated tests, the 
+test process logs all test results in detail and a final summary over all tests.
+
+Example of the summary:<br>
+Test state:225 = success 223 (6TXUQLFS)+ fail 1 (QKTJQFK3)+ incorrect 1 (W6ZNWMDD)
+
+The fingerprint after each section is calculated from the test file names. So when some tests are failing, you can determine, if the same tests failed again in the next run, since the fingerprints will not change then.
+
+The outcome of a test can be as follows:
+- Passed/success
+- Result differs/difference: Compile result does not match the reference data
+- failed compile / fail: Compile failed, so result can't be correct
+- no reference data / no ref: Compile was successfull but there is not reference data to compare the result with
+- crashed / crash: Compiler process crashed due to a fatal implementation mistake
+- incorrect: Compile was sucessfull but was expected not to be
+
+There are currently two tests in the test set, that are meant to be not successfull. These cases verify, if the test process detects the fail/incorrect situation properly.
+
+# test workflow rules
+1. Every time, the commit declares to be complete or best effort. The commit log must contain the summary of a full test run.
+1. When merging or checking out a branch, you should run a full test and compare the summary with the last logged summary of the merged branch.
+
 
 # Conventions for tests content
 The content of all  core testsets must follow the naming rules, described below. The goal of the rules is
