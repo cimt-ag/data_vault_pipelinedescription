@@ -4,7 +4,7 @@ DVPI is the resultset created from the compiler by transforming the a dvpd. It i
 In this document you find a brief guideline on how to use DVPI content in your loading processes and a full syntax reference based on the core DVPD syntax.
 
 # Usage guideline
-DVPI is designed to support the multiple steps of loading a source object into a data vault model. The following steps are normally needed for the loading:
+DVPI is designed to support the steps of loading a source object into a data vault model. The following steps are normally needed for the loading:
 - deploy the target database tables (might be done by the first run of the job or in sync with the deployment of the job artifact)
 - contact the source system and determine the increment
 - fetch the data increment from the source system
@@ -83,11 +83,13 @@ This only applies, when using the stage+target approach.
 - in the current parse set, iterate over load_operations[] list
     - retrieve table stereotype and properties by looking up the table name in the tables[] list.
 	- execute the loading steps for the table stereotype
-	- the data mapping must be read from the "hash_mappings[]" and "data_mappings[]" lists
-	    - copy data from the stage column "stage_column_name" to the target column "column_name"
-	    - use the column_class to identify columns, that have special meanings in the loading (business keys, diff hash, etc)
-	- iterate over all meta fields from the tables columns[] list and provide necessary data accordingly
-
+        - iterate over all meta fields from the tables columns[] list and provide necessary values accordingly
+        - the data mapping must be read from the "hash_mappings[]" and "data_mappings[]" lists
+            - copy data from the stage column "stage_column_name" to the target column "column_name"
+            - use the column_class to identify columns, that have special meanings in the loading (business keys, diff hash, etc)
+        - for satellites
+            - follow driving key directive
+          	- follow deletion detection rule	
 
 ### load data from Ods to the target tables in all possible combinations
 This only applies, when using the ods+target approach.
@@ -101,6 +103,9 @@ This only applies, when using the ods+target approach.
 		- store the value in the column "column_name"
     - use the column_class to identify columns, that have special meanings in the loading (business keys, untracked)
 	- iterate over all meta fields from the table columns[] list and provide necessary data accordingly
+    - for satellites
+        - follow driving key directive
+        - follow deletion detection rule	
 
 ### load data directly from source to the target table
 - in the current parse set, iterate over load_operations[] list
@@ -115,6 +120,9 @@ This only applies, when using the ods+target approach.
 		- store the value in the column "column_name"
     - use the column_class to identify columns, that have special meanings in the loading (business keys, untracked)
 	- iterate over all meta fields from the tables columns[] list and provide necessary data accordingly
+    - for satellites
+        - follow driving key directive
+        - follow deletion detection rule	
 
 
 # Syntax Reference
@@ -169,6 +177,13 @@ The main purpose of the tables section, is to provide all structural information
 **storage_component**
 <br>Identification of the storage component. Valid values depend on the system architecture and may control retrieval of connection parameters and use of platform technology specific SQL Dialect, and loading procedures.
 
+**driving_keys[]**
+(optional, and only set when needed on satellites of links)
+<br>*will be implemented in 0.6.1*
+<br>List of the hub keys in the parent link of the satellite, that identify the driving objects  = Objects, where the complete relation 
+data, expressed by the parent link, is in the currently staged dataset
+<br>Without this declaration, no driving key logic should be applied.
+
 **has_deletion_flag**
 <br>Triggers a loading procedure to manage a deletion flag, when processing deletion data
 
@@ -193,6 +208,8 @@ The main purpose of the tables section, is to provide all structural information
 **uses_diff_hash**
 <br>Indicates the existence and usage of a diff hash, for comparison of satellite data during the loading
 
+**table_comment**
+<br>Contains the table comment, that should be added to the table in the database
 
 **columns[]**
 <br>→ see "columns[]"
@@ -206,7 +223,7 @@ Json Path: $.tables[]
 **column_type**
 <br>Datatype of the column in the table. Should be used in DDL generation.
 
-**column_content_comment**
+**column_comment**
 <br>Comment provided for the column. Should be used in DDL generation.
 
 **is_nullable**
@@ -309,8 +326,30 @@ Provides all necessary declarations how to parse every field from the source dat
 **field_type**
 <br>Datatype of the field. Depending on the parsing module, this might be the type of the incoming data. A type deviation to the target column will result in a type conversion.
 
+**field_comment**
+<br>Comment about the field for pure documentation. 
+
 **field_position**
 <br>This is the position of the field in the DVDP field list. It might be relevant for the parsing (e.g. when field order in DVPD represents the order of CSV columns).
+
+**field_value**
+<br>*Will be added in release 0.6.2*
+<br>Allows the declaration of a constant value or a placeholder, that inject data from, that is not directly in the dataset.
+Valid settings depend on the generator/execution module. 
+General syntax for data placeholder is "${<name of placeholder}". The following placeholders are expected to be available:
+- \<value> - this value will be taken as field value
+- ${CURRENT_TIMESTAMP} - Timestamp of the current load process
+- ${ROW_NUMBER_OVER_BUSINESSKEY(list of business keys)} - The numerical position of the row in the defined business key  
+- ${ROW_NUMBER_OVER_KEY(data vaut key)} - The numerical position of the row in the declared data vault key (e.g. the hub key) 
+- ${ROW_NUMBER} - The numerical position of the row in source data delivery 
+
+Examples for custom placeholders:
+- ${DATE_FROM_FILENAME} - parse the name of the processed filename
+- ${COMPANY_NAME_FROM_CALL_PARAMETER} - Get the company code from the call parameter
+
+Be aware: This property can be missused to provide cleansing and transformation functions. It is recommended 
+not to do so. It's purpose should be restricted to insert data from the execution environment into the dataset. Every kind of cleansing and 
+transformation of the source data, should be done before the staging.
 
 **\<more properties to come>**
 
@@ -318,7 +357,7 @@ Provides all necessary declarations how to parse every field from the source dat
 ### hashes[]
 Json Path: $.parse_sets[]
 
-Provides all necessary declarations, how to assemble and calculate the hash value.
+Provides all necessary declarations, how to assemble and calculate the hash values.
 
 **hash_name**
 <br>Identfication of the hash. This is used to identify the hash in the mappings.
@@ -337,7 +376,8 @@ Provides all necessary declarations, how to assemble and calculate the hash valu
 
 **related_key_hash**(diff hash only)
 <br>Name of the hash, that defines the the key, the diff hash is referring to. This can be used to
-identify all rows for the same multi row diff hash
+identify all rows for the same multi row diff hash. This property is not available, when the key hash of the
+table is delivered by a source field.
 
 **hash_fields[]**
 <br>List of the fields, that need to be concatenated for the hash.
@@ -367,6 +407,9 @@ identify all rows for the same multi row diff hash
 <br>String to be used for the data value NULL (Unknown) when concatenating the field data.
 (This is copied from the model profile, that has to be used for the hash containing table)
 
+**row_order_direction**
+<br>order direction to be used, when assembling data into a group hash. Will be set for multi active satellites.
+
 **model_profile_name**
 <br>This is just for documentation and tracing of the DVPD result and should not be used in any kind of processing of the DVPI.
 
@@ -393,7 +436,7 @@ executing module and must be well documented by it.
 
 **field_target_table**
 <br>Name of the table,  this field is mapped to and causes the participation of the field in the hash. (e.g. name of the hub table when participating as business key of the hub). 
-This should be used to arrage a table name specific order when assembling link keys.
+This should be used to arrange a table name specific order when assembling link keys.
 
 **field_target_column**
 <br>Name of the column,  this field the field is mapped to in the target table. 
@@ -429,6 +472,12 @@ Multiple entries for the same target differ in the mapping of fields and hashes 
 <br>List of the mappings of all fields to the table columns.
 <br>→ see "data_mappings[]"
 
+**deletion_detection_rules[]**
+(optional)
+<br>→ deletion_detection_rules[]
+
+
+
 ### hash_mappings[]
 Json Path: $.parse_sets[].load_operations[]
 
@@ -436,16 +485,19 @@ Json Path: $.parse_sets[].load_operations[]
 <br>Name of the target column in the table
 
 **hash_name**
-<br>Identification of the hash in the hashes[] list.
+<br>Identification of the hash in the hashes[] list. In case of a direct field mapping, the hash_name will not be set.
 
 **hash_class**
 <br>Class of the hash: key, parent_key, diff_hash. Needed to identify the special columns for the loading procedure, depending on the table_stereotype.
 
+**field_name**
+<br>Name of the field, containing the precalculated value in the source data set. Must only be set, when hash_name is not set.
+
 **stage_column_name**
 <br>Name of the stage column, the hash can be taken from, when using stage table approach
 
-### data_mapping[]
-(will be renamed to "field_mappings" in 0.6.1)
+### field_mappings[]
+(formely known as "data_mapping" in 0.6.0)
 
 Json Path: $.parse_sets[].load_operations[]
 
@@ -462,6 +514,38 @@ Json Path: $.parse_sets[].load_operations[]
 
 **stage_column_name**
 <br>Name of the stage column, the data must be taken from, when using the stage table approach.
+
+**update_on_every_load**
+<br>When this property is set to true on at least one data mapping, the loading process must update
+the column in an existing current record if no new row is inserted. Identification of the record is 
+done as follows: hub - hub key, link - link key, sat - parent key, multi active sat - <depends on 
+multiactive historization pattern>, reference table- same set of values in all columns that are not udpated
+on every load (diff hash can be used as shortcut when available)
+ 
+
+### deletion_detection_rules[]
+Json Path: $.parse_sets[].load_operations[]
+
+Contains all deletion detection rules, that have to be applied to the table of this load operation.
+
+**procedure**
+<br>declares deletion detection procedure for this rule. Suggested valid values are:
+- "key_comparison" : Retrieve all (or a partition of) keys from the source, compare vault to the keys and create & stage deletion records for keys, that are not present anymore
+- "deletion_event_transformation" : Convert explicit deletion event messages into a deletion record that is staged
+- "stage_comparison" : The data retrieved and staged includes a complete set or partitions of the complete set. By comparing the whole vault against the stage, deletion records are created during the load from stage to the vault
+- (more procedure names might be available in the actual load process implementation)
+
+**rule_comment**
+(optional)
+<br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
+<br>*“All satellites of customer”*
+
+##### properties for other procedure 
+Please check out the definition in the dvpd specification for the following keywords
+- key_fields[]
+- partitioning_fields[]
+- join_path[]
+- active_keys_of_partition_sql
 
 
 ### stage_columns[]

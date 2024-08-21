@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-07-28 12:46:12
+Compiling t3531c.dvpd.json
+
+DLO-30:parent table relations can't be used, when expliciv field mapping relations are already defined. Table: 'rtjj_3531_aaa_aaa_ttt_dlnk'
+*** Compilation ended with errors ***

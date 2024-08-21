@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-07-28 18:10:22
+Compiling t3101c.dvpd.json
+
+DLO-50:operation 'UUU' induced by satellite 'rtjj_3101_aaa_bbb_uuu_esat' to link rtjj_3101_aaa_bbb_lnk is not supported by the hubs of the link
+*** Compilation ended with errors ***

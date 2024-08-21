@@ -1,4 +1,0 @@
-mandantory,type,schema_name,name
-
-1,view,dv_pipeline_description,DVPD_ATMTST_CATALOG
-1,view,dv_pipeline_description,DVPD_ATMTST_ISSUE_ALL

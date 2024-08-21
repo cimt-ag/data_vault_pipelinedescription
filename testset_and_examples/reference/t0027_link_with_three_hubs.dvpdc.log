@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-06-13 11:57:27
+Compiling t0027_link_with_three_hubs.dvpd.json
+
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t0027_link_with_three_hubs.dvpi.json
+--- Compile successfull ---

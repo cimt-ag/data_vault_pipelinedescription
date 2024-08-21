@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-07-28 13:41:38
+Compiling t3052c.dvpd.json
+
+AHS-S5: Parent table 'rtjj_3050_aaa_hub' has no load operation for relation '/' requiered for satellite 'rtjj_3050_aaa_sat'
+*** Compilation ended with errors ***

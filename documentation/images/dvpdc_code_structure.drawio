@@ -1,0 +1,356 @@
+<mxfile host="Electron" modified="2024-07-16T11:01:35.300Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/23.0.2 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="NxS0WgBWjvZu10sTrFcL" version="23.0.2" type="device">
+  <diagram name="Seite-1" id="_xlTrjUbBoeg_nsTucc6">
+    <mxGraphModel dx="2257" dy="830" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-2" value="dvpdc_worker" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#A9C4EB;" vertex="1" parent="1">
+          <mxGeometry x="-783" y="595" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-4" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="4zg3qLO7-xDs-M1nTAMU-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-693" y="614.5" as="sourcePoint" />
+            <mxPoint x="-413" y="615" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-5" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;initializes g_table_dict with relevant data&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-680" y="590" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-8" value="assembe_dvpi" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#C3ABD0;" vertex="1" parent="1">
+          <mxGeometry x="-810" y="730" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-9" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="4zg3qLO7-xDs-M1nTAMU-8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-480" y="770" as="sourcePoint" />
+            <mxPoint x="-410" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-10" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;uses g_table_dict&amp;nbsp;to collect table information for DVPI assembly&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-19;" vertex="1" parent="1">
+          <mxGeometry x="-735" y="670" width="330" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-11" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;assemble_dvpi&lt;br&gt;_table_entry&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#FFCC99;" vertex="1" parent="1">
+          <mxGeometry x="-800" y="820" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-12" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-720" y="840" as="sourcePoint" />
+            <mxPoint x="-400" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-13" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;uses g_table_dict&amp;nbsp;to get properties of each table&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-29;" vertex="1" parent="1">
+          <mxGeometry x="-720" y="740" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-14" value="g_table_dict" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-413" y="610" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-15" value="g_dvpi_document" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-260" y="690" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-16" value="g_field_dict" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-100" y="770" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-17" value="g_pipeline_model&lt;br&gt;_profile_name" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-260" y="500" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-19" value="g_model_profile_dict" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="500" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-20" value="g_hash_dict" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="600" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-21" value="g_error_count" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="690" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-22" value="&#xa;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;print_the_brain&lt;/span&gt;&#xa;&#xa;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#FFF2CC;labelBorderColor=default;" vertex="1" parent="1">
+          <mxGeometry x="-100" y="600" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-23" value="assembe_dvpi" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#C3ABD0;" vertex="1" parent="1">
+          <mxGeometry x="-650" y="880" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-24" value="" style="endArrow=none;html=1;rounded=0;entryX=-0.002;entryY=0.877;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="4zg3qLO7-xDs-M1nTAMU-15">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-570" y="890" as="sourcePoint" />
+            <mxPoint x="-520" y="840" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-25" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;adds meta information in g_dvpi_document&amp;nbsp;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-25;" vertex="1" parent="1">
+          <mxGeometry x="-560" y="800" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-27" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;assemble_dvpi&lt;br&gt;_parse_set&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#66B2FF;" vertex="1" parent="1">
+          <mxGeometry x="-670" y="950" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-28" value="" style="endArrow=none;html=1;rounded=0;entryX=0.2;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="4zg3qLO7-xDs-M1nTAMU-15">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-595" y="960" as="sourcePoint" />
+            <mxPoint x="-545" y="910" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-29" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;adds parsing rules and sets to g_dvpi_document&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-30;" vertex="1" parent="1">
+          <mxGeometry x="-580" y="850" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-30" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;assemble_dvpi&lt;br&gt;_hash_mappings&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#FF99CC;" vertex="1" parent="1">
+          <mxGeometry x="-600" y="1000" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-31" value="" style="endArrow=none;html=1;rounded=0;exitX=0.691;exitY=0.032;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.351;entryY=1.004;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="4zg3qLO7-xDs-M1nTAMU-30" target="4zg3qLO7-xDs-M1nTAMU-15">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-530" y="995" as="sourcePoint" />
+            <mxPoint x="-480" y="945" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-32" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;adds hash mappings to g_dvpi_document&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-37;" vertex="1" parent="1">
+          <mxGeometry x="-565" y="900" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-33" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;assemble_dvpi&lt;br&gt;_data_mappings&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#67AB9F;" vertex="1" parent="1">
+          <mxGeometry x="-560" y="1060" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-34" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;assemble_dvpi&lt;br&gt;_stage_columns&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#66FFB3;" vertex="1" parent="1">
+          <mxGeometry x="-463" y="1080" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-35" value="" style="endArrow=none;html=1;rounded=0;entryX=0.55;entryY=0.99;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.729;exitY=0.045;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="4zg3qLO7-xDs-M1nTAMU-33" target="4zg3qLO7-xDs-M1nTAMU-15">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-500" y="1060" as="sourcePoint" />
+            <mxPoint x="-450" y="1010" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-36" value="" style="endArrow=none;html=1;rounded=0;entryX=0.763;entryY=1.01;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="4zg3qLO7-xDs-M1nTAMU-15">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-413" y="1080" as="sourcePoint" />
+            <mxPoint x="-363" y="1030" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-37" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;adds data mappings to g_dvpi_document&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-46;" vertex="1" parent="1">
+          <mxGeometry x="-513" y="930" width="220" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-38" value="adds staging columns to g_dvpi_document" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-53;" vertex="1" parent="1">
+          <mxGeometry x="-463" y="950" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-40" value="assembe_dvpi" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#C3ABD0;" vertex="1" parent="1">
+          <mxGeometry x="-210" y="1070" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-41" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;assemble_dvpi&lt;br&gt;_table_entry&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#FFCC99;" vertex="1" parent="1">
+          <mxGeometry x="-90" y="1100" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-42" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;assemble_dvpi&lt;br&gt;_parse_set&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#66B2FF;" vertex="1" parent="1">
+          <mxGeometry x="30" y="1070" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-43" value="" style="endArrow=none;html=1;rounded=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" target="4zg3qLO7-xDs-M1nTAMU-16">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-170" y="1070" as="sourcePoint" />
+            <mxPoint x="-120" y="1020" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-44" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" target="4zg3qLO7-xDs-M1nTAMU-16">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-50" y="1100" as="sourcePoint" />
+            <mxPoint y="1050" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-45" value="" style="endArrow=none;html=1;rounded=0;entryX=0.812;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="4zg3qLO7-xDs-M1nTAMU-16">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="70" y="1070" as="sourcePoint" />
+            <mxPoint x="120" y="1020" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-46" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;uses g_field_dict to determine field mappings&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-67;" vertex="1" parent="1">
+          <mxGeometry x="-255" y="950" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-47" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;uses g_fiel_dict&amp;nbsp;to add field properties to tables&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-88;" vertex="1" parent="1">
+          <mxGeometry x="-180" y="960" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-48" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;uses g_field_dict to add parse sets&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=73;" vertex="1" parent="1">
+          <mxGeometry x="-50" y="940" width="190" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-49" value="&lt;font style=&quot;font-size: 9px;&quot;&gt;writeDvpiSummary&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#FF6666;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1020" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-50" value="&lt;font style=&quot;&quot;&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;assemble_dvpi&lt;/font&gt;&lt;br&gt;&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#C3ABD0;" vertex="1" parent="1">
+          <mxGeometry x="420" y="1000" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-51" value="" style="endArrow=none;html=1;rounded=0;exitX=0.593;exitY=0.005;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.077;entryY=0.991;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="4zg3qLO7-xDs-M1nTAMU-49" target="4zg3qLO7-xDs-M1nTAMU-21">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="910" as="sourcePoint" />
+            <mxPoint x="250" y="860" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-52" value="" style="endArrow=none;html=1;rounded=0;exitX=0.199;exitY=0.104;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.906;entryY=0.994;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="4zg3qLO7-xDs-M1nTAMU-50" target="4zg3qLO7-xDs-M1nTAMU-21">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="374" y="1020" as="sourcePoint" />
+            <mxPoint x="157" y="753" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-53" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;updates g_error_count during writing process when errors are found&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=45;" vertex="1" parent="1">
+          <mxGeometry x="50" y="870" width="350" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-54" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;updates g_error_count during DVPI assembly&amp;nbsp; when errors are found&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=45;" vertex="1" parent="1">
+          <mxGeometry x="140" y="850" width="330" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-55" value="&lt;font style=&quot;&quot;&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;assemble_dvpi&lt;/font&gt;&lt;br&gt;&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#C3ABD0;" vertex="1" parent="1">
+          <mxGeometry x="570" y="840" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-56" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;assemble_dvpi&lt;br&gt;_hash_mappings&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#FF99CC;" vertex="1" parent="1">
+          <mxGeometry x="620" y="700" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-57" value="" style="endArrow=none;html=1;rounded=0;entryX=0.033;entryY=0.304;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="4zg3qLO7-xDs-M1nTAMU-56">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="340" y="635" as="sourcePoint" />
+            <mxPoint x="390" y="585" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-58" value="" style="endArrow=none;html=1;rounded=0;entryX=0.197;entryY=0.1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="4zg3qLO7-xDs-M1nTAMU-55">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="264" y="660" as="sourcePoint" />
+            <mxPoint x="590" y="820" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-59" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;uses g_hash_dict to create hash keys for tables&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=30;" vertex="1" parent="1">
+          <mxGeometry x="300" y="730" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-60" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;adds hash mappings to g_hash_dict&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=15;" vertex="1" parent="1">
+          <mxGeometry x="380" y="650" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-61" value="dvpdc_worker" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#A9C4EB;" vertex="1" parent="1">
+          <mxGeometry x="414" y="380" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-62" value="&lt;font style=&quot;&quot;&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;assemble_dvpi&lt;/font&gt;&lt;br&gt;&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBackgroundColor=none;labelBorderColor=#C3ABD0;" vertex="1" parent="1">
+          <mxGeometry x="510" y="450" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-63" value="" style="endArrow=none;html=1;rounded=0;entryX=0.08;entryY=0.771;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.97;exitY=0.024;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="4zg3qLO7-xDs-M1nTAMU-19" target="4zg3qLO7-xDs-M1nTAMU-61">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="190" y="500" as="sourcePoint" />
+            <mxPoint x="240" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-64" value="" style="endArrow=none;html=1;rounded=0;entryX=0.074;entryY=0.765;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="4zg3qLO7-xDs-M1nTAMU-62">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="190" y="540" as="sourcePoint" />
+            <mxPoint x="240" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-65" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;loads model profiles into g_model_profile_dict&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-20;" vertex="1" parent="1">
+          <mxGeometry x="180" y="430" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-66" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;uses g_model_profile_dict to get model information&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=-10;" vertex="1" parent="1">
+          <mxGeometry x="224" y="480" width="270" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-67" value="dvpdc_worker" style="ellipse;whiteSpace=wrap;html=1;labelBackgroundColor=none;labelBorderColor=#A9C4EB;" vertex="1" parent="1">
+          <mxGeometry x="-600" y="380" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-69" value="" style="endArrow=none;html=1;rounded=0;entryX=0.019;entryY=0.038;entryDx=0;entryDy=0;exitX=0.934;exitY=0.767;exitDx=0;exitDy=0;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="4zg3qLO7-xDs-M1nTAMU-67" target="4zg3qLO7-xDs-M1nTAMU-17">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-490" y="450" as="sourcePoint" />
+            <mxPoint x="-440" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-70" value="" style="endArrow=none;html=1;rounded=0;entryX=0;entryY=0.635;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="4zg3qLO7-xDs-M1nTAMU-17">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-590" y="480" as="sourcePoint" />
+            <mxPoint x="-540" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-71" value="&lt;font style=&quot;font-size: 11px;&quot;&gt;sets g_pipeline_model_profile_name from configuration&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=19;" vertex="1" parent="1">
+          <mxGeometry x="-530" y="430" width="290" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-72" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;assemble_dvpi&lt;br&gt;_stage_columns&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;labelBorderColor=#66FFB3;" vertex="1" parent="1">
+          <mxGeometry x="-670" y="460" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-73" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;uses g_pipeline_model_profile_name to reference the model profile&amp;nbsp;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;rotation=10;" vertex="1" parent="1">
+          <mxGeometry x="-590" y="480" width="320" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-75" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.585;exitY=0.005;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-39.799999999999955" y="770.3000000000002" as="sourcePoint" />
+            <mxPoint x="-40" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-77" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.461;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1.005;entryY=0.439;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="4zg3qLO7-xDs-M1nTAMU-20" target="4zg3qLO7-xDs-M1nTAMU-22">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="71.5" y="660" as="sourcePoint" />
+            <mxPoint x="18.5" y="627" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-78" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.619;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="4zg3qLO7-xDs-M1nTAMU-22">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-293" y="640" as="sourcePoint" />
+            <mxPoint x="-243" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-81" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0;entryDx=0;entryDy=0;exitX=0.021;exitY=0.963;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="4zg3qLO7-xDs-M1nTAMU-19" target="4zg3qLO7-xDs-M1nTAMU-22">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-10" y="530" as="sourcePoint" />
+            <mxPoint x="40" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-82" value="&lt;strike&gt;uses all&amp;nbsp;global variables&lt;br&gt;&amp;nbsp;to print the current&lt;br&gt;&amp;nbsp;state of the&amp;nbsp;pipeline&lt;/strike&gt;" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;labelBorderColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-110" y="490" width="140" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-84" value="&lt;font style=&quot;font-size: 36px;&quot;&gt;DVPDC Code Structure&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="-220" y="20" width="400" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-87" value="&#xa;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;dvpdc_worker&lt;/span&gt;&#xa;&#xa;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#A9C4EB;fillColor=#A9C4EB;" vertex="1" parent="1">
+          <mxGeometry x="-810" y="1660" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-88" value="assemble_dvpi" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=#C3ABD0;labelBorderColor=none;fillColor=#C3ABD0;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="-630" y="1660" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-91" value="assemble_dvpi_table_entry" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFCC99;" vertex="1" parent="1">
+          <mxGeometry x="-430" y="1660" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-92" value="assemble_dvpi_parse_set" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#66B2FF;" vertex="1" parent="1">
+          <mxGeometry x="-240" y="1660" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-93" value="assemble_dvpi_hash_mappings" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FF99CC;" vertex="1" parent="1">
+          <mxGeometry x="-50" y="1660" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-94" value="assemble_dvpi_data_mappings" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#67AB9F;" vertex="1" parent="1">
+          <mxGeometry x="140" y="1660" width="204.5" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-95" value="assemble_dvpi_stage_columns" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#66FFB3;" vertex="1" parent="1">
+          <mxGeometry x="360" y="1660" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-96" value="writeDvpiSummary" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E1D5E7;" vertex="1" parent="1">
+          <mxGeometry x="590" y="1660" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-97" value="dvpdc_worker" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#A9C4EB;" vertex="1" parent="1">
+          <mxGeometry x="-810" y="1480" width="180" height="140" as="geometry">
+            <mxRectangle x="-420" y="1370" width="120" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-98" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;loads model profiles into g_model_profile_dict&lt;/font&gt;" style="text;strokeColor=none;fillColor=#A9C4EB;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="4zg3qLO7-xDs-M1nTAMU-97">
+          <mxGeometry y="30" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-99" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;initializes g_table_dict with relevant data&lt;/font&gt;" style="text;strokeColor=none;fillColor=#A9C4EB;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="4zg3qLO7-xDs-M1nTAMU-97">
+          <mxGeometry y="60" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-100" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;sets g_pipeline_model_profile_name from configuration&lt;/font&gt;" style="text;strokeColor=none;fillColor=#A9C4EB;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="4zg3qLO7-xDs-M1nTAMU-97">
+          <mxGeometry y="90" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-102" value="assemble_dvpi" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#C3ABD0;" vertex="1" parent="1">
+          <mxGeometry x="-620" y="1480" width="180" height="140" as="geometry">
+            <mxRectangle x="-420" y="1370" width="120" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-103" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;uses g_model_profile_dict to get model information&lt;/font&gt;" style="text;strokeColor=none;fillColor=#C3ABD0;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="4zg3qLO7-xDs-M1nTAMU-102">
+          <mxGeometry y="30" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-104" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;uses g_table_dict&amp;nbsp;to collect table information for DVPI assembly&lt;/font&gt;" style="text;strokeColor=none;fillColor=#C3ABD0;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="4zg3qLO7-xDs-M1nTAMU-102">
+          <mxGeometry y="60" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-105" value="&lt;font style=&quot;font-size: 8px;&quot;&gt;sets g_pipeline_model_profile_name from configuration&lt;/font&gt;" style="text;strokeColor=none;fillColor=#C3ABD0;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="4zg3qLO7-xDs-M1nTAMU-102">
+          <mxGeometry y="90" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-111" value="assemble_dvpi_table_entry" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-420" y="1480" width="183" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-112" value="Item 1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="4zg3qLO7-xDs-M1nTAMU-111">
+          <mxGeometry y="30" width="183" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-113" value="Item 2" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="4zg3qLO7-xDs-M1nTAMU-111">
+          <mxGeometry y="60" width="183" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4zg3qLO7-xDs-M1nTAMU-114" value="Item 3" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="4zg3qLO7-xDs-M1nTAMU-111">
+          <mxGeometry y="90" width="183" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

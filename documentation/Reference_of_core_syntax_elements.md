@@ -174,15 +174,17 @@ This array must contain at least one target mapping. Fields, that are mapped to 
 (optional, default is 50000) *defines: diff hash input assembly*
 <br>>will be implemented later<
 <br>Defines the position of the column, when ordering rows for calculation of the group hash for multiactive satellite loading. Columns of the same prio will be ordered alphabetically by the column name. 
-The high default value sets all columns without any declaration at the end of the list.
+The high default value sets all columns without any declaration at the end of the list. Usage of the setting depends on the
+module, responsible for calculating the group hash.
 
 **row_order_direction**
 (optional, default=ASC) *defines: diff hash input assembly*
-<br>*will be implemented later*
+<br>*will be implemented in 6.2.0 *
 <br>Defines the direction of the order of content of this column, for calculation of the group hash for multiactive satellite loading. Possible values are "ASC" and "DESC".
 
 **relation_names[]**
 (optional) *defines: mapping, data model, load operations*
+<br>*will be replaced by "key_sets[]" in release 0.7.0*
 <br>Declares this mapping to be used only in specific relations. It should be valid as a SQL name, since it 
 will be used as name extension for staging columns.
 
@@ -192,14 +194,36 @@ The name must be a valid ***relation_name*** depending on the role of the field.
 * Data excluded from key for hub or link - The name must match a relation name, supported by the target
 * Satellite Content - The name must match a relation name, supported by the parent
 
-To explicitly declare participation in the main (unnamend) relation use "/" as name. 
-This is the only way to declare the participation in a subset of relations that contains the unnamed relation.
+When ommitting this property, the mapping counts only to the "unnamed" relation. 
+You can explicitly declare participation in the main (unnamend) relation with  "/" as name. This allows a mapping to
+be used in mulitple relations that include the unnamed relation.
 
-When ommitting this property, the field mapping participates in relations as follows:
-* when the field is the only field mapped to a target column, the mapping is used in all relations
-* when there are multiple fields mapped to a target column, the mapping is used only in the main (unnamed) relation. 
+By setting the property to \["*"], you declare the mapping to be used in all relations of the table.
+Declaring '*' for all mappings of a table, will use the mappings for all relations of the parent tabled. This can not be
+applied to hubs, since they don't have a parent.
+ 
 
 <br>*["parent"] , ["child1","child2"], ["/","Sibling"]*
+
+**key_sets[]**
+(optional) *defines: mapping, data model, load operations, hash key composition*
+<br>***announced for release 0.7.0** as part of the keyset syntax refactoring*
+<br>Declares this mapping to be used only for a specific key set. It should be valid as a SQL name, since it 
+will be used as name extension for staging columns.
+
+Depending on the target, the declaration will modify the mapping as follows:
+* Business Key - The mapping declares key set names for a hub, where the source field will be used
+* Dependent child key - The mapping declares key set names for a link, where the source field will be used
+* Data excluded from key for hub or link - The mapping will be used in combination with buisness key, that belong to the key set
+* Satellite content - The mapping will be used in combination with a satellite parent key, that is created from keys from that key set
+
+When ommitting this property, the mapping counts only to the "unnamed" key set. 
+You can explicitly declare participation in the "unnamend" key set with  "/" as name. This allows a mapping to
+to inlucde the unnamed relation with other specific named relations.
+
+By setting the property to \["*"], you declare the mapping to be used in all relations of the table.
+Declaring '*' for all mappings of a table, will use the mappings for all relations of the parent tabled. This can not be
+applied to hubs, since they don't have a parent.
 
 
 **exclude_from_key_hash**
@@ -213,10 +237,21 @@ is rare but possible).
 *defines: key hash assembly*
 <br>This property provides explicit control over the order of concatination of fields for the key hash calculation. It will overrule the implicit ordering, that is defined by the implementation. Implicit ordering will still be applied to columns of the same prio. 
 
+**use_as_key_hash**
+(optional, default=false)
+*defines: key hash assembly, load process validation*
+<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
+<br>Setting this to true, defines the field to contain a key_hash for the table. The field/column name must be equal to
+the name, given by the model structure. It can be applied to parent keys of satellites or links and instructs the staging
+phase to just copy the value from the source into the stage table.
+
+
 **exclude_from_change_detection**
 (optional, default=false, only useful on mappings to historized satellites)
 *defines: satellite load, diff hash assembly*
-<br>true = exclude the field from the change detection. Depending on the method of the target, this will modify the comparison SQL or the calculation of the diff hash.
+<br>true = exclude the field from the change detection. Depending on the method of the target,
+this will modify the comparison SQL or the calculation of the diff hash.
+This property will be overruled by the setting of "update_on_every_load"
 
 **prio_in_diff_hash**
 (optional, default=0)
@@ -234,9 +269,14 @@ is rare but possible).
 *defines: load steps*
 <br>*announced for upcoming version*
 <br>*if not supported on specific stereotypes, this must throw a warning*
-<br>Forces the load process to update the column with the staged value every time (e.g. for a last seen date in a hub). When used in satellite or reference table mappings, only the current row for the parent key should be updated.
+<br>Forces the load process to update the column with the staged value every time (e.g. for a last
+seen dates in a hub or link). When used for satellites, only the current row for the parent key 
+should be updated. When used in reference tables, the update must happen on a row that has the
+same values for all columns, except the update_every_load columns.
+Fieldsmappings with update_on_every_load set to true, will be excluded from the diff hash calculation,
+regardless of the exclude_from_change_detection setting.
 
-**column_content_comment**
+**column_comment**
 (optional, default=comment of the field)
 *defines: documentation, table DDL*
 <br>comment that will be added to the column in the data vault model. Default is the comment of the field
@@ -291,7 +331,9 @@ Json Path : /data_vault_mode[]/
 
 Satellites without any mapped content column are allowed (effectivity satellites). 
 
-**table_content_comment**
+
+
+**table_comment**
 (optional)
 *defines: documentation, table ddl*
 <br>Comment to add to the table in the database
@@ -316,6 +358,14 @@ Json Path : /data_vault_mode[]/tables[]
 <br>Name of the hub key in the table. (Currently this name must be unique over all tables in the declared model. Future versions will extend the syntax to allow the same name in different tables, even though it is highly recommended to have unique hub key names)
 <br>*"hk_raccn_account"*
 
+**is_only_structural_element**
+(optional, default=false)
+*defines: hash calculation, loading procedure*
+<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
+Defines the hub to be only declared for structural completeness. The table will not be loaded, and the key_hash will not
+be calculated but must be provided to child tables via "use_as_key_hash" mappings.
+If there are no link children, that need to calculate their link key, the business keys can be omitted.
+
 ### "lnk" specific properties
 
 Json Path : /data_vault_mode[]/tables[]
@@ -328,6 +378,13 @@ Depending on mapped fields and the properties, this can be a
 (mandatory)*defines: model structure*
 <br>Name of the link key in the table
 <br>*"lk_raccn_account_department"*
+
+**is_only_structural_element**
+(optional, default=false)
+*defines: hash calculation, loading procedure*
+<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
+Defines the link to be only declared for structural completeness. The table will not be loaded, and the link_key will not
+be calculated. The link key values for the children must be provided via "use_as_key_hash" mappings. 
 
 **link_parent_tables[]**
 (mandatory)*defines: model structure*
@@ -345,6 +402,50 @@ The order of the tables in the list can be relevant to the hashing order of the 
 (optional)*defines: compiler behaviour*
 <br>must be set to true, to avoid warnings for links without an esat or sat.
 
+**link_key_sets[]**
+(situational)*defines: hash key content, load operations, field mapping*
+<br>*announced for release 0.7.0 as part of the keyset syntax refactoring*
+
+Defines the number of load operations and  key sets of the link. The number of elements must be equal to the number of 
+elements in key_sets of link_parent_table declaration with more then one element.
+Every load operation will use the element with the same position in the link_key_sets[] list and the key_sets[] list.
+
+For the hub key, the link_key_sets[] key set will be used  as long as there is no dedicated key_sets[] list given in the link parent tables entry.
+
+Dependent child keys with no declaration about a key set, will be loaded for all key sets in the list.
+
+Attached satellites with no declaration about a key set, will be loaded for all key sets in the list.
+
+"link_key_sets[]" must be defined explicitly when:
+- key_sets used on the same position in different key_sets[] in the link_parent_tables[] create ambiguity for the attached satellites or contained dependent child keys 
+- key_sets used in dependent child key mappings or attached satellites are not covered in the key_sets[] in the link_parent_tables[]
+
+When declaration of "link_key_sets[]" is optional and omitted , it defaults to the first option of these:
+- the union of all parent mapping key_sets[]    
+- all key sets of dependent child keys
+- all key sets that are defined in field mappings or declared to be tracked by attached satellites
+- all key sets that are common to all attached hubs
+- the single element `/`
+
+This default behaviour reduces the need for declaration of link_key_sets to a minimum. 
+It might reveal violations of rules, that demand explicit declaration.
+
+A compile error will be reported when:
+- a hub does not support the demanded key set
+- the specific key set for a dependent child key is not in the final list
+- the specific key set for an attached satellite is not in the final list
+
+Example of union of parent mapping key_sets
+```
+[A,B,C] & [A,B,C]= [A,B,C]
+[A,B,C] & [/] = [A,B,C]
+[A,/,/] & [/,B,C] = [A,B,C]
+[A,/,/] & [/,/,C] = [A,/,C]
+[A,B,C] & [D,E,F]= invalid
+[A,B,C] & [A] = invalid
+ ```
+
+
 ### link_parent_tables[]
 
 Json Path : /data_vault_mode[]/tables[]
@@ -358,15 +459,33 @@ By using the full property declaration syntax for parent tables, multiple relati
 
 **relation_name**
 (mandatory for every table, declared more then once in the list)
-*defines: model structure, loading operations*
+<br>*defines: model structure, loading operations*
 <br>Name of the relation. The name should be usable to extend the hub key column names.
+<br>*will be replaced by "parent_relation_name" in release 0.7.0*
 The name is referenced by the "relation_name" property of a field, 
 to declare the field to be used for this relation.
 <br>*"master"|"parent"|"duplicate"*
 
+**parent_relation_name**
+(mandatory for 2 and more relations to the same hub)
+<br>*defines: model structure*
+<br>*announced for release 0.7.0 as part of the key_set syntax refactoring*
+It is used to generate different hub key and stage column names. Is source for the default content of "key_sets[]" It defaults to "/".
+
 **hub_key_column_name_in_link**
 (optional)*defines: db element naming*
 <br>Name of the hub key columns, to be used for the mapping of this relation. If ommitted the hub key column name will be generated by adding the relation name to the original hub key column name
+
+**key_sets[]**
+(optional, defaults to 1 element using the parent_relation_name)
+<br>*defines: loading operations, hash keys*
+<br>*announced for release 0.7.0 as part of the key_set syntax refactoring*
+
+Defines the key set to be used from the parent hub, for a specific load operation. With only one element,it will be applied
+to every load operation. When having multiple elements, it must have the same number of elements like all 
+key_sets[] from the other link_parent_table declaraions, that have more then one element.
+The number of elements define the number of loading operations.
+
 
 ### "sat" specific properties
 
@@ -426,8 +545,14 @@ In general, the name must match the final name of a hub key column in the link. 
 **tracked_relation_name**
 (optional, only valid on effectivity satellites)
 *defines: loading operations*
-<br>Name of the relation this satellite will track the validity for. This is only used for satellites
-whithout any field mapping. The relation name must be valid for the satellites parent.
+<br>Name of the relation this satellite will track the validity for.  
+This property can only be used for satellites without any field mapping. The relation name must be valid for the satellites parent.
+
+Setting tracked_relation_name to '*' allows the satellite to follow multiple relations of its parent. If not set, when 
+multiple relations are induced by the parent, this will result in an error, to prevent unintended process generation.
+
+Announcement for release 0.7.0: To express test scenarios 3370-34230,3550,3560 "tracked_relation_name" 
+will be changed to "tracked_key_set".
 
 **history_depth_criteria**
 (mandatory when history_depth_limit is set)
@@ -473,9 +598,7 @@ When set to true, existence of a specific value combination  in the source is de
 <br> defines a maximum depth of history in the reference table in days . No declaration or nagative values are treated as "no limit". When the table is loaded, all rows, that are beyond the given threshhold, are deleted. 
 <br>(in reference tables, the row can only age "on their own", they have no "key" to measure a version count)
 
-
-
-## deletion_detection 
+## deletion_detection_rules[] 
 
 Json Path: /
 
@@ -484,10 +607,25 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 **procedure**
 (mandatory)
 *defines: loading procedure*
-<br>provides the selection from different kind of procedures. Suggested valid values are:
+<br>declares deletion detection procedure for this rule. Suggested valid values are:
 - "key_comparison" : Retrieve all (or a partition of) keys from the source, compare vault to the keys and create & stage deletion records for keys, that are not present anymore
 - "deletion_event_transformation" : Convert explicit deletion event messages into a deletion record that is staged
 - "stage_comparison" : The data retrieved and staged includes a complete set or partitions of the complete set. By comparing the whole vault against the stage, deletion records are created during the load from stage to the vault
+- (more procedure names might be available in the actual load process implementation)
+
+**tables_to_cleanup[]**
+(mandatory, only declared table names allowed)
+*defines: loading procedure*
+<br>List of table names, on which to apply the deletion detection rule. Multiple entries are only allowed for satellites of the same parent.
+<br>“rsfdl_customer_p1_sat”,”rsfdl_customer_p2_sat”
+
+**rule_comment**
+(optional)
+*defines: documentation*
+<br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
+<br>*“All satellites of customer”*
+
+##### deletion_rule properties for procedure "key_comparison"
 
 **key_fields[]**
 (mandatory for "key_comparison", valid fields must be declared in fields[]. The fields must be mapped to business keys of a parent of the satellite)
@@ -499,28 +637,12 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 *defines: loading procedure*
 <br>Names of the fields, which identify fully delivered datasets (partitions) in the current load. If set, the deletion detection wil be restricted to these partitions.
 
-**deletion_rules[]**
-(mandatory)
-<br>List of deletion rules. The order of the the rules in this array must be obeyed.
+##### deletion_rule properties for procedure "stage_comparison"
 
-→ deletion_rules[] 
-
-**> procedure specific properties <**
-For other procedures there might be other properties necessary. 
-
-#### deletion_rules[]
-
-**rule_comment**
+**partitioning_fields[]**
 (optional)
-*defines: documentation*
-<br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
-<br>*“All satellites of customer”*
-
-**tables_to_cleanup[]**
-(mandatory, only declared table names allowed)
 *defines: loading procedure*
-<br>List of table names, on which to apply the deletion detection rule. Multiple entries are only allowed for satellites of the same parent. 
-<br>“rsfdl_customer_p1_sat”,”rsfdl_customer_p2_sat”
+<br>Names of the fields, which identify fully delivered datasets (partitions) in the current load. If set, the deletion detection wil be restricted to these partitions.
 
 **join_path[]**
 (optional, must contain all tables needed to be joined to reach the partitioning columns)
@@ -528,8 +650,6 @@ For other procedures there might be other properties necessary.
 <br>Describes the join path in the model, to get from the tables to delete, to the tables with partitioning fields. The path begins with the parent table of all listed satellites to delete. The path must not branch except when adding satellites to provide partitioning columns or restrict the validity of links. The path can skip unnecessary tables (e.g. hubs, whose business keys are not a partition criteria).
 
 An empty join path means that the partitioning columns are all in the table to cleanup. It can't be set, when there are no partitioning_fields.
-
-
 
 Example:
 ```

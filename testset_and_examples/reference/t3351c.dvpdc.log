@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-07-28 13:41:39
+Compiling t3351c.dvpd.json
+
+AHS-L1: Hub 'rtjj_3351_aaa_hub' has no business key mapping for relation 'TTT' needed for link 'rtjj_3351_aaa_aaa_ttt_lnk'
+*** Compilation ended with errors ***

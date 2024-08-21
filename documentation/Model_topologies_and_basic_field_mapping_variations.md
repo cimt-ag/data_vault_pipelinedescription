@@ -33,7 +33,7 @@ When describing the data we classify the elements as follows:
 **content:** Data that is not used for identification, and just stored in the data model
 
 # Flat Structure Transformation
-Data can be complex in multiple ways, especially when it comes to hierarchical data or document formats. The following approach uses the source data representation after its transformation into a single relational table model (all data is organized in rows, every row contains all fields). Hierarchical data formats might need multiple transformations (one for each array). In that case, each of these particular transformations will relate to one of the described patterns. 
+Data can be complex in multiple ways, especially when it comes to hierarchical data or document formats. The following approach uses the source data representation after its transformation into a single relational table model where all data is organized in rows and every row contains all fields. Hierarchical data formats might need multiple transformations (one for each array). In that case, each of these particular transformations will relate to one of the described patterns. 
 
 # Informationtypes of data
 To define the variety of mappings, it is necessary to clarify the types of information, represented by a field.

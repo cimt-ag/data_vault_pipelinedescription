@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-07-28 12:46:11
+Compiling t3051c.dvpd.json
+
+DLO-21:There is no field mapping for relation '/' into column 'F3_AAA_BK2F' of table 'rtjj_3051_aaa_hub'
+*** Compilation ended with errors ***

@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-07-27 17:51:18
+Compiling t1090_ddl_combined_stage_multi_multi_naming.dvpd.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t1090_ddl_combined_stage_multi_multi_naming.dvpi.json
+--- Compile successfull ---

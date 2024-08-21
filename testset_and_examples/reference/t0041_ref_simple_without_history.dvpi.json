@@ -1,0 +1,210 @@
+{
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
+  "dvpi_version": "0.6.1",
+  "compile_timestamp": "2024-06-13 12:17:28",
+  "dvpd_version": "0.6.0",
+  "pipeline_name": "t0041_ref_simple_without_history",
+  "dvpd_filename": "t0041_ref_simple_without_history.dvpd.json",
+  "tables": [
+    {
+      "table_name": "rtjj_41_aaa_ref",
+      "table_stereotype": "ref",
+      "schema_name": "rvlt_test_jj",
+      "storage_component": "",
+      "is_enddated": false,
+      "uses_diff_hash": false,
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "F1_AAA_RC1",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(20)",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "F2_AAA_RC2",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "DECIMAL(20,0)",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "F3_AAA_RC3",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "DATE",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "F4_AAA_RC4F",
+          "is_nullable": true,
+          "column_class": "content_untracked",
+          "column_type": "DECIMAL(5,0)",
+          "exclude_from_change_detection": "true",
+          "prio_for_column_position": 50000
+        }
+      ]
+    }
+  ],
+  "data_extraction": {
+    "fetch_module_name": "none - this is a pure generator test case"
+  },
+  "parse_sets": [
+    {
+      "stage_properties": [
+        {
+          "stage_schema": "stage_rvlt",
+          "stage_table_name": "st0041_ref_simple_without_history",
+          "storage_component": ""
+        }
+      ],
+      "record_source_name_expression": "dvpd implementation test",
+      "fields": [
+        {
+          "field_type": "Varchar(20)",
+          "field_position": 1,
+          "needs_encryption": false,
+          "field_name": "F1_AAA_RC1"
+        },
+        {
+          "field_type": "Decimal(20,0)",
+          "field_position": 2,
+          "needs_encryption": false,
+          "field_name": "F2_AAA_RC2"
+        },
+        {
+          "field_type": "DATE",
+          "field_position": 3,
+          "needs_encryption": false,
+          "field_name": "F3XX_AAA_RC3"
+        },
+        {
+          "field_type": "DECIMAL(5,0)",
+          "field_position": 4,
+          "needs_encryption": false,
+          "field_name": "F4_AAA_RC4F"
+        }
+      ],
+      "hashes": [],
+      "load_operations": [
+        {
+          "table_name": "rtjj_41_aaa_ref",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [],
+          "data_mapping": [
+            {
+              "column_name": "F1_AAA_RC1",
+              "field_name": "F1_AAA_RC1",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "F1_AAA_RC1"
+            },
+            {
+              "column_name": "F2_AAA_RC2",
+              "field_name": "F2_AAA_RC2",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "F2_AAA_RC2"
+            },
+            {
+              "column_name": "F3_AAA_RC3",
+              "field_name": "F3XX_AAA_RC3",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "F3XX_AAA_RC3"
+            },
+            {
+              "column_name": "F4_AAA_RC4F",
+              "field_name": "F4_AAA_RC4F",
+              "column_class": "content_untracked",
+              "is_nullable": true,
+              "stage_column_name": "F4_AAA_RC4F"
+            }
+          ]
+        }
+      ],
+      "stage_columns": [
+        {
+          "stage_column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "stage_column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "stage_column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "stage_column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "stage_column_name": "F1_AAA_RC1",
+          "stage_column_class": "data",
+          "field_name": "F1_AAA_RC1",
+          "is_nullable": true,
+          "column_type": "Varchar(20)",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "F2_AAA_RC2",
+          "stage_column_class": "data",
+          "field_name": "F2_AAA_RC2",
+          "is_nullable": true,
+          "column_type": "Decimal(20,0)",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "F3XX_AAA_RC3",
+          "stage_column_class": "data",
+          "field_name": "F3XX_AAA_RC3",
+          "is_nullable": true,
+          "column_type": "DATE",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "F4_AAA_RC4F",
+          "stage_column_class": "data",
+          "field_name": "F4_AAA_RC4F",
+          "is_nullable": true,
+          "column_type": "DECIMAL(5,0)",
+          "column_classes": [
+            "content_untracked"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,0 @@
-Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2023-11-05 17:38:34
-Compiling test22_one_link_one_esat.dvpd.json
-
-Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/test22_one_link_one_esat.dvpi.json
---- Compile successfull ---

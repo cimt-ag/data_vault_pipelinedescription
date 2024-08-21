@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-07-28 13:41:40
+Compiling t7220c_r_topo_hub_relation_missing.json
+
+AHS-L1: Hub 'rtcc_220_bbb_hub' has no business key mapping for relation 'R333' needed for link 'rtcc_220_aaa_bbb_lnk'
+*** Compilation ended with errors ***

@@ -6,11 +6,11 @@ Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-
 
 ---------
 
-Data Vault Pipeline Description is a concept and syntax to provide a standardized document format, 
-to declare all necessary metadata for fetching, parsing, hashing a data source and load it
+Data Vault Pipeline Description is a concept and syntax to declare all necessary metadata
+for fetching, parsing, hashing a data source and load it
 into a data vault model.
 
-It is provides as a common interface between all steps and tools, that are executed during the 
+It provides a common interface between all steps and tools, that are needed during the 
 design and implementation of data vault models and loading processes.
 
 Even though it is generally an easy to use concept, the description of all provided
@@ -57,8 +57,8 @@ Defines and explains syntax and structure of the model profile syntax.
 Descibes different project scenarios, how the DVPD should be integrated in the development workflow.
 
 ## Model and method investigations
-Some requirements of the Data Vault Method are not directly described 
-in the books, but are hidden as imlplicit conclusions. The following articles are investigating different aspects in the data vault method and explain the requirements that lead to some syntax concepts and design descisions.
+Some requirements of the Data Vault method are not directly described 
+in the books, but need to be discovered as imlplicit conclusions or from project experiences. The following articles are investigating different aspects in the data vault method and explain the requirements that lead to some syntax concepts and design descisions.
 
 ### [Model topologies and basic field mapping variations](./Model_topologies_and_basic_field_mapping_variations.md)
 This article provides a complete set of model topologies. The described topologies are an
@@ -79,3 +79,18 @@ Deletion detection is a complex problem on its own.
 The full investigation about all possible variationts
 of deletion detection and how to describe it in a syntax is
 placed in this document to shorten the central concept article.
+
+## Implementation of reference compiler and example rendering scripts
+To proof the validity of the concept, this git procject contains a reference implementation of a DVDP Compiler and examples 
+for scripts to render various code and documentation files from the DVPD or its compiled version, the DVPI.
+
+### [installation and usage of the reference implementation](Installation_and_usage_of_the_reference_implementation.md)
+Instructions how to install and use all the provided scripts.
+
+### [DVPDC automated testing](DVPDC_automated_testing.md)
+To proof, that extentions and changes to the compiler do not have any sideeffects to unchanged functionality, a large set of automated test cases is provided in the reposotory. How this works and can be extended, is documented here.
+
+
+
+
+

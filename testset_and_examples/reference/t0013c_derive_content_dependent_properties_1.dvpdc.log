@@ -1,0 +1,14 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-07-14 19:56:46
+Compiling t0013c_derive_content_dependent_properties_1.dvpd.json
+
+Hub table rtjj_13_xxx_hub_without_field_hub has no business key assigned
+Hub table rtjj_13_xxy_hub_without_business_key_hub has no business key assigned
+link parent table 'rtjj_13_xyx_not_existing_hub' of link 'rtjj_13_aaa_xyx_link_with_missing_parent_lnk' is not declared
+link parent table 'rtjj_13_aaa_xx_not_a_hub_sat' of link 'rtjj_13_aaa_xyy_link_with_sat_as_parent_lnk' is not a hub
+parent table 'rtjj_13_xyx_not_existing_hub' of satellite 'rtjj_13_xyx_p1_sat_with_missing_parent_sat' is not declared
+Parent table 'rtjj_13_aaa_hub' of effectivity sat 'rtjj_13_aaa_xx_esat_not_on_link_sat' is not a link
+Parent table 'rtjj_13_aaa_xx_not_a_hub_sat' of satellite 'rtjj_13_aaa_yy_parent_not_hub_or_link_sat' is not a link or hub
+Satellite 'rtjj_13_aaa_bbb_driving_key_sat_with_hub_parent' declares driving Key, but parent is not a link
+*** Compilation ended with errors ***

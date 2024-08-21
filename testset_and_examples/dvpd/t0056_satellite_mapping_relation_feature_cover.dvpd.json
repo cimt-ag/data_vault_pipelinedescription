@@ -1,0 +1,164 @@
+{
+	"dvpd_version": "0.6.1",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t0056_satellite_mapping_relation_feature_cover.dvpd",
+	"pipeline_comment": "Test with a broad variety of satellite mapping constellations. Used during compiler implementation for fast first instant feedback.",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields": [
+		     {"field_name": "F1_AAABBBCCC_BK1", 	"field_type": "Varchar(20)",	 "targets": 
+																																										[{"table_name": "rtjj_56_aaa_hub"},
+																																										{"table_name": "rtjj_56_bbb_hub","relation_names":["*"]},
+																																										{"table_name": "rtjj_56_ccc_hub","relation_names":["*"]}]}
+		    ,{"field_name": "F2_AAA_BK2F", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_56_aaa_hub"}]}
+		    ,{"field_name": "F3_AAA_C1F", 	"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_56_aaa_p1_sat"}]}
+				
+		 	  ,{"field_name": "F4XX_BBB_BK2F_UNM",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_56_bbb_hub","column_name":"F4F5_BBB_BK2F"}]}
+				,{"field_name": "F5XX_BBB_BK2F_TTT",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_56_bbb_hub","column_name":"F4F5_BBB_BK2F","relation_names":["TTT"]}]}
+				
+		 	  ,{"field_name": "F6_BBB_C1",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_bbb_p1_sat","relation_names":["*"]}
+																																								 ,{"table_name": "rtjj_56_bbb_unm_sat","relation_names":["*"]}
+																																								 ,{"table_name": "rtjj_56_bbb_ttt_sat","relation_names":["*"]}
+																																								 ]}
+																																								 
+			  ,{"field_name": "F7XX_BBB_UNM_C2F",	"field_type": "DECIMAL(5,0)",	"targets": [  {"table_name": "rtjj_56_bbb_p1_sat","column_name":"F7F8_BBB_C2F"}
+																																								 ,{"table_name": "rtjj_56_bbb_unm_sat" ,"column_name":"F7_BBB_C2F" }
+																																								 ]}
+			  ,{"field_name": "F8XX_BBB_TTT_C2F",	"field_type": "DECIMAL(5,0)",	"targets": [  {"table_name": "rtjj_56_bbb_p1_sat"  ,"column_name":"F7F8_BBB_C2F","relation_names":["TTT"]}
+																																											 ,{"table_name": "rtjj_56_bbb_ttt_sat" ,"column_name":"F8_BBB_C2F"  ,"relation_names":["TTT"]}
+																																								 ]}
+
+
+			  ,{"field_name": "F9_BBB_ALL_C1F",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_bbb_all_sat","relation_names":["*"]}
+																																								 ]}
+
+
+		 	  ,{"field_name": "F10XX_CCC_BK2F_UNM",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_56_ccc_hub","column_name":"F10F11_CCC_BK2F"}]}
+				,{"field_name": "F11XX_CCC_BK2F_UUU",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_56_ccc_hub","column_name":"F10F11_CCC_BK2F","relation_names":["UUU"]}]}
+
+		 	  ,{"field_name": "F12_CCC_C1",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_ccc_p1_sat","relation_names":["*"]}
+																																								 ,{"table_name": "rtjj_56_ccc_unm_sat","relation_names":["*"]}
+																																								 ,{"table_name": "rtjj_56_ccc_uuu_sat","relation_names":["*"]}
+																																								 ]}
+																																								 
+			  ,{"field_name": "F13XX_CCC_UNM_C2F",	"field_type": "DECIMAL(5,0)",	"targets": [  {"table_name": "rtjj_56_ccc_p1_sat","column_name":"F13F14_CCC_C2F"}
+																																								 ,{"table_name": "rtjj_56_ccc_unm_sat" ,"column_name":"F13_CCC_C2F" }
+																																								 ]}
+			  ,{"field_name": "F14XX_CCC_TTT_C2F",	"field_type": "DECIMAL(5,0)",	"targets": [  {"table_name": "rtjj_56_ccc_p1_sat"  ,"column_name":"F13F14_CCC_C2F","relation_names":["UUU"]}
+																																											 ,{"table_name": "rtjj_56_ccc_uuu_sat" ,"column_name":"F14_CCC_C2F"  ,"relation_names":["UUU"]}
+																																								 ]}
+
+
+			  ,{"field_name": "F15_CCC_ALL_C1F",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_ccc_all_sat","relation_names":["*"]}
+																																								 ]}
+
+				,{"field_name": "F16_AAA_BBB_DFT_C1F",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_aaa_bbb_sat"} ]}
+				,{"field_name": "F17_AAA_BBB_TTT_C1F",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_aaa_bbb_ttt_sat","relation_names":["TTT"]} ]}
+				,{"field_name": "F18_AAA_BBB_ALL_C1F",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_aaa_bbb_all_sat","relation_names":["*"]} ]}
+
+				,{"field_name": "F19_AAA_CCCUUU_C1F",	"field_type": "VARCHAR(200)",	"targets": [  {"table_name": "rtjj_56_aaa_cccuuu_sat"} ]} 
+
+
+		],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_56_aaa_hub",
+					"table_stereotype": "hub",
+					"table_comment":"Single (universal) key set hub"
+			}
+				,{"table_name": "rtjj_56_aaa_p1_sat",
+  				"table_stereotype": "sat",
+					"table_comment":"Only mapping for unnamed key set",
+					"satellite_parent_table": "rtjj_56_aaa_HUB",
+					"diff_hash_column_name": "RH_rtjj_56_aaa_P1_SAT"
+					}
+				,{"table_name": "rtjj_56_bbb_hub"
+							,	"table_stereotype": "hub"
+							,"hub_key_column_name": "HK_rtjj_56_bbb"
+				}	
+				,{"table_name": "rtjj_56_bbb_p1_sat",
+     				"table_stereotype": "sat",
+  					"table_comment":"Different data for both relations",
+						"satellite_parent_table": "rtjj_56_bbb_hub"
+						}
+				,{"table_name": "rtjj_56_bbb_unm_sat",
+     				"table_stereotype": "sat",
+  					"table_comment":"Data for unnamed relations",
+						"satellite_parent_table": "rtjj_56_bbb_hub"
+						}
+				,{"table_name": "rtjj_56_bbb_ttt_sat",
+     				"table_stereotype": "sat",
+  					"table_comment":"Data for ttt relations",
+						"satellite_parent_table": "rtjj_56_bbb_hub"
+						}
+				,{"table_name": "rtjj_56_bbb_all_sat",
+     				"table_stereotype": "sat",
+  					"table_comment":"Same data for all relations",
+						"satellite_parent_table": "rtjj_56_bbb_hub"
+						}
+				,{"table_name": "rtjj_56_aaa_bbb_lnk",
+  				"table_stereotype": "lnk",
+					"link_key_column_name": "LK_rtjj_56_aaa_bbb",
+					"link_parent_tables": ["rtjj_56_aaa_hub","rtjj_56_bbb_hub"]
+					}
+				,{"table_name": "rtjj_56_aaa_bbb_sat",
+     				"table_stereotype": "sat",
+						"satellite_parent_table": "rtjj_56_aaa_bbb_lnk",
+						"driving_keys":["HK_rtjj_56_aaa"]
+						}
+				,{"table_name": "rtjj_56_aaa_bbb_ttt_sat",
+     				"table_stereotype": "sat",
+						"satellite_parent_table": "rtjj_56_aaa_bbb_lnk",
+						"driving_keys":["HK_rtjj_56_aaa"]
+						}
+				,{"table_name": "rtjj_56_aaa_bbb_all_sat",
+     				"table_stereotype": "sat",
+						"satellite_parent_table": "rtjj_56_aaa_bbb_lnk",
+						"driving_keys":["HK_rtjj_56_aaa"]
+						}
+				,{"table_name": "rtjj_56_ccc_hub"
+							,	"table_stereotype": "hub"
+							,"hub_key_column_name": "HK_rtjj_56_ccc"
+				}	
+				,{"table_name": "rtjj_56_ccc_p1_sat",
+     				"table_stereotype": "sat",
+  					"table_comment":"Different data for both relations",
+						"satellite_parent_table": "rtjj_56_ccc_hub"
+						}
+				,{"table_name": "rtjj_56_ccc_unm_sat",
+     				"table_stereotype": "sat",
+  					"table_comment":"Data for unnamed relations",
+						"satellite_parent_table": "rtjj_56_ccc_hub"
+						}
+				,{"table_name": "rtjj_56_ccc_uuu_sat",
+     				"table_stereotype": "sat",
+  					"table_comment":"Data for uuu relations",
+						"satellite_parent_table": "rtjj_56_ccc_hub"
+						}
+				,{"table_name": "rtjj_56_ccc_all_sat",
+     				"table_stereotype": "sat",
+  					"table_comment":"Same data for all relations",
+						"satellite_parent_table": "rtjj_56_ccc_hub"
+						}
+				,{"table_name": "rtjj_56_aaa_cccuuu_lnk",
+  				"table_stereotype": "lnk",
+					"link_key_column_name": "LK_rtjj_56_aaa_cccuuu",
+					"link_parent_tables": [{"table_name":"rtjj_56_aaa_hub"}
+																,{"table_name":"rtjj_56_ccc_hub"}
+																,{"table_name":"rtjj_56_ccc_hub","relation_name":"UUU"}
+																]
+					}
+				,{"table_name": "rtjj_56_aaa_cccuuu_sat",
+     				"table_stereotype": "sat",
+						"satellite_parent_table": "rtjj_56_aaa_cccuuu_lnk",
+						"driving_keys":["HK_rtjj_56_aaa"]
+						}
+				]
+		}
+		]
+
+}

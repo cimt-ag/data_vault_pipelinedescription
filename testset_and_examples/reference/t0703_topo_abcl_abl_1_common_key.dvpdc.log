@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.0
+Compile time: 2024-02-27 13:12:38
+Compiling t0703_topo_abcl_abl_1_common_key.dvpd.json
+
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t0703_topo_abcl_abl_1_common_key.dvpi.json
+--- Compile successfull ---

@@ -1,0 +1,28 @@
+{
+	"dvpd_version": "0.6.0",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t0035_tracking_sat_with_sequence_information",
+	"record_source_name_expression": "dvpd implementation test",
+	"stage_properties" : [{"storage_component":"PostgresDWH","stage_schema":"stage_rvlt"}],
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields": [
+		      {"field_name": "F1_AAA_BK1F", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_35_aaa_hub"}]},
+		 	  {"field_name": "F2_AAA_P1_EVENT_TIME_C1",	"field_type": "timestamp",	"targets": [{"table_name": "rtjj_35_aaa_p1_trsat"}]},
+		 	  {"field_name": "F3_AAA_P1_EVENT_TYPE_C2F",	"field_type": "CHAR(1)",	"targets": [{"table_name": "rtjj_35_aaa_p1_trsat"}]}
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_35_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_35_aaa"}
+				,{"table_name": "rtjj_35_aaa_p1_trsat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_35_aaa_HUB"
+															,"compare_criteria":"key+data"
+															,"is_enddated" : "false"
+															,"uses_diff_hash":"false"
+															,"has_deletion_flag":"false"}
+				]
+		}
+	]
+}

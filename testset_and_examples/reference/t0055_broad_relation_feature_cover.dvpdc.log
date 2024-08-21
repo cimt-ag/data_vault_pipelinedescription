@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-04-07 19:51:20
+Compiling t0055_broad_relation_feature_cover.dvpd.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t0055_broad_relation_feature_cover.dvpi.json
+--- Compile successfull ---
