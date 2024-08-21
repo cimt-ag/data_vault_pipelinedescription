@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-04-30 10:55:52",
+  "compile_timestamp": "2024-06-13 12:17:32",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t3300",
   "dvpd_filename": "t3300.dvpd.json",
@@ -392,7 +392,7 @@
         {
           "table_name": "rtjj_3300_aaa_hub",
           "relation_name": "TTT",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -415,7 +415,7 @@
         {
           "table_name": "rtjj_3300_aaa_hub",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
@@ -438,7 +438,7 @@
         {
           "table_name": "rtjj_3300_aaa_aaa_dlnk",
           "relation_name": "TTT",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
@@ -482,7 +482,7 @@
         {
           "table_name": "rtjj_3300_aaa_aaa_dlnk",
           "relation_name": "UUU",
-          "operation_origin": "explicit field mapping relation",
+          "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",

@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-07-16 10:10:24
+Compiling t1103.dvpd.json
+
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t1103.dvpi.json
+--- Compile successfull ---

@@ -1,7 +1,7 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2024-04-05 13:13:03
+Compiler Version 0.6.1
+Compile time: 2024-06-13 11:57:27
 Compiling t0042_ref_simple_with_history_no_diff_hash.dvpd.json
 
-Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t0042_ref_simple_with_history_no_diff_hash.dvpi.json
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t0042_ref_simple_with_history_no_diff_hash.dvpi.json
 --- Compile successfull ---

@@ -1,7 +1,7 @@
 Data vault pipeline description compiler log 
 Compiler Version 0.6.1
-Compile time: 2024-05-07 10:56:59
+Compile time: 2024-07-28 18:10:22
 Compiling t3102c.dvpd.json
 
-operation 'TTT induced by satellite 'rtjj_3102_aaa_bbb_ttt_esat' to link rtjj_3102_aaa_bbb_lnk is not supported by the hubs of the link
+DLO-50:operation 'TTT' induced by satellite 'rtjj_3102_aaa_bbb_ttt_esat' to link rtjj_3102_aaa_bbb_lnk is not supported by the hubs of the link
 *** Compilation ended with errors ***

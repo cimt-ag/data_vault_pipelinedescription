@@ -1,4 +1,4 @@
-{
+{ 
 	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "t0420",

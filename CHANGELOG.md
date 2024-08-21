@@ -1,12 +1,30 @@
 # release 0.6.1
-In this release, we completely switch from the PostgreSQL implementation of compiler to the python implementation.
-Also the testset will be massively extended. Some minor feature extensions will be added
+In this release, we completely switch from the PostgreSQL implementation of the compiler to the python implementation.
+Also the testsets will be massively extended. Some minor feature extensions have been added and some syntax was changed due to
+findings from active projects and testing.
 
 ### features
-- python implementation of dvpd compiler(DVPDC) including its automated testset
+- python implementation of dvpd compiler(DVPDC) including its automated testing
 - Introduction of the data vault pipeline instruction (DVPI) syntax as result of the compiler output
-- python example of a ddl generator, generating DDL scripts from DVPI
-- python example of a documentation generator, generating mapping documentation in HTML
+- huge extention of the testset
+- python example for a **ddl generator**, generating DDL scripts from DVPI
+- python example for a documentation generator, generating mapping documentation in HTML
+- python example for a **developmer instruction sheet generator**
+- examples of console command script to use all tools on the command line including a "build all script"
+- experimental: syntax to declare source fields to contain precalculated hash values (use_as_hash_key, is_only_structural_element)
+
+### DVPD syntax changes
+- Field mappings to tables now default to the "unnamed relation". To trigger the usage of mappings in all relations "*" must be declared as relation name
+- Effectivity satellites throw an error, when the link has more then one load operation and the satellite has no tracked_relation_name declaration 
+
+ATTENTION: The syntax change will result in DVPDC compile errors, for dvpds with relation names that use generic field mappings. There will be fields missing the namend relations. Also satellites without a relation declaration will now only be bound to the unnamed relation.
+This will trigger "unsupported relation" errors, when the parent has no "unnamed relation". You must adapt your relation declaration to the new
+behavior.
+
+### credits
+Lead Designer and coding: Matthias Wegner (cimt ag)<br>
+Render Example scripts and other coding: Joscha von Hein (cimt ag)<br>
+Testing: Albin Cekaj (cimt ag)
 
 # release 0.6.0
 
@@ -38,6 +56,10 @@ effectivity satellites)
 - renamed "target_table" to "table_name" (only relevant in compiler implementation and result tables)
 - renamed "dv_column_class" to "column_class" (only relevant in compiler implementation and result tables)
 
+### credits
+Lead Designer and coding: Matthias Wegner (cimt ag)<br>
+Proof reading: Joscha von Hein (cimt ag)
+
 # Release 0.5.4
 
 ### features
@@ -53,6 +75,9 @@ effectivity satellites)
 ### documentation
 - apache license added
 - documentation about the core syntax added
+
+### credits
+Lead Designer and coding: Matthias Wegner (cimt ag)
 
 # Release 0.5.3
 

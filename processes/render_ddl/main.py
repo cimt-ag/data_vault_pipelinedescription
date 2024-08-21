@@ -160,7 +160,8 @@ def assemble_column_name_and_stage_name_dict(parse_set):
     column_name_to_stage_name_dict = {}
     stage_name_to_column_name_dict ={}
     for load_operation in parse_set['load_operations']:
-        if 'data_mapping' in load_operation:
+
+        if 'data_mapping' in load_operation:        # collect the mappings from the data_mappings
             for column in load_operation['data_mapping']:
                 column_name=column['column_name']
                 stage_name=column['stage_column_name']
@@ -173,6 +174,20 @@ def assemble_column_name_and_stage_name_dict(parse_set):
                 elif column_name not in stage_name_to_column_name_dict[stage_name]:
                     stage_name_to_column_name_dict[stage_name].append(column_name)
 
+        for column in load_operation['hash_mappings']: # collect the mappings from the hash_mappings
+            if not 'field_name' in column:             # where the hash is provided by a source field
+                continue
+            column_name=column['column_name']
+            stage_name=column['stage_column_name']
+            if column_name not in column_name_to_stage_name_dict:
+                column_name_to_stage_name_dict[column_name]=[stage_name]
+            elif stage_name not in  column_name_to_stage_name_dict[column_name]:
+                column_name_to_stage_name_dict[column_name].append(stage_name)
+            if stage_name not in stage_name_to_column_name_dict:
+                stage_name_to_column_name_dict[stage_name]=[column_name]
+            elif column_name not in stage_name_to_column_name_dict[stage_name]:
+                stage_name_to_column_name_dict[stage_name].append(column_name)
+
     return column_name_to_stage_name_dict,stage_name_to_column_name_dict
 
 def assemble_stage_with_target_column_type_dict(parse_set,tables):
@@ -183,6 +198,11 @@ def assemble_stage_with_target_column_type_dict(parse_set,tables):
         table_name = None
         column_name = None
         for load_operation in parse_set['load_operations']:  # scan all operations for a mapping the current stage column
+            for column_mapping in load_operation['hash_mappings']:
+                if column_mapping['stage_column_name']==stage_column['stage_column_name']:
+                    table_name=load_operation['table_name']
+                    column_name=column_mapping['column_name']
+                    break
             if 'data_mapping' not in load_operation:
                 continue
             for column_mapping in load_operation['data_mapping']:
@@ -302,14 +322,27 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
         columns = table['columns']
         # print(f"columns:\n{columns}")
         column_statements = []
+        comment_statements = []
+
         for column in columns:
-            stage_column_name = column['column_name']
+            column_name = column['column_name']
             col_type = column['column_type']
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
-            column_statements.append("{} {} {}".format(stage_column_name, col_type, nullable))
+            comment = column['column_content_comment'] if 'column_content_comment' in column else None
+            column_statement = "{} {} {}".format(column_name, col_type, nullable)
+            column_statements.append(column_statement)
+            if comment is not None:
+                comment_statements.append("COMMENT ON COLUMN {}.{}.{} IS '{}';".format(schema_name, table_name, column_name, comment))
+
         column_statements = ',\n'.join(column_statements)
+        if 'table_comment' in table:
+            comment_statements.insert(0, f"COMMENT ON TABLE {schema_name}.{table_name} IS '{table['table_comment']}';")
+
+        comment_statements = '\n'.join(comment_statements)
+        
+
         ddl = f"-- generated script for {full_name}"
-        ddl += f"\n\n-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);"
+        ddl += f"\n\n-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);\n\n--COMMENT STATEMENTS\n{comment_statements}"
 
         if add_primary_keys:
             ddl += render_primary_key_clause(table)
@@ -406,7 +439,9 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
                             raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
 
                     column_classes = column['column_classes']
-                    if 'business_key' in column_classes or 'dependent_child_key' in column_classes:
+                    if 'parent_key'  in column_classes:
+                        hashkeys.append("{} {} {}".format(final_column_name, col_type, nullable))
+                    elif 'business_key' in column_classes or 'dependent_child_key' in column_classes:
                         business_keys.append("{} {} {}".format(final_column_name, col_type, nullable))
                     elif 'content_untracked' in column_classes:
                         content_untracked.append("{} {} {}".format(final_column_name, col_type, nullable))
@@ -457,12 +492,27 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
     youngest_file=''
 
     for file_name in os.listdir( dvpi_default_directory):
+        if not os.path. isfile( dvpi_default_directory+'/'+file_name):
+            continue
         file_mtime=os.path.getmtime( dvpi_default_directory+'/'+file_name)
         if file_mtime>max_mtime:
             youngest_file=file_name
             max_mtime=file_mtime
 
     return youngest_file
+
+def search_for_dvpifile_of_test(testnumber):
+    params = configuration_load_ini(args.ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
+    dvpi_directory = Path(params['dvpi_default_directory'])
+
+    fileprefix="t{:04d}".format(int(testnumber))
+
+    for file in sorted(dvpi_directory.iterdir()):
+        if (file.is_file()
+            and file.stem.startswith(fileprefix)):
+            return file.name
+
+    return None
 
 ########################   MAIN ################################
 if __name__ == '__main__':
@@ -474,7 +524,7 @@ if __name__ == '__main__':
         usage= usage_for_terminal
     )
     # input Arguments
-    parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory.Use @youngest to parse the youngest.')
+    parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory.Use @youngest to parse the youngest. @t<number> to use a test result file starting')
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
     parser.add_argument("--print", help="print the generated ddl to the console",  action='store_true')
     parser.add_argument("--add_ghost_records", help="Add ghost record inserts to every script",  action='store_true')
@@ -489,6 +539,12 @@ if __name__ == '__main__':
     else:
         stage_column_naming_rule=args.stage_column_naming_rule
 
+    if args.no_primary_keys == False:
+        no_primary_keys=params.get('no_primary_keys',False) == ('True' or 'true')
+        
+    else:
+        no_primary_keys=args.no_primary_keys
+
     ddl_render_path = Path(params['ddl_root_directory'], fallback=None)
     dvpi_default_directory = Path(params['dvpi_default_directory'], fallback=None)
     
@@ -496,7 +552,14 @@ if __name__ == '__main__':
     if dvpi_file_name == '@youngest':
         dvpi_file_name = get_name_of_youngest_dvpi_file(params['dvpi_default_directory'])
         print(f"Rendering from file {dvpi_file_name}")
+    if dvpi_file_name[:2]=='@t':
+        testnumber=dvpi_file_name[2:]
+        dvpi_file_name=search_for_dvpifile_of_test(testnumber)
+        if dvpi_file_name is None:
+            raise Exception(f"Could not find test file for testnumber {testnumber}")
 
+    print("-- Render DDL --")
+    print("Reading dvpi file "+dvpi_file_name)
     dvpi_file_path = Path(dvpi_file_name)
     if not dvpi_file_path.exists():
        dvpi_file_path = dvpi_default_directory.joinpath(dvpi_file_name)
@@ -505,7 +568,7 @@ if __name__ == '__main__':
 
     ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path
                                         , add_ghost_records=args.add_ghost_records
-                                        , add_primary_keys=not args.no_primary_keys
+                                        , add_primary_keys=not no_primary_keys
                                    , stage_column_naming_rule=stage_column_naming_rule)
     if args.print:
         print(ddl_output)

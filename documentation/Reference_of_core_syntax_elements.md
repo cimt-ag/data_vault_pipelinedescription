@@ -194,12 +194,14 @@ The name must be a valid ***relation_name*** depending on the role of the field.
 * Data excluded from key for hub or link - The name must match a relation name, supported by the target
 * Satellite Content - The name must match a relation name, supported by the parent
 
-To explicitly declare participation in the main (unnamend) relation use "/" as name. 
-This is the only way to declare the participation in a subset of relations that contains the unnamed relation.
+When ommitting this property, the mapping counts only to the "unnamed" relation. 
+You can explicitly declare participation in the main (unnamend) relation with  "/" as name. This allows a mapping to
+be used in mulitple relations that include the unnamed relation.
 
-When ommitting this property, the field mapping participates in relations as follows:
-* when the field is the only field mapped to a target column, the mapping is used in all relations
-* when there are multiple fields mapped to a target column, the mapping is used only in the main (unnamed) relation. 
+By setting the property to \["*"], you declare the mapping to be used in all relations of the table.
+Declaring '*' for all mappings of a table, will use the mappings for all relations of the parent tabled. This can not be
+applied to hubs, since they don't have a parent.
+ 
 
 <br>*["parent"] , ["child1","child2"], ["/","Sibling"]*
 
@@ -215,12 +217,13 @@ Depending on the target, the declaration will modify the mapping as follows:
 * Data excluded from key for hub or link - The mapping will be used in combination with buisness key, that belong to the key set
 * Satellite content - The mapping will be used in combination with a satellite parent key, that is created from keys from that key set
 
-To explicitly declare participation in the main (unnamend) key set use ´/´ as name. 
-This is the only way to declare the participation in a subset of key set that contains the unnamed key set.
+When ommitting this property, the mapping counts only to the "unnamed" key set. 
+You can explicitly declare participation in the "unnamend" key set with  "/" as name. This allows a mapping to
+to inlucde the unnamed relation with other specific named relations.
 
-When ommitting this property, the field mapping participates in key sets as follows:
-* when the field is the only field mapped to a target column, the mapping is used in all key sets
-* when there are multiple fields mapped to a target column, the mapping is used only in the main (unnamed) key set. 
+By setting the property to \["*"], you declare the mapping to be used in all relations of the table.
+Declaring '*' for all mappings of a table, will use the mappings for all relations of the parent tabled. This can not be
+applied to hubs, since they don't have a parent.
 
 
 **exclude_from_key_hash**
@@ -233,6 +236,15 @@ is rare but possible).
 (optional, default=0) 
 *defines: key hash assembly*
 <br>This property provides explicit control over the order of concatination of fields for the key hash calculation. It will overrule the implicit ordering, that is defined by the implementation. Implicit ordering will still be applied to columns of the same prio. 
+
+**use_as_key_hash**
+(optional, default=false)
+*defines: key hash assembly, load process validation*
+<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
+<br>Setting this to true, defines the field to contain a key_hash for the table. The field/column name must be equal to
+the name, given by the model structure. It can be applied to parent keys of satellites or links and instructs the staging
+phase to just copy the value from the source into the stage table.
+
 
 **exclude_from_change_detection**
 (optional, default=false, only useful on mappings to historized satellites)
@@ -319,6 +331,8 @@ Json Path : /data_vault_mode[]/
 
 Satellites without any mapped content column are allowed (effectivity satellites). 
 
+
+
 **table_comment**
 (optional)
 *defines: documentation, table ddl*
@@ -344,6 +358,14 @@ Json Path : /data_vault_mode[]/tables[]
 <br>Name of the hub key in the table. (Currently this name must be unique over all tables in the declared model. Future versions will extend the syntax to allow the same name in different tables, even though it is highly recommended to have unique hub key names)
 <br>*"hk_raccn_account"*
 
+**is_only_structural_element**
+(optional, default=false)
+*defines: hash calculation, loading procedure*
+<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
+Defines the hub to be only declared for structural completeness. The table will not be loaded, and the key_hash will not
+be calculated but must be provided to child tables via "use_as_key_hash" mappings.
+If there are no link children, that need to calculate their link key, the business keys can be omitted.
+
 ### "lnk" specific properties
 
 Json Path : /data_vault_mode[]/tables[]
@@ -356,6 +378,13 @@ Depending on mapped fields and the properties, this can be a
 (mandatory)*defines: model structure*
 <br>Name of the link key in the table
 <br>*"lk_raccn_account_department"*
+
+**is_only_structural_element**
+(optional, default=false)
+*defines: hash calculation, loading procedure*
+<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
+Defines the link to be only declared for structural completeness. The table will not be loaded, and the link_key will not
+be calculated. The link key values for the children must be provided via "use_as_key_hash" mappings. 
 
 **link_parent_tables[]**
 (mandatory)*defines: model structure*
@@ -516,10 +545,13 @@ In general, the name must match the final name of a hub key column in the link. 
 **tracked_relation_name**
 (optional, only valid on effectivity satellites)
 *defines: loading operations*
-<br>Name of the relation this satellite will track the validity for. This is only used for satellites
-whithout any field mapping. The relation name must be valid for the satellites parent.
+<br>Name of the relation this satellite will track the validity for.  
+This property can only be used for satellites without any field mapping. The relation name must be valid for the satellites parent.
 
-Announcement for Release 0.7.0: To express test scenarios 3370-34230,3550,3560 "tracked_relation_name" 
+Setting tracked_relation_name to '*' allows the satellite to follow multiple relations of its parent. If not set, when 
+multiple relations are induced by the parent, this will result in an error, to prevent unintended process generation.
+
+Announcement for release 0.7.0: To express test scenarios 3370-34230,3550,3560 "tracked_relation_name" 
 will be changed to "tracked_key_set".
 
 **history_depth_criteria**

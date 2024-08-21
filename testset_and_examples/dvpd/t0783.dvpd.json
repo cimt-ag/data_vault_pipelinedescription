@@ -19,7 +19,7 @@
 		      ,{"field_name": "F7XX_BBB_C1",  "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_783_bbb_sat" ,"column_name": "F7F8_BBB_C1"} ]}
 			  ,{"field_name": "F8XX_BBB_C1_UUU",  "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_783_bbb_sat" ,"column_name": "F7F8_BBB_C1"
 																				 	,"relation_names":["UUU"]} ]}
-		      ,{"field_name": "F9XX_BBB_C2F",  "field_type": "Varchar(20))", "targets": [{"table_name": "rtjj_783_bbb_sat" ,"column_name": "F9_BBB_C2F"} ]}
+		      ,{"field_name": "F9XX_BBB_C2F",  "field_type": "Varchar(20))", "targets": [{"table_name": "rtjj_783_bbb_sat" ,"column_name": "F9_BBB_C2F", "relation_names":["*"]} ]}
  
 			 ],
 	"data_vault_model": [
@@ -30,14 +30,12 @@
 																			,"diff_hash_column_name": "RH_rtjj_783_bbb_sat"}
 				,{"table_name": "rtjj_783_bbb_uuu_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_783_bbb_uuu",
 												"link_parent_tables": [	{"table_name":"rtjj_783_bbb_hub"}
-																	   ,{"table_name":"rtjj_783_bbb_hub"}  ]}
-				,{"table_name": "rtjj_783_bbb_uuu_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_783_bbb_uuu_lnk"
-																						,"tracked_relation_name":"UUU"}
+																	   ,{"table_name":"rtjj_783_bbb_hub","relation_name":"UUU"}  ]}
+				,{"table_name": "rtjj_783_bbb_uuu_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_783_bbb_uuu_lnk"}
 				,{"table_name": "rtjj_783_bbb_vvv_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_783_bbb_vvv",
 												"link_parent_tables": [	{"table_name":"rtjj_783_bbb_hub"}
-																	   ,{"table_name":"rtjj_783_bbb_hub"}  ]}
-				,{"table_name": "rtjj_783_bbb_vvv_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_783_bbb_vvv_lnk"
-																						,"tracked_relation_name":"VVV"}
+																	   ,{"table_name":"rtjj_783_bbb_hub","relation_name":"VVV"}  ]}
+				,{"table_name": "rtjj_783_bbb_vvv_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_783_bbb_vvv_lnk"}
 				
 				]
 		}

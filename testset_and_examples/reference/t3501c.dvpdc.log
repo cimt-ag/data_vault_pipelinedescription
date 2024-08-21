@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-07-28 17:57:59
+Compiling t3501c.dvpd.json
+
+DLO-70: Sat 'rtjj_3501_aaa_ccc_esat' got multiple induced relations ('TTT','/') from parent,but have no '*' relation set. 
+*** Compilation ended with errors ***

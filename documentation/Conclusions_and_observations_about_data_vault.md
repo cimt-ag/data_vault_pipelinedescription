@@ -59,10 +59,10 @@ This lead to the syntax of the ${ROW_NUMBER...} placeholders for the "field_valu
 ## historization patterns for multi active data
 
 Depending on the final pattern, how to separate
-the data versions, when reading the satellite, the loading process needs additional declarations.
+the data versions, when reading the satellite, the loading process needs additional declarations beside the normal satellite loading parameters.
 The following options of historical data separations for multiactive satellites are possible:
 - every value set/diff hash for a key is enddated individually.  
-- every diff hash for key is evaluated and managed individually.  
+- every diff hash for key is evaluated and managed individually during retrieval.  
 - subkey evaluation and insertion/deletion  
 - the full group of value sets of a changing load for a key have the same load date  
 
@@ -84,7 +84,7 @@ The loading procedure needs an efficient way to
 - insert unknown data. This can be an additional value set or an additional repition of an already known value set
 - enddate missing: This can be a value set, that is not in the source ata anymore, or with less repititions
 
-Only the usual satellite properties are needed to run this procedure. An enddate must be configured.
+Only the usual satellite parameters are needed to run this procedure. An enddate must be configured.
 
 ### Individual diff hash insertion
 Without an enddate the valid data for a specific point in time is determined by
@@ -103,7 +103,7 @@ gfo1721| 2023-05-10|true      |8faj| #missing#    | #missing#
 ```
 The loading procedure needs an efficient way to 
 - insert unknown data. This can be an additional diff hash or an additional repition of an already known diff hash
-- insert deletion record for missing: This can be a diff hash, that is not in the source ata anymore, or with less repititions
+- insert deletion record for missing: This can be a diff hash, that is not in the source data anymore, or with less repititions
 
 Only the usual satellite properties are needed to run this procedure. A diff hash must be configured.
 
@@ -138,7 +138,7 @@ declared. This done with to the "is_subkey" syntax in the target table mapping.
 ### full group insertion
 Without an enddate the valid data for a specific point in time is determined by
 following the chain of distinct load dates for the **key of the sattellite**
-and excluding deletion flagged rows. All valid rows in the inteval will have the same loaddate.
+and excluding deletion flagged rows. All valid rows in the interval will have the same loaddate.
 
 ```
 hub key| load date |deleted   |diff|  content 1   | content 2 
@@ -154,8 +154,8 @@ hub key| load date |deleted   |diff|  content 1   | content 2
 gfo1721| 2023-05-07|false     |8faj| 7th delivery | gets totally removed in 10th delivery
 gfo1721| 2023-05-10|true      |----| #missing#    | #missing#
 ```
-To achieve this pattern all previous method to determine a change in the rows for a specific satellite
-key can be used with the extention, to insert all data for the satellite key instead of only the changed data.
+To achieve this pattern all previous methods to determine a change in the rows for a specific satellite
+key can be used with the modification, that all data for the satellite key with at least one changed row is inserted.
 
 #### full group insertion with group diff hash
 The full group insertion pattern can also be achieved by using a group diff hash load pattern. 

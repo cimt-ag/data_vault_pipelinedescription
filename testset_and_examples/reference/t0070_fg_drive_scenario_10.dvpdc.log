@@ -1,6 +1,6 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2024-02-21 08:53:13
+Compiler Version 0.6.1
+Compile time: 2024-06-13 11:57:28
 Compiling t0070_fg_drive_scenario_10.dvpd.json
 
 Writing DVPI to /git_ordner/dvpd/var/dvpi/t0070_fg_drive_scenario_10.dvpi.json

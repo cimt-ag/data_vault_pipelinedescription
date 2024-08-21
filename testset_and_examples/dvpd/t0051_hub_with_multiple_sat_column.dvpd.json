@@ -8,7 +8,7 @@
 	},
 	"fields": [
 		      {"field_name": "F1_AAA_BK1", 	"field_type": "VARCHAR(20)",	
-											"targets": [{"table_name": "rtjj_51_aaa_hub"}]},
+											"targets": [{"table_name": "rtjj_51_aaa_hub","relation_names":["*"]  }]},
 		 	  {"field_name": "F2XX_AAA_BK2_UUU_VVV",	"field_type": "VARCHAR(20)",
 												"targets": [{"table_name": "rtjj_51_aaa_hub", "column_name": "F2F3_AAA_BK2",
 						     					"relation_names":["uuu","vvv"]}] },

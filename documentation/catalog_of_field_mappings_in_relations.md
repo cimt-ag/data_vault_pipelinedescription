@@ -42,9 +42,10 @@ When describing the data we classify the elements as follows:
 # Property of the source data
 
 ## Tabularized
-Data can be complex in multiple ways, especially when it comes
-to hierarchical data or document formats. The following approach requires
+The following approach requires
 the source data representation to be tabularized (all data is organized in Rows, every row contains all fields).
+Hierarchical data formats express some relation information throught he hierarchical structure. When getting
+tablularized, this must be taken into account.
 
 ## Information types of data
 To define the variety of mappings, it is necessary to clarify the types of information, 
@@ -64,8 +65,8 @@ of a link counts also as identification, since it is needed to address
 attributes, that are attached by the satellite*
 
 ## Properties of relation data
-* Relation data always must contain the business key columns of all participants. 
-* Data sets with multiple relations to the same object must contain multiple instances of 
+- Relation data always must contain the business key columns of all participants. 
+- Data sets with multiple relations to the same object must contain multiple instances of 
 the business key fields. It might (but must not) contain multiple instances of content data fields.
 
 There are two *flavours* for relations in the source data.
@@ -77,6 +78,20 @@ without any known business relation meaning
 Unit of work relations might be misread as a lack of normalization in the source data. But as the 
 words "without any known" indicate, it might just be a lack of knowledge about a hidden meaning.
 
+## Mapping of attribute fields to key sets
+When the source row contains data of multiple keys for the same object and fields with attributes or measures of that object
+it is necessary, to define, which set of attributes belong to wich set of keys. 
+
+The following scenarios can appear on key level:
+- Distinct key fields for every set
+- Some common and some distinct key fields for every set (e.g. in "multi client" applications, having the client field in every table)
+
+On attribute level, there are these scenarios possible (most likely options listed first)
+- Attribute fields only belong to one defined key set (Often the "primary" key set)
+- distinct attribute fields for all or a subset of key sets
+- some common and some distinct attribute fields for all or a subset of key sets
+- only a single set of attribute fields, that has to be applied for all key sets
+
 
 ## Denormalized data
 When source data contains multiple fields, which target the same satellite columns without any
@@ -84,7 +99,7 @@ different business keys, this might look like denormalized data and trigger the 
 multiactive satellite. 
 
 Data vault  recommends to keep the denormalized structure in the raw vault to allow full auditability. 
-That's why DVPD core will not support any explicit syntax that allows denormalization in the 
+That's why DVPD core will not support any explicit syntax that expresses denormalization in the 
 load phase.
 
 # Model topologies 
@@ -112,9 +127,9 @@ The following approaches are available to represent multiple relations
 - dedicated links to the hub for every kind of relation
 - a single link but dedicated effectivity satellites for every kind of relation
 - a single link with a dependent child key, declaring the relation type
-- a single link with a multi active satellite, that contains a column to store the currenty valid relation types (not recommended)
+- a single link with a multi active satellite, that contains a column to store the currenty valid relation types (really really not recommended)
 
-These approaches can also be mixed up, which might happen on purpose or due to legacy. 
+These approaches can also be mixed up, which might happen on purpose or due to legacy over time. 
 
 *side note: When the relation type is declared in a field in the data (not by the field structure),
 this "just data" from the perspective of the data vault. 
@@ -275,10 +290,12 @@ can contain
 - part of a links satellite data (ls)
  
 Participation to a relation is declared at every table mapping of the field.
-If no relatio is declared, a field is considered to be the default source in every relation of that table.
+If no relatio is declared, a field is considered to be in the "unnamed" relation.
 
 To declare the participation on a subset, that contains the "unnamed" relation and another one,
 the syntax provides the reserved relation name "/" for the unnamed relation.
+
+A mapping to all relations of the satellite (or parent) con be declared by using "*" as relation name.
 
 A target column must only have one field mapped in every specific relation. 
 
@@ -308,12 +325,12 @@ These links have at least one explicit relation declaration in their parent mapp
  participate to the main (unnamed) or the universal relation
 - Satellites on these kind of link are not allowed to declare an explicit relation, except the "main" relation
 
-## Participation of simple links
+## Participation of induced relation links
 These links have no explicit relation declaration to a hub (and therefore only one reference column for every hub). 
 - these links participate in all relations that are
-    - declared at their satellites
     - declared at the mapping of their dependent child keys
-    - If neither satellites nor dependent child key mappings declare an explicit relation, links belong to all relations, that are common in all connected hubs
+    - declared at their satellites
+    - If neither satellites nor dependent child key mappings declare an explicit relation, links belong to all relations, that are common in all connected hubs. 
 - each relation the link contributes to, must supported by all connected hubs and must be known explicitily by at 
 least one connecting hub 
   
@@ -322,22 +339,28 @@ a sattelite contributes to the main (unnamed) relation wich will place the link 
 
 
 ## Participation of satellites
-Satellites contribute to all relations that contain a full set of fields, 
-mapped with relation declaration to the satellite.
+Satellites contribute to all relations that are declared by their incomping field mappings. Without any declaration
+the mappings are used for the "unnamed" mapping only.
 
-- The full set of satellite columns is determined from the relation with the most columns.
+Mappings can be declared to be fully generic regarding the relation by setting the relation name to '*'. If all mappings are declared to be generic
+the satellite will follow all relations of its parent.
+
+- The set of columns for a satellite is dermined by all mappings, regardless of the annotated relation
+- All announced relations must have a mapping for every columns
 - relations with different column outcome will fail the consistency check
 - all relations a satellite contributes to, must be supported by the parent
 
-The simple common model use case is covered by participating on the
-main (unnamed) relation when without any declaration.
 
 ## Participation of effectivity satellites
-Effectivity satellites contribute to the main relation unless a tracked relation is declared.
+Unless a tracked relation name is declared, effectivity satellites contribute all relations of the link, as long
+as it is only one. 
 
-- the relation an effectivity satellite participates in must be known by the parent link
+When the link has multiple relations, this might be the result of an unintended relation induction
+through the hubs of the link. Therefore the situation must be clarified by declaring an explicit relation, the satellite will
+track or explicitly allow the satellite to follow all relations by setting the tracked relation  '*'.
 
-The simple common model use case is covered by participating in the relation of the link.
+- the relation an effectivity satellite is tracking, in must be known by the parent link
+
 
 # Procedure to generate relation specific load operations
 Every table must be loaded by one or more loading operations. The field combination, of every load operation
@@ -352,27 +375,27 @@ specific relations, the table is involved in.
 - Every field mapping to a table must belong to one or many set of keys 
 
 ### Step 1 - Determine field mapping restrictions 
-- field mappings without any relation name are set to be default mappings `*`, that can be used for any relation 
+- field mappings, without a relation name are set to belong to the  unnamed relation `/` 
+- field mappings, with  relaion_names =["*"] do not define a relation, but will participate in any relation
+- a hub table with only "*" field mappings is not valid
 
 ### Step 2 - Determine load operation from explicit field relation 
-- a table will have an operation for every explicitly declared mapping relation(this might already include the unnamed relation `/` , when explicitly declared)
-- a table with explicit relations will have an operation for the unnamed relation `/` when there is a default mapping for all columns available
-- a hub table with only default mappings will have an operation for the generic relation `*` 
-- compiler check: For every load operation there must have a valid mapping for all columns (either one explicit or the default)
+- a table will have an operation for every mapping relation, except "*" relation (this includes the unnamed relation `/`, even when it is not declared)
+- a hub, with only an unnamed relation "/" operation, that has not been induced by any field, sets the load operation name to "*" (universal) 
+- compiler check: For every load operation there must be a valid mapping for all columns (either by relation name or "*")
 Result:
 - All field mappings are defined 
 - Hub tables will have all load operations defined
-- Sat and link tables will have load operations, that are the result of explicit mappings
+- sat tables will have load operations defined
+- link tables will have load operations, that are the result of explicit mappings
 - Completeness of the mappings is checked
 
-
-
 ### Step 3 - Determine operation for links with explict parent mappings
-This only applies to links with an explicit relation declaration in the parent hub mapping:
-- Compiler check: The link must not already have a load operation, that was deduced in previous steps (Tgus Restricion will be removed in 0.7.x)
+This only applies to links with at least one explicit relation declaration in the parent hub mapping:
+- Compiler check: The link must not already have a load operation, that was deduced in previous steps (This Restricion will be removed in 0.7.x)
 - The link will have an "explicit relation" load operation `+`
 - Table relations without an explicit relation name are defined to be the unnamed relation `/`
-- Compiler check: The relation of the parent connections must be supported by the operations(= field mappings) of the connected hubs (A `*` hub supports `/` only)
+- Compiler check: The relation of the parent connections must be supported by the operations(= field mappings) of the connected hubs 
 Result:
 - links with explicit relations in the hub mapping are tagged with the `+` load operation
 - The relation names in the hub relations are checked
@@ -386,12 +409,13 @@ Result:
 
 
 ### Step 5 - Satellite to Link operation deduction
-Must be applied to all links, that have no operation yet:
-- get all load operations from load operations of its children that are not `*`
+Must be applied to all links, that have no operation yet
+ Links that already have operations are driven by the satellites or by their own relation declartions.
+- get all load operations from load operations of its children 
 - compiler check: The load operation must be explicitly supported by at least one parent hub 
 - compiler check: The load operation must be supported by all parent hubs, either explicitly or due to the hubs `*` operation
 Result:
-- Links who's operation are driven by the satellites have a operaion list
+- compiler check: In case multiple operations have been induced by the parent hubs, none of the hubs must have an "universal" relation
 
 ### Step 6 - Hub to Link deduction
 Must be applied to all links, that have no operation yet:
@@ -399,20 +423,20 @@ Must be applied to all links, that have no operation yet:
 - Should the result only be `*`, set the load operation of the link to be `/`
 
 ### Step 7 - Parent to Satellite deduction
-Must be applied to all satellites, that have no operation yet:
+Must be applied to all satellites, that have no operation yet
 - Add all operations of the parent 
+- Allow usage of multiple relations from the parent only when satellite ist tracking '\*' relation or has only '\*' mappings 
 Result:
-- every table should have its appropriate list of load operations now
+- every table should now have its appropriate list of load operations
 
 ### Step 8 - Final check
-- compiler crosscheck: all tables must have at least one load operation. Single `*` or one or more relation names
+- compiler crosscheck: all tables must have at least one load operation. Single `\*` or one or more relation names
 
 
 ## Rules for the field assembly for every load operation
 ### Hub load operation
 - the relation to load is defined by the load operation
-- for all columns, where possible: use the field mappings, that match the relation of the operation
-- for columns without relation specific mappings: use the default mapping
+- for all columns, where possible: use the field mappings, that match the relation of the operation and the "*" mapping as fallback
 - for the hub key: use the columns as mapped above
 - In the stage table this will result in a hub key column for every load operation
 
@@ -423,7 +447,6 @@ This only applies to links `+` load operation
 - use the relation specific hub key calculation of the parents(`/` is solved by `*` in the hub, when missing)
 - dependent child keys will not be relation specific and can be mapped directly (this will change in 0.7.x)
 - In the stage table this will result one link key column
-
 
 ### link load operation without explicit parent hub relations
 This only applies to link load operations that are not `+`
@@ -470,12 +493,12 @@ The generic cases all use a 1:1 field distribution. Every field is mapped to onl
 | Model          | A3BR    | A3BL    | A3BE    | A3BD    | 3AR     | A3BN   | 
 |----------------|---------|---------|---------|---------|---------|--------| 
 | overlap scenario|         |         |         |         |         |        | 
-| BK1+           | *201*   | *301*   | *401*   | *501*   | *601*   | *101*  | 
-| BK1~           | *202*   | *302*   | *402*   | *502*   | -       | *102*  | 
-| BK1*           | *203*   | *303*   | *403*   | *503*   | *603*   | *103*  | 
-| BK2+           | *211*   | *311*   | *411*   | *511*   | -       | *111*  | 
-| BK2~           | *212*   | *312*   | *412*   | *512*   | -       | *112*  | 
-| BK2*           | *213*   | *313*   | *413*   | *513*   | -       | *113*  | 
+| BK1+           | *201*   | *301*   | *401*   | *501*   | *601*   | **101**| 
+| BK1~           | *202*   | *302*   | *402*   | *502*   | -       | **102**| 
+| BK1*           | *203*   | *303*   | *403*   | *503*   | *603*   | **103**| 
+| BK2+           | *211*   | *311*   | *411*   | *511*   | -       | **111**| 
+| BK2~           | *212*   | *312*   | *412*   | *512*   | -       | **112**| 
+| BK2*           | *213*   | *313*   | *413*   | *513*   | -       | **113**| 
 | BK2* & BK1+    | *215*   | *315*   | *415*   | *515*   | -       | *115*  | 
 | BK2* & BK1~    | *216*   | *316*   | *416*   | *516*   | -       | *116*  | 
 | BK2* & BK1*    | *217*   | *317*   | *417*   | *517*   | -       | *117*  | 
@@ -539,3 +562,8 @@ Designed cases are created to test common and edge cases. They use the previous 
 |  A2BCR         | ABC,A,B:t,B:u,C,a,b,c  |**702** |
 |  ABCL+ABL      | ABC,A,B:t,B:u,C,a,b,c  |**703** |
 |  A2BR+ACL      | ABC,A,B:t,B:u,C,a,b,c  |**704** |
+
+# More combinatorical exampes
+The vastness of combinatorical possibilites is also explored in the test cases, described in:
+- [Process generation rules](images/process_generation_rules.drawio.pdf)
+- [Process generation rule violations](images/process_generation_rule_violation_scenarios.drawio.pdf)
