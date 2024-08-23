@@ -670,11 +670,9 @@ def determine_load_operations_from_relations_in_mappings():
                             if relation_name == '*':
                                 default_available=True
                     if count_matches>1:
-                        #todo add compiler test to trigger this error
                         register_error(
                             f"DLO-20:There are multiple explicit mappings for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
                     if count_matches==0 and not default_available:
-                        #todo add compiler test to trigger this error
                         register_error(
                             f"DLO-21:There is no field mapping for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
 
@@ -697,7 +695,6 @@ def determine_load_operations_for_links_with_parent_relation_directives():
 
         load_operations = table_entry['load_operations']
         if len(load_operations) > 0:
-            # todo add compiler test to trigger this error
             register_error(
                 f"DLO-30:parent table relations can't be used, when expliciv field mapping relations are already defined. Table: '{table_name}'")
 
@@ -740,11 +737,10 @@ def pull_satellite_load_operations_into_links():
                 continue # only links children satellites with load operations are of interest
 
             for sat_load_operation_name in sat_load_operations:
-                # todo add testcase where multiple sats on the link induce the same load operation
+                # todo add testcase where multiple sats on the link induce the same load operation #issue #304
                 if sat_load_operation_name != '*':
                     link_load_operations[sat_load_operation_name]={"operation_origin":f"induced from satellite {sat_table_name}","mapping_set":"*"}
                 if not is_operation_supported_by_link_hubs(link_table_name,sat_load_operation_name):
-                    # todo add compiler test to trigger this error
                     register_error(
                         f"DLO-50:operation '{sat_load_operation_name}' induced by satellite '{sat_table_name}' to link {sat_table['satellite_parent_table']} is not supported by the hubs of the link")
 
@@ -1134,7 +1130,6 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
             parent_load_operations = satellite_parent_table['load_operations']
 
             if not load_operation_name in parent_load_operations:
-                #todo: create compiler check test case to trigger this message
                 register_error(
                     f"AHS-S5: Parent table '{table_entry['satellite_parent_table']}' has no load operation for relation '{load_operation_name}' requiered for satellite '{table_name}'")
                 return
