@@ -35,4 +35,4 @@ def pg_getConnection_via_inifile(filename,section):
 
 if __name__ == '__main__':
     # small test
-    conn = pg_getConnection_via_inifile("connection_pg_dev.ini","willibald_source")
+    conn = pg_getConnection_via_inifile("../config/connection_pg_dev.ini","willibald_source")

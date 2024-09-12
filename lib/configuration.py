@@ -39,13 +39,8 @@ def configuration_load_ini(filename=None, section=None, mandatory_elements=None)
     if section == None:
         raise Exception("section not set")
     current_directory=os.getcwd().replace('\\','/')  # convert windows to unix slash
-    end_of_root_directory_string=current_directory.find('/processes')
-    if end_of_root_directory_string<0:
-        end_of_root_directory_string = current_directory.find('/lib')
-    if end_of_root_directory_string<0:
-        raise  Exception(f"Could not determine script root directory. Did not find '/processes' or '/lib'")
 
-    file_path = Path(current_directory[:end_of_root_directory_string]+'/config').joinpath(filename)
+    file_path = Path(current_directory).joinpath(filename)
     # print(file_path)  # for debug only
     if  os.path.isdir(file_path):
         raise Exception(f"{file_path} is not a file, but was declared to be an ini file")
@@ -75,7 +70,7 @@ def configuration_load_ini(filename=None, section=None, mandatory_elements=None)
 
 if __name__ == '__main__':
     print('small test of', __name__)
-    my_list = configuration_load_ini('dvpdc.ini', 'dvpdc')
+    my_list = configuration_load_ini('../config/dvpdc.ini', 'dvpdc')
     for key in my_list:
         print(key, '->', my_list[key])
 
