@@ -31,37 +31,66 @@ sys.path.insert(0,project_directory)
 from lib.configuration import configuration_load_ini
 from lib.connection_pg import pg_getConnection_via_inifile
 
-#conn = pg_getConnection_via_inifile("connection_pg_dev.ini","willibald_source")
+
+def get_pg_table_column_list(db_connection, schema_name, table_name):
+    """Gets essential column data of a table"""
+    db_repo_cursor = db_connection.cursor()
+                                     #0
+    db_repo_cursor.execute("""SELECT column_name , /* 0 */
+                                     data_type , /* 1 */
+                                     character_maximum_length, /* 2 */
+                                     numeric_precision, /* 3 */
+                                     numeric_scale, /* 4 */
+                                     datetime_precision /* 5 */
+                            FROM INFORMATION_SCHEMA.COLUMNS 
+                            WHERE TABLE_SCHEMA = lower(%s)
+                            AND TABLE_NAME = lower(%s) order by 1""",
+                           (schema_name.lower(), table_name.lower()))
+    type_translation={'character varying':{'column_type':'VARCHAR' ,'add_charlength':True,'add_numeric_precision':False},
+                      'character': {'column_type': 'CHAR', 'add_charlength': True,'add_numeric_precision': False},
+                      'numeric': {'column_type': 'NUMERIC', 'add_charlength': False,'add_numeric_precision': True},
+                      }
+    table_columns = []
+    column_row = db_repo_cursor.fetchone()
+    while column_row:
+        if column_row[1] in type_translation:
+            translation=type_translation[ column_row[1] ]
+            if translation['add_charlength']:
+                column_type=f"{translation['column_type']}({ column_row[2]})"
+            elif translation['add_numeric_precision']:
+                column_type = f"{translation['column_type']}({column_row[3]},{column_row[4]})"
+            else:
+                column_type = f"{translation['column_type']}"
+        else:
+            column_type= column_row[1]
+        table_column={'column_name': column_row[0],
+                      'column_type': column_type}
+        table_columns.append(table_column)
+        column_row = db_repo_cursor.fetchone()
+
+    if len(table_columns)  == 0:
+        raise Exception(f"no columns collected for {schema_name}.{table_name} . Does this object exist?")
+
+    return table_columns
 
 
-def main(dvpd_filename,
-              ini_file,print_html):
+def main(schema_name, table_name,  ini_file, db_connection):
 
-    params = configuration_load_ini(ini_file, 'rendering',['dvpd_default_directory','documentation_directory'])
-    dvpd_file_path = Path(params['dvpd_default_directory']).joinpath(dvpd_filename)
-    print(params['dvpd_default_directory'])
-    if not dvpd_file_path.exists():
-        raise Exception(f"file not found {dvpd_file_path.as_posix()}")
-    print(f"Rendering documentation from {dvpd_file_path.name}")
+    params = configuration_load_ini(ini_file, 'generator',['dvpd_generator_directory'])
+    pipeline_name = schema_name+"."+table_name
+    dvpd_filename=pipeline_name+".dvpd.json"
+    dvpd_file_path = Path(params['dvpd_generator_directory']).joinpath(dvpd_filename)
 
-    column_labels='Field Name,Field Type,Data Vault Target(s)'
-    if 'documentation_column_labels' in params:
-        column_labels=params['documentation_column_labels']
+    # get all columns
+    table_columns=get_pg_table_column_list(db_connection,schema_name, table_name,)
+    print(json.dumps(table_columns, indent=2, sort_keys=True))
 
-    dvpd = parse_json_file(dvpd_file_path)
-    pipeline_name = dvpd["pipeline_name"]
-    if isinstance(dvpd['fields'], (dict, list)):
-        html = create_documentation(dvpd,column_labels)
-        if print_html:
-            print(html)
-        target_directory=Path(params['documentation_directory'])
-        if not target_directory.exists():
-            target_directory.mkdir(parents=True)
-        out_file_Path = target_directory.joinpath(f'{pipeline_name}.html')
-        with open(out_file_Path, "w") as file:
-            file.write(html)
-    else:
-        print(fields)
+
+    #retirev column statistics
+
+    # assemble final dvpd json
+
+
 
     print (f"Completed rendering documentation from {dvpd_file_path.name}")
 
@@ -77,17 +106,17 @@ if __name__ == "__main__":
     )
     parser.add_argument("schema_name", help="schema name of the table")
     parser.add_argument("table_name", help="name of the table")
-    parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
-    parser.add_argument("--print", help="Print html to console",  action='store_true')
+    parser.add_argument("--dvpdc_ini_file", help="Name of the ini file of dvpdc", default='./dvpdc.ini')
+    parser.add_argument("--connection_ini_file", help="Name of the ini file with the db connection properties", default='./connection_pg.ini')
+    parser.add_argument("--connection_ini_section", help="Name of the section in th ini file to use", default='willibald_source')
 
     args = parser.parse_args()
-    dvpd_filename = args.dvpd_file_name
 
-    if dvpd_filename == '@youngest':
-        dvpd_filename = get_name_of_youngest_dvpd_file(ini_file=args.ini_file)
+    db_connection=pg_getConnection_via_inifile(args.connection_ini_file,args.connection_ini_section)
 
-    main(dvpd_filename=dvpd_filename,
-              ini_file=args.ini_file,
-                print_html=args.print)
 
-    print("--- documentation render complete ---")
+    main(schema_name=args.schema_name, table_name= args.table_name,
+              ini_file=args.dvpdc_ini_file, db_connection=db_connection
+                )
+
+    print("--- generation of dvpd complete ---")
