@@ -31,6 +31,13 @@ sys.path.insert(0,project_directory)
 from lib.configuration import configuration_load_ini
 from lib.connection_pg import pg_getConnection_via_inifile
 
+g_metadata={}
+
+SAMPLE_SIZE_LIMIT=999999
+
+def print_g_metadata():
+    print(json.dumps(g_metadata, indent=2, sort_keys=True))
+
 
 def get_pg_table_column_list(db_connection, schema_name, table_name):
     """Gets essential column data of a table"""
@@ -74,19 +81,100 @@ def get_pg_table_column_list(db_connection, schema_name, table_name):
     return table_columns
 
 
+def measure_count_of_nulls(table_column, db_connection, schema_name, table_name):
+    db_repo_cursor = db_connection.cursor()
+    sql_string=f"""with sample as (
+                    SELECT {table_column['column_name']} the_column 
+                    FROM {schema_name.lower()}.{table_name.lower()}
+                    LIMIT {SAMPLE_SIZE_LIMIT}
+                    ) select count(1) from sample where the_column is null
+                            """
+    db_repo_cursor.execute(sql_string)
+
+
+    column_row = db_repo_cursor.fetchone()
+    while column_row:
+        table_column['count_of_nulls']=column_row[0]
+        column_row = db_repo_cursor.fetchone()
+
+def measure_null_values(table_column, db_connection, schema_name, table_name):
+    db_repo_cursor = db_connection.cursor()
+    sql_string=f"""with sample as (
+                    SELECT {table_column['column_name']} the_column 
+                    FROM {schema_name.lower()}.{table_name.lower()}
+                    LIMIT {SAMPLE_SIZE_LIMIT}
+                    ) select count(1) from sample where the_column is null
+                            """
+    db_repo_cursor.execute(sql_string)
+
+    column_row = db_repo_cursor.fetchone()
+    while column_row:
+        table_column['null_values']=column_row[0]
+        column_row = db_repo_cursor.fetchone()
+
+def measure_cardinality(table_column, db_connection, schema_name, table_name):
+    db_repo_cursor = db_connection.cursor()
+    sql_string=f"""with sample as (
+                        select {table_column['column_name']} as the_column 
+                        FROM {schema_name.lower()}.{table_name.lower()}
+                            LIMIT 999999
+                ) SELECT count(distinct the_column) from sample """
+    db_repo_cursor.execute(sql_string)
+
+
+    column_row = db_repo_cursor.fetchone()
+    while column_row:
+        table_column['cardinality']=column_row[0]
+        column_row = db_repo_cursor.fetchone()
+
+def get_row_count(db_connection, schema_name, table_name):
+    db_repo_cursor = db_connection.cursor()
+    sql_string=f"""select count(1) 
+                        FROM {schema_name.lower()}.{table_name.lower()}"""
+    db_repo_cursor.execute(sql_string)
+
+    column_row = db_repo_cursor.fetchone()
+    row_count=None
+    while column_row:
+        row_count=column_row[0]
+        column_row = db_repo_cursor.fetchone()
+    return row_count
+
 def main(schema_name, table_name,  ini_file, db_connection):
+    global g_metadata
+
 
     params = configuration_load_ini(ini_file, 'generator',['dvpd_generator_directory'])
     pipeline_name = schema_name+"."+table_name
     dvpd_filename=pipeline_name+".dvpd.json"
     dvpd_file_path = Path(params['dvpd_generator_directory']).joinpath(dvpd_filename)
 
+    row_count=get_row_count( db_connection, schema_name, table_name)
+
+    if row_count > SAMPLE_SIZE_LIMIT:
+        row_count_sample=SAMPLE_SIZE_LIMIT
+    else:
+        row_count_sample = row_count
+
+
+    g_metadata={'table_name':table_name,
+               'schema_name':schema_name,
+                'row_count':row_count}
+
+
     # get all columns
-    table_columns=get_pg_table_column_list(db_connection,schema_name, table_name,)
-    print(json.dumps(table_columns, indent=2, sort_keys=True))
 
+    table_columns=get_pg_table_column_list(db_connection,schema_name, table_name)
+    g_metadata['table_columns']=table_columns
 
-    #retirev column statistics
+    #retrieve column statistics
+    for table_column in table_columns:
+        measure_null_values(table_column, db_connection, schema_name, table_name)
+        measure_cardinality(table_column,db_connection,schema_name, table_name)
+        table_column['duplicates']=row_count_sample-table_column['cardinality']
+
+    print_g_metadata()
+
 
     # assemble final dvpd json
 
