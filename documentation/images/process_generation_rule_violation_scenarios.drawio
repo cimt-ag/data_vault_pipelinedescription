@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2024-07-28T17:45:11.379Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="HxkpYEE_gWm8v643aRVh" version="21.6.1" type="device">
+<mxfile host="Electron" modified="2024-08-23T16:11:19.068Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="-ruvW9Nqs06VrrIefcuJ" version="21.6.1" type="device">
   <diagram id="S8_EbyP6fOLFSmQk0vZv" name="Seite-1">
     <mxGraphModel dx="1356" dy="868" grid="1" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" background="#FFFFFF" math="0" shadow="0">
       <root>
@@ -514,7 +514,7 @@
         <mxCell id="BHV4HIjAjoOKH4ibJQ7y-119" value="C2" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="2" vertex="1">
           <mxGeometry x="88.13" y="335" width="121.87" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="BHV4HIjAjoOKH4ibJQ7y-127" value="U Relation incomplete" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;direction=south;position2=1;fillColor=#FFFF66;" parent="2" vertex="1">
+        <mxCell id="BHV4HIjAjoOKH4ibJQ7y-127" value="U and &quot;/&quot; Relation incomplete" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;direction=south;position2=1;fillColor=#FFFF66;" parent="2" vertex="1">
           <mxGeometry x="180" y="390" width="110" height="70" as="geometry" />
         </mxCell>
         <mxCell id="BHV4HIjAjoOKH4ibJQ7y-128" value="U Relation incomplete" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;direction=south;position2=0;fillColor=#FFFF66;size=30;position=0.2;" parent="2" vertex="1">

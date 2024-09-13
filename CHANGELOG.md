@@ -1,3 +1,13 @@
+# release 0.6.2
+
+### features
+- added libary to connect to a database for schema (needed for schema retrieval demo)
+
+### DVPD syntax changes
+
+### code enhancements
+- modified configuration ini loader to find config directory by detecting /lib or /processes in current path
+
 # release 0.6.1
 In this release, we completely switch from the PostgreSQL implementation of the compiler to the python implementation.
 Also the testsets will be massively extended. Some minor feature extensions have been added and some syntax was changed due to
