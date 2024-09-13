@@ -70,8 +70,8 @@ def get_pg_table_column_list(db_connection, schema_name, table_name):
                 column_type = f"{translation['column_type']}"
         else:
             column_type= column_row[1]
-        table_column={'column_name': column_row[0],
-                      'column_type': column_type}
+        table_column={'field_name': column_row[0],
+                      'field_type': column_type}
         table_columns.append(table_column)
         column_row = db_repo_cursor.fetchone()
 
@@ -81,10 +81,33 @@ def get_pg_table_column_list(db_connection, schema_name, table_name):
     return table_columns
 
 
+def determine_key_participation(table_column, db_connection, schema_name, table_name):
+    db_repo_cursor = db_connection.cursor()
+    sql_string=f"""select constraint_type from information_schema.key_column_usage    cu
+                    join information_schema.table_constraints tc 
+                        on tc.table_schema = cu.table_schema 
+                        and tc.table_name=cu.table_name 
+                        and tc.constraint_name=cu.constraint_name
+                    WHERE cu.TABLE_SCHEMA = '{schema_name.lower()}'
+                    AND cu.TABLE_NAME = '{table_name.lower()}'
+                    and cu.column_name=lower('{ table_column['field_name']}')
+                    """
+    db_repo_cursor.execute(sql_string)
+
+    column_row = db_repo_cursor.fetchone()
+    table_column['is_primary_key']=False
+    table_column['is_foreign_key'] = False
+    while column_row:
+        if column_row[0]=='PRIMARY KEY':
+            table_column['is_primary_key'] = True
+        if column_row[0]=='FOREIGN KEY':
+            table_column['is_foreign_key'] = True
+        column_row = db_repo_cursor.fetchone()
+
 def measure_count_of_nulls(table_column, db_connection, schema_name, table_name):
     db_repo_cursor = db_connection.cursor()
     sql_string=f"""with sample as (
-                    SELECT {table_column['column_name']} the_column 
+                    SELECT {table_column['field_name']} the_column 
                     FROM {schema_name.lower()}.{table_name.lower()}
                     LIMIT {SAMPLE_SIZE_LIMIT}
                     ) select count(1) from sample where the_column is null
@@ -100,7 +123,7 @@ def measure_count_of_nulls(table_column, db_connection, schema_name, table_name)
 def measure_null_values(table_column, db_connection, schema_name, table_name):
     db_repo_cursor = db_connection.cursor()
     sql_string=f"""with sample as (
-                    SELECT {table_column['column_name']} the_column 
+                    SELECT {table_column['field_name']} the_column 
                     FROM {schema_name.lower()}.{table_name.lower()}
                     LIMIT {SAMPLE_SIZE_LIMIT}
                     ) select count(1) from sample where the_column is null
@@ -115,7 +138,7 @@ def measure_null_values(table_column, db_connection, schema_name, table_name):
 def measure_cardinality(table_column, db_connection, schema_name, table_name):
     db_repo_cursor = db_connection.cursor()
     sql_string=f"""with sample as (
-                        select {table_column['column_name']} as the_column 
+                        select {table_column['field_name']} as the_column 
                         FROM {schema_name.lower()}.{table_name.lower()}
                             LIMIT 999999
                 ) SELECT count(distinct the_column) from sample """
@@ -140,14 +163,42 @@ def get_row_count(db_connection, schema_name, table_name):
         column_row = db_repo_cursor.fetchone()
     return row_count
 
-def main(schema_name, table_name,  ini_file, db_connection):
+
+def render_field_order_string(table_column,row_count_sample):
+    """Creates a string that will be used to order the fields in the dvpd"""
+    field_order_string=""
+    if table_column ['is_primary_key']:
+        field_order_string+="0"      # primary key fields first
+    else:
+        field_order_string += "1"
+
+    if table_column ['is_foreign_key']:
+        field_order_string+="0"     # foreign key fields second
+    else:
+        field_order_string += "1"
+
+    if table_column ['null_values']<row_count_sample:
+        field_order_string += "0"  # field with data third
+    else:
+        field_order_string += "1"  # empty field last
+
+    field_order_string +="_/_"+table_column['field_name']  # finally order by name
+
+    table_column['field_order_string']=field_order_string
+
+
+
+def main(schema_name, table_name, ini_file, db_connection, target_schema_tag=None):
     global g_metadata
 
 
     params = configuration_load_ini(ini_file, 'generator',['dvpd_generator_directory'])
-    pipeline_name = schema_name+"."+table_name
-    dvpd_filename=pipeline_name+".dvpd.json"
-    dvpd_file_path = Path(params['dvpd_generator_directory']).joinpath(dvpd_filename)
+    pipeline_name = schema_name+"_"+table_name+"_px"
+    if target_schema_tag is None:
+        main_sattelite_name="aaaaaa_"+table_name+"_px_sat"
+    else:
+        main_sattelite_name=target_schema_tag + "_aaaaaa__"+table_name+"_px_sat"
+
 
     row_count=get_row_count( db_connection, schema_name, table_name)
 
@@ -172,13 +223,92 @@ def main(schema_name, table_name,  ini_file, db_connection):
         measure_null_values(table_column, db_connection, schema_name, table_name)
         measure_cardinality(table_column,db_connection,schema_name, table_name)
         table_column['duplicates']=row_count_sample-table_column['cardinality']
+        determine_key_participation(table_column, db_connection, schema_name, table_name)
+        render_field_order_string(table_column,row_count_sample)
 
-    print_g_metadata()
+    #print_g_metadata()
 
 
     # assemble final dvpd json
+    dvpd=[]
+    dvpd.append(    '{')
+    dvpd.append('\t"dvpd_version": "0.6.2",')
+    dvpd.append( f'\t"pipeline_name": "{pipeline_name}",')
+    dvpd.append( '\t"stage_properties": [{"stage_schema": "stage_rvlt"}],')
+    dvpd.append( f'\t"purpose": "Load from {schema_name}.{table_name} into raw vault",')
+    dvpd.append( f'\t"record_source_name_expression": "{schema_name}.{table_name}",')
+    dvpd.append( f'\t"analysis_full_row_count":{row_count},')
+    dvpd.append( f'\t"analysis_sample_row_count":{row_count_sample},')
+    dvpd.append( '\t"data_extraction": {')
+    dvpd.append( '\t\t"fetch_module_name": "none - this is a pure ddl and documentation dvpd"')
+    dvpd.append( '\t},')
+    dvpd.append( '"fields":[')
 
+    table_columns_sorted = sorted(table_columns, key=lambda d: d['field_order_string']   )
 
+    field_elements=[]
+    field_order_group=table_columns_sorted[0]['field_order_string'][:3]
+    first_field=True
+    for table_column in  table_columns_sorted:
+            if not table_column['field_order_string'].startswith(field_order_group): # add separator row for every group
+                field_elements.append("")
+                field_order_group=table_column['field_order_string'][:3]
+            if first_field:
+                field_element="\t {"
+                first_field = False
+            else:
+                field_element="\t,{"
+            field_element +=f'"field_name":"{table_column["field_name"]}",\t"field_type":"{table_column["field_type"]} "'
+            for analytic_tag in ['is_primary_key','is_foreign_key','cardinality','duplicates','null_values']:
+                field_element+=f',"{analytic_tag}":"{table_column[analytic_tag]}"'
+            field_element+=',\t"targets":[{"table_name":"'+main_sattelite_name+'"}]}'
+            field_elements.append(field_element)
+
+    dvpd.append("\n".join(field_elements))
+    dvpd.append('\t],') # end of fields array
+
+    dvpd.append('	"data_vault_model": [')
+    dvpd.append('		{"schema_name": "rvtl_xxxxxx"')
+    dvpd.append('		, "tables": [')
+    dvpd.append('				{"table_name": "aaaaaa_hub"')
+    dvpd.append('						,"table_stereotype": "hub"')
+    dvpd.append('						,"hub_key_column_name": "hk_aaaaaa"')
+    dvpd.append('				}')
+    dvpd.append('				,{"table_name": "'+main_sattelite_name+'"')
+    dvpd.append('						,"table_stereotype": "sat"')
+    dvpd.append('						,"satellite_parent_table": "aaaaaa_hub"')
+    dvpd.append(f'						,"diff_hash_column_name": "rh_'+main_sattelite_name+'"')
+    dvpd.append('				}')
+    dvpd.append('				,{"table_name": "bbbbbb_hub"')
+    dvpd.append('						,"table_stereotype": "hub"')
+    dvpd.append('						,"hub_key_column_name": "hk_bbbbbb"')
+    dvpd.append('				}')
+    dvpd.append('				,{"table_name": "aaaaaa_bbbbbb_lnk"')
+    dvpd.append('						,"table_stereotype": "lnk"')
+    dvpd.append('						,"link_key_column_name": "lk_aaaaa_bbbbb"')
+    dvpd.append('						,"link_parent_tables": ["aaaaaa_hub"')
+    dvpd.append('											   ,"bbbbbb_hub"]')
+    dvpd.append('				}')
+    dvpd.append('				,{"table_name": "aaaaaa_bbbbbb_esat"')
+    dvpd.append('						,"table_stereotype": "sat"')
+    dvpd.append('						,"satellite_parent_table": "aaaaaa_bbbbbb_lnk"')
+    dvpd.append('				}')
+    dvpd.append('			]')
+    dvpd.append('		}')
+    dvpd.append('	]')
+    dvpd.append('}')
+
+    # write dvpd to file
+    dvpd_generator_directory = Path(params['dvpd_generator_directory'])
+    if not os.path.isdir(dvpd_generator_directory):
+        print(f"creating dir: {dvpd_generator_directory}")
+        dvpd_generator_directory.mkdir(parents=True)
+
+    dvpd_filename=pipeline_name+".dvpd.json"
+    dvpd_file_path =dvpd_generator_directory.joinpath(dvpd_filename)
+    dvpd_text="\n".join(dvpd)
+    with open(dvpd_file_path, 'w') as file:
+        file.write(dvpd_text)
 
     print (f"Completed rendering documentation from {dvpd_file_path.name}")
 
