@@ -1,12 +1,15 @@
 {
-  "dvpd_version": "0.6.1",
+  "dvpd_version": "0.6.2",
   "stage_properties" : [{"stage_schema":"stage_rvlt"}],
   "pipeline_name": "t5000_willibald_bestellung",
-  "pipeline_comment":"example from ddvug gartencenter willibald",
-  "record_source_name_expression": "willibald.bestellung",
-  "data_extraction": {
-    "fetch_module_name":"none - this is a pure generator test case"
-  },
+	"stage_properties": [{"stage_schema": "stage_rvlt"}],
+	"purpose": "Load from willibald_shop_p1.bestellung into raw vault",
+	"record_source_name_expression": "willibald_shop_p1.bestellung",
+	"analysis_full_row_count":800,
+	"analysis_sample_row_count":800,
+	"data_extraction": {
+		"fetch_module_name": "none - this is a pure ddl and documentation dvpd"
+	},
 
   "fields": [
          {"field_name": "BestellungID",   "field_type": "integer",      "targets": [{"table_name": "bestellung_hub"}]}
@@ -17,8 +20,20 @@
         ,{"field_name": "Wunschdatum",    "field_type": "DATE",         "targets": [{"table_name": "bestellung_sat"}]}
         ,{"field_name": "Rabatt",         "field_type": "DECIMAL(8,3)", "targets": [{"table_name": "bestellung_sat"}]}
        ],
+			 
+			 "fields":[
+	 {"field_name":"bestellungid",	"field_type":"bigint ","is_primary_key":"True","is_foreign_key":"False","cardinality":"800","duplicates":"0","null_values":"0",	"targets":[{"table_name":"bestellung_hub"}]}
+
+	,{"field_name":"kundeid",	"field_type":"CHAR(13) ","is_primary_key":"False","is_foreign_key":"True","cardinality":"300","duplicates":"500","null_values":"0",	"targets":[{"table_name":"kunde_hub"}]}
+
+	,{"field_name":"allglieferadrid",	"field_type":"integer ","is_primary_key":"False","is_foreign_key":"False","cardinality":"800","duplicates":"0","null_values":"0",	"targets":[{"table_name":"lieferadresse_hub","column_name":"LieferAdrID"}]}
+	,{"field_name":"bestelldatum",	"field_type":"date ","is_primary_key":"False","is_foreign_key":"False","cardinality":"7","duplicates":"793","null_values":"0",	"targets":[{"table_name":"bestellung_sat"}]}
+	,{"field_name":"rabatt",	"field_type":"NUMERIC(5,2) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"7","duplicates":"793","null_values":"0",	"targets":[{"table_name":"bestellung_sat"}]}
+	,{"field_name":"wunschdatum",	"field_type":"date ","is_primary_key":"False","is_foreign_key":"False","cardinality":"21","duplicates":"779","null_values":"0",	"targets":[{"table_name":"bestellung_sat"}]}
+	],
+			 
   "data_vault_model": [
-    {"schema_name": "rvlt_willibald", 
+    {"schema_name": "rvlt_willibald_shop", 
      "tables": [
          {"table_name": "bestellung_hub", "table_stereotype": "hub"
                                         , "hub_key_column_name": "hk_bestellung"}
