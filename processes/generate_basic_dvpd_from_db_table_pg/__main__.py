@@ -203,7 +203,7 @@ def main(schema_name, table_name, ini_file, db_connection, target_schema_tag=Non
         esat_name = table_name+"_"+"bbbbbb_esat"
     else:
         main_sattelite_name=target_schema_tag + "_aaaaaa__"+table_name+"_px_sat"
-        main_hub_name=target_schema_tag + "_"+able_name+"_hub"
+        main_hub_name=target_schema_tag + "_"+table_name+"_hub"
         link_name = table_name + "_" + "bbbbbb_lnk"
         esat_name = table_name + "_" + "bbbbbb_esat"
 
