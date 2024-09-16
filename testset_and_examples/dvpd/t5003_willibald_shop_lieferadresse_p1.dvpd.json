@@ -1,0 +1,55 @@
+{
+	"dvpd_version": "0.6.2",
+	"pipeline_name": "t5003_willibald_shop_lieferadresse_p1",
+	"stage_properties": [{"stage_schema": "stage_rvlt"}],
+	"purpose": "Load from willibald_shop_p1.lieferadresse into raw vault",
+	"record_source_name_expression": "willibald_shop_p1.lieferadresse",
+	"analysis_full_row_count":806,
+	"analysis_sample_row_count":806,
+	"data_extraction": {
+		"fetch_module_name": "none - this is a pure ddl and documentation dvpd"
+	},
+"fields":[
+	 {"field_name":"lieferadrid",	"field_type":"integer ","is_primary_key":"True","is_foreign_key":"False","cardinality":"806","duplicates":"0","null_values":"0",	"targets":[{"table_name":"lieferadresse_hub"}]}
+
+	,{"field_name":"kundeid",	"field_type":"CHAR(13) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"303","duplicates":"503","null_values":"0",	"targets":[{"table_name":"kunde_hub"}]}
+
+	,{"field_name":"adresszusatz",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"3","duplicates":"803","null_values":"803",	"targets":[{"table_name":"lieferadresse_lieferadresse_p1_sat"}]}
+	,{"field_name":"hausnummer",	"field_type":"VARCHAR(10) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"241","duplicates":"565","null_values":"0",	"targets":[{"table_name":"lieferadresse_lieferadresse_p1_sat"}]}
+
+	,{"field_name":"ort",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"721","duplicates":"85","null_values":"0",	"targets":[{"table_name":"lieferadresse_lieferadresse_p1_sat"}]}
+	,{"field_name":"plz",	"field_type":"VARCHAR(10) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"704","duplicates":"102","null_values":"0",	"targets":[{"table_name":"lieferadresse_lieferadresse_p1_sat"}]}
+	,{"field_name":"strasse",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"769","duplicates":"37","null_values":"0",	"targets":[{"table_name":"lieferadresse_lieferadresse_p1_sat"}]}
+
+	,{"field_name":"land",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"0","duplicates":"806","null_values":"806",	"targets":[{"table_name":"lieferadresse_lieferadresse_p1_sat"}]}
+	],
+	"data_vault_model": [
+		{"schema_name": "rvlt_willibald_shop"
+		, "tables": [
+				{"table_name": "lieferadresse_hub"
+						,"table_stereotype": "hub"
+						,"hub_key_column_name": "hk_lieferadresse"
+				}
+				,{"table_name": "lieferadresse_lieferadresse_p1_sat"
+						,"table_stereotype": "sat"
+						,"satellite_parent_table": "lieferadresse_hub"
+						,"diff_hash_column_name": "diff_lieferadresse_lieferadresse_p1_sat"
+				}
+				,{"table_name": "kunde_hub"
+						,"table_stereotype": "hub"
+						,"hub_key_column_name": "hk_kunde"
+				}
+				,{"table_name": "lieferadresse_kunde_lnk"
+						,"table_stereotype": "lnk"
+						,"link_key_column_name": "lk_lieferadresse_kunde"
+						,"link_parent_tables": ["lieferadresse_hub"
+											   ,"kunde_hub"]
+				}
+				,{"table_name": "lieferadresse_kunde_esat"
+						,"table_stereotype": "sat"
+						,"satellite_parent_table": "lieferadresse_kunde_lnk"
+				}
+			]
+		}
+	]
+}
