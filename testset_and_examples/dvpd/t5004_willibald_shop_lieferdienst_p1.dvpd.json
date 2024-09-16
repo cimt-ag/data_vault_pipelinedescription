@@ -1,0 +1,41 @@
+{
+	"dvpd_version": "0.6.2",
+	"pipeline_name": "willibald_shop_p1_lieferdienst_px",
+	"stage_properties": [{"stage_schema": "stage_rvlt"}],
+	"purpose": "Load from willibald_shop_p1.lieferdienst into raw vault",
+	"record_source_name_expression": "willibald_shop_p1.lieferdienst",
+	"analysis_full_row_count":80,
+	"analysis_sample_row_count":80,
+	"data_extraction": {
+		"fetch_module_name": "none - this is a pure ddl and documentation dvpd"
+	},
+"fields":[
+	 {"field_name":"lieferdienstid",	"field_type":"VARCHAR(30) ","is_primary_key":"True","is_foreign_key":"False","cardinality":"80","duplicates":"0","null_values":"0",	"targets":[{"table_name":"lieferdienst_hub"}]}
+
+	,{"field_name":"email",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"80","duplicates":"0","null_values":"0",	"targets":[{"table_name":"lieferdienst_lieferdienst_p1_sat"}]}
+	,{"field_name":"fax",	"field_type":"VARCHAR(20) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"68","duplicates":"12","null_values":"0",	"targets":[{"table_name":"lieferdienst_lieferdienst_p1_sat"}]}
+	,{"field_name":"hausnummer",	"field_type":"VARCHAR(10) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"67","duplicates":"13","null_values":"0",	"targets":[{"table_name":"lieferdienst_lieferdienst_p1_sat"}]}
+	,{"field_name":"land",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"10","duplicates":"70","null_values":"0",	"targets":[{"table_name":"lieferdienst_lieferdienst_p1_sat"}]}
+	,{"field_name":"name",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"80","duplicates":"0","null_values":"0",	"targets":[{"table_name":"lieferdienst_lieferdienst_p1_sat"}]}
+	,{"field_name":"ort",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"80","duplicates":"0","null_values":"0",	"targets":[{"table_name":"lieferdienst_lieferdienst_p1_sat"}]}
+	,{"field_name":"plz",	"field_type":"VARCHAR(10) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"80","duplicates":"0","null_values":"0",	"targets":[{"table_name":"lieferdienst_lieferdienst_p1_sat"}]}
+	,{"field_name":"strasse",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"80","duplicates":"0","null_values":"0",	"targets":[{"table_name":"lieferdienst_lieferdienst_p1_sat"}]}
+	,{"field_name":"telefon",	"field_type":"VARCHAR(20) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"80","duplicates":"0","null_values":"0",	"targets":[{"table_name":"lieferdienst_lieferdienst_p1_sat"}]}
+	],
+	"data_vault_model": [
+		{"schema_name": "rvlt_willibald_shop"
+		, "tables": [
+				{"table_name": "lieferdienst_hub"
+						,"table_stereotype": "hub"
+						,"hub_key_column_name": "hk_lieferdienst"
+				}
+				,{"table_name": "lieferdienst_lieferdienst_p1_sat"
+						,"table_stereotype": "sat"
+						,"satellite_parent_table": "lieferdienst_hub"
+						,"diff_hash_column_name": "diff_lieferdienst_lieferdienst_p1_sat"
+				}
+				
+			]
+		}
+	]
+}
