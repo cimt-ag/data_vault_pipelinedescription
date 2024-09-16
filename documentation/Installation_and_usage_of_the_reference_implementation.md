@@ -26,7 +26,9 @@ The reference implementation is part of the DVPD git reposititory. It consists o
 - Automated test of the DVPDC (processes/test_dvpdc/\__main\__.py)
 - Reference results for the automated testing ((testcases_and_examples/reference/*.dvpd))
 - Example of a ddl Render script (processes/render_ddl/\__main\__.py)
-- Example of a documentation render script (processes/render_documentation /\__main\__.py)
+- Examples of documentation render scripts (processes/render_documentation /\__main\__.py)(processes/render_dev_sheet /\__main\__.py)
+- Example of a dvpd generator (processes/generate_basic_dvpd_from_db_table_pg/\__main\__.py))
+- easy to call windows batch scripts or bash shell scripts for all examples (commands/)
 
 The scripts are using a central configuration file (dvpdc.ini file), to declare further directory structures (See "Decistions about file locations" below)
 
@@ -107,10 +109,10 @@ Example structure
 - a html file, containing a formatted the mapping tabl should be written to subdirectoreis of the configured "documentation_directory"
 
 
-## Create some shortcuts or convinience wrapper
+## Create some shortcuts or convenience wrapper
 Since declaration of the ini files will mostly be the same in every call, you might want to create some wrapper script, that inserts this
 
-This wrapper script might also be helpfull to concatinate some steps of your workflow into one call.
+This wrapper script might also be helpfull to combine some steps of your workflow into one call.
 
 ## Adapt the ddl generator
 The ddl generator is only an example/template and must be 
@@ -137,7 +139,7 @@ Options:
 - --dvpi_directory=\<directory>: Sets the location for the output of the dvpi file (instead of the location configured by the ini file)
 - --report_directory=\<directory>: Sets the location for the log and report file (instead of the location configured by the ini file)
 - --verbose: prints some internal progress messages to the console 
-- --print_brain: prints the internal "memory" of the compiler
+- --print_brain: prints the internal "memory" of the compiler for diagnosis
 
 ### result
 The compiler creates a log file and, when compilation is successfull 2 result files
@@ -230,3 +232,27 @@ This command call all steps with the "@youngest" directive a  file name paramete
 compiles the youngest dvdp and generates ddls and documentation, when compilation was successfull. 
 
 It a first rough example, how to create a ci pipeline.
+
+## Generator of dvpd templates from database tables (dvpd_genereate_from_db)
+This command generates a template dvpd file from the table structure of a database tables.
+
+For the given table, it determines all columns including their attribution to be part of the primary key or a foreign key.
+Also it measures some indicators about cardinality and completeness for all columns.
+
+As a result it writes dvpd a file with all fields, a simple Data Vault model (Hub+sat/link/hub) and 
+uses a best guess to map the fields to the model. THe field analysis data is also provided in the dvpd.
+
+The dvpd generator is started on the command line with:
+
+```dvpd_generate_from_db <name of the table schema> <name of the table> options ```
+
+options:
+  - -h, --help            show this help message and exit
+  - --dvpdc_ini_file <filename>   Name of the ini file of dvpdc
+  - --connection_ini_file <filename> Name of the ini file with the db connection properties
+  -  --connection_ini_section <section name> Name of the section of parameters in the connection file 
+ 
+Settings read from dvpdc.ini file:
+- dvpd_generator_directory - Directory, the result file will be written to
+
+The example is restricted to postgreSQL Databases. It reads it's connection parameters from an ini file.
