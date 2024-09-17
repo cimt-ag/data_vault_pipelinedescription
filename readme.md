@@ -46,7 +46,7 @@ DVPD provides a format, to solve this problem.
 ### Concept Documentation
 1. Description of the concept
 1. Reference of the core syntax of DVPD
-1. Analysis about the use case variations to cover by the syntax
+1. Analysis about the use case variations that should be covered by the syntax
    a. Data Mapping variation taxonomy
    a. Data Mapping dependend process generation
    a. Partitioned deletion scenarios

@@ -1,0 +1,1038 @@
+{
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-09-16 19:13:26",
+  "dvpd_version": "0.6.2",
+  "pipeline_name": "t5005_willibald_shop_position_p1",
+  "dvpd_filename": "t5005_willibald_shop_position_p1.dvpd.json",
+  "tables": [
+    {
+      "table_name": "position_hub",
+      "table_stereotype": "hub",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_POSITION",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "BESTELLUNGID",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "BIGINT ",
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "POSID",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "BIGINT ",
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "position_position_p1_sat",
+      "table_stereotype": "sat",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": false,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "compare_criteria": "key+current",
+      "uses_diff_hash": true,
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "column_name": "MD_VALID_BEFORE",
+          "is_nullable": false,
+          "column_class": "meta_load_enddate",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "HK_POSITION",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_POSITION",
+          "parent_table_name": "position_hub"
+        },
+        {
+          "column_name": "DIFF_POSITION_POSITION_P1_SAT",
+          "is_nullable": false,
+          "column_class": "diff_hash",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "MENGE",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "INTEGER ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "PREIS",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "NUMERIC(10,2) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "bestellung_hub",
+      "table_stereotype": "hub",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_BESTELLUNG",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "BESTELLUNGID",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "BIGINT ",
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "position_bestellung_lnk",
+      "table_stereotype": "lnk",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_POSITION",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_POSITION",
+          "parent_table_name": "position_hub"
+        },
+        {
+          "column_name": "HK_BESTELLUNG",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_BESTELLUNG",
+          "parent_table_name": "bestellung_hub"
+        },
+        {
+          "column_name": "LK_POSITION_BESTELLUNG",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        }
+      ]
+    },
+    {
+      "table_name": "produkt_hub",
+      "table_stereotype": "hub",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_PRODUKT",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "PRODUKTID",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "INTEGER ",
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "lieferadresse_hub",
+      "table_stereotype": "hub",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_LIEFERADRESSE",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "LIEFERADRID",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "INTEGER ",
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "position_produkt_lieferadresse_lnk",
+      "table_stereotype": "lnk",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_POSITION",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_POSITION",
+          "parent_table_name": "position_hub"
+        },
+        {
+          "column_name": "HK_PRODUKT",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_PRODUKT",
+          "parent_table_name": "produkt_hub"
+        },
+        {
+          "column_name": "HK_LIEFERADRESSE",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_LIEFERADRESSE",
+          "parent_table_name": "lieferadresse_hub"
+        },
+        {
+          "column_name": "LK_POSITION_PRODUKT_LIEFERADRESSE",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        }
+      ]
+    },
+    {
+      "table_name": "position_produkt_lieferadresse_esat",
+      "table_stereotype": "sat",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": true,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "compare_criteria": "key+current",
+      "uses_diff_hash": false,
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "column_name": "MD_VALID_BEFORE",
+          "is_nullable": false,
+          "column_class": "meta_load_enddate",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "LK_POSITION_PRODUKT_LIEFERADRESSE",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "LK_POSITION_PRODUKT_LIEFERADRESSE",
+          "parent_table_name": "position_produkt_lieferadresse_lnk"
+        }
+      ]
+    }
+  ],
+  "data_extraction": {
+    "fetch_module_name": "none - this is a pure ddl and documentation dvpd"
+  },
+  "parse_sets": [
+    {
+      "stage_properties": [
+        {
+          "stage_schema": "stage_rvlt",
+          "stage_table_name": "st5005_willibald_shop_position_p1",
+          "storage_component": ""
+        }
+      ],
+      "record_source_name_expression": "willibald_shop_p1.position",
+      "fields": [
+        {
+          "field_type": "bigint ",
+          "is_primary_key": "True",
+          "is_foreign_key": "False",
+          "cardinality": "800",
+          "duplicates": "1200",
+          "null_values": "0",
+          "field_position": 1,
+          "needs_encryption": false,
+          "field_name": "BESTELLUNGID"
+        },
+        {
+          "field_type": "bigint ",
+          "is_primary_key": "True",
+          "is_foreign_key": "False",
+          "cardinality": "2000",
+          "duplicates": "0",
+          "null_values": "0",
+          "field_position": 2,
+          "needs_encryption": false,
+          "field_name": "POSID"
+        },
+        {
+          "field_type": "integer ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "11",
+          "duplicates": "1989",
+          "null_values": "0",
+          "field_position": 3,
+          "needs_encryption": false,
+          "field_name": "MENGE"
+        },
+        {
+          "field_type": "NUMERIC(10,2) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "19",
+          "duplicates": "1981",
+          "null_values": "0",
+          "field_position": 4,
+          "needs_encryption": false,
+          "field_name": "PREIS"
+        },
+        {
+          "field_type": "integer ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "112",
+          "duplicates": "1888",
+          "null_values": "0",
+          "field_position": 5,
+          "needs_encryption": false,
+          "field_name": "PRODUKTID"
+        },
+        {
+          "field_type": "integer ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "300",
+          "duplicates": "1700",
+          "null_values": "1700",
+          "field_position": 6,
+          "needs_encryption": false,
+          "field_name": "SPEZLIEFERADRID"
+        }
+      ],
+      "hashes": [
+        {
+          "stage_column_name": "HK_POSITION",
+          "hash_origin_table": "position_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "BESTELLUNGID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "position_hub",
+              "field_target_column": "BESTELLUNGID"
+            },
+            {
+              "field_name": "POSID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "position_hub",
+              "field_target_column": "POSID"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_POSITION_HUB"
+        },
+        {
+          "stage_column_name": "HK_BESTELLUNG",
+          "hash_origin_table": "bestellung_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "BESTELLUNGID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "bestellung_hub",
+              "field_target_column": "BESTELLUNGID"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_BESTELLUNG_HUB"
+        },
+        {
+          "stage_column_name": "HK_PRODUKT",
+          "hash_origin_table": "produkt_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "PRODUKTID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "produkt_hub",
+              "field_target_column": "PRODUKTID"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_PRODUKT_HUB"
+        },
+        {
+          "stage_column_name": "HK_LIEFERADRESSE",
+          "hash_origin_table": "lieferadresse_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "SPEZLIEFERADRID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "lieferadresse_hub",
+              "field_target_column": "LIEFERADRID"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_LIEFERADRESSE_HUB"
+        },
+        {
+          "stage_column_name": "LK_POSITION_BESTELLUNG",
+          "hash_origin_table": "position_bestellung_lnk",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "BESTELLUNGID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "position_hub",
+              "field_target_column": "BESTELLUNGID",
+              "parent_declaration_position": 1
+            },
+            {
+              "field_name": "POSID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "position_hub",
+              "field_target_column": "POSID",
+              "parent_declaration_position": 1
+            },
+            {
+              "field_name": "BESTELLUNGID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "bestellung_hub",
+              "field_target_column": "BESTELLUNGID",
+              "parent_declaration_position": 2
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_POSITION_BESTELLUNG_LNK"
+        },
+        {
+          "stage_column_name": "LK_POSITION_PRODUKT_LIEFERADRESSE",
+          "hash_origin_table": "position_produkt_lieferadresse_lnk",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "BESTELLUNGID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "position_hub",
+              "field_target_column": "BESTELLUNGID",
+              "parent_declaration_position": 1
+            },
+            {
+              "field_name": "POSID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "position_hub",
+              "field_target_column": "POSID",
+              "parent_declaration_position": 1
+            },
+            {
+              "field_name": "PRODUKTID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "produkt_hub",
+              "field_target_column": "PRODUKTID",
+              "parent_declaration_position": 2
+            },
+            {
+              "field_name": "SPEZLIEFERADRID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "lieferadresse_hub",
+              "field_target_column": "LIEFERADRID",
+              "parent_declaration_position": 3
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_POSITION_PRODUKT_LIEFERADRESSE_LNK"
+        },
+        {
+          "stage_column_name": "DIFF_POSITION_POSITION_P1_SAT",
+          "hash_origin_table": "position_position_p1_sat",
+          "multi_row_content": false,
+          "column_class": "diff_hash",
+          "hash_fields": [
+            {
+              "field_name": "MENGE",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "position_position_p1_sat",
+              "field_target_column": "MENGE"
+            },
+            {
+              "field_name": "PREIS",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "position_position_p1_sat",
+              "field_target_column": "PREIS"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "related_key_hash": "KEY_OF_POSITION_HUB",
+          "hash_name": "DIFF_OF_POSITION_POSITION_P1_SAT"
+        }
+      ],
+      "load_operations": [
+        {
+          "table_name": "position_hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_POSITION",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_POSITION_HUB",
+              "stage_column_name": "HK_POSITION"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "BESTELLUNGID",
+              "field_name": "BESTELLUNGID",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "BESTELLUNGID"
+            },
+            {
+              "column_name": "POSID",
+              "field_name": "POSID",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "POSID"
+            }
+          ]
+        },
+        {
+          "table_name": "position_position_p1_sat",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key",
+              "column_name": "HK_POSITION",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_POSITION_HUB",
+              "stage_column_name": "HK_POSITION"
+            },
+            {
+              "hash_class": "diff_hash",
+              "column_name": "DIFF_POSITION_POSITION_P1_SAT",
+              "is_nullable": false,
+              "hash_name": "DIFF_OF_POSITION_POSITION_P1_SAT",
+              "stage_column_name": "DIFF_POSITION_POSITION_P1_SAT"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "MENGE",
+              "field_name": "MENGE",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "MENGE"
+            },
+            {
+              "column_name": "PREIS",
+              "field_name": "PREIS",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "PREIS"
+            }
+          ]
+        },
+        {
+          "table_name": "bestellung_hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_BESTELLUNG",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_BESTELLUNG_HUB",
+              "stage_column_name": "HK_BESTELLUNG"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "BESTELLUNGID",
+              "field_name": "BESTELLUNGID",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "BESTELLUNGID"
+            }
+          ]
+        },
+        {
+          "table_name": "position_bestellung_lnk",
+          "relation_name": "/",
+          "operation_origin": "implicit unnamed relation, since all parents are universal",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key_1",
+              "column_name": "HK_POSITION",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_POSITION_HUB",
+              "stage_column_name": "HK_POSITION"
+            },
+            {
+              "hash_class": "parent_key_2",
+              "column_name": "HK_BESTELLUNG",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_BESTELLUNG_HUB",
+              "stage_column_name": "HK_BESTELLUNG"
+            },
+            {
+              "hash_class": "key",
+              "column_name": "LK_POSITION_BESTELLUNG",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_POSITION_BESTELLUNG_LNK",
+              "stage_column_name": "LK_POSITION_BESTELLUNG"
+            }
+          ]
+        },
+        {
+          "table_name": "produkt_hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_PRODUKT",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_PRODUKT_HUB",
+              "stage_column_name": "HK_PRODUKT"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "PRODUKTID",
+              "field_name": "PRODUKTID",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "PRODUKTID"
+            }
+          ]
+        },
+        {
+          "table_name": "lieferadresse_hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_LIEFERADRESSE",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_LIEFERADRESSE_HUB",
+              "stage_column_name": "HK_LIEFERADRESSE"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "LIEFERADRID",
+              "field_name": "SPEZLIEFERADRID",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "SPEZLIEFERADRID"
+            }
+          ]
+        },
+        {
+          "table_name": "position_produkt_lieferadresse_lnk",
+          "relation_name": "/",
+          "operation_origin": "implicit unnamed relation, since all parents are universal",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key_1",
+              "column_name": "HK_POSITION",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_POSITION_HUB",
+              "stage_column_name": "HK_POSITION"
+            },
+            {
+              "hash_class": "parent_key_2",
+              "column_name": "HK_PRODUKT",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_PRODUKT_HUB",
+              "stage_column_name": "HK_PRODUKT"
+            },
+            {
+              "hash_class": "parent_key_3",
+              "column_name": "HK_LIEFERADRESSE",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_LIEFERADRESSE_HUB",
+              "stage_column_name": "HK_LIEFERADRESSE"
+            },
+            {
+              "hash_class": "key",
+              "column_name": "LK_POSITION_PRODUKT_LIEFERADRESSE",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_POSITION_PRODUKT_LIEFERADRESSE_LNK",
+              "stage_column_name": "LK_POSITION_PRODUKT_LIEFERADRESSE"
+            }
+          ]
+        },
+        {
+          "table_name": "position_produkt_lieferadresse_esat",
+          "relation_name": "/",
+          "operation_origin": "following parent operation list",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key",
+              "column_name": "LK_POSITION_PRODUKT_LIEFERADRESSE",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_POSITION_PRODUKT_LIEFERADRESSE_LNK",
+              "stage_column_name": "LK_POSITION_PRODUKT_LIEFERADRESSE"
+            }
+          ]
+        }
+      ],
+      "stage_columns": [
+        {
+          "stage_column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "stage_column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "stage_column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "stage_column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "stage_column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "stage_column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "stage_column_name": "HK_POSITION",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_POSITION_HUB",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "HK_BESTELLUNG",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_BESTELLUNG_HUB",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "HK_PRODUKT",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_PRODUKT_HUB",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "HK_LIEFERADRESSE",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_LIEFERADRESSE_HUB",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "LK_POSITION_BESTELLUNG",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_POSITION_BESTELLUNG_LNK",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "LK_POSITION_PRODUKT_LIEFERADRESSE",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_POSITION_PRODUKT_LIEFERADRESSE_LNK",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "DIFF_POSITION_POSITION_P1_SAT",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "DIFF_OF_POSITION_POSITION_P1_SAT",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "BESTELLUNGID",
+          "stage_column_class": "data",
+          "field_name": "BESTELLUNGID",
+          "is_nullable": true,
+          "column_type": "bigint ",
+          "column_classes": [
+            "business_key"
+          ]
+        },
+        {
+          "stage_column_name": "POSID",
+          "stage_column_class": "data",
+          "field_name": "POSID",
+          "is_nullable": true,
+          "column_type": "bigint ",
+          "column_classes": [
+            "business_key"
+          ]
+        },
+        {
+          "stage_column_name": "MENGE",
+          "stage_column_class": "data",
+          "field_name": "MENGE",
+          "is_nullable": true,
+          "column_type": "integer ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "PREIS",
+          "stage_column_class": "data",
+          "field_name": "PREIS",
+          "is_nullable": true,
+          "column_type": "NUMERIC(10,2) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "PRODUKTID",
+          "stage_column_class": "data",
+          "field_name": "PRODUKTID",
+          "is_nullable": true,
+          "column_type": "integer ",
+          "column_classes": [
+            "business_key"
+          ]
+        },
+        {
+          "stage_column_name": "SPEZLIEFERADRID",
+          "stage_column_class": "data",
+          "field_name": "SPEZLIEFERADRID",
+          "is_nullable": true,
+          "column_type": "integer ",
+          "column_classes": [
+            "business_key"
+          ]
+        }
+      ]
+    }
+  ]
+}

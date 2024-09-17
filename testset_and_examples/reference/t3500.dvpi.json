@@ -1,15 +1,15 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
   "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:32",
+  "compile_timestamp": "2024-07-28 18:00:22",
   "dvpd_version": "0.6.1",
-  "pipeline_name": "t5000_willibald_bestellung",
-  "dvpd_filename": "t5000_willibald_bestellung.dvpd.json",
+  "pipeline_name": "t3500",
+  "dvpd_filename": "t3500.dvpd.json",
   "tables": [
     {
-      "table_name": "bestellung_hub",
+      "table_name": "rtjj_3500_aaa_hub",
       "table_stereotype": "hub",
-      "schema_name": "rvlt_willibald",
+      "schema_name": "rvlt_test_jj",
       "storage_component": "",
       "columns": [
         {
@@ -31,145 +31,24 @@
           "column_type": "VARCHAR(255)"
         },
         {
-          "column_name": "HK_BESTELLUNG",
+          "column_name": "HK_RTJJ_3500_AAA",
           "is_nullable": false,
           "column_class": "key",
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "BESTELLUNGID",
+          "column_name": "F1F2_AAA_BK1F",
           "is_nullable": true,
           "column_class": "business_key",
-          "column_type": "INTEGER",
+          "column_type": "VARCHAR(20)",
           "prio_for_column_position": 50000
         }
       ]
     },
     {
-      "table_name": "bestellung_sat",
-      "table_stereotype": "sat",
-      "schema_name": "rvlt_willibald",
-      "storage_component": "",
-      "has_deletion_flag": true,
-      "is_effectivity_sat": false,
-      "is_enddated": true,
-      "is_multiactive": false,
-      "compare_criteria": "key+current",
-      "uses_diff_hash": true,
-      "columns": [
-        {
-          "column_name": "MD_INSERTED_AT",
-          "is_nullable": false,
-          "column_class": "meta_load_date",
-          "column_type": "TIMESTAMP"
-        },
-        {
-          "column_name": "MD_RUN_ID",
-          "is_nullable": false,
-          "column_class": "meta_load_process_id",
-          "column_type": "INT"
-        },
-        {
-          "column_name": "MD_RECORD_SOURCE",
-          "is_nullable": false,
-          "column_class": "meta_record_source",
-          "column_type": "VARCHAR(255)"
-        },
-        {
-          "column_name": "MD_IS_DELETED",
-          "is_nullable": false,
-          "column_class": "meta_deletion_flag",
-          "column_type": "BOOLEAN"
-        },
-        {
-          "column_name": "MD_VALID_BEFORE",
-          "is_nullable": false,
-          "column_class": "meta_load_enddate",
-          "column_type": "TIMESTAMP"
-        },
-        {
-          "column_name": "HK_BESTELLUNG",
-          "is_nullable": false,
-          "column_class": "parent_key",
-          "column_type": "CHAR(28)",
-          "parent_key_column_name": "HK_BESTELLUNG",
-          "parent_table_name": "bestellung_hub"
-        },
-        {
-          "column_name": "DIFF_BESTELLUNG_SAT",
-          "is_nullable": false,
-          "column_class": "diff_hash",
-          "column_type": "CHAR(28)"
-        },
-        {
-          "column_name": "BESTELLDATUM",
-          "is_nullable": true,
-          "column_class": "content",
-          "column_type": "DATE",
-          "exclude_from_change_detection": false,
-          "prio_for_column_position": 50000
-        },
-        {
-          "column_name": "WUNSCHDATUM",
-          "is_nullable": true,
-          "column_class": "content",
-          "column_type": "DATE",
-          "exclude_from_change_detection": false,
-          "prio_for_column_position": 50000
-        },
-        {
-          "column_name": "RABATT",
-          "is_nullable": true,
-          "column_class": "content",
-          "column_type": "DECIMAL(8,3)",
-          "exclude_from_change_detection": false,
-          "prio_for_column_position": 50000
-        }
-      ]
-    },
-    {
-      "table_name": "kunde_hub",
-      "table_stereotype": "hub",
-      "schema_name": "rvlt_willibald",
-      "storage_component": "",
-      "columns": [
-        {
-          "column_name": "MD_INSERTED_AT",
-          "is_nullable": false,
-          "column_class": "meta_load_date",
-          "column_type": "TIMESTAMP"
-        },
-        {
-          "column_name": "MD_RUN_ID",
-          "is_nullable": false,
-          "column_class": "meta_load_process_id",
-          "column_type": "INT"
-        },
-        {
-          "column_name": "MD_RECORD_SOURCE",
-          "is_nullable": false,
-          "column_class": "meta_record_source",
-          "column_type": "VARCHAR(255)"
-        },
-        {
-          "column_name": "HK_KUNDE",
-          "is_nullable": false,
-          "column_class": "key",
-          "column_type": "CHAR(28)"
-        },
-        {
-          "column_name": "KUNDEID",
-          "is_nullable": true,
-          "column_class": "business_key",
-          "column_type": "INTEGER",
-          "prio_for_column_position": 50000
-        }
-      ]
-    },
-    {
-      "table_name": "bestellung_kunde_lnk",
+      "table_name": "rtjj_3500_aaa_aaa_bbb_ttt_lnk",
       "table_stereotype": "lnk",
-      "schema_name": "rvlt_willibald",
+      "schema_name": "rvlt_test_jj",
       "storage_component": "",
       "columns": [
         {
@@ -191,23 +70,31 @@
           "column_type": "VARCHAR(255)"
         },
         {
-          "column_name": "HK_BESTELLUNG",
+          "column_name": "HK_RTJJ_3500_AAA",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
-          "parent_key_column_name": "HK_BESTELLUNG",
-          "parent_table_name": "bestellung_hub"
+          "parent_key_column_name": "HK_RTJJ_3500_AAA",
+          "parent_table_name": "rtjj_3500_aaa_hub"
         },
         {
-          "column_name": "HK_KUNDE",
+          "column_name": "HK_RTJJ_3500_BBB",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
-          "parent_key_column_name": "HK_KUNDE",
-          "parent_table_name": "kunde_hub"
+          "parent_key_column_name": "HK_RTJJ_3500_BBB",
+          "parent_table_name": "rtjj_3500_bbb_hub"
         },
         {
-          "column_name": "LK_BESTELLUNG_KUNDE",
+          "column_name": "HK_RTJJ_3500_AAA_TTT",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_RTJJ_3500_AAA",
+          "parent_table_name": "rtjj_3500_aaa_hub"
+        },
+        {
+          "column_name": "LK_RTJJ_3500_AAA_AAA_BBB_TTT",
           "is_nullable": false,
           "column_class": "key",
           "column_type": "CHAR(28)"
@@ -215,9 +102,9 @@
       ]
     },
     {
-      "table_name": "bestellung_kunde_esat",
+      "table_name": "rtjj_3500_aaa_aaa_bbb_ttt_esat",
       "table_stereotype": "sat",
-      "schema_name": "rvlt_willibald",
+      "schema_name": "rvlt_test_jj",
       "storage_component": "",
       "has_deletion_flag": true,
       "is_effectivity_sat": true,
@@ -225,9 +112,6 @@
       "is_multiactive": false,
       "compare_criteria": "key+current",
       "uses_diff_hash": false,
-      "driving_keys": [
-        "HK_BESTELLUNG"
-      ],
       "columns": [
         {
           "column_name": "MD_INSERTED_AT",
@@ -260,19 +144,19 @@
           "column_type": "TIMESTAMP"
         },
         {
-          "column_name": "LK_BESTELLUNG_KUNDE",
+          "column_name": "LK_RTJJ_3500_AAA_AAA_BBB_TTT",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
-          "parent_key_column_name": "LK_BESTELLUNG_KUNDE",
-          "parent_table_name": "bestellung_kunde_lnk"
+          "parent_key_column_name": "LK_RTJJ_3500_AAA_AAA_BBB_TTT",
+          "parent_table_name": "rtjj_3500_aaa_aaa_bbb_ttt_lnk"
         }
       ]
     },
     {
-      "table_name": "lieferadresse_hub",
+      "table_name": "rtjj_3500_bbb_hub",
       "table_stereotype": "hub",
-      "schema_name": "rvlt_willibald",
+      "schema_name": "rvlt_test_jj",
       "storage_component": "",
       "columns": [
         {
@@ -294,24 +178,24 @@
           "column_type": "VARCHAR(255)"
         },
         {
-          "column_name": "HK_LIEFERADRESSE",
+          "column_name": "HK_RTJJ_3500_BBB",
           "is_nullable": false,
           "column_class": "key",
           "column_type": "CHAR(28)"
         },
         {
-          "column_name": "LIEFERADRID",
+          "column_name": "F3_BBB_BK1F",
           "is_nullable": true,
           "column_class": "business_key",
-          "column_type": "INTEGER",
+          "column_type": "VARCHAR(20)",
           "prio_for_column_position": 50000
         }
       ]
     },
     {
-      "table_name": "bestellung_lieferadresse_lnk",
+      "table_name": "rtjj_3500_aaa_ccc_lnk",
       "table_stereotype": "lnk",
-      "schema_name": "rvlt_willibald",
+      "schema_name": "rvlt_test_jj",
       "storage_component": "",
       "columns": [
         {
@@ -333,23 +217,23 @@
           "column_type": "VARCHAR(255)"
         },
         {
-          "column_name": "HK_BESTELLUNG",
+          "column_name": "HK_RTJJ_3500_AAA",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
-          "parent_key_column_name": "HK_BESTELLUNG",
-          "parent_table_name": "bestellung_hub"
+          "parent_key_column_name": "HK_RTJJ_3500_AAA",
+          "parent_table_name": "rtjj_3500_aaa_hub"
         },
         {
-          "column_name": "HK_KUNDE",
+          "column_name": "HK_RTJJ_3500_CCC",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
-          "parent_key_column_name": "HK_KUNDE",
-          "parent_table_name": "kunde_hub"
+          "parent_key_column_name": "HK_RTJJ_3500_CCC",
+          "parent_table_name": "rtjj_3500_ccc_hub"
         },
         {
-          "column_name": "LK_BESTELLUNG_LIEFERADRESSE",
+          "column_name": "LK_RTJJ_3500_AAA_CCC",
           "is_nullable": false,
           "column_class": "key",
           "column_type": "CHAR(28)"
@@ -357,9 +241,9 @@
       ]
     },
     {
-      "table_name": "bestellung_lieferadresse_esat",
+      "table_name": "rtjj_3500_aaa_ccc_esat",
       "table_stereotype": "sat",
-      "schema_name": "rvlt_willibald",
+      "schema_name": "rvlt_test_jj",
       "storage_component": "",
       "has_deletion_flag": true,
       "is_effectivity_sat": true,
@@ -367,9 +251,6 @@
       "is_multiactive": false,
       "compare_criteria": "key+current",
       "uses_diff_hash": false,
-      "driving_keys": [
-        "HK_BESTELLUNG"
-      ],
       "columns": [
         {
           "column_name": "MD_INSERTED_AT",
@@ -402,12 +283,51 @@
           "column_type": "TIMESTAMP"
         },
         {
-          "column_name": "LK_BESTELLUNG_LIEFERADRESSE",
+          "column_name": "LK_RTJJ_3500_AAA_CCC",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
-          "parent_key_column_name": "LK_BESTELLUNG_LIEFERADRESSE",
-          "parent_table_name": "bestellung_lieferadresse_lnk"
+          "parent_key_column_name": "LK_RTJJ_3500_AAA_CCC",
+          "parent_table_name": "rtjj_3500_aaa_ccc_lnk"
+        }
+      ]
+    },
+    {
+      "table_name": "rtjj_3500_ccc_hub",
+      "table_stereotype": "hub",
+      "schema_name": "rvlt_test_jj",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_RTJJ_3500_CCC",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "F4_CCC_BK1F",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "VARCHAR(20)",
+          "prio_for_column_position": 50000
         }
       ]
     }
@@ -420,60 +340,48 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st5000_willibald_bestellung",
+          "stage_table_name": "st3500",
           "storage_component": ""
         }
       ],
-      "record_source_name_expression": "willibald.bestellung",
+      "record_source_name_expression": "dvpd implementation test",
       "fields": [
         {
-          "field_type": "integer",
+          "field_type": "Varchar(20)",
           "field_position": 1,
           "needs_encryption": false,
-          "field_name": "BESTELLUNGID"
+          "field_name": "F1XX_AAA_BK1F_TTT"
         },
         {
-          "field_type": "integer",
+          "field_type": "Varchar(20)",
           "field_position": 2,
           "needs_encryption": false,
-          "field_name": "KUNDEID"
+          "field_name": "F2XX_AAA_BK1F"
         },
         {
-          "field_type": "integer",
+          "field_type": "Varchar(20)",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "ALLGLIEFERADRID"
+          "field_name": "F3_BBB_BK1F"
         },
         {
-          "field_type": "DATE",
+          "field_type": "Varchar(20)",
           "field_position": 4,
           "needs_encryption": false,
-          "field_name": "BESTELLDATUM"
-        },
-        {
-          "field_type": "DATE",
-          "field_position": 5,
-          "needs_encryption": false,
-          "field_name": "WUNSCHDATUM"
-        },
-        {
-          "field_type": "DECIMAL(8,3)",
-          "field_position": 6,
-          "needs_encryption": false,
-          "field_name": "RABATT"
+          "field_name": "F4_CCC_BK1F"
         }
       ],
       "hashes": [
         {
-          "stage_column_name": "HK_BESTELLUNG",
-          "hash_origin_table": "bestellung_hub",
+          "stage_column_name": "HK_RTJJ_3500_AAA_TTT",
+          "hash_origin_table": "rtjj_3500_aaa_hub",
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "BESTELLUNGID",
+              "field_name": "F1XX_AAA_BK1F_TTT",
               "prio_in_key_hash": 0,
-              "field_target_table": "bestellung_hub",
-              "field_target_column": "BESTELLUNGID"
+              "field_target_table": "rtjj_3500_aaa_hub",
+              "field_target_column": "F1F2_AAA_BK1F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -483,18 +391,18 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_BESTELLUNG_HUB"
+          "hash_name": "KEY_OF_RTJJ_3500_AAA_HUB__FOR__TTT"
         },
         {
-          "stage_column_name": "HK_KUNDE",
-          "hash_origin_table": "kunde_hub",
+          "stage_column_name": "HK_RTJJ_3500_AAA",
+          "hash_origin_table": "rtjj_3500_aaa_hub",
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "KUNDEID",
+              "field_name": "F2XX_AAA_BK1F",
               "prio_in_key_hash": 0,
-              "field_target_table": "kunde_hub",
-              "field_target_column": "KUNDEID"
+              "field_target_table": "rtjj_3500_aaa_hub",
+              "field_target_column": "F1F2_AAA_BK1F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -504,18 +412,18 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_KUNDE_HUB"
+          "hash_name": "KEY_OF_RTJJ_3500_AAA_HUB"
         },
         {
-          "stage_column_name": "HK_LIEFERADRESSE",
-          "hash_origin_table": "lieferadresse_hub",
+          "stage_column_name": "HK_RTJJ_3500_BBB",
+          "hash_origin_table": "rtjj_3500_bbb_hub",
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "ALLGLIEFERADRID",
+              "field_name": "F3_BBB_BK1F",
               "prio_in_key_hash": 0,
-              "field_target_table": "lieferadresse_hub",
-              "field_target_column": "LIEFERADRID"
+              "field_target_table": "rtjj_3500_bbb_hub",
+              "field_target_column": "F3_BBB_BK1F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -525,25 +433,82 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_LIEFERADRESSE_HUB"
+          "hash_name": "KEY_OF_RTJJ_3500_BBB_HUB"
         },
         {
-          "stage_column_name": "LK_BESTELLUNG_KUNDE",
-          "hash_origin_table": "bestellung_kunde_lnk",
+          "stage_column_name": "HK_RTJJ_3500_CCC",
+          "hash_origin_table": "rtjj_3500_ccc_hub",
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "BESTELLUNGID",
+              "field_name": "F4_CCC_BK1F",
               "prio_in_key_hash": 0,
-              "field_target_table": "bestellung_hub",
-              "field_target_column": "BESTELLUNGID",
+              "field_target_table": "rtjj_3500_ccc_hub",
+              "field_target_column": "F4_CCC_BK1F"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_RTJJ_3500_CCC_HUB"
+        },
+        {
+          "stage_column_name": "LK_RTJJ_3500_AAA_AAA_BBB_TTT",
+          "hash_origin_table": "rtjj_3500_aaa_aaa_bbb_ttt_lnk",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F2XX_AAA_BK1F",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_3500_aaa_hub",
+              "field_target_column": "F1F2_AAA_BK1F",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "KUNDEID",
+              "field_name": "F3_BBB_BK1F",
               "prio_in_key_hash": 0,
-              "field_target_table": "kunde_hub",
-              "field_target_column": "KUNDEID",
+              "field_target_table": "rtjj_3500_bbb_hub",
+              "field_target_column": "F3_BBB_BK1F",
+              "parent_declaration_position": 2
+            },
+            {
+              "field_name": "F1XX_AAA_BK1F_TTT",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_3500_aaa_hub",
+              "field_target_column": "F1F2_AAA_BK1F",
+              "parent_declaration_position": 3
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_RTJJ_3500_AAA_AAA_BBB_TTT_LNK"
+        },
+        {
+          "stage_column_name": "LK_RTJJ_3500_AAA_CCC",
+          "hash_origin_table": "rtjj_3500_aaa_ccc_lnk",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "F2XX_AAA_BK1F",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_3500_aaa_hub",
+              "field_target_column": "F1F2_AAA_BK1F",
+              "parent_declaration_position": 1
+            },
+            {
+              "field_name": "F4_CCC_BK1F",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_3500_ccc_hub",
+              "field_target_column": "F4_CCC_BK1F",
               "parent_declaration_position": 2
             }
           ],
@@ -554,271 +519,190 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_BESTELLUNG_KUNDE_LNK"
-        },
-        {
-          "stage_column_name": "LK_BESTELLUNG_LIEFERADRESSE",
-          "hash_origin_table": "bestellung_lieferadresse_lnk",
-          "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "BESTELLUNGID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "bestellung_hub",
-              "field_target_column": "BESTELLUNGID",
-              "parent_declaration_position": 1
-            },
-            {
-              "field_name": "KUNDEID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "kunde_hub",
-              "field_target_column": "KUNDEID",
-              "parent_declaration_position": 2
-            }
-          ],
-          "column_type": "CHAR(28)",
-          "hash_encoding": "BASE64",
-          "hash_function": "sha-1",
-          "hash_concatenation_seperator": "|",
-          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
-          "hash_null_value_string": "",
-          "model_profile_name": "_default",
-          "hash_name": "KEY_OF_BESTELLUNG_LIEFERADRESSE_LNK"
-        },
-        {
-          "stage_column_name": "DIFF_BESTELLUNG_SAT",
-          "hash_origin_table": "bestellung_sat",
-          "multi_row_content": false,
-          "related_key_hash": "KEY_OF_BESTELLUNG_HUB",
-          "column_class": "diff_hash",
-          "hash_fields": [
-            {
-              "field_name": "BESTELLDATUM",
-              "prio_in_diff_hash": 0,
-              "prio_for_row_order": 50000,
-              "field_target_table": "bestellung_sat",
-              "field_target_column": "BESTELLDATUM"
-            },
-            {
-              "field_name": "WUNSCHDATUM",
-              "prio_in_diff_hash": 0,
-              "prio_for_row_order": 50000,
-              "field_target_table": "bestellung_sat",
-              "field_target_column": "WUNSCHDATUM"
-            },
-            {
-              "field_name": "RABATT",
-              "prio_in_diff_hash": 0,
-              "prio_for_row_order": 50000,
-              "field_target_table": "bestellung_sat",
-              "field_target_column": "RABATT"
-            }
-          ],
-          "column_type": "CHAR(28)",
-          "hash_encoding": "BASE64",
-          "hash_function": "sha-1",
-          "hash_concatenation_seperator": "|",
-          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
-          "hash_null_value_string": "",
-          "model_profile_name": "_default",
-          "hash_name": "DIFF_OF_BESTELLUNG_SAT"
+          "hash_name": "KEY_OF_RTJJ_3500_AAA_CCC_LNK"
         }
       ],
       "load_operations": [
         {
-          "table_name": "bestellung_hub",
+          "table_name": "rtjj_3500_aaa_hub",
+          "relation_name": "TTT",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_RTJJ_3500_AAA",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_3500_AAA_HUB__FOR__TTT",
+              "stage_column_name": "HK_RTJJ_3500_AAA_TTT"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "F1F2_AAA_BK1F",
+              "field_name": "F1XX_AAA_BK1F_TTT",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "F1XX_AAA_BK1F_TTT"
+            }
+          ]
+        },
+        {
+          "table_name": "rtjj_3500_aaa_hub",
           "relation_name": "/",
           "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
-              "column_name": "HK_BESTELLUNG",
-              "hash_name": "KEY_OF_BESTELLUNG_HUB",
+              "column_name": "HK_RTJJ_3500_AAA",
               "is_nullable": false,
-              "stage_column_name": "HK_BESTELLUNG"
+              "hash_name": "KEY_OF_RTJJ_3500_AAA_HUB",
+              "stage_column_name": "HK_RTJJ_3500_AAA"
             }
           ],
           "data_mapping": [
             {
-              "column_name": "BESTELLUNGID",
-              "field_name": "BESTELLUNGID",
+              "column_name": "F1F2_AAA_BK1F",
+              "field_name": "F2XX_AAA_BK1F",
               "column_class": "business_key",
               "is_nullable": true,
-              "stage_column_name": "BESTELLUNGID"
+              "stage_column_name": "F2XX_AAA_BK1F"
             }
           ]
         },
         {
-          "table_name": "bestellung_sat",
+          "table_name": "rtjj_3500_aaa_aaa_bbb_ttt_lnk",
           "relation_name": "/",
-          "operation_origin": "field mapping relation",
-          "hash_mappings": [
-            {
-              "hash_class": "parent_key",
-              "column_name": "HK_BESTELLUNG",
-              "hash_name": "KEY_OF_BESTELLUNG_HUB",
-              "is_nullable": false,
-              "stage_column_name": "HK_BESTELLUNG"
-            },
-            {
-              "hash_class": "diff_hash",
-              "column_name": "DIFF_BESTELLUNG_SAT",
-              "hash_name": "DIFF_OF_BESTELLUNG_SAT",
-              "is_nullable": false,
-              "stage_column_name": "DIFF_BESTELLUNG_SAT"
-            }
-          ],
-          "data_mapping": [
-            {
-              "column_name": "BESTELLDATUM",
-              "field_name": "BESTELLDATUM",
-              "column_class": "content",
-              "is_nullable": true,
-              "stage_column_name": "BESTELLDATUM"
-            },
-            {
-              "column_name": "WUNSCHDATUM",
-              "field_name": "WUNSCHDATUM",
-              "column_class": "content",
-              "is_nullable": true,
-              "stage_column_name": "WUNSCHDATUM"
-            },
-            {
-              "column_name": "RABATT",
-              "field_name": "RABATT",
-              "column_class": "content",
-              "is_nullable": true,
-              "stage_column_name": "RABATT"
-            }
-          ]
-        },
-        {
-          "table_name": "kunde_hub",
-          "relation_name": "/",
-          "operation_origin": "field mapping relation",
-          "hash_mappings": [
-            {
-              "hash_class": "key",
-              "column_name": "HK_KUNDE",
-              "hash_name": "KEY_OF_KUNDE_HUB",
-              "is_nullable": false,
-              "stage_column_name": "HK_KUNDE"
-            }
-          ],
-          "data_mapping": [
-            {
-              "column_name": "KUNDEID",
-              "field_name": "KUNDEID",
-              "column_class": "business_key",
-              "is_nullable": true,
-              "stage_column_name": "KUNDEID"
-            }
-          ]
-        },
-        {
-          "table_name": "bestellung_kunde_lnk",
-          "relation_name": "/",
-          "operation_origin": "implicit unnamed relation, since all parents are universal",
+          "operation_origin": "fixed '/' operation due to explicit parent relation declaration",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
-              "column_name": "HK_BESTELLUNG",
-              "hash_name": "KEY_OF_BESTELLUNG_HUB",
+              "column_name": "HK_RTJJ_3500_AAA",
               "is_nullable": false,
-              "stage_column_name": "HK_BESTELLUNG"
+              "hash_name": "KEY_OF_RTJJ_3500_AAA_HUB",
+              "stage_column_name": "HK_RTJJ_3500_AAA"
             },
             {
               "hash_class": "parent_key_2",
-              "column_name": "HK_KUNDE",
-              "hash_name": "KEY_OF_KUNDE_HUB",
+              "column_name": "HK_RTJJ_3500_BBB",
               "is_nullable": false,
-              "stage_column_name": "HK_KUNDE"
+              "hash_name": "KEY_OF_RTJJ_3500_BBB_HUB",
+              "stage_column_name": "HK_RTJJ_3500_BBB"
+            },
+            {
+              "hash_class": "parent_key_3",
+              "column_name": "HK_RTJJ_3500_AAA_TTT",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_3500_AAA_HUB__FOR__TTT",
+              "stage_column_name": "HK_RTJJ_3500_AAA_TTT"
             },
             {
               "hash_class": "key",
-              "column_name": "LK_BESTELLUNG_KUNDE",
-              "hash_name": "KEY_OF_BESTELLUNG_KUNDE_LNK",
+              "column_name": "LK_RTJJ_3500_AAA_AAA_BBB_TTT",
               "is_nullable": false,
-              "stage_column_name": "LK_BESTELLUNG_KUNDE"
+              "hash_name": "KEY_OF_RTJJ_3500_AAA_AAA_BBB_TTT_LNK",
+              "stage_column_name": "LK_RTJJ_3500_AAA_AAA_BBB_TTT"
             }
           ]
         },
         {
-          "table_name": "bestellung_kunde_esat",
+          "table_name": "rtjj_3500_aaa_aaa_bbb_ttt_esat",
           "relation_name": "/",
           "operation_origin": "following parent operation list",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
-              "column_name": "LK_BESTELLUNG_KUNDE",
-              "hash_name": "KEY_OF_BESTELLUNG_KUNDE_LNK",
+              "column_name": "LK_RTJJ_3500_AAA_AAA_BBB_TTT",
               "is_nullable": false,
-              "stage_column_name": "LK_BESTELLUNG_KUNDE"
+              "hash_name": "KEY_OF_RTJJ_3500_AAA_AAA_BBB_TTT_LNK",
+              "stage_column_name": "LK_RTJJ_3500_AAA_AAA_BBB_TTT"
             }
           ]
         },
         {
-          "table_name": "lieferadresse_hub",
+          "table_name": "rtjj_3500_bbb_hub",
           "relation_name": "/",
           "operation_origin": "field mapping relation",
           "hash_mappings": [
             {
               "hash_class": "key",
-              "column_name": "HK_LIEFERADRESSE",
-              "hash_name": "KEY_OF_LIEFERADRESSE_HUB",
+              "column_name": "HK_RTJJ_3500_BBB",
               "is_nullable": false,
-              "stage_column_name": "HK_LIEFERADRESSE"
+              "hash_name": "KEY_OF_RTJJ_3500_BBB_HUB",
+              "stage_column_name": "HK_RTJJ_3500_BBB"
             }
           ],
           "data_mapping": [
             {
-              "column_name": "LIEFERADRID",
-              "field_name": "ALLGLIEFERADRID",
+              "column_name": "F3_BBB_BK1F",
+              "field_name": "F3_BBB_BK1F",
               "column_class": "business_key",
               "is_nullable": true,
-              "stage_column_name": "ALLGLIEFERADRID"
+              "stage_column_name": "F3_BBB_BK1F"
             }
           ]
         },
         {
-          "table_name": "bestellung_lieferadresse_lnk",
+          "table_name": "rtjj_3500_aaa_ccc_lnk",
           "relation_name": "/",
-          "operation_origin": "implicit unnamed relation, since all parents are universal",
+          "operation_origin": "induced from satellite rtjj_3500_aaa_ccc_esat",
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
-              "column_name": "HK_BESTELLUNG",
-              "hash_name": "KEY_OF_BESTELLUNG_HUB",
+              "column_name": "HK_RTJJ_3500_AAA",
               "is_nullable": false,
-              "stage_column_name": "HK_BESTELLUNG"
+              "hash_name": "KEY_OF_RTJJ_3500_AAA_HUB",
+              "stage_column_name": "HK_RTJJ_3500_AAA"
             },
             {
               "hash_class": "parent_key_2",
-              "column_name": "HK_KUNDE",
-              "hash_name": "KEY_OF_KUNDE_HUB",
+              "column_name": "HK_RTJJ_3500_CCC",
               "is_nullable": false,
-              "stage_column_name": "HK_KUNDE"
+              "hash_name": "KEY_OF_RTJJ_3500_CCC_HUB",
+              "stage_column_name": "HK_RTJJ_3500_CCC"
             },
             {
               "hash_class": "key",
-              "column_name": "LK_BESTELLUNG_LIEFERADRESSE",
-              "hash_name": "KEY_OF_BESTELLUNG_LIEFERADRESSE_LNK",
+              "column_name": "LK_RTJJ_3500_AAA_CCC",
               "is_nullable": false,
-              "stage_column_name": "LK_BESTELLUNG_LIEFERADRESSE"
+              "hash_name": "KEY_OF_RTJJ_3500_AAA_CCC_LNK",
+              "stage_column_name": "LK_RTJJ_3500_AAA_CCC"
             }
           ]
         },
         {
-          "table_name": "bestellung_lieferadresse_esat",
+          "table_name": "rtjj_3500_aaa_ccc_esat",
           "relation_name": "/",
-          "operation_origin": "following parent operation list",
+          "operation_origin": "explicitly tracked relation",
           "hash_mappings": [
             {
               "hash_class": "parent_key",
-              "column_name": "LK_BESTELLUNG_LIEFERADRESSE",
-              "hash_name": "KEY_OF_BESTELLUNG_LIEFERADRESSE_LNK",
+              "column_name": "LK_RTJJ_3500_AAA_CCC",
               "is_nullable": false,
-              "stage_column_name": "LK_BESTELLUNG_LIEFERADRESSE"
+              "hash_name": "KEY_OF_RTJJ_3500_AAA_CCC_LNK",
+              "stage_column_name": "LK_RTJJ_3500_AAA_CCC"
+            }
+          ]
+        },
+        {
+          "table_name": "rtjj_3500_ccc_hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_RTJJ_3500_CCC",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_3500_CCC_HUB",
+              "stage_column_name": "HK_RTJJ_3500_CCC"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "F4_CCC_BK1F",
+              "field_name": "F4_CCC_BK1F",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "F4_CCC_BK1F"
             }
           ]
         }
@@ -849,105 +733,85 @@
           "column_type": "BOOLEAN"
         },
         {
-          "stage_column_name": "HK_BESTELLUNG",
+          "stage_column_name": "HK_RTJJ_3500_AAA_TTT",
           "stage_column_class": "hash",
           "is_nullable": false,
-          "hash_name": "KEY_OF_BESTELLUNG_HUB",
+          "hash_name": "KEY_OF_RTJJ_3500_AAA_HUB__FOR__TTT",
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "HK_KUNDE",
+          "stage_column_name": "HK_RTJJ_3500_AAA",
           "stage_column_class": "hash",
           "is_nullable": false,
-          "hash_name": "KEY_OF_KUNDE_HUB",
+          "hash_name": "KEY_OF_RTJJ_3500_AAA_HUB",
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "HK_LIEFERADRESSE",
+          "stage_column_name": "HK_RTJJ_3500_BBB",
           "stage_column_class": "hash",
           "is_nullable": false,
-          "hash_name": "KEY_OF_LIEFERADRESSE_HUB",
+          "hash_name": "KEY_OF_RTJJ_3500_BBB_HUB",
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "LK_BESTELLUNG_KUNDE",
+          "stage_column_name": "HK_RTJJ_3500_CCC",
           "stage_column_class": "hash",
           "is_nullable": false,
-          "hash_name": "KEY_OF_BESTELLUNG_KUNDE_LNK",
+          "hash_name": "KEY_OF_RTJJ_3500_CCC_HUB",
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "LK_BESTELLUNG_LIEFERADRESSE",
+          "stage_column_name": "LK_RTJJ_3500_AAA_AAA_BBB_TTT",
           "stage_column_class": "hash",
           "is_nullable": false,
-          "hash_name": "KEY_OF_BESTELLUNG_LIEFERADRESSE_LNK",
+          "hash_name": "KEY_OF_RTJJ_3500_AAA_AAA_BBB_TTT_LNK",
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "DIFF_BESTELLUNG_SAT",
+          "stage_column_name": "LK_RTJJ_3500_AAA_CCC",
           "stage_column_class": "hash",
           "is_nullable": false,
-          "hash_name": "DIFF_OF_BESTELLUNG_SAT",
+          "hash_name": "KEY_OF_RTJJ_3500_AAA_CCC_LNK",
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "BESTELLUNGID",
+          "stage_column_name": "F1XX_AAA_BK1F_TTT",
           "stage_column_class": "data",
-          "field_name": "BESTELLUNGID",
+          "field_name": "F1XX_AAA_BK1F_TTT",
           "is_nullable": true,
-          "column_type": "integer",
+          "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
           ]
         },
         {
-          "stage_column_name": "KUNDEID",
+          "stage_column_name": "F2XX_AAA_BK1F",
           "stage_column_class": "data",
-          "field_name": "KUNDEID",
+          "field_name": "F2XX_AAA_BK1F",
           "is_nullable": true,
-          "column_type": "integer",
+          "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
           ]
         },
         {
-          "stage_column_name": "ALLGLIEFERADRID",
+          "stage_column_name": "F3_BBB_BK1F",
           "stage_column_class": "data",
-          "field_name": "ALLGLIEFERADRID",
+          "field_name": "F3_BBB_BK1F",
           "is_nullable": true,
-          "column_type": "integer",
+          "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
           ]
         },
         {
-          "stage_column_name": "BESTELLDATUM",
+          "stage_column_name": "F4_CCC_BK1F",
           "stage_column_class": "data",
-          "field_name": "BESTELLDATUM",
+          "field_name": "F4_CCC_BK1F",
           "is_nullable": true,
-          "column_type": "DATE",
+          "column_type": "Varchar(20)",
           "column_classes": [
-            "content"
-          ]
-        },
-        {
-          "stage_column_name": "WUNSCHDATUM",
-          "stage_column_class": "data",
-          "field_name": "WUNSCHDATUM",
-          "is_nullable": true,
-          "column_type": "DATE",
-          "column_classes": [
-            "content"
-          ]
-        },
-        {
-          "stage_column_name": "RABATT",
-          "stage_column_class": "data",
-          "field_name": "RABATT",
-          "is_nullable": true,
-          "column_type": "DECIMAL(8,3)",
-          "column_classes": [
-            "content"
+            "business_key"
           ]
         }
       ]

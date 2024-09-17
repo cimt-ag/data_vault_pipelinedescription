@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.1
+Compile time: 2024-07-27 14:24:28
+Compiling t1106_hub_only.dvpd.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t1106_hub_only.dvpi.json
+--- Compile successfull ---

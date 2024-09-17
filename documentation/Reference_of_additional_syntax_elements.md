@@ -25,9 +25,10 @@ json path: /
 <br>Contains the number of distinct values, that have been found in this field during analysis. This number might be determined
 from a representative sample of the source data set. 
 
-**fill_rate** (optional)
+**duplicates**
+(optional)
 *purpose: analysis documentation, test set generation*
-<br>Percentage of rows, having a non NULL value in the field.This number might be determined
+<br>Contains the number of duplicate value entries.  This number might be determined
 from a representative sample of the source data set. 
 
 **is_primary_key** (optional)
@@ -38,7 +39,13 @@ from a representative sample of the source data set.
 **is_foreign_key**
 *purpose: analysis documentation, test set generation*
 <br>Default: false. 
-<br>Set to true, when the source object attributes this field as part of a primary key of another object
+<br>Set to true, when the source object attributes this field as part of a foreign key declaration
+
+**null_values** (optional)
+*purpose: analysis documentation, test set generation*
+<br>Number of rows, having a  NULL value in the field.This number might be determined
+from a representative sample of the source data set. 
+
 
 # License and Credits
 

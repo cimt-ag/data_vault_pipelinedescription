@@ -1,0 +1,60 @@
+{
+	"dvpd_version": "0.6.2",
+	"pipeline_name": "t5006_willibald_shop_produkt_p1",
+	"stage_properties": [{"stage_schema": "stage_rvlt"}],
+	"purpose": "Load from willibald_shop_p1.produkt into raw vault",
+	"record_source_name_expression": "willibald_shop_p1.produkt",
+	"analysis_full_row_count":126,
+	"analysis_sample_row_count":126,
+	"data_extraction": {
+		"fetch_module_name": "none - this is a pure ddl and documentation dvpd"
+	},
+"fields":[
+	 {"field_name":"produktid",	"field_type":"integer ","is_primary_key":"True","is_foreign_key":"False","cardinality":"126","duplicates":"0","null_values":"0",	"targets":[{"table_name":"produkt_hub"}]}
+
+	,{"field_name":"katid",	"field_type":"VARCHAR(50) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"54","duplicates":"72","null_values":"0",	"targets":[{"table_name":"kategorie_hub"}]}
+
+	,{"field_name":"bezeichnung",	"field_type":"VARCHAR(512) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"126","duplicates":"0","null_values":"0",	"targets":[{"table_name":"produkt_produkt_p1_sat"}]}
+	,{"field_name":"pflanzabstand",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"47","duplicates":"79","null_values":"0",	"targets":[{"table_name":"produkt_produkt_p1_sat"}]}
+	,{"field_name":"pflanzort",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"6","duplicates":"120","null_values":"0",	"targets":[{"table_name":"produkt_produkt_p1_sat"}]}
+	,{"field_name":"typ",	"field_type":"integer ","is_primary_key":"False","is_foreign_key":"False","cardinality":"3","duplicates":"123","null_values":"0",	"targets":[{"table_name":"produkt_produkt_p1_sat"}]}
+	,{"field_name":"umfang",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"31","duplicates":"95","null_values":"0",	"targets":[{"table_name":"produkt_produkt_p1_sat"}]}
+
+	,{"field_name":"preis",	"field_type":"NUMERIC(5,2) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"20","duplicates":"106","null_values":"0",	"targets":[{"table_name":"produkt_produkt_p2_sat"}]}
+
+	],
+	"data_vault_model": [
+		{"schema_name": "rvlt_willibald_shop"
+		, "tables": [
+				{"table_name": "produkt_hub"
+						,"table_stereotype": "hub"
+						,"hub_key_column_name": "hk_produkt"
+				}
+				,{"table_name": "produkt_produkt_p1_sat"
+						,"table_stereotype": "sat"
+						,"satellite_parent_table": "produkt_hub"
+						,"diff_hash_column_name": "diff_produkt_produkt_p1_sat"
+				}
+				,{"table_name": "produkt_produkt_p2_sat"
+						,"table_stereotype": "sat"
+						,"satellite_parent_table": "produkt_hub"
+						,"diff_hash_column_name": "diff_produkt_produkt_p2_sat"
+				}
+				,{"table_name": "kategorie_hub"
+						,"table_stereotype": "hub"
+						,"hub_key_column_name": "hk_kategorie"
+				}
+				,{"table_name": "produkt_kategorie_lnk"
+						,"table_stereotype": "lnk"
+						,"link_key_column_name": "lk_produkt_kategorie"
+						,"link_parent_tables": ["produkt_hub"
+											   ,"kategorie_hub"]
+				}
+				,{"table_name": "produkt_kategorie_esat"
+						,"table_stereotype": "sat"
+						,"satellite_parent_table": "produkt_kategorie_lnk"
+				}
+			]
+		}
+	]
+}
