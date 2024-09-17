@@ -1353,8 +1353,8 @@ def assemble_dvpi(dvpd_object, dvpd_filename):
     global g_dvpi_document
 
     # add meta declaration and dpvd meta data
-    g_dvpi_document={'dvdp_compiler':'dvpdc reference compiler,  release 0.6.1',
-                     'dvpi_version': '0.6.1',
+    g_dvpi_document={'dvdp_compiler':'dvpdc reference compiler,  release 0.6.2',
+                     'dvpi_version': '0.6.2',
                      'compile_timestamp':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'dvpd_version':dvpd_object['dvpd_version'],
                      'pipeline_name':dvpd_object['pipeline_name'],
@@ -1735,7 +1735,7 @@ def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_fi
     with open(dvpdc_log_file_path,"w") as g_logfile:
         g_logfile.write(f"Data vault pipeline description compiler log \n")
         print("---")
-        log_progress(f"Compiler Version 0.6.1")
+        log_progress(f"Compiler Version 0.6.2")
         g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         log_progress(f"Compiling {dvpd_filename}\n")
         try:

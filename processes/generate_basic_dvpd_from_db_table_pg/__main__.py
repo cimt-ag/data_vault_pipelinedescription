@@ -193,11 +193,23 @@ def main(schema_name, table_name, ini_file, db_connection, target_schema_tag=Non
 
 
     params = configuration_load_ini(ini_file, 'generator',['dvpd_generator_directory'])
+
+    # create all the source dependent names of the model
     pipeline_name = schema_name+"_"+table_name+"_px"
     if target_schema_tag is None:
-        main_sattelite_name="aaaaaa_"+table_name+"_px_sat"
+        main_sattelite_name=table_name+"_"+table_name+"_px_sat"
+        main_hub_name=table_name+"_hub"
+        link_name = table_name+"_"+"bbbbbb_lnk"
+        esat_name = table_name+"_"+"bbbbbb_esat"
     else:
         main_sattelite_name=target_schema_tag + "_aaaaaa__"+table_name+"_px_sat"
+        main_hub_name=target_schema_tag + "_"+table_name+"_hub"
+        link_name = table_name + "_" + "bbbbbb_lnk"
+        esat_name = table_name + "_" + "bbbbbb_esat"
+
+    main_hk_name="hk_"+main_hub_name[:-4]
+    lk_name="lk_"+link_name[:-4]
+
 
 
     row_count=get_row_count( db_connection, schema_name, table_name)
@@ -261,37 +273,42 @@ def main(schema_name, table_name, ini_file, db_connection, target_schema_tag=Non
             field_element +=f'"field_name":"{table_column["field_name"]}",\t"field_type":"{table_column["field_type"]} "'
             for analytic_tag in ['is_primary_key','is_foreign_key','cardinality','duplicates','null_values']:
                 field_element+=f',"{analytic_tag}":"{table_column[analytic_tag]}"'
-            field_element+=',\t"targets":[{"table_name":"'+main_sattelite_name+'"}]}'
+            if field_order_group[0]=='0':  #  a primary key element
+                field_element += ',\t"targets":[{"table_name":"' + main_hub_name + '"}]}'
+            elif field_order_group[0:2]=='10':  # a foreign  key element will be assigned to second hub
+                field_element += ',\t"targets":[{"table_name":"bbbbbb_hub"}]}'
+            else:
+                field_element+=',\t"targets":[{"table_name":"'+main_sattelite_name+'"}]}'
             field_elements.append(field_element)
 
     dvpd.append("\n".join(field_elements))
     dvpd.append('\t],') # end of fields array
 
     dvpd.append('	"data_vault_model": [')
-    dvpd.append('		{"schema_name": "rvtl_xxxxxx"')
+    dvpd.append('		{"schema_name": "rvlt_xxxxxx"')
     dvpd.append('		, "tables": [')
-    dvpd.append('				{"table_name": "aaaaaa_hub"')
+    dvpd.append('				{"table_name": "'+main_hub_name+'"')
     dvpd.append('						,"table_stereotype": "hub"')
-    dvpd.append('						,"hub_key_column_name": "hk_aaaaaa"')
+    dvpd.append('						,"hub_key_column_name": "'+main_hk_name+'"')
     dvpd.append('				}')
     dvpd.append('				,{"table_name": "'+main_sattelite_name+'"')
     dvpd.append('						,"table_stereotype": "sat"')
-    dvpd.append('						,"satellite_parent_table": "aaaaaa_hub"')
+    dvpd.append('						,"satellite_parent_table": "'+main_hub_name+'"')
     dvpd.append(f'						,"diff_hash_column_name": "rh_'+main_sattelite_name+'"')
     dvpd.append('				}')
     dvpd.append('				,{"table_name": "bbbbbb_hub"')
     dvpd.append('						,"table_stereotype": "hub"')
     dvpd.append('						,"hub_key_column_name": "hk_bbbbbb"')
     dvpd.append('				}')
-    dvpd.append('				,{"table_name": "aaaaaa_bbbbbb_lnk"')
+    dvpd.append('				,{"table_name": "'+link_name+'"')
     dvpd.append('						,"table_stereotype": "lnk"')
-    dvpd.append('						,"link_key_column_name": "lk_aaaaa_bbbbb"')
-    dvpd.append('						,"link_parent_tables": ["aaaaaa_hub"')
+    dvpd.append('						,"link_key_column_name": "'+lk_name+'"')
+    dvpd.append('						,"link_parent_tables": ["'+main_hub_name+'"')
     dvpd.append('											   ,"bbbbbb_hub"]')
     dvpd.append('				}')
-    dvpd.append('				,{"table_name": "aaaaaa_bbbbbb_esat"')
+    dvpd.append('				,{"table_name": "'+esat_name+'"')
     dvpd.append('						,"table_stereotype": "sat"')
-    dvpd.append('						,"satellite_parent_table": "aaaaaa_bbbbbb_lnk"')
+    dvpd.append('						,"satellite_parent_table": "'+link_name+'"')
     dvpd.append('				}')
     dvpd.append('			]')
     dvpd.append('		}')

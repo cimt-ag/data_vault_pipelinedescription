@@ -1,0 +1,1129 @@
+{
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-09-17 13:31:23",
+  "dvpd_version": "0.6.2",
+  "pipeline_name": "t5050_willibald_roadshow_RS_Bestellung_p1",
+  "dvpd_filename": "t5050_willibald_roadshow_RS_Bestellung_p1.dvpd.json",
+  "tables": [
+    {
+      "table_name": "rs_bestellung_hub",
+      "table_stereotype": "hub",
+      "schema_name": "rvlt_willibald_roadshow",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_RS_BESTELLUNG",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "BESTELLUNGID",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "VARCHAR(128) ",
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "rs_bestellung_rs_bestellung_p1_sat",
+      "table_stereotype": "sat",
+      "schema_name": "rvlt_willibald_roadshow",
+      "storage_component": "",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": false,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "compare_criteria": "key+current",
+      "uses_diff_hash": true,
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "column_name": "MD_VALID_BEFORE",
+          "is_nullable": false,
+          "column_class": "meta_load_enddate",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "HK_RS_BESTELLUNG",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_RS_BESTELLUNG",
+          "parent_table_name": "rs_bestellung_hub"
+        },
+        {
+          "column_name": "RH_RS_BESTELLUNG_RS_BESTELLUNG_P1_SAT",
+          "is_nullable": false,
+          "column_class": "diff_hash",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "GUELTIGBIS",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "CHAR(5) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "KAUFDATUM",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "DATE ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "KKFIRMA",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(128) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "KREDITKARTE",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(30) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "MENGE",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "INTEGER ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "PREIS",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "NUMERIC(10,2) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "RABATT",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "NUMERIC(5,2) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "rs_bestellung_kunde_vereinspartner_produkt_lnk",
+      "table_stereotype": "lnk",
+      "schema_name": "rvlt_willibald_roadshow",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_RS_BESTELLUNG",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_RS_BESTELLUNG",
+          "parent_table_name": "rs_bestellung_hub"
+        },
+        {
+          "column_name": "HK_KUNDE",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_KUNDE",
+          "parent_table_name": "kunde_hub"
+        },
+        {
+          "column_name": "HK_VEREINSPARTNER",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_VEREINSPARTNER",
+          "parent_table_name": "vereinspartner_hub"
+        },
+        {
+          "column_name": "HK_PRODUKT",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_PRODUKT",
+          "parent_table_name": "produkt_hub"
+        },
+        {
+          "column_name": "LK_RS_BESTELLUNG_KUNDE_VEREINSPARTNER",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        }
+      ]
+    },
+    {
+      "table_name": "rs_bestellung_kunde_vereinspartner_produkt_esat",
+      "table_stereotype": "sat",
+      "schema_name": "rvlt_willibald_roadshow",
+      "storage_component": "",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": true,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "compare_criteria": "key+current",
+      "uses_diff_hash": false,
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "column_name": "MD_VALID_BEFORE",
+          "is_nullable": false,
+          "column_class": "meta_load_enddate",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "LK_RS_BESTELLUNG_KUNDE_VEREINSPARTNER",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "LK_RS_BESTELLUNG_KUNDE_VEREINSPARTNER",
+          "parent_table_name": "rs_bestellung_kunde_vereinspartner_produkt_lnk"
+        }
+      ]
+    },
+    {
+      "table_name": "kunde_hub",
+      "table_stereotype": "hub",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_KUNDE",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "KUNDEID",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "CHAR(13) ",
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "produkt_hub",
+      "table_stereotype": "hub",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_PRODUKT",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "PRODUKTID",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "INTEGER ",
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "vereinspartner_hub",
+      "table_stereotype": "hub",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_VEREINSPARTNER",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "VEREINSPARTNERID",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "VARCHAR(30) ",
+          "prio_for_column_position": 50000
+        }
+      ]
+    }
+  ],
+  "data_extraction": {
+    "fetch_module_name": "none - this is a pure ddl and documentation dvpd"
+  },
+  "parse_sets": [
+    {
+      "stage_properties": [
+        {
+          "stage_schema": "stage_rvlt",
+          "stage_table_name": "st5050_willibald_roadshow_RS_Bestellung_p1",
+          "storage_component": ""
+        }
+      ],
+      "record_source_name_expression": "willibald_roadshow_tag1.RS_Bestellung",
+      "fields": [
+        {
+          "field_type": "VARCHAR(128) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "900",
+          "duplicates": "359",
+          "null_values": "0",
+          "field_position": 1,
+          "needs_encryption": false,
+          "field_name": "BESTELLUNGID"
+        },
+        {
+          "field_type": "VARCHAR(30) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "1",
+          "duplicates": "1258",
+          "null_values": "0",
+          "field_position": 2,
+          "needs_encryption": false,
+          "field_name": "VEREINSPARTNERID"
+        },
+        {
+          "field_type": "CHAR(13) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "183",
+          "duplicates": "1076",
+          "null_values": "912",
+          "field_position": 3,
+          "needs_encryption": false,
+          "field_name": "KUNDEID"
+        },
+        {
+          "field_type": "integer ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "125",
+          "duplicates": "1134",
+          "null_values": "0",
+          "field_position": 4,
+          "needs_encryption": false,
+          "field_name": "PRODUKTID"
+        },
+        {
+          "field_type": "CHAR(5) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "145",
+          "duplicates": "1114",
+          "null_values": "626",
+          "field_position": 5,
+          "needs_encryption": false,
+          "field_name": "GUELTIGBIS"
+        },
+        {
+          "field_type": "date ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "1",
+          "duplicates": "1258",
+          "null_values": "0",
+          "field_position": 6,
+          "needs_encryption": false,
+          "field_name": "KAUFDATUM"
+        },
+        {
+          "field_type": "VARCHAR(128) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "3",
+          "duplicates": "1256",
+          "null_values": "626",
+          "field_position": 7,
+          "needs_encryption": false,
+          "field_name": "KKFIRMA"
+        },
+        {
+          "field_type": "VARCHAR(30) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "270",
+          "duplicates": "989",
+          "null_values": "626",
+          "field_position": 8,
+          "needs_encryption": false,
+          "field_name": "KREDITKARTE"
+        },
+        {
+          "field_type": "integer ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "49",
+          "duplicates": "1210",
+          "null_values": "0",
+          "field_position": 9,
+          "needs_encryption": false,
+          "field_name": "MENGE"
+        },
+        {
+          "field_type": "NUMERIC(10,2) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "37",
+          "duplicates": "1222",
+          "null_values": "0",
+          "field_position": 10,
+          "needs_encryption": false,
+          "field_name": "PREIS"
+        },
+        {
+          "field_type": "NUMERIC(5,2) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "124",
+          "duplicates": "1135",
+          "null_values": "0",
+          "field_position": 11,
+          "needs_encryption": false,
+          "field_name": "RABATT"
+        }
+      ],
+      "hashes": [
+        {
+          "stage_column_name": "HK_RS_BESTELLUNG",
+          "hash_origin_table": "rs_bestellung_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "BESTELLUNGID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rs_bestellung_hub",
+              "field_target_column": "BESTELLUNGID"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_RS_BESTELLUNG_HUB"
+        },
+        {
+          "stage_column_name": "HK_KUNDE",
+          "hash_origin_table": "kunde_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "KUNDEID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "kunde_hub",
+              "field_target_column": "KUNDEID"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_KUNDE_HUB"
+        },
+        {
+          "stage_column_name": "HK_PRODUKT",
+          "hash_origin_table": "produkt_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "PRODUKTID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "produkt_hub",
+              "field_target_column": "PRODUKTID"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_PRODUKT_HUB"
+        },
+        {
+          "stage_column_name": "HK_VEREINSPARTNER",
+          "hash_origin_table": "vereinspartner_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "VEREINSPARTNERID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "vereinspartner_hub",
+              "field_target_column": "VEREINSPARTNERID"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_VEREINSPARTNER_HUB"
+        },
+        {
+          "stage_column_name": "LK_RS_BESTELLUNG_KUNDE_VEREINSPARTNER",
+          "hash_origin_table": "rs_bestellung_kunde_vereinspartner_produkt_lnk",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "BESTELLUNGID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rs_bestellung_hub",
+              "field_target_column": "BESTELLUNGID",
+              "parent_declaration_position": 1
+            },
+            {
+              "field_name": "KUNDEID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "kunde_hub",
+              "field_target_column": "KUNDEID",
+              "parent_declaration_position": 2
+            },
+            {
+              "field_name": "VEREINSPARTNERID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "vereinspartner_hub",
+              "field_target_column": "VEREINSPARTNERID",
+              "parent_declaration_position": 3
+            },
+            {
+              "field_name": "PRODUKTID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "produkt_hub",
+              "field_target_column": "PRODUKTID",
+              "parent_declaration_position": 4
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_RS_BESTELLUNG_KUNDE_VEREINSPARTNER_PRODUKT_LNK"
+        },
+        {
+          "stage_column_name": "RH_RS_BESTELLUNG_RS_BESTELLUNG_P1_SAT",
+          "hash_origin_table": "rs_bestellung_rs_bestellung_p1_sat",
+          "multi_row_content": false,
+          "column_class": "diff_hash",
+          "hash_fields": [
+            {
+              "field_name": "GUELTIGBIS",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
+              "field_target_column": "GUELTIGBIS"
+            },
+            {
+              "field_name": "KAUFDATUM",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
+              "field_target_column": "KAUFDATUM"
+            },
+            {
+              "field_name": "KKFIRMA",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
+              "field_target_column": "KKFIRMA"
+            },
+            {
+              "field_name": "KREDITKARTE",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
+              "field_target_column": "KREDITKARTE"
+            },
+            {
+              "field_name": "MENGE",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
+              "field_target_column": "MENGE"
+            },
+            {
+              "field_name": "PREIS",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
+              "field_target_column": "PREIS"
+            },
+            {
+              "field_name": "RABATT",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
+              "field_target_column": "RABATT"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "related_key_hash": "KEY_OF_RS_BESTELLUNG_HUB",
+          "hash_name": "DIFF_OF_RS_BESTELLUNG_RS_BESTELLUNG_P1_SAT"
+        }
+      ],
+      "load_operations": [
+        {
+          "table_name": "rs_bestellung_hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_RS_BESTELLUNG",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_RS_BESTELLUNG_HUB",
+              "stage_column_name": "HK_RS_BESTELLUNG"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "BESTELLUNGID",
+              "field_name": "BESTELLUNGID",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "BESTELLUNGID"
+            }
+          ]
+        },
+        {
+          "table_name": "rs_bestellung_rs_bestellung_p1_sat",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key",
+              "column_name": "HK_RS_BESTELLUNG",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_RS_BESTELLUNG_HUB",
+              "stage_column_name": "HK_RS_BESTELLUNG"
+            },
+            {
+              "hash_class": "diff_hash",
+              "column_name": "RH_RS_BESTELLUNG_RS_BESTELLUNG_P1_SAT",
+              "is_nullable": false,
+              "hash_name": "DIFF_OF_RS_BESTELLUNG_RS_BESTELLUNG_P1_SAT",
+              "stage_column_name": "RH_RS_BESTELLUNG_RS_BESTELLUNG_P1_SAT"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "GUELTIGBIS",
+              "field_name": "GUELTIGBIS",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "GUELTIGBIS"
+            },
+            {
+              "column_name": "KAUFDATUM",
+              "field_name": "KAUFDATUM",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "KAUFDATUM"
+            },
+            {
+              "column_name": "KKFIRMA",
+              "field_name": "KKFIRMA",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "KKFIRMA"
+            },
+            {
+              "column_name": "KREDITKARTE",
+              "field_name": "KREDITKARTE",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "KREDITKARTE"
+            },
+            {
+              "column_name": "MENGE",
+              "field_name": "MENGE",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "MENGE"
+            },
+            {
+              "column_name": "PREIS",
+              "field_name": "PREIS",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "PREIS"
+            },
+            {
+              "column_name": "RABATT",
+              "field_name": "RABATT",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "RABATT"
+            }
+          ]
+        },
+        {
+          "table_name": "rs_bestellung_kunde_vereinspartner_produkt_lnk",
+          "relation_name": "/",
+          "operation_origin": "implicit unnamed relation, since all parents are universal",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key_1",
+              "column_name": "HK_RS_BESTELLUNG",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_RS_BESTELLUNG_HUB",
+              "stage_column_name": "HK_RS_BESTELLUNG"
+            },
+            {
+              "hash_class": "parent_key_2",
+              "column_name": "HK_KUNDE",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_KUNDE_HUB",
+              "stage_column_name": "HK_KUNDE"
+            },
+            {
+              "hash_class": "parent_key_3",
+              "column_name": "HK_VEREINSPARTNER",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_VEREINSPARTNER_HUB",
+              "stage_column_name": "HK_VEREINSPARTNER"
+            },
+            {
+              "hash_class": "parent_key_4",
+              "column_name": "HK_PRODUKT",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_PRODUKT_HUB",
+              "stage_column_name": "HK_PRODUKT"
+            },
+            {
+              "hash_class": "key",
+              "column_name": "LK_RS_BESTELLUNG_KUNDE_VEREINSPARTNER",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_RS_BESTELLUNG_KUNDE_VEREINSPARTNER_PRODUKT_LNK",
+              "stage_column_name": "LK_RS_BESTELLUNG_KUNDE_VEREINSPARTNER"
+            }
+          ]
+        },
+        {
+          "table_name": "rs_bestellung_kunde_vereinspartner_produkt_esat",
+          "relation_name": "/",
+          "operation_origin": "following parent operation list",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key",
+              "column_name": "LK_RS_BESTELLUNG_KUNDE_VEREINSPARTNER",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_RS_BESTELLUNG_KUNDE_VEREINSPARTNER_PRODUKT_LNK",
+              "stage_column_name": "LK_RS_BESTELLUNG_KUNDE_VEREINSPARTNER"
+            }
+          ]
+        },
+        {
+          "table_name": "kunde_hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_KUNDE",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_KUNDE_HUB",
+              "stage_column_name": "HK_KUNDE"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "KUNDEID",
+              "field_name": "KUNDEID",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "KUNDEID"
+            }
+          ]
+        },
+        {
+          "table_name": "produkt_hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_PRODUKT",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_PRODUKT_HUB",
+              "stage_column_name": "HK_PRODUKT"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "PRODUKTID",
+              "field_name": "PRODUKTID",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "PRODUKTID"
+            }
+          ]
+        },
+        {
+          "table_name": "vereinspartner_hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_VEREINSPARTNER",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_VEREINSPARTNER_HUB",
+              "stage_column_name": "HK_VEREINSPARTNER"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "VEREINSPARTNERID",
+              "field_name": "VEREINSPARTNERID",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "VEREINSPARTNERID"
+            }
+          ]
+        }
+      ],
+      "stage_columns": [
+        {
+          "stage_column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "stage_column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "stage_column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "stage_column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "stage_column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "stage_column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "stage_column_name": "HK_RS_BESTELLUNG",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_RS_BESTELLUNG_HUB",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "HK_KUNDE",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_KUNDE_HUB",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "HK_PRODUKT",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_PRODUKT_HUB",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "HK_VEREINSPARTNER",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_VEREINSPARTNER_HUB",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "LK_RS_BESTELLUNG_KUNDE_VEREINSPARTNER",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_RS_BESTELLUNG_KUNDE_VEREINSPARTNER_PRODUKT_LNK",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "RH_RS_BESTELLUNG_RS_BESTELLUNG_P1_SAT",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "DIFF_OF_RS_BESTELLUNG_RS_BESTELLUNG_P1_SAT",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "BESTELLUNGID",
+          "stage_column_class": "data",
+          "field_name": "BESTELLUNGID",
+          "is_nullable": true,
+          "column_type": "VARCHAR(128) ",
+          "column_classes": [
+            "business_key"
+          ]
+        },
+        {
+          "stage_column_name": "VEREINSPARTNERID",
+          "stage_column_class": "data",
+          "field_name": "VEREINSPARTNERID",
+          "is_nullable": true,
+          "column_type": "VARCHAR(30) ",
+          "column_classes": [
+            "business_key"
+          ]
+        },
+        {
+          "stage_column_name": "KUNDEID",
+          "stage_column_class": "data",
+          "field_name": "KUNDEID",
+          "is_nullable": true,
+          "column_type": "CHAR(13) ",
+          "column_classes": [
+            "business_key"
+          ]
+        },
+        {
+          "stage_column_name": "PRODUKTID",
+          "stage_column_class": "data",
+          "field_name": "PRODUKTID",
+          "is_nullable": true,
+          "column_type": "integer ",
+          "column_classes": [
+            "business_key"
+          ]
+        },
+        {
+          "stage_column_name": "GUELTIGBIS",
+          "stage_column_class": "data",
+          "field_name": "GUELTIGBIS",
+          "is_nullable": true,
+          "column_type": "CHAR(5) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "KAUFDATUM",
+          "stage_column_class": "data",
+          "field_name": "KAUFDATUM",
+          "is_nullable": true,
+          "column_type": "date ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "KKFIRMA",
+          "stage_column_class": "data",
+          "field_name": "KKFIRMA",
+          "is_nullable": true,
+          "column_type": "VARCHAR(128) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "KREDITKARTE",
+          "stage_column_class": "data",
+          "field_name": "KREDITKARTE",
+          "is_nullable": true,
+          "column_type": "VARCHAR(30) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "MENGE",
+          "stage_column_class": "data",
+          "field_name": "MENGE",
+          "is_nullable": true,
+          "column_type": "integer ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "PREIS",
+          "stage_column_class": "data",
+          "field_name": "PREIS",
+          "is_nullable": true,
+          "column_type": "NUMERIC(10,2) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "RABATT",
+          "stage_column_class": "data",
+          "field_name": "RABATT",
+          "is_nullable": true,
+          "column_type": "NUMERIC(5,2) ",
+          "column_classes": [
+            "content"
+          ]
+        }
+      ]
+    }
+  ]
+}

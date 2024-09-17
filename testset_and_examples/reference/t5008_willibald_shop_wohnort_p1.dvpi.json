@@ -1,0 +1,617 @@
+{
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-09-17 12:20:38",
+  "dvpd_version": "0.6.2",
+  "pipeline_name": "t5008_willibald_shop_wohnort_p1",
+  "dvpd_filename": "t5008_willibald_shop_wohnort_p1.dvpd.json",
+  "tables": [
+    {
+      "table_name": "kunde_hub",
+      "table_stereotype": "hub",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_WOHNORT",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "KUNDEID",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "CHAR(13) ",
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "kunde_wohnort_p1_msat",
+      "table_stereotype": "sat",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": false,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "compare_criteria": "key+current",
+      "uses_diff_hash": true,
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "column_name": "MD_VALID_BEFORE",
+          "is_nullable": false,
+          "column_class": "meta_load_enddate",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "HK_WOHNORT",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_WOHNORT",
+          "parent_table_name": "kunde_hub"
+        },
+        {
+          "column_name": "DIFF_KUNDE_WOHNORT_P1_SAT",
+          "is_nullable": false,
+          "column_class": "diff_hash",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "VON",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "DATE ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "BIS",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "DATE ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "HAUSNUMMER",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(10) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "ORT",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(128) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "PLZ",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(10) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "STRASSE",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(128) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "ADRESSZUSATZ",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(128) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "LAND",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(128) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        }
+      ]
+    }
+  ],
+  "data_extraction": {
+    "fetch_module_name": "none - this is a pure ddl and documentation dvpd"
+  },
+  "parse_sets": [
+    {
+      "stage_properties": [
+        {
+          "stage_schema": "stage_rvlt",
+          "stage_table_name": "st5008_willibald_shop_wohnort_p1",
+          "storage_component": ""
+        }
+      ],
+      "record_source_name_expression": "willibald_shop_p1.wohnort",
+      "fields": [
+        {
+          "field_type": "CHAR(13) ",
+          "is_primary_key": "True",
+          "is_foreign_key": "False",
+          "cardinality": "300",
+          "duplicates": "400",
+          "null_values": "0",
+          "field_position": 1,
+          "needs_encryption": false,
+          "field_name": "KUNDEID"
+        },
+        {
+          "field_type": "date ",
+          "is_primary_key": "True",
+          "is_foreign_key": "False",
+          "cardinality": "681",
+          "duplicates": "19",
+          "null_values": "0",
+          "field_position": 2,
+          "needs_encryption": false,
+          "field_name": "VON"
+        },
+        {
+          "field_type": "date ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "393",
+          "duplicates": "307",
+          "null_values": "300",
+          "field_position": 3,
+          "needs_encryption": false,
+          "field_name": "BIS"
+        },
+        {
+          "field_type": "VARCHAR(10) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "224",
+          "duplicates": "476",
+          "null_values": "0",
+          "field_position": 4,
+          "needs_encryption": false,
+          "field_name": "HAUSNUMMER"
+        },
+        {
+          "field_type": "VARCHAR(128) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "630",
+          "duplicates": "70",
+          "null_values": "0",
+          "field_position": 5,
+          "needs_encryption": false,
+          "field_name": "ORT"
+        },
+        {
+          "field_type": "VARCHAR(10) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "604",
+          "duplicates": "96",
+          "null_values": "0",
+          "field_position": 6,
+          "needs_encryption": false,
+          "field_name": "PLZ"
+        },
+        {
+          "field_type": "VARCHAR(128) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "664",
+          "duplicates": "36",
+          "null_values": "0",
+          "field_position": 7,
+          "needs_encryption": false,
+          "field_name": "STRASSE"
+        },
+        {
+          "field_type": "VARCHAR(128) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "0",
+          "duplicates": "700",
+          "null_values": "700",
+          "field_position": 8,
+          "needs_encryption": false,
+          "field_name": "ADRESSZUSATZ"
+        },
+        {
+          "field_type": "VARCHAR(128) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "0",
+          "duplicates": "700",
+          "null_values": "700",
+          "field_position": 9,
+          "needs_encryption": false,
+          "field_name": "LAND"
+        }
+      ],
+      "hashes": [
+        {
+          "stage_column_name": "HK_WOHNORT",
+          "hash_origin_table": "kunde_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "KUNDEID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "kunde_hub",
+              "field_target_column": "KUNDEID"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_KUNDE_HUB"
+        },
+        {
+          "stage_column_name": "DIFF_KUNDE_WOHNORT_P1_SAT",
+          "hash_origin_table": "kunde_wohnort_p1_msat",
+          "multi_row_content": false,
+          "column_class": "diff_hash",
+          "hash_fields": [
+            {
+              "field_name": "VON",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "kunde_wohnort_p1_msat",
+              "field_target_column": "VON"
+            },
+            {
+              "field_name": "BIS",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "kunde_wohnort_p1_msat",
+              "field_target_column": "BIS"
+            },
+            {
+              "field_name": "HAUSNUMMER",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "kunde_wohnort_p1_msat",
+              "field_target_column": "HAUSNUMMER"
+            },
+            {
+              "field_name": "ORT",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "kunde_wohnort_p1_msat",
+              "field_target_column": "ORT"
+            },
+            {
+              "field_name": "PLZ",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "kunde_wohnort_p1_msat",
+              "field_target_column": "PLZ"
+            },
+            {
+              "field_name": "STRASSE",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "kunde_wohnort_p1_msat",
+              "field_target_column": "STRASSE"
+            },
+            {
+              "field_name": "ADRESSZUSATZ",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "kunde_wohnort_p1_msat",
+              "field_target_column": "ADRESSZUSATZ"
+            },
+            {
+              "field_name": "LAND",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "kunde_wohnort_p1_msat",
+              "field_target_column": "LAND"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "related_key_hash": "KEY_OF_KUNDE_HUB",
+          "hash_name": "DIFF_OF_KUNDE_WOHNORT_P1_MSAT"
+        }
+      ],
+      "load_operations": [
+        {
+          "table_name": "kunde_hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_WOHNORT",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_KUNDE_HUB",
+              "stage_column_name": "HK_WOHNORT"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "KUNDEID",
+              "field_name": "KUNDEID",
+              "column_class": "business_key",
+              "is_nullable": true,
+              "stage_column_name": "KUNDEID"
+            }
+          ]
+        },
+        {
+          "table_name": "kunde_wohnort_p1_msat",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key",
+              "column_name": "HK_WOHNORT",
+              "is_nullable": false,
+              "hash_name": "KEY_OF_KUNDE_HUB",
+              "stage_column_name": "HK_WOHNORT"
+            },
+            {
+              "hash_class": "diff_hash",
+              "column_name": "DIFF_KUNDE_WOHNORT_P1_SAT",
+              "is_nullable": false,
+              "hash_name": "DIFF_OF_KUNDE_WOHNORT_P1_MSAT",
+              "stage_column_name": "DIFF_KUNDE_WOHNORT_P1_SAT"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "VON",
+              "field_name": "VON",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "VON"
+            },
+            {
+              "column_name": "BIS",
+              "field_name": "BIS",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "BIS"
+            },
+            {
+              "column_name": "HAUSNUMMER",
+              "field_name": "HAUSNUMMER",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "HAUSNUMMER"
+            },
+            {
+              "column_name": "ORT",
+              "field_name": "ORT",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "ORT"
+            },
+            {
+              "column_name": "PLZ",
+              "field_name": "PLZ",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "PLZ"
+            },
+            {
+              "column_name": "STRASSE",
+              "field_name": "STRASSE",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "STRASSE"
+            },
+            {
+              "column_name": "ADRESSZUSATZ",
+              "field_name": "ADRESSZUSATZ",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "ADRESSZUSATZ"
+            },
+            {
+              "column_name": "LAND",
+              "field_name": "LAND",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "LAND"
+            }
+          ]
+        }
+      ],
+      "stage_columns": [
+        {
+          "stage_column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "stage_column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "stage_column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "stage_column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "stage_column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "stage_column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "stage_column_name": "HK_WOHNORT",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_KUNDE_HUB",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "DIFF_KUNDE_WOHNORT_P1_SAT",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "DIFF_OF_KUNDE_WOHNORT_P1_MSAT",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "KUNDEID",
+          "stage_column_class": "data",
+          "field_name": "KUNDEID",
+          "is_nullable": true,
+          "column_type": "CHAR(13) ",
+          "column_classes": [
+            "business_key"
+          ]
+        },
+        {
+          "stage_column_name": "VON",
+          "stage_column_class": "data",
+          "field_name": "VON",
+          "is_nullable": true,
+          "column_type": "date ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "BIS",
+          "stage_column_class": "data",
+          "field_name": "BIS",
+          "is_nullable": true,
+          "column_type": "date ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "HAUSNUMMER",
+          "stage_column_class": "data",
+          "field_name": "HAUSNUMMER",
+          "is_nullable": true,
+          "column_type": "VARCHAR(10) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "ORT",
+          "stage_column_class": "data",
+          "field_name": "ORT",
+          "is_nullable": true,
+          "column_type": "VARCHAR(128) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "PLZ",
+          "stage_column_class": "data",
+          "field_name": "PLZ",
+          "is_nullable": true,
+          "column_type": "VARCHAR(10) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "STRASSE",
+          "stage_column_class": "data",
+          "field_name": "STRASSE",
+          "is_nullable": true,
+          "column_type": "VARCHAR(128) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "ADRESSZUSATZ",
+          "stage_column_class": "data",
+          "field_name": "ADRESSZUSATZ",
+          "is_nullable": true,
+          "column_type": "VARCHAR(128) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "LAND",
+          "stage_column_class": "data",
+          "field_name": "LAND",
+          "is_nullable": true,
+          "column_type": "VARCHAR(128) ",
+          "column_classes": [
+            "content"
+          ]
+        }
+      ]
+    }
+  ]
+}
