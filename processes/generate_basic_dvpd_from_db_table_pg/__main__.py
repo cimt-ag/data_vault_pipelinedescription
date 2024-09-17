@@ -285,7 +285,7 @@ def main(schema_name, table_name, ini_file, db_connection, target_schema_tag=Non
     dvpd.append('\t],') # end of fields array
 
     dvpd.append('	"data_vault_model": [')
-    dvpd.append('		{"schema_name": "rvtl_xxxxxx"')
+    dvpd.append('		{"schema_name": "rvlt_xxxxxx"')
     dvpd.append('		, "tables": [')
     dvpd.append('				{"table_name": "'+main_hub_name+'"')
     dvpd.append('						,"table_stereotype": "hub"')
