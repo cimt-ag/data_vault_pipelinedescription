@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-09-16 19:24:48",
+  "compile_timestamp": "2024-09-17 16:11:10",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5006_willibald_shop_produkt_p1",
   "dvpd_filename": "t5006_willibald_shop_produkt_p1.dvpd.json",
@@ -144,7 +144,7 @@
       ]
     },
     {
-      "table_name": "produkt_produkt_p2_sat",
+      "table_name": "produkt_produkt_p1s_sat",
       "table_stereotype": "sat",
       "schema_name": "rvlt_willibald_shop",
       "storage_component": "",
@@ -194,7 +194,7 @@
           "parent_table_name": "produkt_hub"
         },
         {
-          "column_name": "DIFF_PRODUKT_PRODUKT_P2_SAT",
+          "column_name": "DIFF_PRODUKT_PRODUKT_P1S_SAT",
           "is_nullable": false,
           "column_class": "diff_hash",
           "column_type": "CHAR(28)"
@@ -577,8 +577,8 @@
           "hash_name": "DIFF_OF_PRODUKT_PRODUKT_P1_SAT"
         },
         {
-          "stage_column_name": "DIFF_PRODUKT_PRODUKT_P2_SAT",
-          "hash_origin_table": "produkt_produkt_p2_sat",
+          "stage_column_name": "DIFF_PRODUKT_PRODUKT_P1S_SAT",
+          "hash_origin_table": "produkt_produkt_p1s_sat",
           "multi_row_content": false,
           "column_class": "diff_hash",
           "hash_fields": [
@@ -586,7 +586,7 @@
               "field_name": "PREIS",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
-              "field_target_table": "produkt_produkt_p2_sat",
+              "field_target_table": "produkt_produkt_p1s_sat",
               "field_target_column": "PREIS"
             }
           ],
@@ -598,7 +598,7 @@
           "hash_null_value_string": "",
           "model_profile_name": "_default",
           "related_key_hash": "KEY_OF_PRODUKT_HUB",
-          "hash_name": "DIFF_OF_PRODUKT_PRODUKT_P2_SAT"
+          "hash_name": "DIFF_OF_PRODUKT_PRODUKT_P1S_SAT"
         }
       ],
       "load_operations": [
@@ -684,7 +684,7 @@
           ]
         },
         {
-          "table_name": "produkt_produkt_p2_sat",
+          "table_name": "produkt_produkt_p1s_sat",
           "relation_name": "/",
           "operation_origin": "field mapping relation",
           "hash_mappings": [
@@ -697,10 +697,10 @@
             },
             {
               "hash_class": "diff_hash",
-              "column_name": "DIFF_PRODUKT_PRODUKT_P2_SAT",
+              "column_name": "DIFF_PRODUKT_PRODUKT_P1S_SAT",
               "is_nullable": false,
-              "hash_name": "DIFF_OF_PRODUKT_PRODUKT_P2_SAT",
-              "stage_column_name": "DIFF_PRODUKT_PRODUKT_P2_SAT"
+              "hash_name": "DIFF_OF_PRODUKT_PRODUKT_P1S_SAT",
+              "stage_column_name": "DIFF_PRODUKT_PRODUKT_P1S_SAT"
             }
           ],
           "data_mapping": [
@@ -833,10 +833,10 @@
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "DIFF_PRODUKT_PRODUKT_P2_SAT",
+          "stage_column_name": "DIFF_PRODUKT_PRODUKT_P1S_SAT",
           "stage_column_class": "hash",
           "is_nullable": false,
-          "hash_name": "DIFF_OF_PRODUKT_PRODUKT_P2_SAT",
+          "hash_name": "DIFF_OF_PRODUKT_PRODUKT_P1S_SAT",
           "column_type": "CHAR(28)"
         },
         {
