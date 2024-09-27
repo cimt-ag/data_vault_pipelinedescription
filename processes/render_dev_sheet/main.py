@@ -434,8 +434,13 @@ if __name__ == '__main__':
     else:
         stage_column_naming_rule=args.stage_column_naming_rule
 
-    dvpi_default_directory = Path(params['dvpi_default_directory'], fallback=None)
-    documentation_directory = Path(params['documentation_directory'], fallback=None)
+    dvpi_default_directory = Path(params['dvpi_default_directory'])
+    documentation_directory = Path(params['documentation_directory'])
+
+    # create target directory
+    if not os.path.isdir(documentation_directory):
+        print(f"creating dir: "+documentation_directory.name)
+        documentation_directory.mkdir(parents=True)
     
     dvpi_file_name=args.dvpi_file_name
     if dvpi_file_name == '@youngest':
