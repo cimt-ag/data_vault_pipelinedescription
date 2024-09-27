@@ -22,6 +22,7 @@ import argparse
 import json
 import os
 import sys
+from datetime import datetime
 
 from pathlib import Path
 
@@ -258,6 +259,14 @@ def main(schema_name, table_name, ini_file, db_connection, target_schema_tag=Non
 
     table_columns_sorted = sorted(table_columns, key=lambda d: d['field_order_string']   )
 
+    max_column_name_length=0
+    max_type_declaration_length=0
+    for table_column in  table_columns_sorted:
+        if len(table_column['field_name']) > max_column_name_length:
+            max_column_name_length = len(table_column['field_name'])
+        if len(table_column['field_type']) > max_type_declaration_length:
+            max_type_declaration_length= len(table_column['field_type'])
+
     field_elements=[]
     field_order_group=table_columns_sorted[0]['field_order_string'][:3]
     first_field=True
@@ -270,15 +279,20 @@ def main(schema_name, table_name, ini_file, db_connection, target_schema_tag=Non
                 first_field = False
             else:
                 field_element="\t,{"
-            field_element +=f'"field_name":"{table_column["field_name"]}",\t"field_type":"{table_column["field_type"]} "'
+            field_name_string=f'"field_name":"{table_column["field_name"]}",'
+            field_element +=f'{field_name_string.ljust(max_column_name_length+16)}'
+            field_type_string=f'"field_type":"{table_column["field_type"].upper()}",'
+            field_element +=f'{field_type_string.ljust(max_type_declaration_length+16)}'
+
+            if field_order_group[0]=='0':  #  a primary key element
+                field_element += '\t"targets":[{"table_name":"' + main_hub_name + '"}]'
+            elif field_order_group[0:2]=='10':  # a foreign  key element will be assigned to second hub
+                field_element += '\t"targets":[{"table_name":"bbbbbb_hub"}]'
+            else:
+                field_element+='\t"targets":[{"table_name":"'+main_sattelite_name+'"}],\t'
             for analytic_tag in ['is_primary_key','is_foreign_key','cardinality','duplicates','null_values']:
                 field_element+=f',"{analytic_tag}":"{table_column[analytic_tag]}"'
-            if field_order_group[0]=='0':  #  a primary key element
-                field_element += ',\t"targets":[{"table_name":"' + main_hub_name + '"}]}'
-            elif field_order_group[0:2]=='10':  # a foreign  key element will be assigned to second hub
-                field_element += ',\t"targets":[{"table_name":"bbbbbb_hub"}]}'
-            else:
-                field_element+=',\t"targets":[{"table_name":"'+main_sattelite_name+'"}]}'
+            field_element+='}'
             field_elements.append(field_element)
 
     dvpd.append("\n".join(field_elements))
@@ -327,6 +341,38 @@ def main(schema_name, table_name, ini_file, db_connection, target_schema_tag=Non
     with open(dvpd_file_path, 'w') as file:
         file.write(dvpd_text)
 
+    # create human readable data profile report
+    report=[]
+    report.append(f'Data profile of "{schema_name}.{table_name}" at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
+    report.append(80*'-')
+    report.append( f'Table row count: {str(row_count).rjust(8)}')
+    report.append( f'Sample row count:{str(row_count_sample).rjust(8)}')
+    report.append('')
+
+
+    report.append("Name".ljust(max_column_name_length)+ " PK  FK  Cardin.  duplic.  null cnt")
+    for table_column in  table_columns_sorted:
+        # ['is_primary_key','is_foreign_key','cardinality','duplicates','null_values']
+        if table_column ['is_primary_key']:
+            key_marker=" P  "
+        else:
+            key_marker = " .  "
+        if table_column ['is_foreign_key']:
+            key_marker+=" F  "
+        else:
+            key_marker+= " .  "
+        measure_string=str(table_column ['cardinality']).rjust(8)
+        measure_string+=str(table_column ['duplicates']).rjust(9)
+        measure_string+=str(table_column ['null_values']).rjust(9)
+
+        report.append(f"{table_column['field_name'].ljust(max_column_name_length)}{key_marker}{measure_string}")
+
+    report_filename=pipeline_name+".data_profile.txt"
+    report_file_path =dvpd_generator_directory.joinpath(report_filename)
+    report_text="\n".join(report)
+    with open(report_file_path, 'w') as file:
+        file.write(report_text)
+
     print (f"Completed rendering documentation from {dvpd_file_path.name}")
 
 
@@ -342,8 +388,8 @@ if __name__ == "__main__":
     parser.add_argument("schema_name", help="schema name of the table")
     parser.add_argument("table_name", help="name of the table")
     parser.add_argument("--dvpdc_ini_file", help="Name of the ini file of dvpdc", default='./dvpdc.ini')
-    parser.add_argument("--connection_ini_file", help="Name of the ini file with the db connection properties", default='./connection_pg.ini')
-    parser.add_argument("--connection_ini_section", help="Name of the section in th ini file to use", default='willibald_source')
+    parser.add_argument("--connection_ini_file", help="Name of the ini file with the source db connection properties", default='./connection_pg.ini')
+    parser.add_argument("--connection_ini_section", help="Name of the section in the ini file to use", default='willibald_source')
 
     args = parser.parse_args()
 
