@@ -289,7 +289,7 @@ def main(schema_name, table_name, ini_file, db_connection, target_schema_tag=Non
             elif field_order_group[0:2]=='10':  # a foreign  key element will be assigned to second hub
                 field_element += '\t"targets":[{"table_name":"bbbbbb_hub"}]'
             else:
-                field_element+='\t"targets":[{"table_name":"'+main_sattelite_name+'"}],\t'
+                field_element+='\t"targets":[{"table_name":"'+main_sattelite_name+'"}]\t'
             for analytic_tag in ['is_primary_key','is_foreign_key','cardinality','duplicates','null_values']:
                 field_element+=f',"{analytic_tag}":"{table_column[analytic_tag]}"'
             field_element+='}'

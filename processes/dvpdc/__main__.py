@@ -1453,7 +1453,7 @@ def assemble_dvpi_parse_set(dvpd_object):
     stage_properties=copy.deepcopy(dvpd_object['stage_properties'])
     for stage_property_entry in stage_properties:
         if 'stage_table_name' not in  stage_property_entry:
-            stage_property_entry['stage_table_name']=f"s{g_dvpi_document['pipeline_name']}"
+            stage_property_entry['stage_table_name']=f"{g_dvpi_document['pipeline_name']}_stage"
         if 'storage_component' not in  stage_property_entry:
             stage_property_entry['storage_component']=""
     parse_set['stage_properties']=stage_properties
