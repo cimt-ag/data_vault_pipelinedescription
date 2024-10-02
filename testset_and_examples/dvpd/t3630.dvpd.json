@@ -25,7 +25,7 @@
 												"link_parent_tables": [	{"table_name":"rtjj_3630_aaa_hub"}
 																		,{"table_name":"rtjj_3630_bbb_hub"}  ]}
 				
-				,{"table_name": "rtjj_3630_aaa_bbb_ttt_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_3630_aaa_bbb_lnk"
+				,{"table_name": "rtjj_3630_aaa_bbb_uuu_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_3630_aaa_bbb_lnk"
 																						,"tracked_relation_name": "UUU"}
 				,{"table_name": "rtjj_3630_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_3630_bbb"}
 				,{"table_name": "rtjj_3630_aaa_bbb_p1_sat",	"table_stereotype": "sat"
