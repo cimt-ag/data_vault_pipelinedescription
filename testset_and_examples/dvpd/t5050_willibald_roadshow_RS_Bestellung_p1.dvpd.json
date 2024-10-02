@@ -1,0 +1,68 @@
+{
+	"dvpd_version": "0.6.2",
+	"pipeline_name": "t5050_willibald_roadshow_RS_Bestellung_p1",
+	"stage_properties": [{"stage_schema": "stage_rvlt"}],
+	"purpose": "Load from willibald_roadshow_tag1.RS_Bestellung into raw vault",
+	"record_source_name_expression": "willibald_roadshow_tag1.RS_Bestellung",
+	"analysis_full_row_count":1259,
+	"analysis_sample_row_count":1259,
+	"data_extraction": {
+		"fetch_module_name": "none - this is a pure ddl and documentation dvpd"
+	},
+"fields":[
+	 {"field_name":"bestellungid",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"900","duplicates":"359","null_values":"0",	"targets":[{"table_name":"RS_Bestellung_hub"}]}
+	,{"field_name":"vereinspartnerid",	"field_type":"VARCHAR(30) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"1","duplicates":"1258","null_values":"0",	"targets":[{"table_name":"vereinspartner_hub"}]}
+	,{"field_name":"kundeid",	"field_type":"CHAR(13) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"183","duplicates":"1076","null_values":"912",	"targets":[{"table_name":"kunde_hub"}]}
+	,{"field_name":"produktid",	"field_type":"integer ","is_primary_key":"False","is_foreign_key":"False","cardinality":"125","duplicates":"1134","null_values":"0",	"targets":[{"table_name":"produkt_hub"}]}
+
+	,{"field_name":"gueltigbis",	"field_type":"CHAR(5) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"145","duplicates":"1114","null_values":"626",	"targets":[{"table_name":"RS_Bestellung_RS_Bestellung_p1_sat"}]}
+	,{"field_name":"kaufdatum",	"field_type":"date ","is_primary_key":"False","is_foreign_key":"False","cardinality":"1","duplicates":"1258","null_values":"0",	"targets":[{"table_name":"RS_Bestellung_RS_Bestellung_p1_sat"}]}
+	,{"field_name":"kkfirma",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"3","duplicates":"1256","null_values":"626",	"targets":[{"table_name":"RS_Bestellung_RS_Bestellung_p1_sat"}]}
+	,{"field_name":"kreditkarte",	"field_type":"VARCHAR(30) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"270","duplicates":"989","null_values":"626",	"targets":[{"table_name":"RS_Bestellung_RS_Bestellung_p1_sat"}]}
+	,{"field_name":"menge",	"field_type":"integer ","is_primary_key":"False","is_foreign_key":"False","cardinality":"49","duplicates":"1210","null_values":"0",	"targets":[{"table_name":"RS_Bestellung_RS_Bestellung_p1_sat"}]}
+	,{"field_name":"preis",	"field_type":"NUMERIC(10,2) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"37","duplicates":"1222","null_values":"0",	"targets":[{"table_name":"RS_Bestellung_RS_Bestellung_p1_sat"}]}
+	,{"field_name":"rabatt",	"field_type":"NUMERIC(5,2) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"124","duplicates":"1135","null_values":"0",	"targets":[{"table_name":"RS_Bestellung_RS_Bestellung_p1_sat"}]}
+	],
+	"data_vault_model": [
+		{"schema_name": "rvlt_willibald_roadshow"
+		, "tables": [
+				{"table_name": "RS_Bestellung_hub"
+						,"table_stereotype": "hub"
+						,"hub_key_column_name": "hk_RS_Bestellung"
+				}
+				,{"table_name": "RS_Bestellung_RS_Bestellung_p1_sat"
+						,"table_stereotype": "sat"
+						,"satellite_parent_table": "RS_Bestellung_hub"
+						,"diff_hash_column_name": "rh_RS_Bestellung_RS_Bestellung_p1_sat"
+				}
+
+				,{"table_name": "RS_Bestellung_kunde_vereinspartner_produkt_lnk"
+						,"table_stereotype": "lnk"
+						,"link_key_column_name": "lk_RS_Bestellung_kunde_vereinspartner"
+						,"link_parent_tables": ["RS_Bestellung_hub"
+											   ,"kunde_hub","vereinspartner_hub","produkt_hub"]
+				}
+				,{"table_name": "RS_Bestellung_kunde_vereinspartner_produkt_esat"
+						,"table_stereotype": "sat"
+						,"satellite_parent_table": "RS_Bestellung_kunde_vereinspartner_produkt_lnk"
+				}
+			]
+		}
+		,{"schema_name": "rvlt_willibald_shop"
+		, "tables": [			
+				{"table_name": "kunde_hub"
+						,"table_stereotype": "hub"
+						,"hub_key_column_name": "hk_kunde"
+				}
+				,{"table_name": "produkt_hub"
+						,"table_stereotype": "hub"
+						,"hub_key_column_name": "hk_produkt"
+				}
+				,{"table_name": "vereinspartner_hub"
+						,"table_stereotype": "hub"
+						,"hub_key_column_name": "hk_vereinspartner"
+				}
+			]
+		}
+	]
+}
