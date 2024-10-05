@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:28",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-10-02 12:57:17",
   "dvpd_version": "0.6.0",
   "pipeline_name": "test90_model_profile_on_pipeline",
   "dvpd_filename": "t0090_model_profile_on_pipeline.dvpd.json",
@@ -145,7 +145,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "stest90_model_profile_on_pipeline",
+          "stage_table_name": "test90_model_profile_on_pipeline_stage",
           "storage_component": ""
         }
       ],
@@ -220,7 +220,6 @@
           "stage_column_name": "RH_RTJJ_90_AAA_P1_SAT",
           "hash_origin_table": "rtjj_90_aaa_p1_sat",
           "multi_row_content": false,
-          "related_key_hash": "KEY_OF_RTJJ_90_AAA_HUB",
           "column_class": "diff_hash",
           "hash_fields": [
             {
@@ -252,6 +251,7 @@
           "hash_timestamp_format_sqlstyle": "_T00",
           "hash_null_value_string": "_T00",
           "model_profile_name": "t0090",
+          "related_key_hash": "KEY_OF_RTJJ_90_AAA_HUB",
           "hash_name": "DIFF_OF_RTJJ_90_AAA_P1_SAT"
         }
       ],
@@ -264,8 +264,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_90_AAA",
-              "hash_name": "KEY_OF_RTJJ_90_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_90_AAA_HUB",
               "stage_column_name": "HK_RTJJ_90_AAA"
             }
           ],
@@ -294,15 +294,15 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_90_AAA",
-              "hash_name": "KEY_OF_RTJJ_90_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_90_AAA_HUB",
               "stage_column_name": "HK_RTJJ_90_AAA"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "RH_RTJJ_90_AAA_P1_SAT",
-              "hash_name": "DIFF_OF_RTJJ_90_AAA_P1_SAT",
               "is_nullable": false,
+              "hash_name": "DIFF_OF_RTJJ_90_AAA_P1_SAT",
               "stage_column_name": "RH_RTJJ_90_AAA_P1_SAT"
             }
           ],

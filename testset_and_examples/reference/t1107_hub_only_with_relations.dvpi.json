@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-07-27 14:21:11",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-10-02 12:57:20",
   "dvpd_version": "0.6.1",
   "pipeline_name": "t1107_hub_only_with_relations",
   "dvpd_filename": "t1107_hub_only_with_relations.dvpd.json",
@@ -54,7 +54,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st1107_hub_only_with_relations",
+          "stage_table_name": "t1107_hub_only_with_relations_stage",
           "storage_component": ""
         }
       ],

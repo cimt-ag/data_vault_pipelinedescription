@@ -1,6 +1,6 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.1
-Compile time: 2024-06-13 11:57:28
+Compiler Version 0.6.2
+Compile time: 2024-10-02 12:57:17
 Compiling t0082_double_recursion_and_link.dvpd.json
 
 Writing DVPI to /git_ordner/dvpd/var/dvpi/t0082_double_recursion_and_link.dvpi.json
