@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-08-16 18:58:56",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-10-02 12:57:20",
   "dvpd_version": "0.6.1",
   "pipeline_name": "t1020_multiple_use_key_hash_for_sat_scenarios",
   "dvpd_filename": "t1020_multiple_use_key_hash_for_sat_scenarios.dvpd.json",
@@ -208,7 +208,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st1020_multiple_use_key_hash_for_sat_scenarios",
+          "stage_table_name": "t1020_multiple_use_key_hash_for_sat_scenarios_stage",
           "storage_component": ""
         }
       ],

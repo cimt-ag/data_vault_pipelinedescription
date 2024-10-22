@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:28",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-10-02 12:57:16",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0035_tracking_sat_with_sequence_information",
   "dvpd_filename": "t0035_tracking_sat_with_sequence_information.dvpd.json",
@@ -111,7 +111,7 @@
         {
           "storage_component": "PostgresDWH",
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st0035_tracking_sat_with_sequence_information"
+          "stage_table_name": "t0035_tracking_sat_with_sequence_information_stage"
         }
       ],
       "record_source_name_expression": "dvpd implementation test",
@@ -167,8 +167,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_35_AAA",
-              "hash_name": "KEY_OF_RTJJ_35_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_35_AAA_HUB",
               "stage_column_name": "HK_RTJJ_35_AAA"
             }
           ],
@@ -190,8 +190,8 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_35_AAA",
-              "hash_name": "KEY_OF_RTJJ_35_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_35_AAA_HUB",
               "stage_column_name": "HK_RTJJ_35_AAA"
             }
           ],

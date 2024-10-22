@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:28",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-10-02 12:57:16",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0033_simple_hub_msat",
   "dvpd_filename": "t0033_simple_hub_msat.dvps.json",
@@ -151,7 +151,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st0033_simple_hub_msat",
+          "stage_table_name": "t0033_simple_hub_msat_stage",
           "storage_component": ""
         }
       ],
@@ -226,7 +226,6 @@
           "stage_column_name": "GH_RTJJ_33_AAA_P1_MSAT",
           "hash_origin_table": "rtjj_33_aaa_p1_msat",
           "multi_row_content": true,
-          "related_key_hash": "KEY_OF_RTJJ_33_AAA_HUB",
           "column_class": "diff_hash",
           "hash_fields": [
             {
@@ -258,6 +257,7 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "related_key_hash": "KEY_OF_RTJJ_33_AAA_HUB",
           "hash_name": "DIFF_OF_RTJJ_33_AAA_P1_MSAT"
         }
       ],
@@ -270,8 +270,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_33_AAA",
-              "hash_name": "KEY_OF_RTJJ_33_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_33_AAA_HUB",
               "stage_column_name": "HK_RTJJ_33_AAA"
             }
           ],
@@ -300,15 +300,15 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_33_AAA",
-              "hash_name": "KEY_OF_RTJJ_33_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_33_AAA_HUB",
               "stage_column_name": "HK_RTJJ_33_AAA"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "GH_RTJJ_33_AAA_P1_MSAT",
-              "hash_name": "DIFF_OF_RTJJ_33_AAA_P1_MSAT",
               "is_nullable": false,
+              "hash_name": "DIFF_OF_RTJJ_33_AAA_P1_MSAT",
               "stage_column_name": "GH_RTJJ_33_AAA_P1_MSAT"
             }
           ],

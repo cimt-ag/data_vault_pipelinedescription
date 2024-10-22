@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-07-16 10:10:24",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-10-02 12:57:20",
   "dvpd_version": "0.6.1",
   "pipeline_name": "t1103",
   "dvpd_filename": "t1103.dvpd.json",
@@ -223,7 +223,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st1103",
+          "stage_table_name": "t1103_stage",
           "storage_component": ""
         }
       ],

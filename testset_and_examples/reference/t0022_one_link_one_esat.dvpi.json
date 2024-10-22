@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:27",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-10-02 12:57:15",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0022_one_link_one_esat",
   "dvpd_filename": "t0022_one_link_one_esat.dvpd.json",
@@ -278,7 +278,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st0022_one_link_one_esat",
+          "stage_table_name": "t0022_one_link_one_esat_stage",
           "storage_component": ""
         }
       ],
@@ -391,7 +391,6 @@
           "stage_column_name": "RH_RTJJ_22_AAA_P1_SAT",
           "hash_origin_table": "rtjj_22_aaa_p1_sat",
           "multi_row_content": false,
-          "related_key_hash": "KEY_OF_RTJJ_22_AAA_HUB",
           "column_class": "diff_hash",
           "hash_fields": [
             {
@@ -423,6 +422,7 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "related_key_hash": "KEY_OF_RTJJ_22_AAA_HUB",
           "hash_name": "DIFF_OF_RTJJ_22_AAA_P1_SAT"
         }
       ],
@@ -435,8 +435,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_22_AAA",
-              "hash_name": "KEY_OF_RTJJ_22_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_22_AAA_HUB",
               "stage_column_name": "HK_RTJJ_22_AAA"
             }
           ],
@@ -458,15 +458,15 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_22_AAA",
-              "hash_name": "KEY_OF_RTJJ_22_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_22_AAA_HUB",
               "stage_column_name": "HK_RTJJ_22_AAA"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "RH_RTJJ_22_AAA_P1_SAT",
-              "hash_name": "DIFF_OF_RTJJ_22_AAA_P1_SAT",
               "is_nullable": false,
+              "hash_name": "DIFF_OF_RTJJ_22_AAA_P1_SAT",
               "stage_column_name": "RH_RTJJ_22_AAA_P1_SAT"
             }
           ],
@@ -502,22 +502,22 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_RTJJ_22_AAA",
-              "hash_name": "KEY_OF_RTJJ_22_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_22_AAA_HUB",
               "stage_column_name": "HK_RTJJ_22_AAA"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_RTKK_22_BBB",
-              "hash_name": "KEY_OF_RTKK_22_BBB_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTKK_22_BBB_HUB",
               "stage_column_name": "HK_RTKK_22_BBB"
             },
             {
               "hash_class": "key",
               "column_name": "LK_RTJJ_22_AAA_BBB",
-              "hash_name": "KEY_OF_RTJJ_22_AAA_BBB_LNK",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_22_AAA_BBB_LNK",
               "stage_column_name": "LK_RTJJ_22_AAA_BBB"
             }
           ]
@@ -530,8 +530,8 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_22_AAA_BBB",
-              "hash_name": "KEY_OF_RTJJ_22_AAA_BBB_LNK",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_22_AAA_BBB_LNK",
               "stage_column_name": "LK_RTJJ_22_AAA_BBB"
             }
           ]
@@ -544,8 +544,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTKK_22_BBB",
-              "hash_name": "KEY_OF_RTKK_22_BBB_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTKK_22_BBB_HUB",
               "stage_column_name": "HK_RTKK_22_BBB"
             }
           ],
