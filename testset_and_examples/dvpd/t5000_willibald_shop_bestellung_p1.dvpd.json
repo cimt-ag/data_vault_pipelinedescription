@@ -1,6 +1,5 @@
 {
   "dvpd_version": "0.6.2",
-  "stage_properties" : [{"stage_schema":"stage_rvlt"}],
   "pipeline_name": "t5000_willibald_shop_bestellung_p1",
 	"stage_properties": [{"stage_schema": "stage_rvlt"}],
 	"purpose": "Load from willibald_shop_p1.bestellung into raw vault",

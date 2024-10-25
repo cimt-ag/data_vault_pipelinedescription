@@ -28,7 +28,7 @@
 		, "tables": [
 				{"table_name": "kunde_hub"
 						,"table_stereotype": "hub"
-						,"hub_key_column_name": "hk_wohnort"
+						,"hub_key_column_name": "hk_kunde"
 				}
 				,{"table_name": "kunde_wohnort_p1_msat"
 						,"table_stereotype": "sat"
