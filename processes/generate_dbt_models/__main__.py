@@ -109,7 +109,7 @@ def generate_datavault4dbt_model(dvpi_path, model_dir, write_mode):
     parse_set = data.get('parse_sets')[0]
     stage_model_name = generate_stage_model(parse_set, model_dir)
     load_operations = parse_set.get('load_operations')
-    
+    record_source = parse_set['record_source_name_expression']
 
     # Iterate over tables in the JSON
     tables = data.get('tables', [])
@@ -123,12 +123,15 @@ def generate_datavault4dbt_model(dvpi_path, model_dir, write_mode):
 
         if table_stereotype == "hub":
             generate_hub_model(table, schema_name, model_dir, stage_model_name, load_operations)
-#        elif table_stereotype == "sat":
-#            generate_sat_model(table, schema_name, model_dir)
+        elif table_stereotype == "sat":
+            if table['is_effectivity_sat']:
+                generate_record_tracking_sat(table, schema_name, model_dir, stage_model_name, load_operations, record_source)
+            else: 
+                generate_sat_model(table, schema_name, model_dir, stage_model_name)
         elif table_stereotype == "lnk":
             generate_link_model(table, schema_name, model_dir, stage_model_name, load_operations)
-#        else:
-#            print(f"Unsupported table stereotype: {table_stereotype}")
+        else:
+            print(f"Unsupported table stereotype: {table_stereotype}")
 
 def generate_hub_model(table, schema_name, output_directory, stage_model_name, load_operations):
     schema_name = table.get('schema_name')
@@ -198,27 +201,137 @@ def generate_hub_model(table, schema_name, output_directory, stage_model_name, l
 
     write_model_to_file(output_path, model_content)
 
-def generate_sat_model(table, schema_name, output_directory):
+def generate_multiactive_sat(table, output_directory, stage_model_name):
+    schema_name = table.get('schema_name')
     table_name = table.get('table_name')
     columns = table.get('columns', [])
-    hashkey = next((col['column_name'] for col in columns if col['column_class'] == 'parent_key'), None)
-    diff_columns = [col['column_name'] for col in columns if col['column_class'] == 'content']
+    parent_hashkey = next((col['column_name'] for col in columns if col['column_class'] == 'parent_key'), None)
+    src_hashdiff = next((col['column_name'] for col in columns if col['column_class'] == 'diff_hash'), None)
+    src_payload = [col['column_name'] for col in columns if col['column_class'] == 'content']
+    # Define the file name and output path
+    output_directory = Path.joinpath(output_directory, schema_name)
+    output_file_name = f"{table_name}.sql"
+    output_path = os.path.join(output_directory, output_file_name)
 
-    print(f"Generating sat model for table: {table_name}, hashkey: {hashkey}")
+    yaml_dict = {}
+    yaml_dict['source_model'] = stage_model_name
+    yaml_dict['parent_hashkey'] = parent_hashkey
+    yaml_dict['src_hashdiff'] = src_hashdiff
+    yaml_dict['src_payload'] = src_payload
 
-    # Generate YAML metadata for sat
+    yaml_metadata = yaml.dump(yaml_dict, sort_keys=False, default_flow_style=False)
+
+    # Generate YAML metadata for stage
     yaml_metadata = f"""
 {{%- set yaml_metadata -%}}
-hashkey: '{hashkey}'
-diff_columns:
-  - {"\n  - ".join(diff_columns)}
+{yaml_metadata}
 {{%- endset -%}}
 """
 
-    # Generate model content for sat
-    model_content = f"{{{{ config(materialized = 'view') }}}}\n\n{yaml_metadata}\n\n{{{{ datavault4dbt.sat(hashkey=metadata_dict.get('hashkey')\n                    , diff_columns=metadata_dict.get('diff_columns')\n                    ) }}}}"
+    # Generate model content for hub
+    model_content = f"""{{{{ config(materialized = 'incremental') }}}}\n\n
+{yaml_metadata}\n\n
+{{%- set metadata_dict = fromyaml(yaml_metadata) -%}}\n\n
+{{{{ datavault4dbt.sat_v0(parent_hashkey=metadata_dict.get('parent_hashkey')
+                    , src_hashdiff=metadata_dict.get('src_hashdiff')
+                    , src_payload=metadata_dict.get('src_payload')
+                    , source_model=metadata_dict.get('source_model') ) }}}}
+"""
 
-    write_model_to_file(output_path,  model_content)
+    write_model_to_file(output_path, model_content)
+
+
+# -> ESAT
+def generate_record_tracking_sat(table, schema_name, output_directory, stage_model_name, load_operations, record_source):
+    schema_name = table.get('schema_name')
+    table_name = table.get('table_name')
+    columns = table.get('columns', [])
+    parent_hashkey = next((col['column_name'] for col in columns if col['column_class'] == 'parent_key'), None)
+    load_operations = [lo for lo in load_operations if lo['table_name'] == table_name]
+    # Define the file name and output path
+    output_directory = Path.joinpath(output_directory, schema_name)
+    output_file_name = f"{table_name}.sql"
+    output_path = os.path.join(output_directory, output_file_name)
+
+    # If model already exists, import it's yaml_metadata
+    if os.path.exists(output_path):
+        yaml_dict = extract_yaml_metadata_from_file(output_path)
+    else:
+        yaml_dict = {'source_models': []}
+    
+    for lo in load_operations:
+        source_model = {'name': stage_model_name}
+        relation_name = lo['relation_name']
+        source_model['rsrc_static'] = f"{record_source}_{relation_name}" 
+        hash_mapping = next((mapping for mapping in lo['hash_mappings'] if mapping['hash_class'] == 'parent_key'), None)           # No need to iterate, since only one Entity is Tracked (Hub or Linkkey)
+        column_name = hash_mapping.get('column_name')
+        stage_column_name = hash_mapping.get('stage_column_name')
+
+        if column_name != stage_column_name:
+            source_model['hk_column'] = stage_column_name
+
+    yaml_dict['source_models'] = [item for item in yaml_dict['source_models'] if item.get('name') != stage_model_name]
+    yaml_dict['source_models'].append(source_model)
+    yaml_dict['tracked_hashkey'] = parent_hashkey
+
+    yaml_metadata = yaml.dump(yaml_dict, sort_keys=False, default_flow_style=False)
+
+    # Generate YAML metadata for stage
+    yaml_metadata = f"""
+{{%- set yaml_metadata -%}}
+{yaml_metadata}
+{{%- endset -%}}
+"""
+
+    # Generate model content for hub
+    model_content = f"""{{{{ config(materialized = 'incremental') }}}}\n\n
+{yaml_metadata}\n\n
+{{%- set metadata_dict = fromyaml(yaml_metadata) -%}}\n\n
+{{{{ datavault4dbt.rec_track_sat(tracked_hashkey=metadata_dict.get('tracked_hashkey')
+                    , source_models=metadata_dict.get('source_models') ) }}}}
+"""
+
+    write_model_to_file(output_path, model_content)
+
+# normal SAT
+def generate_sat_model(table, schema_name, output_directory, stage_model_name):
+    schema_name = table.get('schema_name')
+    table_name = table.get('table_name')
+    columns = table.get('columns', [])
+    parent_hashkey = next((col['column_name'] for col in columns if col['column_class'] == 'parent_key'), None)
+    src_hashdiff = next((col['column_name'] for col in columns if col['column_class'] == 'diff_hash'), None)
+    src_payload = [col['column_name'] for col in columns if col['column_class'] == 'content']
+    # Define the file name and output path
+    output_directory = Path.joinpath(output_directory, schema_name)
+    output_file_name = f"{table_name}.sql"
+    output_path = os.path.join(output_directory, output_file_name)
+
+    yaml_dict = {}
+    yaml_dict['source_model'] = stage_model_name
+    yaml_dict['parent_hashkey'] = parent_hashkey
+    yaml_dict['src_hashdiff'] = src_hashdiff
+    yaml_dict['src_payload'] = src_payload
+
+    yaml_metadata = yaml.dump(yaml_dict, sort_keys=False, default_flow_style=False)
+
+    # Generate YAML metadata for stage
+    yaml_metadata = f"""
+{{%- set yaml_metadata -%}}
+{yaml_metadata}
+{{%- endset -%}}
+"""
+
+    # Generate model content for hub
+    model_content = f"""{{{{ config(materialized = 'incremental') }}}}\n\n
+{yaml_metadata}\n\n
+{{%- set metadata_dict = fromyaml(yaml_metadata) -%}}\n\n
+{{{{ datavault4dbt.sat_v0(parent_hashkey=metadata_dict.get('parent_hashkey')
+                    , src_hashdiff=metadata_dict.get('src_hashdiff')
+                    , src_payload=metadata_dict.get('src_payload')
+                    , source_model=metadata_dict.get('source_model') ) }}}}
+"""
+
+    write_model_to_file(output_path, model_content)
 
 def generate_link_model(table, schema_name, output_directory, stage_model_name, load_operations):
     table_name = table.get('table_name')
@@ -286,8 +399,8 @@ def generate_link_model(table, schema_name, output_directory, stage_model_name, 
     model_content = f"""{{{{ config(materialized = 'incremental', unique_key = '{hashkey}') }}}}\n\n
 {yaml_metadata}\n\n
 {{%- set metadata_dict = fromyaml(yaml_metadata) -%}}\n\n
-{{{{ datavault4dbt.hub(hashkey=metadata_dict.get('hashkey')
-                    , business_keys=metadata_dict.get('business_keys')
+{{{{ datavault4dbt.link(link_hashkey=metadata_dict.get('link_hashkey')
+                    , foreign_hashkeys=metadata_dict.get('foreign_hashkeys')
                     , source_models=metadata_dict.get('source_models') ) }}}}
 """
 
