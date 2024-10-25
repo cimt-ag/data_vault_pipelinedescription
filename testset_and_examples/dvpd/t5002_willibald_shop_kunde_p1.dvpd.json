@@ -27,7 +27,7 @@
 	,{"field_name":"vorname",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"281","duplicates":"19","null_values":"0",	"targets":[{"table_name":"kunde_kunde_p1_sat"}]}
 	],
 	"data_vault_model": [
-		{"schema_name": "rvtl_xxxxxx"
+		{"schema_name": "rvlt_willibald_shop"
 		, "tables": [
 				{"table_name": "kunde_hub"
 						,"table_stereotype": "hub"

@@ -18,7 +18,7 @@
 	,{"field_name":"rabatt3",	"field_type":"integer ","is_primary_key":"False","is_foreign_key":"False","cardinality":"5","duplicates":"1","null_values":"0",	"targets":[{"table_name":"vereinspartner_vereinspartner_p1_sat"}]}
 	],
 	"data_vault_model": [
-		{"schema_name": "rvtl_xxxxxx"
+		{"schema_name": "rvlt_willibald_shop"
 		, "tables": [
 				{"table_name": "vereinspartner_hub"
 						,"table_stereotype": "hub"
