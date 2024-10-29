@@ -598,7 +598,7 @@ def derive_load_operations():
 
     # add load operations dict to every table, so we dont have to care about existence in the following code
     for table_name,table_entry in g_table_dict.items():
-        load_operations={}
+        load_operations ={}
         table_entry['load_operations'] = load_operations
 
     set_load_operations_for_reference_tables()
@@ -608,7 +608,11 @@ def derive_load_operations():
     pull_satellite_load_operations_into_links()
     pull_hub_load_operations_into_links()
     pull_parent_operations_into_sat()
+
     #todo final_load_operation_crosscheck()
+
+
+
 
 def set_load_operations_for_reference_tables():
     # ref tables always only have  "/" operation
@@ -1829,6 +1833,11 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
     check_intertable_structure_constraints()
     if g_error_count > 0:
         raise DvpdcError
+
+    # remove any load operations from "is_only_structural_element" tables
+    for table_name,table_entry in g_table_dict.items():
+        if table_entry['is_only_structural_element']:
+            table_entry['load_operations'] = {}
 
     assemble_dvpi(dvpd_object,dvpd_filename)
     #print_dvpi_document()
