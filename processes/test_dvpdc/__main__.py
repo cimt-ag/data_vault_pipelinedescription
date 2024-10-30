@@ -19,6 +19,11 @@ import argparse
 import base64
 import hashlib
 import re
+import sys
+import os
+
+project_directory = os.path.dirname(os.path.dirname(sys.path[0]))
+sys.path.insert(0,project_directory)
 
 from Levenshtein import distance
 from processes.dvpdc.__main__ import dvpdc
@@ -48,7 +53,7 @@ def report_list_length_missmatch(expected_list, found_list, path):
     #todo implement comparison based on identifiing element (approach: path pattern->keyword list to find identifing )
 def report_value_difference(expected_value, found_value, path):
     global g_difference_count
-    print(f"ATST--EI:[{g_test_id}] /{path}: Wrong value '{found_value}' ! Expected '{expected_value}' , ls-diff:{distance(found_value,expected_value)}")
+    print(f"ATST--EI:[{g_test_id}] /{path}: Wrong value '{found_value}' ! Expected '{expected_value}' , ls-diff:{distance(f"{found_value}",f"{expected_value}")}")
     g_difference_count += 1
 
 def run_test_for_file(dvpd_filename, raise_on_crash=False):
