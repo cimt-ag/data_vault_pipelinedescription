@@ -127,7 +127,7 @@ def generate_datavault4dbt_model(dvpi_path, model_dir, write_mode):
             if table['is_effectivity_sat']:
                 generate_record_tracking_sat(table, schema_name, model_dir, stage_model_name, load_operations, record_source)
             else: 
-                generate_sat_model(table, schema_name, model_dir, stage_model_name)
+                generate_sat_v0_model(table, schema_name, model_dir, stage_model_name)
         elif table_stereotype == "lnk":
             generate_link_model(table, schema_name, model_dir, stage_model_name, load_operations)
         else:
@@ -293,8 +293,41 @@ def generate_record_tracking_sat(table, schema_name, output_directory, stage_mod
 
     write_model_to_file(output_path, model_content)
 
+# Generates the sat_v1 model, which is a view based on the sat_v0
+# It calculates the end-date and adds a 'is_current' flag
+# This is necessary when working with DBT since we don't want to actually UPDATE any rows in a table (Insert-Only)
+def generate_sat_v1_model(sat_v0, hashkey, hashdiff, output_path):
+
+    yaml_dict = {'sat_v0': sat_v0
+                 , 'hashkey': hashkey
+                 , 'hashdiff': hashdiff
+                 , 'add_is_current_flag': True  # hard-coded - is not specified in DVPI
+                 , 'include_payload': True}     # hard-coded - is not specified in DVPI
+    yaml_metadata = yaml.dump(yaml_dict, sort_keys=False, default_flow_style=False)
+
+    # Generate YAML metadata for stage
+    yaml_metadata = f"""
+{{%- set yaml_metadata -%}}
+{yaml_metadata}
+{{%- endset -%}}
+"""
+
+    # Generate model content for hub
+    model_content = f"""{{{{ config(materialized = 'view') }}}}\n\n
+{yaml_metadata}\n\n
+{{%- set metadata_dict = fromyaml(yaml_metadata) -%}}\n\n
+{{{{ datavault4dbt.sat_v1(sat_v0=metadata_dict.get('sat_v0')
+                    , hashkey=metadata_dict.get('hashkey')
+                    , hashdiff=metadata_dict.get('hashdiff')
+                    , include_payload=metadata_dict.get('include_payload')
+                    , add_is_current_flag=metadata_dict.get('add_is_current_flag') ) }}}}
+"""
+
+    write_model_to_file(output_path, model_content)
+
+
 # normal SAT
-def generate_sat_model(table, schema_name, output_directory, stage_model_name):
+def generate_sat_v0_model(table, schema_name, output_directory, stage_model_name):
     schema_name = table.get('schema_name')
     table_name = table.get('table_name')
     columns = table.get('columns', [])
@@ -303,8 +336,8 @@ def generate_sat_model(table, schema_name, output_directory, stage_model_name):
     src_payload = [col['column_name'] for col in columns if col['column_class'] == 'content']
     # Define the file name and output path
     output_directory = Path.joinpath(output_directory, schema_name)
-    output_file_name = f"{table_name}.sql"
-    output_path = os.path.join(output_directory, output_file_name)
+    v0_output_file_name = f"{table_name}_v0.sql"
+    v0_output_path = os.path.join(output_directory, v0_output_file_name)
 
     yaml_dict = {}
     yaml_dict['source_model'] = stage_model_name
@@ -331,7 +364,15 @@ def generate_sat_model(table, schema_name, output_directory, stage_model_name):
                     , source_model=metadata_dict.get('source_model') ) }}}}
 """
 
-    write_model_to_file(output_path, model_content)
+    write_model_to_file(v0_output_path, model_content)
+
+    # Generate SAT_V1
+    v1_output_file_name = f"{table_name}_v1.sql"
+    v1_output_path = os.path.join(output_directory, v1_output_file_name)
+    sat_v0 = f"{table_name}_v0"
+    generate_sat_v1_model(sat_v0, parent_hashkey, src_hashdiff, v1_output_path)
+
+
 
 def generate_link_model(table, schema_name, output_directory, stage_model_name, load_operations):
     table_name = table.get('table_name')
