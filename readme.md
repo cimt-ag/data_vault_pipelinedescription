@@ -52,8 +52,6 @@ DVPD provides a format, to solve this problem.
    a. Partitioned deletion scenarios
 
 ### Reference implementation
-1. PostgreSQL tables and views to implement a DVPD compiler
-1. Documentaion about the structure and usage of the DVPD views
-1. PostgreSQL tables and view to implement automated testing of the compiler
+1. Python Implementation of DVPDC Compiler
 1. Testsets
-1. Python scripts to deploy the tables and view automatically
+1. Python examples of generator scipts for DDL/Documentation

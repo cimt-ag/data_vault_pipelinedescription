@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-10-02 09:26:31",
+  "compile_timestamp": "2024-10-02 12:57:22",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t3690",
   "dvpd_filename": "t3690.dvpd.json",
@@ -267,7 +267,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st3690",
+          "stage_table_name": "t3690_stage",
           "storage_component": ""
         }
       ],

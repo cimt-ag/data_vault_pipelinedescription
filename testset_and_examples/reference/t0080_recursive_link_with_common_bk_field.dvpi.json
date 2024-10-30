@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:28",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-10-02 12:57:17",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0080_recursive_link_with_common_bk_field",
   "dvpd_filename": "t0080_recursive_link_with_common_bk_field.dvpd.json",
@@ -161,7 +161,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st0080_recursive_link_with_common_bk_field",
+          "stage_table_name": "t0080_recursive_link_with_common_bk_field_stage",
           "storage_component": ""
         }
       ],
@@ -294,8 +294,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_80_AAA",
-              "hash_name": "KEY_OF_RTJJ_80_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_80_AAA_HUB",
               "stage_column_name": "HK_RTJJ_80_AAA"
             }
           ],
@@ -324,8 +324,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_80_AAA",
-              "hash_name": "KEY_OF_RTJJ_80_AAA_HUB__FOR__TTT",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_80_AAA_HUB__FOR__TTT",
               "stage_column_name": "HK_RTJJ_80_AAA_TTT"
             }
           ],
@@ -354,22 +354,22 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_RTJJ_80_AAA",
-              "hash_name": "KEY_OF_RTJJ_80_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_80_AAA_HUB",
               "stage_column_name": "HK_RTJJ_80_AAA"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_RTJJ_80_AAA_TTT",
-              "hash_name": "KEY_OF_RTJJ_80_AAA_HUB__FOR__TTT",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_80_AAA_HUB__FOR__TTT",
               "stage_column_name": "HK_RTJJ_80_AAA_TTT"
             },
             {
               "hash_class": "key",
               "column_name": "LK_RTJJ_80_AAA_RECU",
-              "hash_name": "KEY_OF_RTJJ_80_AAA_RECU_LNK",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_80_AAA_RECU_LNK",
               "stage_column_name": "LK_RTJJ_80_AAA_RECU"
             }
           ]
@@ -382,8 +382,8 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_80_AAA_RECU",
-              "hash_name": "KEY_OF_RTJJ_80_AAA_RECU_LNK",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_80_AAA_RECU_LNK",
               "stage_column_name": "LK_RTJJ_80_AAA_RECU"
             }
           ]
