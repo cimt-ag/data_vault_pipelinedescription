@@ -600,7 +600,7 @@ class DVPIcrosscheck:
         self.pipeline_names = {}
     def load_dvpi_files(self):
         for file_name in os.listdir(self.dvpi_directory):
-            if file_name.startswith("t5") and file_name.endswith(".json"):
+            if file_name.startswith("t120") and file_name.endswith(".json"):
                 self.dvpi_files.append(file_name)
 
     def load_tables_from_dvpi(self, file_name):
@@ -623,38 +623,82 @@ class DVPIcrosscheck:
         for table_name in tables.keys():
             if table_name not in self.table_occurrences:
                 self.table_occurrences[table_name] = []
-            self.table_occurrences[table_name].append(pipeline_name)
+            self.table_occurrences[table_name].append((pipeline_name, tables[table_name]))
 
     def run_comparison(self):
         """
-        Compare tables from each DVPI file and track table occurrences.
+        Load DVPI files, check properties, and generate the table occurrence report.
         """
         self.load_dvpi_files()
 
-        if len(self.dvpi_files) == 0:
-            print("No DVPI files found!")
-            return
-
-        # Load tables and track occurrences for each test case
+        # Load tables, check properties, and track occurrences for each test case
         for file_name in self.dvpi_files:
             tables = self.load_tables_from_dvpi(file_name)
             self.tables_dict[file_name] = tables
+            for table in tables.values():
+                self.check_table_properties(table)  # Run checks for each table
             self.load_table_occurrences(file_name, tables)
 
         # Generate the list of tables that appear in more than one test case
-        self.generate_table_occurrence()
+        self.generate_table_occurrence_report()
 
-    def generate_table_occurrence(self):
+    def generate_table_occurrence_report(self):
         """
-        Tables that appear in more than one test case.
+        Print tables that appear in more than one test case and the test cases where they appear.
         """
-        for table_name, test_cases in self.table_occurrences.items():
-            if len(test_cases) > 1:
-                print(f"Table '{table_name}' appears in: {', '.join(test_cases)}")
+        print("\nTables that appear in more than one test case:")
+        for table_name, occurrences in self.table_occurrences.items():
+            if len(occurrences) > 1:
+                pipeline_names = [occurrence[0] for occurrence in occurrences]
+                print(f"Table '{table_name}' appears in: {', '.join(pipeline_names)}")
 
+                self.compare_table_across_test_cases(table_name, occurrences)
 
+    def compare_table_across_test_cases(self, table_name, occurrences):
+        """
+        Compare properties (table_stereotype, schema_name, storage_component, columns) of tables with the same name across multiple test cases.
+        """
+        # Use the first occurrence as the reference
+        reference_pipeline, reference_table = occurrences[0]
+        reference_properties = {
+            "table_stereotype": reference_table["table_stereotype"],
+            "schema_name": reference_table.get("schema_name", ""),
+            "storage_component": reference_table.get("storage_component", ""),
+            "columns": reference_table["columns"]
+        }
+
+        for pipeline_name, table in occurrences[1:]:
+            for prop, ref_value in reference_properties.items():
+                # Compare columns in a separate way
+                if prop == "columns":
+                    if not self.compare_columns(ref_value, table[prop]):
+                        print(
+                            f"Mismatch in columns for table '{table_name}' between {reference_pipeline} and {pipeline_name}")
+                elif table.get(prop) != ref_value:
+                    print(
+                        f"Mismatch in '{prop}' for table '{table_name}' between {reference_pipeline} and {pipeline_name}")
+
+    def compare_columns(self, ref_columns, compare_columns):
+        """
+        Compare columns between two tables to ensure they match in name, type, and other key properties.
+        """
+        if len(ref_columns) != len(compare_columns):
+            return False
+
+        for ref_col, comp_col in zip(ref_columns, compare_columns):
+            if ref_col["column_name"] != comp_col["column_name"] or ref_col["column_type"] != comp_col["column_type"]:
+                return False
+            # Add additional column property checks if necessary
+
+        return True
+
+    def check_table_properties(self, table):
+        """
+        Generic check for table properties based on table_stereotype.
+        """
+        pass
 
 if __name__ == "__main__":
-    dvpi_directory = "C:\\git_ordner\\dvpd\\var\\dvpi"
+    dvpi_directory = r"C:\git_ordner\dvpd\var\dvpi"  # Correct path
     comparison = DVPIcrosscheck(dvpi_directory)
     comparison.run_comparison()

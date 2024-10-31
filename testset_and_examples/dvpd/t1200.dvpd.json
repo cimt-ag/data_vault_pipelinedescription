@@ -1,8 +1,8 @@
 {
 	"dvpd_version": "0.6.2",
-	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"stage_properties" : [{"stage_schema":"stage_rvlt", "stage_table_name":"t1200_stage"}],
 	"pipeline_name": "t1200",
-	"purpose":"Test dvpd transformation for multilayered field groups",
+	"purpose":"Base model for integration test",
 	"record_source_name_expression": "knuppisoft.artikel",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
