@@ -16,6 +16,19 @@ The syntax is an extention of the core syntax. For the main structures, please l
 *purpose: analysis documentation, test set generation*
 <br> The number of rows, used for the conent analysis of the source
 
+## Data Extraction
+json path: /
+
+### for Module "json_array"
+json path: /data_extraction
+
+**json_array_path**
+(optional)
+*purpose: parsing of source*
+<br>*this syntax is a proposal and has not been used in code yet*
+<br>Json path of the object, that contains the array with the final row granularity. When the array is nested into parent
+arrays, that also need to be iterated over, these parent arrays must be declared with [*]. 
+
 ## fields[]
 json path: /
 
@@ -45,6 +58,24 @@ from a representative sample of the source data set.
 *purpose: analysis documentation, test set generation*
 <br>Number of rows, having a  NULL value in the field.This number might be determined
 from a representative sample of the source data set. 
+
+**json_path** (optional)
+*purpose: parsing of source*
+<br>Contains the json path, to determine the data of the field in a json document. 
+The default value for the json path ist the name of the field.
+
+The expression always starts on the "looped" Element (see json_loop_level). 
+The expression must lead to a single value or a Json subobject.
+Even though a path staring at the json document root can be declare by starting using "$" it
+is recommended to express all hierarchy navigation with the "json_loop_level"
+
+
+
+**json_loop_level** (optional)
+*purpose: parsing of source*
+<br>*this syntax is a proposal and has not been used in code yet*
+<br>Defines the loop level, the json path is beginning. Level 0 (= the default) is the loop of the row granularity. To address elements of parent objects to the row object, the level must be decreased. -1 = direct parent, -2 = Parent of parent and so on.
+(Loop levels are used to iterate over hierarchical stacked arrays)
 
 
 # License and Credits
