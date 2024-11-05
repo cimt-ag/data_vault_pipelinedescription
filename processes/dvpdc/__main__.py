@@ -404,12 +404,11 @@ def create_columns_from_field_mapping(field_entry, field_position):
         column_map_entry['field_position']=field_position
         column_map_entry['column_type'] = table_mapping.get('column_type',field_entry['field_type']).upper()  # defaults to field type
         column_map_entry['use_as_key_hash'] = table_mapping.get('use_as_key_hash',False)  # defaults to False
-        # TODO: check if this is right spot to put 'is_multi_active_key' property
         if 'is_multi_active_key' in table_mapping:
             if table_entry['table_stereotype'] == 'sat':
                 column_map_entry['is_multi_active_key'] = table_mapping.get('is_multi_active_key') 
             else:
-                register_error("CFM-1: 'is_multi_avtive_key' property declared for non-sat entity. (property can only be declared for multi-active satellite)")
+                register_error("CFM-1: 'is_multi_avtive_key' property declared for non-sat entity. (property can only be declared if target is a multi-active satellite)")
         if not column_map_entry['use_as_key_hash'] :
             column_map_entry['row_order_direction'] = table_mapping.get('row_order_direction','ASC')  # defaults to ASC
             column_map_entry['exclude_from_key_hash'] = table_mapping.get('exclude_from_key_hash',False)  # defaults to False
