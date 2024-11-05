@@ -12,16 +12,15 @@
 "fields":[
 	 {"field_name":"kundeid",	"field_type":"CHAR(13) ","is_primary_key":"True","is_foreign_key":"False","cardinality":"300","duplicates":"400","null_values":"0",	"targets":[{"table_name":"kunde_hub"}]}
 	 
-	,{"field_name":"von",	"field_type":"date ","is_primary_key":"True","is_foreign_key":"False","cardinality":"681","duplicates":"19","null_values":"0",	"targets":[{"table_name":"kunde_wohnort_p1_msat"}]}
+	,{"field_name":"von",	"field_type":"date ","is_primary_key":"True","is_foreign_key":"False","cardinality":"681","duplicates":"19","null_values":"0",	"targets":[{"table_name":"kunde_wohnort_p1_msat", "is_multi_active_key": true}]}
 
 	,{"field_name":"bis",	"field_type":"date ","is_primary_key":"False","is_foreign_key":"False","cardinality":"393","duplicates":"307","null_values":"300",	"targets":[{"table_name":"kunde_wohnort_p1_msat"}]}
-	,{"field_name":"hausnummer",	"field_type":"VARCHAR(10) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"224","duplicates":"476","null_values":"0",	"targets":[{"table_name":"kunde_wohnort_p1_msat"}]}
+	,{"field_name":"hausnummer",	"field_type":"VARCHAR(10) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"224","duplicates":"476","null_values":"0",	"targets":[{"table_name":"kunde_wohnort_p1_msat", "is_multi_active_key": true}]}
 	,{"field_name":"ort",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"630","duplicates":"70","null_values":"0",	"targets":[{"table_name":"kunde_wohnort_p1_msat"}]}
-	,{"field_name":"plz",	"field_type":"VARCHAR(10) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"604","duplicates":"96","null_values":"0",	"targets":[{"table_name":"kunde_wohnort_p1_msat"}]}
-	,{"field_name":"strasse",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"664","duplicates":"36","null_values":"0",	"targets":[{"table_name":"kunde_wohnort_p1_msat"}]}
-
+	,{"field_name":"plz",	"field_type":"VARCHAR(10) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"604","duplicates":"96","null_values":"0",	"targets":[{"table_name":"kunde_wohnort_p1_msat", "is_multi_active_key": true}]}
+	,{"field_name":"strasse",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"664","duplicates":"36","null_values":"0",	"targets":[{"table_name":"kunde_wohnort_p1_msat", "is_multi_active_key": true}]}
 	,{"field_name":"adresszusatz",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"0","duplicates":"700","null_values":"700",	"targets":[{"table_name":"kunde_wohnort_p1_msat"}]}
-	,{"field_name":"land",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"0","duplicates":"700","null_values":"700",	"targets":[{"table_name":"kunde_wohnort_p1_msat"}]}
+	,{"field_name":"land",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"0","duplicates":"700","null_values":"700",	"targets":[{"table_name":"kunde_wohnort_p1_msat", "is_multi_active_key": true}]}
 	],
 	"data_vault_model": [
 		{"schema_name": "rvlt_willibald_shop"
