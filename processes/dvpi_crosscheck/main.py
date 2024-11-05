@@ -671,26 +671,40 @@ class DVPIcrosscheck:
             for prop, ref_value in reference_properties.items():
                 # Compare columns in a separate way
                 if prop == "columns":
-                    if not self.compare_columns(ref_value, table[prop]):
+                    if not self.compare_columns_detailed(ref_value, table[prop], table_name, reference_pipeline, pipeline_name):
                         print(
                             f"Mismatch in columns for table '{table_name}' between {reference_pipeline} and {pipeline_name}")
                 elif table.get(prop) != ref_value:
                     print(
                         f"Mismatch in '{prop}' for table '{table_name}' between {reference_pipeline} and {pipeline_name}")
 
-    def compare_columns(self, ref_columns, compare_columns):
-        """
-        Compare columns between two tables to ensure they match in name, type, and other key properties.
-        """
-        if len(ref_columns) != len(compare_columns):
-            return False
+    def compare_columns_detailed(self, ref_columns, compare_columns, table_name, reference_pipeline, pipeline_name):
+        ref_columns_dict = {col["column_name"]: col for col in ref_columns}
+        compare_columns_dict = {col["column_name"]: col for col in compare_columns}
 
-        for ref_col, comp_col in zip(ref_columns, compare_columns):
-            if ref_col["column_name"] != comp_col["column_name"] or ref_col["column_type"] != comp_col["column_type"]:
-                return False
-            # Add additional column property checks if necessary
+        all_column_names = set(ref_columns_dict.keys()).union(compare_columns_dict.keys())
+        differences_found = False
 
-        return True
+        for column_name in all_column_names:
+            ref_col = ref_columns_dict.get(column_name)
+            comp_col = compare_columns_dict.get(column_name)
+
+            if ref_col and not comp_col:
+                print(f"Column '{column_name}' exists in {reference_pipeline} but is missing in {pipeline_name}")
+                differences_found = True
+            elif not ref_col and comp_col:
+                print(f"Column '{column_name}' is missing in {reference_pipeline} but exists in {pipeline_name}")
+                differences_found = True
+            else:
+                for key in ref_col.keys():
+                    if ref_col.get(key) != comp_col.get(key):
+                        print(f"Difference in column '{column_name}' for table '{table_name}':")
+                        print(f"  '{key}' differs between {reference_pipeline} and {pipeline_name}:")
+                        print(f"    {reference_pipeline} -> {key}: {ref_col.get(key)}")
+                        print(f"    {pipeline_name} -> {key}: {comp_col.get(key)}")
+                        differences_found = True
+
+        return not differences_found
 
     def check_table_properties(self, table):
         """
@@ -699,6 +713,6 @@ class DVPIcrosscheck:
         pass
 
 if __name__ == "__main__":
-    dvpi_directory = r"C:\git_ordner\dvpd\var\dvpi"  # Correct path
+    dvpi_directory = r"C:\git_ordner\dvpd\var\dvpi"
     comparison = DVPIcrosscheck(dvpi_directory)
     comparison.run_comparison()
