@@ -61,14 +61,14 @@ from a representative sample of the source data set.
 
 **json_path** (optional)
 *purpose: parsing of source*
+<br>*this syntax is a proposal and has not been used in code yet*
 <br>Contains the json path, to determine the data of the field in a json document. 
-The default value for the json path ist the name of the field.
+Depending on the parsing module, this declaration can be left out, when the field name is the same as the json path.
 
 The expression always starts on the "looped" Element (see json_loop_level). 
 The expression must lead to a single value or a Json subobject.
 Even though a path staring at the json document root can be declare by starting using "$" it
 is recommended to express all hierarchy navigation with the "json_loop_level"
-
 
 
 **json_loop_level** (optional)
