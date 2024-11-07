@@ -2,6 +2,7 @@ import json
 import yaml
 import os
 import argparse
+import numpy as np
 from pathlib import Path
 import sys
 import re
@@ -126,6 +127,8 @@ def generate_datavault4dbt_model(dvpi_path, model_dir, write_mode):
         elif table_stereotype == "sat":
             if table['is_effectivity_sat']:
                 generate_record_tracking_sat(table, schema_name, model_dir, stage_model_name, load_operations, record_source)
+            if 'is_multiactive' in table and table['is_multiactive']:
+                generate_multiactive_sat_v0_model(table, model_dir, stage_model_name, load_operations)
             else: 
                 generate_sat_v0_model(table, schema_name, model_dir, stage_model_name)
         elif table_stereotype == "lnk":
@@ -201,23 +204,54 @@ def generate_hub_model(table, schema_name, output_directory, stage_model_name, l
 
     write_model_to_file(output_path, model_content)
 
-def generate_multiactive_sat(table, output_directory, stage_model_name):
+def generate_multi_active_sat_v1_model(sat_v0, hashkey, hashdiff, ma_attribute, output_path):
+
+    yaml_dict = {'sat_v0': sat_v0
+                 , 'hashkey': hashkey
+                 , 'hashdiff': hashdiff
+                 , 'ma_attribute': ma_attribute
+                 , 'add_is_current_flag': True}  # hard-coded - is not specified in DVPI
+    yaml_metadata = yaml.dump(yaml_dict, sort_keys=False, default_flow_style=False)
+
+    # Generate YAML metadata for stage
+    yaml_metadata = f"""
+{{%- set yaml_metadata -%}}
+{yaml_metadata}
+{{%- endset -%}}
+"""
+
+    # Generate model content for hub
+    model_content = f"""{{{{ config(materialized = 'view') }}}}\n\n
+{yaml_metadata}\n\n
+{{%- set metadata_dict = fromyaml(yaml_metadata) -%}}\n\n
+{{{{ datavault4dbt.ma_sat_v1(sat_v0=metadata_dict.get('sat_v0')
+                    , hashkey=metadata_dict.get('hashkey')
+                    , hashdiff=metadata_dict.get('hashdiff')
+                    , ma_attribute=metadata_dict.get('ma_attribute')
+                    , add_is_current_flag=metadata_dict.get('add_is_current_flag') ) }}}}
+"""
+
+    write_model_to_file(output_path, model_content)
+
+def generate_multiactive_sat_v0_model(table, output_directory, stage_model_name, load_operations):
     schema_name = table.get('schema_name')
     table_name = table.get('table_name')
     columns = table.get('columns', [])
     parent_hashkey = next((col['column_name'] for col in columns if col['column_class'] == 'parent_key'), None)
     src_hashdiff = next((col['column_name'] for col in columns if col['column_class'] == 'diff_hash'), None)
     src_payload = [col['column_name'] for col in columns if col['column_class'] == 'content']
+    load_operations = [lo for lo in load_operations if lo['table_name'] == table_name]
     # Define the file name and output path
     output_directory = Path.joinpath(output_directory, schema_name)
-    output_file_name = f"{table_name}.sql"
-    output_path = os.path.join(output_directory, output_file_name)
+    v0_output_file_name = f"{table_name}_v0.sql"
+    v0_output_path = os.path.join(output_directory, v0_output_file_name)
 
     yaml_dict = {}
     yaml_dict['source_model'] = stage_model_name
     yaml_dict['parent_hashkey'] = parent_hashkey
     yaml_dict['src_hashdiff'] = src_hashdiff
-    yaml_dict['src_payload'] = src_payload
+    yaml_dict['src_ma_key'] = [dm['stage_column_name'] for dm in load_operations[0]['data_mapping'] if 'is_multi_active_key' in dm and dm['is_multi_active_key'] == True] # currently does not support column name != stage column name!!
+    yaml_dict['src_payload'] = np.setdiff1d(np.array(src_payload), np.array(yaml_dict['src_ma_key'])).tolist()
 
     yaml_metadata = yaml.dump(yaml_dict, sort_keys=False, default_flow_style=False)
 
@@ -232,13 +266,20 @@ def generate_multiactive_sat(table, output_directory, stage_model_name):
     model_content = f"""{{{{ config(materialized = 'incremental') }}}}\n\n
 {yaml_metadata}\n\n
 {{%- set metadata_dict = fromyaml(yaml_metadata) -%}}\n\n
-{{{{ datavault4dbt.sat_v0(parent_hashkey=metadata_dict.get('parent_hashkey')
+{{{{ datavault4dbt.ma_sat_v0(parent_hashkey=metadata_dict.get('parent_hashkey')
                     , src_hashdiff=metadata_dict.get('src_hashdiff')
                     , src_payload=metadata_dict.get('src_payload')
+                    , src_ma_key=metadata_dict.get('src_ma_key')
                     , source_model=metadata_dict.get('source_model') ) }}}}
 """
 
-    write_model_to_file(output_path, model_content)
+    write_model_to_file(v0_output_path, model_content)
+
+    # Generate SAT_V1
+    v1_output_file_name = f"{table_name}_v1.sql"
+    v1_output_path = os.path.join(output_directory, v1_output_file_name)
+    sat_v0 = f"{table_name}_v0"
+    generate_multi_active_sat_v1_model(sat_v0, parent_hashkey, src_hashdiff, yaml_dict['src_ma_key'], v1_output_path)
 
 
 # -> ESAT
@@ -379,6 +420,7 @@ def generate_link_model(table, schema_name, output_directory, stage_model_name, 
     columns = table.get('columns', [])
     foreign_hashkeys = [col['column_name'] for col in columns if col['column_class'] in {'parent_key', 'dependent_child_key'}]
     hashkey = next((col['column_name'] for col in columns if col['column_class'] == 'key'), None)
+    load_operations = [lo for lo in load_operations if lo['table_name'] == table_name]
     # Define the file name and output path
     output_directory = Path.joinpath(output_directory, schema_name)
     output_file_name = f"{table_name}.sql"
@@ -460,6 +502,8 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
         if file_mtime>max_mtime:
             youngest_file=file_name
             max_mtime=file_mtime
+    
+    return youngest_file
 
 ########################   MAIN ################################
 
