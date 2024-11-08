@@ -1,9 +1,7 @@
 # imports from libraries
 import json
-import yaml
 import os
 import argparse
-import numpy as np
 from pathlib import Path
 import sys
 
@@ -13,10 +11,10 @@ sys.path.insert(0,project_directory)
 # imports within project
 from lib.configuration import configuration_load_ini
 from stage import generate_stage_model
-from utils import extract_yaml_metadata_from_file, write_model_to_file, get_name_of_youngest_dvpi_file
+from utils import get_name_of_youngest_dvpi_file
 from hub import generate_hub_model
 from link import generate_link_model
-from sat import generate_sat_v0_model, generate_sat_v1_model, generate_multiactive_sat_v0_model, generate_multi_active_sat_v1_model, generate_record_tracking_sat
+from sat import generate_sat_v0_model, generate_multiactive_sat_v0_model, generate_record_tracking_sat
 
 g_schema_table_dict = {}
 
