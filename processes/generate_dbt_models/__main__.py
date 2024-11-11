@@ -53,16 +53,16 @@ def generate_datavault4dbt_model(dvpi_path, model_dir, append_only):
         print(f"Processing table: {table_name}, schema: {schema_name}, stereotype: {table_stereotype}")
 
         if table_stereotype == "hub":
-            generate_hub_model(table, schema_name, model_dir, stage_model_name, load_operations)
+            generate_hub_model(table, schema_name, model_dir, stage_model_name, load_operations, overwrite)
         elif table_stereotype == "sat":
-            if table['is_effectivity_sat']:
+            if 'is_effectivity_sat' in table and table['is_effectivity_sat']:
                 generate_record_tracking_sat(table, schema_name, model_dir, stage_model_name, load_operations, record_source, overwrite)
-            if 'is_multiactive' in table and table['is_multiactive']:
+            elif 'is_multiactive' in table and table['is_multiactive']:
                 generate_multiactive_sat_v0_model(table, model_dir, stage_model_name, load_operations)
             else: 
                 generate_sat_v0_model(table, schema_name, model_dir, stage_model_name)
         elif table_stereotype == "lnk":
-            generate_link_model(table, schema_name, model_dir, stage_model_name, load_operations)
+            generate_link_model(table, schema_name, model_dir, stage_model_name, load_operations, overwrite)
         else:
             print(f"Unsupported table stereotype: {table_stereotype}")
 
