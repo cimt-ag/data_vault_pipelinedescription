@@ -698,18 +698,15 @@ class DVPIcrosscheck:
             else:
                 for key in ref_col.keys():
                     if ref_col.get(key) != comp_col.get(key):
-                        print(f"Difference in column '{column_name}' for table '{table_name}':")
-                        print(f"  '{key}' differs between {reference_pipeline} and {pipeline_name}:")
-                        print(f"    {reference_pipeline} -> {key}: {ref_col.get(key)}")
-                        print(f"    {pipeline_name} -> {key}: {comp_col.get(key)}")
+                        print(f"   Difference in column '{column_name}' for table '{table_name}':")
+                        print(f"     '{key}' differs between {reference_pipeline} and {pipeline_name}:")
+                        print(f"         {reference_pipeline} -> {key}: {ref_col.get(key)}")
+                        print(f"         {pipeline_name} -> {key}: {comp_col.get(key)}")
                         differences_found = True
 
         return not differences_found
 
     def check_table_properties(self, table):
-        """
-        Generic check for table properties based on table_stereotype.
-        """
         pass
 
 if __name__ == "__main__":
