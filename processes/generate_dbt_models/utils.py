@@ -1,6 +1,7 @@
 import re
 import os
 import yaml
+import json
 
 def extract_yaml_metadata_from_file(filepath):
     # read the file
@@ -44,3 +45,11 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
             max_mtime=file_mtime
     
     return youngest_file
+
+def get_table_list_for_dvpi(dvpi_file_path):
+    with open(dvpi_file_path, 'r') as file:
+        dvpi = json.load(file)
+
+    tables = dvpi.get('tables', [])
+    table_names = [table['table_name'] for table in tables]
+    return table_names
