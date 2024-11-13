@@ -1,6 +1,6 @@
 {
 	"dvpd_version": "0.6.2",
-	"pipeline_name": "t5000_willibald_shop_kunde_p1",
+	"pipeline_name": "t5002_willibald_shop_kunde_p1",
 	"stage_properties": [{"stage_schema": "stage_rvlt"}],
 	"purpose": "Load from willibald_shop_p1.kunde into raw vault",
 	"record_source_name_expression": "willibald_shop_p1.kunde",
