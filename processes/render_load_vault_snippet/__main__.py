@@ -37,7 +37,15 @@ def get_columns_by_class(columns):
         columns_by_class.setdefault(column_class, {}).setdefault('column_name', []).append(column_name)
         columns_by_class.setdefault(column_class, {}).setdefault('column_stage_name', []).append(column_stage_name)
     #print(columns_by_class)
-    #to ensure the same order, also when the stage and vault columns have different names
+
+    if 'content' in columns_by_class and 'content_untracked' in columns_by_class:
+        columns_by_class.setdefault('content_all', {})['column_name'] = columns_by_class['content']['column_name'] + columns_by_class['content_untracked']['column_name']
+        columns_by_class.setdefault('content_all', {})['column_stage_name'] = columns_by_class['content']['column_stage_name'] + columns_by_class['content_untracked']['column_stage_name']
+    if 'content' in columns_by_class and 'content_untracked' not in columns_by_class:
+        columns_by_class.setdefault('content_all', {})['column_name'] = columns_by_class['content']['column_name']
+        columns_by_class.setdefault('content_all', {})['column_stage_name'] = columns_by_class['content']['column_stage_name']
+
+    # to ensure the same order, also when the stage and vault columns have different names
     for key in columns_by_class.keys():
         column_name_list = columns_by_class[key]['column_name']
         column_stage_name_list = columns_by_class[key]['column_stage_name']
@@ -52,7 +60,7 @@ def get_parent_table_name_for_key(columns, key_name):
     if c['column_name'] == key_name:
       return c['parent_table_name']
 
-def get_tables_by_stereotypes(dvpi_json):
+'''def get_tables_by_stereotypes(dvpi_json):
     table_list = dict()
     for table in dvpi_json['tables']:
         if table['table_stereotype'] == 'hub':
@@ -61,7 +69,7 @@ def get_tables_by_stereotypes(dvpi_json):
             table_list.setdefault('lnk', []).append(table['table_name'])
         else:
             table_list.setdefault('sat', []).append(table['table_name'])
-    return table_list
+    return table_list'''
 
 def get_stage_properties(dvpi_json):
     stage_properties = dict()
@@ -88,7 +96,7 @@ def get_load_operations(dvpi_json):
     load_operations = dvpi_json['parse_sets'][0]['load_operations']
     return load_operations
 
-def get_table_data_mapping(load_operations, table_name):
+'''def get_table_data_mapping(load_operations, table_name):
     for load in load_operations:
         if load.get('table_name') == table_name:
             return load.get('data_mapping')
@@ -101,11 +109,13 @@ def get_table_hash_mapping(load_operations, table_name):
 def get_table_data_and_hash_mapping(load_operations, table_name):
     data_mapping = get_table_data_mapping(load_operations, table_name) or []
     hash_mapping = get_table_hash_mapping(load_operations, table_name) or []
-    return data_mapping + hash_mapping
+    return data_mapping + hash_mapping'''
     
 def get_statement_list_method_definition_for_hub(dvpi_table, dvpi_table_load_operations):
     output = str()
-    columns_mapping = get_table_data_and_hash_mapping(dvpi_table_load_operations, dvpi_table['table_name'])
+    data_mapping = dvpi_table_load_operations.get('data_mapping') or []
+    hash_mapping = dvpi_table_load_operations.get('hash_mappings') or []
+    columns_mapping = data_mapping + hash_mapping
     columns_by_class = get_columns_by_class(columns_mapping)
 
     output += f"statement_list = {function_names['hub']}(vault_table='{dvpi_table['table_name']}',\n"
@@ -120,7 +130,9 @@ def get_statement_list_method_definition_for_hub(dvpi_table, dvpi_table_load_ope
 
 def get_statement_list_method_definition_for_lnk(dvpi_table,dvpi_table_load_operations):
     output = str()
-    columns_mapping = get_table_data_and_hash_mapping(dvpi_table_load_operations, dvpi_table['table_name'])
+    data_mapping = dvpi_table_load_operations.get('data_mapping') or []
+    hash_mapping = dvpi_table_load_operations.get('hash_mappings') or []
+    columns_mapping = data_mapping + hash_mapping
     columns_by_class = get_columns_by_class(columns_mapping)
 
     output += f"statement_list = {function_names['dlnk' if 'dependent_child_key' in columns_by_class else 'lnk']}(vault_table='{dvpi_table['table_name']}',\n"
@@ -136,14 +148,16 @@ def get_statement_list_method_definition_for_lnk(dvpi_table,dvpi_table_load_oper
 
 def get_statement_list_method_definition_for_sat(dvpi_table, tables_to_cleanup,dvpi_table_load_operations):
     output = str()
-    columns_mapping = get_table_data_and_hash_mapping(dvpi_table_load_operations, dvpi_table['table_name'])
+    data_mapping = dvpi_table_load_operations.get('data_mapping') or []
+    hash_mapping = dvpi_table_load_operations.get('hash_mappings') or []
+    columns_mapping = data_mapping + hash_mapping
     columns_by_class = get_columns_by_class(columns_mapping)
 
     output += f"statement_list = {function_names['sat']}(vault_table='{dvpi_table['table_name']}',\n"
     output += f"vault_schema='{dvpi_table['schema_name']}',\n"
     output += f"stage_hk_column='{columns_by_class['parent_key']['column_stage_name'][0]}',\n"
     output += f"stage_rh_column='{columns_by_class['diff_hash']['column_stage_name'][0]}',\n"
-    output += f"stage_content_column_list={columns_by_class['content']['column_stage_name']},\n"
+    output += f"stage_content_column_list={columns_by_class['content_all']['column_stage_name']},\n"
     output += f"with_deletion_detection={True if dvpi_table['table_name'] in tables_to_cleanup else False},\n"
     output += f'db_connection=dwh_connection,\n'
     output += "stage_schema=stage_schema,\nstage_table=stage_table,\nmeta_job_instance_id = my_job_instance.get_job_instance_id(),\nmeta_inserted_at = my_job_instance.get_job_started_at() )\n\n"
@@ -152,7 +166,9 @@ def get_statement_list_method_definition_for_sat(dvpi_table, tables_to_cleanup,d
 
 def get_statement_list_method_definition_for_esat(dvpi_table,tables_to_cleanup,dvpi_table_load_operations):
     output = str()
-    columns_mapping = get_table_data_and_hash_mapping(dvpi_table_load_operations, dvpi_table['table_name'])
+    data_mapping = dvpi_table_load_operations.get('data_mapping') or []
+    hash_mapping = dvpi_table_load_operations.get('hash_mappings') or []
+    columns_mapping = data_mapping + hash_mapping
     columns_by_class = get_columns_by_class(columns_mapping)
 
     output += f"statement_list = {function_names['esat']}(vault_esat_table='{dvpi_table['table_name']}',\n"
@@ -169,23 +185,27 @@ def get_statement_list_method_definition_for_esat(dvpi_table,tables_to_cleanup,d
 
 def get_statement_list_method_definition_for_msat(dvpi_table,tables_to_cleanup,dvpi_table_load_operations):
     output = str()
-    columns_mapping = get_table_data_and_hash_mapping(dvpi_table_load_operations, dvpi_table['table_name'])
+    data_mapping = dvpi_table_load_operations.get('data_mapping') or []
+    hash_mapping = dvpi_table_load_operations.get('hash_mappings') or []
+    columns_mapping = data_mapping + hash_mapping
     columns_by_class = get_columns_by_class(columns_mapping)
 
     output += f"statement_list = {function_names['msat']}(vault_table='{dvpi_table['table_name']}',\n"
     output += f"vault_schema='{dvpi_table['schema_name']}',\n"
     output += f"stage_hk_column='{columns_by_class['parent_key']['column_stage_name'][0]}',\n"
     output += f"stage_gh_column='{columns_by_class['diff_hash']['column_stage_name'][0]}',\n"
-    output += f"stage_content_column_list={columns_by_class['content']['column_stage_name']},\n"
+    output += f"stage_content_column_list={columns_by_class['content_all']['column_stage_name']},\n"
     output += f"with_deletion_detection={True if dvpi_table['table_name'] in tables_to_cleanup else False},\n"
     output += f'db_connection=dwh_connection,\n'
     output += "stage_schema=stage_schema,\nstage_table=stage_table,\nmeta_job_instance_id = my_job_instance.get_job_instance_id(),\nmeta_inserted_at = my_job_instance.get_job_started_at() )\n\n"
     output += "dvf_execute_elt_statement_list(dwh_cursor, statement_list)\n\n# ----------\n\n"
     return output
 
-def get_hash_collision_statement_method_definition_for_hub(dvpi_table,dvpi_table_load_operations):
+def get_hash_collision_statement_method_definition_for_hub(dvpi_table, dvpi_table_load_operations):
     output = str()
-    columns_mapping = get_table_data_and_hash_mapping(dvpi_table_load_operations, dvpi_table['table_name'])
+    data_mapping = dvpi_table_load_operations.get('data_mapping') or []
+    hash_mapping = dvpi_table_load_operations.get('hash_mappings') or []
+    columns_mapping = data_mapping + hash_mapping
     columns_by_class = get_columns_by_class(columns_mapping)
 
     output += f"hash_collision_check_statement_list = dvf_get_check_hash_collision_hub_elt_sql(vault_table='{dvpi_table['table_name']}',\n"
@@ -199,7 +219,9 @@ def get_hash_collision_statement_method_definition_for_hub(dvpi_table,dvpi_table
 
 def get_hash_collision_statement_method_definition_for_sat(dvpi_table,dvpi_table_load_operations):
     output = str()
-    columns_mapping = get_table_data_and_hash_mapping(dvpi_table_load_operations, dvpi_table['table_name'])
+    data_mapping = dvpi_table_load_operations.get('data_mapping') or []
+    hash_mapping = dvpi_table_load_operations.get('hash_mappings') or []
+    columns_mapping = data_mapping + hash_mapping
     columns_by_class = get_columns_by_class(columns_mapping)
 
     output += f"singularity_check_statement_list = dvf_get_check_singularity_sat_elt_sql(vault_table='{dvpi_table['table_name']}',\n"
@@ -211,12 +233,11 @@ def get_hash_collision_statement_method_definition_for_sat(dvpi_table,dvpi_table
 
 def get_hash_collision_statement_method_definition_for_lnk(dvpi_table, dvpi_table_load_operations):
     output = str()
-    data_mapping_columns = get_table_data_mapping(dvpi_table_load_operations, dvpi_table['table_name']) or []
-    hash_mapping_columns = get_table_hash_mapping(dvpi_table_load_operations, dvpi_table['table_name']) or []
+    data_mapping = dvpi_table_load_operations.get('data_mapping') or []
+    hash_mapping = dvpi_table_load_operations.get('hash_mappings') or []
+    columns_mapping = data_mapping + hash_mapping
 
-    columns = data_mapping_columns + hash_mapping_columns
-
-    columns_by_class = get_columns_by_class(columns)
+    columns_by_class = get_columns_by_class(columns_mapping)
     output += f"hash_collision_check_statement_list = {'dvf_get_check_hash_collision_dlnk_elt_sql' if 'dependent_child_key' in columns_by_class else 'dvf_get_check_hash_collision_lnk_elt_sql'}(vault_table='{dvpi_table['table_name']}',\n"
     output += f"vault_schema='{dvpi_table['schema_name']}',\n"
     output += f"stage_lk_column='{columns_by_class['key']['column_stage_name'][0]}',\n"
@@ -235,7 +256,6 @@ def generate_lv_snippet_from_dvpi(file_path, tables_to_cleanup):
     indent_level_2 = " " * 4 * 2
     with open(file_path, 'r') as file:
         data = json.load(file)
-    tables_by_stereotypes = get_tables_by_stereotypes(data)
 
     load_operations = get_load_operations(data)
 
@@ -243,44 +263,43 @@ def generate_lv_snippet_from_dvpi(file_path, tables_to_cleanup):
 
     output_all = textwrap.indent(f"# general constants\nstage_schema = '{stage_properties['stage_schema']}'\n" f"stage_table = '{stage_properties['stage_table']}'\n\n\ndwh_cursor = dwh_connection.cursor()\n\n\n",indent_level_2)
 
-    if 'hub' in tables_by_stereotypes:
-        for hub in tables_by_stereotypes['hub']:
+    for load_operations_for_table in load_operations:
+        print(f"{load_operations_for_table.get('table_name')} {load_operations_for_table.get('relation_name')}")
+        if load_operations_for_table.get('table_name').split('_')[-1] == 'hub':
             for table in data['tables']:
-                output = str()
-                if table['table_name'] == hub:
-                    output = get_hash_collision_statement_method_definition_for_hub(table,load_operations)
-                    output += get_statement_list_method_definition_for_hub(table,load_operations)
-                    output_all += textwrap.indent(output, indent_level_2) + '\n'
-    if 'lnk' in tables_by_stereotypes:
-        for lnk in tables_by_stereotypes['lnk']:
-            for table in data['tables']:
-                output = str()
-                if table['table_name'] == lnk:
-                    output = get_hash_collision_statement_method_definition_for_lnk(table,load_operations)
-                    output += get_statement_list_method_definition_for_lnk(table,load_operations)
+                if table['table_name'] == load_operations_for_table.get('table_name'):
+                    output = get_hash_collision_statement_method_definition_for_hub(table, load_operations_for_table)
+                    output += get_statement_list_method_definition_for_hub(table, load_operations_for_table)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
-    if 'sat' in tables_by_stereotypes:
-        for sat in tables_by_stereotypes['sat']:
+
+        if load_operations_for_table.get('table_name').split('_')[-1] == 'lnk':
             for table in data['tables']:
-                output = str()
-                if  table['table_name'] == sat and table['is_effectivity_sat']:
-                    output = get_statement_list_method_definition_for_esat(table,tables_to_cleanup,load_operations)
+                if table['table_name'] == load_operations_for_table.get('table_name'):
+                    output = get_hash_collision_statement_method_definition_for_lnk(table,load_operations_for_table)
+                    output += get_statement_list_method_definition_for_lnk(table,load_operations_for_table)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
-        for sat in tables_by_stereotypes['sat']:
+
+        if load_operations_for_table.get('table_name').split('_')[-1] == 'esat':
             for table in data['tables']:
-                output = str()
-                if  table['table_name'] == sat and table['is_multiactive']:
-                    output = get_statement_list_method_definition_for_msat(table,tables_to_cleanup,load_operations)
+                if table['table_name'] == load_operations_for_table.get('table_name'):
+                    output = get_statement_list_method_definition_for_esat(table,tables_to_cleanup,load_operations_for_table)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
-        for sat in tables_by_stereotypes['sat']:
+
+        if load_operations_for_table.get('table_name').split('_')[-1] == 'msat':
             for table in data['tables']:
-                output = str()
-                if table['table_name'] == sat and not table['is_effectivity_sat'] and not table['is_multiactive']:
-                    output = get_hash_collision_statement_method_definition_for_sat(table,load_operations)
-                    output += get_statement_list_method_definition_for_sat(table,tables_to_cleanup,load_operations)
+                if table['table_name'] == load_operations_for_table.get('table_name'):
+                    output = get_statement_list_method_definition_for_msat(table,tables_to_cleanup,load_operations_for_table)
+                    output_all += textwrap.indent(output, indent_level_2) + '\n'
+
+
+        if load_operations_for_table.get('table_name').split('_')[-1] == 'sat':
+            for table in data['tables']:
+                if table['table_name'] == load_operations_for_table.get('table_name'):
+                    output = get_hash_collision_statement_method_definition_for_sat(table,load_operations_for_table)
+                    output += get_statement_list_method_definition_for_sat(table,tables_to_cleanup,load_operations_for_table)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
     return output_all
