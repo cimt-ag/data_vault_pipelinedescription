@@ -598,6 +598,7 @@ class DVPIcrosscheck:
         self.tables_dict = {}
         self.table_occurrences = {}
         self.pipeline_names = {}
+        self.table_differences = {}
     def load_dvpi_files(self):
         for file_name in os.listdir(self.dvpi_directory):
             if file_name.startswith("t120") and file_name.endswith(".json"):
@@ -671,12 +672,17 @@ class DVPIcrosscheck:
             for prop, ref_value in reference_properties.items():
                 # Compare columns in a separate way
                 if prop == "columns":
-                    if not self.compare_columns_detailed(ref_value, table[prop], table_name, reference_pipeline, pipeline_name):
-                        print(
-                            f"Mismatch in columns for table '{table_name}' between {reference_pipeline} and {pipeline_name}")
+                    self.compare_columns_detailed(ref_value, table[prop], table_name, reference_pipeline, pipeline_name)
                 elif table.get(prop) != ref_value:
-                    print(
-                        f"Mismatch in '{prop}' for table '{table_name}' between {reference_pipeline} and {pipeline_name}")
+                    if table_name not in self.table_differences:
+                        self.table_differences[table_name] = []
+                    self.table_differences[table_name].append({
+                        "reference_pipeline": reference_pipeline,
+                        "pipeline_name": pipeline_name,
+                        "property": prop,
+                        "reference_value": ref_value,
+                        "comparison_value": table.get(prop)
+                    })
 
     def compare_columns_detailed(self, ref_columns, compare_columns, table_name, reference_pipeline, pipeline_name):
         ref_columns_dict = {col["column_name"]: col for col in ref_columns}
@@ -684,27 +690,85 @@ class DVPIcrosscheck:
 
         all_column_names = set(ref_columns_dict.keys()).union(compare_columns_dict.keys())
         differences_found = False
+        table_differences = []
 
         for column_name in all_column_names:
             ref_col = ref_columns_dict.get(column_name)
             comp_col = compare_columns_dict.get(column_name)
+            column_differences = {"column_name": column_name, "status": []}
 
             if ref_col and not comp_col:
-                print(f"Column '{column_name}' exists in {reference_pipeline} but is missing in {pipeline_name}")
+                column_differences["status"].append({
+                    "pipeline": reference_pipeline,
+                    "status": "declared"
+                })
+                column_differences["status"].append({
+                    "pipeline": pipeline_name,
+                    "status": "missing"
+                })
                 differences_found = True
             elif not ref_col and comp_col:
-                print(f"Column '{column_name}' is missing in {reference_pipeline} but exists in {pipeline_name}")
+                column_differences["status"].append({
+                    "pipeline": reference_pipeline,
+                    "status": "missing"
+                })
+                column_differences["status"].append({
+                    "pipeline": pipeline_name,
+                    "status": "declared"
+                })
                 differences_found = True
             else:
+                # Check for attribute differences in matching columns
                 for key in ref_col.keys():
                     if ref_col.get(key) != comp_col.get(key):
-                        print(f"   Difference in column '{column_name}' for table '{table_name}':")
-                        print(f"     '{key}' differs between {reference_pipeline} and {pipeline_name}:")
-                        print(f"         {reference_pipeline} -> {key}: {ref_col.get(key)}")
-                        print(f"         {pipeline_name} -> {key}: {comp_col.get(key)}")
+                        column_differences["status"].append({
+                            "pipeline": reference_pipeline,
+                            "attribute": key,
+                            "value": ref_col.get(key),
+                            "status": "declared"
+                        })
+                        column_differences["status"].append({
+                            "pipeline": pipeline_name,
+                            "attribute": key,
+                            "value": comp_col.get(key),
+                            "status": "declared"
+                        })
                         differences_found = True
 
+            # Add differences for this column if there are any
+            if column_differences["status"]:
+                table_differences.append(column_differences)
+
+        # Store the differences for this table if any were found
+        if differences_found:
+            if table_name not in self.table_differences:
+                self.table_differences[table_name] = []
+            self.table_differences[table_name].append({
+                "reference_pipeline": reference_pipeline,
+                "pipeline_name": pipeline_name,
+                "column_differences": table_differences
+            })
+
         return not differences_found
+
+    def print_differences(self):
+        for table_name, differences in self.table_differences.items():
+            print(f"\nTable '{table_name}' has differences across test cases:")
+            for diff in differences:
+                #print(f"  Between {diff['reference_pipeline']} and {diff['pipeline_name']}:")
+                for column_diff in diff["column_differences"]:
+                    print(f"    Column '{column_diff['column_name']}' differs between:")
+
+                    max_pipeline_length = max(len(status['pipeline']) for status in column_diff["status"])
+
+                    for status in column_diff["status"]:
+                        pipeline = status["pipeline"].ljust(max_pipeline_length + 2)
+                        if "attribute" in status:
+                            attribute = status["attribute"]
+                            value = status["value"]
+                            print(f"      {pipeline} -> {attribute}: {value}")
+                        else:
+                            print(f"      {pipeline} {status['status']}")
 
     def check_table_properties(self, table):
         pass
@@ -713,3 +777,4 @@ if __name__ == "__main__":
     dvpi_directory = r"C:\git_ordner\dvpd\var\dvpi"
     comparison = DVPIcrosscheck(dvpi_directory)
     comparison.run_comparison()
+    comparison.print_differences()
