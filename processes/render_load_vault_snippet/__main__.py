@@ -280,6 +280,13 @@ def generate_lv_snippet_from_dvpi(file_path, tables_to_cleanup):
                     output += get_statement_list_method_definition_for_lnk(table,load_operations_for_table)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
+        if load_operations_for_table.get('table_name').split('_')[-1] == 'dlnk':
+            for table in data['tables']:
+                if table['table_name'] == load_operations_for_table.get('table_name'):
+                    output = get_hash_collision_statement_method_definition_for_lnk(table,load_operations_for_table)
+                    output += get_statement_list_method_definition_for_lnk(table,load_operations_for_table)
+                    output_all += textwrap.indent(output, indent_level_2) + '\n'
+
 
         if load_operations_for_table.get('table_name').split('_')[-1] == 'esat':
             for table in data['tables']:
