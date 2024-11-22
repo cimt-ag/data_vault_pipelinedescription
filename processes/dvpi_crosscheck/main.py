@@ -72,7 +72,8 @@ class DVPIcrosscheck:
                 pipeline_names = [occurrence[0] for occurrence in occurrences]
                 print(f"Table '{table_name}' appears in: {', '.join(pipeline_names)}")
 
-                self.compare_columns_detailed_for_all_pipelines(table_name, occurrences)
+                self.compare_table_across_test_cases(table_name, occurrences)
+
 
     def compare_table_across_test_cases(self, table_name, occurrences):
         """
@@ -102,25 +103,6 @@ class DVPIcrosscheck:
                         "reference_value": ref_value,
                         "comparison_value": table.get(prop)
                     })
-
-    def compare_columns_detailed_for_all_pipelines(self, table_name, occurrences):
-        """
-        Compare columns for all pipelines where the table appears.
-        """
-        pipeline_tables = {pipeline: table["columns"] for pipeline, table in occurrences}
-
-        # Generate all pairwise combinations of pipelines
-        pipelines = list(pipeline_tables.keys())
-        for i in range(len(pipelines)):
-            for j in range(i + 1, len(pipelines)):
-                ref_pipeline = pipelines[i]
-                compare_pipeline = pipelines[j]
-                ref_columns = pipeline_tables[ref_pipeline]
-                compare_columns = pipeline_tables[compare_pipeline]
-
-                self.compare_columns_detailed(
-                    ref_columns, compare_columns, table_name, ref_pipeline, compare_pipeline
-                )
 
     def compare_columns_detailed(self, ref_columns, compare_columns, table_name, reference_pipeline, pipeline_name):
         ref_columns_dict = {col["column_name"]: col for col in ref_columns}
@@ -198,6 +180,7 @@ class DVPIcrosscheck:
                 for column_diff in diff["column_differences"]:
                     print(f"    Column '{column_diff['column_name']}' is in:")
 
+                    # Find the max length for pipeline names to align values
                     max_pipeline_length = max(len(status['pipeline']) for status in column_diff["status"])
 
                     for status in column_diff["status"]:
