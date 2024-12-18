@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-10-02 12:57:22",
+  "compile_timestamp": "2024-10-30 11:10:35",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5008_willibald_shop_wohnort_p1",
   "dvpd_filename": "t5008_willibald_shop_wohnort_p1.dvpd.json",
@@ -31,7 +31,7 @@
           "column_type": "VARCHAR(255)"
         },
         {
-          "column_name": "HK_WOHNORT",
+          "column_name": "HK_KUNDE",
           "is_nullable": false,
           "column_class": "key",
           "column_type": "CHAR(28)"
@@ -53,7 +53,7 @@
       "has_deletion_flag": true,
       "is_effectivity_sat": false,
       "is_enddated": true,
-      "is_multiactive": false,
+      "is_multiactive": true,
       "compare_criteria": "key+current",
       "uses_diff_hash": true,
       "columns": [
@@ -88,11 +88,11 @@
           "column_type": "TIMESTAMP"
         },
         {
-          "column_name": "HK_WOHNORT",
+          "column_name": "HK_KUNDE",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
-          "parent_key_column_name": "HK_WOHNORT",
+          "parent_key_column_name": "HK_KUNDE",
           "parent_table_name": "kunde_hub"
         },
         {
@@ -284,7 +284,7 @@
       ],
       "hashes": [
         {
-          "stage_column_name": "HK_WOHNORT",
+          "stage_column_name": "HK_KUNDE",
           "hash_origin_table": "kunde_hub",
           "column_class": "key",
           "hash_fields": [
@@ -307,7 +307,7 @@
         {
           "stage_column_name": "DIFF_KUNDE_WOHNORT_P1_SAT",
           "hash_origin_table": "kunde_wohnort_p1_msat",
-          "multi_row_content": false,
+          "multi_row_content": true,
           "column_class": "diff_hash",
           "hash_fields": [
             {
@@ -386,10 +386,10 @@
           "hash_mappings": [
             {
               "hash_class": "key",
-              "column_name": "HK_WOHNORT",
+              "column_name": "HK_KUNDE",
               "is_nullable": false,
               "hash_name": "KEY_OF_KUNDE_HUB",
-              "stage_column_name": "HK_WOHNORT"
+              "stage_column_name": "HK_KUNDE"
             }
           ],
           "data_mapping": [
@@ -409,10 +409,10 @@
           "hash_mappings": [
             {
               "hash_class": "parent_key",
-              "column_name": "HK_WOHNORT",
+              "column_name": "HK_KUNDE",
               "is_nullable": false,
               "hash_name": "KEY_OF_KUNDE_HUB",
-              "stage_column_name": "HK_WOHNORT"
+              "stage_column_name": "HK_KUNDE"
             },
             {
               "hash_class": "diff_hash",
@@ -508,7 +508,7 @@
           "column_type": "BOOLEAN"
         },
         {
-          "stage_column_name": "HK_WOHNORT",
+          "stage_column_name": "HK_KUNDE",
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_KUNDE_HUB",

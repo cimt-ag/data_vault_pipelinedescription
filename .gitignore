@@ -11,3 +11,4 @@ experimental/java-dvpi-consumer/target/
 .vscode/launch.json
 .venv/
 *.bak
+resources/

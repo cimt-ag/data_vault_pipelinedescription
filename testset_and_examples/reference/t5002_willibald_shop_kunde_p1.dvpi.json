@@ -1,15 +1,15 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-10-02 12:57:22",
+  "compile_timestamp": "2024-11-13 13:46:04",
   "dvpd_version": "0.6.2",
-  "pipeline_name": "t5000_willibald_shop_kunde_p1",
+  "pipeline_name": "t5002_willibald_shop_kunde_p1",
   "dvpd_filename": "t5002_willibald_shop_kunde_p1.dvpd.json",
   "tables": [
     {
       "table_name": "kunde_hub",
       "table_stereotype": "hub",
-      "schema_name": "rvtl_xxxxxx",
+      "schema_name": "rvlt_willibald_shop",
       "storage_component": "",
       "columns": [
         {
@@ -48,7 +48,7 @@
     {
       "table_name": "kunde_kunde_p1_sat",
       "table_stereotype": "sat",
-      "schema_name": "rvtl_xxxxxx",
+      "schema_name": "rvlt_willibald_shop",
       "storage_component": "",
       "has_deletion_flag": true,
       "is_effectivity_sat": false,
@@ -186,7 +186,7 @@
     {
       "table_name": "vereinspartner_hub",
       "table_stereotype": "hub",
-      "schema_name": "rvtl_xxxxxx",
+      "schema_name": "rvlt_willibald_shop",
       "storage_component": "",
       "columns": [
         {
@@ -225,7 +225,7 @@
     {
       "table_name": "kunde_vereinspartner_lnk",
       "table_stereotype": "lnk",
-      "schema_name": "rvtl_xxxxxx",
+      "schema_name": "rvlt_willibald_shop",
       "storage_component": "",
       "columns": [
         {
@@ -273,7 +273,7 @@
     {
       "table_name": "kunde_vereinspartner_esat",
       "table_stereotype": "sat",
-      "schema_name": "rvtl_xxxxxx",
+      "schema_name": "rvlt_willibald_shop",
       "storage_component": "",
       "has_deletion_flag": true,
       "is_effectivity_sat": true,
@@ -331,7 +331,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "t5000_willibald_shop_kunde_p1_stage",
+          "stage_table_name": "t5002_willibald_shop_kunde_p1_stage",
           "storage_component": ""
         }
       ],

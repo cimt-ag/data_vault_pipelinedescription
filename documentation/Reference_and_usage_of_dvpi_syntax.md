@@ -521,6 +521,9 @@ the column in an existing current record if no new row is inserted. Identificati
 done as follows: hub - hub key, link - link key, sat - parent key, multi active sat - <depends on 
 multiactive historization pattern>, reference table- same set of values in all columns that are not udpated
 on every load (diff hash can be used as shortcut when available)
+
+**is_multi_active_key**
+<br>Indicates that column is part of the multi-active key for a multi-active-satellite.
  
 
 ### deletion_detection_rules[]

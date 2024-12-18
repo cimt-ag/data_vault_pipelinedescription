@@ -182,6 +182,10 @@ module, responsible for calculating the group hash.
 <br>*will be implemented in 6.2.0 *
 <br>Defines the direction of the order of content of this column, for calculation of the group hash for multiactive satellite loading. Possible values are "ASC" and "DESC".
 
+**is_multi_active_key**
+(optional)
+<br>Indicates, that the field is (part) of the multi-active-key of target multi-active-satellite. The multi-active-key must be unique for any given Parent-HashKey (at any point in time).
+
 **relation_names[]**
 (optional) *defines: mapping, data model, load operations*
 <br>*will be replaced by "key_sets[]" in release 0.7.0*
