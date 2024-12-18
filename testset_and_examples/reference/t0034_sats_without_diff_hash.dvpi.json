@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:28",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-10-02 12:57:16",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0034_sats_without_diff_hash",
   "dvpd_filename": "t0034_sats_without_diff_hash.dvpd.json",
@@ -326,7 +326,7 @@
         {
           "storage_component": "PostgresDWH",
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st0034_sats_without_diff_hash"
+          "stage_table_name": "t0034_sats_without_diff_hash_stage"
         }
       ],
       "record_source_name_expression": "dvpd implementation test",
@@ -418,8 +418,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_34_AAA",
-              "hash_name": "KEY_OF_RTJJ_34_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_34_AAA_HUB",
               "stage_column_name": "HK_RTJJ_34_AAA"
             }
           ],
@@ -448,8 +448,8 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_34_AAA",
-              "hash_name": "KEY_OF_RTJJ_34_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_34_AAA_HUB",
               "stage_column_name": "HK_RTJJ_34_AAA"
             }
           ],
@@ -485,8 +485,8 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_34_AAA",
-              "hash_name": "KEY_OF_RTJJ_34_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_34_AAA_HUB",
               "stage_column_name": "HK_RTJJ_34_AAA"
             }
           ],
@@ -515,8 +515,8 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_34_AAA",
-              "hash_name": "KEY_OF_RTJJ_34_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_34_AAA_HUB",
               "stage_column_name": "HK_RTJJ_34_AAA"
             }
           ],
@@ -538,8 +538,8 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_34_AAA",
-              "hash_name": "KEY_OF_RTJJ_34_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_34_AAA_HUB",
               "stage_column_name": "HK_RTJJ_34_AAA"
             }
           ],

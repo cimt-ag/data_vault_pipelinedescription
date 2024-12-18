@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:32",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-10-02 12:57:21",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t3540",
   "dvpd_filename": "t3540.dvpd.json",
@@ -190,7 +190,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st3540",
+          "stage_table_name": "t3540_stage",
           "storage_component": ""
         }
       ],
@@ -321,7 +321,6 @@
           "stage_column_name": "RH_RTJJ_3540_AAA_AAA_TTT_SAT",
           "hash_origin_table": "rtjj_3540_aaa_aaa_ttt_sat",
           "multi_row_content": false,
-          "related_key_hash": "KEY_OF_RTJJ_3540_AAA_AAA_TTT_DLNK",
           "column_class": "diff_hash",
           "hash_fields": [
             {
@@ -346,6 +345,7 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "related_key_hash": "KEY_OF_RTJJ_3540_AAA_AAA_TTT_DLNK",
           "hash_name": "DIFF_OF_RTJJ_3540_AAA_AAA_TTT_SAT"
         }
       ],
@@ -358,8 +358,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_3540_AAA",
-              "hash_name": "KEY_OF_RTJJ_3540_AAA_HUB__FOR__TTT",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_3540_AAA_HUB__FOR__TTT",
               "stage_column_name": "HK_RTJJ_3540_AAA_TTT"
             }
           ],
@@ -381,8 +381,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_3540_AAA",
-              "hash_name": "KEY_OF_RTJJ_3540_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_3540_AAA_HUB",
               "stage_column_name": "HK_RTJJ_3540_AAA"
             }
           ],
@@ -404,22 +404,22 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_RTJJ_3540_AAA",
-              "hash_name": "KEY_OF_RTJJ_3540_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_3540_AAA_HUB",
               "stage_column_name": "HK_RTJJ_3540_AAA"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_RTJJ_3540_AAA_TTT",
-              "hash_name": "KEY_OF_RTJJ_3540_AAA_HUB__FOR__TTT",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_3540_AAA_HUB__FOR__TTT",
               "stage_column_name": "HK_RTJJ_3540_AAA_TTT"
             },
             {
               "hash_class": "key",
               "column_name": "LK_RTJJ_3540_AAA_AAA_TTT",
-              "hash_name": "KEY_OF_RTJJ_3540_AAA_AAA_TTT_DLNK",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_3540_AAA_AAA_TTT_DLNK",
               "stage_column_name": "LK_RTJJ_3540_AAA_AAA_TTT"
             }
           ],
@@ -448,15 +448,15 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_3540_AAA_AAA_TTT",
-              "hash_name": "KEY_OF_RTJJ_3540_AAA_AAA_TTT_DLNK",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_3540_AAA_AAA_TTT_DLNK",
               "stage_column_name": "LK_RTJJ_3540_AAA_AAA_TTT"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "RH_RTJJ_3540_AAA_AAA_TTT_SAT",
-              "hash_name": "DIFF_OF_RTJJ_3540_AAA_AAA_TTT_SAT",
               "is_nullable": false,
+              "hash_name": "DIFF_OF_RTJJ_3540_AAA_AAA_TTT_SAT",
               "stage_column_name": "RH_RTJJ_3540_AAA_AAA_TTT_SAT"
             }
           ],

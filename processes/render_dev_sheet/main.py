@@ -251,7 +251,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
         raise MissingFieldError("The field 'parse_sets' is missing in the DVPI.")
 
     # Extract tables and stage tables
-    tables = dvpi.get('tables', [])
+
     parse_sets = dvpi.get('parse_sets', [])
     tables=dvpi['tables']
     report_file_name = dvpi['pipeline_name']+".devsheet.txt"
@@ -268,17 +268,31 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
             g_report_file.write("------------------------------------------------------\n")
             g_report_file.write(f"record source:  {parse_set['record_source_name_expression']}\n\n")
 
-
+            if 'json_array_path' in dvpi['data_extraction']:
+                g_report_file.write(f"Json array path: {dvpi['data_extraction']['json_array_path']}\n\n")
 
             g_report_file.write(f"Source fields:\n")
             max_name_length = 0
+            max_jsonpath_length = 0
             fields=parse_set['fields']
+
             for field in fields:
                 if len(field['field_name']) > max_name_length:
                     max_name_length = len(field['field_name'])
-            for field in parse_set['fields']:
+                if "json_path" in field and len(field['json_path']) > max_jsonpath_length:
+                    max_jsonpath_length = len(field['json_path'])
+
+            for field in fields:
+                if "json_path" in field:
+                    if "json_loop_level" in field:
+                        g_report_file.write(
+                            f"   {field['json_loop_level']}. {field['json_path'].ljust(max_jsonpath_length)}->")
+                    else:
+                        g_report_file.write(
+                            f"       {field['json_path'].ljust(max_jsonpath_length)}->")
                 g_report_file.write(
                     f"       {field['field_name'].ljust(max_name_length)}  {field['field_type']}\n")
+
 
             g_report_file.write("\n\n------------------------------------------------------\n")
             g_report_file.write(f"Table List:\n")
@@ -434,8 +448,13 @@ if __name__ == '__main__':
     else:
         stage_column_naming_rule=args.stage_column_naming_rule
 
-    dvpi_default_directory = Path(params['dvpi_default_directory'], fallback=None)
-    documentation_directory = Path(params['documentation_directory'], fallback=None)
+    dvpi_default_directory = Path(params['dvpi_default_directory'])
+    documentation_directory = Path(params['documentation_directory'])
+
+    # create target directory
+    if not os.path.isdir(documentation_directory):
+        print(f"creating dir: "+documentation_directory.name)
+        documentation_directory.mkdir(parents=True)
     
     dvpi_file_name=args.dvpi_file_name
     if dvpi_file_name == '@youngest':

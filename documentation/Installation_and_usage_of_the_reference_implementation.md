@@ -240,7 +240,8 @@ For the given table, it determines all columns including their attribution to be
 Also it measures some indicators about cardinality and completeness for all columns.
 
 As a result it writes dvpd a file with all fields, a simple Data Vault model (Hub+sat/link/hub) and 
-uses a best guess to map the fields to the model. THe field analysis data is also provided in the dvpd.
+uses a best guess to map the fields to the model. The field analysis data is also provided in the dvpd.
+Additionally it generates a summary of the data profiling as simple human readable text file.
 
 The dvpd generator is started on the command line with:
 
@@ -249,8 +250,8 @@ The dvpd generator is started on the command line with:
 options:
   - -h, --help            show this help message and exit
   - --dvpdc_ini_file <filename>   Name of the ini file of dvpdc
-  - --connection_ini_file <filename> Name of the ini file with the db connection properties
-  -  --connection_ini_section <section name> Name of the section of parameters in the connection file 
+  - --connection_ini_file <filename> Name of the ini file with the db connection properties of the source
+  - --connection_ini_section <section name> Name of the section of parameters in the connection file 
  
 Settings read from dvpdc.ini file:
 - dvpd_generator_directory - Directory, the result file will be written to

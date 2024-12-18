@@ -1,6 +1,6 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.1
-Compile time: 2024-06-13 11:57:30
+Compiler Version 0.6.2
+Compile time: 2024-10-02 12:57:20
 Compiling t1702_r_topo_link_3_hubs_1_common.dvpd.json
 
 Writing DVPI to /git_ordner/dvpd/var/dvpi/t1702_r_topo_link_3_hubs_1_common.dvpi.json

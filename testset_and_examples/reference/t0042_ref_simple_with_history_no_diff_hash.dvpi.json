@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:28",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2024-10-02 12:57:16",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0042_ref_simple_with_history_no_diff_hash",
   "dvpd_filename": "t0042_ref_simple_with_history_no_diff_hash.dvpd.json",
@@ -81,7 +81,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st0042_ref_simple_with_history_no_diff_hash",
+          "stage_table_name": "t0042_ref_simple_with_history_no_diff_hash_stage",
           "storage_component": ""
         }
       ],
