@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-10-02 12:57:22",
+  "compile_timestamp": "2024-10-30 11:10:35",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5000_willibald_shop_bestellung_p1",
   "dvpd_filename": "t5000_willibald_shop_bestellung_p1.dvpd.json",
@@ -40,7 +40,7 @@
           "column_name": "BESTELLUNGID",
           "is_nullable": true,
           "column_class": "business_key",
-          "column_type": "BIGINT ",
+          "column_type": "INTEGER",
           "prio_for_column_position": 50000
         }
       ]
@@ -105,15 +105,7 @@
           "column_name": "BESTELLDATUM",
           "is_nullable": true,
           "column_class": "content",
-          "column_type": "DATE ",
-          "exclude_from_change_detection": false,
-          "prio_for_column_position": 50000
-        },
-        {
-          "column_name": "RABATT",
-          "is_nullable": true,
-          "column_class": "content",
-          "column_type": "NUMERIC(5,2) ",
+          "column_type": "DATE",
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         },
@@ -121,7 +113,15 @@
           "column_name": "WUNSCHDATUM",
           "is_nullable": true,
           "column_class": "content",
-          "column_type": "DATE ",
+          "column_type": "DATE",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "RABATT",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "DECIMAL(8,3)",
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
         }
@@ -161,7 +161,7 @@
           "column_name": "KUNDEID",
           "is_nullable": true,
           "column_class": "business_key",
-          "column_type": "CHAR(13) ",
+          "column_type": "INTEGER",
           "prio_for_column_position": 50000
         }
       ]
@@ -303,7 +303,7 @@
           "column_name": "LIEFERADRID",
           "is_nullable": true,
           "column_class": "business_key",
-          "column_type": "INTEGER ",
+          "column_type": "INTEGER",
           "prio_for_column_position": 50000
         }
       ]
@@ -341,12 +341,12 @@
           "parent_table_name": "bestellung_hub"
         },
         {
-          "column_name": "HK_KUNDE",
+          "column_name": "HK_LIEFERADRESSE",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
-          "parent_key_column_name": "HK_KUNDE",
-          "parent_table_name": "kunde_hub"
+          "parent_key_column_name": "HK_LIEFERADRESSE",
+          "parent_table_name": "lieferadresse_hub"
         },
         {
           "column_name": "LK_BESTELLUNG_LIEFERADRESSE",
@@ -427,70 +427,40 @@
       "record_source_name_expression": "willibald_shop_p1.bestellung",
       "fields": [
         {
-          "field_type": "bigint ",
-          "is_primary_key": "True",
-          "is_foreign_key": "False",
-          "cardinality": "800",
-          "duplicates": "0",
-          "null_values": "0",
+          "field_type": "integer",
           "field_position": 1,
           "needs_encryption": false,
           "field_name": "BESTELLUNGID"
         },
         {
-          "field_type": "CHAR(13) ",
-          "is_primary_key": "False",
-          "is_foreign_key": "True",
-          "cardinality": "300",
-          "duplicates": "500",
-          "null_values": "0",
+          "field_type": "integer",
           "field_position": 2,
           "needs_encryption": false,
           "field_name": "KUNDEID"
         },
         {
-          "field_type": "integer ",
-          "is_primary_key": "False",
-          "is_foreign_key": "False",
-          "cardinality": "800",
-          "duplicates": "0",
-          "null_values": "0",
+          "field_type": "integer",
           "field_position": 3,
           "needs_encryption": false,
           "field_name": "ALLGLIEFERADRID"
         },
         {
-          "field_type": "date ",
-          "is_primary_key": "False",
-          "is_foreign_key": "False",
-          "cardinality": "7",
-          "duplicates": "793",
-          "null_values": "0",
+          "field_type": "DATE",
           "field_position": 4,
           "needs_encryption": false,
           "field_name": "BESTELLDATUM"
         },
         {
-          "field_type": "NUMERIC(5,2) ",
-          "is_primary_key": "False",
-          "is_foreign_key": "False",
-          "cardinality": "7",
-          "duplicates": "793",
-          "null_values": "0",
+          "field_type": "DATE",
           "field_position": 5,
           "needs_encryption": false,
-          "field_name": "RABATT"
+          "field_name": "WUNSCHDATUM"
         },
         {
-          "field_type": "date ",
-          "is_primary_key": "False",
-          "is_foreign_key": "False",
-          "cardinality": "21",
-          "duplicates": "779",
-          "null_values": "0",
+          "field_type": "DECIMAL(8,3)",
           "field_position": 6,
           "needs_encryption": false,
-          "field_name": "WUNSCHDATUM"
+          "field_name": "RABATT"
         }
       ],
       "hashes": [
@@ -599,10 +569,10 @@
               "parent_declaration_position": 1
             },
             {
-              "field_name": "KUNDEID",
+              "field_name": "ALLGLIEFERADRID",
               "prio_in_key_hash": 0,
-              "field_target_table": "kunde_hub",
-              "field_target_column": "KUNDEID",
+              "field_target_table": "lieferadresse_hub",
+              "field_target_column": "LIEFERADRID",
               "parent_declaration_position": 2
             }
           ],
@@ -629,18 +599,18 @@
               "field_target_column": "BESTELLDATUM"
             },
             {
-              "field_name": "RABATT",
-              "prio_in_diff_hash": 0,
-              "prio_for_row_order": 50000,
-              "field_target_table": "bestellung_p1_sat",
-              "field_target_column": "RABATT"
-            },
-            {
               "field_name": "WUNSCHDATUM",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "bestellung_p1_sat",
               "field_target_column": "WUNSCHDATUM"
+            },
+            {
+              "field_name": "RABATT",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "bestellung_p1_sat",
+              "field_target_column": "RABATT"
             }
           ],
           "column_type": "CHAR(28)",
@@ -707,18 +677,18 @@
               "stage_column_name": "BESTELLDATUM"
             },
             {
-              "column_name": "RABATT",
-              "field_name": "RABATT",
-              "column_class": "content",
-              "is_nullable": true,
-              "stage_column_name": "RABATT"
-            },
-            {
               "column_name": "WUNSCHDATUM",
               "field_name": "WUNSCHDATUM",
               "column_class": "content",
               "is_nullable": true,
               "stage_column_name": "WUNSCHDATUM"
+            },
+            {
+              "column_name": "RABATT",
+              "field_name": "RABATT",
+              "column_class": "content",
+              "is_nullable": true,
+              "stage_column_name": "RABATT"
             }
           ]
         },
@@ -824,10 +794,10 @@
             },
             {
               "hash_class": "parent_key_2",
-              "column_name": "HK_KUNDE",
+              "column_name": "HK_LIEFERADRESSE",
               "is_nullable": false,
-              "hash_name": "KEY_OF_KUNDE_HUB",
-              "stage_column_name": "HK_KUNDE"
+              "hash_name": "KEY_OF_LIEFERADRESSE_HUB",
+              "stage_column_name": "HK_LIEFERADRESSE"
             },
             {
               "hash_class": "key",
@@ -925,7 +895,7 @@
           "stage_column_class": "data",
           "field_name": "BESTELLUNGID",
           "is_nullable": true,
-          "column_type": "bigint ",
+          "column_type": "integer",
           "column_classes": [
             "business_key"
           ]
@@ -935,7 +905,7 @@
           "stage_column_class": "data",
           "field_name": "KUNDEID",
           "is_nullable": true,
-          "column_type": "CHAR(13) ",
+          "column_type": "integer",
           "column_classes": [
             "business_key"
           ]
@@ -945,7 +915,7 @@
           "stage_column_class": "data",
           "field_name": "ALLGLIEFERADRID",
           "is_nullable": true,
-          "column_type": "integer ",
+          "column_type": "integer",
           "column_classes": [
             "business_key"
           ]
@@ -955,17 +925,7 @@
           "stage_column_class": "data",
           "field_name": "BESTELLDATUM",
           "is_nullable": true,
-          "column_type": "date ",
-          "column_classes": [
-            "content"
-          ]
-        },
-        {
-          "stage_column_name": "RABATT",
-          "stage_column_class": "data",
-          "field_name": "RABATT",
-          "is_nullable": true,
-          "column_type": "NUMERIC(5,2) ",
+          "column_type": "DATE",
           "column_classes": [
             "content"
           ]
@@ -975,7 +935,17 @@
           "stage_column_class": "data",
           "field_name": "WUNSCHDATUM",
           "is_nullable": true,
-          "column_type": "date ",
+          "column_type": "DATE",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "RABATT",
+          "stage_column_class": "data",
+          "field_name": "RABATT",
+          "is_nullable": true,
+          "column_type": "DECIMAL(8,3)",
           "column_classes": [
             "content"
           ]

@@ -397,12 +397,18 @@ def create_columns_from_field_mapping(field_entry, field_position):
         if not table_name in g_table_dict:
             register_error(f"Can't map field {field_name} to table {table_name}. Table is not declared in the model")
             continue
+        table_entry=g_table_dict[table_name]
         column_map_entry={}
         column_name = table_mapping.get('column_name',field_name).upper()  # defaults to field name
         column_map_entry['field_name']=field_name
         column_map_entry['field_position']=field_position
         column_map_entry['column_type'] = table_mapping.get('column_type',field_entry['field_type']).upper()  # defaults to field type
         column_map_entry['use_as_key_hash'] = table_mapping.get('use_as_key_hash',False)  # defaults to False
+        if 'is_multi_active_key' in table_mapping:
+            if table_entry['table_stereotype'] == 'sat':
+                column_map_entry['is_multi_active_key'] = table_mapping.get('is_multi_active_key') 
+            else:
+                register_error("CFM-1: 'is_multi_avtive_key' property declared for non-sat entity. (property can only be declared if target is a multi-active satellite)")
         if not column_map_entry['use_as_key_hash'] :
             column_map_entry['row_order_direction'] = table_mapping.get('row_order_direction','ASC')  # defaults to ASC
             column_map_entry['exclude_from_key_hash'] = table_mapping.get('exclude_from_key_hash',False)  # defaults to False
@@ -426,7 +432,6 @@ def create_columns_from_field_mapping(field_entry, field_position):
         # announced property: hash_cleansing_rules
 
         # finally add this field mapping to the columns array of the table in g_table_dict
-        table_entry=g_table_dict[table_name]
         if not column_map_entry['use_as_key_hash']:
             if not 'data_columns' in table_entry:
                 table_entry['data_columns'] = {}
@@ -557,6 +562,11 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
             column_properties['column_class'] = 'content_untracked'
         else:
             column_properties['column_class']='content'
+        if 'is_multi_active_key' in first_field:
+            if 'is_multiactive' in table_entry and table_entry['is_multiactive'] == True:
+                column_properties['is_multi_active_key'] = first_field['is_multi_active_key']
+            else:
+                register_error(f"CDP-1: 'is_multi_active_key' property can only be used when target table is a multi-active satellite")
         column_properties['field_mapping_count']=len(column_properties['field_mappings'])
         for property_name in ['column_type','column_content_comment','prio_for_column_position','prio_for_row_order','row_order_direction','exclude_from_change_detection','prio_in_diff_hash']:
             column_properties[property_name]=first_field[property_name]
@@ -598,7 +608,7 @@ def derive_load_operations():
 
     # add load operations dict to every table, so we dont have to care about existence in the following code
     for table_name,table_entry in g_table_dict.items():
-        load_operations={}
+        load_operations ={}
         table_entry['load_operations'] = load_operations
 
     set_load_operations_for_reference_tables()
@@ -608,7 +618,11 @@ def derive_load_operations():
     pull_satellite_load_operations_into_links()
     pull_hub_load_operations_into_links()
     pull_parent_operations_into_sat()
+
     #todo final_load_operation_crosscheck()
+
+
+
 
 def set_load_operations_for_reference_tables():
     # ref tables always only have  "/" operation
@@ -1329,7 +1343,7 @@ def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, mappin
 
 
 def copy_data_column_properties_to_operation_mapping(data_mapping_dict,data_column):
-    operation_relevant_column_properties=['column_class','exclude_from_change_detection','prio_for_row_order','prio_in_diff_hash','exclude_from_key_hash','prio_in_key_hash','update_on_every_load']
+    operation_relevant_column_properties=['column_class','exclude_from_change_detection','prio_for_row_order','prio_in_diff_hash','exclude_from_key_hash','prio_in_key_hash','update_on_every_load','is_multi_active_key']
     for relevant_key in operation_relevant_column_properties:
         if relevant_key in data_column:
             data_mapping_dict[relevant_key]=data_column[relevant_key]
@@ -1535,6 +1549,8 @@ def assemble_dvpi_data_mappings(load_operation_entry):
                                    'is_nullable': True,
                                     'stage_column_name':data_mapping_dict_entry['field_name'] # currently it is 1:1 naming
                                     }
+        if 'is_multi_active_key' in data_mapping_dict_entry:
+            dvpi_data_mapping_entry['is_multi_active_key'] = data_mapping_dict_entry['is_multi_active_key']
         dvpi_data_mappings.append(dvpi_data_mapping_entry)
     return dvpi_data_mappings
 
@@ -1829,6 +1845,11 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
     check_intertable_structure_constraints()
     if g_error_count > 0:
         raise DvpdcError
+
+    # remove any load operations from "is_only_structural_element" tables
+    for table_name,table_entry in g_table_dict.items():
+        if table_entry['is_only_structural_element']:
+            table_entry['load_operations'] = {}
 
     assemble_dvpi(dvpd_object,dvpd_filename)
     #print_dvpi_document()

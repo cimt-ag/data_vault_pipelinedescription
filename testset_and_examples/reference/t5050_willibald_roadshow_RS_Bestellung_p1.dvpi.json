@@ -1,9 +1,9 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-10-02 12:57:22",
+  "compile_timestamp": "2024-11-11 11:33:54",
   "dvpd_version": "0.6.2",
-  "pipeline_name": "t5050_willibald_roadshow_RS_Bestellung_p1",
+  "pipeline_name": "t5050_willibald_roadshow_rs_bestellung_p1",
   "dvpd_filename": "t5050_willibald_roadshow_RS_Bestellung_p1.dvpd.json",
   "tables": [
     {
@@ -401,11 +401,11 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "t5050_willibald_roadshow_RS_Bestellung_p1_stage",
+          "stage_table_name": "t5050_willibald_roadshow_rs_bestellung_p1_stage",
           "storage_component": ""
         }
       ],
-      "record_source_name_expression": "willibald_roadshow_tag1.RS_Bestellung",
+      "record_source_name_expression": "willibald_roadshow_tag1.rs_bestellung",
       "fields": [
         {
           "field_type": "VARCHAR(128) ",

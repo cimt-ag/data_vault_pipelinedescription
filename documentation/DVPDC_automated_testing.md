@@ -121,7 +121,7 @@ The following number ranges are defined (a legacy from the proof the development
 | 00               | Compiler must complain about missing essential syntax elements                                       |
 | 01               | Compiler must complain about bad model relations                                                     |
 | 02               | Compiler must complain about bad fiels mapping                                                       |
-| 03               | Compiler must complain about sattlite specifc violations                                             |
+| 03               | Compiler must complain about satellite specifc violations                                             |
 | **20 - 39**      | **Varations of basic data vault modelling**                                                          |
 | **40 - 49**      | Reference tables**                                                                                   |
 | **50 - 59**      | **multiple features in many variations, used in compiler development**                               |
@@ -129,13 +129,13 @@ The following number ranges are defined (a legacy from the proof the development
 | **90 - 99**      | **model profile usage**                                                                              |
 | **100-999**      | see  [catalog_of_field_mappings_in_relations.md](catalog_of_field_mappings_in_relations.md)          |                                                        |
 | **1000-2999**    | **Collection without central topic**                                                                 |
-| **300x-499x**    | **process generation variations** with x = 0 for basic tests and x>0 for violations of comiler rules |
+| **300x-499x**    | **process generation variations** with x = 0 for basic tests and x>0 for violations of compiler rules |
 | **5000-5099**    | **DDVUG Test Usecase "Gartenscenter** willibald"                                                       |
 | **7xxx-9xxx**    | **Compiler rule checks, based on cases in 100-999. Using the same 3 digit numbers**                  |
 |                  |                                                                                                      |
 
 ## Collection without central topic
-Test numbers 1000 to 2999 canbe used for singular or very small groups of tests, for any topic, not targeted by the big
+Test numbers 1000 to 2999 can be used for singular or very small groups of tests, for any topic, not targeted by the big
 test fields. It is requiered to declare the test target in the file name.
 
 Some smaller groups are listed here

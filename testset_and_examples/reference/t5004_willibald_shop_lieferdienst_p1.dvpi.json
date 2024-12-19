@@ -1,9 +1,9 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-10-02 12:57:22",
+  "compile_timestamp": "2024-10-30 11:10:35",
   "dvpd_version": "0.6.2",
-  "pipeline_name": "willibald_shop_p1_lieferdienst_px",
+  "pipeline_name": "t5004_willibald_shop_p1_lieferdienst_p1",
   "dvpd_filename": "t5004_willibald_shop_lieferdienst_p1.dvpd.json",
   "tables": [
     {
@@ -184,7 +184,8 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "willibald_shop_p1_lieferdienst_px_stage",
+          "stage_column_name": "t5004_willibald_shop_p1_lieferdienst_p1",
+          "stage_table_name": "t5004_willibald_shop_p1_lieferdienst_p1_stage",
           "storage_component": ""
         }
       ],

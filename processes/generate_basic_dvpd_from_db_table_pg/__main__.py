@@ -341,6 +341,9 @@ def main(schema_name, table_name, ini_file, db_connection, target_schema_tag=Non
     with open(dvpd_file_path, 'w') as file:
         file.write(dvpd_text)
 
+    print (f"generated dvpd {dvpd_filename}")
+
+
     # create human readable data profile report
     report=[]
     report.append(f'Data profile of "{schema_name}.{table_name}" at {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')
@@ -373,7 +376,7 @@ def main(schema_name, table_name, ini_file, db_connection, target_schema_tag=Non
     with open(report_file_path, 'w') as file:
         file.write(report_text)
 
-    print (f"Completed rendering documentation from {dvpd_file_path.name}")
+    print (f"Created data profile in {report_filename}")
 
 
 

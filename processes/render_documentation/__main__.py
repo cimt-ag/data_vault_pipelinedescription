@@ -24,15 +24,19 @@ def parse_json_file(file_path):
 def is_json_true(json):
     return json==True or json=="true" or json=="True"
 
-def parse_target(target):
+def render_target(target,field_name,field_text):
 #    print(f"parse({target}):")
     result = target["table_name"]
-    
-    result += f".[{target['column_name']}]" if 'column_name' in target else ""
+
+    if 'column_name' in target:
+        result += f".[{target['column_name']}]"
+    elif field_name.upper() != field_text.upper():
+        result += f".[{field_name.upper()}]"
 
     in_brackets = []
     if 'exclude_from_key_hash' in target and is_json_true(target['exclude_from_key_hash']):
-        # print(f"exclude_from_key_hash: {target['exclude_from_key_hash']}")  
+        # print(f"exclude_from_key_hash: {target['exclude_from_key_hash']}")
+
         in_brackets.append("not in key hash") 
     if 'exclude_from_change_detection' in target and is_json_true(target['exclude_from_change_detection']):
         in_brackets.append("not in comparison")
@@ -56,6 +60,7 @@ def parse_target(target):
 def create_documentation(dvpd,column_labels):
     pipeline_name=dvpd["pipeline_name"]
     fields= dvpd["fields"]
+    with_json_parsing='json_array_path' in dvpd['data_extraction']
     record_source=dvpd["record_source_name_expression"]
     header_text=column_labels.split(',')
     if len(header_text)<3:
@@ -73,6 +78,8 @@ def create_documentation(dvpd,column_labels):
     html += "<body>\n"
     html += f"<h1>Pipeline: {pipeline_name}\n</h1>"
     html += f"<p>Record source: {record_source}\n</p>"
+    if with_json_parsing:
+        html += f"<p>Json loop path: {dvpd['data_extraction']['json_array_path']}\n</p>"
     html += "   <table>\n"
     html += "       <tr>\n"
     html += f"           <th>{header_text[0]}</th>\n"
@@ -80,19 +87,28 @@ def create_documentation(dvpd,column_labels):
     html += f"           <th>{header_text[2]}</th>\n"
     html += "       </tr>\n"
     for field in fields:
-        field_name = field["field_name"]
+        if with_json_parsing:
+            json_loop_level_prefix=''
+            if 'json_loop_level' in field:
+                json_loop_level_prefix = f"{field['json_loop_level']}. "
+            if 'json_path' in field:
+                field_text=json_loop_level_prefix+field['json_path']
+            else:
+                field_text = json_loop_level_prefix + field['field_name']
+        else:
+            field_text = field["field_name"]
         field_type = field["field_type"]
         targets = field["targets"]
 
         html += "       <tr>\n"
-        html += f"           <td>{field_name}</td>\n"
+        html += f"           <td>{field_text}</td>\n"
         html += f"           <td>{field_type}</td>\n"
         if len(targets) == 1:
-            html += f"           <td>{parse_target(targets[0])}</td>\n"
+            html += f"           <td>{render_target(targets[0],field['field_name'],field_text)}</td>\n"
         else:
             t = []
             for target in targets:
-                t.append(parse_target(target))
+                t.append(render_target(target,field["field_name"],field_text))
             html += "               <td>" + ",<br/> ".join(t) + "</td>\n"
         html += "       </tr>\n"
 
@@ -129,7 +145,7 @@ def main(dvpd_filename,
         with open(out_file_Path, "w") as file:
             file.write(html)
     else:
-        print(fields)
+        print(dvpd['fields'])
 
     print (f"Completed rendering documentation from {dvpd_file_path.name}")
 
