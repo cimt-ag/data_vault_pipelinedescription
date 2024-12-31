@@ -44,8 +44,25 @@ class DVPIcrosscheck:
                             self.pipeline_data[table_name][column_name][key][pipeline_name] = value
 
     def analyze_conflicts(self):
-        """Identify conflicts in properties and presence of columns across pipelines."""
+        """Identify conflicts in properties and presence of tables and columns across pipelines."""
+        pipelines_total = set(self.pipeline_names.values())
+
         for table_name, columns in self.pipeline_data.items():
+            # Check if the table is available in at least two pipelines
+            table_presence = {
+                pipeline: "declared" if table_name in self.pipeline_data else "missing"
+                for pipeline in pipelines_total
+            }
+            declared_count = list(table_presence.values()).count("declared")
+
+            if declared_count < 2:  # Skip analysis if the table is not in at least two pipelines
+                if table_name not in self.conflict_report:
+                    self.conflict_report[table_name] = {}
+                self.conflict_report[table_name]["table_presence"] = table_presence
+                self.total_differences += 1
+                continue
+
+            # Analyze column-level conflicts if the table is available in two or more pipelines
             for column_name, properties in columns.items():
                 # Analyze property conflicts
                 for prop, values in properties.items():
@@ -59,9 +76,7 @@ class DVPIcrosscheck:
                         self.total_differences += 1
 
                 # Analyze column presence across pipelines
-                pipelines_total = set(self.pipeline_names.values())
                 pipelines_with_column = set()
-
                 for prop, pipelines in properties.items():
                     pipelines_with_column.update(pipelines.keys())
 
@@ -72,7 +87,7 @@ class DVPIcrosscheck:
                         if column_name not in self.conflict_report[table_name]:
                             self.conflict_report[table_name][column_name] = {}
                         self.conflict_report[table_name][column_name]["presence"] = {
-                            self.pipeline_names.get(pipeline, pipeline): "declared" if pipeline in pipelines_with_column else "missing"
+                            pipeline: "declared" if pipeline in pipelines_with_column else "missing"
                             for pipeline in pipelines_total
                         }
                         self.total_differences += 1
@@ -82,7 +97,13 @@ class DVPIcrosscheck:
         print("\nConflicts across pipelines:")
         for table_name, columns in self.conflict_report.items():
             print(f"\nTable '{table_name}' has differences across pipelines:")
+            if "table_presence" in columns:
+                print(f"  Table presence is:")
+                for pipeline, status in columns["table_presence"].items():
+                    print(f"      {status} : {pipeline}")
             for column_name, properties in columns.items():
+                if column_name == "table_presence":
+                    continue
                 if "presence" in properties:
                     presence_values = list(properties["presence"].values())
                     most_common_value = max(set(presence_values), key=presence_values.count)
