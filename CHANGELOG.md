@@ -1,5 +1,5 @@
 # release 0.6.2
-
+ 
 ### major features
 - added example of DVPI to DBT Model Generator
 - Added model consistency check process over all dvpi
