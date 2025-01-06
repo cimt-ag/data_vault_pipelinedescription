@@ -1366,12 +1366,15 @@ def check_intertable_structure_constraints():
 def assemble_dvpi(dvpd_object, dvpd_filename):
     global g_dvpi_document
 
+    pipeline_revision_tag=dvpd_object.get('pipeline_revision_tag','--none--')
+
     # add meta declaration and dpvd meta data
     g_dvpi_document={'dvdp_compiler':'dvpdc reference compiler,  release 0.6.2',
                      'dvpi_version': '0.6.2',
                      'compile_timestamp':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'dvpd_version':dvpd_object['dvpd_version'],
                      'pipeline_name':dvpd_object['pipeline_name'],
+                     'pipeline_revision_tag':pipeline_revision_tag,
                      'dvpd_filename':dvpd_filename}
 
     # add tables
