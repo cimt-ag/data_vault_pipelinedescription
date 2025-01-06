@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 18:46:30",
+  "compile_timestamp": "2025-01-06 19:00:17",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5001_willibald_shop_kategorie_p1",
   "pipeline_revision_tag": "--none--",
@@ -367,7 +367,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_KATEGORIE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KATEGORIE_HUB",
               "stage_column_name": "HK_KATEGORIE"
             }
@@ -377,7 +376,6 @@
               "column_name": "KATID",
               "field_name": "KATID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "KATID"
             }
           ]
@@ -390,7 +388,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_KATEGORIE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KATEGORIE_HUB__FOR__OBERKATEGORIE",
               "stage_column_name": "HK_KATEGORIE_OBERKATEGORIE"
             }
@@ -400,7 +397,6 @@
               "column_name": "KATID",
               "field_name": "OBERKATID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "OBERKATID"
             }
           ]
@@ -413,14 +409,12 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_KATEGORIE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KATEGORIE_HUB",
               "stage_column_name": "HK_KATEGORIE"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "DIFF_KATEGORIE_KATEGORIE_P1_SAT",
-              "is_nullable": false,
               "hash_name": "DIFF_OF_KATEGORIE_KATEGORIE_P1_SAT",
               "stage_column_name": "DIFF_KATEGORIE_KATEGORIE_P1_SAT"
             }
@@ -430,7 +424,6 @@
               "column_name": "NAME",
               "field_name": "NAME",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "NAME"
             }
           ]
@@ -443,21 +436,18 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_KATEGORIE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KATEGORIE_HUB",
               "stage_column_name": "HK_KATEGORIE"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_KATEGORIE_OBERKATEGORIE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KATEGORIE_HUB__FOR__OBERKATEGORIE",
               "stage_column_name": "HK_KATEGORIE_OBERKATEGORIE"
             },
             {
               "hash_class": "key",
               "column_name": "LK_KATEGORIE_KATEGORIE_OBERKATEGORIE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KATEGORIE_OBERKATEGORIE_LNK",
               "stage_column_name": "LK_KATEGORIE_KATEGORIE_OBERKATEGORIE"
             }
@@ -471,7 +461,6 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_KATEGORIE_KATEGORIE_OBERKATEGORIE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KATEGORIE_OBERKATEGORIE_LNK",
               "stage_column_name": "LK_KATEGORIE_KATEGORIE_OBERKATEGORIE"
             }

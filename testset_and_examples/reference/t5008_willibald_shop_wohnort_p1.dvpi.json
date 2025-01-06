@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 18:46:30",
+  "compile_timestamp": "2025-01-06 19:00:17",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5008_willibald_shop_wohnort_p1",
   "pipeline_revision_tag": "--none--",
@@ -388,7 +388,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KUNDE_HUB",
               "stage_column_name": "HK_KUNDE"
             }
@@ -398,7 +397,6 @@
               "column_name": "KUNDEID",
               "field_name": "KUNDEID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "KUNDEID"
             }
           ]
@@ -411,14 +409,12 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KUNDE_HUB",
               "stage_column_name": "HK_KUNDE"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "DIFF_KUNDE_WOHNORT_P1_SAT",
-              "is_nullable": false,
               "hash_name": "DIFF_OF_KUNDE_WOHNORT_P1_MSAT",
               "stage_column_name": "DIFF_KUNDE_WOHNORT_P1_SAT"
             }
@@ -428,7 +424,6 @@
               "column_name": "VON",
               "field_name": "VON",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "VON",
               "is_multi_active_key": true
             },
@@ -436,14 +431,12 @@
               "column_name": "BIS",
               "field_name": "BIS",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "BIS"
             },
             {
               "column_name": "HAUSNUMMER",
               "field_name": "HAUSNUMMER",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "HAUSNUMMER",
               "is_multi_active_key": true
             },
@@ -451,14 +444,12 @@
               "column_name": "ORT",
               "field_name": "ORT",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "ORT"
             },
             {
               "column_name": "PLZ",
               "field_name": "PLZ",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "PLZ",
               "is_multi_active_key": true
             },
@@ -466,7 +457,6 @@
               "column_name": "STRASSE",
               "field_name": "STRASSE",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "STRASSE",
               "is_multi_active_key": true
             },
@@ -474,14 +464,12 @@
               "column_name": "ADRESSZUSATZ",
               "field_name": "ADRESSZUSATZ",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "ADRESSZUSATZ"
             },
             {
               "column_name": "LAND",
               "field_name": "LAND",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "LAND",
               "is_multi_active_key": true
             }

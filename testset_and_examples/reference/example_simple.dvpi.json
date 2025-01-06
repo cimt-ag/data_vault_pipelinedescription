@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 18:46:29",
+  "compile_timestamp": "2025-01-06 19:00:16",
   "dvpd_version": "0.6.0",
   "pipeline_name": "example_simple",
   "pipeline_revision_tag": "--none--",
@@ -238,7 +238,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_PERSON",
-              "is_nullable": false,
               "hash_name": "KEY_OF_PERSON_HUB",
               "stage_column_name": "HK_PERSON"
             }
@@ -248,14 +247,12 @@
               "column_name": "COMPANY",
               "field_name": "COMPANY",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "COMPANY"
             },
             {
               "column_name": "PERSON_ID",
               "field_name": "PERSON_ID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "PERSON_ID"
             }
           ]
@@ -268,14 +265,12 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_PERSON",
-              "is_nullable": false,
               "hash_name": "KEY_OF_PERSON_HUB",
               "stage_column_name": "HK_PERSON"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "RH_PERSON_SAT",
-              "is_nullable": false,
               "hash_name": "DIFF_OF_PERSON_SAT",
               "stage_column_name": "RH_PERSON_SAT"
             }
@@ -285,14 +280,12 @@
               "column_name": "NAME",
               "field_name": "NAME",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "NAME"
             },
             {
               "column_name": "JOB",
               "field_name": "JOB",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "JOB"
             }
           ]

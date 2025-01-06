@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 18:46:30",
+  "compile_timestamp": "2025-01-06 19:00:17",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5007_willibald_shop_vereinspartner_p1",
   "pipeline_revision_tag": "--none--",
@@ -458,7 +458,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_VEREINSPARTNER",
-              "is_nullable": false,
               "hash_name": "KEY_OF_VEREINSPARTNER_HUB",
               "stage_column_name": "HK_VEREINSPARTNER"
             }
@@ -468,7 +467,6 @@
               "column_name": "VEREINSPARTNERID",
               "field_name": "VEREINSPARTNERID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "VEREINSPARTNERID"
             }
           ]
@@ -481,14 +479,12 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_VEREINSPARTNER",
-              "is_nullable": false,
               "hash_name": "KEY_OF_VEREINSPARTNER_HUB",
               "stage_column_name": "HK_VEREINSPARTNER"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "DIFF_VEREINSPARTNER_VEREINSPARTNER_P1_SAT",
-              "is_nullable": false,
               "hash_name": "DIFF_OF_VEREINSPARTNER_VEREINSPARTNER_P1_SAT",
               "stage_column_name": "DIFF_VEREINSPARTNER_VEREINSPARTNER_P1_SAT"
             }
@@ -498,21 +494,18 @@
               "column_name": "RABATT1",
               "field_name": "RABATT1",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "RABATT1"
             },
             {
               "column_name": "RABATT2",
               "field_name": "RABATT2",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "RABATT2"
             },
             {
               "column_name": "RABATT3",
               "field_name": "RABATT3",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "RABATT3"
             }
           ]
@@ -525,7 +518,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KUNDE_HUB",
               "stage_column_name": "HK_KUNDE"
             }
@@ -535,7 +527,6 @@
               "column_name": "KUNDEID",
               "field_name": "KUNDEIDVEREIN",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "KUNDEIDVEREIN"
             }
           ]
@@ -548,21 +539,18 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_VEREINSPARTNER",
-              "is_nullable": false,
               "hash_name": "KEY_OF_VEREINSPARTNER_HUB",
               "stage_column_name": "HK_VEREINSPARTNER"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KUNDE_HUB",
               "stage_column_name": "HK_KUNDE"
             },
             {
               "hash_class": "key",
               "column_name": "LK_VEREINSPARTNER_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_VEREINSPARTNER_KUNDE_LNK",
               "stage_column_name": "LK_VEREINSPARTNER_KUNDE"
             }
@@ -576,7 +564,6 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_VEREINSPARTNER_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_VEREINSPARTNER_KUNDE_LNK",
               "stage_column_name": "LK_VEREINSPARTNER_KUNDE"
             }

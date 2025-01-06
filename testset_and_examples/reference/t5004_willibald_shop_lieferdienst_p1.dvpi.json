@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 18:46:30",
+  "compile_timestamp": "2025-01-06 19:00:17",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5004_willibald_shop_p1_lieferdienst_p1",
   "pipeline_revision_tag": "--none--",
@@ -415,7 +415,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_LIEFERDIENST",
-              "is_nullable": false,
               "hash_name": "KEY_OF_LIEFERDIENST_HUB",
               "stage_column_name": "HK_LIEFERDIENST"
             }
@@ -425,7 +424,6 @@
               "column_name": "LIEFERDIENSTID",
               "field_name": "LIEFERDIENSTID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "LIEFERDIENSTID"
             }
           ]
@@ -438,14 +436,12 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_LIEFERDIENST",
-              "is_nullable": false,
               "hash_name": "KEY_OF_LIEFERDIENST_HUB",
               "stage_column_name": "HK_LIEFERDIENST"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "DIFF_LIEFERDIENST_LIEFERDIENST_P1_SAT",
-              "is_nullable": false,
               "hash_name": "DIFF_OF_LIEFERDIENST_LIEFERDIENST_P1_SAT",
               "stage_column_name": "DIFF_LIEFERDIENST_LIEFERDIENST_P1_SAT"
             }
@@ -455,63 +451,54 @@
               "column_name": "EMAIL",
               "field_name": "EMAIL",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "EMAIL"
             },
             {
               "column_name": "FAX",
               "field_name": "FAX",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "FAX"
             },
             {
               "column_name": "HAUSNUMMER",
               "field_name": "HAUSNUMMER",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "HAUSNUMMER"
             },
             {
               "column_name": "LAND",
               "field_name": "LAND",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "LAND"
             },
             {
               "column_name": "NAME",
               "field_name": "NAME",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "NAME"
             },
             {
               "column_name": "ORT",
               "field_name": "ORT",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "ORT"
             },
             {
               "column_name": "PLZ",
               "field_name": "PLZ",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "PLZ"
             },
             {
               "column_name": "STRASSE",
               "field_name": "STRASSE",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "STRASSE"
             },
             {
               "column_name": "TELEFON",
               "field_name": "TELEFON",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "TELEFON"
             }
           ]

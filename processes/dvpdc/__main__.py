@@ -1527,7 +1527,6 @@ def assemble_dvpi_hash_mappings(load_operation_entry):
     for hash_class,load_operation_hash_dict_entry in load_operation_entry['hash_mapping_dict'].items():
         dvpi_hash_mapping_entry={'hash_class':hash_class,
                                 'column_name':load_operation_hash_dict_entry['hash_column_name'],
-                                'is_nullable':False,
                     }
         if 'hash_name' in load_operation_hash_dict_entry:
             dvpi_hash_mapping_entry['hash_name']=load_operation_hash_dict_entry['hash_name']
@@ -1549,7 +1548,6 @@ def assemble_dvpi_data_mappings(load_operation_entry):
         dvpi_data_mapping_entry = {'column_name':column_name,
                                    'field_name': data_mapping_dict_entry['field_name'],
                                    'column_class': data_mapping_dict_entry['column_class'],
-                                   'is_nullable': True,
                                     'stage_column_name':data_mapping_dict_entry['field_name'] # currently it is 1:1 naming
                                     }
         if 'is_multi_active_key' in data_mapping_dict_entry:

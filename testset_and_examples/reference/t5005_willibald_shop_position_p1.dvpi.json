@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 18:46:30",
+  "compile_timestamp": "2025-01-06 19:00:17",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5005_willibald_shop_position_p1",
   "pipeline_revision_tag": "--none--",
@@ -693,7 +693,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_POSITION",
-              "is_nullable": false,
               "hash_name": "KEY_OF_POSITION_HUB",
               "stage_column_name": "HK_POSITION"
             }
@@ -703,14 +702,12 @@
               "column_name": "BESTELLUNGID",
               "field_name": "BESTELLUNGID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "BESTELLUNGID"
             },
             {
               "column_name": "POSID",
               "field_name": "POSID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "POSID"
             }
           ]
@@ -723,14 +720,12 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_POSITION",
-              "is_nullable": false,
               "hash_name": "KEY_OF_POSITION_HUB",
               "stage_column_name": "HK_POSITION"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "DIFF_POSITION_POSITION_P1_SAT",
-              "is_nullable": false,
               "hash_name": "DIFF_OF_POSITION_POSITION_P1_SAT",
               "stage_column_name": "DIFF_POSITION_POSITION_P1_SAT"
             }
@@ -740,14 +735,12 @@
               "column_name": "MENGE",
               "field_name": "MENGE",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "MENGE"
             },
             {
               "column_name": "PREIS",
               "field_name": "PREIS",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "PREIS"
             }
           ]
@@ -760,7 +753,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_BESTELLUNG",
-              "is_nullable": false,
               "hash_name": "KEY_OF_BESTELLUNG_HUB",
               "stage_column_name": "HK_BESTELLUNG"
             }
@@ -770,7 +762,6 @@
               "column_name": "BESTELLUNGID",
               "field_name": "BESTELLUNGID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "BESTELLUNGID"
             }
           ]
@@ -783,21 +774,18 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_POSITION",
-              "is_nullable": false,
               "hash_name": "KEY_OF_POSITION_HUB",
               "stage_column_name": "HK_POSITION"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_BESTELLUNG",
-              "is_nullable": false,
               "hash_name": "KEY_OF_BESTELLUNG_HUB",
               "stage_column_name": "HK_BESTELLUNG"
             },
             {
               "hash_class": "key",
               "column_name": "LK_POSITION_BESTELLUNG",
-              "is_nullable": false,
               "hash_name": "KEY_OF_POSITION_BESTELLUNG_LNK",
               "stage_column_name": "LK_POSITION_BESTELLUNG"
             }
@@ -811,7 +799,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_PRODUKT",
-              "is_nullable": false,
               "hash_name": "KEY_OF_PRODUKT_HUB",
               "stage_column_name": "HK_PRODUKT"
             }
@@ -821,7 +808,6 @@
               "column_name": "PRODUKTID",
               "field_name": "PRODUKTID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "PRODUKTID"
             }
           ]
@@ -834,7 +820,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_LIEFERADRESSE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_LIEFERADRESSE_HUB",
               "stage_column_name": "HK_LIEFERADRESSE"
             }
@@ -844,7 +829,6 @@
               "column_name": "LIEFERADRID",
               "field_name": "SPEZLIEFERADRID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "SPEZLIEFERADRID"
             }
           ]
@@ -857,28 +841,24 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_POSITION",
-              "is_nullable": false,
               "hash_name": "KEY_OF_POSITION_HUB",
               "stage_column_name": "HK_POSITION"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_PRODUKT",
-              "is_nullable": false,
               "hash_name": "KEY_OF_PRODUKT_HUB",
               "stage_column_name": "HK_PRODUKT"
             },
             {
               "hash_class": "parent_key_3",
               "column_name": "HK_LIEFERADRESSE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_LIEFERADRESSE_HUB",
               "stage_column_name": "HK_LIEFERADRESSE"
             },
             {
               "hash_class": "key",
               "column_name": "LK_POSITION_PRODUKT_LIEFERADRESSE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_POSITION_PRODUKT_LIEFERADRESSE_LNK",
               "stage_column_name": "LK_POSITION_PRODUKT_LIEFERADRESSE"
             }
@@ -892,7 +872,6 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_POSITION_PRODUKT_LIEFERADRESSE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_POSITION_PRODUKT_LIEFERADRESSE_LNK",
               "stage_column_name": "LK_POSITION_PRODUKT_LIEFERADRESSE"
             }

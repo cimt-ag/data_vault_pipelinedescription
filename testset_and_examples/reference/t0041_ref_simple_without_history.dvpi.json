@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 18:46:29",
+  "compile_timestamp": "2025-01-06 19:00:16",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0041_ref_simple_without_history",
   "pipeline_revision_tag": "--none--",
@@ -119,28 +119,24 @@
               "column_name": "F1_AAA_RC1",
               "field_name": "F1_AAA_RC1",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F1_AAA_RC1"
             },
             {
               "column_name": "F2_AAA_RC2",
               "field_name": "F2_AAA_RC2",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F2_AAA_RC2"
             },
             {
               "column_name": "F3_AAA_RC3",
               "field_name": "F3XX_AAA_RC3",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F3XX_AAA_RC3"
             },
             {
               "column_name": "F4_AAA_RC4F",
               "field_name": "F4_AAA_RC4F",
               "column_class": "content_untracked",
-              "is_nullable": true,
               "stage_column_name": "F4_AAA_RC4F"
             }
           ]

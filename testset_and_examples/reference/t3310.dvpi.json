@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 18:46:30",
+  "compile_timestamp": "2025-01-06 19:00:17",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t3310",
   "pipeline_revision_tag": "--none--",
@@ -421,7 +421,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_3310_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3310_AAA_HUB__FOR__TTT",
               "stage_column_name": "HK_RTJJ_3310_AAA_TTT"
             }
@@ -431,7 +430,6 @@
               "column_name": "F1F2_AAA_BK1F",
               "field_name": "F1XX_AAA_BK1F_TTT",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F1XX_AAA_BK1F_TTT"
             }
           ]
@@ -444,7 +442,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_3310_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3310_AAA_HUB__FOR__UUU",
               "stage_column_name": "HK_RTJJ_3310_AAA_UUU"
             }
@@ -454,7 +451,6 @@
               "column_name": "F1F2_AAA_BK1F",
               "field_name": "F2XX_AAA_BK1F_UUU",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F2XX_AAA_BK1F_UUU"
             }
           ]
@@ -467,14 +463,12 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_RTJJ_3310_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3310_AAA_HUB__FOR__TTT",
               "stage_column_name": "HK_RTJJ_3310_AAA_TTT"
             },
             {
               "hash_class": "key",
               "column_name": "LK_RTJJ_3310_AAA_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3310_AAA_AAA_DLNK_TTT",
               "stage_column_name": "LK_RTJJ_3310_AAA_AAA_TTT"
             }
@@ -484,14 +478,12 @@
               "column_name": "F3_AAA_AAA_DC1",
               "field_name": "F3XX_AAA_AAA_DC1",
               "column_class": "dependent_child_key",
-              "is_nullable": true,
               "stage_column_name": "F3XX_AAA_AAA_DC1"
             },
             {
               "column_name": "F4F5_AAA_AAA_DC2F",
               "field_name": "F4XX_AAA_AAA_DC2F_TTT",
               "column_class": "dependent_child_key",
-              "is_nullable": true,
               "stage_column_name": "F4XX_AAA_AAA_DC2F_TTT"
             }
           ]
@@ -504,14 +496,12 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_RTJJ_3310_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3310_AAA_HUB__FOR__UUU",
               "stage_column_name": "HK_RTJJ_3310_AAA_UUU"
             },
             {
               "hash_class": "key",
               "column_name": "LK_RTJJ_3310_AAA_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3310_AAA_AAA_DLNK_UUU",
               "stage_column_name": "LK_RTJJ_3310_AAA_AAA_UUU"
             }
@@ -521,14 +511,12 @@
               "column_name": "F3_AAA_AAA_DC1",
               "field_name": "F3XX_AAA_AAA_DC1",
               "column_class": "dependent_child_key",
-              "is_nullable": true,
               "stage_column_name": "F3XX_AAA_AAA_DC1"
             },
             {
               "column_name": "F4F5_AAA_AAA_DC2F",
               "field_name": "F5XX_AAA_AAA_DC2F_UUU",
               "column_class": "dependent_child_key",
-              "is_nullable": true,
               "stage_column_name": "F5XX_AAA_AAA_DC2F_UUU"
             }
           ]
@@ -541,14 +529,12 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_3310_AAA_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3310_AAA_AAA_DLNK_TTT",
               "stage_column_name": "LK_RTJJ_3310_AAA_AAA_TTT"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "RH_RTJJ_3310_AAA_AAA_SAT",
-              "is_nullable": false,
               "hash_name": "DIFF_OF_RTJJ_3310_AAA_AAA_SAT__FOR__TTT",
               "stage_column_name": "RH_RTJJ_3310_AAA_AAA_SAT_TTT"
             }
@@ -558,14 +544,12 @@
               "column_name": "F6_AAA_AAA_C1",
               "field_name": "F6XX_AAA_AAA_C1",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F6XX_AAA_AAA_C1"
             },
             {
               "column_name": "F7F8_AAA_AAA_C2F",
               "field_name": "F7XX_AAA_AAA_C2F_TTT",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F7XX_AAA_AAA_C2F_TTT"
             }
           ]
@@ -578,14 +562,12 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_3310_AAA_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3310_AAA_AAA_DLNK_UUU",
               "stage_column_name": "LK_RTJJ_3310_AAA_AAA_UUU"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "RH_RTJJ_3310_AAA_AAA_SAT",
-              "is_nullable": false,
               "hash_name": "DIFF_OF_RTJJ_3310_AAA_AAA_SAT__FOR__UUU",
               "stage_column_name": "RH_RTJJ_3310_AAA_AAA_SAT_UUU"
             }
@@ -595,14 +577,12 @@
               "column_name": "F6_AAA_AAA_C1",
               "field_name": "F6XX_AAA_AAA_C1",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F6XX_AAA_AAA_C1"
             },
             {
               "column_name": "F7F8_AAA_AAA_C2F",
               "field_name": "F8XX_AAA_AAA_C2F_UUU",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F8XX_AAA_AAA_C2F_UUU"
             }
           ]
