@@ -1,9 +1,10 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:27",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2025-01-06 18:46:29",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0020_simple_hub_sat",
+  "pipeline_revision_tag": "demoRevisionTagOf t0020",
   "dvpd_filename": "t0020_simple_hub_sat.dvpd.json",
   "tables": [
     {
@@ -226,7 +227,6 @@
           "stage_column_name": "RH_RTJJ_20_AAA_P1_SAT",
           "hash_origin_table": "rtjj_20_aaa_p1_sat",
           "multi_row_content": false,
-          "related_key_hash": "KEY_OF_RTJJ_20_AAA_HUB",
           "column_class": "diff_hash",
           "hash_fields": [
             {
@@ -258,6 +258,7 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "related_key_hash": "KEY_OF_RTJJ_20_AAA_HUB",
           "hash_name": "DIFF_OF_RTJJ_20_AAA_P1_SAT"
         }
       ],
@@ -270,8 +271,8 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_20_AAA",
-              "hash_name": "KEY_OF_RTJJ_20_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_20_AAA_HUB",
               "stage_column_name": "HK_RTJJ_20_AAA"
             }
           ],
@@ -300,15 +301,15 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_20_AAA",
-              "hash_name": "KEY_OF_RTJJ_20_AAA_HUB",
               "is_nullable": false,
+              "hash_name": "KEY_OF_RTJJ_20_AAA_HUB",
               "stage_column_name": "HK_RTJJ_20_AAA"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "RH_RTJJ_20_AAA_P1_SAT",
-              "hash_name": "DIFF_OF_RTJJ_20_AAA_P1_SAT",
               "is_nullable": false,
+              "hash_name": "DIFF_OF_RTJJ_20_AAA_P1_SAT",
               "stage_column_name": "RH_RTJJ_20_AAA_P1_SAT"
             }
           ],

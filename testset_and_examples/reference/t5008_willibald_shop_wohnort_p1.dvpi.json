@@ -1,9 +1,10 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-10-30 11:10:35",
+  "compile_timestamp": "2025-01-06 18:46:30",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5008_willibald_shop_wohnort_p1",
+  "pipeline_revision_tag": "--none--",
   "dvpd_filename": "t5008_willibald_shop_wohnort_p1.dvpd.json",
   "tables": [
     {
@@ -428,7 +429,8 @@
               "field_name": "VON",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "VON"
+              "stage_column_name": "VON",
+              "is_multi_active_key": true
             },
             {
               "column_name": "BIS",
@@ -442,7 +444,8 @@
               "field_name": "HAUSNUMMER",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "HAUSNUMMER"
+              "stage_column_name": "HAUSNUMMER",
+              "is_multi_active_key": true
             },
             {
               "column_name": "ORT",
@@ -456,14 +459,16 @@
               "field_name": "PLZ",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "PLZ"
+              "stage_column_name": "PLZ",
+              "is_multi_active_key": true
             },
             {
               "column_name": "STRASSE",
               "field_name": "STRASSE",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "STRASSE"
+              "stage_column_name": "STRASSE",
+              "is_multi_active_key": true
             },
             {
               "column_name": "ADRESSZUSATZ",
@@ -477,7 +482,8 @@
               "field_name": "LAND",
               "column_class": "content",
               "is_nullable": true,
-              "stage_column_name": "LAND"
+              "stage_column_name": "LAND",
+              "is_multi_active_key": true
             }
           ]
         }
