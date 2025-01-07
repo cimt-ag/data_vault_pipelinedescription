@@ -1,9 +1,10 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-10-02 12:57:21",
+  "compile_timestamp": "2025-01-06 19:00:17",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t3490",
+  "pipeline_revision_tag": "--none--",
   "dvpd_filename": "t3490.dvpd.json",
   "tables": [
     {
@@ -363,7 +364,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_3490_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3490_AAA_HUB__FOR__TTT",
               "stage_column_name": "HK_RTJJ_3490_AAA_TTT"
             }
@@ -373,7 +373,6 @@
               "column_name": "F1F2_AAA_BK1F",
               "field_name": "F1XX_AAA_BK1F_TTT",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F1XX_AAA_BK1F_TTT"
             }
           ]
@@ -386,7 +385,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_3490_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3490_AAA_HUB",
               "stage_column_name": "HK_RTJJ_3490_AAA"
             }
@@ -396,7 +394,6 @@
               "column_name": "F1F2_AAA_BK1F",
               "field_name": "F2XX_AAA_BK1F",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F2XX_AAA_BK1F"
             }
           ]
@@ -409,28 +406,24 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_RTJJ_3490_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3490_AAA_HUB",
               "stage_column_name": "HK_RTJJ_3490_AAA"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_RTJJ_3490_BBB_UUU",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3490_BBB_HUB__FOR__UUU",
               "stage_column_name": "HK_RTJJ_3490_BBB_UUU"
             },
             {
               "hash_class": "parent_key_3",
               "column_name": "HK_RTJJ_3490_BBB_VVV",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3490_BBB_HUB__FOR__VVV",
               "stage_column_name": "HK_RTJJ_3490_BBB_VVV"
             },
             {
               "hash_class": "key",
               "column_name": "LK_RTJJ_3490_AAA_BBB_BBB_UUU_VVV",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3490_AAA_BBB_BBB_UUU_VVV_LNK",
               "stage_column_name": "LK_RTJJ_3490_AAA_BBB_BBB_UUU_VVV"
             }
@@ -444,7 +437,6 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_3490_AAA_BBB_BBB_UUU_VVV",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3490_AAA_BBB_BBB_UUU_VVV_LNK",
               "stage_column_name": "LK_RTJJ_3490_AAA_BBB_BBB_UUU_VVV"
             }
@@ -458,7 +450,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_3490_BBB",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3490_BBB_HUB__FOR__UUU",
               "stage_column_name": "HK_RTJJ_3490_BBB_UUU"
             }
@@ -468,7 +459,6 @@
               "column_name": "F3F4_AAA_BK1F",
               "field_name": "F3XX_BBB_BK1F_UUU",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F3XX_BBB_BK1F_UUU"
             }
           ]
@@ -481,7 +471,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_3490_BBB",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_3490_BBB_HUB__FOR__VVV",
               "stage_column_name": "HK_RTJJ_3490_BBB_VVV"
             }
@@ -491,7 +480,6 @@
               "column_name": "F3F4_AAA_BK1F",
               "field_name": "F4XX_BBB_BK1F_VVV",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F4XX_BBB_BK1F_VVV"
             }
           ]

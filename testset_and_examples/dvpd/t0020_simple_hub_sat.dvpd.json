@@ -2,6 +2,7 @@
 	"dvpd_version": "0.6.0",
 	"stage_properties" : [{"stage_schema":"stage_rvlt","stage_table_name":"srtjj_20"}],
 	"pipeline_name": "t0020_simple_hub_sat",
+	"pipeline_revision_tag":"demoRevisionTagOf t0020",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"

@@ -1,9 +1,10 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-10-02 12:57:20",
+  "compile_timestamp": "2025-01-06 19:00:17",
   "dvpd_version": "0.6.0",
   "pipeline_name": "test22_one_link_one_esat",
+  "pipeline_revision_tag": "--none--",
   "dvpd_filename": "t1000_prio_property_combination.dvpd.json",
   "tables": [
     {
@@ -534,7 +535,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_1000_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_1000_AAA_HUB",
               "stage_column_name": "HK_RTJJ_1000_AAA"
             }
@@ -544,21 +544,18 @@
               "column_name": "F1_AAA_BK2",
               "field_name": "F1_AAA_BK2",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F1_AAA_BK2"
             },
             {
               "column_name": "F2_AAA_BK3",
               "field_name": "F2_AAA_BK3",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F2_AAA_BK3"
             },
             {
               "column_name": "F3_AAA_BK1",
               "field_name": "F3_AAA_BK1",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F3_AAA_BK1"
             }
           ]
@@ -571,14 +568,12 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_1000_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_1000_AAA_HUB",
               "stage_column_name": "HK_RTJJ_1000_AAA"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "RH_RTJJ_1000_AAA_P1_SAT",
-              "is_nullable": false,
               "hash_name": "DIFF_OF_RTJJ_1000_AAA_P1_SAT",
               "stage_column_name": "RH_RTJJ_1000_AAA_P1_SAT"
             }
@@ -588,28 +583,24 @@
               "column_name": "F6_AAA_SP1_C2",
               "field_name": "F6_AAA_SP1_C2",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F6_AAA_SP1_C2"
             },
             {
               "column_name": "F7_AAA_SP1_C1",
               "field_name": "F7_AAA_SP1_C1",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F7_AAA_SP1_C1"
             },
             {
               "column_name": "F8_AAA_SP1_C4",
               "field_name": "F8_AAA_SP1_C4",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F8_AAA_SP1_C4"
             },
             {
               "column_name": "F9_AAA_SP1_C3",
               "field_name": "F9_AAA_SP1_C3",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F9_AAA_SP1_C3"
             }
           ]
@@ -622,21 +613,18 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_RTJJ_1000_AAA",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_1000_AAA_HUB",
               "stage_column_name": "HK_RTJJ_1000_AAA"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_RTJJ_1000_BBB",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_1000_BBB_HUB",
               "stage_column_name": "HK_RTJJ_1000_BBB"
             },
             {
               "hash_class": "key",
               "column_name": "LK_RTJJ_1000_AAA_BBB",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_1000_AAA_BBB_LNK",
               "stage_column_name": "LK_RTJJ_1000_AAA_BBB"
             }
@@ -650,7 +638,6 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_1000_AAA_BBB",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_1000_AAA_BBB_LNK",
               "stage_column_name": "LK_RTJJ_1000_AAA_BBB"
             }
@@ -664,7 +651,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_RTJJ_1000_BBB",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RTJJ_1000_BBB_HUB",
               "stage_column_name": "HK_RTJJ_1000_BBB"
             }
@@ -674,14 +660,12 @@
               "column_name": "F4_BBB_BK2",
               "field_name": "F4_BBB_BK2",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F4_BBB_BK2"
             },
             {
               "column_name": "F5_BBB_BK1",
               "field_name": "F5_BBB_BK1",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F5_BBB_BK1"
             }
           ]

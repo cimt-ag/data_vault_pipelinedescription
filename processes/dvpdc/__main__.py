@@ -1366,12 +1366,15 @@ def check_intertable_structure_constraints():
 def assemble_dvpi(dvpd_object, dvpd_filename):
     global g_dvpi_document
 
+    pipeline_revision_tag=dvpd_object.get('pipeline_revision_tag','--none--')
+
     # add meta declaration and dpvd meta data
     g_dvpi_document={'dvdp_compiler':'dvpdc reference compiler,  release 0.6.2',
                      'dvpi_version': '0.6.2',
                      'compile_timestamp':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'dvpd_version':dvpd_object['dvpd_version'],
                      'pipeline_name':dvpd_object['pipeline_name'],
+                     'pipeline_revision_tag':pipeline_revision_tag,
                      'dvpd_filename':dvpd_filename}
 
     # add tables
@@ -1524,7 +1527,6 @@ def assemble_dvpi_hash_mappings(load_operation_entry):
     for hash_class,load_operation_hash_dict_entry in load_operation_entry['hash_mapping_dict'].items():
         dvpi_hash_mapping_entry={'hash_class':hash_class,
                                 'column_name':load_operation_hash_dict_entry['hash_column_name'],
-                                'is_nullable':False,
                     }
         if 'hash_name' in load_operation_hash_dict_entry:
             dvpi_hash_mapping_entry['hash_name']=load_operation_hash_dict_entry['hash_name']
@@ -1546,7 +1548,6 @@ def assemble_dvpi_data_mappings(load_operation_entry):
         dvpi_data_mapping_entry = {'column_name':column_name,
                                    'field_name': data_mapping_dict_entry['field_name'],
                                    'column_class': data_mapping_dict_entry['column_class'],
-                                   'is_nullable': True,
                                     'stage_column_name':data_mapping_dict_entry['field_name'] # currently it is 1:1 naming
                                     }
         if 'is_multi_active_key' in data_mapping_dict_entry:

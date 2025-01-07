@@ -1,8 +1,8 @@
 {
 	"dvpd_version": "0.6.2",
-	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "t1200",
-	"purpose":"Test dvpd transformation for multilayered field groups",
+	"stage_properties" : [{"stage_schema":"stage_rvlt", "stage_table_name":"t1200_stage"}],
+	"pipeline_name": "t1205_extra_table",
+	"purpose":"Base model for integration test",
 	"record_source_name_expression": "knuppisoft.artikel",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
@@ -16,7 +16,7 @@
 																				 	,"relation_names":["TTT"]} ]}	 
 		      ,{"field_name": "F5XX_BBB_BK2F_UUU", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_1200_bbb_hub" ,"column_name": "F4F5_BBB_BK2F"
 																				 	,"relation_names":["UUU"]} ]}
-
+			  ,{"field_name": "F6_AAA_BK1F",   "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1200_ccc_hub"}]}	
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
@@ -30,7 +30,10 @@
 																	   ,{"table_name":"rtjj_1200_bbb_hub","relation_name":"UUU"} ]}
 				,{"table_name": "rtjj_1200_aaa_bbb_esat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_1200_aaa_bbb_lnk"}
 				,{"table_name": "rtjj_1200_bbb_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_1200_bbb"}
-
+				,{"table_name": "rtjj_1200_ccc_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_1200_ccc"}
+				,{"table_name": "rtjj_1200_aaa_ccc_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_1200_aaa_ccc",
+												"link_parent_tables": [	{"table_name":"rtjj_1200_aaa_hub"}
+																	   ,{"table_name":"rtjj_1200_ccc_hub"} ]}
 				]
 		}
 	]

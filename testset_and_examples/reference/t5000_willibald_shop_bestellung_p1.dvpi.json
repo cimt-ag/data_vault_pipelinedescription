@@ -1,9 +1,10 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-10-30 11:10:35",
+  "compile_timestamp": "2025-01-06 19:00:17",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5000_willibald_shop_bestellung_p1",
+  "pipeline_revision_tag": "--none--",
   "dvpd_filename": "t5000_willibald_shop_bestellung_p1.dvpd.json",
   "tables": [
     {
@@ -633,7 +634,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_BESTELLUNG",
-              "is_nullable": false,
               "hash_name": "KEY_OF_BESTELLUNG_HUB",
               "stage_column_name": "HK_BESTELLUNG"
             }
@@ -643,7 +643,6 @@
               "column_name": "BESTELLUNGID",
               "field_name": "BESTELLUNGID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "BESTELLUNGID"
             }
           ]
@@ -656,14 +655,12 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_BESTELLUNG",
-              "is_nullable": false,
               "hash_name": "KEY_OF_BESTELLUNG_HUB",
               "stage_column_name": "HK_BESTELLUNG"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "DIFF_BESTELLUNG_P1_SAT",
-              "is_nullable": false,
               "hash_name": "DIFF_OF_BESTELLUNG_P1_SAT",
               "stage_column_name": "DIFF_BESTELLUNG_P1_SAT"
             }
@@ -673,21 +670,18 @@
               "column_name": "BESTELLDATUM",
               "field_name": "BESTELLDATUM",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "BESTELLDATUM"
             },
             {
               "column_name": "WUNSCHDATUM",
               "field_name": "WUNSCHDATUM",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "WUNSCHDATUM"
             },
             {
               "column_name": "RABATT",
               "field_name": "RABATT",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "RABATT"
             }
           ]
@@ -700,7 +694,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KUNDE_HUB",
               "stage_column_name": "HK_KUNDE"
             }
@@ -710,7 +703,6 @@
               "column_name": "KUNDEID",
               "field_name": "KUNDEID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "KUNDEID"
             }
           ]
@@ -723,21 +715,18 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_BESTELLUNG",
-              "is_nullable": false,
               "hash_name": "KEY_OF_BESTELLUNG_HUB",
               "stage_column_name": "HK_BESTELLUNG"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KUNDE_HUB",
               "stage_column_name": "HK_KUNDE"
             },
             {
               "hash_class": "key",
               "column_name": "LK_BESTELLUNG_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_BESTELLUNG_KUNDE_LNK",
               "stage_column_name": "LK_BESTELLUNG_KUNDE"
             }
@@ -751,7 +740,6 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_BESTELLUNG_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_BESTELLUNG_KUNDE_LNK",
               "stage_column_name": "LK_BESTELLUNG_KUNDE"
             }
@@ -765,7 +753,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_LIEFERADRESSE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_LIEFERADRESSE_HUB",
               "stage_column_name": "HK_LIEFERADRESSE"
             }
@@ -775,7 +762,6 @@
               "column_name": "LIEFERADRID",
               "field_name": "ALLGLIEFERADRID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "ALLGLIEFERADRID"
             }
           ]
@@ -788,21 +774,18 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_BESTELLUNG",
-              "is_nullable": false,
               "hash_name": "KEY_OF_BESTELLUNG_HUB",
               "stage_column_name": "HK_BESTELLUNG"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_LIEFERADRESSE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_LIEFERADRESSE_HUB",
               "stage_column_name": "HK_LIEFERADRESSE"
             },
             {
               "hash_class": "key",
               "column_name": "LK_BESTELLUNG_LIEFERADRESSE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_BESTELLUNG_LIEFERADRESSE_LNK",
               "stage_column_name": "LK_BESTELLUNG_LIEFERADRESSE"
             }
@@ -816,7 +799,6 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_BESTELLUNG_LIEFERADRESSE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_BESTELLUNG_LIEFERADRESSE_LNK",
               "stage_column_name": "LK_BESTELLUNG_LIEFERADRESSE"
             }
