@@ -247,7 +247,8 @@ is rare but possible).
 <br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
 <br>Setting this to true, defines the field to contain a key_hash for the table. The field/column name must be equal to
 the name, given by the model structure. It can be applied to parent keys of satellites or links and instructs the staging
-phase to just copy the value from the source into the stage table.
+phase to just copy the value from the source into the stage table. Parent elements must still be
+declared but can be "only_strutural_element"
 
 
 **exclude_from_change_detection**
