@@ -1122,7 +1122,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
             if sat_key_column_name not in table_entry['direct_key_hash_columns']:
                 # todo: add test case for this check
                 register_error(
-                    f"AHS-S2: The key column '{sat_key_column_name}' of satellite '{table_name}' has no 'use_as_key_hash' field mapping")
+                    f"AHS-S2: Satellite '{table_name}' needs a 'use_as_key_hash' field mapping for its key column '{sat_key_column_name}'.")
                 return
 
             # The Load operation must be covered exactly once in key_hash_field_mapping
