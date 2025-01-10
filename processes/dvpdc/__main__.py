@@ -1101,6 +1101,11 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         hash_mapping_dict = {}
         load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
 
+        if satellite_parent_table['is_only_structural_element'] and 'direct_key_hash_columns' not in table_entry:
+            register_error(
+                f"AHS-S0: Parent '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is declared to be only a structural element, but satellite has no 'use_as_key_hash' mapping ")
+            return
+
         if 'direct_key_hash_columns' in table_entry:   # hash value is delivered directly from source
 
             # hash column name must be key name of satellite (default ist the key name of the  parent)
