@@ -332,15 +332,19 @@ if __name__ == "__main__":
         for filename in difference_file_list:
             print(filename)
 
+    if len(reference_missing_list) > 0:
+        print("\nvvv---Tests with missing reference---vvv")
+        for filename in reference_missing_list:
+            print(filename)
 
     if len(failing_file_list)>0:
         print("\nvvv---Compile Failed---vvv")
         for filename in failing_file_list:
             print(filename)
 
-    if len(reference_missing_list) > 0:
-        print("\nvvv---Tests with missing reference---vvv")
-        for filename in reference_missing_list:
+    if len(incorrect_file_list) > 0:
+        print("\nvvv---Incorrectly successful compiles---vvv")
+        for filename in incorrect_file_list:
             print(filename)
 
     if len(crashed_file_list) > 0:
@@ -348,10 +352,11 @@ if __name__ == "__main__":
         for filename in crashed_file_list:
             print(filename)
 
-    if len(incorrect_file_list) > 0:
-        print("\nvvv---Incorrect tests---vvv")
-        for filename in incorrect_file_list:
-            print(filename)
+
+
+
+
+
 
     print('\nTest log search hint:')
     print ('find "ATST---" for main results only,  "ATST--" to also include details, "ATST--EI" for details only')
@@ -364,25 +369,27 @@ if __name__ == "__main__":
     report_line+=f"success {len(successful_file_list)} ({file_list_fp})"
 
     print(f"** {len(successful_file_list)} tests passed ({file_list_fp})")
+
     if len(difference_file_list)>0:
         file_list_fp=assemble_file_list_fingerprint(difference_file_list)
         report_line += f"+ difference {len(difference_file_list)} ({file_list_fp})"
         print(f"** {len(difference_file_list)} tests with differences ({file_list_fp})")
-    if len(failing_file_list)>0:
-        file_list_fp=assemble_file_list_fingerprint(failing_file_list)
-        report_line += f"+ fail {len(failing_file_list)} ({file_list_fp})"
-        print(f"** {len(failing_file_list)} tests with failed compile ({file_list_fp})")
     if len(reference_missing_list) > 0:
         file_list_fp = assemble_file_list_fingerprint(reference_missing_list)
         report_line += f"+ no ref {len(reference_missing_list)} ({file_list_fp})"
         print(f"** {len(reference_missing_list)} tests have no reference data ({file_list_fp})")
+    if len(failing_file_list)>0:
+        file_list_fp=assemble_file_list_fingerprint(failing_file_list)
+        report_line += f"+ fail {len(failing_file_list)} ({file_list_fp})"
+        print(f"** {len(failing_file_list)} tests with failed compile ({file_list_fp})")
+    if len(incorrect_file_list) > 0:  # Add incorrect to report
+        file_list_fp = assemble_file_list_fingerprint(incorrect_file_list)
+        report_line += f"+ incorrectly successfull {len(incorrect_file_list)} ({file_list_fp})"
+        print(f"** {len(incorrect_file_list)} incorrectly successful compiles ({file_list_fp})")
     if len(crashed_file_list) > 0:
         file_list_fp = assemble_file_list_fingerprint(crashed_file_list)
         report_line += f"+ crash {len(crashed_file_list)} ({file_list_fp})"
         print(f"** {len(crashed_file_list)} tests crashed ({file_list_fp}) **** ")
-    if len(incorrect_file_list) > 0:  # Add incorrect to report
-        file_list_fp = assemble_file_list_fingerprint(incorrect_file_list)
-        report_line += f"+ incorrect {len(incorrect_file_list)} ({file_list_fp})"
-        print(f"** {len(incorrect_file_list)} incorrect tests ({file_list_fp})")
+
 
     print("\nTest state:"+report_line)
