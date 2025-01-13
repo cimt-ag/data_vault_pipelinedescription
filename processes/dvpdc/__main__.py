@@ -669,11 +669,30 @@ def determine_load_operations_from_relations_in_mappings():
                 if not has_generic_mapping:
                     has_generic_mapping_for_all_columns=False
 
-            if len(load_operations)==0:   # no mapping generated a load operation (all mappings are * mappings)
-                table_entry['data_is_mapped_to_generic_relation']=True
 
-            # crosscheck completness of mappings for all determined load operations
-            for load_operation_name,load_operation in load_operations.items():
+
+        if 'direct_key_hash_columns' in table_entry:
+            for direct_key_column in table_entry['direct_key_hash_columns'].values():
+                has_generic_mapping = False
+                for field_mapping in direct_key_column['field_mappings']:
+                    for relation_name in field_mapping['relation_names']:
+                        if relation_name != '*':
+                            load_operations[relation_name] = {"operation_origin": "field mapping relation",
+                                                              "mapping_set": relation_name}
+                            if not field_mapping['implict_unnamed_relation']:
+                                has_implicit_unnamed_mapping_for_all_columns = False
+                        else:
+                            has_generic_mapping = True
+                if not has_generic_mapping:
+                    has_generic_mapping_for_all_columns = False
+
+        if 'data_columns' in table_entry or 'direct_key_hash_columns' in table_entry:
+            if len(load_operations)==0:   # no mapping generated a load operation (all mappings are * mappings)
+                  table_entry['data_is_mapped_to_generic_relation']=True
+
+        # finally crosscheck completness of mappings for all determined load operations
+        for load_operation_name,load_operation in load_operations.items():
+            if 'data_columns' in table_entry:
                 for data_column_name, data_column in table_entry['data_columns'].items():
                     count_matches=0
                     default_available=False
@@ -689,6 +708,7 @@ def determine_load_operations_from_relations_in_mappings():
                     if count_matches==0 and not default_available:
                         register_error(
                             f"DLO-21:There is no field mapping for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
+            #todo add crosscheck for direct key mapping completenes
 
         # Set universal flag for hub,s that have only a "/" operation
         if table_entry['table_stereotype'] == 'hub' and len(load_operations) == 1 and '/' in load_operations and has_implicit_unnamed_mapping_for_all_columns :
