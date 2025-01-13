@@ -58,8 +58,12 @@ def report_list_length_missmatch(expected_list, found_list, path):
     #todo implement comparison based on identifiing element (approach: path pattern->keyword list to find identifing )
 def report_value_difference(expected_value, found_value, path):
     global g_difference_count
-    print(f"ATST--EI:[{g_test_id}] /{path}: Wrong value '{found_value}' ! Expected '{expected_value}' , ls-diff:{distance(found_value,expected_value)}")
     g_difference_count += 1
+    ls_diff_message=""
+    if isinstance(expected_value,str) and isinstance(found_value,str):
+        ls_diff_message=f", ls-diff:{distance(found_value,expected_value)}"
+    print(f"ATST--EI:[{g_test_id}] /{path}: Wrong value '{found_value}' ! Expected '{expected_value}'{ls_diff_message}")
+
 
 def run_test_for_file(dvpd_filename, raise_on_crash=False):
     global g_difference_count
