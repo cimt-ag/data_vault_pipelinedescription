@@ -1,8 +1,9 @@
 Data vault pipeline description compiler log 
 Compiler Version 0.6.2
-Compile time: 2025-01-10 16:55:18
+Compile time: 2025-01-14 12:33:35
 Compiling t1021c_missing_use_key_hash_for_sat.dvpd.json
 
-AHS-S0: Parent 'rtjj_1021_aaa_hub' of satellite 'btjj_1021_aaa_sat' is declared to be only a structural element, but satellite has no 'use_as_key_hash' mapping 
-AHS-S0: Parent 'rtjj_1021_aaa_bbb_lnk' of satellite 'btjj_1021_aaa_bbb_sat' is declared to be only a structural element, but satellite has no 'use_as_key_hash' mapping 
+CST-S1: Parent 'rtjj_1021_aaa_hub' of satellite 'btjj_1021_aaa_sat' is declared to be only a structural element, but satellite has no 'use_as_key_hash' mapping 
+CST-S1: Parent 'rtjj_1021_aaa_bbb_lnk' of satellite 'btjj_1021_aaa_bbb_sat' is declared to be only a structural element, but satellite has no 'use_as_key_hash' mapping 
+CST-S1: Parent 'rtjj_1021_aaa_bbb_lnk' of satellite 'btjj_1021_aaa_bbb_esat' is declared to be only a structural element, but satellite has no 'use_as_key_hash' mapping 
 *** Compilation ended with errors ***

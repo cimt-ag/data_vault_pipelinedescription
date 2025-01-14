@@ -1,8 +1,9 @@
 Data vault pipeline description compiler log 
 Compiler Version 0.6.2
-Compile time: 2025-01-10 17:30:15
+Compile time: 2025-01-14 13:44:39
 Compiling t1023c_wrong_column_name_for_use_key_as_hash_for_sat.dvpd.json
 
-AHS-S2: Satellite 'btjj_1021_aaa_sat' needs a 'use_as_key_hash' field mapping for its key column 'HK_RTJJ_1021_AAA'.
-AHS-S2: Satellite 'btjj_1021_aaa_bbb_sat' needs a 'use_as_key_hash' field mapping for its key column 'LK_RTJJ_1021_AAA_BBB'.
+CST-S2: Satellite 'btjj_1021_aaa_sat': Missing a 'use_as_key_hash' field mapping for the key column 'HK_RTJJ_1021_AAA'.
+CST-S2: Satellite 'btjj_1021_aaa_bbb_sat': Missing a 'use_as_key_hash' field mapping for the key column 'LK_RTJJ_1021_AAA_BBB'.
+CST-S2: Satellite 'btjj_1021_aaa_bbb_esat': Missing a 'use_as_key_hash' field mapping for the key column 'LK_RTJJ_1021_AAA_BBB'.
 *** Compilation ended with errors ***
