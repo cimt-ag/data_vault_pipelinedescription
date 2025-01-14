@@ -603,6 +603,21 @@ def add_generic_relation_mappings(column_properties):
             #todo: add test to trigger the upper error
 
 
+def check_topology_specific_properties():
+    """After all table relations have been determined we can check if properties of partent/child tables are compatible"""
+    for table_name, table_entry in g_table_dict.items():
+        #todo: add lnk topolgy check
+        #if table_entry['table_stereotype'] == 'lnk':
+        #    check_topology_specific_lnk_properties(table_entry)
+        if table_entry['table_stereotype'] == 'sat':
+            check_sat_topology_specific_properties(table_name, table_entry)
+def check_sat_topology_specific_properties(table_name, table_entry):
+    global g_table_dict
+    parent_table = g_table_dict[table_entry['satellite_parent_table']]
+    if parent_table['is_only_structural_element'] and 'direct_key_hash_columns' not in table_entry:
+            register_error(
+                f"CST-S1: Parent '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is declared to be only a structural element, but satellite has no 'use_as_key_hash' mapping ")
+
 def derive_load_operations():
     global g_table_dict
 
@@ -689,6 +704,8 @@ def determine_load_operations_from_relations_in_mappings():
         if 'data_columns' in table_entry or 'direct_key_hash_columns' in table_entry:
             if len(load_operations)==0:   # no mapping generated a load operation (all mappings are * mappings)
                   table_entry['data_is_mapped_to_generic_relation']=True
+
+
 
         # finally crosscheck completness of mappings for all determined load operations
         for load_operation_name,load_operation in load_operations.items():
@@ -1121,10 +1138,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         hash_mapping_dict = {}
         load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
 
-        if satellite_parent_table['is_only_structural_element'] and 'direct_key_hash_columns' not in table_entry:
-            register_error(
-                f"AHS-S0: Parent '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is declared to be only a structural element, but satellite has no 'use_as_key_hash' mapping ")
-            return
+
 
         if 'direct_key_hash_columns' in table_entry:   # hash value is delivered directly from source
 
@@ -1142,7 +1156,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
             if sat_key_column_name not in table_entry['direct_key_hash_columns']:
                 # todo: add test case for this check
                 register_error(
-                    f"AHS-S2: Satellite '{table_name}' needs a 'use_as_key_hash' field mapping for its key column '{sat_key_column_name}'.")
+                    f"AHS-S2: Satellite '{table_name}' has no 'use_as_key_hash' field mapping for its key column '{sat_key_column_name}'.")
                 return
 
             # The Load operation must be covered exactly once in key_hash_field_mapping
@@ -1373,9 +1387,10 @@ def copy_data_column_properties_to_operation_mapping(data_mapping_dict,data_colu
         if relevant_key in data_column:
             data_mapping_dict[relevant_key]=data_column[relevant_key]
 
-def check_intertable_structure_constraints():
+def check_intertable_column_constraints():
+    """Final checks, that need all columns derived for all tables"""
 
-    # Driving Keys must be resolvable (this can only be checked after all hahs derivation)
+    # Driving Keys must be resolvable in the parent
     for table_name, table_entry in g_table_dict.items():
         if 'driving_keys' in table_entry and table_entry['table_stereotype']=='sat':
             parent = table_entry['satellite_parent_table']
@@ -1855,6 +1870,9 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
     if g_error_count > 0:
         raise DvpdcError
 
+    check_topology_specific_properties()
+    if g_error_count > 0:
+        raise DvpdcError
 
     derive_load_operations()
     if g_error_count > 0:
@@ -1868,7 +1886,7 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
     if g_error_count > 0:
         raise DvpdcError
 
-    check_intertable_structure_constraints()
+    check_intertable_column_constraints()
     if g_error_count > 0:
         raise DvpdcError
 

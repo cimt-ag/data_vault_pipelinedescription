@@ -160,7 +160,7 @@ def compare_dvpdc_log_with_reference(dvpd_filename):
                 message_found=True
                 break
         if not message_found:
-            print(f"ATST--EI:[{g_test_id}] compliler log message not in reference >>{log_line}")
+            print(f"ATST--EI:[{g_test_id}] unexpected in compiler log >>{log_line}")
             g_difference_count+=1
 
 
