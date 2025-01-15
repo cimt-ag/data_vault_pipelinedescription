@@ -1,7 +1,7 @@
 import json
 import os
 import sys
-
+from Levenshtein import distance
 class DVPIcrosscheck:
     def __init__(self, dvpi_directory):
         self.dvpi_directory = dvpi_directory
@@ -42,27 +42,41 @@ class DVPIcrosscheck:
                                 self.pipeline_data[table_name][column_name][key] = {}
                             self.pipeline_data[table_name][column_name][key][pipeline_name] = value
 
+    def check_table_name_similarity(self):
+        """Check for table names that are too similar to each other."""
+        print("\nChecking for similar table names...")
+        table_names = list(self.pipeline_data.keys())
+        similar_tables = []
+
+        for i, table1 in enumerate(table_names):
+            for table2 in table_names[i + 1:]:
+                # Calculate Levenshtein distance
+                similarity_distance = distance(table1, table2)
+                if similarity_distance <= 2:
+                    similar_tables.append((table1, table2, similarity_distance))
+
+        # Print results
+        if similar_tables:
+            print("Warning: Found similar table names:")
+            for table1, table2, similarity_distance in similar_tables:
+                print(f"  '{table1}' and '{table2}' (Distance: {similarity_distance})")
+        else:
+            print("No similar table names found.")
+
     def analyze_conflicts(self):
         """Identify conflicts in properties and presence of tables and columns across pipelines."""
-        pipelines_total = set(self.pipeline_names.values())  # Set of all pipeline names
-
         for table_name, columns in self.pipeline_data.items():
-            # Calculate the presence of the table in pipelines
-            table_presence = {
-                pipeline: "declared in" if table_name in self.pipeline_data and any(
-                    pipeline in col.get(prop, {}).keys()
-                    for col in columns.values()
-                    for prop in col.keys()
-                ) else "missing in"
-                for pipeline in pipelines_total
+            # Identify pipelines where the table exists
+            pipelines_with_table = {
+                pipeline for pipeline in self.pipeline_names.values()
+                if any(pipeline in col.get(prop, {}).keys() for col in columns.values() for prop in col.keys())
             }
-            declared_count = list(table_presence.values()).count("declared in")
 
-            # Skip the table if it's not in at least two pipelines
-            if declared_count < 2:
+            # Skip if the table exists in fewer than two pipelines
+            if len(pipelines_with_table) < 2:
                 continue
 
-            # Analyze column-level conflicts if the table is available in two or more pipelines
+            # Analyze column-level conflicts
             for column_name, properties in columns.items():
                 # Analyze property conflicts
                 for prop, values in properties.items():
@@ -72,7 +86,9 @@ class DVPIcrosscheck:
                             self.conflict_report[table_name] = {}
                         if column_name not in self.conflict_report[table_name]:
                             self.conflict_report[table_name][column_name] = {}
-                        self.conflict_report[table_name][column_name][prop] = values
+                        self.conflict_report[table_name][column_name][prop] = {
+                            pipeline: value for pipeline, value in values.items() if pipeline in pipelines_with_table
+                        }
                         self.total_differences += 1
 
                 # Analyze column presence across pipelines
@@ -80,15 +96,18 @@ class DVPIcrosscheck:
                 for prop, pipelines in properties.items():
                     pipelines_with_column.update(pipelines.keys())
 
-                if len(pipelines_with_column) < len(pipelines_total):
-                    if pipelines_with_column != pipelines_total:  # Check if all declared or all missing
+                # Filter only relevant pipelines
+                pipelines_with_column.intersection_update(pipelines_with_table)
+
+                if len(pipelines_with_column) < len(pipelines_with_table):
+                    if pipelines_with_column != pipelines_with_table:  # Check if all declared or all missing
                         if table_name not in self.conflict_report:
                             self.conflict_report[table_name] = {}
                         if column_name not in self.conflict_report[table_name]:
                             self.conflict_report[table_name][column_name] = {}
                         self.conflict_report[table_name][column_name]["presence"] = {
-                            pipeline: "declared in" if pipeline in pipelines_with_column else "missing in"
-                            for pipeline in pipelines_total
+                            pipeline: "declared" if pipeline in pipelines_with_column else "missing"
+                            for pipeline in pipelines_with_table
                         }
                         self.total_differences += 1
 
@@ -105,10 +124,8 @@ class DVPIcrosscheck:
                 if column_name == "table_presence":
                     continue
                 if "presence" in properties:
-                    presence_values = list(properties["presence"].values())
-                    most_common_value = max(set(presence_values), key=presence_values.count)
                     print(f"  Column '{column_name}' is in:")
-                    sorted_presence = sorted(properties["presence"].items(), key=lambda x: x[1] != most_common_value)
+                    sorted_presence = sorted(properties["presence"].items(), key=lambda x: x[0])
 
                     # Group pipelines by their status
                     grouped_status = {}
@@ -116,26 +133,34 @@ class DVPIcrosscheck:
                         grouped_status.setdefault(status, []).append(pipeline)
 
                     for status, pipelines in grouped_status.items():
-                        # Print the first pipeline with the status
-                        print(f"      {status}  : {pipelines[0]}")
-                        # Align subsequent pipelines under the same status
+                        print(f'    "{status}"   : {pipelines[0]}')
                         for pipeline in pipelines[1:]:
-                            print(f"                  : {pipeline}")
+                            print(f"                 : {pipeline}")
                 for prop, pipelines in properties.items():
                     if prop != "presence":
                         print(f"  Column '{column_name}' has conflicts:")
                         print(f"    '{prop}' is:")
-                        values = list(pipelines.values())
-                        most_common_value = max(set(values), key=values.count)
-                        sorted_pipelines = sorted(pipelines.items(), key=lambda x: x[1] != most_common_value)
-                        for pipeline, value in sorted_pipelines:
-                            print(f"      {value} : {pipeline}")
+
+                        # Group pipelines by value and calculate alignment
+                        grouped_values = {}
+                        for pipeline, value in pipelines.items():
+                            grouped_values.setdefault(value, []).append(pipeline)
+
+                        max_value_length = max(len(str(value)) for value in grouped_values.keys())
+
+                        for value, pipelines in grouped_values.items():
+                            # Align pipelines under the same value and format the value as a string with quotes
+                            quoted_value = f'"{value}"'
+                            print(f"      {quoted_value:<{max_value_length + 2}} : {pipelines[0]}")
+                            for pipeline in pipelines[1:]:
+                                print(f"      {' ' * (max_value_length + 2)} : {pipeline}")
         print(f"\nTotal number of conflicts: {self.total_differences}")
 
     def run_analysis(self):
         """Run the analysis from loading data to generating the report."""
         self.load_dvpi_files()
         self.load_pipeline_data()
+        self.check_table_name_similarity()
         self.analyze_conflicts()
         self.print_conflicts()
 
