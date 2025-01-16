@@ -8,9 +8,14 @@
 ### code enhancements
 - modified configuration ini loader to find config directory by detecting /lib or /processes in current path
 
-### Funcitional changes
+### Functional changes dvpdc
 Some functional changes can be mitigated by migrating existing dvpd files with the migration script (processes/migration_scripts/migrate_0_6_1_to_0_6_2)
 - default stage table name is now `<pipeline_name>_stage` (previously `s<pipeline_name>`). Migration will add explicit stage_table_name declaraction to keep old name
+
+### Functional changes render ddl
+- Ghost record hash value and far future date is not hard coded any more but 
+taken from model profile definition. Special syntax allows declaration of code snippets instead
+of text constants
 
 # release 0.6.1
 In this release, we completely switch from the PostgreSQL implementation of the compiler to the python implementation.

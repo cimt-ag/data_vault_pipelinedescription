@@ -12,3 +12,6 @@ experimental/java-dvpi-consumer/target/
 .venv/
 *.bak
 resources/
+.project
+.dbeaver/
+documentation/.vs/
