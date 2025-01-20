@@ -184,7 +184,9 @@ module, responsible for calculating the group hash.
 
 **is_multi_active_key**
 (optional)
-<br>Indicates, that the field is (part) of the multi-active-key of target multi-active-satellite. The multi-active-key must be unique for any given Parent-HashKey (at any point in time).
+<br>Indicates, that the field is (part) of the multi-active-key of target multi-active-satellite. 
+This must be delcared, when the multi active satellite loading pattern depends 
+on it.
 
 **relation_names[]**
 (optional) *defines: mapping, data model, load operations*
