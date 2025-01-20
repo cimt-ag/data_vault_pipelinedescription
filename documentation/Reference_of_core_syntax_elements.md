@@ -184,7 +184,9 @@ module, responsible for calculating the group hash.
 
 **is_multi_active_key**
 (optional)
-<br>Indicates, that the field is (part) of the multi-active-key of target multi-active-satellite. The multi-active-key must be unique for any given Parent-HashKey (at any point in time).
+<br>Declares the field is (part) of the multi-active-key of targeted multi-active-satellite. 
+<br> This must be delcared, when the multi active satellite loading pattern depends 
+on it. 
 
 **relation_names[]**
 (optional) *defines: mapping, data model, load operations*
@@ -247,7 +249,8 @@ is rare but possible).
 <br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
 <br>Setting this to true, defines the field to contain a key_hash for the table. The field/column name must be equal to
 the name, given by the model structure. It can be applied to parent keys of satellites or links and instructs the staging
-phase to just copy the value from the source into the stage table.
+phase to just copy the value from the source into the stage table. Parent elements must still be
+declared but can be "only_strutural_element"
 
 
 **exclude_from_change_detection**

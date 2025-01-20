@@ -41,6 +41,11 @@ def report_missing(keyword, path):
     print(f"ATST--EI:[{g_test_id}] /{path}:Keyword '{keyword}' is missing !")
     g_difference_count += 1
 
+def report_unexpected(keyword, path):
+    global g_difference_count
+    print(f"ATST--EI:[{g_test_id}] /{path}:Keyword '{keyword}' is not in reference !")
+    g_difference_count += 1
+
 def report_type_missmatch(expected_value, found_value, path):
     global g_difference_count
     print(f"ATST--EI:[{g_test_id}] /{path}:Wrong type '{type(found_value)}' ! Expected '{type(expected_value)}'  (ls-diff:{distance(found_value,expected_value)}) ")
@@ -53,8 +58,12 @@ def report_list_length_missmatch(expected_list, found_list, path):
     #todo implement comparison based on identifiing element (approach: path pattern->keyword list to find identifing )
 def report_value_difference(expected_value, found_value, path):
     global g_difference_count
-    print(f"ATST--EI:[{g_test_id}] /{path}: Wrong value '{found_value}' ! Expected '{expected_value}' , ls-diff:{distance(f"{found_value}",f"{expected_value}")}")
     g_difference_count += 1
+    ls_diff_message=""
+    if isinstance(expected_value,str) and isinstance(found_value,str):
+        ls_diff_message=f", ls-diff:{distance(found_value,expected_value)}"
+    print(f"ATST--EI:[{g_test_id}] /{path}: Wrong value '{found_value}' ! Expected '{expected_value}'{ls_diff_message}")
+
 
 def run_test_for_file(dvpd_filename, raise_on_crash=False):
     global g_difference_count
@@ -151,7 +160,7 @@ def compare_dvpdc_log_with_reference(dvpd_filename):
                 message_found=True
                 break
         if not message_found:
-            print(f"ATST--EI:[{g_test_id}] compliler log message not in reference >>{log_line}")
+            print(f"ATST--EI:[{g_test_id}] unexpected in compiler log >>{log_line}")
             g_difference_count+=1
 
 
@@ -190,6 +199,8 @@ def compare_dvpi_with_reference(dvpd_filename):
     elements_to_ignore=['dvdp_compiler','dvpi_version','compile_timestamp']
     for ignorable in elements_to_ignore:
         dvpi_reference_object.pop(ignorable, None)
+        if ignorable in dvpi_object:
+            dvpi_object.pop(ignorable, None)
 
     print(f"ATST-LEI:[{g_test_id}] Comparing DVPI")
     check_reference_values(dvpi_reference_object, dvpi_object)
@@ -217,6 +228,10 @@ def check_reference_values(reference_object,test_object,path=""):
                     continue
                 child_path = f"{path}/{keyword}"
                 check_reference_values(sub_object, test_object[keyword], child_path)
+            for keyword, sub_object in test_object.items():
+                if keyword not in reference_object:
+                    report_unexpected(keyword, path)
+                    continue
             return
         if reference_object != test_object:
             report_value_difference(reference_object, test_object, path)
@@ -317,15 +332,19 @@ if __name__ == "__main__":
         for filename in difference_file_list:
             print(filename)
 
+    if len(reference_missing_list) > 0:
+        print("\nvvv---Tests with missing reference---vvv")
+        for filename in reference_missing_list:
+            print(filename)
 
     if len(failing_file_list)>0:
         print("\nvvv---Compile Failed---vvv")
         for filename in failing_file_list:
             print(filename)
 
-    if len(reference_missing_list) > 0:
-        print("\nvvv---Tests with missing reference---vvv")
-        for filename in reference_missing_list:
+    if len(incorrect_file_list) > 0:
+        print("\nvvv---Incorrectly successful compiles---vvv")
+        for filename in incorrect_file_list:
             print(filename)
 
     if len(crashed_file_list) > 0:
@@ -333,10 +352,11 @@ if __name__ == "__main__":
         for filename in crashed_file_list:
             print(filename)
 
-    if len(incorrect_file_list) > 0:
-        print("\nvvv---Incorrect tests---vvv")
-        for filename in incorrect_file_list:
-            print(filename)
+
+
+
+
+
 
     print('\nTest log search hint:')
     print ('find "ATST---" for main results only,  "ATST--" to also include details, "ATST--EI" for details only')
@@ -349,25 +369,27 @@ if __name__ == "__main__":
     report_line+=f"success {len(successful_file_list)} ({file_list_fp})"
 
     print(f"** {len(successful_file_list)} tests passed ({file_list_fp})")
+
     if len(difference_file_list)>0:
         file_list_fp=assemble_file_list_fingerprint(difference_file_list)
         report_line += f"+ difference {len(difference_file_list)} ({file_list_fp})"
         print(f"** {len(difference_file_list)} tests with differences ({file_list_fp})")
-    if len(failing_file_list)>0:
-        file_list_fp=assemble_file_list_fingerprint(failing_file_list)
-        report_line += f"+ fail {len(failing_file_list)} ({file_list_fp})"
-        print(f"** {len(failing_file_list)} tests with failed compile ({file_list_fp})")
     if len(reference_missing_list) > 0:
         file_list_fp = assemble_file_list_fingerprint(reference_missing_list)
         report_line += f"+ no ref {len(reference_missing_list)} ({file_list_fp})"
         print(f"** {len(reference_missing_list)} tests have no reference data ({file_list_fp})")
+    if len(failing_file_list)>0:
+        file_list_fp=assemble_file_list_fingerprint(failing_file_list)
+        report_line += f"+ fail {len(failing_file_list)} ({file_list_fp})"
+        print(f"** {len(failing_file_list)} tests with failed compile ({file_list_fp})")
+    if len(incorrect_file_list) > 0:  # Add incorrect to report
+        file_list_fp = assemble_file_list_fingerprint(incorrect_file_list)
+        report_line += f"+ incorrectly successfull {len(incorrect_file_list)} ({file_list_fp})"
+        print(f"** {len(incorrect_file_list)} incorrectly successful compiles ({file_list_fp})")
     if len(crashed_file_list) > 0:
         file_list_fp = assemble_file_list_fingerprint(crashed_file_list)
         report_line += f"+ crash {len(crashed_file_list)} ({file_list_fp})"
         print(f"** {len(crashed_file_list)} tests crashed ({file_list_fp}) **** ")
-    if len(incorrect_file_list) > 0:  # Add incorrect to report
-        file_list_fp = assemble_file_list_fingerprint(incorrect_file_list)
-        report_line += f"+ incorrect {len(incorrect_file_list)} ({file_list_fp})"
-        print(f"** {len(incorrect_file_list)} incorrect tests ({file_list_fp})")
+
 
     print("\nTest state:"+report_line)

@@ -1,9 +1,16 @@
 # release 0.6.2
+ 
+### major features
+- added example of DVPI to DBT Model Generator
+- Added model consistency check process over all dvpi
 
-### features
+### other features
 - added libary to connect to a database for schema (needed for schema retrieval demo)
+- added example of python function code generator (creates code for cimt data vault framework)
+- enhanced output of automated test for better mass change checking
 
 ### DVPD syntax changes
+- added 'is_multiactive_key' keyword for field to table mapping to dvpd and dpvi
 
 ### code enhancements
 - modified configuration ini loader to find config directory by detecting /lib or /processes in current path

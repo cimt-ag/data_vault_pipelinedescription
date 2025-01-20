@@ -46,7 +46,7 @@ ends the old relation.
 The need for the extra deletion operation in the satellite comes from the data vault mechanics,
 not from the source delivery behaviour. 
 
-### preseving order of multitactive data
+## preseving order of multitactive data
 
 For multi active data it might be necessary to preserve the order of the data in the transmission format, since the
 might be a meaning to it.
@@ -133,7 +133,11 @@ The loading procedure needs an efficient way to
 - insert deletion record for missing, when a subkey isn't delivered any more
 
 For this procedure to work,  the fields, that belong to the subkey in the satellite must be
-declared. This done with to the "is_subkey" syntax in the target table mapping.
+declared. This done with to the "is_muli_active_key" syntax in the target table mapping.
+
+Beside this special handling during loading, the same information about the role as key is
+needed during retreival of the data, since it is needed to determin, wich row belong to
+actual data and wicht to historized data.
 
 ### full group insertion
 Without an enddate the valid data for a specific point in time is determined by
