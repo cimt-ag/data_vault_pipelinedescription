@@ -750,10 +750,13 @@ The only declaration difference to a normal satellite is the "is_multiactive=tru
 Since a diff hash needs to be calculated over all rows of the same busniess key, there is the additional challenge, to keep a stable order over the rows. 
 Like with the column order for the diff hash, the ordering of the rows can be just a fixed rule. Again DVPD alos provides keywords to allow control over the row ordering.
 
-### Multi-Active Satellite with keys
-Another way to implement multi active keys, is to declare a set columns in the satellite to be a "sub"key.
+### Multi-Active satellite with "sub" keys
+A variation of implementing multi active keys, is to declare a set columns in the satellite to be a "sub"key.
 The data in these multiactive key columns must be unique over all rows of the same parent key. This
-allows to implement loading processes with a more efficient historization pattern.
+allows to implement loading processes with a more efficient historization pattern. Some Data Vault 
+Loading tools rely on this concept.
+
+This modified example assumes, that every type of a telephone number will only be used once.
 
 ```json
 "fields": [
@@ -767,7 +770,8 @@ allows to implement loading processes with a more efficient historization patter
 			},
 		    {	"field_name": "PHONE_NUMBER",
 				"field_type": "VARCHAR(100)",
-				"targets": [{"table_name": "customer_phone_msat"}]
+				"targets": [{"table_name": "customer_phone_msat",
+                             "is_multi_active_key":true}]
 			}
 		],
 "tables": [
@@ -784,10 +788,7 @@ allows to implement loading processes with a more efficient historization patter
 		]
 ```
 Note:<br>
-The only declaration difference to a normal satellite is the "is_multiactive=true" attribute that should trigger the specfic load processing of multi active statellites.
-
-Since a diff hash needs to be calculated over all rows of the same busniess key, there is the additional challenge, to keep a stable order over the rows. 
-Like with the column order for the diff hash, the ordering of the rows can be just a fixed rule. Again DVPD alos provides keywords to allow control over the row ordering.
+The satellite property "is_multiactive=true" is still necessary..
 
 
 ### Status Tracking Satellite with sequence information {Dv-5.3.3}

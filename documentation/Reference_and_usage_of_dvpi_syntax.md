@@ -528,7 +528,9 @@ multiactive historization pattern>, reference table- same set of values in all c
 on every load (diff hash can be used as shortcut when available)
 
 **is_multi_active_key**
-<br>Indicates that column is part of the multi-active key for a multi-active-satellite.
+<br>Declares this column to be part of the multi-active key for a multi-active-satellite. Loading
+procedures, that support multi active historization loading patterns with a key, should use
+this as input.
  
 
 ### deletion_detection_rules[]
