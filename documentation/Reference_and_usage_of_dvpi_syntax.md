@@ -528,10 +528,12 @@ multiactive historization pattern>, reference table- same set of values in all c
 on every load (diff hash can be used as shortcut when available)
 
 **is_multi_active_key**
+(optional)
 <br>Declares this column to be part of the multi-active key for a multi-active-satellite. Loading
 procedures, that support multi active historization loading patterns with a key, should use
 this as input.
- 
+
+This property is only set, when declared in the dvpd. There is no default value.
 
 ### deletion_detection_rules[]
 Json Path: $.parse_sets[].load_operations[]
