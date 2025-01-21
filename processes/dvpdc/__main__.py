@@ -1186,7 +1186,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                         return
             if field_mapping_to_use==None:
                 register_error(
-                    f"AHS-S4: Missing field mapping to '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
+                    f"AHS-S4: Missing field mapping to key column '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
                 return
 
             satellite_parent_table_key_column_name=sat_key_column_name
