@@ -57,7 +57,7 @@ class DVPIcrosscheck:
 
         # Print results
         if similar_tables:
-            print("Warning: Found similar table names:")
+            print("Warning: Found nearly similar table names:")
             for table1, table2, similarity_distance in similar_tables:
                 print(f"  '{table1}' and '{table2}' (Distance: {similarity_distance})")
         else:
@@ -112,10 +112,15 @@ class DVPIcrosscheck:
                         self.total_differences += 1
 
     def print_conflicts(self):
-        """Print out the report of conflicts for all tables and columns."""
+        """Print out the report of conflicts for all tables and columns with conflict counts."""
         print("\nConflicts across pipelines:")
         for table_name, columns in self.conflict_report.items():
-            print(f"\nTable '{table_name}' has differences across pipelines:")
+            # Count total conflicts for the table
+            conflict_count = sum(
+                len(properties) for column_name, properties in columns.items() if column_name != "table_presence"
+            )
+
+            print(f"\nTable '{table_name}' has {conflict_count} differences across pipelines:")
             if "table_presence" in columns:
                 print(f"  Table presence is:")
                 for pipeline, status in columns["table_presence"].items():
@@ -149,7 +154,6 @@ class DVPIcrosscheck:
                         max_value_length = max(len(str(value)) for value in grouped_values.keys())
 
                         for value, pipelines in grouped_values.items():
-                            # Align pipelines under the same value and format the value as a string with quotes
                             quoted_value = f'"{value}"'
                             print(f"      {quoted_value:<{max_value_length + 2}} : {pipelines[0]}")
                             for pipeline in pipelines[1:]:
