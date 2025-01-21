@@ -204,9 +204,9 @@ When ommitting this property, the mapping counts only to the "unnamed" relation.
 You can explicitly declare participation in the main (unnamend) relation with  "/" as name. This allows a mapping to
 be used in mulitple relations that include the unnamed relation.
 
-By setting the property to \["*"], you declare the mapping to be used in all relations of the table.
-Declaring '*' for all mappings of a table, will use the mappings for all relations of the parent tabled. This can not be
-applied to hubs, since they don't have a parent.
+By setting the property to * , you declare the field mapping to be used in all relations of the table.
+Declaring * for **all mappings of a table**, declares to use the mappings for all relations of the tables parent tabled.
+This can not be applied to hubs, since they don't have a parent.
  
 
 <br>*["parent"] , ["child1","child2"], ["/","Sibling"]*

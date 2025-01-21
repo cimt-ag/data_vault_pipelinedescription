@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.2
+Compile time: 2025-01-21 17:15:15
+Compiling t1024c_trigger_ahs_s4_missing_use_key_hash_mapping_in_one_relation.json
+
+AHS-S4: Missing field mapping to key column 'HK_RTJJ_1024_AAA' of satellite 'btjj_1024_aaa_sat' for relation operation 'UUU'
+*** Compilation ended with errors ***

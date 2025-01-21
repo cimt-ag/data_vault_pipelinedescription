@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.2
+Compile time: 2025-01-21 16:49:41
+Compiling t1022c_trigger_ahs_s3_duplicate_key_hash_relation.dvpd.json
+
+AHS-S3: Duplicate field mapping to 'HK_RTJJ_1022_AAA' of satellite 'btjj_1022_aaa_sat' for relation operation 'TTT'
+*** Compilation ended with errors ***

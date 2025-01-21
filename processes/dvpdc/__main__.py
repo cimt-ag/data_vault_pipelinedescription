@@ -731,19 +731,23 @@ def determine_load_operations_from_relations_in_mappings():
             if 'data_columns' in table_entry:
                 for data_column_name, data_column in table_entry['data_columns'].items():
                     count_matches=0
-                    default_available=False
+                    universal_mapping_defined=False
                     for field_mapping in data_column['field_mappings']:
                         for relation_name in field_mapping['relation_names']:
                             if relation_name == load_operation_name:
                                 count_matches+=1
                             if relation_name == '*':
-                                default_available=True
+                                universal_mapping_defined=True
                     if count_matches>1:
                         register_error(
                             f"DLO-20:There are multiple explicit mappings for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
-                    if count_matches==0 and not default_available:
+                    if count_matches==0 and not universal_mapping_defined:
                         register_error(
                             f"DLO-21:There is no field mapping for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
+                    if count_matches==1 and universal_mapping_defined:
+                        register_error(
+                            f"DLO-22: There is a mix of universal (*) relation mapping with mapping for relation'{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
+
             #todo add crosscheck for direct key mapping completenes
 
         # Set universal flag for hub,s that have only a "/" operation
@@ -1171,8 +1175,8 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                       f"though it had been checked in 'derive_content_dependent_sat_properties'"
 
             # The Load operation must be covered exactly once in key_hash_field_mapping
-            field_mapping_to_use=None
-            for field_mapping in   table_entry['direct_key_hash_columns'][sat_key_column_name]['field_mappings']:
+            field_mapping_to_use = None
+            for field_mapping in table_entry['direct_key_hash_columns'][sat_key_column_name]['field_mappings']:
                 if load_operation_name in field_mapping['relation_names'] or '*' in field_mapping['relation_names']:
                     if field_mapping_to_use == None:
                         field_mapping_to_use=field_mapping
@@ -1182,7 +1186,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                         return
             if field_mapping_to_use==None:
                 register_error(
-                    f"AHS-S4: Missing field mapping to '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
+                    f"AHS-S4: Missing field mapping to key column '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
                 return
 
             satellite_parent_table_key_column_name=sat_key_column_name
@@ -1509,7 +1513,7 @@ def assemble_dvpi_table_entry(table_name,table_entry):
             column_dict[column_name]=1
         else:
             register_error(
-                f"Double column name '{column_name}' when assembling table '{table_name}'. Check for conflicts ")
+                f"AD-TE1: Double column name '{column_name}' when assembling table '{table_name}'. Please check for name collisions between meta columns, data columns and hash columns!")
 
     return dvpi_table_entry
 
@@ -1652,7 +1656,7 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
             column_dict[stage_column_name]=1
         else:
             register_error(
-                f"Double stage column name '{stage_column_name}' when adding hash to columns for stage table. Check for conflicts between meta data columns and hashes ?")
+                f"AD-SC1: Double stage column name '{stage_column_name}' when assembling columns for stage table. Please check for name collisions between meta columns, fields and hash columns!")
 
     return dvpi_stage_columns
 
