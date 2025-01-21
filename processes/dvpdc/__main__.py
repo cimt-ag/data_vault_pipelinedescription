@@ -1175,8 +1175,8 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                       f"though it had been checked in 'derive_content_dependent_sat_properties'"
 
             # The Load operation must be covered exactly once in key_hash_field_mapping
-            field_mapping_to_use=None
-            for field_mapping in   table_entry['direct_key_hash_columns'][sat_key_column_name]['field_mappings']:
+            field_mapping_to_use = None
+            for field_mapping in table_entry['direct_key_hash_columns'][sat_key_column_name]['field_mappings']:
                 if load_operation_name in field_mapping['relation_names'] or '*' in field_mapping['relation_names']:
                     if field_mapping_to_use == None:
                         field_mapping_to_use=field_mapping
