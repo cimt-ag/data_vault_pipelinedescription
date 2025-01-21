@@ -731,19 +731,23 @@ def determine_load_operations_from_relations_in_mappings():
             if 'data_columns' in table_entry:
                 for data_column_name, data_column in table_entry['data_columns'].items():
                     count_matches=0
-                    default_available=False
+                    universal_mapping_defined=False
                     for field_mapping in data_column['field_mappings']:
                         for relation_name in field_mapping['relation_names']:
                             if relation_name == load_operation_name:
                                 count_matches+=1
                             if relation_name == '*':
-                                default_available=True
+                                universal_mapping_defined=True
                     if count_matches>1:
                         register_error(
                             f"DLO-20:There are multiple explicit mappings for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
-                    if count_matches==0 and not default_available:
+                    if count_matches==0 and not universal_mapping_defined:
                         register_error(
                             f"DLO-21:There is no field mapping for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
+                    if count_matches==1 and universal_mapping_defined:
+                        register_error(
+                            f"DLO-22: There is a mix of universal (*) relation mapping with mapping for relation'{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
+
             #todo add crosscheck for direct key mapping completenes
 
         # Set universal flag for hub,s that have only a "/" operation

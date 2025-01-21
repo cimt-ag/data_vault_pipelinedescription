@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.2
+Compile time: 2025-01-21 12:34:33
+Compiling t3071c.dvpd.json
+
+DLO-22: There is a mix of universal (*) relation mapping with mapping for relation'/' into column 'F5F6_AAA_C1' of table 'rtjj_3071_aaa_sat'
+*** Compilation ended with errors ***
