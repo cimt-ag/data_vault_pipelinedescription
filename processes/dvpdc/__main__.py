@@ -1509,7 +1509,7 @@ def assemble_dvpi_table_entry(table_name,table_entry):
             column_dict[column_name]=1
         else:
             register_error(
-                f"Double column name '{column_name}' when assembling table '{table_name}'. Check for conflicts ")
+                f"AD-TE1: Double column name '{column_name}' when assembling table '{table_name}'. Please check for name collisions between meta columns, data columns and hash columns!")
 
     return dvpi_table_entry
 
@@ -1652,7 +1652,7 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
             column_dict[stage_column_name]=1
         else:
             register_error(
-                f"Double stage column name '{stage_column_name}' when adding hash to columns for stage table. Check for conflicts between meta data columns and hashes ?")
+                f"AD-SC1: Double stage column name '{stage_column_name}' when assembling columns for stage table. Please check for name collisions between meta columns, fields and hash columns!")
 
     return dvpi_stage_columns
 
