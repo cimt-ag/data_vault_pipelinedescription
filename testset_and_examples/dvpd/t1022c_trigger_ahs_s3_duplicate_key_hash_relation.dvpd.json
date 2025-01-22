@@ -1,7 +1,7 @@
 {
 	"dvpd_version": "0.6.2",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "t1022c_duplicate_key_hash_relation",
+	"pipeline_name": "t1022c_trigger_ahs_s3_duplicate_key_hash_relation",
 	"record_source_name_expression": "dvpd implementation test",
 	"pipeline_comment":"Test for duplicate 'use_as_key_hash' relation mappings on satellites.",
 	"data_extraction": {

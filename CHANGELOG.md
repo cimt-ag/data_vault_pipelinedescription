@@ -1,16 +1,28 @@
 # release 0.6.2
+ 
+### major features
+- added example of DVPI to DBT Model Generator
+- Added model consistency check process over all dvpi
 
-### features
+### other features
 - added libary to connect to a database for schema (needed for schema retrieval demo)
+- added example of python function code generator (creates code for cimt data vault framework)
+- enhanced output of automated test for better mass change checking
 
 ### DVPD syntax changes
+- added 'is_multiactive_key' keyword for field to table mapping to dvpd and dpvi
 
 ### code enhancements
 - modified configuration ini loader to find config directory by detecting /lib or /processes in current path
 
-### Funcitional changes
+### Functional changes dvpdc
 Some functional changes can be mitigated by migrating existing dvpd files with the migration script (processes/migration_scripts/migrate_0_6_1_to_0_6_2)
 - default stage table name is now `<pipeline_name>_stage` (previously `s<pipeline_name>`). Migration will add explicit stage_table_name declaraction to keep old name
+
+### Functional changes render ddl
+- Ghost record hash value and far future date is not hard coded any more but 
+taken from model profile definition. Special syntax allows declaration of code snippets instead
+of text constants
 
 # release 0.6.1
 In this release, we completely switch from the PostgreSQL implementation of the compiler to the python implementation.

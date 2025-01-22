@@ -184,7 +184,9 @@ module, responsible for calculating the group hash.
 
 **is_multi_active_key**
 (optional)
-<br>Indicates, that the field is (part) of the multi-active-key of target multi-active-satellite. The multi-active-key must be unique for any given Parent-HashKey (at any point in time).
+<br>Declares the field is (part) of the multi-active-key of targeted multi-active-satellite. 
+<br> This must be delcared, when the multi active satellite loading pattern depends 
+on it. 
 
 **relation_names[]**
 (optional) *defines: mapping, data model, load operations*
@@ -202,9 +204,9 @@ When ommitting this property, the mapping counts only to the "unnamed" relation.
 You can explicitly declare participation in the main (unnamend) relation with  "/" as name. This allows a mapping to
 be used in mulitple relations that include the unnamed relation.
 
-By setting the property to \["*"], you declare the mapping to be used in all relations of the table.
-Declaring '*' for all mappings of a table, will use the mappings for all relations of the parent tabled. This can not be
-applied to hubs, since they don't have a parent.
+By setting the property to * , you declare the field mapping to be used in all relations of the table.
+Declaring * for **all mappings of a table**, declares to use the mappings for all relations of the tables parent tabled.
+This can not be applied to hubs, since they don't have a parent.
  
 
 <br>*["parent"] , ["child1","child2"], ["/","Sibling"]*
@@ -247,7 +249,8 @@ is rare but possible).
 <br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
 <br>Setting this to true, defines the field to contain a key_hash for the table. The field/column name must be equal to
 the name, given by the model structure. It can be applied to parent keys of satellites or links and instructs the staging
-phase to just copy the value from the source into the stage table.
+phase to just copy the value from the source into the stage table. Parent elements must still be
+declared but can be "only_strutural_element"
 
 
 **exclude_from_change_detection**

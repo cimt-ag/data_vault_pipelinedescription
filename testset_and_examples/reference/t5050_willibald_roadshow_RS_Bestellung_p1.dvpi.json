@@ -1,9 +1,10 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-11-11 11:33:54",
+  "compile_timestamp": "2025-01-06 19:00:17",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5050_willibald_roadshow_rs_bestellung_p1",
+  "pipeline_revision_tag": "--none--",
   "dvpd_filename": "t5050_willibald_roadshow_RS_Bestellung_p1.dvpd.json",
   "tables": [
     {
@@ -733,7 +734,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_RS_BESTELLUNG",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RS_BESTELLUNG_HUB",
               "stage_column_name": "HK_RS_BESTELLUNG"
             }
@@ -743,7 +743,6 @@
               "column_name": "BESTELLUNGID",
               "field_name": "BESTELLUNGID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "BESTELLUNGID"
             }
           ]
@@ -756,14 +755,12 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_RS_BESTELLUNG",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RS_BESTELLUNG_HUB",
               "stage_column_name": "HK_RS_BESTELLUNG"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "RH_RS_BESTELLUNG_RS_BESTELLUNG_P1_SAT",
-              "is_nullable": false,
               "hash_name": "DIFF_OF_RS_BESTELLUNG_RS_BESTELLUNG_P1_SAT",
               "stage_column_name": "RH_RS_BESTELLUNG_RS_BESTELLUNG_P1_SAT"
             }
@@ -773,49 +770,42 @@
               "column_name": "GUELTIGBIS",
               "field_name": "GUELTIGBIS",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "GUELTIGBIS"
             },
             {
               "column_name": "KAUFDATUM",
               "field_name": "KAUFDATUM",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "KAUFDATUM"
             },
             {
               "column_name": "KKFIRMA",
               "field_name": "KKFIRMA",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "KKFIRMA"
             },
             {
               "column_name": "KREDITKARTE",
               "field_name": "KREDITKARTE",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "KREDITKARTE"
             },
             {
               "column_name": "MENGE",
               "field_name": "MENGE",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "MENGE"
             },
             {
               "column_name": "PREIS",
               "field_name": "PREIS",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "PREIS"
             },
             {
               "column_name": "RABATT",
               "field_name": "RABATT",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "RABATT"
             }
           ]
@@ -828,35 +818,30 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_RS_BESTELLUNG",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RS_BESTELLUNG_HUB",
               "stage_column_name": "HK_RS_BESTELLUNG"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KUNDE_HUB",
               "stage_column_name": "HK_KUNDE"
             },
             {
               "hash_class": "parent_key_3",
               "column_name": "HK_VEREINSPARTNER",
-              "is_nullable": false,
               "hash_name": "KEY_OF_VEREINSPARTNER_HUB",
               "stage_column_name": "HK_VEREINSPARTNER"
             },
             {
               "hash_class": "parent_key_4",
               "column_name": "HK_PRODUKT",
-              "is_nullable": false,
               "hash_name": "KEY_OF_PRODUKT_HUB",
               "stage_column_name": "HK_PRODUKT"
             },
             {
               "hash_class": "key",
               "column_name": "LK_RS_BESTELLUNG_KUNDE_VEREINSPARTNER",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RS_BESTELLUNG_KUNDE_VEREINSPARTNER_PRODUKT_LNK",
               "stage_column_name": "LK_RS_BESTELLUNG_KUNDE_VEREINSPARTNER"
             }
@@ -870,7 +855,6 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_RS_BESTELLUNG_KUNDE_VEREINSPARTNER",
-              "is_nullable": false,
               "hash_name": "KEY_OF_RS_BESTELLUNG_KUNDE_VEREINSPARTNER_PRODUKT_LNK",
               "stage_column_name": "LK_RS_BESTELLUNG_KUNDE_VEREINSPARTNER"
             }
@@ -884,7 +868,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KUNDE_HUB",
               "stage_column_name": "HK_KUNDE"
             }
@@ -894,7 +877,6 @@
               "column_name": "KUNDEID",
               "field_name": "KUNDEID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "KUNDEID"
             }
           ]
@@ -907,7 +889,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_PRODUKT",
-              "is_nullable": false,
               "hash_name": "KEY_OF_PRODUKT_HUB",
               "stage_column_name": "HK_PRODUKT"
             }
@@ -917,7 +898,6 @@
               "column_name": "PRODUKTID",
               "field_name": "PRODUKTID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "PRODUKTID"
             }
           ]
@@ -930,7 +910,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_VEREINSPARTNER",
-              "is_nullable": false,
               "hash_name": "KEY_OF_VEREINSPARTNER_HUB",
               "stage_column_name": "HK_VEREINSPARTNER"
             }
@@ -940,7 +919,6 @@
               "column_name": "VEREINSPARTNERID",
               "field_name": "VEREINSPARTNERID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "VEREINSPARTNERID"
             }
           ]
