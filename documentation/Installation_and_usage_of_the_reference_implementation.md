@@ -279,10 +279,10 @@ The example is restricted to postgreSQL Databases. It reads it's connection para
 ## Generate DBT Models (generate_dbt_models)
 This command generates DBT model files based on the DVPI files (=result of DVPD compile).
 The generated DBT models use the [datavault4dbt](https://www.datavault4dbt.com/) syntax. Therefore
-you need to install that package into the dbt invornment to work.
+you need to install that package into the dbt environment to work.
 
 The generator can be configured to write the model files  into the 
-dbt project directory. The target directory is configuresd wiv the ini parameter "model_directory".
+dbt project directory. The target directory is configured with the ini parameter "model_directory".
 See all options below.
 
 Currently, the script can generate hubs, links, satellites and stage models.
@@ -296,25 +296,24 @@ The generator creates or modifies all DBT models, that are affected by the decla
 By setting the dvpi file name to "@youngest", the script uses the youngest file in the dvpi default
 directory.
 
-"Modification" means, that only the DBT declarations, resulting from the given DVPI file 
-will be added or changed in the DBT model. 
+"Modify" means, that only the DBT declarations in the model file, that resulting from the given DVPI file 
+will be added or changed by the generator. 
 
-By setting the option -a, the generator will replace the affected DBT models completely,
-but also includes the information of all other dvpi files that have an impact on the models.
+By setting the option -a, the generator will replace the DBT models affected by the DVPI completely,
+but also includes the information of all other DVPI files that have an impact on these models.
 
 When using the dvpi file name "@all", the script creates/replaces dbt models for all dvpi files
 found in the dvpi default directory. 
 
 The generator **does not check overall model consistency** and might 
-deliver "garbage" if different DVPI's declare different structures for the same target. It is highly recommended, to check the
-consitency between of all dvpi files first by using the "dvpi_crosscheck" script. 
+deliver "garbage" if different DVPI's declare different structures for the same target. 
+It is highly recommended, to check the consitency between of all DVPI files first
+with the "dvpd_crosscheck" script. 
 
 options:
   - -h, --help            show this help message and exit
-  - -a, --use-all-dvpis   Use specified dvpi only to identify the set of models to generate, but use all dvpis to actually create those models. 
+  - -a, --use-all-dvpis   Use specified dvpi only to identify the set of models to generate, but use all dvpis to actually create those models.
 
-Settings read from dvpdc.ini file:
-
-Section "datavault4dbt"
+Settings read from dvpdc.ini file, section "datavault4dbt":
 - dvpi_default_directory - The directory where the generator searches for the dvpi-files
 - model_directory        - The directory where the datavault4dbt model files will be written to
