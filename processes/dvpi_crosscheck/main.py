@@ -13,7 +13,7 @@ class DVPIcrosscheck:
 
     def load_dvpi_files(self):
         for file_name in os.listdir(self.dvpi_directory):
-            if file_name.startswith("t120") and file_name.endswith(".json"):
+            if file_name.startswith("t") and file_name.endswith(".json"):
                 self.dvpi_files.append(file_name)
 
     def load_pipeline_data(self):

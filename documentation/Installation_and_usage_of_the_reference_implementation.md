@@ -257,3 +257,4 @@ Settings read from dvpdc.ini file:
 - dvpd_generator_directory - Directory, the result file will be written to
 
 The example is restricted to postgreSQL Databases. It reads it's connection parameters from an ini file.
+
