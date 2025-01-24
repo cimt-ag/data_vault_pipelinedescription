@@ -277,26 +277,44 @@ Settings read from dvpdc.ini file:
 The example is restricted to postgreSQL Databases. It reads it's connection parameters from an ini file.
 
 ## Generate DBT Models (generate_dbt_models)
-This command generates DBT model files by using information provided in the DVPI.
-The generated files use the [datavault4dbt](https://www.datavault4dbt.com/) syntax, so only work in a setting where this package is used.
-In order to make use of this generator, one must have a datavault4dbt project already set up. When setup correctly the model files are written directly to the model directory filder of your datavault4dbt project. This command requires a .ini file to specify the dbt model directory and the default dvpi directory.
+This command generates DBT model files based on the DVPI files (=result of DVPD compile).
+The generated DBT models use the [datavault4dbt](https://www.datavault4dbt.com/) syntax. Therefore
+you need to install that package into the dbt invornment to work.
 
-Currently, the script can generate hubs, links, satellites and stage models. We will also add support for Ref-Tables in the near future. 
+The generator can be configured to write the model files  into the 
+dbt project directory. The target directory is configuresd wiv the ini parameter "model_directory".
+See all options below.
+
+Currently, the script can generate hubs, links, satellites and stage models.
+Support for Ref-Tables will be added in upcoming releases. 
 
 The dbt model generator is started on the command line with:
 
 ```dvpd_generate_dbt_models <name of the dvpi file> <path to the ini file> options```
 
-The name of the dvpi file should not contain the postfix .dvpi.json
-When using the dvpi file name "@youngest", the script uses the youngest file in the dvpi default directory
-When using the dvpi file name "@all", the script creates dbt models for all dvpi files in the dvpi default directory.
+The generator creates or modifies all DBT models, that are affected by the declared dvpi file.
+By setting the dvpi file name to "@youngest", the script uses the youngest file in the dvpi default
+directory.
+
+"Modification" means, that only the DBT declarations, resulting from the given DVPI file 
+will be added or changed in the DBT model. 
+
+By setting the option -a, the generator will replace the affected DBT models completely,
+but also includes the information of all other dvpi files that have an impact on the models.
+
+When using the dvpi file name "@all", the script creates/replaces dbt models for all dvpi files
+found in the dvpi default directory. 
+
+The generator **does not check overall model consistency** and might 
+deliver "garbage" if different DVPI's declare different structures for the same target. It is highly recommended, to check the
+consitency between of all dvpi files first by using the "dvpi_crosscheck" script. 
 
 options:
   - -h, --help            show this help message and exit
   - -a, --use-all-dvpis   Use specified dvpi only to identify the set of models to generate, but use all dvpis to actually create those models. 
 
 Settings read from dvpdc.ini file:
-- dvpi_default_directly - The directory where the script searches for the dvpi-files
-- model_directory       - The directory where the datavault4dbt model files will be written to
 
-When the -a setting is used, or the dvpi file name is "@all", the generator will overwrite the existing model files, since it assumes complete information for each model. In all other cases the generator, the 'source' section of the model files will only be appended and not overwritten.
+Section "datavault4dbt"
+- dvpi_default_directory - The directory where the generator searches for the dvpi-files
+- model_directory        - The directory where the datavault4dbt model files will be written to
