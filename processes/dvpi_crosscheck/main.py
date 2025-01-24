@@ -1,6 +1,35 @@
+#!/usr/bin/env python310
+# =====================================================================
+# Part of the Data Vault Pipeline Description Reference Implementation
+#
+#  Copyright 2025 Albin Cekaj
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#  =====================================================================
+
+
+
+import argparse
 import json
 import os
 import sys
+from pathlib import Path
+
+project_directory = os.path.dirname(os.path.dirname(sys.path[0]))
+sys.path.insert(0,project_directory)
+
+from lib.configuration import configuration_load_ini
+
 from Levenshtein import distance
 class DVPIcrosscheck:
     def __init__(self, dvpi_directory):
@@ -11,10 +40,11 @@ class DVPIcrosscheck:
         self.pipeline_names = {}
         self.total_differences = 0
 
-    def load_dvpi_files(self):
+    def load_dvpi_files(self,tests_only):
         for file_name in os.listdir(self.dvpi_directory):
-            if file_name.startswith("t120") and file_name.endswith(".json"):
-                self.dvpi_files.append(file_name)
+            if file_name.endswith(".json"):
+                if (not tests_only and not file_name.startswith("t120")) or (tests_only and file_name.startswith("t120")):
+                    self.dvpi_files.append(file_name)
 
     def load_pipeline_data(self):
         """Collect and organize tables, columns, and properties from each DVPI file."""
@@ -159,9 +189,9 @@ class DVPIcrosscheck:
                                 print(f"      {' ' * (max_value_length + 2)} : {pipeline}")
         print(f"\nTotal number of conflicts: {self.total_differences}")
 
-    def run_analysis(self):
+    def run_analysis(self,tests_only):
         """Run the analysis from loading data to generating the report."""
-        self.load_dvpi_files()
+        self.load_dvpi_files(tests_only)
         self.load_pipeline_data()
         self.check_table_name_similarity()
         self.analyze_conflicts()
@@ -173,6 +203,36 @@ class DVPIcrosscheck:
             sys.exit(0)
 
 if __name__ == "__main__":
-    dvpi_directory = r"C:\\git_ordner\\dvpd\\var\\dvpi"
+    description_for_terminal = "Cimt AG reccommends to follow the instruction before starting the script. If you run your script from command line, it should look" \
+                               " like this: python __main__.py inputFile"
+    usage_for_terminal = "Add option -h for further instruction"
+
+    parser = argparse.ArgumentParser(
+        description=description_for_terminal,
+        usage=usage_for_terminal
+    )
+    # input Arguments
+    #todo add file focussed check
+    #parser.add_argument("dvpi_filename",
+    #                   help="Name of the dvpi file to check. Set this to '@youngest' to check the youngest file in your dvpi directory")
+    parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
+    # output arguments
+    parser.add_argument("--dvpi_directory", help="Path of the directory with dvpi files to check")
+    parser.add_argument("--tests_only", help="Restricts the list of dvpi files to the crosschek test files",action='store_true')
+
+    args = parser.parse_args()
+
+    params = configuration_load_ini(args.ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
+
+    if args.dvpi_directory == None:
+        dvpi_directory = Path(params['dvpi_default_directory'])
+    else:
+        dvpi_directory = Path(args.dvpi_directory)
+
+
+    #if dvpd_filename == '@youngest':
+    #    dvpd_filename = get_name_of_youngest_dvpd_file(ini_file=args.ini_file)
+
+
     crosscheck = DVPIcrosscheck(dvpi_directory)
-    crosscheck.run_analysis()
+    crosscheck.run_analysis(args.tests_only)
