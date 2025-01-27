@@ -42,10 +42,6 @@ class DVPIcrosscheck:
 
     def load_dvpi_files(self,tests_only):
         for file_name in os.listdir(self.dvpi_directory):
-
-            if file_name.startswith("t") and file_name.endswith(".json"):
-                self.dvpi_files.append(file_name)
-
             if file_name.endswith(".json"):
                 if (not tests_only and not file_name.startswith("t120")) or (tests_only and file_name.startswith("t120")):
                     self.dvpi_files.append(file_name)
