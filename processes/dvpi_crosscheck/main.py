@@ -41,6 +41,7 @@ class DVPIcrosscheck:
         self.total_differences = 0
         self.multi_dvpi_table_count = 0
 
+
     def collect_dvpi_file_names(self, tests_only):
         for file_name in os.listdir(self.dvpi_directory):
             if file_name.endswith(".json"):
@@ -84,7 +85,7 @@ class DVPIcrosscheck:
             for table2 in table_names[i + 1:]:
                 # Calculate Levenshtein distance
                 similarity_distance = distance(table1, table2)
-                if similarity_distance <= 2:
+                if similarity_distance <= 1:
                     similar_tables.append((table1, table2, similarity_distance))
 
         # Print results
@@ -146,18 +147,23 @@ class DVPIcrosscheck:
 
     def print_conflicts(self):
         """Print out the report of conflicts for all tables and columns with conflict counts."""
-        print("\nConflicts across pipelines:")
+
+        if len(self.conflict_report) == 0:
+            print ("\n== no conflicts ==\n")
+            return
+
+        print("\nList of conflicts:")
+        print("=========================================================")
 
         total_tables = len(self.conflict_report)  # Total number of tables
 
-        total_conflicts = 0  # Track total conflicts globally
+
 
         for table_name, columns in self.conflict_report.items():
             # Count total conflicts for this table
             conflict_count = sum(
                 len(properties) for column_name, properties in columns.items() if column_name != "table_presence"
             )
-            total_conflicts += conflict_count
 
             # Track unique DVPI and multi-DVPI involvement
             table_dvpi = set()
@@ -171,7 +177,7 @@ class DVPIcrosscheck:
                             table_dvpi.add(pipeline)
 
 
-            print(f"\nTable '{table_name}' has {conflict_count} differences across pipelines:")
+            print(f"\nTable '{table_name}' has {conflict_count} conflict across pipelines:")
             for column_name, properties in columns.items():
                 if "presence" in properties:
                     print(f"  Column '{column_name}' is in:")
@@ -207,11 +213,9 @@ class DVPIcrosscheck:
                             for pipeline in pipelines[1:]:
                                 print(f"                : {pipeline}")
 
-        print(f"\nDVPI analyzed: {len(self.dvpi_files)}")
-        print(f"Tables analyzed: {len(self.pipeline_data)}")
-        print(f"Tables where multiple DVPI are involved: {self.multi_dvpi_table_count}")
-        print(f"Tables with conflicts: {len(self.conflict_report)}")
-        print(f"Number of conflicts: {total_conflicts}")
+        print("=========================================================")
+
+
 
     def run_analysis(self,tests_only):
         """Run the analysis from loading data to generating the report."""
@@ -220,6 +224,15 @@ class DVPIcrosscheck:
         self.check_table_name_similarity()
         self.analyze_conflicts()
         self.print_conflicts()
+
+        print(f"\nDVPI analyzed: {len(self.dvpi_files)}")
+        print(f"Tables analyzed: {len(self.pipeline_data)}")
+        print(f"Tables created by multiple DVPI: {self.multi_dvpi_table_count}")
+        print(f"Tables with conflicts: {len(self.conflict_report)}")
+        print(f"Number of conflicts: {self.total_differences}")
+
+        print(
+            f"\ncrosscheck for {len(self.dvpi_files)} DVPI files=>Tables:{len(self.pipeline_data)}, Conflict Tables: {len(self.conflict_report)}/{self.multi_dvpi_table_count}, Conflicts: {self.total_differences}")
 
         return self.total_differences
 
@@ -244,7 +257,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    params = configuration_load_ini(args.ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
+    params = configuration_load_ini(args.ini_file, 'dvpdc', ['dvpi_default_directory'])
 
     if args.dvpi_directory == None:
         dvpi_directory = Path(params['dvpi_default_directory'])

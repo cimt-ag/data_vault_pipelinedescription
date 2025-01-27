@@ -3,7 +3,7 @@ Installation and users Guide for the reference implementation
 
 ## Licence and Credits
 
-(C) Matthias Wegner, cimt ag
+(C) 2025 Matthias Wegner, Joscha von Hein, Albin Cekaj,  cimt ag
 
 Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)
 
@@ -230,7 +230,7 @@ needed to implement the loading process.
 
 The developer sheet generator is started on the command line with:
 
-```dvpd_devsheet_render <name of the dvpi file> options ```
+```dvpd_devsheet_render <name of the dvpi file> [options] ```
 
 When using the file name "@youngest", the script uses the youngest file in the dvpi default directory
 
@@ -263,7 +263,7 @@ Additionally it generates a summary of the data profiling as simple human readab
 
 The dvpd generator is started on the command line with:
 
-```dvpd_generate_from_db <name of the table schema> <name of the table> options ```
+```dvpd_generate_from_db <name of the table schema> <name of the table> [options] ```
 
 options:
   - -h, --help            show this help message and exit
@@ -276,8 +276,7 @@ Settings read from dvpdc.ini file:
 
 The example is restricted to postgreSQL Databases. It reads it's connection parameters from an ini file.
 
-<<<<<<< HEAD
-=======
+
 ## Generate DBT Models (generate_dbt_models)
 This command generates DBT model files based on the DVPI files (=result of DVPD compile).
 The generated DBT models use the [datavault4dbt](https://www.datavault4dbt.com/) syntax. Therefore
@@ -292,7 +291,7 @@ Support for Ref-Tables will be added in upcoming releases.
 
 The dbt model generator is started on the command line with:
 
-```dvpd_generate_dbt_models <name of the dvpi file> <path to the ini file> options```
+```dvpd_generate_dbt_models <name of the dvpi file> <path to the ini file> [options]```
 
 The generator creates or modifies all DBT models, that are affected by the declared dvpi file.
 By setting the dvpi file name to "@youngest", the script uses the youngest file in the dvpi default
@@ -319,34 +318,60 @@ options:
 Settings read from dvpdc.ini file, section "datavault4dbt":
 - dvpi_default_directory - The directory where the generator searches for the dvpi-files
 - model_directory        - The directory where the datavault4dbt model files will be written to
->>>>>>> origin/feat/mawegner
 
 
-# Crosscheck in DVPD Reference Implementation
+## Crosscheck of DVPI
 The **Crosscheck Feature** is a component of DVPD reference implementation.
 It ensures data integrity, schema alignment and configuration consistency by identifying differences across multiple pipelines.
 
-## Purpose of Crosscheck
+### Purpose of Crosscheck
 
-The crosscheck identifies inconsistencies in:
+The crosscheck identifies inconsistencies between different dvpi's (=compiled dvpd's) in:
 1. **Table Structures**: Schema differences like column types, sizes, and constraints.
-2. **Hash Keys**: Variations in definitions and usage.
+2. **Hash Keys**: Variations in definitions and usage (mostly caused by different field mapping properties).
 3. **Field Types**: Mismatched declarations and usage.
 
-## Implementation Overview
+### Execution
+The crosscheck is started on the command line with:
+
+```dvpd_dvpi_crosscheck [options]```
+
+options:
+  - -h, --help            show this help message and exit
+  - --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
+  - --tests_only  restricts the dvpi to a hard coded set of files (Name Pattern "t120*.json"). In the set of reference tests, 
+these test contain specific scenarios to test the crosscheck
+
+Settings read from dvpdc.ini file, section "dvpdc":
+  - dvpi_default_directory - The directory where the crosscheck searches for the dvpi-files
+
+The crosscheck checks all *.json files, in the configures directory. If conflicts are detected, they will 
+be reported to the console and the crosscheck exits with exit code 8.
+
+A very comprehensive final report summary is provided as a single line string. 
+<br>eg.```crosscheck for 213 DVPI files=>Tables:1068, Conflict Tables: 3/6, Conflicts: 3```
+<br> It can be usefull to copy this into a commit message and therefore document the state of the implementation
+in the git log. 
+
+*Announcement:<br>
+Later releases will allow to restrict the crosscheck to objects 
+of a specific pipeline. In combination with properties to declare levels of maturity, this will prevent
+already established and tested pipelines to be reported, when new (less mature) pipelines are not compatible yet.*
+
+### Implementation insights
 
 The crosscheck process involves three main phases:
 
-### 1. Loading Pipeline Data
+#### 1. Loading Pipeline Data
 - Scans all DVPI files in the specified directory.
 - Extracts tables, columns, and their associated properties from each DVPI file.
 
-### 2. Conflict Analysis
+#### 2. Conflict Analysis
 - Compares properties across pipelines.
 - Identifies conflicts in column properties, table structures, and schema definitions.
 - Highlights columns missing in certain pipelines in hash definitions.
 
-### 3. Conflict Reporting
+#### 3. Conflict Reporting
 - Generates detailed reports summarizing inconsistencies.
 - Provides insights into conflicts such as column presence, data types, and schema mismatches.
 
