@@ -39,8 +39,9 @@ class DVPIcrosscheck:
         self.conflict_report = {}
         self.pipeline_names = {}
         self.total_differences = 0
+        self.multi_dvpi_table_count = 0
 
-    def load_dvpi_files(self,tests_only):
+    def collect_dvpi_file_names(self, tests_only):
         for file_name in os.listdir(self.dvpi_directory):
             if file_name.endswith(".json"):
                 if (not tests_only and not file_name.startswith("t120")) or (tests_only and file_name.startswith("t120")):
@@ -106,6 +107,8 @@ class DVPIcrosscheck:
             if len(pipelines_with_table) < 2:
                 continue
 
+            self.multi_dvpi_table_count +=1;
+
             # Analyze column-level conflicts
             for column_name, properties in columns.items():
                 # Analyze property conflicts
@@ -146,8 +149,7 @@ class DVPIcrosscheck:
         print("\nConflicts across pipelines:")
 
         total_tables = len(self.conflict_report)  # Total number of tables
-        unique_dvpi = set()  # To track unique DVPI
-        multi_dvpi_tables = 0  # Tables with conflicts across various DVPI
+
         total_conflicts = 0  # Track total conflicts globally
 
         for table_name, columns in self.conflict_report.items():
@@ -168,9 +170,6 @@ class DVPIcrosscheck:
                         for pipeline in pipelines.keys():
                             table_dvpi.add(pipeline)
 
-            unique_dvpi.update(table_dvpi)
-            if len(table_dvpi) > 1:
-                multi_dvpi_tables += 1
 
             print(f"\nTable '{table_name}' has {conflict_count} differences across pipelines:")
             for column_name, properties in columns.items():
@@ -208,23 +207,22 @@ class DVPIcrosscheck:
                             for pipeline in pipelines[1:]:
                                 print(f"                : {pipeline}")
 
-        print(f"\nTotal number of tables analyzed: {total_tables}")
-        print(f"Total number of DVPI analyzed: {len(unique_dvpi)}")
-        print(f"Number of tables where various DVPI are involved: {multi_dvpi_tables}")
-        print(f"Total number of conflicts: {total_conflicts}")
+        print(f"\nDVPI analyzed: {len(self.dvpi_files)}")
+        print(f"Tables analyzed: {len(self.pipeline_data)}")
+        print(f"Tables where multiple DVPI are involved: {self.multi_dvpi_table_count}")
+        print(f"Tables with conflicts: {len(self.conflict_report)}")
+        print(f"Number of conflicts: {total_conflicts}")
 
     def run_analysis(self,tests_only):
         """Run the analysis from loading data to generating the report."""
-        self.load_dvpi_files(tests_only)
+        self.collect_dvpi_file_names(tests_only)
         self.load_pipeline_data()
         self.check_table_name_similarity()
         self.analyze_conflicts()
         self.print_conflicts()
 
-        if self.total_differences > 0:
-            sys.exit(8)
-        else:
-            sys.exit(0)
+        return self.total_differences
+
 
 if __name__ == "__main__":
     description_for_terminal = "Cimt AG reccommends to follow the instruction before starting the script. If you run your script from command line, it should look" \
@@ -259,4 +257,9 @@ if __name__ == "__main__":
 
 
     crosscheck = DVPIcrosscheck(dvpi_directory)
-    crosscheck.run_analysis(args.tests_only)
+    number_of_conflicts=crosscheck.run_analysis(args.tests_only)
+
+    if number_of_conflicts > 0:
+        sys.exit(8)
+    else:
+        sys.exit(0)
