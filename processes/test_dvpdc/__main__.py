@@ -283,7 +283,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dvpd_filename","-f", required=False, help="Name of the dvpd file to test")
     parser.add_argument("--testnumber","-t", required=False, type=int, help="Number of the test")
-    parser.add_argument("--ini_file", help="Name of the ini file")
+    parser.add_argument("--ini_file", help="Name of the ini file",default='./dvpdc.ini')
     args = parser.parse_args()
 
 
