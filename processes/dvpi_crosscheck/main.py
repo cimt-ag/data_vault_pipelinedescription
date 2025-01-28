@@ -129,11 +129,11 @@ class DVPIcrosscheck:
 
         # Print results
         if similar_tables:
-            print("Warning: Found nearly similar table names:")
+            print("! Warning: Found table name similarities:")
             for table1, table2, similarity_distance in similar_tables:
                 print(f"  '{table1}' and '{table2}' (Distance: {similarity_distance})")
         else:
-            print("No similar table names found.")
+            print("Table name similarities: None")
 
         return len(similar_tables)
 
@@ -229,7 +229,10 @@ class DVPIcrosscheck:
                             table_dvpi.add(pipeline)
 
 
-            print(f"\nTable '{table_name}' has {conflict_count} conflict across pipelines:")
+            if conflict_count == 1:
+                print(f"\nTable '{table_name}' has {conflict_count} conflict across pipelines:")
+            else:
+                print(f"\nTable '{table_name}' has {conflict_count} conflicts across pipelines:")
             for column_name, properties in columns.items():
                 if "presence" in properties:
                     print(f"  Column '{column_name}' is in:")
