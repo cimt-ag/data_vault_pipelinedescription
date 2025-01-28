@@ -310,7 +310,11 @@ def guess_and_pinpoint_model_profile(dvpi):
 
 
 
-def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_primary_keys=True,stage_column_naming_rule='stage'):
+def parse_json_to_ddl(filepath, ddl_render_path
+                    ,add_ghost_records=False
+                    ,add_primary_keys=True
+                    ,stage_column_naming_rule='stage'
+                    ,ddl_file_naming_pattern='lll'):
     """creates all ddl scripts and stres them in files
     special parameter: stage column naming , field= use field name, when available, stage=use stagename (might create duplicates), combine=combine stage and field name, when different
     combined stage column mappings tries to name the stage column like the target column. To prevent using the same stage column name for different content
@@ -407,7 +411,9 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
         
         # save ddl in directory
         table_ddl_path = schema_path / f"table_{table_name}.sql"
-        print(table_ddl_path.stem)
+        if ddl_file_naming_pattern=='lUl':
+            table_ddl_path = schema_path / f"table_{table_name.upper()}.sql"
+        print(table_ddl_path.name)
         with open(table_ddl_path, 'w') as file:
           file.write(ddl)
         
@@ -524,7 +530,9 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
         
         # save ddl in directory
         table_ddl_path = schema_path / f"table_{table_name}.sql"
-        print(table_ddl_path.stem)
+        if ddl_file_naming_pattern=='lUl':
+            table_ddl_path = schema_path / f"table_{table_name.upper()}.sql"
+        print(table_ddl_path.name)
         with open(table_ddl_path, 'w') as file:
           file.write(ddl)
 
@@ -618,7 +626,10 @@ if __name__ == '__main__':
     parser.add_argument("--add_ghost_records", help="Add ghost record inserts to every script",  action='store_true')
     parser.add_argument("--no_primary_keys", help="omit rendering of primary key constraints ",  action='store_true')
     parser.add_argument("--stage_column_naming_rule", help="Rule to use for stage column naming [stage,combined]", default='#notset#')
+    parser.add_argument("--ddl_file_naming_pattern", choices=['lll', 'lUl'], default='lll'
+                            ,help="Define the pattern of the file names. Currently possible patterns. 'lll' all name parts lower case (default). 'lUl' only table name in upper case")
     parser.add_argument("--model_profile_directory",help="Name of the model profile directory")
+
 
     args = parser.parse_args()
 
@@ -654,17 +665,20 @@ if __name__ == '__main__':
             raise Exception(f"Could not find test file for testnumber {testnumber}")
 
     print("-- Render DDL --")
-    print("Reading dvpi file "+dvpi_file_name)
+    print("Reading dvpi file '"+dvpi_file_name+"'\n")
     dvpi_file_path = Path(dvpi_file_name)
     if not dvpi_file_path.exists():
        dvpi_file_path = dvpi_default_directory.joinpath(dvpi_file_name)
        if not dvpi_file_path.exists():
             print(f"could not find file {args.dvpi_file_name}")
 
+    print("Generating ddl files:")
+
     ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path
                                         , add_ghost_records=args.add_ghost_records
                                         , add_primary_keys=not no_primary_keys
-                                   , stage_column_naming_rule=stage_column_naming_rule)
+                                   , stage_column_naming_rule=stage_column_naming_rule
+                                   , ddl_file_naming_pattern=args.ddl_file_naming_pattern)
     if args.print:
         print(ddl_output)
 
