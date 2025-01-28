@@ -240,6 +240,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
     renders a cheat sheet, that contains all crucial information for the developer
     """
     global  g_report_file
+
     with open(dvpi_filepath, 'r') as file:
         dvpi = json.load(file)
 
@@ -259,7 +260,6 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
 
     with open(report_sheet_file_path, "w") as g_report_file:
         g_report_file.write(f"Data vault pipeline developer cheat sheet \n")
-        print("---")
         g_report_file.write(f"rendered from  {dvpi_filepath.stem}\n\n")
         g_report_file.write(f"pipeline name:  {dvpi['pipeline_name']}\n\n")
 
@@ -428,6 +428,9 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
 
 ########################   MAIN ################################
 if __name__ == '__main__':
+
+    print("=== developers sheet render ===")
+
     description_for_terminal = "Process dvpi at the given location to render the developer sheet."
     usage_for_terminal = "Add option -h for further instruction"
 
@@ -470,4 +473,4 @@ if __name__ == '__main__':
     render_dev_cheat_sheet(dvpi_file_path, documentation_directory
                                         , stage_column_naming_rule=stage_column_naming_rule)
 
-    print("--- dev developers sheet render complete ---")
+    print("--- developers sheet render complete ---\n")

@@ -664,7 +664,7 @@ if __name__ == '__main__':
         if dvpi_file_name is None:
             raise Exception(f"Could not find test file for testnumber {testnumber}")
 
-    print("-- Render DDL --")
+    print("=== ddl render ===")
     print("Reading dvpi file '"+dvpi_file_name+"'\n")
     dvpi_file_path = Path(dvpi_file_name)
     if not dvpi_file_path.exists():
@@ -682,4 +682,4 @@ if __name__ == '__main__':
     if args.print:
         print(ddl_output)
 
-    print("--- ddl render complete ---")
+    print("--- ddl render complete ---\n")

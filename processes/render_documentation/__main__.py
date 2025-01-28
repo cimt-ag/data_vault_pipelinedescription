@@ -169,6 +169,8 @@ def get_name_of_youngest_dvpd_file(ini_file):
 
 if __name__ == "__main__":
 
+    print("=== documentation render ===")
+
     parser = argparse.ArgumentParser(
             description="Create specification documentation snippet from DVDP file",
             usage = "Add option -h for further instruction"
@@ -187,4 +189,4 @@ if __name__ == "__main__":
               ini_file=args.ini_file,
                 print_html=args.print)
 
-    print("--- documentation render complete ---")
+    print("--- documentation render complete ---\n")

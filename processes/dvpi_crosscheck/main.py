@@ -149,7 +149,7 @@ class DVPIcrosscheck:
         """Print out the report of conflicts for all tables and columns with conflict counts."""
 
         if len(self.conflict_report) == 0:
-            print ("\n== no conflicts ==\n")
+            print ("\n= no conflicts =\n")
             return
 
         print("\nList of conflicts:")
@@ -238,6 +238,7 @@ class DVPIcrosscheck:
 
 
 if __name__ == "__main__":
+    print ("=== dvpi crosscheck ===")
     description_for_terminal = "Cimt AG reccommends to follow the instruction before starting the script. If you run your script from command line, it should look" \
                                " like this: python __main__.py inputFile"
     usage_for_terminal = "Add option -h for further instruction"
@@ -271,6 +272,8 @@ if __name__ == "__main__":
 
     crosscheck = DVPIcrosscheck(dvpi_directory)
     number_of_conflicts=crosscheck.run_analysis(args.tests_only)
+
+    print ("--- dvpi crosscheck complete ---\n")
 
     if number_of_conflicts > 0:
         sys.exit(8)
