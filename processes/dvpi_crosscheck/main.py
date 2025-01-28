@@ -106,6 +106,7 @@ class DVPIcrosscheck:
                         self.pipeline_data[table_name][column_name][key] = {}
                     self.pipeline_data[table_name][column_name][key][pipeline_name] = value
         return added_data
+        #todo: evaluate coneptually, if we need more data to ensure compatibility of hash composition
 
     def check_table_name_similarity(self):
         """Check for table names that are too similar to each other."""

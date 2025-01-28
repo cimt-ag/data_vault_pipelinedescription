@@ -167,6 +167,52 @@ The compiler creates a log file and, when compilation is successfull 2 result fi
 - dvpi directory:
     - dvpi file: Contains the dvpi json file, that has been generated from the dvpd. This can be used as a base for all further generators (see [Reference_and_usage_of_dvpi_syntax.md](Reference_and_usage_of_dvpi_syntax.md))
     
+## Crosscheck of DVPI
+The **Crosscheck Feature** is a component of DVPD reference implementation.
+It ensures data integrity, schema alignment and configuration consistency by identifying 
+differences across multiple pipelines.
+
+The crosscheck identifies inconsistencies between different dvpi's (=compiled dvpd's) in by just compary the structure:
+1. **Table Structures**: Schema differences like column types, sizes, and constraints.
+2. **Hash Keys**: Variations in definitions and usage (mostly caused by different field mapping properties).
+3. **Field Types**: Mismatched declarations and usage.
+
+### Execution
+The crosscheck is started on the command line with:
+
+```dvpd_dvpi_crosscheck <name of dvpi file> [options]```
+
+The declared file is used as focus. Comparison will only be done on tables, that are defined in this 
+file.
+
+- When using the file name **"@youngest"**, the script uses the youngest file in the dvpi default directory as focus.
+- When using the file name **"@all"**, the script compares all files in the dvpi default directory
+
+Options:
+  - -h, --help            show this help message and exit
+  - --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
+  - --tests_only  restricts the dvpi to a hard coded set of files (Name Pattern "t120*.json"). In the set of reference tests, 
+these test contain specific scenarios to test the crosscheck
+
+Settings read from dvpdc.ini file, section "dvpdc":
+  - dvpi_default_directory - The directory where the crosscheck searches for the dvpi-files
+
+Exit codes:
+- 0: everthing is fine
+- 5: There are similarity warnings
+- 8: there are conflicts
+- 9: There are inconsistencies in the dvpi files, that prevent an analysis
+- 1: something very bad happened
+
+The crosscheck checks all *.json files, in the configured directory. If conflicts are detected, they will 
+be reported to the console and the crosscheck exits with exit code 8.
+
+The output contains 4 sections:
+- Table name similarity analisys: lists table names that are nearly the same (Might indicate a typo)
+- Table / Column property conflicts: lists for every table with a conflict a detailed description of every conflict
+- Summary Report: Statistics about the analysis
+- Summary report line: comprehensive statistics about the analys in one single string (thought to be used as commit message)
+
 ## ddl generator (dvpd_ddl_render)
 The ddl generator renders all create statements for a given dvpi file. Since this is an example and not
 core part of the dvpd concept, syntax and structure are also only example (mainly taken from a current project).
@@ -321,64 +367,3 @@ Settings read from dvpdc.ini file, section "datavault4dbt":
 - model_directory        - The directory where the datavault4dbt model files will be written to
 
 
-## Crosscheck of DVPI
-The **Crosscheck Feature** is a component of DVPD reference implementation.
-It ensures data integrity, schema alignment and configuration consistency by identifying differences across multiple pipelines.
-
-### Purpose of Crosscheck
-
-The crosscheck identifies inconsistencies between different dvpi's (=compiled dvpd's) in:
-1. **Table Structures**: Schema differences like column types, sizes, and constraints.
-2. **Hash Keys**: Variations in definitions and usage (mostly caused by different field mapping properties).
-3. **Field Types**: Mismatched declarations and usage.
-
-### Execution
-The crosscheck is started on the command line with:
-
-```dvpd_dvpi_crosscheck [options]```
-
-options:
-  - -h, --help            show this help message and exit
-  - --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
-  - --tests_only  restricts the dvpi to a hard coded set of files (Name Pattern "t120*.json"). In the set of reference tests, 
-these test contain specific scenarios to test the crosscheck
-
-Settings read from dvpdc.ini file, section "dvpdc":
-  - dvpi_default_directory - The directory where the crosscheck searches for the dvpi-files
-
-The crosscheck checks all *.json files, in the configures directory. If conflicts are detected, they will 
-be reported to the console and the crosscheck exits with exit code 8.
-
-A very comprehensive final report summary is provided as a single line string. 
-<br>eg.```crosscheck for 213 DVPI files=>Tables:1068, Conflict Tables: 3/6, Conflicts: 3```
-<br> It can be usefull to copy this into a commit message and therefore document the state of the implementation
-in the git log. 
-
-*Announcement:<br>
-Later releases will allow to restrict the crosscheck to objects 
-of a specific pipeline. In combination with properties to declare levels of maturity, this will prevent
-already established and tested pipelines to be reported, when new (less mature) pipelines are not compatible yet.*
-
-### Implementation insights
-
-The crosscheck process involves three main phases:
-
-#### 1. Loading Pipeline Data
-- Scans all DVPI files in the specified directory.
-- Extracts tables, columns, and their associated properties from each DVPI file.
-
-#### 2. Conflict Analysis
-- Compares properties across pipelines.
-- Identifies conflicts in column properties, table structures, and schema definitions.
-- Highlights columns missing in certain pipelines in hash definitions.
-
-#### 3. Conflict Reporting
-- Generates detailed reports summarizing inconsistencies.
-- Provides insights into conflicts such as column presence, data types, and schema mismatches.
-
-## Summary
-The crosscheck  provides as well additional insights into the scope and complexity of the analysis:
-- **Number of tables analyzed**: - The overall count of tables reviewed during the crosscheck process.
-- **Number of DVPI analyzed**: Indicates the number of DVPI files scanned, showing how many pipeline configurations were involved.
-- **Number of tables where various DVPI are involved**: Analyse of tables that interact with multiple DVPI files.
-- **Total number of conflicts**: Summarizes the total number of differences identified across pipelines.
