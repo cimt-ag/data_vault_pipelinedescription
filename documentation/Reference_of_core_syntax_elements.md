@@ -777,6 +777,6 @@ Examples:
 
 # License and Credits
 
-(C) Matthias Wegner, cimt ag
+(C) 2025 Matthias Wegner, Joscha von Hein, cimt ag
 
 Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)

@@ -1,6 +1,35 @@
+#!/usr/bin/env python310
+# =====================================================================
+# Part of the Data Vault Pipeline Description Reference Implementation
+#
+#  Copyright 2025 Albin Cekaj
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#  =====================================================================
+
+
+
+import argparse
 import json
 import os
 import sys
+from pathlib import Path
+
+project_directory = os.path.dirname(os.path.dirname(sys.path[0]))
+sys.path.insert(0,project_directory)
+
+from lib.configuration import configuration_load_ini
+
 from Levenshtein import distance
 class DVPIcrosscheck:
     def __init__(self, dvpi_directory):
@@ -8,13 +37,17 @@ class DVPIcrosscheck:
         self.dvpi_files = []
         self.pipeline_data = {}
         self.conflict_report = {}
-        self.pipeline_names = {}  # Store pipeline names from DVPI files
+        self.pipeline_names = {}
         self.total_differences = 0
+        self.multi_dvpi_table_count = 0
 
-    def load_dvpi_files(self):
+
+    def collect_dvpi_file_names(self, tests_only):
         for file_name in os.listdir(self.dvpi_directory):
-            if file_name.startswith("t120") and file_name.endswith(".json"):
-                self.dvpi_files.append(file_name)
+            if file_name.endswith(".json"):
+                if (not tests_only and not file_name.startswith("t120")) or (tests_only and file_name.startswith("t120")):
+                    self.dvpi_files.append(file_name)
+
 
     def load_pipeline_data(self):
         """Collect and organize tables, columns, and properties from each DVPI file."""
@@ -52,12 +85,12 @@ class DVPIcrosscheck:
             for table2 in table_names[i + 1:]:
                 # Calculate Levenshtein distance
                 similarity_distance = distance(table1, table2)
-                if similarity_distance <= 2:
+                if similarity_distance <= 1:
                     similar_tables.append((table1, table2, similarity_distance))
 
         # Print results
         if similar_tables:
-            print("Warning: Found similar table names:")
+            print("Warning: Found nearly similar table names:")
             for table1, table2, similarity_distance in similar_tables:
                 print(f"  '{table1}' and '{table2}' (Distance: {similarity_distance})")
         else:
@@ -72,9 +105,10 @@ class DVPIcrosscheck:
                 if any(pipeline in col.get(prop, {}).keys() for col in columns.values() for prop in col.keys())
             }
 
-            # Skip if the table exists in fewer than two pipelines
             if len(pipelines_with_table) < 2:
                 continue
+
+            self.multi_dvpi_table_count +=1;
 
             # Analyze column-level conflicts
             for column_name, properties in columns.items():
@@ -112,27 +146,52 @@ class DVPIcrosscheck:
                         self.total_differences += 1
 
     def print_conflicts(self):
-        """Print out the report of conflicts for all tables and columns."""
-        print("\nConflicts across pipelines:")
+        """Print out the report of conflicts for all tables and columns with conflict counts."""
+
+        if len(self.conflict_report) == 0:
+            print ("\n== no conflicts ==\n")
+            return
+
+        print("\nList of conflicts:")
+        print("=========================================================")
+
+        total_tables = len(self.conflict_report)  # Total number of tables
+
+
+
         for table_name, columns in self.conflict_report.items():
-            print(f"\nTable '{table_name}' has differences across pipelines:")
-            if "table_presence" in columns:
-                print(f"  Table presence is:")
-                for pipeline, status in columns["table_presence"].items():
-                    print(f"      {status} : {pipeline}")
+            # Count total conflicts for this table
+            conflict_count = sum(
+                len(properties) for column_name, properties in columns.items() if column_name != "table_presence"
+            )
+
+            # Track unique DVPI and multi-DVPI involvement
+            table_dvpi = set()
             for column_name, properties in columns.items():
-                if column_name == "table_presence":
-                    continue
+                if "presence" in properties:
+                    for pipeline in properties["presence"]:
+                        table_dvpi.add(pipeline)
+                for prop, pipelines in properties.items():
+                    if prop != "presence":
+                        for pipeline in pipelines.keys():
+                            table_dvpi.add(pipeline)
+
+
+            print(f"\nTable '{table_name}' has {conflict_count} conflict across pipelines:")
+            for column_name, properties in columns.items():
                 if "presence" in properties:
                     print(f"  Column '{column_name}' is in:")
-                    sorted_presence = sorted(properties["presence"].items(), key=lambda x: x[0])
 
-                    # Group pipelines by their status
+                    # Group pipelines by status ("declared" or "missing")
                     grouped_status = {}
-                    for pipeline, status in sorted_presence:
+                    for pipeline, status in properties["presence"].items():
                         grouped_status.setdefault(status, []).append(pipeline)
 
-                    for status, pipelines in grouped_status.items():
+                    # Sort by the number of pipelines in each group
+                    sorted_status = sorted(grouped_status.items(), key=lambda x: len(x[1]))
+
+                    # Print each group in the sorted order
+                    for status, pipelines in sorted_status:
                         print(f'    "{status}"   : {pipelines[0]}')
                         for pipeline in pipelines[1:]:
                             print(f"                 : {pipeline}")
@@ -141,30 +200,79 @@ class DVPIcrosscheck:
                         print(f"  Column '{column_name}' has conflicts:")
                         print(f"    '{prop}' is:")
 
-                        # Group pipelines by value and calculate alignment
+                        # Group pipelines by value
                         grouped_values = {}
                         for pipeline, value in pipelines.items():
                             grouped_values.setdefault(value, []).append(pipeline)
 
-                        max_value_length = max(len(str(value)) for value in grouped_values.keys())
+                        # Sort grouped values by the number of pipelines in each group
+                        sorted_values = sorted(grouped_values.items(), key=lambda x: len(x[1]))
 
-                        for value, pipelines in grouped_values.items():
-                            # Align pipelines under the same value and format the value as a string with quotes
-                            quoted_value = f'"{value}"'
-                            print(f"      {quoted_value:<{max_value_length + 2}} : {pipelines[0]}")
+                        for value, pipelines in sorted_values:
+                            print(f"      \"{value}\" : {pipelines[0]}")
                             for pipeline in pipelines[1:]:
-                                print(f"      {' ' * (max_value_length + 2)} : {pipeline}")
-        print(f"\nTotal number of conflicts: {self.total_differences}")
+                                print(f"                : {pipeline}")
 
-    def run_analysis(self):
+        print("=========================================================")
+
+
+
+    def run_analysis(self,tests_only):
         """Run the analysis from loading data to generating the report."""
-        self.load_dvpi_files()
+        self.collect_dvpi_file_names(tests_only)
         self.load_pipeline_data()
         self.check_table_name_similarity()
         self.analyze_conflicts()
         self.print_conflicts()
 
+        print(f"\nDVPI analyzed: {len(self.dvpi_files)}")
+        print(f"Tables analyzed: {len(self.pipeline_data)}")
+        print(f"Tables created by multiple DVPI: {self.multi_dvpi_table_count}")
+        print(f"Tables with conflicts: {len(self.conflict_report)}")
+        print(f"Number of conflicts: {self.total_differences}")
+
+        print(
+            f"\ncrosscheck for {len(self.dvpi_files)} DVPI files=>Tables:{len(self.pipeline_data)}, Conflict Tables: {len(self.conflict_report)}/{self.multi_dvpi_table_count}, Conflicts: {self.total_differences}")
+
+        return self.total_differences
+
+
 if __name__ == "__main__":
-    dvpi_directory = r"C:\\git_ordner\\dvpd\\var\\dvpi"
+    description_for_terminal = "Cimt AG reccommends to follow the instruction before starting the script. If you run your script from command line, it should look" \
+                               " like this: python __main__.py inputFile"
+    usage_for_terminal = "Add option -h for further instruction"
+
+    parser = argparse.ArgumentParser(
+        description=description_for_terminal,
+        usage=usage_for_terminal
+    )
+    # input Arguments
+    #todo add file focussed check
+    #parser.add_argument("dvpi_filename",
+    #                   help="Name of the dvpi file to check. Set this to '@youngest' to check the youngest file in your dvpi directory")
+    parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
+    # output arguments
+    parser.add_argument("--dvpi_directory", help="Path of the directory with dvpi files to check")
+    parser.add_argument("--tests_only", help="Restricts the list of dvpi files to the crosschek test files",action='store_true')
+
+    args = parser.parse_args()
+
+    params = configuration_load_ini(args.ini_file, 'dvpdc', ['dvpi_default_directory'])
+
+    if args.dvpi_directory == None:
+        dvpi_directory = Path(params['dvpi_default_directory'])
+    else:
+        dvpi_directory = Path(args.dvpi_directory)
+
+
+    #if dvpd_filename == '@youngest':
+    #    dvpd_filename = get_name_of_youngest_dvpd_file(ini_file=args.ini_file)
+
+
     crosscheck = DVPIcrosscheck(dvpi_directory)
-    crosscheck.run_analysis()
+    number_of_conflicts=crosscheck.run_analysis(args.tests_only)
+
+    if number_of_conflicts > 0:
+        sys.exit(8)
+    else:
+        sys.exit(0)
