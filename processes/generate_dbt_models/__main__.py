@@ -90,6 +90,9 @@ def generate_models_for_dvpi_using_all_dvpis(dvpi_file_path, model_dir, dvpi_def
 
 ########################   MAIN ################################
 if __name__ == "__main__":
+
+    print("=== datavault4dbt model generator ===")
+
     description_for_terminal = "Process dvpi at the given location to generate dbt models using the datavault4dbt extension."
     usage_for_terminal = "Add option -h for further instruction"
 
@@ -136,4 +139,4 @@ if __name__ == "__main__":
         else:
             generate_datavault4dbt_model(dvpi_file_path, model_dir, True)
 
-    print("--- datavault4dbt model generation complete ---")
+    print("--- datavault4dbt model generator complete ---")

@@ -1806,8 +1806,7 @@ def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_fi
 
     with open(dvpdc_log_file_path,"w") as g_logfile:
         g_logfile.write(f"Data vault pipeline description compiler log \n")
-        print("---")
-        log_progress(f"Compiler Version 0.6.2")
+        log_progress(f"=== DVPD Compiler Version 0.6.2 ===")
         g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         log_progress(f"Compiling {dvpd_filename}\n")
         try:
@@ -1933,6 +1932,7 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
         raise DvpdcError
 
     log_progress("--- Compile successfull ---")
+    print("")
 
     writeDvpiSummary(dvpdc_report_directory,dvpd_file_path)
 
@@ -1997,10 +1997,10 @@ if __name__ == "__main__":
     except DvpdcError:
         if args.print_brain:
             print_the_brain()
-        print("*** stopped compilation due to errors in input ***")
+        print("*** DVPD compiler stopped compilation due to errors DVPD input ***\n")
         exit(5)
 
-    except Exception :
+    except Exception:
         if args.print_brain:
             print_the_brain()
         raise

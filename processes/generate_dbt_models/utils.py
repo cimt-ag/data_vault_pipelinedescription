@@ -28,7 +28,7 @@ def write_model_to_file(output_path, model_content):
     with open(output_path, 'w') as output_file:
         output_file.write(model_content)
     
-    print(f"Model file generated: {output_path}")
+    #print(f"Model file generated: {output_path}") # only for DEBUG/TRACE
 
 
 def get_name_of_youngest_dvpi_file(dvpi_default_directory):
