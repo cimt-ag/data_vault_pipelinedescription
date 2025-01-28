@@ -2,7 +2,7 @@
 # =====================================================================
 # Part of the Data Vault Pipeline Description Reference Implementation
 #
-#  Copyright 2025 Albin Cekaj
+#  Copyright 2025 Albin Cekaj, Matthias Wegner, cimt ag
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ class DVPIcrosscheck:
         self.multi_dvpi_table_count = 0
         self.dvpi_focus_file = dvpi_focus_file
         self.dvpi_count = 0
+        self.similar_tables_of_unknown=[]
 
     def collect_dvpi_file_names(self, tests_only):
         for file_name in os.listdir(self.dvpi_directory):
@@ -90,6 +91,7 @@ class DVPIcrosscheck:
             table_name = table["table_name"]
             if table_name not in self.pipeline_data:
                if add_only_known_tables :
+                 self.check_similarity_with_unknown(table_name)
                  continue
                else:
                  self.pipeline_data[table_name] = {}
@@ -120,6 +122,10 @@ class DVPIcrosscheck:
                 similarity_distance = distance(table1, table2)
                 if similarity_distance <= 1:
                     similar_tables.append((table1, table2, similarity_distance))
+            for table2 in self.similar_tables_of_unknown:
+                similarity_distance = distance(table1, table2)
+                if similarity_distance <= 1:
+                    similar_tables.append((table1, table2, similarity_distance))
 
         # Print results
         if similar_tables:
@@ -130,6 +136,17 @@ class DVPIcrosscheck:
             print("No similar table names found.")
 
         return len(similar_tables)
+
+    def check_similarity_with_unknown(self, table_name_of_unknown):
+        '''Checks if a given table name is similar to the relevant model and puts it in the list, if so.'''
+        if table_name_of_unknown in self.similar_tables_of_unknown:
+            return
+
+        for table_name_of_focus in  self.pipeline_data:
+            similarity_distance = distance(table_name_of_focus, table_name_of_unknown)
+            if similarity_distance <= 1:
+                self.similar_tables_of_unknown.append(table_name_of_unknown)
+            return  # we can stop here, since at least one relevant table is already similar
 
     def analyze_conflicts(self):
         """Identify conflicts in properties and presence of tables and columns across pipelines."""
@@ -276,6 +293,8 @@ class DVPIcrosscheck:
             return "warnings"
 
         return "fine"
+
+
 
 def get_name_of_youngest_dvpi_file(dvpi_default_directory):
 
