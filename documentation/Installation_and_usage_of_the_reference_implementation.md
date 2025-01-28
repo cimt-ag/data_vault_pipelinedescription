@@ -183,6 +183,7 @@ Options:
 - --print: prints the full ddl set to the console
 - --add_ghost_records: adds ghost record inserts to the script 
 - --no_primary_keys: omit rendering of primary key constraints
+- --ddl_file_naming_pattern: declares the pattern for the file name. Valid settings: <br>```lll``` = everything lowercase<br>```lUl``` = table name upper case
 - --stage_column_naming_rule={stage|combined} : stage = pure genrated stage column names are used in the stage combined= combination of target column names and stage column names
 
 Settings read from .ini file:
