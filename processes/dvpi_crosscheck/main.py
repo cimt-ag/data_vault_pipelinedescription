@@ -96,6 +96,8 @@ class DVPIcrosscheck:
         else:
             print("No similar table names found.")
 
+        return len(similar_tables)
+
     def analyze_conflicts(self):
         """Identify conflicts in properties and presence of tables and columns across pipelines."""
         for table_name, columns in self.pipeline_data.items():
@@ -221,7 +223,7 @@ class DVPIcrosscheck:
         """Run the analysis from loading data to generating the report."""
         self.collect_dvpi_file_names(tests_only)
         self.load_pipeline_data()
-        self.check_table_name_similarity()
+        number_of_similar_tables=self.check_table_name_similarity()
         self.analyze_conflicts()
         self.print_conflicts()
 
@@ -234,7 +236,13 @@ class DVPIcrosscheck:
         print(
             f"\ncrosscheck for {len(self.dvpi_files)} DVPI files=>Tables:{len(self.pipeline_data)}, Conflict Tables: {len(self.conflict_report)}/{self.multi_dvpi_table_count}, Conflicts: {self.total_differences}")
 
-        return self.total_differences
+        if self.total_differences>0:
+            return "conflicts"
+
+        if number_of_similar_tables>0:
+            return "warnings"
+
+        return "fine"
 
 
 if __name__ == "__main__":
@@ -271,11 +279,17 @@ if __name__ == "__main__":
 
 
     crosscheck = DVPIcrosscheck(dvpi_directory)
-    number_of_conflicts=crosscheck.run_analysis(args.tests_only)
+    check_result=crosscheck.run_analysis(args.tests_only)
 
-    print ("--- dvpi crosscheck complete ---\n")
 
-    if number_of_conflicts > 0:
-        sys.exit(8)
-    else:
+    if check_result == 'fine':
+        print("--- dvpi crosscheck successfull ---\n")
         sys.exit(0)
+    elif check_result == 'conflicts':
+        print("*** dvpi crosscheck ended with conflicts ***\n")
+        sys.exit(8)
+    elif check_result == 'warnings':
+            print("--! dvpi crosscheck ended with warnings !--\n")
+            sys.exit(5)
+    else:
+        raise f"unknow check result type {check_result}"
