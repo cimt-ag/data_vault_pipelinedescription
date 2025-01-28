@@ -2000,7 +2000,7 @@ if __name__ == "__main__":
         print("*** DVPD compiler stopped compilation due to errors DVPD input ***\n")
         exit(5)
 
-    except Exception :
+    except Exception:
         if args.print_brain:
             print_the_brain()
         raise
