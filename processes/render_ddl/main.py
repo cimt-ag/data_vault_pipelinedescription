@@ -45,6 +45,8 @@ def format_sqlsnippet(original):
     return result
 def create_ghost_records(full_name, columns):
 
+
+
     far_future_timestamp_sqlsnippet = format_sqlsnippet(g_current_model_profile['far_future_timestamp'])
     key_for_null_ghost_record_sqlsnippet= format_sqlsnippet(g_current_model_profile['key_for_null_ghost_record'])
     key_for_missing_ghost_record_sqlsnippet = format_sqlsnippet(g_current_model_profile['key_for_missing_ghost_record'])
@@ -390,7 +392,7 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
         if add_primary_keys:
             ddl += render_primary_key_clause(table)
 
-        if add_ghost_records:
+        if add_ghost_records and table_stereotype!='ref':
             ddl += create_ghost_records(full_name, columns)
 
         ddl +="\n-- end of script --"
