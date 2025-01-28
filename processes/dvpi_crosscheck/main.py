@@ -31,8 +31,12 @@ sys.path.insert(0,project_directory)
 from lib.configuration import configuration_load_ini
 
 from Levenshtein import distance
+
+class CrosscheckError(Exception):
+    """Raised when Crosscheck must stop due to severe errors  """
+    pass
 class DVPIcrosscheck:
-    def __init__(self, dvpi_directory):
+    def __init__(self, dvpi_directory, dvpi_focus_file):
         self.dvpi_directory = dvpi_directory
         self.dvpi_files = []
         self.pipeline_data = {}
@@ -40,7 +44,8 @@ class DVPIcrosscheck:
         self.pipeline_names = {}
         self.total_differences = 0
         self.multi_dvpi_table_count = 0
-
+        self.dvpi_focus_file = dvpi_focus_file
+        self.dvpi_count = 0
 
     def collect_dvpi_file_names(self, tests_only):
         for file_name in os.listdir(self.dvpi_directory):
@@ -49,31 +54,58 @@ class DVPIcrosscheck:
                     self.dvpi_files.append(file_name)
 
 
-    def load_pipeline_data(self):
+    def load_all_relevant_pipeline_data(self):
         """Collect and organize tables, columns, and properties from each DVPI file."""
-        for file_name in self.dvpi_files:
-            file_path = os.path.join(self.dvpi_directory, file_name)
+
+        focus_on_file=False
+
+        if self.dvpi_focus_file != "@all":  #load focus file first
+            focus_on_file = True
+            file_path = os.path.join(self.dvpi_directory, self.dvpi_focus_file )
             with open(file_path, 'r') as f:
                 dvpi_data = json.load(f)
-                pipeline_name = dvpi_data.get("pipeline_name", file_name)
-                self.pipeline_names[file_name] = pipeline_name
+                pipeline_name = dvpi_data.get("pipeline_name")
+                self.pipeline_names[pipeline_name] = self.dvpi_focus_file
+                self.add_dvpi_to_repositories(dvpi_data,add_only_known_tables=False)
+                self.dvpi_count += 1
 
-                tables = dvpi_data.get("tables", [])
-                for table in tables:
-                    table_name = table["table_name"]
-                    if table_name not in self.pipeline_data:
-                        self.pipeline_data[table_name] = {}
+        for file_name in self.dvpi_files:
+            file_path = os.path.join(self.dvpi_directory, file_name)
+            if file_name == self.dvpi_focus_file:
+                continue
+            with open(file_path, 'r') as f:
+                dvpi_data = json.load(f)
+                pipeline_name = dvpi_data.get("pipeline_name")
+                if pipeline_name in self.pipeline_names:
+                    raise CrosscheckError(f"Duplicate pipeline name {pipeline_name} declared by files  '{file_name}' and '{self.pipeline_names[pipeline_name]}'")
+                self.pipeline_names[pipeline_name] = file_name
+                if self.add_dvpi_to_repositories(dvpi_data, add_only_known_tables=focus_on_file):
+                   self.dvpi_count +=1
 
-                    columns = table.get("columns", [])
-                    for column in columns:
-                        column_name = column["column_name"]
-                        if column_name not in self.pipeline_data[table_name]:
-                            self.pipeline_data[table_name][column_name] = {}
+    def add_dvpi_to_repositories(self,dvpi_data,add_only_known_tables=False):
+        pipeline_name = dvpi_data.get("pipeline_name")
+        tables = dvpi_data.get("tables", [])
+        added_data=False
+        for table in tables:
+            table_name = table["table_name"]
+            if table_name not in self.pipeline_data:
+               if add_only_known_tables :
+                 continue
+               else:
+                 self.pipeline_data[table_name] = {}
+            added_data = True
 
-                        for key, value in column.items():
-                            if key not in self.pipeline_data[table_name][column_name]:
-                                self.pipeline_data[table_name][column_name][key] = {}
-                            self.pipeline_data[table_name][column_name][key][pipeline_name] = value
+            columns = table.get("columns", [])
+            for column in columns:
+                column_name = column["column_name"]
+                if column_name not in self.pipeline_data[table_name]:
+                    self.pipeline_data[table_name][column_name] = {}
+
+                for key, value in column.items():
+                    if key not in self.pipeline_data[table_name][column_name]:
+                        self.pipeline_data[table_name][column_name][key] = {}
+                    self.pipeline_data[table_name][column_name][key][pipeline_name] = value
+        return added_data
 
     def check_table_name_similarity(self):
         """Check for table names that are too similar to each other."""
@@ -103,7 +135,7 @@ class DVPIcrosscheck:
         for table_name, columns in self.pipeline_data.items():
             # Identify pipelines where the table exists
             pipelines_with_table = {
-                pipeline for pipeline in self.pipeline_names.values()
+                pipeline for pipeline in self.pipeline_names.keys()
                 if any(pipeline in col.get(prop, {}).keys() for col in columns.values() for prop in col.keys())
             }
 
@@ -222,19 +254,19 @@ class DVPIcrosscheck:
     def run_analysis(self,tests_only):
         """Run the analysis from loading data to generating the report."""
         self.collect_dvpi_file_names(tests_only)
-        self.load_pipeline_data()
+        self.load_all_relevant_pipeline_data()
         number_of_similar_tables=self.check_table_name_similarity()
         self.analyze_conflicts()
         self.print_conflicts()
 
-        print(f"\nDVPI analyzed: {len(self.dvpi_files)}")
+        print(f"\nDVPI analyzed: {self.dvpi_count}")
         print(f"Tables analyzed: {len(self.pipeline_data)}")
         print(f"Tables created by multiple DVPI: {self.multi_dvpi_table_count}")
         print(f"Tables with conflicts: {len(self.conflict_report)}")
         print(f"Number of conflicts: {self.total_differences}")
 
         print(
-            f"\ncrosscheck for {len(self.dvpi_files)} DVPI files=>Tables:{len(self.pipeline_data)}, Conflict Tables: {len(self.conflict_report)}/{self.multi_dvpi_table_count}, Conflicts: {self.total_differences}")
+            f"\ncrosscheck for {self.dvpi_count} DVPI files=>Tables:{len(self.pipeline_data)}, Conflict Tables: {len(self.conflict_report)}/{self.multi_dvpi_table_count}, Conflicts: {self.total_differences}")
 
         if self.total_differences>0:
             return "conflicts"
@@ -244,11 +276,24 @@ class DVPIcrosscheck:
 
         return "fine"
 
+def get_name_of_youngest_dvpi_file(dvpi_default_directory):
+
+    max_mtime=0
+    youngest_file=''
+
+    for file_name in os.listdir( dvpi_default_directory):
+        if not os.path. isfile( dvpi_default_directory+'/'+file_name):
+            continue
+        file_mtime=os.path.getmtime( dvpi_default_directory+'/'+file_name)
+        if file_mtime>max_mtime:
+            youngest_file=file_name
+            max_mtime=file_mtime
+
+    return youngest_file
 
 if __name__ == "__main__":
     print ("=== dvpi crosscheck ===")
-    description_for_terminal = "Cimt AG reccommends to follow the instruction before starting the script. If you run your script from command line, it should look" \
-                               " like this: python __main__.py inputFile"
+    description_for_terminal = "Checks the structural compatibility from the pipeline description of a set of dvpi"
     usage_for_terminal = "Add option -h for further instruction"
 
     parser = argparse.ArgumentParser(
@@ -256,9 +301,9 @@ if __name__ == "__main__":
         usage=usage_for_terminal
     )
     # input Arguments
-    #todo add file focussed check
-    #parser.add_argument("dvpi_filename",
-    #                   help="Name of the dvpi file to check. Set this to '@youngest' to check the youngest file in your dvpi directory")
+
+    parser.add_argument("dvpi_filename",
+                       help="Name of the dvpi file to check. Set this to '@youngest' to check the youngest file in your dvpi directory")
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
     # output arguments
     parser.add_argument("--dvpi_directory", help="Path of the directory with dvpi files to check")
@@ -274,13 +319,22 @@ if __name__ == "__main__":
         dvpi_directory = Path(args.dvpi_directory)
 
 
-    #if dvpd_filename == '@youngest':
-    #    dvpd_filename = get_name_of_youngest_dvpd_file(ini_file=args.ini_file)
+    dvpi_file_name=args.dvpi_filename
+    if dvpi_file_name == '@youngest':
+        dvpi_file_name = get_name_of_youngest_dvpi_file(params['dvpi_default_directory'])
 
+    if dvpi_file_name != '@all':
+        print(f"Crosscheck with focus on objects in '{dvpi_file_name}'")
+    else:
+        print(f"Crosscheck complete set of dvpi")
 
-    crosscheck = DVPIcrosscheck(dvpi_directory)
-    check_result=crosscheck.run_analysis(args.tests_only)
-
+    crosscheck = DVPIcrosscheck(dvpi_directory, dvpi_file_name)
+    try:
+        check_result=crosscheck.run_analysis(args.tests_only)
+    except CrosscheckError as ce:
+        print(ce)
+        print("*** dvpi crosscheck ended with error ***\n")
+        sys.exit(9)
 
     if check_result == 'fine':
         print("--- dvpi crosscheck successfull ---\n")
