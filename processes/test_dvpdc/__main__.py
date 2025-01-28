@@ -273,6 +273,8 @@ def assemble_file_list_fingerprint(file_list):
 ################################  Main ########################################
 if __name__ == "__main__":
 
+    print("=== Automated test of DVPDC ===")
+
     successful_file_list=[]
     difference_file_list = []
     failing_file_list=[]
@@ -362,34 +364,38 @@ if __name__ == "__main__":
     print ('find "ATST---" for main results only,  "ATST--" to also include details, "ATST--EI" for details only')
     print ('find "ATST-" for all log output of automated test')
 
-    print(f"\n**** Number of tests: {len(dvpd_file_list)} ****")
+    print("\n==================== Test Statistics ================================")
+
+
+    print(f"\nNumber of tests: {len(dvpd_file_list)} ")
 
     report_line=f"{len(dvpd_file_list)} = "
     file_list_fp=assemble_file_list_fingerprint(successful_file_list)
     report_line+=f"success {len(successful_file_list)} ({file_list_fp})"
 
-    print(f"** {len(successful_file_list)} tests passed ({file_list_fp})")
+    print(f"  {len(successful_file_list)} tests passed ({file_list_fp})")
 
     if len(difference_file_list)>0:
         file_list_fp=assemble_file_list_fingerprint(difference_file_list)
         report_line += f"+ difference {len(difference_file_list)} ({file_list_fp})"
-        print(f"** {len(difference_file_list)} tests with differences ({file_list_fp})")
+        print(f"* {len(difference_file_list)} tests with differences ({file_list_fp})")
     if len(reference_missing_list) > 0:
         file_list_fp = assemble_file_list_fingerprint(reference_missing_list)
         report_line += f"+ no ref {len(reference_missing_list)} ({file_list_fp})"
-        print(f"** {len(reference_missing_list)} tests have no reference data ({file_list_fp})")
+        print(f"* {len(reference_missing_list)} tests have no reference data ({file_list_fp})")
     if len(failing_file_list)>0:
         file_list_fp=assemble_file_list_fingerprint(failing_file_list)
         report_line += f"+ fail {len(failing_file_list)} ({file_list_fp})"
-        print(f"** {len(failing_file_list)} tests with failed compile ({file_list_fp})")
+        print(f"* {len(failing_file_list)} tests with failed compile ({file_list_fp})")
     if len(incorrect_file_list) > 0:  # Add incorrect to report
         file_list_fp = assemble_file_list_fingerprint(incorrect_file_list)
         report_line += f"+ incorrectly successfull {len(incorrect_file_list)} ({file_list_fp})"
-        print(f"** {len(incorrect_file_list)} incorrectly successful compiles ({file_list_fp})")
+        print(f"* {len(incorrect_file_list)} incorrectly successful compiles ({file_list_fp})")
     if len(crashed_file_list) > 0:
         file_list_fp = assemble_file_list_fingerprint(crashed_file_list)
         report_line += f"+ crash {len(crashed_file_list)} ({file_list_fp})"
-        print(f"** {len(crashed_file_list)} tests crashed ({file_list_fp}) **** ")
-
+        print(f"* {len(crashed_file_list)} tests crashed ({file_list_fp}) **** ")
 
     print("\nTest state:"+report_line)
+
+    print("--- Auotmated test of DVPDC complete ---")
