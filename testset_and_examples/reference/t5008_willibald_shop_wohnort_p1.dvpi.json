@@ -1,9 +1,10 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-10-02 12:57:22",
+  "compile_timestamp": "2025-01-06 19:00:17",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5008_willibald_shop_wohnort_p1",
+  "pipeline_revision_tag": "--none--",
   "dvpd_filename": "t5008_willibald_shop_wohnort_p1.dvpd.json",
   "tables": [
     {
@@ -31,7 +32,7 @@
           "column_type": "VARCHAR(255)"
         },
         {
-          "column_name": "HK_WOHNORT",
+          "column_name": "HK_KUNDE",
           "is_nullable": false,
           "column_class": "key",
           "column_type": "CHAR(28)"
@@ -53,7 +54,7 @@
       "has_deletion_flag": true,
       "is_effectivity_sat": false,
       "is_enddated": true,
-      "is_multiactive": false,
+      "is_multiactive": true,
       "compare_criteria": "key+current",
       "uses_diff_hash": true,
       "columns": [
@@ -88,11 +89,11 @@
           "column_type": "TIMESTAMP"
         },
         {
-          "column_name": "HK_WOHNORT",
+          "column_name": "HK_KUNDE",
           "is_nullable": false,
           "column_class": "parent_key",
           "column_type": "CHAR(28)",
-          "parent_key_column_name": "HK_WOHNORT",
+          "parent_key_column_name": "HK_KUNDE",
           "parent_table_name": "kunde_hub"
         },
         {
@@ -284,7 +285,7 @@
       ],
       "hashes": [
         {
-          "stage_column_name": "HK_WOHNORT",
+          "stage_column_name": "HK_KUNDE",
           "hash_origin_table": "kunde_hub",
           "column_class": "key",
           "hash_fields": [
@@ -307,7 +308,7 @@
         {
           "stage_column_name": "DIFF_KUNDE_WOHNORT_P1_SAT",
           "hash_origin_table": "kunde_wohnort_p1_msat",
-          "multi_row_content": false,
+          "multi_row_content": true,
           "column_class": "diff_hash",
           "hash_fields": [
             {
@@ -386,10 +387,9 @@
           "hash_mappings": [
             {
               "hash_class": "key",
-              "column_name": "HK_WOHNORT",
-              "is_nullable": false,
+              "column_name": "HK_KUNDE",
               "hash_name": "KEY_OF_KUNDE_HUB",
-              "stage_column_name": "HK_WOHNORT"
+              "stage_column_name": "HK_KUNDE"
             }
           ],
           "data_mapping": [
@@ -397,7 +397,6 @@
               "column_name": "KUNDEID",
               "field_name": "KUNDEID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "KUNDEID"
             }
           ]
@@ -409,15 +408,13 @@
           "hash_mappings": [
             {
               "hash_class": "parent_key",
-              "column_name": "HK_WOHNORT",
-              "is_nullable": false,
+              "column_name": "HK_KUNDE",
               "hash_name": "KEY_OF_KUNDE_HUB",
-              "stage_column_name": "HK_WOHNORT"
+              "stage_column_name": "HK_KUNDE"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "DIFF_KUNDE_WOHNORT_P1_SAT",
-              "is_nullable": false,
               "hash_name": "DIFF_OF_KUNDE_WOHNORT_P1_MSAT",
               "stage_column_name": "DIFF_KUNDE_WOHNORT_P1_SAT"
             }
@@ -427,57 +424,54 @@
               "column_name": "VON",
               "field_name": "VON",
               "column_class": "content",
-              "is_nullable": true,
-              "stage_column_name": "VON"
+              "stage_column_name": "VON",
+              "is_multi_active_key": true
             },
             {
               "column_name": "BIS",
               "field_name": "BIS",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "BIS"
             },
             {
               "column_name": "HAUSNUMMER",
               "field_name": "HAUSNUMMER",
               "column_class": "content",
-              "is_nullable": true,
-              "stage_column_name": "HAUSNUMMER"
+              "stage_column_name": "HAUSNUMMER",
+              "is_multi_active_key": true
             },
             {
               "column_name": "ORT",
               "field_name": "ORT",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "ORT"
             },
             {
               "column_name": "PLZ",
               "field_name": "PLZ",
               "column_class": "content",
-              "is_nullable": true,
-              "stage_column_name": "PLZ"
+              "stage_column_name": "PLZ",
+              "is_multi_active_key": true
             },
             {
               "column_name": "STRASSE",
               "field_name": "STRASSE",
               "column_class": "content",
-              "is_nullable": true,
-              "stage_column_name": "STRASSE"
+              "stage_column_name": "STRASSE",
+              "is_multi_active_key": true
             },
             {
               "column_name": "ADRESSZUSATZ",
               "field_name": "ADRESSZUSATZ",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "ADRESSZUSATZ"
             },
             {
               "column_name": "LAND",
               "field_name": "LAND",
               "column_class": "content",
-              "is_nullable": true,
-              "stage_column_name": "LAND"
+              "stage_column_name": "LAND",
+              "is_multi_active_key": true
             }
           ]
         }
@@ -508,7 +502,7 @@
           "column_type": "BOOLEAN"
         },
         {
-          "stage_column_name": "HK_WOHNORT",
+          "stage_column_name": "HK_KUNDE",
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_KUNDE_HUB",

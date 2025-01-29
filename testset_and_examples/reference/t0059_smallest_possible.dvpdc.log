@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.2
+Compile time: 2025-01-06 18:39:17
+Compiling t0059_smallest_possible.dvpd.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t0059_smallest_possible.dvpi.json
+--- Compile successfull ---

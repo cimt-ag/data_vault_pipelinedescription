@@ -3,7 +3,7 @@ Installation and users Guide for the reference implementation
 
 ## Licence and Credits
 
-(C) Matthias Wegner, cimt ag
+(C) 2025 Matthias Wegner, Joscha von Hein, Albin Cekaj,  cimt ag
 
 Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)
 
@@ -15,51 +15,36 @@ The reference implementation serves the following goals:
 - Provide examples for model and mapping variation
 - Provide examples / templates for code and documentation generators
 
-It is implemented completly in python and provided under the Apache 2.0 licence:
+It is implemented completely in python and provided under the Apache 2.0 licence:
 http://www.apache.org/licenses/LICENSE-2.0
 
 # Architecture and content of the reference implementation
 The reference implementation is part of the DVPD git reposititory. It consists of the following assets:
 - DVPD Compiler (DVPDC) (processes/dvpdc/\__main\__.py)
+- DVPI Crosscheck (dvpd_dvpi_crosscheck) (processes/dvpi_crosscheck/main.py)
 - Some assisting libraries (lib/*.py)
 - Set of dvpd testcases and example dvpd (testcases_and_examples/dvpd/\*.dvpd, testcases_and_examples/model_profiles/*)
 - Automated test of the DVPDC (processes/test_dvpdc/\__main\__.py)
 - Reference results for the automated testing ((testcases_and_examples/reference/*.dvpd))
-- Example of a ddl Render script (processes/render_ddl/\__main\__.py)
-- Examples of documentation render scripts (processes/render_documentation /\__main\__.py)(processes/render_dev_sheet /\__main\__.py)
-- Example of a dvpd generator (processes/generate_basic_dvpd_from_db_table_pg/\__main\__.py))
+- Examples of
+  - ddl Render script (processes/render_ddl/\__main\__.py)
+  - documentation render scripts (processes/render_documentation /\__main\__.py)(processes/render_dev_sheet /\__main\__.py)
+  - dvpd generator (processes/generate_basic_dvpd_from_db_table_pg/\__main\__.py))
+  -dbt generator script (processes/generate_dbt_models/\__main\__.py)
 - easy to call windows batch scripts or bash shell scripts for all examples (commands/)
 
 The scripts are using a central configuration file (dvpdc.ini file), to declare further directory structures (See "Decistions about file locations" below)
-
 - template for the configuration file (config_template/dvpdc.ini)
-
-# DVPD usage Worflow
-The general workflow, would be as follows:
-1. Generate and edit the dvpd document of the desired pipeline
-2. store the dvpd in the directory for dvpd's in your project
-3. Compile the dvpd. This will result in 
-    - a log output with compiler messages on console and the reporting directory
-    - a dvpi file in the desigated dvpi directory
-    - a dvpi summary report in the reporting directory
-4. review the compiler messages and the dvpi summary. If you need to correct mistakes, loop back to step 3
-5. run the ddl render script for the new generated dvpi to generate the ddl files in the repository for ddl files
-8. deploy the data model to the data base (using the ddl files and the deployment procedure of your choice). This will test the db compatibility of your ddl files.
-6. probably commit dvpd, dvpi and the ddl files in a git repository of the project
-7. generate other assets from dvpd and dvpi (e.g. documentation, loading code, etc.)
-8. finalize the implementation of the pipeline 
-
-Feel free to integrate this into a CI/CD workflow of your choice.
 
 # Installation Guide
 ## Requirements
 - python 3.10 or higher must be available
 - please install missing python packages on demand (via python pip or equivalent package manager)
-- A text editor (hopefully capable of JSON syntax highlitging and hierarchie folding)
+- A text editor (hopefully capable of JSON syntax highlighting and hierarchy folding)
 
 If you want to modify, debug or extend the dvpd toolset or documentation
-- An text editor soupporting markdown documents
-- "Draw.io" for opitmal view of diagrams
+- An text editor supporting markdown documents
+- "Draw.io" for optimal view of diagrams
 - A python ide
 
 ## Decisions about file locations
@@ -73,7 +58,7 @@ You need to decide, where to place the following artifacts
 
 Example structure
 ```
-\dvpd_compiler             <- the compiler project
+\dvpd_compiler             <- the compiler project (this project)
 \dwh_resources             <- the git repository of your dwh project
      \dvdc_config          <- dvpdc ini file
      \dvpd_model_profiles  <- dvpd model profiles
@@ -81,6 +66,7 @@ Example structure
      \dvpi                 <- dvpi files
      \model_ddl            <- genrated DDL files
 \var\dvpdc_report          <- log output of dvpdc
+\dwh_builder               <- a dedicated place for setting up the build scripts
 ```
 
 ## Download and setup the compiler
@@ -125,6 +111,42 @@ of the ddl files lies in the responsibility of the ddl generator.
 
 To adapt the ddl generator it is recommended to copy the template and make it your own code.
 
+# DVPD usage Worflow
+The general workflow, would be as follows:
+### Primary dvpd creation and compilation
+1. Generate and edit the dvpd document of the desired pipeline
+2. store the dvpd in the directory for dvpd's in your project
+3. Compile the dvpd. This will result in 
+    - a log output with compiler messages on console and the reporting directory
+    - a dvpi file in the desigated dvpi directory
+    - a dvpi summary report in the reporting directory
+4. review the compiler messages and the dvpi summary. If you need to correct mistakes, loop back to step 3
+5. run the model crosscheck. In case of model inconsistencies to other pipeline, align the models (looping back to step 3)
+6. probably commit dvpd, dvpi and the ddl files in a git repository of the project
+
+
+### Platform specific generation of data base structure 
+1. when using DBT as load processor:
+   1. run the dbt renderer
+   1. execute the dbt modells, to test consistency
+   1. probably commit dvpd, dvpi and the dbt files in a git repository of the project
+
+1. in case you need ddl scripts: 
+   1. run the ddl render script for the new generated dvpi to generate the ddl files in the repository for ddl files
+   1. deploy the data model to the data base (using the ddl files and the deployment procedure of your choice). This will test the db compatibility of your ddl files.
+   1. probably commit dvpd, dvpi and the ddl files in a git repository of the project
+
+In case of problems with generated code (mostply bad names and types, that are not compatible with the Databeses)
+correct the dvpd and got back to step 3 in the previous phase
+    
+### Further generation of code and documentation
+1. generate developer sheet
+1. generate documentaion
+1. generate loading code 
+
+
+
+
 # Usage Guide
 ## dvpd compiler (dvpdc)
 The dvpdc compiler is started on the command line with
@@ -149,6 +171,52 @@ The compiler creates a log file and, when compilation is successfull 2 result fi
 - dvpi directory:
     - dvpi file: Contains the dvpi json file, that has been generated from the dvpd. This can be used as a base for all further generators (see [Reference_and_usage_of_dvpi_syntax.md](Reference_and_usage_of_dvpi_syntax.md))
     
+## Crosscheck of DVPI
+The **Crosscheck Feature** is a component of DVPD reference implementation.
+It ensures data integrity, schema alignment and configuration consistency by identifying 
+differences across multiple pipelines.
+
+The crosscheck identifies inconsistencies between different dvpi's (=compiled dvpd's) in by just compary the structure:
+1. **Table Structures**: Schema differences like column types, sizes, and constraints.
+2. **Hash Keys**: Variations in definitions and usage (mostly caused by different field mapping properties).
+3. **Field Types**: Mismatched declarations and usage.
+
+### Execution
+The crosscheck is started on the command line with:
+
+```dvpd_dvpi_crosscheck <name of dvpi file> [options]```
+
+The declared file is used as focus. Comparison will only be done on tables, that are defined in this 
+file.
+
+- When using the file name **"@youngest"**, the script uses the youngest file in the dvpi default directory as focus.
+- When using the file name **"@all"**, the script compares all files in the dvpi default directory
+
+Options:
+  - -h, --help            show this help message and exit
+  - --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
+  - --tests_only  restricts the dvpi to a hard coded set of files (Name Pattern "t120*.json"). In the set of reference tests, 
+these test contain specific scenarios to test the crosscheck
+
+Settings read from dvpdc.ini file, section "dvpdc":
+  - dvpi_default_directory - The directory where the crosscheck searches for the dvpi-files
+
+Exit codes:
+- 0: everthing is fine
+- 5: There are similarity warnings
+- 8: there are conflicts
+- 9: There are inconsistencies in the dvpi files, that prevent an analysis
+- 1: something very bad happened
+
+The crosscheck checks all *.json files, in the configured directory. If conflicts are detected, they will 
+be reported to the console and the crosscheck exits with exit code 8.
+
+The output contains 4 sections:
+- Table name similarity analisys: lists table names that are nearly the same (Might indicate a typo)
+- Table / Column property conflicts: lists for every table with a conflict a detailed description of every conflict
+- Summary Report: Statistics about the analysis
+- Summary report line: comprehensive statistics about the analys in one single string (thought to be used as commit message)
+
 ## ddl generator (dvpd_ddl_render)
 The ddl generator renders all create statements for a given dvpi file. Since this is an example and not
 core part of the dvpd concept, syntax and structure are also only example (mainly taken from a current project).
@@ -165,6 +233,7 @@ Options:
 - --print: prints the full ddl set to the console
 - --add_ghost_records: adds ghost record inserts to the script 
 - --no_primary_keys: omit rendering of primary key constraints
+- --ddl_file_naming_pattern: declares the pattern for the file name. Valid settings: <br>```lll``` = everything lowercase<br>```lUl``` = table name upper case
 - --stage_column_naming_rule={stage|combined} : stage = pure genrated stage column names are used in the stage combined= combination of target column names and stage column names
 
 Settings read from .ini file:
@@ -212,7 +281,7 @@ needed to implement the loading process.
 
 The developer sheet generator is started on the command line with:
 
-```dvpd_devsheet_render <name of the dvpi file> options ```
+```dvpd_devsheet_render <name of the dvpi file> [options] ```
 
 When using the file name "@youngest", the script uses the youngest file in the dvpi default directory
 
@@ -245,7 +314,7 @@ Additionally it generates a summary of the data profiling as simple human readab
 
 The dvpd generator is started on the command line with:
 
-```dvpd_generate_from_db <name of the table schema> <name of the table> options ```
+```dvpd_generate_from_db <name of the table schema> <name of the table> [options] ```
 
 options:
   - -h, --help            show this help message and exit
@@ -257,3 +326,48 @@ Settings read from dvpdc.ini file:
 - dvpd_generator_directory - Directory, the result file will be written to
 
 The example is restricted to postgreSQL Databases. It reads it's connection parameters from an ini file.
+
+
+## Generate DBT Models (generate_dbt_models)
+This command generates DBT model files based on the DVPI files (=result of DVPD compile).
+The generated DBT models use the [datavault4dbt](https://www.datavault4dbt.com/) syntax. Therefore
+you need to install that package into the dbt environment to work.
+
+The generator can be configured to write the model files  into the 
+dbt project directory. The target directory is configured with the ini parameter "model_directory".
+See all options below.
+
+Currently, the script can generate hubs, links, satellites and stage models.
+Support for Ref-Tables will be added in upcoming releases. 
+
+The dbt model generator is started on the command line with:
+
+```dvpd_generate_dbt_models <name of the dvpi file> <path to the ini file> [options]```
+
+The generator creates or modifies all DBT models, that are affected by the declared dvpi file.
+By setting the dvpi file name to "@youngest", the script uses the youngest file in the dvpi default
+directory.
+
+"Modify" means, that only the DBT declarations in the model file, that resulting from the given DVPI file 
+will be added or changed by the generator. 
+
+By setting the option -a, the generator will replace the DBT models affected by the DVPI completely,
+but also includes the information of all other DVPI files that have an impact on these models.
+
+When using the dvpi file name "@all", the script creates/replaces dbt models for all dvpi files
+found in the dvpi default directory. 
+
+The generator **does not check overall model consistency** and might 
+deliver "garbage" if different DVPI's declare different structures for the same target. 
+It is highly recommended, to check the consitency between of all DVPI files first
+with the "dvpd_crosscheck" script. 
+
+options:
+  - -h, --help            show this help message and exit
+  - -a, --use-all-dvpis   Use specified dvpi only to identify the set of models to generate, but use all dvpis to actually create those models.
+
+Settings read from dvpdc.ini file, section "datavault4dbt":
+- dvpi_default_directory - The directory where the generator searches for the dvpi-files
+- model_directory        - The directory where the datavault4dbt model files will be written to
+
+

@@ -1,0 +1,21 @@
+{
+	"dvpd_version": "0.6.2",
+	"stage_properties" : [{"stage_schema":"stage_rvlt","stage_table_name":"srtjj_59"}],
+	"pipeline_name": "t0059_smallest_possible",
+	"pipeline_revision_tag":"demoRevisionTagOf t0059",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+	"fields": [
+		      {"field_name": "F1_AAA_BK1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_59_aaa_hub"}]}
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_59_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_59_aaa","table_content_comment":"Hub aaa created for test20"}
+				]
+		}
+	]
+}

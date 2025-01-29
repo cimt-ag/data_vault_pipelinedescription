@@ -1,16 +1,33 @@
 # release 0.6.2
+ 
+### major features
+- Added model DVPI consistency check over all dvpi ```dvpd_dvpi_crosscheck```
+- added example of DVPI to DBT Model Generator ```dvpd_generate_dbt_models```
 
-### features
+### other features
+- added schema retrieval and base DVPD generator: ```dvpd_generate_from_db``` 
 - added libary to connect to a database for schema (needed for schema retrieval demo)
+- added example of python load function code generator (creates code for cimt data vault framework loading processes)
+- enhanced output of automated test for better checking of changes with high impact
 
-### DVPD syntax changes
+### DVPD syntax extentions or changes
+- added 'is_multiactive_key' keyword for field to table mapping to dvpd and dpvi (needed for dbt generator)
+- *Experimental and work in progress:* added 'use_as_key_hash' and 'only_strutural_element' keywords to allow delcaration of business vault
+tables, that don't need a full hash key calculation, since hash values are already known by the source transformation
 
 ### code enhancements
 - modified configuration ini loader to find config directory by detecting /lib or /processes in current path
 
-### Funcitional changes
-Some functional changes can be mitigated by migrating existing dvpd files with the migration script (processes/migration_scripts/migrate_0_6_1_to_0_6_2)
-- default stage table name is now `<pipeline_name>_stage` (previously `s<pipeline_name>`). Migration will add explicit stage_table_name declaraction to keep old name
+### Functional changes dvpdc
+Some functional changes can be mitigated by migrating existing dvpd files 
+with the migration script (processes/migration_scripts/migrate_0_6_1_to_0_6_2)
+- default stage table name is now `<pipeline_name>_stage` (previously `s<pipeline_name>`). 
+Migration will add explicit stage_table_name declaraction to keep old name
+
+### Functional changes render ddl
+- Ghost record hash value and far future date is not hard coded any more but 
+taken from model profile definition. Special syntax allows declaration of code snippets instead
+of text constants
 
 # release 0.6.1
 In this release, we completely switch from the PostgreSQL implementation of the compiler to the python implementation.

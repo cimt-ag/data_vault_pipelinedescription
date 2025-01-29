@@ -51,7 +51,7 @@
 																																												"column_name":"F22F23_BBB_P1_C1",
 																																												"relation_names":["UUU"]}]}
 				,{"field_name": "F24XX_BBB_P1_C2F",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p1_sat",
-																																												"column_name":"F24F25_BBB_P1_C2F", "relation_names":["*"]}]}
+																																												"column_name":"F24F25_BBB_P1_C2F", "relation_names":["/","UUU"]}]}
 				,{"field_name": "F25XX_BBB_P1_C2F_TTT",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtkk_55_bbb_p1_sat",
 																																												"column_name":"F24F25_BBB_P1_C2F",
 																																												"relation_names":["TTT"]}]}
