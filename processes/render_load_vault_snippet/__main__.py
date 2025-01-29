@@ -146,7 +146,7 @@ def get_statement_list_method_definition_for_lnk(dvpi_table,dvpi_table_load_oper
     output += "dvf_execute_elt_statement_list(dwh_cursor, statement_list)\n\n# ----------\n\n"
     return output
 
-def get_statement_list_method_definition_for_sat(dvpi_table, tables_to_cleanup,dvpi_table_load_operations):
+def get_statement_list_method_definition_for_sat(dvpi_table, tables_to_cleanup,dvpi_table_load_operations, include_stage_content_column_list):
     output = str()
     data_mapping = dvpi_table_load_operations.get('data_mapping') or []
     hash_mapping = dvpi_table_load_operations.get('hash_mappings') or []
@@ -157,7 +157,8 @@ def get_statement_list_method_definition_for_sat(dvpi_table, tables_to_cleanup,d
     output += f"vault_schema='{dvpi_table['schema_name']}',\n"
     output += f"stage_hk_column='{columns_by_class['parent_key']['column_stage_name'][0]}',\n"
     output += f"stage_rh_column='{columns_by_class['diff_hash']['column_stage_name'][0]}',\n"
-    output += f"stage_content_column_list={columns_by_class['content_all']['column_stage_name']},\n"
+    if include_stage_content_column_list.lower() == 'true':
+        output += f"stage_content_column_list={columns_by_class['content_all']['column_stage_name']},\n"
     output += f"with_deletion_detection={True if dvpi_table['table_name'] in tables_to_cleanup else False},\n"
     output += f'db_connection=dwh_connection,\n'
     output += "stage_schema=stage_schema,\nstage_table=stage_table,\nmeta_job_instance_id = my_job_instance.get_job_instance_id(),\nmeta_inserted_at = my_job_instance.get_job_started_at() )\n\n"
@@ -183,7 +184,7 @@ def get_statement_list_method_definition_for_esat(dvpi_table,tables_to_cleanup,d
     output += "dvf_execute_elt_statement_list(dwh_cursor, statement_list)\n\n# ----------\n\n"
     return output
 
-def get_statement_list_method_definition_for_msat(dvpi_table,tables_to_cleanup,dvpi_table_load_operations):
+def get_statement_list_method_definition_for_msat(dvpi_table,tables_to_cleanup,dvpi_table_load_operations, include_stage_content_column_list):
     output = str()
     data_mapping = dvpi_table_load_operations.get('data_mapping') or []
     hash_mapping = dvpi_table_load_operations.get('hash_mappings') or []
@@ -194,7 +195,8 @@ def get_statement_list_method_definition_for_msat(dvpi_table,tables_to_cleanup,d
     output += f"vault_schema='{dvpi_table['schema_name']}',\n"
     output += f"stage_hk_column='{columns_by_class['parent_key']['column_stage_name'][0]}',\n"
     output += f"stage_gh_column='{columns_by_class['diff_hash']['column_stage_name'][0]}',\n"
-    output += f"stage_content_column_list={columns_by_class['content_all']['column_stage_name']},\n"
+    if include_stage_content_column_list.lower() == 'true':
+        output += f"stage_content_column_list={columns_by_class['content_all']['column_stage_name']},\n"
     output += f"with_deletion_detection={True if dvpi_table['table_name'] in tables_to_cleanup else False},\n"
     output += f'db_connection=dwh_connection,\n'
     output += "stage_schema=stage_schema,\nstage_table=stage_table,\nmeta_job_instance_id = my_job_instance.get_job_instance_id(),\nmeta_inserted_at = my_job_instance.get_job_started_at() )\n\n"
@@ -250,7 +252,7 @@ def get_hash_collision_statement_method_definition_for_lnk(dvpi_table, dvpi_tabl
     return output
 
 
-def generate_lv_snippet_from_dvpi(file_path, tables_to_cleanup):
+def generate_lv_snippet_from_dvpi(file_path, tables_to_cleanup, include_stage_content_column_list):
     file_path = file_path
     indent_level_1 = " " * 4 * 1
     indent_level_2 = " " * 4 * 2
@@ -298,7 +300,7 @@ def generate_lv_snippet_from_dvpi(file_path, tables_to_cleanup):
         if load_operations_for_table.get('table_name').split('_')[-1] == 'msat':
             for table in data['tables']:
                 if table['table_name'] == load_operations_for_table.get('table_name'):
-                    output = get_statement_list_method_definition_for_msat(table,tables_to_cleanup,load_operations_for_table)
+                    output = get_statement_list_method_definition_for_msat(table,tables_to_cleanup,load_operations_for_table, include_stage_content_column_list)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
 
@@ -306,7 +308,7 @@ def generate_lv_snippet_from_dvpi(file_path, tables_to_cleanup):
             for table in data['tables']:
                 if table['table_name'] == load_operations_for_table.get('table_name'):
                     output = get_hash_collision_statement_method_definition_for_sat(table,load_operations_for_table)
-                    output += get_statement_list_method_definition_for_sat(table,tables_to_cleanup,load_operations_for_table)
+                    output += get_statement_list_method_definition_for_sat(table,tables_to_cleanup,load_operations_for_table, include_stage_content_column_list)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
     return output_all
@@ -364,7 +366,7 @@ def search_for_dvpifile_of_test(testnumber):
     return None
 
 
-def lvs(dvpi_file_name, ini_file, replace_code_between_markers, start_marker, end_marker, project_pipeline_name, project_load_vault_file):
+def lvs(dvpi_file_name, ini_file, replace_code_between_markers, start_marker, end_marker, project_pipeline_name, project_load_vault_file, include_stage_content_column_list):
     params = configuration_load_ini(ini_file, 'rendering',
                                     ['load_vault_snippet_directory', 'dvpi_default_directory',
                                      'dwh_processes_directory'])
@@ -390,7 +392,7 @@ def lvs(dvpi_file_name, ini_file, replace_code_between_markers, start_marker, en
             print(f"could not find file {dvpd_file_name}")
 
     tables_to_cleanup = get_stage_comparison_tables_to_cleanup_from_dvpd(dvpd_file_path)
-    code = generate_lv_snippet_from_dvpi(dvpi_file_path, tables_to_cleanup)
+    code = generate_lv_snippet_from_dvpi(dvpi_file_path, tables_to_cleanup, include_stage_content_column_list)
 
     # write load_vault snippet to file
     lvs_render_path.mkdir(parents=True, exist_ok=True)
@@ -436,6 +438,7 @@ if __name__ == '__main__':
     parser.add_argument("--end_marker",help="End marker",default="# END LOAD DATA TO VLT PART")
     parser.add_argument("--project_pipeline_name", help="Pipeline name in your DWH project.")
     parser.add_argument("--project_load_vault_file", help="Name of the py load vault file in your DWH project", default='load_vault_1')
+    parser.add_argument("--include_stage_content_column_list", default="False")
     args = parser.parse_args()
 
     params = configuration_load_ini(args.ini_file, 'rendering', ['dvpi_default_directory'])
@@ -459,7 +462,8 @@ if __name__ == '__main__':
         start_marker=args.start_marker,
         end_marker=args.end_marker,
         project_pipeline_name=args.project_pipeline_name,
-        project_load_vault_file=args.project_load_vault_file
+        project_load_vault_file=args.project_load_vault_file,
+        include_stage_content_column_list=args.include_stage_content_column_list
         )
 
 
