@@ -1,7 +1,7 @@
 import os
 import yaml
 from pathlib import Path
-from utils import write_model_to_file, extract_yaml_metadata_from_file
+from utils import write_model_to_file, extract_yaml_metadata_from_file,get_verbose_logging
 
 def generate_link_model(table, schema_name, output_directory, stage_model_name, load_operations, overwrite = False):
     table_name = table.get('table_name')
@@ -14,7 +14,8 @@ def generate_link_model(table, schema_name, output_directory, stage_model_name, 
     output_file_name = f"{table_name}.sql"
     output_path = os.path.join(output_directory, output_file_name)
 
-    print(f"Generating link model for table: {table_name}, hashkey: {hashkey}")
+    if get_verbose_logging():
+        print(f"Generating link model for table: {table_name}, hashkey: {hashkey}")
 
     # If model already exists, import it's yaml_metadata
     if os.path.exists(output_path) and not overwrite:

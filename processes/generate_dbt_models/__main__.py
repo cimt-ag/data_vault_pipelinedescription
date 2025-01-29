@@ -11,12 +11,14 @@ sys.path.insert(0,project_directory)
 # imports within project
 from lib.configuration import configuration_load_ini
 from stage import generate_stage_model
-from utils import get_name_of_youngest_dvpi_file, get_table_list_for_dvpi
+from utils import get_name_of_youngest_dvpi_file, get_table_list_for_dvpi,set_verbose_logging
 from hub import generate_hub_model
 from link import generate_link_model
 from sat import generate_sat_v0_model, generate_multiactive_sat_v0_model, generate_record_tracking_sat
 
 g_schema_table_dict = {}
+
+g_verbose_logging=False
 
 def generate_datavault4dbt_model(dvpi_path, model_dir, append_only, table_filter=None):
     global g_schema_table_dict
@@ -50,6 +52,8 @@ def generate_datavault4dbt_model(dvpi_path, model_dir, append_only, table_filter
 
             table_stereotype = table.get('table_stereotype')
 
+            if g_verbose_logging:
+                print("")
             print(f"Processing table: {table_name}, schema: {schema_name}, stereotype: {table_stereotype}")
 
             if table_stereotype == "hub":
@@ -104,10 +108,15 @@ if __name__ == "__main__":
     parser.add_argument('dvpi_file_name', help='Name the file to process. File must be in the configured dvpi_default_directory. Use @youngest to parse the youngest. Use @all to generate the dbt models for all dvpis in the dvpi default directory.')
     parser.add_argument("--ini_file", help="Name of the ini file", default='./dvpdc.ini')
     parser.add_argument('-a', '--use-all-dvpis', action='store_true', help='Use all dvpi files for generating model contents relevant to specified dvpi')
+    parser.add_argument("--verbose", help="Log more information about progress", action='store_true')
+
     args = parser.parse_args()
 
     # write mode should either be append or overwrite
     params = configuration_load_ini(args.ini_file, 'datavault4dbt', ['model_directory', 'dvpi_default_directory'])
+
+    g_verbose_logging=args.verbose
+    set_verbose_logging(g_verbose_logging)
 
     model_dir = Path(params['model_directory'])
     dvpi_default_directory = Path(params['dvpi_default_directory'], fallback=None)
