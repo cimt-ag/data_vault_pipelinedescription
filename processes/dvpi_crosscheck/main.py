@@ -201,7 +201,7 @@ class DVPIcrosscheck:
         """Print out the report of conflicts for all tables and columns with conflict counts."""
 
         if len(self.conflict_report) == 0:
-            print ("\n= no conflicts =\n")
+            print ("\n- no conflicts -")
             return
 
         print("\nList of conflicts:")

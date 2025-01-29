@@ -15,7 +15,7 @@ set DVPDC_BASE=%~dp0/..
 rem room for more environment checking
 
 :step10
-rem Dermine file names, depending if parameter is @youngest or not
+rem Assemble file names, depending if parameter is @youngest or not
 set DVPD_FILE=%1
 set DVPI_FILE=%1
 
@@ -25,11 +25,13 @@ set DVPI_FILE=%1.dvpi.json
 
 
 :step20
+rem Compile
 python "%DVPDC_BASE%/processes/dvpdc/__main__.py" %DVPD_FILE%
 
 if errorlevel 1 goto abort
 
 :step30
+rem crosscheck
 set DVPD_CROSSCHECK_WARNING=0
 python "%DVPDC_BASE%/processes/dvpi_crosscheck/main.py" %DVPI_FILE%
 
@@ -42,15 +44,20 @@ goto step40
 set DVPD_CROSSCHECK_WARNING=1
 
 :step40
+rem render all results we want
+python "%DVPDC_BASE%/processes/render_documentation/__main__.py" %DVPD_FILE%
 
 python "%DVPDC_BASE%/processes/render_ddl/main.py"  %DVPI_FILE%
+rem python "%DVPDC_BASE%/processes/render_ddl/main.py"  %DVPI_FILE% --add_ghost_records --ddl_file_naming_pattern lUl --no_primary_keys --stage_column_naming_rule combined
+
 python "%DVPDC_BASE%/processes/render_dev_sheet/main.py"  %DVPI_FILE%
-python "%DVPDC_BASE%/processes/render_documentation/__main__.py" %DVPD_FILE%
+rem python "%DVPDC_BASE%/processes/render_dev_sheet/main.py"  %DVPI_FILE% --stage_column_naming_rule combined
+
 rem python "%DVPDC_BASE%/processes/render_load_vault_snippet/__main__.py"  %DVPI_FILE%
 
 :step90
 if %DVPD_CROSSCHECK_WARNING%==0 GOTO step90_2
-echo ---! There have been similarity warning from the crosscheck !---
+echo ---! There have been similarity warnings from the crosscheck !---
 
 :step90_2
 echo ---------------- %SCRIPTNAME% for %1 complete ----------------
