@@ -15,69 +15,36 @@ The reference implementation serves the following goals:
 - Provide examples for model and mapping variation
 - Provide examples / templates for code and documentation generators
 
-It is implemented completly in python and provided under the Apache 2.0 licence:
+It is implemented completely in python and provided under the Apache 2.0 licence:
 http://www.apache.org/licenses/LICENSE-2.0
 
 # Architecture and content of the reference implementation
 The reference implementation is part of the DVPD git reposititory. It consists of the following assets:
 - DVPD Compiler (DVPDC) (processes/dvpdc/\__main\__.py)
+- DVPI Crosscheck (dvpd_dvpi_crosscheck) (processes/dvpi_crosscheck/main.py)
 - Some assisting libraries (lib/*.py)
 - Set of dvpd testcases and example dvpd (testcases_and_examples/dvpd/\*.dvpd, testcases_and_examples/model_profiles/*)
 - Automated test of the DVPDC (processes/test_dvpdc/\__main\__.py)
 - Reference results for the automated testing ((testcases_and_examples/reference/*.dvpd))
-- Example of a ddl Render script (processes/render_ddl/\__main\__.py)
-- Examples of documentation render scripts (processes/render_documentation /\__main\__.py)(processes/render_dev_sheet /\__main\__.py)
-- Example of a dvpd generator (processes/generate_basic_dvpd_from_db_table_pg/\__main\__.py))
+- Examples of
+  - ddl Render script (processes/render_ddl/\__main\__.py)
+  - documentation render scripts (processes/render_documentation /\__main\__.py)(processes/render_dev_sheet /\__main\__.py)
+  - dvpd generator (processes/generate_basic_dvpd_from_db_table_pg/\__main\__.py))
+  -dbt generator script (processes/generate_dbt_models/\__main\__.py)
 - easy to call windows batch scripts or bash shell scripts for all examples (commands/)
 
 The scripts are using a central configuration file (dvpdc.ini file), to declare further directory structures (See "Decistions about file locations" below)
-
 - template for the configuration file (config_template/dvpdc.ini)
-
-# DVPD usage Worflow
-The general workflow, would be as follows:
-### Primary dvpd creation and compilation
-1. Generate and edit the dvpd document of the desired pipeline
-2. store the dvpd in the directory for dvpd's in your project
-3. Compile the dvpd. This will result in 
-    - a log output with compiler messages on console and the reporting directory
-    - a dvpi file in the desigated dvpi directory
-    - a dvpi summary report in the reporting directory
-4. review the compiler messages and the dvpi summary. If you need to correct mistakes, loop back to step 3
-5. run the model crosscheck. In case of model inconsistencies to other pipeline, align the models (looping back to step 3)
-6. probably commit dvpd, dvpi and the ddl files in a git repository of the project
-
-
-### Platform specific generation of data base structure 
-1. when using DBT as load processor:
-   1. run the dbt renderer
-   1. execute the dbt modells, to test consistency
-   1. probably commit dvpd, dvpi and the dbt files in a git repository of the project
-
-1. in case you need ddl scripts: 
-   1. run the ddl render script for the new generated dvpi to generate the ddl files in the repository for ddl files
-   1. deploy the data model to the data base (using the ddl files and the deployment procedure of your choice). This will test the db compatibility of your ddl files.
-   1. probably commit dvpd, dvpi and the ddl files in a git repository of the project
-
-In case of problems with generated code (mostply bad names and types, that are not compatible with the Databeses)
-correct the dvpd and got back to step 3 in the previous phase
-    
-### Further generation of code and documentation
-1. generate developer sheet
-1. generate documentaion
-1. generate loading code 
-
-
 
 # Installation Guide
 ## Requirements
 - python 3.10 or higher must be available
 - please install missing python packages on demand (via python pip or equivalent package manager)
-- A text editor (hopefully capable of JSON syntax highlitging and hierarchie folding)
+- A text editor (hopefully capable of JSON syntax highlighting and hierarchy folding)
 
 If you want to modify, debug or extend the dvpd toolset or documentation
-- An text editor soupporting markdown documents
-- "Draw.io" for opitmal view of diagrams
+- An text editor supporting markdown documents
+- "Draw.io" for optimal view of diagrams
 - A python ide
 
 ## Decisions about file locations
@@ -99,6 +66,7 @@ Example structure
      \dvpi                 <- dvpi files
      \model_ddl            <- genrated DDL files
 \var\dvpdc_report          <- log output of dvpdc
+\dwh_builder               <- a dedicated place for setting up the build scripts
 ```
 
 ## Download and setup the compiler
@@ -142,6 +110,42 @@ applied to the compilers result in the dvpi. Only the final formatting, sorting 
 of the ddl files lies in the responsibility of the ddl generator.
 
 To adapt the ddl generator it is recommended to copy the template and make it your own code.
+
+# DVPD usage Worflow
+The general workflow, would be as follows:
+### Primary dvpd creation and compilation
+1. Generate and edit the dvpd document of the desired pipeline
+2. store the dvpd in the directory for dvpd's in your project
+3. Compile the dvpd. This will result in 
+    - a log output with compiler messages on console and the reporting directory
+    - a dvpi file in the desigated dvpi directory
+    - a dvpi summary report in the reporting directory
+4. review the compiler messages and the dvpi summary. If you need to correct mistakes, loop back to step 3
+5. run the model crosscheck. In case of model inconsistencies to other pipeline, align the models (looping back to step 3)
+6. probably commit dvpd, dvpi and the ddl files in a git repository of the project
+
+
+### Platform specific generation of data base structure 
+1. when using DBT as load processor:
+   1. run the dbt renderer
+   1. execute the dbt modells, to test consistency
+   1. probably commit dvpd, dvpi and the dbt files in a git repository of the project
+
+1. in case you need ddl scripts: 
+   1. run the ddl render script for the new generated dvpi to generate the ddl files in the repository for ddl files
+   1. deploy the data model to the data base (using the ddl files and the deployment procedure of your choice). This will test the db compatibility of your ddl files.
+   1. probably commit dvpd, dvpi and the ddl files in a git repository of the project
+
+In case of problems with generated code (mostply bad names and types, that are not compatible with the Databeses)
+correct the dvpd and got back to step 3 in the previous phase
+    
+### Further generation of code and documentation
+1. generate developer sheet
+1. generate documentaion
+1. generate loading code 
+
+
+
 
 # Usage Guide
 ## dvpd compiler (dvpdc)
