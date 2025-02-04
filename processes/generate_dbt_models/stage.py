@@ -1,7 +1,9 @@
 import os
 from pathlib import Path
 import yaml
-from utils import write_model_to_file
+from utils import write_model_to_file,get_verbose_logging
+
+
 
 def generate_stage_model(parse_set, output_directory) -> str:
     stage_properties = parse_set.get('stage_properties', [{}])[0]
@@ -9,13 +11,19 @@ def generate_stage_model(parse_set, output_directory) -> str:
     stage_table_name = stage_properties.get('stage_table_name')
     record_source = parse_set.get('record_source_name_expression')
     # Assumption is, that a source model is defined according to the record source name
-    source_name, source_table_name = record_source.split('.')
+    if "." in record_source:
+        source_name, source_table_name = record_source.split('.')
+    else:
+        source_name ="generic"
+        source_table_name=record_source
+        print("! Warning: record source could not be split into source and object. Using 'generic' as source !")
     # Define the file name and output path
     output_directory = Path.joinpath(output_directory, stage_schema)
     output_file_name = f"{stage_table_name}.sql"
     output_path = os.path.join(output_directory, output_file_name)
 
-    print(f"Generating stage model for table: {stage_table_name}, schema: {stage_schema}")
+    if get_verbose_logging():
+        print(f"Generating stage model for table: {stage_table_name}, schema: {stage_schema}")
 
     config = ["materialized='view'", f"schema='{stage_schema}'"]
     config = ', '.join(config)

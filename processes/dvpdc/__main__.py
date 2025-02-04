@@ -1957,9 +1957,11 @@ def get_name_of_youngest_dvpd_file(ini_file):
 
 
 if __name__ == "__main__":
-    description_for_terminal = "Cimt AG reccommends to follow the instruction before starting the script. If you run your script from command line, it should look" \
-                               " like this: python __main__.py inputFile"
-    usage_for_terminal = "Add option -h for further instruction"
+    description_for_terminal = "DVPD compiler. Parses a data vault pipeline description (dvpd) file and translates it into a data vault pipeline instruction (dvpi)."\
+                                "\nPlease read the dvpd concept documentation for better understanding of the ."\
+                                "\nThe filename of the dvpi file will be the filename of the dvpd file, without any '.dpvd' or '.json' segments and with '.dvpi.json' appended"\
+                                "\n Examples: myname.dvpd.json -> myname.dvpi.json, myname.txt->myname.txt.dvpi.json, dvpd_myname.json -> dpvd_myname.dvpi.json"
+    usage_for_terminal = "dvpdc <file to compile> [options] \n Add option -h for further instruction"
 
     parser = argparse.ArgumentParser(
         description=description_for_terminal,
@@ -1971,7 +1973,7 @@ if __name__ == "__main__":
     parser.add_argument("--model_profile_directory",help="Name of the model profile directory")
 
     # output arguments
-    parser.add_argument("--dvpi_directory",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
+    parser.add_argument("--dvpi_directory",  help="Name of the director, the dvpi file will be written to")
     parser.add_argument("--report_directory", help="Name of the report file (defaults to filename + .dvpdc.log")
     parser.add_argument("--print_brain", help="When set, the compiler will print its internal data structure to stdout", action='store_true')
     parser.add_argument("--verbose", help="Log more information about progress", action='store_true')
