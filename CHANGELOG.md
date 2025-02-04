@@ -9,9 +9,11 @@
 - added libary to connect to a database for schema (needed for schema retrieval demo)
 - added example of python load function code generator (creates code for cimt data vault framework loading processes)
 - enhanced output of automated test for better checking of changes with high impact
+- Examples of build scripts for different scenarios 
+- build scripts are now capable to run for multiple projects and multiple states of dvpd implementation
 
 ### DVPD syntax extentions or changes
-- added 'is_multiactive_key' keyword for field to table mapping to dvpd and dpvi (needed for dbt generator)
+- added 'is_multi_active_key' keyword for field to table mapping to dvpd and dpvi (needed for dbt generator)
 - *Experimental and work in progress:* added 'use_as_key_hash' and 'only_strutural_element' keywords to allow delcaration of business vault
 tables, that don't need a full hash key calculation, since hash values are already known by the source transformation
 
@@ -22,12 +24,18 @@ tables, that don't need a full hash key calculation, since hash values are alrea
 Some functional changes can be mitigated by migrating existing dvpd files 
 with the migration script (processes/migration_scripts/migrate_0_6_1_to_0_6_2)
 - default stage table name is now `<pipeline_name>_stage` (previously `s<pipeline_name>`). 
-Migration will add explicit stage_table_name declaraction to keep old name
+Migration will add explicit stage_table_name declaration to keep old name
 
 ### Functional changes render ddl
 - Ghost record hash value and far future date is not hard coded any more but 
 taken from model profile definition. Special syntax allows declaration of code snippets instead
 of text constants
+- 
+### credits
+Lead Designer and coding: Matthias Wegner (cimt ag)<br>
+DBT Generator and compiler extension: Joscha von Hein (cimt ag)<br>
+Crosscheck coding and tests: Albin Cekaj (cimt ag)<br>
+cimt python framework code generator: Krystyna Mykhaylova (cimt ag)
 
 # release 0.6.1
 In this release, we completely switch from the PostgreSQL implementation of the compiler to the python implementation.
@@ -37,10 +45,10 @@ findings from active projects and testing.
 ### features
 - python implementation of dvpd compiler(DVPDC) including its automated testing
 - Introduction of the data vault pipeline instruction (DVPI) syntax as result of the compiler output
-- huge extention of the testset
+- huge extension of the testset
 - python example for a **ddl generator**, generating DDL scripts from DVPI
 - python example for a documentation generator, generating mapping documentation in HTML
-- python example for a **developmer instruction sheet generator**
+- python example for a **developer instruction sheet generator**
 - examples of console command script to use all tools on the command line including a "build all script"
 - experimental: syntax to declare source fields to contain precalculated hash values (use_as_hash_key, is_only_structural_element)
 
