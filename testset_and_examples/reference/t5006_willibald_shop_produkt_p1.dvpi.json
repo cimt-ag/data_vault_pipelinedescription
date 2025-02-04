@@ -1,0 +1,908 @@
+{
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2025-01-06 19:00:17",
+  "dvpd_version": "0.6.2",
+  "pipeline_name": "t5006_willibald_shop_produkt_p1",
+  "pipeline_revision_tag": "--none--",
+  "dvpd_filename": "t5006_willibald_shop_produkt_p1.dvpd.json",
+  "tables": [
+    {
+      "table_name": "produkt_hub",
+      "table_stereotype": "hub",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_PRODUKT",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "PRODUKTID",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "INTEGER ",
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "produkt_produkt_p1_sat",
+      "table_stereotype": "sat",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": false,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "compare_criteria": "key+current",
+      "uses_diff_hash": true,
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "column_name": "MD_VALID_BEFORE",
+          "is_nullable": false,
+          "column_class": "meta_load_enddate",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "HK_PRODUKT",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_PRODUKT",
+          "parent_table_name": "produkt_hub"
+        },
+        {
+          "column_name": "DIFF_PRODUKT_PRODUKT_P1_SAT",
+          "is_nullable": false,
+          "column_class": "diff_hash",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "BEZEICHNUNG",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(512) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "PFLANZABSTAND",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(128) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "PFLANZORT",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(128) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "TYP",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "INTEGER ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        },
+        {
+          "column_name": "UMFANG",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "VARCHAR(128) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "produkt_produkt_p1s_sat",
+      "table_stereotype": "sat",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": false,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "compare_criteria": "key+current",
+      "uses_diff_hash": true,
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "column_name": "MD_VALID_BEFORE",
+          "is_nullable": false,
+          "column_class": "meta_load_enddate",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "HK_PRODUKT",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_PRODUKT",
+          "parent_table_name": "produkt_hub"
+        },
+        {
+          "column_name": "DIFF_PRODUKT_PRODUKT_P1S_SAT",
+          "is_nullable": false,
+          "column_class": "diff_hash",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "PREIS",
+          "is_nullable": true,
+          "column_class": "content",
+          "column_type": "NUMERIC(5,2) ",
+          "exclude_from_change_detection": false,
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "kategorie_hub",
+      "table_stereotype": "hub",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_KATEGORIE",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "KATID",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "VARCHAR(50) ",
+          "prio_for_column_position": 50000
+        }
+      ]
+    },
+    {
+      "table_name": "produkt_kategorie_lnk",
+      "table_stereotype": "lnk",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_PRODUKT",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_PRODUKT",
+          "parent_table_name": "produkt_hub"
+        },
+        {
+          "column_name": "HK_KATEGORIE",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "HK_KATEGORIE",
+          "parent_table_name": "kategorie_hub"
+        },
+        {
+          "column_name": "LK_PRODUKT_KATEGORIE",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        }
+      ]
+    },
+    {
+      "table_name": "produkt_kategorie_esat",
+      "table_stereotype": "sat",
+      "schema_name": "rvlt_willibald_shop",
+      "storage_component": "",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": true,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "compare_criteria": "key+current",
+      "uses_diff_hash": false,
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "column_name": "MD_VALID_BEFORE",
+          "is_nullable": false,
+          "column_class": "meta_load_enddate",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "LK_PRODUKT_KATEGORIE",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "LK_PRODUKT_KATEGORIE",
+          "parent_table_name": "produkt_kategorie_lnk"
+        }
+      ]
+    }
+  ],
+  "data_extraction": {
+    "fetch_module_name": "none - this is a pure ddl and documentation dvpd"
+  },
+  "parse_sets": [
+    {
+      "stage_properties": [
+        {
+          "stage_schema": "stage_rvlt",
+          "stage_table_name": "st5006_willibald_shop_produkt_p1",
+          "storage_component": ""
+        }
+      ],
+      "record_source_name_expression": "willibald_shop_p1.produkt",
+      "fields": [
+        {
+          "field_type": "integer ",
+          "is_primary_key": "True",
+          "is_foreign_key": "False",
+          "cardinality": "126",
+          "duplicates": "0",
+          "null_values": "0",
+          "field_position": 1,
+          "needs_encryption": false,
+          "field_name": "PRODUKTID"
+        },
+        {
+          "field_type": "VARCHAR(50) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "54",
+          "duplicates": "72",
+          "null_values": "0",
+          "field_position": 2,
+          "needs_encryption": false,
+          "field_name": "KATID"
+        },
+        {
+          "field_type": "VARCHAR(512) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "126",
+          "duplicates": "0",
+          "null_values": "0",
+          "field_position": 3,
+          "needs_encryption": false,
+          "field_name": "BEZEICHNUNG"
+        },
+        {
+          "field_type": "VARCHAR(128) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "47",
+          "duplicates": "79",
+          "null_values": "0",
+          "field_position": 4,
+          "needs_encryption": false,
+          "field_name": "PFLANZABSTAND"
+        },
+        {
+          "field_type": "VARCHAR(128) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "6",
+          "duplicates": "120",
+          "null_values": "0",
+          "field_position": 5,
+          "needs_encryption": false,
+          "field_name": "PFLANZORT"
+        },
+        {
+          "field_type": "integer ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "3",
+          "duplicates": "123",
+          "null_values": "0",
+          "field_position": 6,
+          "needs_encryption": false,
+          "field_name": "TYP"
+        },
+        {
+          "field_type": "VARCHAR(128) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "31",
+          "duplicates": "95",
+          "null_values": "0",
+          "field_position": 7,
+          "needs_encryption": false,
+          "field_name": "UMFANG"
+        },
+        {
+          "field_type": "NUMERIC(5,2) ",
+          "is_primary_key": "False",
+          "is_foreign_key": "False",
+          "cardinality": "20",
+          "duplicates": "106",
+          "null_values": "0",
+          "field_position": 8,
+          "needs_encryption": false,
+          "field_name": "PREIS"
+        }
+      ],
+      "hashes": [
+        {
+          "stage_column_name": "HK_PRODUKT",
+          "hash_origin_table": "produkt_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "PRODUKTID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "produkt_hub",
+              "field_target_column": "PRODUKTID"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_PRODUKT_HUB"
+        },
+        {
+          "stage_column_name": "HK_KATEGORIE",
+          "hash_origin_table": "kategorie_hub",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "KATID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "kategorie_hub",
+              "field_target_column": "KATID"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_KATEGORIE_HUB"
+        },
+        {
+          "stage_column_name": "LK_PRODUKT_KATEGORIE",
+          "hash_origin_table": "produkt_kategorie_lnk",
+          "column_class": "key",
+          "hash_fields": [
+            {
+              "field_name": "PRODUKTID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "produkt_hub",
+              "field_target_column": "PRODUKTID",
+              "parent_declaration_position": 1
+            },
+            {
+              "field_name": "KATID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "kategorie_hub",
+              "field_target_column": "KATID",
+              "parent_declaration_position": 2
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_name": "KEY_OF_PRODUKT_KATEGORIE_LNK"
+        },
+        {
+          "stage_column_name": "DIFF_PRODUKT_PRODUKT_P1_SAT",
+          "hash_origin_table": "produkt_produkt_p1_sat",
+          "multi_row_content": false,
+          "column_class": "diff_hash",
+          "hash_fields": [
+            {
+              "field_name": "BEZEICHNUNG",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "produkt_produkt_p1_sat",
+              "field_target_column": "BEZEICHNUNG"
+            },
+            {
+              "field_name": "PFLANZABSTAND",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "produkt_produkt_p1_sat",
+              "field_target_column": "PFLANZABSTAND"
+            },
+            {
+              "field_name": "PFLANZORT",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "produkt_produkt_p1_sat",
+              "field_target_column": "PFLANZORT"
+            },
+            {
+              "field_name": "TYP",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "produkt_produkt_p1_sat",
+              "field_target_column": "TYP"
+            },
+            {
+              "field_name": "UMFANG",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "produkt_produkt_p1_sat",
+              "field_target_column": "UMFANG"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "related_key_hash": "KEY_OF_PRODUKT_HUB",
+          "hash_name": "DIFF_OF_PRODUKT_PRODUKT_P1_SAT"
+        },
+        {
+          "stage_column_name": "DIFF_PRODUKT_PRODUKT_P1S_SAT",
+          "hash_origin_table": "produkt_produkt_p1s_sat",
+          "multi_row_content": false,
+          "column_class": "diff_hash",
+          "hash_fields": [
+            {
+              "field_name": "PREIS",
+              "prio_in_diff_hash": 0,
+              "prio_for_row_order": 50000,
+              "field_target_table": "produkt_produkt_p1s_sat",
+              "field_target_column": "PREIS"
+            }
+          ],
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "related_key_hash": "KEY_OF_PRODUKT_HUB",
+          "hash_name": "DIFF_OF_PRODUKT_PRODUKT_P1S_SAT"
+        }
+      ],
+      "load_operations": [
+        {
+          "table_name": "produkt_hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_PRODUKT",
+              "hash_name": "KEY_OF_PRODUKT_HUB",
+              "stage_column_name": "HK_PRODUKT"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "PRODUKTID",
+              "field_name": "PRODUKTID",
+              "column_class": "business_key",
+              "stage_column_name": "PRODUKTID"
+            }
+          ]
+        },
+        {
+          "table_name": "produkt_produkt_p1_sat",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key",
+              "column_name": "HK_PRODUKT",
+              "hash_name": "KEY_OF_PRODUKT_HUB",
+              "stage_column_name": "HK_PRODUKT"
+            },
+            {
+              "hash_class": "diff_hash",
+              "column_name": "DIFF_PRODUKT_PRODUKT_P1_SAT",
+              "hash_name": "DIFF_OF_PRODUKT_PRODUKT_P1_SAT",
+              "stage_column_name": "DIFF_PRODUKT_PRODUKT_P1_SAT"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "BEZEICHNUNG",
+              "field_name": "BEZEICHNUNG",
+              "column_class": "content",
+              "stage_column_name": "BEZEICHNUNG"
+            },
+            {
+              "column_name": "PFLANZABSTAND",
+              "field_name": "PFLANZABSTAND",
+              "column_class": "content",
+              "stage_column_name": "PFLANZABSTAND"
+            },
+            {
+              "column_name": "PFLANZORT",
+              "field_name": "PFLANZORT",
+              "column_class": "content",
+              "stage_column_name": "PFLANZORT"
+            },
+            {
+              "column_name": "TYP",
+              "field_name": "TYP",
+              "column_class": "content",
+              "stage_column_name": "TYP"
+            },
+            {
+              "column_name": "UMFANG",
+              "field_name": "UMFANG",
+              "column_class": "content",
+              "stage_column_name": "UMFANG"
+            }
+          ]
+        },
+        {
+          "table_name": "produkt_produkt_p1s_sat",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key",
+              "column_name": "HK_PRODUKT",
+              "hash_name": "KEY_OF_PRODUKT_HUB",
+              "stage_column_name": "HK_PRODUKT"
+            },
+            {
+              "hash_class": "diff_hash",
+              "column_name": "DIFF_PRODUKT_PRODUKT_P1S_SAT",
+              "hash_name": "DIFF_OF_PRODUKT_PRODUKT_P1S_SAT",
+              "stage_column_name": "DIFF_PRODUKT_PRODUKT_P1S_SAT"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "PREIS",
+              "field_name": "PREIS",
+              "column_class": "content",
+              "stage_column_name": "PREIS"
+            }
+          ]
+        },
+        {
+          "table_name": "kategorie_hub",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_KATEGORIE",
+              "hash_name": "KEY_OF_KATEGORIE_HUB",
+              "stage_column_name": "HK_KATEGORIE"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "KATID",
+              "field_name": "KATID",
+              "column_class": "business_key",
+              "stage_column_name": "KATID"
+            }
+          ]
+        },
+        {
+          "table_name": "produkt_kategorie_lnk",
+          "relation_name": "/",
+          "operation_origin": "implicit unnamed relation, since all parents are universal",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key_1",
+              "column_name": "HK_PRODUKT",
+              "hash_name": "KEY_OF_PRODUKT_HUB",
+              "stage_column_name": "HK_PRODUKT"
+            },
+            {
+              "hash_class": "parent_key_2",
+              "column_name": "HK_KATEGORIE",
+              "hash_name": "KEY_OF_KATEGORIE_HUB",
+              "stage_column_name": "HK_KATEGORIE"
+            },
+            {
+              "hash_class": "key",
+              "column_name": "LK_PRODUKT_KATEGORIE",
+              "hash_name": "KEY_OF_PRODUKT_KATEGORIE_LNK",
+              "stage_column_name": "LK_PRODUKT_KATEGORIE"
+            }
+          ]
+        },
+        {
+          "table_name": "produkt_kategorie_esat",
+          "relation_name": "/",
+          "operation_origin": "following parent operation list",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key",
+              "column_name": "LK_PRODUKT_KATEGORIE",
+              "hash_name": "KEY_OF_PRODUKT_KATEGORIE_LNK",
+              "stage_column_name": "LK_PRODUKT_KATEGORIE"
+            }
+          ]
+        }
+      ],
+      "stage_columns": [
+        {
+          "stage_column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "stage_column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "stage_column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "stage_column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "stage_column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "stage_column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "stage_column_name": "HK_PRODUKT",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_PRODUKT_HUB",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "HK_KATEGORIE",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_KATEGORIE_HUB",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "LK_PRODUKT_KATEGORIE",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_PRODUKT_KATEGORIE_LNK",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "DIFF_PRODUKT_PRODUKT_P1_SAT",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "DIFF_OF_PRODUKT_PRODUKT_P1_SAT",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "DIFF_PRODUKT_PRODUKT_P1S_SAT",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "DIFF_OF_PRODUKT_PRODUKT_P1S_SAT",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "PRODUKTID",
+          "stage_column_class": "data",
+          "field_name": "PRODUKTID",
+          "is_nullable": true,
+          "column_type": "integer ",
+          "column_classes": [
+            "business_key"
+          ]
+        },
+        {
+          "stage_column_name": "KATID",
+          "stage_column_class": "data",
+          "field_name": "KATID",
+          "is_nullable": true,
+          "column_type": "VARCHAR(50) ",
+          "column_classes": [
+            "business_key"
+          ]
+        },
+        {
+          "stage_column_name": "BEZEICHNUNG",
+          "stage_column_class": "data",
+          "field_name": "BEZEICHNUNG",
+          "is_nullable": true,
+          "column_type": "VARCHAR(512) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "PFLANZABSTAND",
+          "stage_column_class": "data",
+          "field_name": "PFLANZABSTAND",
+          "is_nullable": true,
+          "column_type": "VARCHAR(128) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "PFLANZORT",
+          "stage_column_class": "data",
+          "field_name": "PFLANZORT",
+          "is_nullable": true,
+          "column_type": "VARCHAR(128) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "TYP",
+          "stage_column_class": "data",
+          "field_name": "TYP",
+          "is_nullable": true,
+          "column_type": "integer ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "UMFANG",
+          "stage_column_class": "data",
+          "field_name": "UMFANG",
+          "is_nullable": true,
+          "column_type": "VARCHAR(128) ",
+          "column_classes": [
+            "content"
+          ]
+        },
+        {
+          "stage_column_name": "PREIS",
+          "stage_column_class": "data",
+          "field_name": "PREIS",
+          "is_nullable": true,
+          "column_type": "NUMERIC(5,2) ",
+          "column_classes": [
+            "content"
+          ]
+        }
+      ]
+    }
+  ]
+}

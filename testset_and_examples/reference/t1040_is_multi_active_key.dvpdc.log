@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.2
+Compile time: 2024-11-05 10:31:23
+Compiling t1040_is_multi_active_key.dvpd.json
+
+Writing DVPI to /gitbox/data_vault_pipelinedescription/resources/dvpi/t1040_is_multi_active_key.dvpi.json
+--- Compile successfull ---

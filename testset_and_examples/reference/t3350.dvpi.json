@@ -1,9 +1,10 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:32",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2025-01-06 19:00:17",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t3350",
+  "pipeline_revision_tag": "--none--",
   "dvpd_filename": "t3350.dvpd.json",
   "tables": [
     {
@@ -154,7 +155,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st3350",
+          "stage_table_name": "t3350_stage",
           "storage_component": ""
         }
       ],
@@ -256,7 +257,6 @@
               "hash_class": "key",
               "column_name": "HK_RTJJ_3350_AAA",
               "hash_name": "KEY_OF_RTJJ_3350_AAA_HUB__FOR__TTT",
-              "is_nullable": false,
               "stage_column_name": "HK_RTJJ_3350_AAA_TTT"
             }
           ],
@@ -265,7 +265,6 @@
               "column_name": "F1F2_AAA_BK1F",
               "field_name": "F1XX_AAA_BK1F_TTT",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F1XX_AAA_BK1F_TTT"
             }
           ]
@@ -279,7 +278,6 @@
               "hash_class": "key",
               "column_name": "HK_RTJJ_3350_AAA",
               "hash_name": "KEY_OF_RTJJ_3350_AAA_HUB",
-              "is_nullable": false,
               "stage_column_name": "HK_RTJJ_3350_AAA"
             }
           ],
@@ -288,7 +286,6 @@
               "column_name": "F1F2_AAA_BK1F",
               "field_name": "F2XX_AAA_BK1F",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F2XX_AAA_BK1F"
             }
           ]
@@ -302,21 +299,18 @@
               "hash_class": "parent_key_1",
               "column_name": "HK_RTJJ_3350_AAA",
               "hash_name": "KEY_OF_RTJJ_3350_AAA_HUB",
-              "is_nullable": false,
               "stage_column_name": "HK_RTJJ_3350_AAA"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_RTJJ_3350_AAA_TTT",
               "hash_name": "KEY_OF_RTJJ_3350_AAA_HUB__FOR__TTT",
-              "is_nullable": false,
               "stage_column_name": "HK_RTJJ_3350_AAA_TTT"
             },
             {
               "hash_class": "key",
               "column_name": "LK_RTJJ_3350_AAA_AAA_TTT",
               "hash_name": "KEY_OF_RTJJ_3350_AAA_AAA_TTT_LNK",
-              "is_nullable": false,
               "stage_column_name": "LK_RTJJ_3350_AAA_AAA_TTT"
             }
           ]
@@ -330,7 +324,6 @@
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_3350_AAA_AAA_TTT",
               "hash_name": "KEY_OF_RTJJ_3350_AAA_AAA_TTT_LNK",
-              "is_nullable": false,
               "stage_column_name": "LK_RTJJ_3350_AAA_AAA_TTT"
             }
           ]

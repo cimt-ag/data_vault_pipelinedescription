@@ -146,6 +146,11 @@ A DVPI is expressed with JSON syntax and contains the following attributes (Keys
 **pipeline_name**
 <br> Name of the pipeline, as declared in the dvpd. Could/should be used to identify the loading process artifact(s)
 
+**pipeline_revision_tag**
+<br>String to identify the revision of the pipeline description. Content depends on process and toolset for development and deployment. Might be a version number or a revision / build tag.
+<br>Set to '--none--' if not given
+<br>Examples: *"1.1" | "x129sa8"*
+
 **dvpd_filemame**
 <br>Name of the compiled DVPD file. Just for auditability
 
@@ -468,7 +473,7 @@ Multiple entries for the same target differ in the mapping of fields and hashes 
 <br>→ see "hash_mappings[]"
 
 **data_mapping**
-<br>(will be renamed to "field_mappings" in 0.6.1)
+<br>(will be renamed to "field_mappings" in 0.6.3)
 <br>List of the mappings of all fields to the table columns.
 <br>→ see "data_mappings[]"
 
@@ -496,8 +501,8 @@ Json Path: $.parse_sets[].load_operations[]
 **stage_column_name**
 <br>Name of the stage column, the hash can be taken from, when using stage table approach
 
-### field_mappings[]
-(formely known as "data_mapping" in 0.6.0)
+### data_mapping[]
+(will be renamed to "field_mappings" in 0.6.3)
 
 Json Path: $.parse_sets[].load_operations[]
 
@@ -521,7 +526,14 @@ the column in an existing current record if no new row is inserted. Identificati
 done as follows: hub - hub key, link - link key, sat - parent key, multi active sat - <depends on 
 multiactive historization pattern>, reference table- same set of values in all columns that are not udpated
 on every load (diff hash can be used as shortcut when available)
- 
+
+**is_multi_active_key**
+(optional)
+<br>Declares this column to be part of the multi-active key for a multi-active-satellite. Loading
+procedures, that support multi active historization loading patterns with a key, should use
+this as input.
+
+This property is only set, when declared in the dvpd. There is no default value.
 
 ### deletion_detection_rules[]
 Json Path: $.parse_sets[].load_operations[]

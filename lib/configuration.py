@@ -35,11 +35,15 @@ def configuration_load_ini(filename=None, section=None, mandatory_elements=None)
     # todo move responsibility for full path to caller
 
     if filename == None:
-        raise Exception("No .ini file declaraion found")
-    file_path = Path(Path(os.getcwd()).joinpath(filename))
+        raise Exception("Filname not set")
+    if section == None:
+        raise Exception("section not set")
+    current_directory=os.getcwd().replace('\\','/')  # convert windows to unix slash
+
+    file_path = Path(current_directory).joinpath(filename)
     # print(file_path)  # for debug only
     if  os.path.isdir(file_path):
-        Exception(f"{file_path} is not a file, but declared as ini file")
+        raise Exception(f"{file_path} is not a file, but was declared to be an ini file")
 
     if not os.path.exists(file_path):
         raise Exception(f'could not find configuration file: {file_path}')
@@ -54,7 +58,7 @@ def configuration_load_ini(filename=None, section=None, mandatory_elements=None)
             key_value_list[param[0]] = param[1]
             # print(param[0], param[1])
     else:
-        raise Exception('Section {0} not found in the {1} file'.format(section, filename))
+        raise Exception('Section "{0}" not found in ini file "{1}" '.format(section, filename))
 
     if mandatory_elements != None:
         for keyword in mandatory_elements:
@@ -66,7 +70,7 @@ def configuration_load_ini(filename=None, section=None, mandatory_elements=None)
 
 if __name__ == '__main__':
     print('small test of', __name__)
-    my_list = configuration_load_ini('pg_connection.ini', 'postgresql')
+    my_list = configuration_load_ini('../config/dvpdc.ini', 'dvpdc')
     for key in my_list:
         print(key, '->', my_list[key])
 

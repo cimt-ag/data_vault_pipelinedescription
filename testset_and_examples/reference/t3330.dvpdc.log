@@ -1,7 +1,7 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.1
-Compile time: 2024-06-13 11:57:31
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-01-28 16:22:27
 Compiling t3330.dvpd.json
 
-Writing DVPI to /git_ordner/dvpd/var/dvpi/t3330.dvpi.json
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t3330.dvpi.json
 --- Compile successfull ---

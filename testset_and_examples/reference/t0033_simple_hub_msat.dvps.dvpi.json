@@ -1,9 +1,10 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:28",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2025-01-06 19:00:16",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0033_simple_hub_msat",
+  "pipeline_revision_tag": "--none--",
   "dvpd_filename": "t0033_simple_hub_msat.dvps.json",
   "tables": [
     {
@@ -151,7 +152,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st0033_simple_hub_msat",
+          "stage_table_name": "t0033_simple_hub_msat_stage",
           "storage_component": ""
         }
       ],
@@ -226,7 +227,6 @@
           "stage_column_name": "GH_RTJJ_33_AAA_P1_MSAT",
           "hash_origin_table": "rtjj_33_aaa_p1_msat",
           "multi_row_content": true,
-          "related_key_hash": "KEY_OF_RTJJ_33_AAA_HUB",
           "column_class": "diff_hash",
           "hash_fields": [
             {
@@ -258,6 +258,7 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "related_key_hash": "KEY_OF_RTJJ_33_AAA_HUB",
           "hash_name": "DIFF_OF_RTJJ_33_AAA_P1_MSAT"
         }
       ],
@@ -271,7 +272,6 @@
               "hash_class": "key",
               "column_name": "HK_RTJJ_33_AAA",
               "hash_name": "KEY_OF_RTJJ_33_AAA_HUB",
-              "is_nullable": false,
               "stage_column_name": "HK_RTJJ_33_AAA"
             }
           ],
@@ -280,14 +280,12 @@
               "column_name": "F1_AAA_BK1",
               "field_name": "F1_AAA_BK1",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F1_AAA_BK1"
             },
             {
               "column_name": "F2_AAA_BK2F",
               "field_name": "F2_AAA_BK2F",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F2_AAA_BK2F"
             }
           ]
@@ -301,14 +299,12 @@
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_33_AAA",
               "hash_name": "KEY_OF_RTJJ_33_AAA_HUB",
-              "is_nullable": false,
               "stage_column_name": "HK_RTJJ_33_AAA"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "GH_RTJJ_33_AAA_P1_MSAT",
               "hash_name": "DIFF_OF_RTJJ_33_AAA_P1_MSAT",
-              "is_nullable": false,
               "stage_column_name": "GH_RTJJ_33_AAA_P1_MSAT"
             }
           ],
@@ -317,28 +313,24 @@
               "column_name": "F3_AAA_P1_C1",
               "field_name": "F3_AAA_P1_C1",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F3_AAA_P1_C1"
             },
             {
               "column_name": "F4_AAA_P1_C2",
               "field_name": "F4_AAA_P1_C2",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F4_AAA_P1_C2"
             },
             {
               "column_name": "F5_AAA_P1_C3",
               "field_name": "F5XX_AAA_P1_C3",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F5XX_AAA_P1_C3"
             },
             {
               "column_name": "F6_AAA_P1_C4F",
               "field_name": "F6_AAA_P1_C4F",
               "column_class": "content_untracked",
-              "is_nullable": true,
               "stage_column_name": "F6_AAA_P1_C4F"
             }
           ]

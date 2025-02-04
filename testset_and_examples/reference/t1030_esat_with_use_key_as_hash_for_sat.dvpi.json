@@ -1,0 +1,139 @@
+{
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2025-01-22 09:52:20",
+  "dvpd_version": "0.6.2",
+  "pipeline_name": "t1030c_missing_use_key_hash_for_sat",
+  "pipeline_revision_tag": "--none--",
+  "dvpd_filename": "t1030_esat_with_use_key_as_hash_for_sat.dvpd.json",
+  "tables": [
+    {
+      "table_name": "btjj_1030_aaa_bbb_esat",
+      "table_stereotype": "sat",
+      "schema_name": "bvlt_test_jj",
+      "storage_component": "",
+      "has_deletion_flag": true,
+      "is_effectivity_sat": true,
+      "is_enddated": true,
+      "is_multiactive": false,
+      "compare_criteria": "key+current",
+      "uses_diff_hash": false,
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "column_name": "MD_VALID_BEFORE",
+          "is_nullable": false,
+          "column_class": "meta_load_enddate",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "LK_RTJJ_1030_AAA_BBB",
+          "is_nullable": false,
+          "column_class": "parent_key",
+          "column_type": "CHAR(28)",
+          "parent_key_column_name": "LK_RTJJ_1030_AAA_BBB",
+          "parent_table_name": "rtjj_1030_aaa_bbb_lnk"
+        }
+      ]
+    }
+  ],
+  "data_extraction": {
+    "fetch_module_name": "none - this is a pure generator test case",
+    "Query": "Select HK_AAA,LK_rtjj_1030_aaa_bbb, something"
+  },
+  "parse_sets": [
+    {
+      "stage_properties": [
+        {
+          "stage_schema": "stage_rvlt",
+          "stage_table_name": "t1030c_missing_use_key_hash_for_sat_stage",
+          "storage_component": ""
+        }
+      ],
+      "record_source_name_expression": "dvpd implementation test",
+      "fields": [
+        {
+          "field_type": "CHAR(28)",
+          "field_position": 1,
+          "needs_encryption": false,
+          "field_name": "LK_RTJJ_1030_AAA_BBB"
+        }
+      ],
+      "hashes": [],
+      "load_operations": [
+        {
+          "table_name": "btjj_1030_aaa_bbb_esat",
+          "relation_name": "/",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "parent_key",
+              "column_name": "LK_RTJJ_1030_AAA_BBB",
+              "field_name": "LK_RTJJ_1030_AAA_BBB",
+              "stage_column_name": "LK_RTJJ_1030_AAA_BBB"
+            }
+          ]
+        }
+      ],
+      "stage_columns": [
+        {
+          "stage_column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "stage_column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "stage_column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "stage_column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "stage_column_name": "MD_IS_DELETED",
+          "is_nullable": false,
+          "stage_column_class": "meta_deletion_flag",
+          "column_type": "BOOLEAN"
+        },
+        {
+          "stage_column_name": "LK_RTJJ_1030_AAA_BBB",
+          "stage_column_class": "data",
+          "field_name": "LK_RTJJ_1030_AAA_BBB",
+          "is_nullable": true,
+          "column_type": "CHAR(28)",
+          "column_classes": [
+            "parent_key"
+          ]
+        }
+      ]
+    }
+  ]
+}

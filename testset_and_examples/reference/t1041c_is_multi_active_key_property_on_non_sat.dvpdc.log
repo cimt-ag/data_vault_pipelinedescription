@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.2
+Compile time: 2024-11-05 10:31:23
+Compiling t1041c_is_multi_active_key_property_on_non_sat.dvpd.json
+
+CFM-1: 'is_multi_avtive_key' property declared for non-sat entity. (property can only be declared if target is a multi-active satellite)
+*** Compilation ended with errors ***

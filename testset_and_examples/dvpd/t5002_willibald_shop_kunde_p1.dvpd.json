@@ -1,0 +1,58 @@
+{
+	"dvpd_version": "0.6.2",
+	"pipeline_name": "t5002_willibald_shop_kunde_p1",
+	"stage_properties": [{"stage_schema": "stage_rvlt"}],
+	"purpose": "Load from willibald_shop_p1.kunde into raw vault",
+	"record_source_name_expression": "willibald_shop_p1.kunde",
+	"analysis_full_row_count":300,
+	"analysis_sample_row_count":300,
+	"data_extraction": {
+		"fetch_module_name": "none - this is a pure ddl and documentation dvpd"
+	},
+"fields":[
+	 {"field_name":"kundeid",	"field_type":"CHAR(13) ","is_primary_key":"True","is_foreign_key":"False","cardinality":"300","duplicates":"0","null_values":"0",	"targets":[{"table_name":"kunde_hub"}]}
+
+	,{"field_name":"vereinspartnerid",	"field_type":"VARCHAR(30) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"6","duplicates":"294","null_values":"162",	"targets":[{"table_name":"vereinspartner_hub"}]}
+
+
+	,{"field_name":"email",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"300","duplicates":"0","null_values":"0",	"targets":[{"table_name":"kunde_kunde_p1_sat"}]}
+	,{"field_name":"geburtsdatum",	"field_type":"date ","is_primary_key":"False","is_foreign_key":"False","cardinality":"298","duplicates":"2","null_values":"0",	"targets":[{"table_name":"kunde_kunde_p1_sat"}]}
+	,{"field_name":"geschlecht",	"field_type":"CHAR(1) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"3","duplicates":"297","null_values":"53",	"targets":[{"table_name":"kunde_kunde_p1_sat"}]}
+	,{"field_name":"gueltigbis",	"field_type":"CHAR(5) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"153","duplicates":"147","null_values":"0",	"targets":[{"table_name":"kunde_kunde_p1_sat"}]}
+	,{"field_name":"kkfirma",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"3","duplicates":"297","null_values":"0",	"targets":[{"table_name":"kunde_kunde_p1_sat"}]}
+	,{"field_name":"kreditkarte",	"field_type":"VARCHAR(30) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"300","duplicates":"0","null_values":"0",	"targets":[{"table_name":"kunde_kunde_p1_sat"}]}
+	,{"field_name":"mobil",	"field_type":"VARCHAR(20) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"244","duplicates":"56","null_values":"56",	"targets":[{"table_name":"kunde_kunde_p1_sat"}]}
+	,{"field_name":"name",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"293","duplicates":"7","null_values":"0",	"targets":[{"table_name":"kunde_kunde_p1_sat"}]}
+	,{"field_name":"telefon",	"field_type":"VARCHAR(20) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"234","duplicates":"66","null_values":"66",	"targets":[{"table_name":"kunde_kunde_p1_sat"}]}
+	,{"field_name":"vorname",	"field_type":"VARCHAR(128) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"281","duplicates":"19","null_values":"0",	"targets":[{"table_name":"kunde_kunde_p1_sat"}]}
+	],
+	"data_vault_model": [
+		{"schema_name": "rvlt_willibald_shop"
+		, "tables": [
+				{"table_name": "kunde_hub"
+						,"table_stereotype": "hub"
+						,"hub_key_column_name": "hk_kunde"
+				}
+				,{"table_name": "kunde_kunde_p1_sat"
+						,"table_stereotype": "sat"
+						,"satellite_parent_table": "kunde_hub"
+						,"diff_hash_column_name": "diff_kunde_kunde_p1_sat"
+				}
+				,{"table_name": "vereinspartner_hub"
+						,"table_stereotype": "hub"
+						,"hub_key_column_name": "hk_vereinspartner"
+				}
+				,{"table_name": "kunde_vereinspartner_lnk"
+						,"table_stereotype": "lnk"
+						,"link_key_column_name": "lk_kunde_vereinspartner"
+						,"link_parent_tables": ["kunde_hub"
+											   ,"vereinspartner_hub"]
+				}
+				,{"table_name": "kunde_vereinspartner_esat"
+						,"table_stereotype": "sat"
+						,"satellite_parent_table": "kunde_vereinspartner_lnk"
+				}
+			]
+		}
+	]
+}

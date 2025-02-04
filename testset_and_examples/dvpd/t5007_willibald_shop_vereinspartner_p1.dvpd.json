@@ -1,0 +1,49 @@
+{
+	"dvpd_version": "0.6.2",
+	"pipeline_name": "t5007_willibald_shop_vereinspartner_p1",
+	"stage_properties": [{"stage_schema": "stage_rvlt"}],
+	"purpose": "Load from willibald_shop_p1.vereinspartner into raw vault",
+	"record_source_name_expression": "willibald_shop_p1.vereinspartner",
+	"analysis_full_row_count":6,
+	"analysis_sample_row_count":6,
+	"data_extraction": {
+		"fetch_module_name": "none - this is a pure ddl and documentation dvpd"
+	},
+"fields":[
+	 {"field_name":"vereinspartnerid",	"field_type":"VARCHAR(30) ","is_primary_key":"True","is_foreign_key":"False","cardinality":"6","duplicates":"0","null_values":"0",	"targets":[{"table_name":"vereinspartner_hub"}]}
+
+	,{"field_name":"kundeidverein",	"field_type":"CHAR(13) ","is_primary_key":"False","is_foreign_key":"False","cardinality":"6","duplicates":"0","null_values":"0",	"targets":[{"table_name":"kunde_hub","column_name":"kundeid"}]}
+	,{"field_name":"rabatt1",	"field_type":"integer ","is_primary_key":"False","is_foreign_key":"False","cardinality":"5","duplicates":"1","null_values":"0",	"targets":[{"table_name":"vereinspartner_vereinspartner_p1_sat"}]}
+	,{"field_name":"rabatt2",	"field_type":"integer ","is_primary_key":"False","is_foreign_key":"False","cardinality":"5","duplicates":"1","null_values":"0",	"targets":[{"table_name":"vereinspartner_vereinspartner_p1_sat"}]}
+	,{"field_name":"rabatt3",	"field_type":"integer ","is_primary_key":"False","is_foreign_key":"False","cardinality":"5","duplicates":"1","null_values":"0",	"targets":[{"table_name":"vereinspartner_vereinspartner_p1_sat"}]}
+	],
+	"data_vault_model": [
+		{"schema_name": "rvlt_willibald_shop"
+		, "tables": [
+				{"table_name": "vereinspartner_hub"
+						,"table_stereotype": "hub"
+						,"hub_key_column_name": "hk_vereinspartner"
+				}
+				,{"table_name": "vereinspartner_vereinspartner_p1_sat"
+						,"table_stereotype": "sat"
+						,"satellite_parent_table": "vereinspartner_hub"
+						,"diff_hash_column_name": "diff_vereinspartner_vereinspartner_p1_sat"
+				}
+				,{"table_name": "kunde_hub"
+						,"table_stereotype": "hub"
+						,"hub_key_column_name": "hk_kunde"
+				}
+				,{"table_name": "vereinspartner_kunde_lnk"
+						,"table_stereotype": "lnk"
+						,"link_key_column_name": "lk_vereinspartner_kunde"
+						,"link_parent_tables": ["vereinspartner_hub"
+											   ,"kunde_hub"]
+				}
+				,{"table_name": "vereinspartner_kunde_esat"
+						,"table_stereotype": "sat"
+						,"satellite_parent_table": "vereinspartner_kunde_lnk"
+				}
+			]
+		}
+	]
+}

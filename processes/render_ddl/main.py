@@ -12,7 +12,15 @@ sys.path.insert(0,project_directory)
 
 from lib.configuration import configuration_load_ini
 
+# global dictionaries
+g_model_profile_dict={}
+g_current_model_profile=None
+
 class MissingFieldError(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+class DeclarationError(Exception):
     def __init__(self, message):
         super().__init__(message)
 
@@ -29,15 +37,29 @@ def get_missing_for_string_length(length:int = 13, must_be_fixed_length=False):
             result += ' ' * (length-13)
     return "'"+result+"'"
 
+def format_sqlsnippet(original):
+    if original[0] == '$' and original[-1:] == '$':
+        result = original.replace('$', '')
+    else:
+        result = "'" + original + "'"
+    return result
 def create_ghost_records(full_name, columns):
+
+
+
+    far_future_timestamp_sqlsnippet = format_sqlsnippet(g_current_model_profile['far_future_timestamp'])
+    key_for_null_ghost_record_sqlsnippet= format_sqlsnippet(g_current_model_profile['key_for_null_ghost_record'])
+    key_for_missing_ghost_record_sqlsnippet = format_sqlsnippet(g_current_model_profile['key_for_missing_ghost_record'])
+
+
     null_record_column_class_map = {'meta_load_process_id': '0',
                                     'meta_load_date': 'CURRENT_TIMESTAMP',
                                     'meta_record_source': "'SYSTEM'",
                                     'meta_deletion_flag': 'false',
-                                    'meta_load_enddate': 'lib.far_future_date()',
-                                    'key': 'lib.hash_key_for_delivered_null()',
-                                    'parent_key': 'lib.hash_key_for_delivered_null()',
-                                    'diff_hash': 'lib.hash_key_for_delivered_null()',
+                                    'meta_load_enddate': far_future_timestamp_sqlsnippet,
+                                    'key':key_for_null_ghost_record_sqlsnippet,
+                                    'parent_key': key_for_null_ghost_record_sqlsnippet,
+                                    'diff_hash': key_for_null_ghost_record_sqlsnippet,
                                     'business_key': 'null',
                                     'dependent_child_key': 'null',
                                     'content': 'null',
@@ -68,10 +90,10 @@ def create_ghost_records(full_name, columns):
                                     'meta_load_date': 'CURRENT_TIMESTAMP',
                                     'meta_record_source': "'SYSTEM'",
                                     'meta_deletion_flag': 'true',
-                                    'meta_load_enddate': 'lib.far_future_date()',
-                                    'key': 'lib.hash_key_for_missing()',
-                                    'parent_key': 'lib.hash_key_for_missing()',
-                                    'diff_hash': 'lib.hash_key_for_missing()',
+                                    'meta_load_enddate':  far_future_timestamp_sqlsnippet,
+                                    'key': key_for_missing_ghost_record_sqlsnippet,
+                                    'parent_key': key_for_missing_ghost_record_sqlsnippet,
+                                    'diff_hash': key_for_missing_ghost_record_sqlsnippet,
                                     'business_key': 'const_missing_data',
                                     'dependent_child_key': 'const_missing_data',
                                     'content': 'const_missing_data',
@@ -269,7 +291,30 @@ def determine_combined_stage_column_name(stage_column_name, stage_name_to_column
     return final_column_name
 
 
-def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_primary_keys=True,stage_column_naming_rule='stage'):
+def guess_and_pinpoint_model_profile(dvpi):
+    """Guess the model profile from the model profile comment in the hashes and 
+    set the global model_profile to point to it.
+    This is not the final design, but currently the only one to implement profile specific ghost record value rendering"""
+
+    global g_current_model_profile
+    g_current_model_profile=None # when no hashes are in the parse set, there will be no need for ghost records and this should not lead to an error
+
+    for parse_set in dvpi['parse_sets']:
+        if 'hashes' not in parse_set:
+            continue
+        for hash_definition in parse_set['hashes']:
+            if hash_definition['model_profile_name'] not in g_model_profile_dict:
+                raise DeclarationError(f"Declared model_profile '{hash_definition['model_profile_name']}' is unknown")
+            g_current_model_profile=g_model_profile_dict[hash_definition['model_profile_name']]
+            return
+
+
+
+def parse_json_to_ddl(filepath, ddl_render_path
+                    ,add_ghost_records=False
+                    ,add_primary_keys=True
+                    ,stage_column_naming_rule='stage'
+                    ,ddl_file_naming_pattern='lll'):
     """creates all ddl scripts and stres them in files
     special parameter: stage column naming , field= use field name, when available, stage=use stagename (might create duplicates), combine=combine stage and field name, when different
     combined stage column mappings tries to name the stage column like the target column. To prevent using the same stage column name for different content
@@ -287,6 +332,10 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
     
     if 'parse_sets' not in data:
         raise MissingFieldError("The field 'parse_sets' is missing in the DVPI.")
+
+    guess_and_pinpoint_model_profile(data)
+    # todo this needs more precision later, since model profile can be table specific. Depends on more precision in dvpi
+
 
     # Extract tables and stage tables
     tables = data.get('tables', [])
@@ -347,7 +396,7 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
         if add_primary_keys:
             ddl += render_primary_key_clause(table)
 
-        if add_ghost_records:
+        if add_ghost_records and table_stereotype!='ref':
             ddl += create_ghost_records(full_name, columns)
 
         ddl +="\n-- end of script --"
@@ -362,7 +411,9 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
         
         # save ddl in directory
         table_ddl_path = schema_path / f"table_{table_name}.sql"
-        print(table_ddl_path.stem)
+        if ddl_file_naming_pattern=='lUl':
+            table_ddl_path = schema_path / f"table_{table_name.upper()}.sql"
+        print(table_ddl_path.name)
         with open(table_ddl_path, 'w') as file:
           file.write(ddl)
         
@@ -479,7 +530,9 @@ def parse_json_to_ddl(filepath, ddl_render_path,add_ghost_records=False,add_prim
         
         # save ddl in directory
         table_ddl_path = schema_path / f"table_{table_name}.sql"
-        print(table_ddl_path.stem)
+        if ddl_file_naming_pattern=='lUl':
+            table_ddl_path = schema_path / f"table_{table_name.upper()}.sql"
+        print(table_ddl_path.name)
         with open(table_ddl_path, 'w') as file:
           file.write(ddl)
 
@@ -514,6 +567,49 @@ def search_for_dvpifile_of_test(testnumber):
 
     return None
 
+
+def load_model_profiles(full_directory_name):
+    """Runs through model profile files and tries to load them"""
+    directory = Path(full_directory_name)
+
+    name_pattern_matcher=re.compile(".+profile.json$")
+    for file in directory.iterdir():
+          if file.is_file() and os.path.getsize(file) != 0 and name_pattern_matcher.match(Path(file).name):
+                add_model_profile_file(file)
+
+
+def add_model_profile_file(file_to_process: Path):
+    """Parses one model profile file, validates it and adds it to the internal dictionary"""
+    global g_model_profile_dict
+
+    file_name=file_to_process.name
+
+    #todo add all mandatory keywords
+    mandatory_keys=['model_profile_name','table_key_column_type','table_key_hash_function','table_key_hash_encoding','hash_concatenation_seperator']
+
+    try:
+        with open(file_to_process, "r") as dvpd_model_profile_file:
+            model_profile_object=json.load(dvpd_model_profile_file)
+    except json.JSONDecodeError as e:
+        print("WARNING: JSON Parsing error of file "+ file_to_process.as_posix())
+        print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
+        print("Model profile will not be available")
+        return
+
+    for mandatory_keyword in mandatory_keys:
+        if mandatory_keyword not in model_profile_object:
+            raise MissingFieldError( f"'model profile in file '{file_name}' is missing keyword '{mandatory_keyword}'")
+
+
+    model_profile_name=model_profile_object['model_profile_name']
+    model_profile_object['model_profile_file_name']=file_name
+    if model_profile_name not in g_model_profile_dict:
+        g_model_profile_dict[model_profile_name]=model_profile_object
+    else:
+        if file_name != g_model_profile_dict[model_profile_name]['model_profile_file_name']:
+            raise DeclarationError("duplicate declaration of model profile '{0}' in '{1}'. Already read from '{2}'".format(model_profile_name,file_name,g_model_profile_dict[model_profile_name]['model_profile_file_name']))
+
+
 ########################   MAIN ################################
 if __name__ == '__main__':
     description_for_terminal = "Process dvpi at the given location to render the ddl statements."
@@ -530,6 +626,11 @@ if __name__ == '__main__':
     parser.add_argument("--add_ghost_records", help="Add ghost record inserts to every script",  action='store_true')
     parser.add_argument("--no_primary_keys", help="omit rendering of primary key constraints ",  action='store_true')
     parser.add_argument("--stage_column_naming_rule", help="Rule to use for stage column naming [stage,combined]", default='#notset#')
+    parser.add_argument("--ddl_file_naming_pattern", choices=['lll', 'lUl'], default='lll'
+                            ,help="Define the pattern of the file names. Currently possible patterns. 'lll' all name parts lower case (default). 'lUl' only table name in upper case")
+    parser.add_argument("--model_profile_directory",help="Name of the model profile directory")
+
+
     args = parser.parse_args()
 
     params = configuration_load_ini(args.ini_file, 'rendering', ['ddl_root_directory', 'dvpi_default_directory'])
@@ -547,6 +648,11 @@ if __name__ == '__main__':
 
     ddl_render_path = Path(params['ddl_root_directory'], fallback=None)
     dvpi_default_directory = Path(params['dvpi_default_directory'], fallback=None)
+
+    if args.model_profile_directory==None:
+        load_model_profiles(params['dvpd_model_profile_directory'])
+    else:
+        load_model_profiles(args.model_profile_directory)
     
     dvpi_file_name=args.dvpi_file_name
     if dvpi_file_name == '@youngest':
@@ -558,19 +664,22 @@ if __name__ == '__main__':
         if dvpi_file_name is None:
             raise Exception(f"Could not find test file for testnumber {testnumber}")
 
-    print("-- Render DDL --")
-    print("Reading dvpi file "+dvpi_file_name)
+    print("=== ddl render ===")
+    print("Reading dvpi file '"+dvpi_file_name+"'\n")
     dvpi_file_path = Path(dvpi_file_name)
     if not dvpi_file_path.exists():
        dvpi_file_path = dvpi_default_directory.joinpath(dvpi_file_name)
        if not dvpi_file_path.exists():
             print(f"could not find file {args.dvpi_file_name}")
 
+    print("Generating ddl files:")
+
     ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path
                                         , add_ghost_records=args.add_ghost_records
                                         , add_primary_keys=not no_primary_keys
-                                   , stage_column_naming_rule=stage_column_naming_rule)
+                                   , stage_column_naming_rule=stage_column_naming_rule
+                                   , ddl_file_naming_pattern=args.ddl_file_naming_pattern)
     if args.print:
         print(ddl_output)
 
-    print("--- ddl render complete ---")
+    print("--- ddl render complete ---\n")
