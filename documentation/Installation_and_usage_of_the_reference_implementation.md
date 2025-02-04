@@ -51,19 +51,20 @@ If you want to modify, debug or extend the dvpd toolset or documentation
 ## Directory and file locations
 It is recommended keep the dvpd scripts separate from the files of the dwh project (dvpds, ddls, loading code etc.) 
 The dvpd scripts read the configuration files from the current directory, if not told otherwise.
-The main purpose of the configudation file is the declaration of all directories, the scripts search or write to.
+The main purpose of the configuration file is the declaration of all directories, the scripts search or write to.
  
 - DVPD files  
 - "model profile" configuration files 
 - compiler results files (Reports, dvpi files)
 - results from generators (e.g. the generated DDL files, documentation)
 
-The dvpd files, and all the result. except for the compiler logs,
+The dvpd files, and all the result, except for the compiler logs,
 should be under version control of the dwh project. It is up to you, if you generate directly into your
-hot project directories some intermediate directories and copy files later.
-
-By creating a "build shell directory" for every project with a project specific dvpdc.ini file 
-you select the project you are building for, with the directory where you open your command shell.
+"hot" project directories or if you use some intermediate directories as build targets and copy files later.
+Just be careful when building and committing automaticalle, since all dvpd interact on the level of 
+the data vault model. A mistake in one dvpd can be the cause of a bad ddl file,
+was already created correctly by another dvdp. Be shure to include the 
+crosscheck step in your build, to detect and prevent these kind of problems.
 
 A dwh project, using dvpd must have at least the following dedicated directories:
 - directory for all dvpds
@@ -71,9 +72,24 @@ A dwh project, using dvpd must have at least the following dedicated directories
 - directory for all dvpis (result of dvpd compile)
 - directory for generated outcome (e.g. DDL scripts)
 
+### Providing a project specific dvpd build setup
+*This is only one solution, how to provide a build setup, by just using the basics of the operating system of
+a workstation. When using CI/CD tools, there might be many more. Use this as a blueprint, for a minimal solution*
+
+A very simple way, to  provide a project specific build enviroinment, is to create a dedicated 
+"build shell directory" with the  project specific dvpdc.ini in that directory. To execute a build
+command for the project, you just open a shell/commandline in that directory and type in the 
+command
+
+### Example of a directory structure
+
 All in all this would be example structure (names can be chosen freely and are only suggestions)
 ```
 \dvpd_compiler             <- the compiler project (this project)
+     \commands
+     \documentation
+     \processes
+     ...
 \dwh_project_x             <- the git repository of your dwh project
      \dvpd_model_profiles  <- dvpd model profiles
      \dvpd                 <- dvpd files
@@ -85,17 +101,20 @@ All in all this would be example structure (names can be chosen freely and are o
 ```
 
 ## Download and setup the compiler project for the first project
-- Download or clone the DVPD repository in the directory for the DVPD compiler
-- add the directory "/commands" from the compiler project to your path environment variable
-- add directories for the model profiles and the dvpds to your projects asset directory tree
-- create an empty directory for the projects specific shell (the build shell directory for the project). This must be outside of the DVPD compiler project. 
-- copy the file **dvpdc.ini** from the "config_template" directory of the build shell directory for the project
-- adapt all properties in **dvpdc.ini** to point to the desired directories of your projects asset directory tree
-- copy the file "default.model_profile.json" from "testset_and_examples\model_profiles" to your desired location for model profiles
-- adapt the default model profile to your project needs (see [Reference_of_model_profile_syntax.md](Reference_of_model_profile_syntax.md))
+- install dvpd on your workstation
+  - Download or clone the DVPD repository in the directory for the DVPD compiler
+  - add the directory "/commands" from the compiler project to your path environment variable
+- prepare your project  
+  - add directories for the model profiles and the dvpds to your projects asset directory tree
+  - copy the file "default.model_profile.json" from "testset_and_examples\model_profiles" to your desired location for model profiles
+  - adapt the default model profile to your project needs (see [Reference_of_model_profile_syntax.md](Reference_of_model_profile_syntax.md))
+  - add a first dvpd file to your project (probably just a copy of t0020_simple_hub_sat.dvpd.json from the testset_and_examples\dvpd directory )
+- create a build shell 
+   - create an empty directory for the projects specific shell (the build shell directory for the project). This must be outside of the DVPD compiler project. 
+   - copy the file **dvpdc.ini** from the "config_template" directory of the build shell directory for the project
+   - adapt all properties in the **dvpdc.ini** to point to the desired directories of your projects asset directory tree
 
 ### Test the setup
-- copy "t0020_simple_hub_sat.dvpd.json" to your configures directory for the dvpd files 
 - open a command line in the build shell directory
 - run `dvpdc -h`. This should show the help text of the compiler
 - run `dvdpc t0020_simple_hub_sat.dvpd.json`. - This should write out its messages and success state to the console and a log file in the log output directory
@@ -105,17 +124,20 @@ All in all this would be example structure (names can be chosen freely and are o
 - run all other renderer and generators you need, to check if the configuration is correct 
 
 ### Choose and adapt build script
-There are multiple build scripts provided in the command directory. The build script combine all steps to compile a dvpd and generate all wanted
+There are multiple build scripts provided in the command directory. 
+The build script combine all steps to compile a dvpd and generate all wanted
 elements, in one call. (see below).
 
-It is recommended, to copy the build script, that fits your need the most, into the build shell directory with
-a proper name, and align with your requirements and project principles.
+It is recommended, to copy the build script, that fits your need the most,
+into the build shell directory with
+a proper name, and align it with your requirements and project principles.
 
-Since you will use your adapted copy, an update of the scripts in dvdp project, will not affect your build settings.
+By using your adapted copy, an update of the build script blueprint in dvdp project,
+will not affect your build settings.
 
-To work properly, the build script needs the environment variable **DVPDC_BASE** to point to the dvpd repository. In windows
-a convient way is to create a batch script in the build shell directory (suggested name "open_build_shell.bat") with 
-the following content
+To work properly, the build script needs the environment variable **DVPDC_BASE** to point to 
+the dvpd repository. In windows a convient way to achieve this, is to create a batch script 
+in the build shell directory (suggested name "open_build_shell.bat") with the following content
 ```
 set DVPDC_BASE=<absolute path to your dvpd install directory>
 set path=%DVPDC_BASE%\commands;%PATH%
@@ -129,20 +151,23 @@ DVPD installation are used.
 
 ## Setup another project to use the compiler and generator
 For another project to use the compiler follow this checklist
-- add directories for the model profiles and the dvpds to your projects asset directory tree
-- create an empty directory for the projects specific shell (the build shell directory for the project). This must be outside of the DVPD compiler project. 
-- copy the file **dvpdc.ini** from the "config_template" directory of the build shell directory for the project
-- adapt all properties in the **dvpdc.ini** to point to the desired directories of your projects asset directory tree
-- copy the file "default.model_profile.json" from "testset_and_examples\model_profiles" to your desired location for model profiles
-- adapt the default model profile to your project needs (see [Reference_of_model_profile_syntax.md](Reference_of_model_profile_syntax.md))
-- create your custom build script by copying and adapting an appropriate build script template from the commands directory to the build shell directory
-- create you open_build_shell.bat or copy it from the buils shell directory of the existing project
-- open the shell via your open_buils_shell.bat
-- test the build script
+- prepare your project 
+   - add directories for the model profiles and the dvpds to your projects asset directory tree
+   - copy the file "default.model_profile.json" from "testset_and_examples\model_profiles" to your desired location for model profiles in the project
+   - adapt the default model profile to your project needs (see [Reference_of_model_profile_syntax.md](Reference_of_model_profile_syntax.md))
+   - add a first dvpd file to your project (probably just a copy of t0020_simple_hub_sat.dvpd.json from the testset_and_examples\dvpd directory )
+- create a build shell 
+   - create an empty directory for the projects specific shell (the build shell directory for the project). This must be outside of the DVPD compiler project. 
+   - copy the file **dvpdc.ini** from the "config_template" directory of the build shell directory for the project
+   - adapt all properties in the **dvpdc.ini** to point to the desired directories of your projects asset directory tree
+   - create a new open_build_shell.bat or copy it from the builds shell directory of the existing project into your new build shell directory
+   - create a custom build script in your build shell by copying and adapting an appropriate build script template from the "commands" directory to the build shell directory
+   - open the shell via your open_buils_shell.bat
+   - test the build script with the example dvpd file
 
 ## Adapt the ddl generator
-The ddl generator is only an example/template and must be 
-adapted to your specific need, regarding SQL dialect or naming of files and directories.
+As with all generators, the ddl generator is only an example/template and might not be sufficient 
+for your specific database or project conventions.
 
 Please be aware, that many design decisions  about your platform (e.g. names and types of metadata and hash columns) 
 can be adjusted in the model profile  and will already be
@@ -368,24 +393,9 @@ Settings read from dvpdc.ini file, section "datavault4dbt":
 - dvpi_default_directory - The directory where the generator searches for the dvpi-files
 - model_directory        - The directory where the datavault4dbt model files will be written to
 
-# Full Build scripts
-To provide guidance and examples, there are multiple build scripts included, that compile, crosscheck and render 
-a dvpo for different scenarios:
-- dvpd_build4basics - Our base script, only generating ddls and documentation
-- dvpd_build4cimtpy - Also create code snippets for the cimt python data vault framework
-- dvpd_build4dbt - Renders documentation and DBT models (ddl not needed since DBT does it by itself)
-
-All buildscripts share the same parameters and behavior:
-- dvdp scripts must end with ".dvpd.json"
-- You must declare the dvpd file name, that shout be build, without ".dvpd.json"
-- You can declare @youngest as file name to trigger the build the latest dvpd updated
-- The script stops in case of a compile error or a crosscheck conflict to prevent accidential overweiteing of approved assets with wrong settings
-- The script writes a final warning, when the crosscheck detected name similarities, but does create all assets
-- The script uses the DVPD script set, adressed by the environment variable DVPDC_BASE. If the variable is not set, the script assumes to have been read from  DVPD project command directory.
-
-
-# DVPD usage Worflow
+# DVPD usage Workflow
 Here is a comprehensive guide of the general workflow, when using DVPD in different scenarios:
+## Manual steps
 ### Primary dvpd creation and compilation
 1. Generate and edit the dvpd document of the desired pipeline
 2. store the dvpd in the directory for dvpd's in your project
@@ -416,5 +426,26 @@ correct the dvpd and got back to step 3 in the previous phase
 1. generate developer sheet
 1. generate documentaion
 1. generate loading code 
+
+## Automiation via full build scripts
+To provide guidance and examples, there are multiple build scripts included in the command directory.
+These script **combine all necessary steps** to generate all assets from a single dvpd **in one call**.
+
+Currently you can find the following scenarios:
+- dvpd_build4basics - Our base script, only generating ddls and documentation
+- dvpd_build4cimtpy - Also create code snippets for the cimt python data vault framework (work in progress)
+- dvpd_build4dbt - Renders documentation and DBT models (ddl not needed since DBT does it by itself)
+
+All buildscripts share the same parameters, conventions and behavior:
+- dvdp scripts must end with ".dvpd.json"
+- You must declare the dvpd file name, that shout be build, without ".dvpd.json"
+- You can declare @youngest as file name to trigger the build of dvpd with the youngest change date
+- The script stops in case of a compile error or a crosscheck conflict to prevent accidental overwriting of approved assets with wrong settings
+- The script writes a final warning, when the crosscheck has detected name similarities. Assets will still be created.
+- The script uses the DVPD script set, adressed by the environment variable DVPDC_BASE. If the variable is not set, the 
+script assumes to have be positioned in the DVPD project command directory.
+
+
+
 
 
