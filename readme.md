@@ -39,7 +39,8 @@ and modelling steps. This metadata is needed for the implementation, and in best
 
 DVPD provides a format, to solve this problem.
 
- \**This product needs to solve a high varyity of scenarios, but from the perspecive of a single project, only a small amount is needed. You dont pay the price for 300 functions, when you only need 10 of them*
+ *This product needs to solve a high varyity of scenarios, but from the perspective of a single project,
+ only a small amount is needed. You don't pay the price for 300 functions, when you only need 10 of them*
 
 # What you find in this repository
 
@@ -52,6 +53,12 @@ DVPD provides a format, to solve this problem.
    a. Partitioned deletion scenarios
 
 ### Reference implementation
-1. Python Implementation of DVPDC Compiler
-1. Testsets
-1. Python examples of generator scipts for DDL/Documentation
+1. Python Implementation of DVPD Compiler (dvpdc)
+1. Testsets for the DVPDC Compiler
+2. Model Crosscheck script
+1. Python examples of generator scipts for
+   - DDL (DB Table create scripts)
+   - Model Documentation
+   - DBT Models
+   - Developer implementation guidance documentation
+   - and more

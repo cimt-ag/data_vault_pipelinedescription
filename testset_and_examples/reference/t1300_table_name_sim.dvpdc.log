@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.2
+Compile time: 2025-01-08 10:38:24
+Compiling t1300_table_name_sim.dvpd.json
+
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t1300_table_name_sim.dvpi.json
+--- Compile successfull ---

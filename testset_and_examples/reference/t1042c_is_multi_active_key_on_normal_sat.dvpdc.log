@@ -1,0 +1,8 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.2
+Compile time: 2024-11-05 10:31:23
+Compiling t1042c_is_multi_active_key_on_normal_sat.dvpd.json
+
+CDP-1: 'is_multi_active_key' property can only be used when target table is a multi-active satellite
+CDP-1: 'is_multi_active_key' property can only be used when target table is a multi-active satellite
+*** Compilation ended with errors ***

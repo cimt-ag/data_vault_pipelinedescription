@@ -1,6 +1,6 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.1
-Compile time: 2024-06-13 11:57:27
+Compiler Version 0.6.2
+Compile time: 2024-10-02 12:57:15
 Compiling t0023_one_link_with_one_satellite.dvpd.json
 
 Writing DVPI to /git_ordner/dvpd/var/dvpi/t0023_one_link_with_one_satellite.dvpi.json

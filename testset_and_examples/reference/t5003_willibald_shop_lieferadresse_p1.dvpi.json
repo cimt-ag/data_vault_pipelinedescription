@@ -1,9 +1,10 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2024-09-16 18:58:40",
+  "compile_timestamp": "2025-01-06 19:00:17",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5003_willibald_shop_lieferadresse_p1",
+  "pipeline_revision_tag": "--none--",
   "dvpd_filename": "t5003_willibald_shop_lieferadresse_p1.dvpd.json",
   "tables": [
     {
@@ -299,7 +300,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "st5003_willibald_shop_lieferadresse_p1",
+          "stage_table_name": "t5003_willibald_shop_lieferadresse_p1_stage",
           "storage_component": ""
         }
       ],
@@ -535,7 +536,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_LIEFERADRESSE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_LIEFERADRESSE_HUB",
               "stage_column_name": "HK_LIEFERADRESSE"
             }
@@ -545,7 +545,6 @@
               "column_name": "LIEFERADRID",
               "field_name": "LIEFERADRID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "LIEFERADRID"
             }
           ]
@@ -558,14 +557,12 @@
             {
               "hash_class": "parent_key",
               "column_name": "HK_LIEFERADRESSE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_LIEFERADRESSE_HUB",
               "stage_column_name": "HK_LIEFERADRESSE"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "DIFF_LIEFERADRESSE_LIEFERADRESSE_P1_SAT",
-              "is_nullable": false,
               "hash_name": "DIFF_OF_LIEFERADRESSE_LIEFERADRESSE_P1_SAT",
               "stage_column_name": "DIFF_LIEFERADRESSE_LIEFERADRESSE_P1_SAT"
             }
@@ -575,42 +572,36 @@
               "column_name": "ADRESSZUSATZ",
               "field_name": "ADRESSZUSATZ",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "ADRESSZUSATZ"
             },
             {
               "column_name": "HAUSNUMMER",
               "field_name": "HAUSNUMMER",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "HAUSNUMMER"
             },
             {
               "column_name": "ORT",
               "field_name": "ORT",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "ORT"
             },
             {
               "column_name": "PLZ",
               "field_name": "PLZ",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "PLZ"
             },
             {
               "column_name": "STRASSE",
               "field_name": "STRASSE",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "STRASSE"
             },
             {
               "column_name": "LAND",
               "field_name": "LAND",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "LAND"
             }
           ]
@@ -623,7 +614,6 @@
             {
               "hash_class": "key",
               "column_name": "HK_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KUNDE_HUB",
               "stage_column_name": "HK_KUNDE"
             }
@@ -633,7 +623,6 @@
               "column_name": "KUNDEID",
               "field_name": "KUNDEID",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "KUNDEID"
             }
           ]
@@ -646,21 +635,18 @@
             {
               "hash_class": "parent_key_1",
               "column_name": "HK_LIEFERADRESSE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_LIEFERADRESSE_HUB",
               "stage_column_name": "HK_LIEFERADRESSE"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_KUNDE_HUB",
               "stage_column_name": "HK_KUNDE"
             },
             {
               "hash_class": "key",
               "column_name": "LK_LIEFERADRESSE_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_LIEFERADRESSE_KUNDE_LNK",
               "stage_column_name": "LK_LIEFERADRESSE_KUNDE"
             }
@@ -674,7 +660,6 @@
             {
               "hash_class": "parent_key",
               "column_name": "LK_LIEFERADRESSE_KUNDE",
-              "is_nullable": false,
               "hash_name": "KEY_OF_LIEFERADRESSE_KUNDE_LNK",
               "stage_column_name": "LK_LIEFERADRESSE_KUNDE"
             }

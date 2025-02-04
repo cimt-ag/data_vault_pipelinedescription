@@ -1,0 +1,10 @@
+Data vault pipeline description compiler log 
+Compiler Version 0.6.2
+Compile time: 2025-01-21 10:38:15
+Compiling t1029c_naming_conflict_content_to_hash.dvpd.json
+
+AD-TE1: Double column name 'HK_RTJJ_1029_AAA' when assembling table 'rtjj_1029_aaa_sat'. Please check for name collisions between meta columns, data columns and hash columns!
+AD-TE1: Double column name 'HK_RTJJ_1029_CCC' when assembling table 'rtjj_1029_ccc_hub'. Please check for name collisions between meta columns, data columns and hash columns!
+AD-TE1: Double column name 'HK_RTJJ_1029_BBB' when assembling table 'btjj_1029_bbb_sat'. Please check for name collisions between meta columns, data columns and hash columns!
+AD-SC1: Double stage column name 'HK_RTJJ_1029_CCC' when assembling columns for stage table. Please check for name collisions between meta columns, fields and hash columns!
+*** Compilation ended with errors ***

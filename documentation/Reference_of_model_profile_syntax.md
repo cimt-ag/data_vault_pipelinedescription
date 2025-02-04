@@ -71,13 +71,24 @@ String to be used in value concatination for hashing, when a field contains a NU
 (mandatory)<br>
 Hash value to be used for the ghost record, that will be addressed when all business keys are null in a delivered source record (will happen in optional foreign key relations). The encoding of the value depends on the table_key_hash_encoding.
 
+Beginning and ending this value with $, declares it to be a code snippet, that will be injected
+in the generated code. Render modules will take this into account, to add necessary quotes
+when placing it into their target.
+
+
 <br>*Example: "0000000000000000000000000001"*
+<br>*"$lib.hash_key_for_delivered_null()$"*
 
 **key_for_missing_ghost_record**
 (mandatory)<br>
 Hash value to be used for the ghost record, that can be addressed when a business rule cannot find a relation. The encoding of the value depends on the table_key_hash_encoding. 
 
+Beginning and ending this value with $, declares it to be a code snippet, that will be injected
+in the generated code. Render modules will take this into account, to add necessary quotes
+when placing it into their target.
+
 <br>*Example:"FFFFFFFFFFFFFFFFFFFFFFFFFFFE"*
+<br>*"$lib.hash_key_for_missing()$"*
 
 **content_for_missing_string**
 (mandatory)<br>
@@ -142,7 +153,12 @@ Determines if an enddate column will be added to the satellite and gets updated 
 (mandatory, when enddating is used)<br>
 Timestamp to be used in the enddating column in new (not yet entdated) records.
 
+Beginning and ending this value with $, declares it to be a code snippet, that will be injected
+in the generated code. Render modules will take this into account, to add necessary quotes
+when placing it into their target.
+
 <br>*Example: 2299-12-30 00:00:00*
+<br>*$lib.far_future_date()$*
 
 **load_enddate_column_name**
 (mandatory, when enddating is used)<br>

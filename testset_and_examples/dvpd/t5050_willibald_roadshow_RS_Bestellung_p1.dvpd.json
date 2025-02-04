@@ -1,9 +1,9 @@
 {
 	"dvpd_version": "0.6.2",
-	"pipeline_name": "t5050_willibald_roadshow_RS_Bestellung_p1",
+	"pipeline_name": "t5050_willibald_roadshow_rs_bestellung_p1",
 	"stage_properties": [{"stage_schema": "stage_rvlt"}],
 	"purpose": "Load from willibald_roadshow_tag1.RS_Bestellung into raw vault",
-	"record_source_name_expression": "willibald_roadshow_tag1.RS_Bestellung",
+	"record_source_name_expression": "willibald_roadshow_tag1.rs_bestellung",
 	"analysis_full_row_count":1259,
 	"analysis_sample_row_count":1259,
 	"data_extraction": {

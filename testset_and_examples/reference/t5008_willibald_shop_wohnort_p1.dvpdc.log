@@ -1,7 +1,7 @@
 Data vault pipeline description compiler log 
 Compiler Version 0.6.2
-Compile time: 2024-09-17 12:20:38
+Compile time: 2024-10-30 11:10:35
 Compiling t5008_willibald_shop_wohnort_p1.dvpd.json
 
-Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t5008_willibald_shop_wohnort_p1.dvpi.json
+Writing DVPI to /gitbox/data_vault_pipelinedescription/resources/dvpi/t5008_willibald_shop_wohnort_p1.dvpi.json
 --- Compile successfull ---

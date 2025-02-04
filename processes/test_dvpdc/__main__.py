@@ -18,7 +18,14 @@
 import argparse
 import base64
 import hashlib
+import re
+import sys
+import os
 
+project_directory = os.path.dirname(os.path.dirname(sys.path[0]))
+sys.path.insert(0,project_directory)
+
+from Levenshtein import distance
 from processes.dvpdc.__main__ import dvpdc
 from pathlib import Path
 from lib.configuration import configuration_load_ini
@@ -27,50 +34,61 @@ import json
 
 
 g_difference_count=0
+g_test_id=""
 
 def report_missing(keyword, path):
     global g_difference_count
-    print(f"Keyword '{keyword}' is missing at /{path}")
+    print(f"ATST--EI:[{g_test_id}] /{path}:Keyword '{keyword}' is missing !")
+    g_difference_count += 1
+
+def report_unexpected(keyword, path):
+    global g_difference_count
+    print(f"ATST--EI:[{g_test_id}] /{path}:Keyword '{keyword}' is not in reference !")
     g_difference_count += 1
 
 def report_type_missmatch(expected_value, found_value, path):
     global g_difference_count
-    print(f"Different type. Found '{type(found_value)}' Expected '{type(expected_value)}' at /{path}")
+    print(f"ATST--EI:[{g_test_id}] /{path}:Wrong type '{type(found_value)}' ! Expected '{type(expected_value)}'  (ls-diff:{distance(found_value,expected_value)}) ")
     g_difference_count += 1
 
 def report_list_length_missmatch(expected_list, found_list, path):
     global g_difference_count
-    print(f"Different count of list elements. Found '{len(found_list)}' Expected '{len(expected_list)}' at /{path}")
+    print(f"ATST--EI:[{g_test_id}] /{path}:Wrong count of list elements '{len(found_list)}' ! Expected '{len(expected_list)}' ")
     g_difference_count += 1
     #todo implement comparison based on identifiing element (approach: path pattern->keyword list to find identifing )
 def report_value_difference(expected_value, found_value, path):
     global g_difference_count
-    print(f"Different value. Found '{found_value}' Expected '{expected_value}' at /{path}")
     g_difference_count += 1
+    ls_diff_message=""
+    if isinstance(expected_value,str) and isinstance(found_value,str):
+        ls_diff_message=f", ls-diff:{distance(found_value,expected_value)}"
+    print(f"ATST--EI:[{g_test_id}] /{path}: Wrong value '{found_value}' ! Expected '{expected_value}'{ls_diff_message}")
+
 
 def run_test_for_file(dvpd_filename, raise_on_crash=False):
     global g_difference_count
-
+    global g_test_id
     try:
+        matches=re.search("^([^_.]+)",dvpd_filename)  # get first part of the filename
+        g_test_id=matches.group()
         dvpdc(dvpd_filename, ini_file=args.ini_file)
         if dvpd_filename[5] == "c":
-            print("ATSTMSG: ** test failed **: Compiling successfull, but should not****")
+            print(f"ATST---I:[{g_test_id}] *** test failed: Compiling successfull, but should not ***")
             #return "fail"
             return "incorrect"
 
     except DvpdcError:
         if dvpd_filename[5] != "c":
-            print("ATSTMSG: ** test failed **: Compiling failed, but should not****")
+            print(f"ATST---I:[{g_test_id}] *** test failed: Compiling failed, but should not ***")
             return "fail"
 
     except Exception as e:
-        print("ATSTMSG: ** test failed **: Compiler Crashed****")
+        print(f"ATST---I:[{g_test_id}] *** test failed: Compiler Crashed ***")
         if raise_on_crash:
             raise
         return "crash"
 
-    print("\n--- Comparing result with reference ---")
-    print(args.ini_file)
+    print(f"\nATST-LEI:[{g_test_id}]--- Comparing result with reference ---")
     g_difference_count=0
 
     try:
@@ -79,14 +97,14 @@ def run_test_for_file(dvpd_filename, raise_on_crash=False):
             compare_dvpi_with_reference(dvpd_filename)
 
     except FileNotFoundError:
-        print("ATSTMSG: ** test failed **: Missing reference data. There is no reference data available for the test case****")
+        print(f"ATST---I:[{g_test_id}] *** test failed: Missing reference data. There is no reference data available for the test case ***")
         return "no_reference"
 
     if g_difference_count == 0:
-            print("\n--- Test OK ---")
+            print(f"\nATST---I:[{g_test_id}] --- Test OK ---")
             return "success"
 
-    print("\nATSTMSG: * test failed **:Result differs from reference****")
+    print(f"\nATST---I:[{g_test_id}] *** test failed:Result differs {g_difference_count} times from reference ***")
     return "differ"
 
 
@@ -108,18 +126,18 @@ def compare_dvpdc_log_with_reference(dvpd_filename):
         with open(dvpdc_log_file_path, "r") as dvpdc_log_file:
             log_file_lines=dvpdc_log_file.read().splitlines()
     except Exception:
-        print("ATSTMSG: ERROR reading "+ dvpdc_log_file_path.as_posix())
+        print(f"ATST--EI:[{g_test_id}] ERROR reading "+ dvpdc_log_file_path.as_posix())
         raise
 
     try:
         with open(dvpdc_log_file_reference_file_path, "r") as dvpdc_log_file_reference:
             reference_log_file_lines=dvpdc_log_file_reference.read().splitlines()
     except FileNotFoundError:
-        print("ATSTMSG: Reference file not found " + dvpdc_log_file_reference_file_path.as_posix())
+        print(f"ATST--EI:[{g_test_id}] Reference file not found " + dvpdc_log_file_reference_file_path.as_posix())
         g_difference_count+=1
         raise
 
-    print("Comparing Compiler log")
+    print(f"ATST-LEI:[{g_test_id}] Comparing Compiler log")
     HEADER_LOG_LINES=3
     for index, reference_line in enumerate(reference_log_file_lines):
         if index < HEADER_LOG_LINES or reference_line.startswith("Writing DVPI to"): # skip first lines, they can change without impact
@@ -130,7 +148,7 @@ def compare_dvpdc_log_with_reference(dvpd_filename):
                 message_found=True
                 break
         if not message_found:
-            print(f"ATSTMSG: missing in log >>{reference_line}")
+            print(f"ATST--EI:[{g_test_id}] missing in compiler log >>{reference_line}")
             g_difference_count+=1
 
     for index, log_line in enumerate(log_file_lines):
@@ -142,7 +160,7 @@ def compare_dvpdc_log_with_reference(dvpd_filename):
                 message_found=True
                 break
         if not message_found:
-            print(f"ATSTMSG: not in reference >>{log_line}")
+            print(f"ATST--EI:[{g_test_id}] unexpected in compiler log >>{log_line}")
             g_difference_count+=1
 
 
@@ -161,7 +179,7 @@ def compare_dvpi_with_reference(dvpd_filename):
         with open(dvpi_file_path, "r") as dvpi_file:
             dvpi_object=json.load(dvpi_file)
     except json.JSONDecodeError as e:
-        print("ATSTMSG: JSON Parsing error of file "+ dvpi_file_path.as_posix())
+        print(f"ATST--EI:[{g_test_id}] JSON Parsing error of file "+ dvpi_file_path.as_posix())
         print(print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno)))
         raise
 
@@ -169,25 +187,25 @@ def compare_dvpi_with_reference(dvpd_filename):
         with open(dvpi_reference_file_path, "r") as dvpi_reference_file:
             dvpi_reference_object=json.load(dvpi_reference_file)
     except json.JSONDecodeError as e:
-        print("ATSTMSG: JSON Parsing error of file "+ dvpi_reference_file_path.as_posix())
+        print(f"ATST--EI:[{g_test_id}] JSON Parsing error of file "+ dvpi_reference_file_path.as_posix())
         print(print(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno)))
         g_difference_count+=1
         return
     except FileNotFoundError:
-        print("ATSTMSG: Reference file is missing " + dvpi_reference_file_path.as_posix())
+        print(f"ATST--EI:[{g_test_id}] Reference file is missing " + dvpi_reference_file_path.as_posix())
         g_difference_count+=1
         raise
 
     elements_to_ignore=['dvdp_compiler','dvpi_version','compile_timestamp']
     for ignorable in elements_to_ignore:
         dvpi_reference_object.pop(ignorable, None)
+        if ignorable in dvpi_object:
+            dvpi_object.pop(ignorable, None)
 
-    print("Comparing DVPI")
+    print(f"ATST-LEI:[{g_test_id}] Comparing DVPI")
     check_reference_values(dvpi_reference_object, dvpi_object)
     if g_difference_count > 0:
-        print(f"ATSTMSG: *** Identified {g_difference_count} differences *** ")
-    else:
-        print("---- result acceptable ----")
+        print(f"ATST-LEI:[{g_test_id}]  Identified {g_difference_count} differences ")
     return g_difference_count
 
 def check_reference_values(reference_object,test_object,path=""):
@@ -210,6 +228,10 @@ def check_reference_values(reference_object,test_object,path=""):
                     continue
                 child_path = f"{path}/{keyword}"
                 check_reference_values(sub_object, test_object[keyword], child_path)
+            for keyword, sub_object in test_object.items():
+                if keyword not in reference_object:
+                    report_unexpected(keyword, path)
+                    continue
             return
         if reference_object != test_object:
             report_value_difference(reference_object, test_object, path)
@@ -251,6 +273,8 @@ def assemble_file_list_fingerprint(file_list):
 ################################  Main ########################################
 if __name__ == "__main__":
 
+    print("=== Automated test of DVPDC ===")
+
     successful_file_list=[]
     difference_file_list = []
     failing_file_list=[]
@@ -261,7 +285,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dvpd_filename","-f", required=False, help="Name of the dvpd file to test")
     parser.add_argument("--testnumber","-t", required=False, type=int, help="Number of the test")
-    parser.add_argument("--ini_file", help="Name of the ini file")
+    parser.add_argument("--ini_file", help="Name of the ini file",default='./dvpdc.ini')
     args = parser.parse_args()
 
 
@@ -282,7 +306,7 @@ if __name__ == "__main__":
         dvpd_file_list = find_dvpd_files(ini_file=args.ini_file)
 
     for filename in dvpd_file_list:
-        print(f"\n------------------ Testing:{filename} ---------------------------")
+        print(f"\nATST---I: ------------------ Testing:{filename} ---------------------------")
         result = run_test_for_file(filename,raise_on_crash)
 
         if result == "success":
@@ -298,7 +322,7 @@ if __name__ == "__main__":
         elif result == "incorrect":
             incorrect_file_list.append(filename)
         else:
-            print(f"Unhandled test result: {result}")
+            print(f"!!! Unhandled test result: {result} !!!")
 
     print("\n==================== Test Summary ================================")
     print("\nvvv---Passed tests---vvv")
@@ -310,15 +334,19 @@ if __name__ == "__main__":
         for filename in difference_file_list:
             print(filename)
 
+    if len(reference_missing_list) > 0:
+        print("\nvvv---Tests with missing reference---vvv")
+        for filename in reference_missing_list:
+            print(filename)
 
     if len(failing_file_list)>0:
         print("\nvvv---Compile Failed---vvv")
         for filename in failing_file_list:
             print(filename)
 
-    if len(reference_missing_list) > 0:
-        print("\nvvv---Tests with missing reference---vvv")
-        for filename in reference_missing_list:
+    if len(incorrect_file_list) > 0:
+        print("\nvvv---Incorrectly successful compiles---vvv")
+        for filename in incorrect_file_list:
             print(filename)
 
     if len(crashed_file_list) > 0:
@@ -326,36 +354,48 @@ if __name__ == "__main__":
         for filename in crashed_file_list:
             print(filename)
 
-    if len(incorrect_file_list) > 0:
-        print("\nvvv---Incorrect tests---vvv")
-        for filename in incorrect_file_list:
-            print(filename)
+
+
+
+
+
+
+    print('\nTest log search hint:')
+    print ('find "ATST---" for main results only,  "ATST--" to also include details, "ATST--EI" for details only')
+    print ('find "ATST-" for all log output of automated test')
+
+    print("\n==================== Test Statistics ================================")
+
+
+    print(f"\nNumber of tests: {len(dvpd_file_list)} ")
 
     report_line=f"{len(dvpd_file_list)} = "
-    print(f"\n**** Number of tests: {len(dvpd_file_list)} ****")
-
     file_list_fp=assemble_file_list_fingerprint(successful_file_list)
     report_line+=f"success {len(successful_file_list)} ({file_list_fp})"
-    print(f"** {len(successful_file_list)} tests passed ({file_list_fp})")
+
+    print(f"  {len(successful_file_list)} tests passed ({file_list_fp})")
+
     if len(difference_file_list)>0:
         file_list_fp=assemble_file_list_fingerprint(difference_file_list)
         report_line += f"+ difference {len(difference_file_list)} ({file_list_fp})"
-        print(f"** {len(difference_file_list)} tests with differences ({file_list_fp})")
-    if len(failing_file_list)>0:
-        file_list_fp=assemble_file_list_fingerprint(failing_file_list)
-        report_line += f"+ fail {len(failing_file_list)} ({file_list_fp})"
-        print(f"** {len(failing_file_list)} tests with failed compile ({file_list_fp})")
+        print(f"* {len(difference_file_list)} tests with differences ({file_list_fp})")
     if len(reference_missing_list) > 0:
         file_list_fp = assemble_file_list_fingerprint(reference_missing_list)
         report_line += f"+ no ref {len(reference_missing_list)} ({file_list_fp})"
-        print(f"** {len(reference_missing_list)} tests have no reference data ({file_list_fp})")
+        print(f"* {len(reference_missing_list)} tests have no reference data ({file_list_fp})")
+    if len(failing_file_list)>0:
+        file_list_fp=assemble_file_list_fingerprint(failing_file_list)
+        report_line += f"+ fail {len(failing_file_list)} ({file_list_fp})"
+        print(f"* {len(failing_file_list)} tests with failed compile ({file_list_fp})")
+    if len(incorrect_file_list) > 0:  # Add incorrect to report
+        file_list_fp = assemble_file_list_fingerprint(incorrect_file_list)
+        report_line += f"+ incorrectly successfull {len(incorrect_file_list)} ({file_list_fp})"
+        print(f"* {len(incorrect_file_list)} incorrectly successful compiles ({file_list_fp})")
     if len(crashed_file_list) > 0:
         file_list_fp = assemble_file_list_fingerprint(crashed_file_list)
         report_line += f"+ crash {len(crashed_file_list)} ({file_list_fp})"
-        print(f"** {len(crashed_file_list)} tests crashed ({file_list_fp}) **** ")
-    if len(incorrect_file_list) > 0:  # Add incorrect to report
-        file_list_fp = assemble_file_list_fingerprint(incorrect_file_list)
-        report_line += f"+ incorrect {len(incorrect_file_list)} ({file_list_fp})"
-        print(f"** {len(incorrect_file_list)} incorrect tests ({file_list_fp})")
+        print(f"* {len(crashed_file_list)} tests crashed ({file_list_fp}) **** ")
 
     print("\nTest state:"+report_line)
+
+    print("--- Auotmated test of DVPDC complete ---")

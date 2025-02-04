@@ -1,9 +1,10 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.1",
-  "dvpi_version": "0.6.1",
-  "compile_timestamp": "2024-06-13 12:17:27",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2025-01-06 19:00:16",
   "dvpd_version": "0.6.0",
   "pipeline_name": "test32_hub_dlink_sat_driving_key",
+  "pipeline_revision_tag": "--none--",
   "dvpd_filename": "t0032_hub_dlink_sat_driving_key.dvpd.json",
   "tables": [
     {
@@ -186,7 +187,7 @@
       "stage_properties": [
         {
           "stage_schema": "stage_rvlt",
-          "stage_table_name": "stest32_hub_dlink_sat_driving_key",
+          "stage_table_name": "test32_hub_dlink_sat_driving_key_stage",
           "storage_component": ""
         }
       ],
@@ -290,7 +291,6 @@
           "stage_column_name": "RH_RTJJ_32_AAA_DDD_P1_SAT",
           "hash_origin_table": "rtjj_32_aaa_ddd_p1_sat",
           "multi_row_content": false,
-          "related_key_hash": "KEY_OF_RTJJ_32_AAA_DDD_DLNK",
           "column_class": "diff_hash",
           "hash_fields": [
             {
@@ -315,6 +315,7 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "related_key_hash": "KEY_OF_RTJJ_32_AAA_DDD_DLNK",
           "hash_name": "DIFF_OF_RTJJ_32_AAA_DDD_P1_SAT"
         }
       ],
@@ -328,7 +329,6 @@
               "hash_class": "key",
               "column_name": "HK_RTJJ_32_AAA",
               "hash_name": "KEY_OF_RTJJ_32_AAA_HUB",
-              "is_nullable": false,
               "stage_column_name": "HK_RTJJ_32_AAA"
             }
           ],
@@ -337,14 +337,12 @@
               "column_name": "F1_AAA_BK1",
               "field_name": "F1_AAA_BK1",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F1_AAA_BK1"
             },
             {
               "column_name": "F2_AAA_BK2F",
               "field_name": "F2_AAA_BK2F",
               "column_class": "business_key",
-              "is_nullable": true,
               "stage_column_name": "F2_AAA_BK2F"
             }
           ]
@@ -358,14 +356,12 @@
               "hash_class": "parent_key_1",
               "column_name": "HK_RTJJ_32_AAA",
               "hash_name": "KEY_OF_RTJJ_32_AAA_HUB",
-              "is_nullable": false,
               "stage_column_name": "HK_RTJJ_32_AAA"
             },
             {
               "hash_class": "key",
               "column_name": "LK_RTJJ_32_AAA_DDD",
               "hash_name": "KEY_OF_RTJJ_32_AAA_DDD_DLNK",
-              "is_nullable": false,
               "stage_column_name": "LK_RTJJ_32_AAA_DDD"
             }
           ],
@@ -374,7 +370,6 @@
               "column_name": "F3_AAA_DDD_DC1F",
               "field_name": "F3_AAA_DDD_DC1F",
               "column_class": "dependent_child_key",
-              "is_nullable": true,
               "stage_column_name": "F3_AAA_DDD_DC1F"
             }
           ]
@@ -388,14 +383,12 @@
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_32_AAA_DDD",
               "hash_name": "KEY_OF_RTJJ_32_AAA_DDD_DLNK",
-              "is_nullable": false,
               "stage_column_name": "LK_RTJJ_32_AAA_DDD"
             },
             {
               "hash_class": "diff_hash",
               "column_name": "RH_RTJJ_32_AAA_DDD_P1_SAT",
               "hash_name": "DIFF_OF_RTJJ_32_AAA_DDD_P1_SAT",
-              "is_nullable": false,
               "stage_column_name": "RH_RTJJ_32_AAA_DDD_P1_SAT"
             }
           ],
@@ -404,14 +397,12 @@
               "column_name": "F4_AAA_DDD_P1_C1",
               "field_name": "F4_AAA_DDD_P1_C1",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F4_AAA_DDD_P1_C1"
             },
             {
               "column_name": "F5_AAA_DDD_P1_C2F",
               "field_name": "F5_AAA_DDD_P1_C2F",
               "column_class": "content",
-              "is_nullable": true,
               "stage_column_name": "F5_AAA_DDD_P1_C2F"
             }
           ]

@@ -397,12 +397,18 @@ def create_columns_from_field_mapping(field_entry, field_position):
         if not table_name in g_table_dict:
             register_error(f"Can't map field {field_name} to table {table_name}. Table is not declared in the model")
             continue
+        table_entry=g_table_dict[table_name]
         column_map_entry={}
         column_name = table_mapping.get('column_name',field_name).upper()  # defaults to field name
         column_map_entry['field_name']=field_name
         column_map_entry['field_position']=field_position
         column_map_entry['column_type'] = table_mapping.get('column_type',field_entry['field_type']).upper()  # defaults to field type
         column_map_entry['use_as_key_hash'] = table_mapping.get('use_as_key_hash',False)  # defaults to False
+        if 'is_multi_active_key' in table_mapping:
+            if table_entry['table_stereotype'] == 'sat':
+                column_map_entry['is_multi_active_key'] = table_mapping.get('is_multi_active_key') 
+            else:
+                register_error("CFM-1: 'is_multi_avtive_key' property declared for non-sat entity. (property can only be declared if target is a multi-active satellite)")
         if not column_map_entry['use_as_key_hash'] :
             column_map_entry['row_order_direction'] = table_mapping.get('row_order_direction','ASC')  # defaults to ASC
             column_map_entry['exclude_from_key_hash'] = table_mapping.get('exclude_from_key_hash',False)  # defaults to False
@@ -426,7 +432,6 @@ def create_columns_from_field_mapping(field_entry, field_position):
         # announced property: hash_cleansing_rules
 
         # finally add this field mapping to the columns array of the table in g_table_dict
-        table_entry=g_table_dict[table_name]
         if not column_map_entry['use_as_key_hash']:
             if not 'data_columns' in table_entry:
                 table_entry['data_columns'] = {}
@@ -557,6 +562,11 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
             column_properties['column_class'] = 'content_untracked'
         else:
             column_properties['column_class']='content'
+        if 'is_multi_active_key' in first_field:
+            if 'is_multiactive' in table_entry and table_entry['is_multiactive'] == True:
+                column_properties['is_multi_active_key'] = first_field['is_multi_active_key']
+            else:
+                register_error(f"CDP-1: 'is_multi_active_key' property can only be used when target table is a multi-active satellite")
         column_properties['field_mapping_count']=len(column_properties['field_mappings'])
         for property_name in ['column_type','column_content_comment','prio_for_column_position','prio_for_row_order','row_order_direction','exclude_from_change_detection','prio_in_diff_hash']:
             column_properties[property_name]=first_field[property_name]
@@ -593,12 +603,46 @@ def add_generic_relation_mappings(column_properties):
             #todo: add test to trigger the upper error
 
 
+def check_topology_specific_properties():
+    """After all table relations have been determined we can check if properties of partent/child tables are compatible"""
+    for table_name, table_entry in g_table_dict.items():
+        #todo: add lnk topolgy check
+        #if table_entry['table_stereotype'] == 'lnk':
+        #    check_topology_specific_lnk_properties(table_entry)
+        if table_entry['table_stereotype'] == 'sat':
+            check_sat_topology_specific_properties(table_name, table_entry)
+def check_sat_topology_specific_properties(table_name, table_entry):
+    global g_table_dict
+    satellite_parent_table = g_table_dict[table_entry['satellite_parent_table']]
+
+    if satellite_parent_table['is_only_structural_element']:
+        if 'direct_key_hash_columns' not in table_entry:
+            register_error(
+                   f"CST-S1: Parent '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is declared "
+                   f"to be only a structural element, but satellite has no 'use_as_key_hash' mapping ")
+            return
+        if satellite_parent_table['table_stereotype'] == 'hub':
+            sat_key_column_name = satellite_parent_table['hub_key_column_name']
+        elif satellite_parent_table['table_stereotype'] == 'lnk':
+            sat_key_column_name = satellite_parent_table['link_key_column_name']
+        else:
+            raise f"***This should not happen***. Parent of satellite '{table_name}' is not a link or hub, even " \
+                  f"though it had been checked in 'derive_content_dependent_sat_properties'"
+
+        # The column name must be addressd by the use_as_key_hash mapping
+        if sat_key_column_name not in table_entry['direct_key_hash_columns']:
+            # todo: add test case for this check
+            register_error(
+                f"CST-S2: Satellite '{table_name}': Missing a 'use_as_key_hash' field mapping for the key column '{sat_key_column_name}'.")
+            return
+    #todo: add check when not structural but use_as_key_hash is given
+
 def derive_load_operations():
     global g_table_dict
 
     # add load operations dict to every table, so we dont have to care about existence in the following code
     for table_name,table_entry in g_table_dict.items():
-        load_operations={}
+        load_operations ={}
         table_entry['load_operations'] = load_operations
 
     set_load_operations_for_reference_tables()
@@ -608,7 +652,11 @@ def derive_load_operations():
     pull_satellite_load_operations_into_links()
     pull_hub_load_operations_into_links()
     pull_parent_operations_into_sat()
+
     #todo final_load_operation_crosscheck()
+
+
+
 
 def set_load_operations_for_reference_tables():
     # ref tables always only have  "/" operation
@@ -655,26 +703,52 @@ def determine_load_operations_from_relations_in_mappings():
                 if not has_generic_mapping:
                     has_generic_mapping_for_all_columns=False
 
-            if len(load_operations)==0:   # no mapping generated a load operation (all mappings are * mappings)
-                table_entry['data_is_mapped_to_generic_relation']=True
 
-            # crosscheck completness of mappings for all determined load operations
-            for load_operation_name,load_operation in load_operations.items():
+
+        if 'direct_key_hash_columns' in table_entry:
+            for direct_key_column in table_entry['direct_key_hash_columns'].values():
+                has_generic_mapping = False
+                for field_mapping in direct_key_column['field_mappings']:
+                    for relation_name in field_mapping['relation_names']:
+                        if relation_name != '*':
+                            load_operations[relation_name] = {"operation_origin": "field mapping relation",
+                                                              "mapping_set": relation_name}
+                            if not field_mapping['implict_unnamed_relation']:
+                                has_implicit_unnamed_mapping_for_all_columns = False
+                        else:
+                            has_generic_mapping = True
+                if not has_generic_mapping:
+                    has_generic_mapping_for_all_columns = False
+
+        if 'data_columns' in table_entry or 'direct_key_hash_columns' in table_entry:
+            if len(load_operations)==0:   # no mapping generated a load operation (all mappings are * mappings)
+                  table_entry['data_is_mapped_to_generic_relation']=True
+
+
+
+        # finally crosscheck completness of mappings for all determined load operations
+        for load_operation_name,load_operation in load_operations.items():
+            if 'data_columns' in table_entry:
                 for data_column_name, data_column in table_entry['data_columns'].items():
                     count_matches=0
-                    default_available=False
+                    universal_mapping_defined=False
                     for field_mapping in data_column['field_mappings']:
                         for relation_name in field_mapping['relation_names']:
                             if relation_name == load_operation_name:
                                 count_matches+=1
                             if relation_name == '*':
-                                default_available=True
+                                universal_mapping_defined=True
                     if count_matches>1:
                         register_error(
                             f"DLO-20:There are multiple explicit mappings for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
-                    if count_matches==0 and not default_available:
+                    if count_matches==0 and not universal_mapping_defined:
                         register_error(
                             f"DLO-21:There is no field mapping for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
+                    if count_matches==1 and universal_mapping_defined:
+                        register_error(
+                            f"DLO-22: There is a mix of universal (*) relation mapping with mapping for relation'{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
+
+            #todo add crosscheck for direct key mapping completenes
 
         # Set universal flag for hub,s that have only a "/" operation
         if table_entry['table_stereotype'] == 'hub' and len(load_operations) == 1 and '/' in load_operations and has_implicit_unnamed_mapping_for_all_columns :
@@ -1087,6 +1161,8 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
         hash_mapping_dict = {}
         load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
 
+
+
         if 'direct_key_hash_columns' in table_entry:   # hash value is delivered directly from source
 
             # hash column name must be key name of satellite (default ist the key name of the  parent)
@@ -1095,20 +1171,12 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
             elif satellite_parent_table['table_stereotype']=='lnk':
                 sat_key_column_name = satellite_parent_table['link_key_column_name']
             else:
-                register_error(
-                    f"AHS-S1: Could not determine key column name of  '{table_entry['satellite_parent_table']}' when checking use_as_key_hash declaration of satellite '{table_name}'")
-                return
-
-            # The column name must be addressd by the use_as_key_hash mapping
-            if sat_key_column_name not in table_entry['direct_key_hash_columns']:
-                # todo: add test case for this check
-                register_error(
-                    f"AHS-S2: The key column '{sat_key_column_name}' of satellite '{table_name}' has no 'use_as_key_hash' field mapping")
-                return
+                raise f"***This should not happen***. Parent of satellite '{table_name}' is not a link or hub, even " \
+                      f"though it had been checked in 'derive_content_dependent_sat_properties'"
 
             # The Load operation must be covered exactly once in key_hash_field_mapping
-            field_mapping_to_use=None
-            for field_mapping in   table_entry['direct_key_hash_columns'][sat_key_column_name]['field_mappings']:
+            field_mapping_to_use = None
+            for field_mapping in table_entry['direct_key_hash_columns'][sat_key_column_name]['field_mappings']:
                 if load_operation_name in field_mapping['relation_names'] or '*' in field_mapping['relation_names']:
                     if field_mapping_to_use == None:
                         field_mapping_to_use=field_mapping
@@ -1118,7 +1186,7 @@ def add_hash_column_mappings_for_sat(table_name,table_entry):
                         return
             if field_mapping_to_use==None:
                 register_error(
-                    f"AHS-S4: Missing field mapping to '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
+                    f"AHS-S4: Missing field mapping to key column '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
                 return
 
             satellite_parent_table_key_column_name=sat_key_column_name
@@ -1329,14 +1397,15 @@ def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, mappin
 
 
 def copy_data_column_properties_to_operation_mapping(data_mapping_dict,data_column):
-    operation_relevant_column_properties=['column_class','exclude_from_change_detection','prio_for_row_order','prio_in_diff_hash','exclude_from_key_hash','prio_in_key_hash','update_on_every_load']
+    operation_relevant_column_properties=['column_class','exclude_from_change_detection','prio_for_row_order','prio_in_diff_hash','exclude_from_key_hash','prio_in_key_hash','update_on_every_load','is_multi_active_key']
     for relevant_key in operation_relevant_column_properties:
         if relevant_key in data_column:
             data_mapping_dict[relevant_key]=data_column[relevant_key]
 
-def check_intertable_structure_constraints():
+def check_intertable_column_constraints():
+    """Final checks, that need all columns derived for all tables"""
 
-    # Driving Keys must be resolvable (this can only be checked after all hahs derivation)
+    # Driving Keys must be resolvable in the parent
     for table_name, table_entry in g_table_dict.items():
         if 'driving_keys' in table_entry and table_entry['table_stereotype']=='sat':
             parent = table_entry['satellite_parent_table']
@@ -1352,12 +1421,15 @@ def check_intertable_structure_constraints():
 def assemble_dvpi(dvpd_object, dvpd_filename):
     global g_dvpi_document
 
+    pipeline_revision_tag=dvpd_object.get('pipeline_revision_tag','--none--')
+
     # add meta declaration and dpvd meta data
     g_dvpi_document={'dvdp_compiler':'dvpdc reference compiler,  release 0.6.2',
                      'dvpi_version': '0.6.2',
                      'compile_timestamp':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'dvpd_version':dvpd_object['dvpd_version'],
                      'pipeline_name':dvpd_object['pipeline_name'],
+                     'pipeline_revision_tag':pipeline_revision_tag,
                      'dvpd_filename':dvpd_filename}
 
     # add tables
@@ -1441,7 +1513,7 @@ def assemble_dvpi_table_entry(table_name,table_entry):
             column_dict[column_name]=1
         else:
             register_error(
-                f"Double column name '{column_name}' when assembling table '{table_name}'. Check for conflicts ")
+                f"AD-TE1: Double column name '{column_name}' when assembling table '{table_name}'. Please check for name collisions between meta columns, data columns and hash columns!")
 
     return dvpi_table_entry
 
@@ -1453,7 +1525,7 @@ def assemble_dvpi_parse_set(dvpd_object):
     stage_properties=copy.deepcopy(dvpd_object['stage_properties'])
     for stage_property_entry in stage_properties:
         if 'stage_table_name' not in  stage_property_entry:
-            stage_property_entry['stage_table_name']=f"s{g_dvpi_document['pipeline_name']}"
+            stage_property_entry['stage_table_name']=f"{g_dvpi_document['pipeline_name']}_stage"
         if 'storage_component' not in  stage_property_entry:
             stage_property_entry['storage_component']=""
     parse_set['stage_properties']=stage_properties
@@ -1510,7 +1582,6 @@ def assemble_dvpi_hash_mappings(load_operation_entry):
     for hash_class,load_operation_hash_dict_entry in load_operation_entry['hash_mapping_dict'].items():
         dvpi_hash_mapping_entry={'hash_class':hash_class,
                                 'column_name':load_operation_hash_dict_entry['hash_column_name'],
-                                'is_nullable':False,
                     }
         if 'hash_name' in load_operation_hash_dict_entry:
             dvpi_hash_mapping_entry['hash_name']=load_operation_hash_dict_entry['hash_name']
@@ -1532,9 +1603,10 @@ def assemble_dvpi_data_mappings(load_operation_entry):
         dvpi_data_mapping_entry = {'column_name':column_name,
                                    'field_name': data_mapping_dict_entry['field_name'],
                                    'column_class': data_mapping_dict_entry['column_class'],
-                                   'is_nullable': True,
                                     'stage_column_name':data_mapping_dict_entry['field_name'] # currently it is 1:1 naming
                                     }
+        if 'is_multi_active_key' in data_mapping_dict_entry:
+            dvpi_data_mapping_entry['is_multi_active_key'] = data_mapping_dict_entry['is_multi_active_key']
         dvpi_data_mappings.append(dvpi_data_mapping_entry)
     return dvpi_data_mappings
 
@@ -1584,7 +1656,7 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
             column_dict[stage_column_name]=1
         else:
             register_error(
-                f"Double stage column name '{stage_column_name}' when adding hash to columns for stage table. Check for conflicts between meta data columns and hashes ?")
+                f"AD-SC1: Double stage column name '{stage_column_name}' when assembling columns for stage table. Please check for name collisions between meta columns, fields and hash columns!")
 
     return dvpi_stage_columns
 
@@ -1734,8 +1806,7 @@ def dvpdc(dvpd_filename,dvpi_directory=None, dvpdc_report_directory=None, ini_fi
 
     with open(dvpdc_log_file_path,"w") as g_logfile:
         g_logfile.write(f"Data vault pipeline description compiler log \n")
-        print("---")
-        log_progress(f"Compiler Version 0.6.2")
+        log_progress(f"=== DVPD Compiler Version 0.6.2 ===")
         g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         log_progress(f"Compiling {dvpd_filename}\n")
         try:
@@ -1813,6 +1884,9 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
     if g_error_count > 0:
         raise DvpdcError
 
+    check_topology_specific_properties()
+    if g_error_count > 0:
+        raise DvpdcError
 
     derive_load_operations()
     if g_error_count > 0:
@@ -1826,9 +1900,14 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
     if g_error_count > 0:
         raise DvpdcError
 
-    check_intertable_structure_constraints()
+    check_intertable_column_constraints()
     if g_error_count > 0:
         raise DvpdcError
+
+    # remove any load operations from "is_only_structural_element" tables
+    for table_name,table_entry in g_table_dict.items():
+        if table_entry['is_only_structural_element']:
+            table_entry['load_operations'] = {}
 
     assemble_dvpi(dvpd_object,dvpd_filename)
     #print_dvpi_document()
@@ -1853,6 +1932,7 @@ def dvpdc_worker(dvpd_filename,dvpi_directory=None, dvpdc_report_directory = Non
         raise DvpdcError
 
     log_progress("--- Compile successfull ---")
+    print("")
 
     writeDvpiSummary(dvpdc_report_directory,dvpd_file_path)
 
@@ -1877,9 +1957,11 @@ def get_name_of_youngest_dvpd_file(ini_file):
 
 
 if __name__ == "__main__":
-    description_for_terminal = "Cimt AG reccommends to follow the instruction before starting the script. If you run your script from command line, it should look" \
-                               " like this: python __main__.py inputFile"
-    usage_for_terminal = "Add option -h for further instruction"
+    description_for_terminal = "DVPD compiler. Parses a data vault pipeline description (dvpd) file and translates it into a data vault pipeline instruction (dvpi)."\
+                                "\nPlease read the dvpd concept documentation for better understanding of the ."\
+                                "\nThe filename of the dvpi file will be the filename of the dvpd file, without any '.dpvd' or '.json' segments and with '.dvpi.json' appended"\
+                                "\n Examples: myname.dvpd.json -> myname.dvpi.json, myname.txt->myname.txt.dvpi.json, dvpd_myname.json -> dpvd_myname.dvpi.json"
+    usage_for_terminal = "dvpdc <file to compile> [options] \n Add option -h for further instruction"
 
     parser = argparse.ArgumentParser(
         description=description_for_terminal,
@@ -1891,7 +1973,7 @@ if __name__ == "__main__":
     parser.add_argument("--model_profile_directory",help="Name of the model profile directory")
 
     # output arguments
-    parser.add_argument("--dvpi_directory",  help="Name of the dvpi file to write (defaults to filename +  dvpi.json)")
+    parser.add_argument("--dvpi_directory",  help="Name of the director, the dvpi file will be written to")
     parser.add_argument("--report_directory", help="Name of the report file (defaults to filename + .dvpdc.log")
     parser.add_argument("--print_brain", help="When set, the compiler will print its internal data structure to stdout", action='store_true')
     parser.add_argument("--verbose", help="Log more information about progress", action='store_true')
@@ -1917,10 +1999,10 @@ if __name__ == "__main__":
     except DvpdcError:
         if args.print_brain:
             print_the_brain()
-        print("*** stopped compilation due to errors in input ***")
+        print("*** DVPD compiler stopped compilation due to errors DVPD input ***\n")
         exit(5)
 
-    except Exception :
+    except Exception:
         if args.print_brain:
             print_the_brain()
         raise

@@ -22,12 +22,12 @@ This articles provides the overview, what you will find here.
 PLEASE NOTE: **Knowledge about Data Vault modelling and loading procedures
 is essential to understand the concept.**
 
-Please consult approriate literature, to learn Data Vault first.
+Please consult appropriate literature, to **learn Data Vault first**.
 
 ## The main articles
 
 ### [DVPD The Concept](./DVPD_The_Concept.md) 
-The main article about the concept
+The main article about the concept. **Read this first, when your like to learn from the conceptual perspective**
 * motivation of the concept
 * Data Vault model and load requirements covered by the concept
 * design decisions that have been made and are driving the syntax
@@ -41,6 +41,8 @@ Michael Olschimke from 2016. This is to prove the
 completeness of the concept.
 
 Besides from that, this is a good entry point to understand the core syntax by looking at examples.
+
+**Read this first, when your like to learn by looking at examples**
 
 ### [Reference of code syntax elements](./Reference_of_core_syntax_elements.md) 
 Defines and explains the DVPD core syntax and structure.
@@ -88,7 +90,9 @@ for scripts to render various code and documentation files from the DVPD or its 
 Instructions how to install and use all the provided scripts.
 
 ### [DVPDC automated testing](DVPDC_automated_testing.md)
-To proof, that extentions and changes to the compiler do not have any sideeffects to unchanged functionality, a large set of automated test cases is provided in the reposotory. How this works and can be extended, is documented here.
+To proof, that extentions and changes to the compiler do not have any sideeffects to unchanged functionality,
+a large set of automated test cases is provided in the reposotory. 
+How this works and can be extended, is documented here.
 
 
 
