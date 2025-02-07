@@ -53,8 +53,6 @@ rem python "%DVPDC_BASE%/processes/render_ddl/main.py"  %DVPI_FILE% --add_ghost_
 python "%DVPDC_BASE%/processes/render_dev_sheet/main.py"  %DVPI_FILE%
 rem python "%DVPDC_BASE%/processes/render_dev_sheet/main.py"  %DVPI_FILE% --stage_column_naming_rule combined
 
-rem python "%DVPDC_BASE%/processes/render_load_vault_snippet/__main__.py"  %DVPI_FILE%
-
 :step90
 if %DVPD_CROSSCHECK_WARNING%==0 GOTO step90_2
 echo ---! There have been similarity warnings from the crosscheck !---

@@ -3,6 +3,16 @@ import os
 import yaml
 import json
 
+g_verbose_logging=False
+
+def set_verbose_logging(verbose_logging):
+    # this is a fast workaround to reduce logoutput. There can be better patterns, but it is how it is
+    global g_verbose_logging
+    g_verbose_logging=verbose_logging
+
+def get_verbose_logging():
+    return g_verbose_logging
+
 def extract_yaml_metadata_from_file(filepath):
     # read the file
     with open(filepath, 'r') as file:
@@ -23,7 +33,8 @@ def write_model_to_file(output_path, model_content):
     os.makedirs(directory, exist_ok=True)
 
 
-    print(f"Writing model to file: {output_path}")
+    if g_verbose_logging:
+        print(f"Writing model to file: {output_path}")
     # Write the model content to the output file
     with open(output_path, 'w') as output_file:
         output_file.write(model_content)
