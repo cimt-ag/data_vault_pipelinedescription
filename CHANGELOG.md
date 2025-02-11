@@ -1,3 +1,9 @@
+# release 0.6.3
+
+### other features
+* DDL render: added configuration to set name for directory of stage table ddl files 
+
+
 # release 0.6.2
  
 ### major features
