@@ -167,8 +167,13 @@ def render_primary_key_clause(table):
         column_class=column['column_class']
         if table_stereotype in ('hub', 'lnk') and column_class=='key':
             pk_column_list.append(column['column_name'])
-        if table_stereotype == 'sat' and column_class in ('parent_key','meta_load_date'):
+        if table_stereotype == 'sat' and column_class in ('parent_key'):
             pk_column_list.append(column['column_name'])
+
+    if table_stereotype == 'sat':      # for satellite we add the meta load date as PK second element
+        for column in table['columns']:
+            if column['column_class'] in ('meta_load_date'):
+                pk_column_list.append(column['column_name'])
 
     ddl_text=""
     if len(pk_column_list)>0:
