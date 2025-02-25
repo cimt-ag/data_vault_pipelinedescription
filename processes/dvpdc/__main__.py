@@ -1638,25 +1638,32 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
         dvpi_stage_columns.append(dvpi_stage_column_entry)
 
     # add all fields to
-    for field_name,field_entry in g_field_dict.items():
+    for field_name, field_entry in g_field_dict.items():
         column_classes = collect_column_classes_for_field(field_name)
-        dvpi_stage_column_entry = {'stage_column_name':field_name,
-                                   'stage_column_class':'data',
-                                   'field_name':field_name,
-                                   'is_nullable': True,
-                                   'column_type':field_entry['field_type'],
-                                   'column_classes':column_classes } # later feature will collect list of classes
-        dvpi_stage_columns.append(dvpi_stage_column_entry)
 
-    # final check for double stage column names
-    column_dict={}
-    for stage_column_entry in dvpi_stage_columns:
-        stage_column_name = stage_column_entry['stage_column_name']
-        if stage_column_name not in column_dict:
-            column_dict[stage_column_name]=1
-        else:
-            register_error(
-                f"AD-SC1: Double stage column name '{stage_column_name}' when assembling columns for stage table. Please check for name collisions between meta columns, fields and hash columns!")
+        # Collect target column information
+        targets = []
+        for table_name, table_entry in g_table_dict.items():
+            if 'data_columns' in table_entry:
+                for column_name, column_entry in table_entry['data_columns'].items():
+                    for mapping in column_entry['field_mappings']:
+                        if mapping['field_name'] == field_name:
+                            targets.append({
+                                'table_name': table_name,
+                                'column_name': column_name,
+                                'column_type': column_entry['column_type'],
+                                'column_class': column_entry['column_class']
+                            })
+
+        dvpi_stage_columns.append({
+            'stage_column_name': field_name,
+            'stage_column_class': 'data',
+            'field_name': field_name,
+            'is_nullable': True,
+            'column_type': field_entry['field_type'],
+            'column_classes': column_classes,
+            'targets': targets  # Add the targets array
+        })
 
     return dvpi_stage_columns
 
