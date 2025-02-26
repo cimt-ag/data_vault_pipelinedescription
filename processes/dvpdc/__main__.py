@@ -1665,6 +1665,16 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
             'targets': targets  # Add the targets array
         })
 
+        # final check for double stage column names
+    column_dict = {}
+    for stage_column_entry in dvpi_stage_columns:
+        stage_column_name = stage_column_entry['stage_column_name']
+        if stage_column_name not in column_dict:
+            column_dict[stage_column_name] = 1
+        else:
+            register_error(
+                f"AD-SC1: Double stage column name '{stage_column_name}' when assembling columns for stage table. Please check for name collisions between meta columns, fields and hash columns!")
+
     return dvpi_stage_columns
 
 def collect_column_classes_for_field(field_name):
