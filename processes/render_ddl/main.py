@@ -84,7 +84,7 @@ def create_ghost_records(full_name, columns):
                             'TIMESTAMP': "'2998-11-30 00:00:00.000'",
                             'TIME': "'00:00:000'",
                             'BYTE': '-99',
-                            'JSON': '{ "!#!missing!#!": "missing" }'
+                            'JSON': '\'{ "!#!missing!#!": "missing" }\''
                             }
 
     missing_record_column_class_map = {'meta_load_process_id': '0',

@@ -21,14 +21,12 @@
 			  {"field_name": "F10_AAA_P1_C9",	"field_type": "NUMERIC",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]},
 			  {"field_name": "F11_AAA_P1_C10",	"field_type": "FLOAT",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]},
 			  {"field_name": "F12_AAA_P1_C11",	"field_type": "REAL",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]},
-			  {"field_name": "F13_AAA_P1_C12",	"field_type": "DOUBLE",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]},
+			  {"field_name": "F13_AAA_P1_C12",	"field_type": "DOUBLE PRECISION",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]},
 			  {"field_name": "F14_AAA_P1_C13",	"field_type": "BOOLEAN",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]},
 			  {"field_name": "F15_AAA_P1_C14",	"field_type": "DATE",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]},
-			  {"field_name": "F16_AAA_P1_C15",	"field_type": "DATETIME",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]},
-			  {"field_name": "F17_AAA_P1_C16",	"field_type": "TIMESTAMP",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]},
-			  {"field_name": "F18_AAA_P1_C17",	"field_type": "TIME",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]},
-			  {"field_name": "F19_AAA_P1_C18",	"field_type": "BYTE",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]},
-			  {"field_name": "F20_AAA_P1_C19F",	"field_type": "JSON",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]}
+			  {"field_name": "F16_AAA_P1_C15",	"field_type": "TIMESTAMP",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]},
+			  {"field_name": "F17_AAA_P1_C16",	"field_type": "TIME",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]},
+			  {"field_name": "F18_AAA_P1_C17F",	"field_type": "JSON",	"targets": [{"table_name": "rtjj_1050_aaa_p1_sat"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
