@@ -167,8 +167,13 @@ def render_primary_key_clause(table):
         column_class=column['column_class']
         if table_stereotype in ('hub', 'lnk') and column_class=='key':
             pk_column_list.append(column['column_name'])
-        if table_stereotype == 'sat' and column_class in ('parent_key','meta_load_date'):
+        if table_stereotype == 'sat' and column_class in ('parent_key'):
             pk_column_list.append(column['column_name'])
+
+    if table_stereotype == 'sat':      # for satellite we add the meta load date as PK second element
+        for column in table['columns']:
+            if column['column_class'] in ('meta_load_date'):
+                pk_column_list.append(column['column_name'])
 
     ddl_text=""
     if len(pk_column_list)>0:
@@ -314,7 +319,8 @@ def parse_json_to_ddl(filepath, ddl_render_path
                     ,add_ghost_records=False
                     ,add_primary_keys=True
                     ,stage_column_naming_rule='stage'
-                    ,ddl_file_naming_pattern='lll'):
+                    ,ddl_file_naming_pattern='lll'
+                    ,ddl_stage_directory_name='stage'):
     """creates all ddl scripts and stres them in files
     special parameter: stage column naming , field= use field name, when available, stage=use stagename (might create duplicates), combine=combine stage and field name, when different
     combined stage column mappings tries to name the stage column like the target column. To prevent using the same stage column name for different content
@@ -523,7 +529,7 @@ def parse_json_to_ddl(filepath, ddl_render_path
         ddl_statements.append(ddl)
 
         # create schema dir if not  exists
-        schema_path = ddl_render_path / stage_schema_dir / 'stage'
+        schema_path = ddl_render_path / stage_schema_dir / ddl_stage_directory_name
         if not os.path.isdir(schema_path):
             print(f"creating dir: {schema_path}")
             schema_path.mkdir()
@@ -640,6 +646,8 @@ if __name__ == '__main__':
     else:
         stage_column_naming_rule=args.stage_column_naming_rule
 
+    ddl_stage_directory_name=params.get('ddl_stage_directory_name','stage')
+
     if args.no_primary_keys == False:
         no_primary_keys=params.get('no_primary_keys',False) == ('True' or 'true')
         
@@ -678,7 +686,8 @@ if __name__ == '__main__':
                                         , add_ghost_records=args.add_ghost_records
                                         , add_primary_keys=not no_primary_keys
                                    , stage_column_naming_rule=stage_column_naming_rule
-                                   , ddl_file_naming_pattern=args.ddl_file_naming_pattern)
+                                   , ddl_file_naming_pattern=args.ddl_file_naming_pattern
+                                   ,ddl_stage_directory_name=ddl_stage_directory_name)
     if args.print:
         print(ddl_output)
 
