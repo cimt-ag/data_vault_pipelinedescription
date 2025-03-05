@@ -587,9 +587,27 @@ The consolidated list of stage table columns.
 <br>list of column classes of the target tables, this stage column is  mapped to.
 Might be used to order the columns of the stage table by class, when creating the table. (e.g. business keys first, then content columns, then untracked columns)
 
+**targets**
+<br>Provides detailed mapping information about where the stage column's data is stored in the target tables. 
+<br>This enables schema validation, data integrity enforcement, and transformation logic consistency.
+<br>→ see "targets[]"
 
+### targets[]
+<br>Provides detailed mapping information about where the stage column's data is stored in the target tables. 
+<br>This enables schema validation, data integrity enforcement, and transformation logic consistency.
+<br>Each entry in the targets list contains:
 
+**table_name**
+<br> The name of the target table where this column's data is loaded.This ensures that data is placed in the correct table.
 
+**column_name**
+<br>The corresponding column name in the target table.Helps in verifying schema alignment and mapping correctness.
+
+**column_type**
+<br>The type of the column in the target table, ensuring that data types match between the stage and target tables.
+
+**column_class**
+<br>The classification of the column in the target table, defining its role (e.g., business key, dependent child key, content, etc.).
 
 # License and Credits
 
