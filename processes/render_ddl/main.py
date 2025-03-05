@@ -75,15 +75,16 @@ def create_ghost_records(full_name, columns):
                             'BIGINT': '999999999999999999',
                             'DECIMAL': 'use_get_missing_number_for_digits_function',
                             'NUMERIC': 'use_get_missing_number_for_digits_function',
-                            'FLOAT': 'NaN',
-                            'REAL': 'NaN',
-                            'DOUBLE': 'NaN',
+                            'FLOAT': '9999999.999999',
+                            'REAL': '9999999.999999',
+                            'DOUBLE': '9999999.999999',
                             'BOOLEAN': 'null',
-                            'DATE': '2998-11-30',
-                            'DATETIME': '2998-11-30 00:00:00.000',
-                            'TIMESTAMP': '2998-11-30 00:00:00.000',
-                            'TIME': '00:00',
-                            'BYTE': '-99'
+                            'DATE': "'2998-11-30'",
+                            'DATETIME': "'2998-11-30 00:00:00.000'",
+                            'TIMESTAMP': "'2998-11-30 00:00:00.000'",
+                            'TIME': "'00:00:000'",
+                            'BYTE': '-99',
+                            'JSON': '{ "!#!missing!#!": "missing" }'
                             }
 
     missing_record_column_class_map = {'meta_load_process_id': '0',
@@ -122,27 +123,24 @@ def create_ghost_records(full_name, columns):
             nullable = True if 'is_nullable' in column and column['is_nullable']==True else False
             value_for_missing = const_for_missing_map[base_type]
             # print(f'base_type: {base_type} | nullable: {nullable} | const_for_missing: {value_for_missing}\n')
-            if nullable and base_type not in ['VARCHAR', 'TEXT', 'CHAR']:
-                value_for_missing = 'NULL'
-            else: # use const_for_missing_data
-                if base_type == 'VARCHAR':
-                    if length == None:
-                        value_for_missing = get_missing_for_string_length()
+            if base_type == 'VARCHAR':
+                if length == None:
+                    value_for_missing = get_missing_for_string_length()
+                else:
+                    value_for_missing = get_missing_for_string_length(length)
+            if base_type == 'CHAR':
+                if length == None:
+                    value_for_missing = get_missing_for_string_length(1, True)
+                else:
+                    value_for_missing = get_missing_for_string_length(length, True)
+            if value_for_missing == 'use_get_missing_number_for_digits_function':
+                if length == None:
+                    value_for_missing = get_missing_number_for_digits(18)
+                else:
+                    if scale == None or scale == '':
+                        value_for_missing = get_missing_number_for_digits(length)
                     else:
-                        value_for_missing = get_missing_for_string_length(length)
-                if base_type == 'CHAR':
-                    if length == None:
-                        value_for_missing = get_missing_for_string_length(1, True)
-                    else:
-                        value_for_missing = get_missing_for_string_length(length, True)
-                if value_for_missing == 'use_get_missing_number_for_digits_function':
-                    if length == None: 
-                        value_for_missing = get_missing_number_for_digits(18)
-                    else:
-                        if scale == None or scale == '':
-                            value_for_missing = get_missing_number_for_digits(length)
-                        else:
-                            value_for_missing = get_missing_number_for_digits(length - scale)
+                        value_for_missing = get_missing_number_for_digits(length - scale)
         
 
         values_for_missing.append(value_for_missing)
