@@ -377,12 +377,17 @@ def parse_json_to_ddl(filepath, ddl_render_path
         column_statements = []
         comment_statements = []
 
+        max_name_length=0
+        for column in columns:
+            if len(column['column_name']) > max_name_length:
+              max_name_length = len(column['column_name'])
+
         for column in columns:
             column_name = column['column_name']
             col_type = column['column_type']
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
             comment = column['column_content_comment'] if 'column_content_comment' in column else None
-            column_statement = "{} {} {}".format(column_name, col_type, nullable)
+            column_statement = "\t{}\t{}\t{}".format(column_name.ljust(max_name_length), col_type.ljust(15), nullable)
             column_statements.append(column_statement)
             if comment is not None:
                 comment_statements.append("COMMENT ON COLUMN {}.{}.{} IS '{}';".format(schema_name, table_name, column_name, comment))
@@ -464,6 +469,11 @@ def parse_json_to_ddl(filepath, ddl_render_path
             column_name_to_stage_name_dict,stage_name_to_column_name_dict=assemble_column_name_and_stage_name_dict(parse_set)
             stage_with_target_column_type_dict=assemble_stage_with_target_column_type_dict(parse_set,tables)
 
+        max_name_length=0
+        for column in columns:
+            if len(column['stage_column_name']) > max_name_length:
+              max_name_length = len(column['stage_column_name'])
+
         for column in columns:
             stage_column_name = column['stage_column_name']
             stage_column_class = column['stage_column_class']
@@ -471,17 +481,17 @@ def parse_json_to_ddl(filepath, ddl_render_path
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
             match stage_column_class:
                 case 'meta_load_date':
-                    meta_load_date_column = "{} {} {}".format(stage_column_name, col_type, nullable)
+                    meta_load_date_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
                 case 'meta_load_process':
-                    meta_load_date_column = "{} {} {}".format(stage_column_name, col_type, nullable)
+                    meta_load_date_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
                 case 'meta_load_process_id':
-                    meta_load_process_id_column = "{} {} {}".format(stage_column_name, col_type, nullable)
+                    meta_load_process_id_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
                 case 'meta_record_source':
-                    meta_record_source_column = "{} {} {}".format(stage_column_name, col_type, nullable)
+                    meta_record_source_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
                 case 'meta_deletion_flag':
-                    meta_deletion_flag_column = "{} {} {}".format(stage_column_name, col_type, nullable)
+                    meta_deletion_flag_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
                 case 'hash':
-                    hashkeys.append("{} {} {}".format(stage_column_name, col_type, nullable))
+                    hashkeys.append("\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable))
                 case 'data':
                     final_column_name=stage_column_name
                     match stage_column_naming_rule:
@@ -494,14 +504,15 @@ def parse_json_to_ddl(filepath, ddl_render_path
                             raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
 
                     column_classes = column['column_classes']
+                    ddl_column_line="\t{}\t{}\t{}".format(final_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
                     if 'parent_key'  in column_classes:
-                        hashkeys.append("{} {} {}".format(final_column_name, col_type, nullable))
+                        hashkeys.append(ddl_column_line)
                     elif 'business_key' in column_classes or 'dependent_child_key' in column_classes:
-                        business_keys.append("{} {} {}".format(final_column_name, col_type, nullable))
+                        business_keys.append(ddl_column_line)
                     elif 'content_untracked' in column_classes:
-                        content_untracked.append("{} {} {}".format(final_column_name, col_type, nullable))
+                        content_untracked.append(ddl_column_line)
                     elif 'content' in column_classes:
-                        content.append("{} {} {}".format(final_column_name, col_type, nullable))
+                        content.append(ddl_column_line)
                     else:
                         raise AssertionError(f"unexpected column class! {column_classes} are currently not supported!")
             
