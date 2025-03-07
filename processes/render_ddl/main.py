@@ -75,15 +75,16 @@ def create_ghost_records(full_name, columns):
                             'BIGINT': '999999999999999999',
                             'DECIMAL': 'use_get_missing_number_for_digits_function',
                             'NUMERIC': 'use_get_missing_number_for_digits_function',
-                            'FLOAT': 'NaN',
-                            'REAL': 'NaN',
-                            'DOUBLE': 'NaN',
+                            'FLOAT': '9999999.999999',
+                            'REAL': '9999999.999999',
+                            'DOUBLE': '9999999.999999',
                             'BOOLEAN': 'null',
-                            'DATE': '2998-11-30',
-                            'DATETIME': '2998-11-30 00:00:00.000',
-                            'TIMESTAMP': '2998-11-30 00:00:00.000',
-                            'TIME': '00:00',
-                            'BYTE': '-99'
+                            'DATE': "'2998-11-30'",
+                            'DATETIME': "'2998-11-30 00:00:00.000'",
+                            'TIMESTAMP': "'2998-11-30 00:00:00.000'",
+                            'TIME': "'00:00:000'",
+                            'BYTE': '-99',
+                            'JSON': '\'{ "!#!missing!#!": "missing" }\''
                             }
 
     missing_record_column_class_map = {'meta_load_process_id': '0',
@@ -122,27 +123,24 @@ def create_ghost_records(full_name, columns):
             nullable = True if 'is_nullable' in column and column['is_nullable']==True else False
             value_for_missing = const_for_missing_map[base_type]
             # print(f'base_type: {base_type} | nullable: {nullable} | const_for_missing: {value_for_missing}\n')
-            if nullable and base_type not in ['VARCHAR', 'TEXT', 'CHAR']:
-                value_for_missing = 'NULL'
-            else: # use const_for_missing_data
-                if base_type == 'VARCHAR':
-                    if length == None:
-                        value_for_missing = get_missing_for_string_length()
+            if base_type == 'VARCHAR':
+                if length == None:
+                    value_for_missing = get_missing_for_string_length()
+                else:
+                    value_for_missing = get_missing_for_string_length(length)
+            if base_type == 'CHAR':
+                if length == None:
+                    value_for_missing = get_missing_for_string_length(1, True)
+                else:
+                    value_for_missing = get_missing_for_string_length(length, True)
+            if value_for_missing == 'use_get_missing_number_for_digits_function':
+                if length == None:
+                    value_for_missing = get_missing_number_for_digits(18)
+                else:
+                    if scale == None or scale == '':
+                        value_for_missing = get_missing_number_for_digits(length)
                     else:
-                        value_for_missing = get_missing_for_string_length(length)
-                if base_type == 'CHAR':
-                    if length == None:
-                        value_for_missing = get_missing_for_string_length(1, True)
-                    else:
-                        value_for_missing = get_missing_for_string_length(length, True)
-                if value_for_missing == 'use_get_missing_number_for_digits_function':
-                    if length == None: 
-                        value_for_missing = get_missing_number_for_digits(18)
-                    else:
-                        if scale == None or scale == '':
-                            value_for_missing = get_missing_number_for_digits(length)
-                        else:
-                            value_for_missing = get_missing_number_for_digits(length - scale)
+                        value_for_missing = get_missing_number_for_digits(length - scale)
         
 
         values_for_missing.append(value_for_missing)
@@ -167,8 +165,13 @@ def render_primary_key_clause(table):
         column_class=column['column_class']
         if table_stereotype in ('hub', 'lnk') and column_class=='key':
             pk_column_list.append(column['column_name'])
-        if table_stereotype == 'sat' and column_class in ('parent_key','meta_load_date'):
+        if table_stereotype == 'sat' and column_class in ('parent_key'):
             pk_column_list.append(column['column_name'])
+
+    if table_stereotype == 'sat':      # for satellite we add the meta load date as PK second element
+        for column in table['columns']:
+            if column['column_class'] in ('meta_load_date'):
+                pk_column_list.append(column['column_name'])
 
     ddl_text=""
     if len(pk_column_list)>0:
@@ -314,7 +317,8 @@ def parse_json_to_ddl(filepath, ddl_render_path
                     ,add_ghost_records=False
                     ,add_primary_keys=True
                     ,stage_column_naming_rule='stage'
-                    ,ddl_file_naming_pattern='lll'):
+                    ,ddl_file_naming_pattern='lll'
+                    ,ddl_stage_directory_name='stage'):
     """creates all ddl scripts and stres them in files
     special parameter: stage column naming , field= use field name, when available, stage=use stagename (might create duplicates), combine=combine stage and field name, when different
     combined stage column mappings tries to name the stage column like the target column. To prevent using the same stage column name for different content
@@ -373,12 +377,17 @@ def parse_json_to_ddl(filepath, ddl_render_path
         column_statements = []
         comment_statements = []
 
+        max_name_length=0
+        for column in columns:
+            if len(column['column_name']) > max_name_length:
+              max_name_length = len(column['column_name'])
+
         for column in columns:
             column_name = column['column_name']
             col_type = column['column_type']
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
             comment = column['column_content_comment'] if 'column_content_comment' in column else None
-            column_statement = "{} {} {}".format(column_name, col_type, nullable)
+            column_statement = "\t{}\t{}\t{}".format(column_name.ljust(max_name_length), col_type.ljust(15), nullable)
             column_statements.append(column_statement)
             if comment is not None:
                 comment_statements.append("COMMENT ON COLUMN {}.{}.{} IS '{}';".format(schema_name, table_name, column_name, comment))
@@ -460,6 +469,11 @@ def parse_json_to_ddl(filepath, ddl_render_path
             column_name_to_stage_name_dict,stage_name_to_column_name_dict=assemble_column_name_and_stage_name_dict(parse_set)
             stage_with_target_column_type_dict=assemble_stage_with_target_column_type_dict(parse_set,tables)
 
+        max_name_length=0
+        for column in columns:
+            if len(column['stage_column_name']) > max_name_length:
+              max_name_length = len(column['stage_column_name'])
+
         for column in columns:
             stage_column_name = column['stage_column_name']
             stage_column_class = column['stage_column_class']
@@ -467,17 +481,17 @@ def parse_json_to_ddl(filepath, ddl_render_path
             nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
             match stage_column_class:
                 case 'meta_load_date':
-                    meta_load_date_column = "{} {} {}".format(stage_column_name, col_type, nullable)
+                    meta_load_date_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
                 case 'meta_load_process':
-                    meta_load_date_column = "{} {} {}".format(stage_column_name, col_type, nullable)
+                    meta_load_date_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
                 case 'meta_load_process_id':
-                    meta_load_process_id_column = "{} {} {}".format(stage_column_name, col_type, nullable)
+                    meta_load_process_id_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
                 case 'meta_record_source':
-                    meta_record_source_column = "{} {} {}".format(stage_column_name, col_type, nullable)
+                    meta_record_source_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
                 case 'meta_deletion_flag':
-                    meta_deletion_flag_column = "{} {} {}".format(stage_column_name, col_type, nullable)
+                    meta_deletion_flag_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
                 case 'hash':
-                    hashkeys.append("{} {} {}".format(stage_column_name, col_type, nullable))
+                    hashkeys.append("\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable))
                 case 'data':
                     final_column_name=stage_column_name
                     match stage_column_naming_rule:
@@ -490,14 +504,15 @@ def parse_json_to_ddl(filepath, ddl_render_path
                             raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
 
                     column_classes = column['column_classes']
+                    ddl_column_line="\t{}\t{}\t{}".format(final_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
                     if 'parent_key'  in column_classes:
-                        hashkeys.append("{} {} {}".format(final_column_name, col_type, nullable))
+                        hashkeys.append(ddl_column_line)
                     elif 'business_key' in column_classes or 'dependent_child_key' in column_classes:
-                        business_keys.append("{} {} {}".format(final_column_name, col_type, nullable))
+                        business_keys.append(ddl_column_line)
                     elif 'content_untracked' in column_classes:
-                        content_untracked.append("{} {} {}".format(final_column_name, col_type, nullable))
+                        content_untracked.append(ddl_column_line)
                     elif 'content' in column_classes:
-                        content.append("{} {} {}".format(final_column_name, col_type, nullable))
+                        content.append(ddl_column_line)
                     else:
                         raise AssertionError(f"unexpected column class! {column_classes} are currently not supported!")
             
@@ -523,7 +538,7 @@ def parse_json_to_ddl(filepath, ddl_render_path
         ddl_statements.append(ddl)
 
         # create schema dir if not  exists
-        schema_path = ddl_render_path / stage_schema_dir / 'stage'
+        schema_path = ddl_render_path / stage_schema_dir / ddl_stage_directory_name
         if not os.path.isdir(schema_path):
             print(f"creating dir: {schema_path}")
             schema_path.mkdir()
@@ -640,6 +655,8 @@ if __name__ == '__main__':
     else:
         stage_column_naming_rule=args.stage_column_naming_rule
 
+    ddl_stage_directory_name=params.get('ddl_stage_directory_name','stage')
+
     if args.no_primary_keys == False:
         no_primary_keys=params.get('no_primary_keys',False) == ('True' or 'true')
         
@@ -678,7 +695,8 @@ if __name__ == '__main__':
                                         , add_ghost_records=args.add_ghost_records
                                         , add_primary_keys=not no_primary_keys
                                    , stage_column_naming_rule=stage_column_naming_rule
-                                   , ddl_file_naming_pattern=args.ddl_file_naming_pattern)
+                                   , ddl_file_naming_pattern=args.ddl_file_naming_pattern
+                                   ,ddl_stage_directory_name=ddl_stage_directory_name)
     if args.print:
         print(ddl_output)
 
