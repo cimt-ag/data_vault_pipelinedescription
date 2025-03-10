@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-03-06 12:55:12
+Compiling t1050_ghost_record_type_catalog.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t1050_ghost_record_type_catalog.dvpi.json
+--- Compile successfull ---
