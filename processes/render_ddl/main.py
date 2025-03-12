@@ -312,6 +312,25 @@ def guess_and_pinpoint_model_profile(dvpi):
             return
 
 
+def target_column_type_in_stage(parse_set):
+    """
+    Checks if a stage column maps to more than one column type in target tables.
+    If conflicts are found, returns False, otherwise True.
+    """
+    for stage_column in parse_set["stage_columns"]:
+        if stage_column["stage_column_class"] != "data":
+            continue
+
+        target_types = set()
+        for target in stage_column.get("targets", []):
+            target_types.add(target["column_type"])
+
+        if len(target_types) > 1:
+            print(
+                f"Conflict: Stage column '{stage_column['stage_column_name']}' maps to multiple types: {target_types}")
+            return False
+
+    return True
 
 def parse_json_to_ddl(filepath, ddl_render_path
                     ,add_ghost_records=False
@@ -319,12 +338,12 @@ def parse_json_to_ddl(filepath, ddl_render_path
                     ,stage_column_naming_rule='stage'
                     ,ddl_file_naming_pattern='lll'
                     ,ddl_stage_directory_name='stage'):
-    """creates all ddl scripts and stres them in files
+    """creates all ddl scripts and stores them in files
     special parameter: stage column naming , field= use field name, when available, stage=use stagename (might create duplicates), combine=combine stage and field name, when different
     combined stage column mappings tries to name the stage column like the target column. To prevent using the same stage column name for different content
     the following scenarios are mitigated as follows:
     single stage column -> equally named target columns: use target column name
-    single stage column -> multiple differently named target columns: use concatinated target column names
+    single stage column -> multiple differently named target columns: use concatenated target column names
     multiple stage columns -> equally named target column(s): use target column name_append stage column name
     """
     with open(filepath, 'r') as file:
@@ -336,6 +355,12 @@ def parse_json_to_ddl(filepath, ddl_render_path
     
     if 'parse_sets' not in data:
         raise MissingFieldError("The field 'parse_sets' is missing in the DVPI.")
+
+    for parse_set in data['parse_sets']:
+        if not target_column_type_in_stage(parse_set):
+            raise Exception("Column type conflict detected in target tables.")
+
+    print("No column type conflicts detected. Proceeding with DDL generation.")
 
     guess_and_pinpoint_model_profile(data)
     # todo this needs more precision later, since model profile can be table specific. Depends on more precision in dvpi

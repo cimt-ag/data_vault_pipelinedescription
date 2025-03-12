@@ -9,8 +9,8 @@
 	},
 
 	"fields": [
-		      {"field_name": "F1_AAA_BK1F", 		"field_type": "Varchar(1120)",	"targets": [{"table_name": "rtjj_1120_aaa_hub"}]},
-		 	  {"field_name": "F2_AAA_P1_C1",	"field_type": "VARCHAR(11200)",	"targets": [{"table_name": "rtjj_1120_aaa_p1_sat"}]},
+		      {"field_name": "F1_AAA_BK1F", 		"field_type": "Varchar(255)",	"targets": [{"table_name": "rtjj_1120_aaa_hub"}]},
+		 	  {"field_name": "F2_AAA_P1_C1",	"field_type": "VARCHAR(255)",	"targets": [{"table_name": "rtjj_1120_aaa_p1_sat"}]},
 			  {"field_name": "F3_AAA_P1_C2F",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_1120_aaa_p1_sat","column_type":"DECIMAL(10,0)"}]}
 			 ],
 	"data_vault_model": [
