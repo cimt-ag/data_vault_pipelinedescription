@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-03-20 10:50:35
+Compiling t1120_column_type_change_single_target.dvpd.json
+
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t1120_column_type_change_single_target.dvpi.json
+--- Compile successfull ---
