@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-03-20 10:45:27",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5003_willibald_shop_lieferadresse_p1",
   "pipeline_revision_tag": "--none--",
@@ -727,6 +727,14 @@
           "column_type": "integer ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_hub",
+              "column_name": "LIEFERADRID",
+              "column_type": "INTEGER ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -737,6 +745,14 @@
           "column_type": "CHAR(13) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_hub",
+              "column_name": "KUNDEID",
+              "column_type": "CHAR(13) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -747,6 +763,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_lieferadresse_p1_sat",
+              "column_name": "ADRESSZUSATZ",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -757,6 +781,14 @@
           "column_type": "VARCHAR(10) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_lieferadresse_p1_sat",
+              "column_name": "HAUSNUMMER",
+              "column_type": "VARCHAR(10) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -767,6 +799,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_lieferadresse_p1_sat",
+              "column_name": "ORT",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -777,6 +817,14 @@
           "column_type": "VARCHAR(10) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_lieferadresse_p1_sat",
+              "column_name": "PLZ",
+              "column_type": "VARCHAR(10) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -787,6 +835,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_lieferadresse_p1_sat",
+              "column_name": "STRASSE",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -797,6 +853,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_lieferadresse_p1_sat",
+              "column_name": "LAND",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         }
       ]

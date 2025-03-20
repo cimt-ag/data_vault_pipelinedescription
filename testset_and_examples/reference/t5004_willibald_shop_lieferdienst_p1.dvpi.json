@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-03-20 10:45:27",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5004_willibald_shop_p1_lieferdienst_p1",
   "pipeline_revision_tag": "--none--",
@@ -551,6 +551,14 @@
           "column_type": "VARCHAR(30) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferdienst_hub",
+              "column_name": "LIEFERDIENSTID",
+              "column_type": "VARCHAR(30) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -561,6 +569,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferdienst_lieferdienst_p1_sat",
+              "column_name": "EMAIL",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -571,6 +587,14 @@
           "column_type": "VARCHAR(20) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferdienst_lieferdienst_p1_sat",
+              "column_name": "FAX",
+              "column_type": "VARCHAR(20) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -581,6 +605,14 @@
           "column_type": "VARCHAR(10) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferdienst_lieferdienst_p1_sat",
+              "column_name": "HAUSNUMMER",
+              "column_type": "VARCHAR(10) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -591,6 +623,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferdienst_lieferdienst_p1_sat",
+              "column_name": "LAND",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -601,6 +641,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferdienst_lieferdienst_p1_sat",
+              "column_name": "NAME",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -611,6 +659,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferdienst_lieferdienst_p1_sat",
+              "column_name": "ORT",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -621,6 +677,14 @@
           "column_type": "VARCHAR(10) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferdienst_lieferdienst_p1_sat",
+              "column_name": "PLZ",
+              "column_type": "VARCHAR(10) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -631,6 +695,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferdienst_lieferdienst_p1_sat",
+              "column_name": "STRASSE",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -641,6 +713,14 @@
           "column_type": "VARCHAR(20) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferdienst_lieferdienst_p1_sat",
+              "column_name": "TELEFON",
+              "column_type": "VARCHAR(20) ",
+              "column_class": "content"
+            }
           ]
         }
       ]

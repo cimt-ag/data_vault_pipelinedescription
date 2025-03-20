@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-20 16:19:08",
+  "compile_timestamp": "2025-03-20 10:45:26",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t1091_use_model_profile_with_functions_for_ghost_record_keys",
   "pipeline_revision_tag": "--none--",
@@ -609,6 +609,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1091_aaa_hub",
+              "column_name": "F1_AAA_BK1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -619,6 +627,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_1091_bbb_hub",
+              "column_name": "F2_BBB_BK1F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -629,6 +645,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1091_aaa_p1_sat",
+              "column_name": "F3_AAA_P1_C1",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -639,6 +663,14 @@
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1091_aaa_p1_sat",
+              "column_name": "F4_AAA_P1_C2",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -649,6 +681,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1091_aaa_p1_sat",
+              "column_name": "F5_AAA_P1_C3F",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         }
       ]

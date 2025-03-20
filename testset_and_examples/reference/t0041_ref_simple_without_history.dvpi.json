@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:16",
+  "compile_timestamp": "2025-03-20 10:45:24",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0041_ref_simple_without_history",
   "pipeline_revision_tag": "--none--",
@@ -169,6 +169,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_41_aaa_ref",
+              "column_name": "F1_AAA_RC1",
+              "column_type": "VARCHAR(20)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -179,6 +187,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_41_aaa_ref",
+              "column_name": "F2_AAA_RC2",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -189,6 +205,14 @@
           "column_type": "DATE",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_41_aaa_ref",
+              "column_name": "F3_AAA_RC3",
+              "column_type": "DATE",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -199,6 +223,14 @@
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
             "content_untracked"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_41_aaa_ref",
+              "column_name": "F4_AAA_RC4F",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content_untracked"
+            }
           ]
         }
       ]

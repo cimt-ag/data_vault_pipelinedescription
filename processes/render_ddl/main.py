@@ -363,7 +363,7 @@ def parse_json_to_ddl(filepath, ddl_render_path
             print("Can not use target column type for stage")
             exit(5)
 
-    print("No column type conflicts detected. Proceeding with DDL generation.")
+    #print("No column type conflicts detected. Proceeding with DDL generation.")
 
     guess_and_pinpoint_model_profile(data)
     # todo this needs more precision later, since model profile can be table specific. Depends on more precision in dvpi

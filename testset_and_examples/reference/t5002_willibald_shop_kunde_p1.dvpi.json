@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-03-20 10:45:27",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5002_willibald_shop_kunde_p1",
   "pipeline_revision_tag": "--none--",
@@ -855,6 +855,14 @@
           "column_type": "CHAR(13) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_hub",
+              "column_name": "KUNDEID",
+              "column_type": "CHAR(13) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -865,6 +873,14 @@
           "column_type": "VARCHAR(30) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "vereinspartner_hub",
+              "column_name": "VEREINSPARTNERID",
+              "column_type": "VARCHAR(30) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -875,6 +891,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_kunde_p1_sat",
+              "column_name": "EMAIL",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -885,6 +909,14 @@
           "column_type": "date ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_kunde_p1_sat",
+              "column_name": "GEBURTSDATUM",
+              "column_type": "DATE ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -895,6 +927,14 @@
           "column_type": "CHAR(1) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_kunde_p1_sat",
+              "column_name": "GESCHLECHT",
+              "column_type": "CHAR(1) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -905,6 +945,14 @@
           "column_type": "CHAR(5) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_kunde_p1_sat",
+              "column_name": "GUELTIGBIS",
+              "column_type": "CHAR(5) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -915,6 +963,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_kunde_p1_sat",
+              "column_name": "KKFIRMA",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -925,6 +981,14 @@
           "column_type": "VARCHAR(30) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_kunde_p1_sat",
+              "column_name": "KREDITKARTE",
+              "column_type": "VARCHAR(30) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -935,6 +999,14 @@
           "column_type": "VARCHAR(20) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_kunde_p1_sat",
+              "column_name": "MOBIL",
+              "column_type": "VARCHAR(20) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -945,6 +1017,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_kunde_p1_sat",
+              "column_name": "NAME",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -955,6 +1035,14 @@
           "column_type": "VARCHAR(20) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_kunde_p1_sat",
+              "column_name": "TELEFON",
+              "column_type": "VARCHAR(20) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -965,6 +1053,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_kunde_p1_sat",
+              "column_name": "VORNAME",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         }
       ]
