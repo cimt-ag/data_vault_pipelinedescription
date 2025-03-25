@@ -406,11 +406,11 @@ def lvs(dvpi_file_name, ini_file, replace_code_between_markers, start_marker, en
 
     print("--- load_vault snippet render complete ---")
 
-    if replace_code_between_markers == 'True' or replace_code_between_markers == 'true':
+    if replace_code_between_markers.lower() == 'true':
         dwh_processes_directory = Path(params.get('dwh_processes_directory', None))
 
         pipeline_name = dvpi_file_name.replace('.dvpi.json','') if project_pipeline_name is None else project_pipeline_name
-        project_load_vault_file = dwh_processes_directory.joinpath(rf'{pipeline_name}\{project_load_vault_file}.py')
+        project_load_vault_file = dwh_processes_directory.joinpath(f'{pipeline_name}',f'{project_load_vault_file}.py')
         if not dvpi_file_path.exists():
             print(f"could not find file {args.dvpi_file_name}")
 
