@@ -1956,8 +1956,12 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
     for table_name, (dvpd_table, dvpd_schema) in dvpd_table_lookup.items():
         dvpi_table = dvpi_table_lookup.get(table_name)
         if dvpi_table:
-            copy_extensions(dvpd_table, dvpi_table)
+            copy_extensions(dvpd_table, dvpi_table)     # data_vaullt_model[].tables[0] -> tables[0]
             copy_extensions(dvpd_schema, dvpi_table)
+
+            for load_op in dvpi_document.get("parse_sets", [{}])[0].get("load_operations", []):
+                if load_op.get("table_name", "").lower() == table_name:
+                    copy_extensions(dvpd_table, load_op)    # data_vaullt_model[].tables[0] -> parse_sets.load_operations[0]
 
     # --- 6. Link parent keywords ---
     for table in dvpd_table_lookup.values():
@@ -1969,7 +1973,7 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
                     parent_exts = {}
                 elif isinstance(parent, dict):
                     parent_table = parent.get("table_name", "").lower()
-                    parent_exts = {k: v for k, v in parent.items() if is_ext_key(k)}
+                    parent_exts = {k: v for k, v in parent.items() if is_ext_key(k)}    # data_vaullt_model[].tables[0].link_parent_tabes -> tables[0].columns[0]
                 else:
                     continue
 
@@ -1997,7 +2001,7 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
                     continue
                 for target in field.get("targets", []):
                     if any(is_ext_key(k) and "load" in k for k in target):
-                        dm.update({k: v for k, v in target.items() if is_ext_key(k) and "load" in k})
+                        dm.update({k: v for k, v in target.items() if is_ext_key(k) and "load" in k})   # fields[0].targets[0]. with "load" in name -> parse_sets.load_operations[0].data_mappings[0]
 
     for field in dvpd_fields:
         for target in field.get("targets", []):
@@ -2005,7 +2009,7 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
             column = target.get("column_name", field["field_name"])
 
             # column keyword
-            if any(is_ext_key(k) and "column" in k for k in target):
+            if any(is_ext_key(k) and "column" in k for k in target):    # fields[0].targets[0]. with "column" in name -> tables[0].columns[0]
                 for tbl in dvpi_document.get("tables", []):
                     if tbl["table_name"].lower() == table.lower():
                         for col in tbl.get("columns", []):
@@ -2013,7 +2017,7 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
                                 copy_extensions(target, col)
 
             # hash keyword
-            if any(is_ext_key(k) and "hash" in k for k in target):
+            if any(is_ext_key(k) and "hash" in k for k in target):  # fields[0].targets[0]. with "hash" in name -> parse_sets.hashes[0].hash_fields[0]
                 hf = dvpi_hash_lookup.get((field["field_name"], table.lower(), column))
                 if hf:
                     copy_extensions(target, hf)
