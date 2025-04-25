@@ -291,7 +291,13 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                         g_report_file.write(
                             f"       {field['json_path'].ljust(max_jsonpath_length)}->")
                 g_report_file.write(
-                    f"       {field['field_name'].ljust(max_name_length)}  {field['field_type']}\n")
+                    f"        {field['field_name'].ljust(max_name_length)}  {field['field_type']}\n")
+                if "json_path_excludes" in field:
+                    g_report_file.write(
+                        f"            Exclude json paths: '{'\',\''.join(field['json_path_excludes']) }'\n")
+                if "json_path_includes" in field:
+                    g_report_file.write(
+                        f"            Include only json paths: '{'\',\''.join(field['json_path_includes']) }'\n")
 
 
             g_report_file.write("\n\n------------------------------------------------------\n")
