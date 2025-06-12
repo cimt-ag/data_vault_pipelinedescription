@@ -1,0 +1,28 @@
+{
+	"dvpd_version": "0.6.2",
+	"stage_properties" : [{"stage_schema":"stage_rvlt","stage_table_name":"srtjj_1014"}],
+	"pipeline_name": "t1014_json_path_field_syntax",
+	"pipeline_revision_tag":"demoRevisionTagOf t001014",
+	"pipeline_comment":"Test the correct processing of json specific field declarations",
+	"record_source_name_expression": "dvpd implementation test",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+		,"json_array_path":"$.Data"
+	},
+
+	"fields": [
+		      {"field_name": "F1_AAA_BK1", 		"field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1014_aaa_hub"}]},
+		 	  {"field_name": "F2_AAA_BK2F",	"field_type": "Decimal(36,0)",	"targets": [{"table_name": "rtjj_1014_aaa_hub"}]},
+		 	  {"field_name": "F3_AAA_P1_C1",	"field_type": "VARCHAR(2000)","json_path_excludes":["Id","person/name"],	"targets": [{"table_name": "rtjj_1014_aaa_p1_sat"}]},
+			  {"field_name": "F4_AAA_P1_C2F",	"field_type": "VARCHAR(2000)","json_path_includes":["Id","person/name"],	"targets": [{"table_name": "rtjj_1014_aaa_p1_sat"}]}
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_1014_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_1014_aaa","table_content_comment":"Hub aaa created for test1014"},
+				{"table_name": "rtjj_1014_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_1014_aaa_HUB"
+																			,"diff_hash_column_name": "RH_rtjj_1014_aaa_P1_SAT","table_content_comment":"Satellite  created for test1014"	}
+				]
+		}
+	]
+}
