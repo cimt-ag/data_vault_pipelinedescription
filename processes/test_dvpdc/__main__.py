@@ -398,4 +398,4 @@ if __name__ == "__main__":
 
     print("\nTest state:"+report_line)
 
-    print("--- Auotmated test of DVPDC complete ---")
+    print("--- Automated test of DVPDC complete ---")

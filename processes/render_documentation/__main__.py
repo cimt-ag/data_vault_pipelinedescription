@@ -99,7 +99,7 @@ def create_documentation(dvpd,column_labels):
                 json_path_string="' ,'".join(field['json_path_excludes'])
                 field_text +=f"<br/>(Exclude json paths: '{json_path_string}')"
             if "json_path_includes" in field:
-                json_path_string ="' ,'"..join(field['json_path_includes'])
+                json_path_string ="' ,'".join(field['json_path_includes'])
                 field_text +=f"<br/>(Include only json paths: '{json_path_string}')"
         else:
             field_text = field["field_name"]
