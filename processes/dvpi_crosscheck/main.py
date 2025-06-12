@@ -64,24 +64,32 @@ class DVPIcrosscheck:
             focus_on_file = True
             file_path = os.path.join(self.dvpi_directory, self.dvpi_focus_file )
             with open(file_path, 'r') as f:
-                dvpi_data = json.load(f)
-                pipeline_name = dvpi_data.get("pipeline_name")
-                self.pipeline_names[pipeline_name] = self.dvpi_focus_file
-                self.add_dvpi_to_repositories(dvpi_data,add_only_known_tables=False)
-                self.dvpi_count += 1
+                try:
+                    dvpi_data = json.load(f)
+                    pipeline_name = dvpi_data.get("pipeline_name")
+                    self.pipeline_names[pipeline_name] = self.dvpi_focus_file
+                    self.add_dvpi_to_repositories(dvpi_data,add_only_known_tables=False)
+                    self.dvpi_count += 1
+                except:
+                    print(f"*** crosscheck: Error when parsing file {f.name} ***")
+                    raise
 
         for file_name in self.dvpi_files:
             file_path = os.path.join(self.dvpi_directory, file_name)
             if file_name == self.dvpi_focus_file:
                 continue
             with open(file_path, 'r') as f:
-                dvpi_data = json.load(f)
-                pipeline_name = dvpi_data.get("pipeline_name")
-                if pipeline_name in self.pipeline_names:
-                    raise CrosscheckError(f"Duplicate pipeline name {pipeline_name} declared by files  '{file_name}' and '{self.pipeline_names[pipeline_name]}'")
-                self.pipeline_names[pipeline_name] = file_name
-                if self.add_dvpi_to_repositories(dvpi_data, add_only_known_tables=focus_on_file):
-                   self.dvpi_count +=1
+                try:
+                    dvpi_data = json.load(f)
+                    pipeline_name = dvpi_data.get("pipeline_name")
+                    if pipeline_name in self.pipeline_names:
+                        raise CrosscheckError(f"Duplicate pipeline name {pipeline_name} declared by files  '{file_name}' and '{self.pipeline_names[pipeline_name]}'")
+                    self.pipeline_names[pipeline_name] = file_name
+                    if self.add_dvpi_to_repositories(dvpi_data, add_only_known_tables=focus_on_file):
+                       self.dvpi_count +=1
+                except:
+                    print(f"*** crosscheck: Error when parsing file {f.name} ***")
+                    raise
 
     def add_dvpi_to_repositories(self,dvpi_data,add_only_known_tables=False):
         pipeline_name = dvpi_data.get("pipeline_name")
