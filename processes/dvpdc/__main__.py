@@ -1088,6 +1088,7 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
             parent_model_profile = g_model_profile_dict[parent_table_entry['model_profile_name']]
             parent_table_key_column_type = parent_model_profile['table_key_column_type']
             parent_load_operations = parent_table_entry['load_operations']
+            relation_name = link_parent_entry.get('relation_name')
 
             # determine the parent (hub) key set to use
             if link_parent_entry['relation_name'] != '?':  # explicitly declared parent relation
@@ -1108,6 +1109,7 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
             parent_load_operation = parent_load_operations[needed_key_set]
             parent_hash_reference_dict = parent_load_operation['hash_mapping_dict']
             parent_key_hash_reference = parent_hash_reference_dict['key']
+            link_parent_entry['relation_name'] = needed_key_set
 
             # assemble the column name for the hub key in the link
             if link_parent_entry['hub_key_column_name_in_link'] != None:
@@ -1140,7 +1142,9 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
                                                                    "parent_table_name": link_parent_entry['table_name'],
                                                                    "parent_key_column_name": parent_key_hash_reference[
                                                                        'hash_column_name'],
-                                                                   "column_type": parent_table_key_column_type}
+                                                                   "column_type": parent_table_key_column_type,
+                                                                   "relation_name": needed_key_set
+                                                                   }
 
         # add dependent child keys if exist
         if 'data_mapping_dict' in link_load_operation_entry:
@@ -1552,6 +1556,9 @@ def assemble_dvpi_table_entry(table_name, table_entry):
         for column_property in hash_column_properties_to_copy:
             if column_property in column_entry:
                 dvpi_column_entry[column_property] = column_entry[column_property]
+
+        if 'relation_name' in column_entry:
+            dvpi_column_entry['relation_name'] = column_entry['relation_name']
 
     # add data columns to columns
     data_column_properties_to_copy = ['column_class', 'column_type', 'column_content_comment',
