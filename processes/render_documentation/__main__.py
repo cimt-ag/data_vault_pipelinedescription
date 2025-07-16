@@ -95,6 +95,12 @@ def create_documentation(dvpd,column_labels):
                 field_text=json_loop_level_prefix+field['json_path']
             else:
                 field_text = json_loop_level_prefix + field['field_name']
+            if "json_path_excludes" in field:
+                json_path_string="' ,'".join(field['json_path_excludes'])
+                field_text +=f"<br/>(Exclude json paths: '{json_path_string}')"
+            if "json_path_includes" in field:
+                json_path_string ="' ,'".join(field['json_path_includes'])
+                field_text +=f"<br/>(Include only json paths: '{json_path_string}')"
         else:
             field_text = field["field_name"]
         field_type = field["field_type"]
