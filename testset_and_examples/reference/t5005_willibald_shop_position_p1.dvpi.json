@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-03-20 10:45:27",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5005_willibald_shop_position_p1",
   "pipeline_revision_tag": "--none--",
@@ -960,6 +960,20 @@
           "column_type": "bigint ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "position_hub",
+              "column_name": "BESTELLUNGID",
+              "column_type": "BIGINT ",
+              "column_class": "business_key"
+            },
+            {
+              "table_name": "bestellung_hub",
+              "column_name": "BESTELLUNGID",
+              "column_type": "BIGINT ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -970,6 +984,14 @@
           "column_type": "bigint ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "position_hub",
+              "column_name": "POSID",
+              "column_type": "BIGINT ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -980,6 +1002,14 @@
           "column_type": "integer ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "position_position_p1_sat",
+              "column_name": "MENGE",
+              "column_type": "INTEGER ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -990,6 +1020,14 @@
           "column_type": "NUMERIC(10,2) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "position_position_p1_sat",
+              "column_name": "PREIS",
+              "column_type": "NUMERIC(10,2) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -1000,6 +1038,14 @@
           "column_type": "integer ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "produkt_hub",
+              "column_name": "PRODUKTID",
+              "column_type": "INTEGER ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -1010,6 +1056,14 @@
           "column_type": "integer ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_hub",
+              "column_name": "LIEFERADRID",
+              "column_type": "INTEGER ",
+              "column_class": "business_key"
+            }
           ]
         }
       ]

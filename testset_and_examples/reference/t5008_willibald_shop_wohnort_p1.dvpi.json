@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-03-20 10:45:27",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5008_willibald_shop_wohnort_p1",
   "pipeline_revision_tag": "--none--",
@@ -523,6 +523,14 @@
           "column_type": "CHAR(13) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_hub",
+              "column_name": "KUNDEID",
+              "column_type": "CHAR(13) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -533,6 +541,14 @@
           "column_type": "date ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_wohnort_p1_msat",
+              "column_name": "VON",
+              "column_type": "DATE ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -543,6 +559,14 @@
           "column_type": "date ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_wohnort_p1_msat",
+              "column_name": "BIS",
+              "column_type": "DATE ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -553,6 +577,14 @@
           "column_type": "VARCHAR(10) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_wohnort_p1_msat",
+              "column_name": "HAUSNUMMER",
+              "column_type": "VARCHAR(10) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -563,6 +595,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_wohnort_p1_msat",
+              "column_name": "ORT",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -573,6 +613,14 @@
           "column_type": "VARCHAR(10) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_wohnort_p1_msat",
+              "column_name": "PLZ",
+              "column_type": "VARCHAR(10) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -583,6 +631,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_wohnort_p1_msat",
+              "column_name": "STRASSE",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -593,6 +649,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_wohnort_p1_msat",
+              "column_name": "ADRESSZUSATZ",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -603,6 +667,14 @@
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_wohnort_p1_msat",
+              "column_name": "LAND",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         }
       ]

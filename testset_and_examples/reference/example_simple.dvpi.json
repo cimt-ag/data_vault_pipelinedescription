@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:16",
+  "compile_timestamp": "2025-03-20 10:45:23",
   "dvpd_version": "0.6.0",
   "pipeline_name": "example_simple",
   "pipeline_revision_tag": "--none--",
@@ -338,6 +338,14 @@
           "column_type": "varchar(5)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "person_hub",
+              "column_name": "COMPANY",
+              "column_type": "VARCHAR(5)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -348,6 +356,14 @@
           "column_type": "varchar(10)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "person_hub",
+              "column_name": "PERSON_ID",
+              "column_type": "VARCHAR(10)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -358,6 +374,14 @@
           "column_type": "varchar(250)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "person_sat",
+              "column_name": "NAME",
+              "column_type": "VARCHAR(250)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -368,6 +392,14 @@
           "column_type": "varchar(250)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "person_sat",
+              "column_name": "JOB",
+              "column_type": "VARCHAR(250)",
+              "column_class": "content"
+            }
           ]
         }
       ]

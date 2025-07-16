@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-07-16 15:14:39
+Compiling t1300_kwx_simple_hub_sat.dvpd.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t1300_kwx_simple_hub_sat.dvpi.json
+--- Compile successfull ---

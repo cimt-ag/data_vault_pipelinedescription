@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-03-20 10:45:26",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t1704_topo_a2br_acl_1_common_key",
   "pipeline_revision_tag": "--none--",
@@ -1293,6 +1293,26 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1704_aaa_hub",
+              "column_name": "F1_AAA_BBB_CCC_BK1",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            },
+            {
+              "table_name": "rtjj_1704_bbb_hub",
+              "column_name": "F1_AAA_BBB_CCC_BK1",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            },
+            {
+              "table_name": "rtjj_1704_ccc_hub",
+              "column_name": "F1_AAA_BBB_CCC_BK1",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -1303,6 +1323,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1704_aaa_hub",
+              "column_name": "F2_AAA_BK2F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -1313,6 +1341,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1704_bbb_hub",
+              "column_name": "F3F4_BBB_BK2F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -1323,6 +1359,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1704_bbb_hub",
+              "column_name": "F3F4_BBB_BK2F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -1333,6 +1377,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1704_ccc_hub",
+              "column_name": "F5_CCC_BK2F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -1343,6 +1395,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1704_aaa_sat",
+              "column_name": "F6_AAA_C1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -1353,6 +1413,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1704_bbb_sat",
+              "column_name": "F7_BBB_C1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -1363,6 +1431,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1704_ccc_sat",
+              "column_name": "F8_CCC_C1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "content"
+            }
           ]
         }
       ]

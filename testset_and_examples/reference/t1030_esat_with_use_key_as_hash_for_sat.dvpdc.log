@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-07-16 15:23:13
+Compiling t1030_esat_with_use_key_as_hash_for_sat.dvpd.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t1030_esat_with_use_key_as_hash_for_sat.dvpi.json
+--- Compile successfull ---

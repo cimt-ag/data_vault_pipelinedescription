@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-22 09:52:20",
+  "compile_timestamp": "2025-03-20 10:45:26",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t1030c_missing_use_key_hash_for_sat",
   "pipeline_revision_tag": "--none--",
@@ -131,7 +131,8 @@
           "column_type": "CHAR(28)",
           "column_classes": [
             "parent_key"
-          ]
+          ],
+          "targets": []
         }
       ]
     }
