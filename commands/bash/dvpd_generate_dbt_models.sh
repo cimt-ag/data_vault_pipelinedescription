@@ -1,5 +1,4 @@
 #!/bin/bash
-# Script that runs the dvpd compiler and then all the render scripts
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 DVPI_FILE_NAME=$1
 INI_FILE_PATH=$2
