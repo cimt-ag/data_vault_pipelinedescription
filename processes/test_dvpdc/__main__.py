@@ -396,6 +396,6 @@ if __name__ == "__main__":
         report_line += f"+ crash {len(crashed_file_list)} ({file_list_fp})"
         print(f"* {len(crashed_file_list)} tests crashed ({file_list_fp}) **** ")
 
-    print("\nTest state: "+report_line)  
+    print("\nTest state: "+report_line)
 
     print("--- Automated test of DVPDC complete ---")
