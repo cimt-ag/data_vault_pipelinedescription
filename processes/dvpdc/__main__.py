@@ -207,7 +207,7 @@ def check_essential_element(dvpd_object):
                         f"missing declaration of 'table_name' for field [{field_count}], target [{target_count}] ")
 
 
-def transform_hub_table(dvpd_table_entry, schema_name, storage_component, table_comment):
+def collect_hub_properties(dvpd_table_entry, schema_name, storage_component, table_comment):
     """Cleanse check and add table declaration for a hub table"""
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
@@ -227,7 +227,7 @@ def transform_hub_table(dvpd_table_entry, schema_name, storage_component, table_
     g_table_dict[table_name] = table_properties
 
 
-def transform_lnk_table(dvpd_table_entry, schema_name, storage_component, table_comment):
+def collect_lnk_properties(dvpd_table_entry, schema_name, storage_component, table_comment):
     """Cleanse check and add table declaration for a lnk table"""
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
@@ -286,7 +286,7 @@ def transform_lnk_table(dvpd_table_entry, schema_name, storage_component, table_
     g_table_dict[table_name] = table_properties
 
 
-def transform_sat_table(dvpd_table_entry, schema_name, storage_component, table_comment):
+def collect_sat_properties(dvpd_table_entry, schema_name, storage_component, table_comment):
     """Cleanse check and add table declaration for a satellite table"""
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
@@ -334,7 +334,7 @@ def transform_sat_table(dvpd_table_entry, schema_name, storage_component, table_
     g_table_dict[table_name] = table_properties
 
 
-def transform_ref_table(dvpd_table_entry, schema_name, storage_component, table_comment):
+def collect_ref_properties(dvpd_table_entry, schema_name, storage_component, table_comment):
     """Cleanse check and add table declaration for a satellite table"""
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
@@ -377,13 +377,13 @@ def collect_table_properties(dvpd_object):
 
             match table_entry['table_stereotype'].lower():
                 case 'hub':
-                    transform_hub_table(table_entry, schema_name, storage_component, table_comment)
+                    collect_hub_properties(table_entry, schema_name, storage_component, table_comment)
                 case 'lnk':
-                    transform_lnk_table(table_entry, schema_name, storage_component, table_comment)
+                    collect_lnk_properties(table_entry, schema_name, storage_component, table_comment)
                 case 'sat':
-                    transform_sat_table(table_entry, schema_name, storage_component, table_comment)
+                    collect_sat_properties(table_entry, schema_name, storage_component, table_comment)
                 case 'ref':
-                    transform_ref_table(table_entry, schema_name, storage_component, table_comment)
+                    collect_ref_properties(table_entry, schema_name, storage_component, table_comment)
                 case _:
                     register_error(
                         f"Unknown table stereotype '{table_entry['table_stereotype']}' declared for table {table_entry['table_name']}")
@@ -642,44 +642,6 @@ def add_generic_relation_mappings(column_properties):
             register_error(
                 f"When using '*' as relation names, this must be the only relation in the 'relation_names' for a table mapping. This is violated by  '{field_entry['field_name']}'")
             # todo: add test to trigger the upper error
-
-
-def check_topology_specific_properties():
-    """After all table relations have been determined we can check if properties of partent/child tables are compatible"""
-    for table_name, table_entry in g_table_dict.items():
-        # todo: add lnk topolgy check
-        # if table_entry['table_stereotype'] == 'lnk':
-        #    check_topology_specific_lnk_properties(table_entry)
-        if table_entry['table_stereotype'] == 'sat':
-            check_sat_topology_specific_properties(table_name, table_entry)
-
-
-def check_sat_topology_specific_properties(table_name, table_entry):
-    global g_table_dict
-    satellite_parent_table = g_table_dict[table_entry['satellite_parent_table']]
-
-    if satellite_parent_table['is_only_structural_element']:
-        if 'direct_key_hash_columns' not in table_entry:
-            register_error(
-                f"CST-S1: Parent '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is declared "
-                f"to be only a structural element, but satellite has no 'use_as_key_hash' mapping ")
-            return
-        if satellite_parent_table['table_stereotype'] == 'hub':
-            sat_key_column_name = satellite_parent_table['hub_key_column_name']
-        elif satellite_parent_table['table_stereotype'] == 'lnk':
-            sat_key_column_name = satellite_parent_table['link_key_column_name']
-        else:
-            raise f"***This should not happen***. Parent of satellite '{table_name}' is not a link or hub, even " \
-                  f"though it had been checked in 'derive_content_dependent_sat_properties'"
-
-        # The column name must be addressd by the use_as_key_hash mapping
-        if sat_key_column_name not in table_entry['direct_key_hash_columns']:
-            # todo: add test case for this check
-            register_error(
-                f"CST-S2: Satellite '{table_name}': Missing a 'use_as_key_hash' field mapping for the key column '{sat_key_column_name}'.")
-            return
-    # todo: add check when not structural but use_as_key_hash is given
-
 
 def derive_load_operations():
     global g_table_dict
@@ -2086,9 +2048,6 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
     if g_error_count > 0:
         raise DvpdcError
 
-    check_topology_specific_properties()
-    if g_error_count > 0:
-        raise DvpdcError
 
     derive_load_operations()
     if g_error_count > 0:
