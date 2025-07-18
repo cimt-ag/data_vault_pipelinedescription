@@ -165,7 +165,7 @@ def check_essential_element(dvpd_object):
                  'record_source_name_expression', 'data_vault_model']
     for key_name in root_keys:
         if dvpd_object.get(key_name) is None:
-            register_error(f"missing declaration of root property '{key_name}'")
+            register_error(f"CEE-S1: missing declaration of root property '{key_name}'")
 
     if g_error_count > 0:
         return
@@ -175,19 +175,19 @@ def check_essential_element(dvpd_object):
     table_count = 0
     for schema_index, schema_entry in enumerate(dvpd_object['data_vault_model'], start=1):
         if schema_entry.get('schema_name') is None:
-            register_error(f"missing declaration of 'schema_name' for data_vault_model entry [{schema_index}]")
+            register_error(f"CEE-S2: missing declaration of 'schema_name' for data_vault_model entry [{schema_index}]")
         if schema_entry.get('tables') is None:
-            register_error(f"missing declaration of 'tables' for data_vault_model entry [{schema_index}]")
+            register_error(f"CEE-S3: missing declaration of 'tables' for data_vault_model entry [{schema_index}]")
         else:
             for table_entry in schema_entry['tables']:
                 table_count += 1
                 for key_name in table_keys:
                     if table_entry.get(key_name) is None:
                         register_error(
-                            f"missing declaration of essential table property '{key_name}' for table entry [{str(table_count)}]")
+                            f"CEE-S4: missing declaration of essential table property '{key_name}' for table entry [{str(table_count)}]")
 
     if table_count == 0:
-        register_error("No table declared")
+        register_error("CEE-S5: No table declared")
 
     # Check essential keys of field declaration
     field_keys = ['field_name', 'field_type', 'targets']
@@ -197,14 +197,14 @@ def check_essential_element(dvpd_object):
         for key_name in field_keys:
             if field_entry.get(key_name) == None:
                 register_error(
-                    f"missing declaration of essential field property '{key_name}' for field [{field_count}]")
+                    f"CEE-S6: missing declaration of essential field property '{key_name}' for field [{field_count}]")
         target_count = 0
         if 'targets' in field_entry:
             for target_entry in field_entry.get('targets'):
                 target_count += 1
                 if target_entry.get('table_name') == None:
                     register_error(
-                        f"missing declaration of 'table_name' for field [{field_count}], target [{target_count}] ")
+                        f"CEE-S7: missing declaration of 'table_name' for field [{field_count}], target [{target_count}] ")
 
 
 def collect_hub_properties(dvpd_table_entry, schema_name, storage_component, table_comment):
@@ -217,13 +217,13 @@ def collect_hub_properties(dvpd_table_entry, schema_name, storage_component, tab
                         'model_profile_name': model_profile_name, 'table_comment': table_comment
         , 'is_only_structural_element': is_only_structural_element}
     if model_profile_name not in g_model_profile_dict:
-        register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
+        register_error(f"CHP-S1: model profile '{model_profile_name}' for table '{table_name}' is not defined")
 
     if 'hub_key_column_name' in dvpd_table_entry:
         table_properties['hub_key_column_name'] = dvpd_table_entry['hub_key_column_name'].upper()
     else:
         table_properties['hub_key_column_name'] = "HK_" + remove_stereotype_suffix(table_name).upper()
-        # register_error(f'hub_key_column_name is not declared for hub table {table_name}')
+        # register_error(f'CHP-S2: hub_key_column_name is not declared for hub table {table_name}')
     g_table_dict[table_name] = table_properties
 
 
@@ -237,13 +237,13 @@ def collect_lnk_properties(dvpd_table_entry, schema_name, storage_component, tab
                         'model_profile_name': model_profile_name, 'table_comment': table_comment
         , 'is_only_structural_element': is_only_structural_element}
     if model_profile_name not in g_model_profile_dict:
-        register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
+        register_error(f"CLP-S1: model profile '{model_profile_name}' for table '{table_name}' is not defined")
 
     if 'link_key_column_name' in dvpd_table_entry:
         table_properties['link_key_column_name'] = dvpd_table_entry['link_key_column_name'].upper()
     else:
         table_properties['link_key_column_name'] = "LK_" + remove_stereotype_suffix(table_name).upper()
-        # register_error(f'link_key_column_name is not declared for lnk table {table_name}')
+        # register_error(f'CLP-S2: link_key_column_name is not declared for lnk table {table_name}')
     table_properties['is_link_without_sat'] = cast2Bool(
         dvpd_table_entry.get('is_link_without_sat', False))  # default is false
 
@@ -269,18 +269,18 @@ def collect_lnk_properties(dvpd_table_entry, schema_name, storage_component, tab
                         cleansed_parent_entry['hub_key_column_name_in_link'] = None
                     cleansed_parent_entry['parent_list_position'] = list_position
                 else:
-                    register_error(f'table_name is not declared in link_parent_tables for lnk table {table_name}')
+                    register_error(f"CLP-S3: property 'table_name' is not declared in link_parent_tables for lnk table '{table_name}'")
             else:
                 cleansed_parent_entry['table_name'] = parent_entry.lower()
                 cleansed_parent_entry['relation_name'] = '?'
                 cleansed_parent_entry['hub_key_column_name_in_link'] = None
                 cleansed_parent_entry['parent_list_position'] = list_position
             # else:
-            #    register_error(f'link_parent_tables has bad syntax for lnk table {table_name}')
+            #    register_error(f'CLP-S4:  link_parent_tables has bad syntax for lnk table {table_name}')
             table_properties['link_parent_tables'].append(cleansed_parent_entry)
             table_properties['has_explicit_link_parent_relations'] = has_explicit_link_parent_relations
     else:
-        register_error(f"Declaration of 'link_parent_tables' clause is missing for lnk table '{table_name}'")
+        register_error(f"CLP-S5:  Declaration of 'link_parent_tables' clause is missing for lnk table '{table_name}'")
 
     # finally add this to the global table dictionary
     g_table_dict[table_name] = table_properties
@@ -296,14 +296,14 @@ def collect_sat_properties(dvpd_table_entry, schema_name, storage_component, tab
         , 'is_only_structural_element': False}
 
     if model_profile_name not in g_model_profile_dict:
-        register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
+        register_error(f"CSP-S1:  model profile '{model_profile_name}' for table '{table_name}' is not defined")
         return
     model_profile = g_model_profile_dict[model_profile_name]
 
     if 'satellite_parent_table' in dvpd_table_entry:
         table_properties['satellite_parent_table'] = dvpd_table_entry['satellite_parent_table'].lower()
     else:
-        register_error(f'satellite_parent_table is not declared for satellite table {table_name}')
+        register_error(f'CSP-S2: satellite_parent_table is not declared for satellite table {table_name}')
     table_properties['is_multiactive'] = cast2Bool(dvpd_table_entry.get('is_multiactive', False))  # default is false
     table_properties['compare_criteria'] = dvpd_table_entry.get('compare_criteria', model_profile[
         'compare_criteria_default']).lower()  # default is profile
@@ -344,7 +344,7 @@ def collect_ref_properties(dvpd_table_entry, schema_name, storage_component, tab
         , 'is_only_structural_element': False}
 
     if model_profile_name not in g_model_profile_dict:
-        register_error(f"model profile '{model_profile_name}' for table '{table_name}' is not defined")
+        register_error(f"CRP-S1: model profile '{model_profile_name}' for table '{table_name}' is not defined")
         return
 
     model_profile = g_model_profile_dict[model_profile_name]
