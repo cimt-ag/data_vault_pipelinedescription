@@ -1,7 +1,7 @@
 {
-	"dvpd_version": "0.6.2",
+	"dvpd_version": "0.6.3",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "t1030c_missing_use_key_hash_for_sat",
+	"pipeline_name": "t1030_multiple_use_key_hash_for_link_scenarios",
 	"record_source_name_expression": "dvpd implementation test",
 	"pipeline_comment":"Test for esat creation from business rule.",
 	"data_extraction": {
@@ -24,17 +24,22 @@
 																					 , "hub_key_column_name1": "HK_rtjj_1030_bbb"
  																					 , "is_only_structural_element":true
 																					 }
-				,{"table_name": "rtjj_1030_aaa_bbb_lnk",	"table_stereotype": "lnk"
-																								 ,"link_key_column_name": "LK_rtjj_1030_aaa_bbb"
-																								 ,"link_parent_tables": ["rtjj_1030_aaa_hub","rtjj_1030_bbb_hub"]
-		  																					 , "is_only_structural_element":true
-																								 }
+
 		]
 		},
 				{"schema_name": "bvlt_test_jj", 
 		 "tables": [
-				{"table_name": "btjj_1030_aaa_bbb_esat"	,"table_stereotype": "sat"			,"satellite_parent_table": "rtjj_1030_aaa_bbb_lnk"
+		 		{"table_name": "btjj_1030_aaa_bbb_lnk",	"table_stereotype": "lnk"
+																								 ,"link_key_column_name": "LK_btjj_1030_aaa_bbb"
+																								 ,"link_parent_tables": ["rtjj_1030_aaa_hub","rtjj_1030_bbb_hub"]
+																								 }
+				,{"table_name": "btjj_1030_aaa_bbb_esat"	,"table_stereotype": "sat"			,"satellite_parent_table": "btjj_1030_aaa_bbb_lnk"
 																								}
+				,{"table_name": "btjj_1020_aaa_bbb_sat"	,"table_stereotype": "sat"
+																								,"satellite_parent_table": "rtjj_1030_aaa_bbb_lnk"
+																								,"diff_hash_column_name": "RH_btjj_1030_aaa_bbb_sat"
+																								}
+																							
 				]
 				}
 	]

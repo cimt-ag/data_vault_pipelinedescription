@@ -533,7 +533,7 @@ def derive_content_dependent_hub_properties(table_name, table_entry):
 
     table_entry['has_business_key'] = has_business_key
     if not has_business_key and not table_entry['is_only_structural_element']:
-        register_error(f"Hub table {table_name} has no business key assigned")
+        register_error(f"CDH-S1: Hub table {table_name} has no business key assigned")
 
 
 def derive_content_dependent_lnk_properties(table_name, table_entry):
@@ -541,11 +541,11 @@ def derive_content_dependent_lnk_properties(table_name, table_entry):
 
     for link_parent in table_entry['link_parent_tables']:
         if link_parent['table_name'] not in g_table_dict:
-            register_error(f"link parent table '{link_parent['table_name']}' of link '{table_name}' is not declared")
+            register_error(f"CDL-S1: link parent table '{link_parent['table_name']}' of link '{table_name}' is not declared")
             return
         parent_table = g_table_dict[link_parent['table_name']]
         if parent_table['table_stereotype'] != 'hub':
-            register_error(f"link parent table '{link_parent['table_name']}' of link '{table_name}' is not a hub")
+            register_error(f"CDL-S2: link parent table '{link_parent['table_name']}' of link '{table_name}' is not a hub")
             return
         link_parent['parent_key_column_name'] = parent_table['hub_key_column_name']
 

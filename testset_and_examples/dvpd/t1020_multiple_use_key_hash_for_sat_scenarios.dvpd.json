@@ -1,5 +1,5 @@
 {
-	"dvpd_version": "0.6.1",
+	"dvpd_version": "0.6.2",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "t1020_multiple_use_key_hash_for_sat_scenarios",
 	"record_source_name_expression": "dvpd implementation test",
@@ -10,11 +10,9 @@
 	},
 
 	"fields": [
-				 {"field_name": "HK_rtjj_1020_aaa", 	"field_type": "CHAR(28)",	"targets": [{"table_name":"btjj_1020_aaa_sat"
+				{"field_name": "HK_rtjj_1020_aaa", 	"field_type": "CHAR(28)",	"targets": [{"table_name":"rtjj_1020_aaa_hub"
 																									,"use_as_key_hash":"true"	}]}
-		 	  ,{"field_name": "LK_rtjj_1020_aaa_bbb",	"field_type": "CHAR(28)",	"targets": [{"table_name": "btjj_1020_aaa_bbb_sat"
-																									,"use_as_key_hash":"true"}
-																									,{"table_name": "btjj_1020_aaa_bbb_esat"
+		 	  ,{"field_name": "LK_rtjj_1020_aaa_bbb",	"field_type": "CHAR(28)",	"targets": [{"table_name": "rtjj_1020_aaa_bbb_lnk"
 																									,"use_as_key_hash":"true"}]}
 		 	  ,{"field_name": "F3_AAA_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "btjj_1020_aaa_sat"}]}
 			  ,{"field_name": "F4_AAA_C2F",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "btjj_1020_aaa_sat"}]}
@@ -32,25 +30,25 @@
  																					 , "is_only_structural_element":true
 																					 }
 				,{"table_name": "rtjj_1020_aaa_bbb_lnk",	"table_stereotype": "lnk"
-																								 ,"link_key_column_name": "LK_rtjj_1020_aaa_bbb"
-																								 ,"link_parent_tables": ["rtjj_1020_aaa_hub","rtjj_1020_bbb_hub"]
-		  																					 , "is_only_structural_element":true
-																								 }
+																					 ,"link_key_column_name": "LK_rtjj_1020_aaa_bbb"
+																					 ,"link_parent_tables": ["rtjj_1020_aaa_hub","rtjj_1020_bbb_hub"]
+		  																			 , "is_only_structural_element":true
+																					 }
 		]
 		},
 				{"schema_name": "bvlt_test_jj", 
 		 "tables": [
-		 				{"table_name": "btjj_1020_aaa_sat"		,"table_stereotype": "sat"
+		 		{"table_name": "btjj_1020_aaa_sat"		,"table_stereotype": "sat"
 																							,"satellite_parent_table": "rtjj_1020_aaa_hub"
 																							,"diff_hash_column_name": "rh_btjj_1020_aaa_sat"
 																							}
 				,{"table_name": "btjj_1020_aaa_bbb_sat"	,"table_stereotype": "sat"
-																								,"satellite_parent_table": "rtjj_1020_aaa_bbb_lnk"
-																								,"diff_hash_column_name": "RH_btjj_1020_aaa_bbb_sat"
-																								}
+																							,"satellite_parent_table": "rtjj_1020_aaa_bbb_lnk"
+																							,"diff_hash_column_name": "RH_btjj_1020_aaa_bbb_sat"
+																							}
 				,{"table_name": "btjj_1020_aaa_bbb_esat"	,"table_stereotype": "sat"
-																									,"satellite_parent_table": "rtjj_1020_aaa_bbb_lnk"
-																									}
+																							,"satellite_parent_table": "rtjj_1020_aaa_bbb_lnk"
+																							}
 				]
 				}
 	]
