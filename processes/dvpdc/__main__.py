@@ -59,6 +59,36 @@ def print_the_brain():
     print("JSON of g_hash_dict:")
     print(json.dumps(g_hash_dict, indent=2, sort_keys=True))
 
+def dump_the_brain(dvpdc_report_path, dvpd_file_name):
+
+    dvpdc_report_directory = Path(dvpdc_report_path)
+    dvpdc_report_directory.mkdir(parents=True, exist_ok=True)
+    dvpd_file_path = Path(dvpd_file_name)
+
+
+    braindump_filename = dvpd_file_path.name.replace('.json', '').replace('.dvpd', '') + ".braindump.json"
+
+    braindump_file_path = dvpdc_report_directory.joinpath(braindump_filename)
+
+
+    with open(braindump_file_path, "w") as braindump_file:
+        braindump_file.write('{"==========DVPDC BRAIN DUMP ==========":{\n')
+
+        braindump_file.write('"JSON of g_model_profile_dict":')
+        braindump_file.write(json.dumps(g_model_profile_dict, indent=2, sort_keys=True))
+
+        braindump_file.write(',\n"JSON of g_field_dict:":')
+        braindump_file.write(json.dumps(g_field_dict, indent=2, sort_keys=True))
+
+        braindump_file.write(',\n"JSON of g_table_dict:":')
+        braindump_file.write(json.dumps(g_table_dict, indent=2, sort_keys=True))
+
+        braindump_file.write(',\n"JSON of g_hash_dict:":')
+        braindump_file.write(json.dumps(g_hash_dict, indent=2, sort_keys=True))
+
+        braindump_file.write('\n}')
+
+
 
 def print_dvpi_document():
     print("DVPI :")
@@ -2163,6 +2193,8 @@ if __name__ == "__main__":
     parser.add_argument("--report_directory", help="Name of the report file (defaults to filename + .dvpdc.log")
     parser.add_argument("--print_brain", help="When set, the compiler will print its internal data structure to stdout",
                         action='store_true')
+    parser.add_argument("--dump_brain", help="When set, the compiler will print its internal data structure to stdout",
+                        action='store_true')
     parser.add_argument("--verbose", help="Log more information about progress", action='store_true')
 
     # parser.add_argument("-l","--log filename", help="Name of the report file (defaults to filename + .dvpdc.log")
@@ -2173,6 +2205,12 @@ if __name__ == "__main__":
     if dvpd_filename == '@youngest':
         dvpd_filename = get_name_of_youngest_dvpd_file(ini_file=args.ini_file)
 
+    #determine report path also here for print brain (will be done again in dvpcd for encapsulation)
+    report_directory_name=args.report_directory
+    if report_directory_name==None:
+        params = configuration_load_ini(args.ini_file, 'dvpdc')
+        report_directory_name=params['dvpdc_report_default_directory']
+
     try:
         dvpdc(dvpd_filename=dvpd_filename,
               dvpi_directory=args.dvpi_directory,
@@ -2181,15 +2219,23 @@ if __name__ == "__main__":
               model_profile_directory=args.model_profile_directory,
               verbose_logging=args.verbose
               )
+
+
         if args.print_brain:
             print_the_brain()
+        if args.dump_brain:
+                dump_the_brain(report_directory_name,dvpd_filename)
     except DvpdcError:
         if args.print_brain:
             print_the_brain()
+        if args.dump_brain:
+                dump_the_brain(report_directory_name,dvpd_filename)
         print("*** DVPD compiler stopped compilation due to errors DVPD input ***\n")
         exit(5)
 
     except Exception:
         if args.print_brain:
             print_the_brain()
+        if args.dump_brain:
+                dump_the_brain(report_directory_name,dvpd_filename)
         raise
