@@ -415,62 +415,69 @@ def create_columns_from_field_mapping(field_entry, field_position):
     for table_mapping in field_entry['targets']:
         table_name = table_mapping['table_name'].lower()
         if not table_name in g_table_dict:
-            register_error(f"Can't map field {field_name} to table {table_name}. Table is not declared in the model")
+            register_error(f"CFM-2: Can't map field {field_name} to table {table_name}. Table is not declared in the model")
             continue
         table_entry = g_table_dict[table_name]
-        column_map_entry = {}
-        column_name = table_mapping.get('column_name', field_name).upper()  # defaults to field name
-        column_map_entry['field_name'] = field_name
-        column_map_entry['field_position'] = field_position
-        column_map_entry['column_type'] = table_mapping.get('column_type',
-                                                            field_entry['field_type']).upper()  # defaults to field type
-        column_map_entry['use_as_key_hash'] = table_mapping.get('use_as_key_hash', False)  # defaults to False
-        if 'is_multi_active_key' in table_mapping:
-            if table_entry['table_stereotype'] == 'sat':
-                column_map_entry['is_multi_active_key'] = table_mapping.get('is_multi_active_key')
-            else:
-                register_error(
-                    "CFM-1: 'is_multi_avtive_key' property declared for non-sat entity. (property can only be declared if target is a multi-active satellite)")
-        if not column_map_entry['use_as_key_hash']:
-            column_map_entry['row_order_direction'] = table_mapping.get('row_order_direction', 'ASC')  # defaults to ASC
-            column_map_entry['exclude_from_key_hash'] = table_mapping.get('exclude_from_key_hash',
-                                                                          False)  # defaults to False
-            column_map_entry['exclude_from_change_detection'] = table_mapping.get('exclude_from_change_detection',
-                                                                                  False)  # defaults to False
-            column_map_entry['column_content_comment'] = table_mapping.get('column_content_comment',
-                                                                           field_entry.get('field_comment'))
-            column_map_entry['update_on_every_load'] = table_mapping.get('update_on_every_load',
-                                                                         False)  # defaults to False
-            try:
-                column_map_entry['prio_in_key_hash'] = int(table_mapping.get('prio_in_key_hash', 0))  # defaults to 0
-                column_map_entry['prio_for_column_position'] = int(
-                    table_mapping.get('prio_for_column_position', 50000))  # defaults to 50000
-                column_map_entry['prio_for_row_order'] = int(
-                    table_mapping.get('prio_for_row_order', 50000))  # defaults to 50000
-                column_map_entry['prio_in_diff_hash'] = int(table_mapping.get('prio_in_diff_hash', 0))  # defaults to 0
-            except ValueError as ve:
-                register_error(
-                    f"Error when reading numerical properties from  mapping of field '{field_name}' to table '{table_name}':" + str(
-                        ve))
+
+        # Assemble the basic mapping entry
 
         relation_names_cleansed = []  # of no relation is declared, at least an empty array will be attached as 'relation_names'
         if 'relation_names' in table_mapping:
             for relation_name in table_mapping['relation_names']:
                 # todo test if relation_name is a string object
                 relation_names_cleansed.append(relation_name.upper())
-        column_map_entry['relation_names'] = relation_names_cleansed
-        # announced property: hash_cleansing_rules
 
-        # finally add this field mapping to the columns array of the table in g_table_dict
-        if not column_map_entry['use_as_key_hash']:
-            if not 'data_columns' in table_entry:
+        column_map_entry = {'field_name':field_name,
+                            'field_position':field_position,
+                            'relation_names':relation_names_cleansed}
+
+        # assemble direct key mapping, and store it as table property
+        if table_mapping.get('use_as_key_hash', False):
+            if table_entry['table_stereotype'] != 'hub' and table_entry['table_stereotype'] != 'lnk':
+                #todo: create test for CFM-3
+                register_error(
+                    f"CFM-3: 'use_as_key_hash' only possible for mappings to hubs and links. Can't map field '{field_name}' to table '{table_name}'")
+                continue
+            if not 'direct_key_mappings' in table_entry:
+                table_entry['direct_key_mappings'] = []
+            table_entry['direct_key_mappings'].append(column_map_entry)
+            continue
+
+        # assemble data column mapping
+        column_name = table_mapping.get('column_name', field_name).upper()  # defaults to field name
+        column_map_entry['column_type'] = table_mapping.get('column_type',
+                                                            field_entry['field_type']).upper()  # defaults to field type
+        if 'is_multi_active_key' in table_mapping:
+            if table_entry['table_stereotype'] == 'sat':
+                column_map_entry['is_multi_active_key'] = table_mapping.get('is_multi_active_key')
+            else:
+                register_error(
+                    "CFM-1: 'is_multi_avtive_key' property declared for non-sat entity. (property can only be declared if target is a multi-active satellite)")
+        column_map_entry['row_order_direction'] = table_mapping.get('row_order_direction', 'ASC')  # defaults to ASC
+        column_map_entry['exclude_from_key_hash'] = table_mapping.get('exclude_from_key_hash',
+                                                                      False)  # defaults to False
+        column_map_entry['exclude_from_change_detection'] = table_mapping.get('exclude_from_change_detection',
+                                                                              False)  # defaults to False
+        column_map_entry['column_content_comment'] = table_mapping.get('column_content_comment',
+                                                                       field_entry.get('field_comment'))
+        column_map_entry['update_on_every_load'] = table_mapping.get('update_on_every_load',
+                                                                     False)  # defaults to False
+        try:
+            column_map_entry['prio_in_key_hash'] = int(table_mapping.get('prio_in_key_hash', 0))  # defaults to 0
+            column_map_entry['prio_for_column_position'] = int(
+                table_mapping.get('prio_for_column_position', 50000))  # defaults to 50000
+            column_map_entry['prio_for_row_order'] = int(
+                table_mapping.get('prio_for_row_order', 50000))  # defaults to 50000
+            column_map_entry['prio_in_diff_hash'] = int(table_mapping.get('prio_in_diff_hash', 0))  # defaults to 0
+        except ValueError as ve:
+            register_error(
+                f"Error when reading numerical properties from  mapping of field '{field_name}' to table '{table_name}':" + str(
+                    ve))
+
+        # add the data column mapping to the data columns dictionary of the table
+        if not 'data_columns' in table_entry:
                 table_entry['data_columns'] = {}
-            column_dict = table_entry['data_columns']
-        else:
-            if not 'direct_key_hash_columns' in table_entry:
-                table_entry['direct_key_hash_columns'] = {}
-            column_dict = table_entry['direct_key_hash_columns']
-
+        column_dict = table_entry['data_columns']
         if not column_name in column_dict:
             column_dict[column_name] = {}
         theColumn = column_dict[column_name]
@@ -532,9 +539,13 @@ def derive_content_dependent_hub_properties(table_name, table_entry):
             add_generic_relation_mappings(column_properties)
 
     table_entry['has_business_key'] = has_business_key
+
+    if 'direct_key_mappings' in table_entry:
+        for direct_key_properties in table_entry['direct_key_mappings']:
+            add_generic_relation_mappings_to_field_mapping_of_column(direct_key_properties)
+
     if not has_business_key and not table_entry['is_only_structural_element']:
         register_error(f"CDH-S1: Hub table {table_name} has no business key assigned")
-
 
 def derive_content_dependent_lnk_properties(table_name, table_entry):
     global g_table_dict
@@ -587,11 +598,6 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
         if parent_table_stereotype != 'lnk':
             register_error(f"Satellite '{table_name}' declares driving Key, but parent is not a link")
 
-    if 'direct_key_hash_columns' in table_entry:
-        for column_name, column_properties in table_entry['direct_key_hash_columns'].items():
-            column_properties['column_class'] = 'parent_key'
-            add_generic_relation_mappings(column_properties)
-
     if table_entry['is_effectivity_sat']:
         return  # without any columns, we are done here
 
@@ -627,21 +633,23 @@ def derive_content_dependent_ref_properties(table_name, table_entry):
             column_properties[property_name] = first_field[property_name]
         add_generic_relation_mappings(column_properties)
 
-
 def add_generic_relation_mappings(column_properties):
+    for field_entry in column_properties['field_mappings']:
+        add_generic_relation_mappings_to_field_mapping_of_column(field_entry)
+
+def add_generic_relation_mappings_to_field_mapping_of_column(field_entry):
     """STEP 1 of operation deduction procedure
        Field mappings for every column, that have no relation names yet, will be placed in the "/" relation
        (the 'relation_names' list is created by create_columns_from_field_mapping but can be emtpy)"""
-    for field_entry in column_properties['field_mappings']:
-        if len(field_entry['relation_names']) == 0:
-            field_entry['relation_names'].append('/')
-            field_entry['implict_unnamed_relation'] = True
-        else:
-            field_entry['implict_unnamed_relation'] = False
-        if '*' in field_entry['relation_names'] and len(field_entry['relation_names']) > 1:
-            register_error(
-                f"When using '*' as relation names, this must be the only relation in the 'relation_names' for a table mapping. This is violated by  '{field_entry['field_name']}'")
-            # todo: add test to trigger the upper error
+    if len(field_entry['relation_names']) == 0:
+        field_entry['relation_names'].append('/')
+        field_entry['implict_unnamed_relation'] = True
+    else:
+        field_entry['implict_unnamed_relation'] = False
+    if '*' in field_entry['relation_names'] and len(field_entry['relation_names']) > 1:
+        register_error(
+            f"When using '*' as relation names, this must be the only relation in the 'relation_names' for a table mapping. This is violated by  '{field_entry['field_name']}'")
+        # todo: add test to trigger the upper error
 
 def derive_load_operations():
     global g_table_dict
@@ -708,22 +716,21 @@ def determine_load_operations_from_relations_in_mappings():
                 if not has_generic_mapping:
                     has_generic_mapping_for_all_columns = False
 
-        if 'direct_key_hash_columns' in table_entry:
-            for direct_key_column in table_entry['direct_key_hash_columns'].values():
+        if 'direct_key_mappings' in table_entry:
                 has_generic_mapping = False
-                for field_mapping in direct_key_column['field_mappings']:
-                    for relation_name in field_mapping['relation_names']:
+                for direct_key_mapping in table_entry['direct_key_mappings']:
+                    for relation_name in direct_key_mapping['relation_names']:
                         if relation_name != '*':
                             load_operations[relation_name] = {"operation_origin": "field mapping relation",
                                                               "mapping_set": relation_name}
-                            if not field_mapping['implict_unnamed_relation']:
+                            if not direct_key_mapping['implict_unnamed_relation']:
                                 has_implicit_unnamed_mapping_for_all_columns = False
                         else:
                             has_generic_mapping = True
                 if not has_generic_mapping:
                     has_generic_mapping_for_all_columns = False
 
-        if 'data_columns' in table_entry or 'direct_key_hash_columns' in table_entry:
+        if 'data_columns' in table_entry or 'direct_key_mappings' in table_entry:
             if len(load_operations) == 0:  # no mapping generated a load operation (all mappings are * mappings)
                 table_entry['data_is_mapped_to_generic_relation'] = True
 
@@ -918,14 +925,7 @@ def pull_parent_operations_into_sat():
                     f"DLO-70: Sat '{sat_table_name}' got multiple induced relations ('{sat_operation_list_string}') from parent,but have no '*' relation set. ")
 
 
-def add_data_mapping_dict_to_load_operations():
-    global g_table_dict
-    for table_name, table_entry in g_table_dict.items():
-        for load_operation_name, load_operation in table_entry['load_operations'].items():
-            log_function_step('add_data_mapping_dict_to_load_operations', f"{table_name}:{load_operation_name}")
-            if 'data_columns' in table_entry:
-                add_data_mapping_dict_for_one_load_operation(table_name, table_entry, load_operation['mapping_set'],
-                                                             load_operation)
+
 
 
 def add_hash_columns():
@@ -982,14 +982,15 @@ def add_hash_column_mappings_for_hub(table_name, table_entry):
 
         # assemble the columns and fields for this hash from the load operations data_mapping_dict
         hash_fields = []
-        for column_name, column_entry in load_operation_entry['data_mapping_dict'].items():
-            if column_entry['exclude_from_key_hash']:
-                continue
-            hash_field = {'field_name': column_entry['field_name'],
-                          'prio_in_key_hash': column_entry['prio_in_key_hash'],
-                          'field_target_table': table_name,
-                          'field_target_column': column_name}
-            hash_fields.append(hash_field)
+        if 'data_mapping_dict' in load_operation_entry:
+            for column_name, column_entry in load_operation_entry['data_mapping_dict'].items():
+                if column_entry['exclude_from_key_hash']:
+                    continue
+                hash_field = {'field_name': column_entry['field_name'],
+                              'prio_in_key_hash': column_entry['prio_in_key_hash'],
+                              'field_target_table': table_name,
+                              'field_target_column': column_name}
+                hash_fields.append(hash_field)
 
         # put hash definition into global list
         hash_description = {"stage_column_name": stage_column_name,
@@ -1171,62 +1172,32 @@ def add_hash_column_mappings_for_sat(table_name, table_entry):
         hash_mapping_dict = {}
         load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
 
-        if 'direct_key_hash_columns' in table_entry:  # hash value is delivered directly from source
+        # determine key hash from parent table
 
-            # hash column name must be key name of satellite (default ist the key name of the  parent)
-            if satellite_parent_table['table_stereotype'] == 'hub':
-                sat_key_column_name = satellite_parent_table['hub_key_column_name']
-            elif satellite_parent_table['table_stereotype'] == 'lnk':
-                sat_key_column_name = satellite_parent_table['link_key_column_name']
-            else:
-                raise f"***This should not happen***. Parent of satellite '{table_name}' is not a link or hub, even " \
-                      f"though it had been checked in 'derive_content_dependent_sat_properties'"
+        parent_load_operations = satellite_parent_table['load_operations']
 
-            # The Load operation must be covered exactly once in key_hash_field_mapping
-            field_mapping_to_use = None
-            for field_mapping in table_entry['direct_key_hash_columns'][sat_key_column_name]['field_mappings']:
-                if load_operation_name in field_mapping['relation_names'] or '*' in field_mapping['relation_names']:
-                    if field_mapping_to_use == None:
-                        field_mapping_to_use = field_mapping
-                    else:
-                        register_error(
-                            f"AHS-S3: Duplicate field mapping to '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
-                        return
-            if field_mapping_to_use == None:
-                register_error(
-                    f"AHS-S4: Missing field mapping to key column '{sat_key_column_name}' of satellite '{table_name}' for relation operation '{load_operation_name}'")
-                return
+        if not load_operation_name in parent_load_operations:
+            register_error(
+                f"AHS-S5: Parent table '{table_entry['satellite_parent_table']}' has no load operation for relation '{load_operation_name}' requiered for satellite '{table_name}'")
+            return
 
-            satellite_parent_table_key_column_name = sat_key_column_name
-            sat_key_hash_reference = {"field_name": field_mapping_to_use['field_name'],
-                                      "hash_column_name": sat_key_column_name}
+        parent_load_operation = parent_load_operations[load_operation_name]
+        parent_hash_reference_dict = parent_load_operation['hash_mapping_dict']
+        parent_key_hash_reference = parent_hash_reference_dict['key']
+        satellite_parent_table_key_column_name = parent_key_hash_reference['hash_column_name']
 
-        else:  # hash value must be defined by parent
+        sat_key_column_name = parent_key_hash_reference[
+            'hash_column_name']  # currently the same as parent. Might be overwritten by sat propetery later
 
-            parent_load_operations = satellite_parent_table['load_operations']
+        if 'hash_name' not in parent_key_hash_reference:
+            # todo: create compiler check test case to trigger this message
+            register_error(
+                f"AHS-S6: Parent table '{table_entry['satellite_parent_table']}' for satellite '{table_name}' has no hash calculation for {satellite_parent_table_key_column_name}. You may need a 'use_as_key_hash' mapping to the satellite.")
+            return
 
-            if not load_operation_name in parent_load_operations:
-                register_error(
-                    f"AHS-S5: Parent table '{table_entry['satellite_parent_table']}' has no load operation for relation '{load_operation_name}' requiered for satellite '{table_name}'")
-                return
-
-            parent_load_operation = parent_load_operations[load_operation_name]
-            parent_hash_reference_dict = parent_load_operation['hash_mapping_dict']
-            parent_key_hash_reference = parent_hash_reference_dict['key']
-            satellite_parent_table_key_column_name = parent_key_hash_reference['hash_column_name']
-
-            sat_key_column_name = parent_key_hash_reference[
-                'hash_column_name']  # currently the same as parent. Might be overwritten by sat propetery later
-
-            if 'hash_name' not in parent_key_hash_reference:
-                # todo: create compiler check test case to trigger this message
-                register_error(
-                    f"AHS-S6: Parent table '{table_entry['satellite_parent_table']}' for satellite '{table_name}' has no hash calculation for {satellite_parent_table_key_column_name}. You may need a 'use_as_key_hash' mapping to the satellite.")
-                return
-
-            # put reference to hash description in load operation hash list
-            sat_key_hash_reference = {"hash_name": parent_key_hash_reference['hash_name'],
-                                      "hash_column_name": sat_key_column_name}
+        # put reference to hash description in load operation hash list
+        sat_key_hash_reference = {"hash_name": parent_key_hash_reference['hash_name'],
+                                  "hash_column_name": sat_key_column_name}
 
         hash_mapping_dict['parent_key'] = sat_key_hash_reference
 
@@ -1361,6 +1332,17 @@ def add_hash_column_mappings_for_ref(table_name, table_entry):
             table_hash_columns[diff_hash_column_name] = {"column_class": "diff_hash",
                                                          "column_type": diff_hash_column_type}
 
+def add_data_mapping_dict_to_load_operations():
+    global g_table_dict
+    for table_name, table_entry in g_table_dict.items():
+        for load_operation_name, load_operation in table_entry['load_operations'].items():
+            if 'data_columns' in table_entry:
+                log_function_step('add_data_mapping_dict_to_load_operations', f"{table_name}:{load_operation_name}")
+                add_data_mapping_dict_for_one_load_operation(table_name, table_entry, load_operation['mapping_set'],
+                                                             load_operation)
+            if 'direct_key_mappings' in table_entry:
+                add_direct_key_mapping_for_one_load_operation(table_name, table_entry, load_operation['mapping_set'],
+                                                             load_operation)
 
 def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, mapping_set_name, load_operation):
     data_mapping_dict = {}
@@ -1404,6 +1386,46 @@ def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, mappin
     # finally add the data mapping dict to the load operation, when mappings have been found
     if len(data_mapping_dict) > 0:
         load_operation['data_mapping_dict'] = data_mapping_dict
+
+
+def add_direct_key_mapping_for_one_load_operation(table_name, table_entry, mapping_set_name, load_operation):
+    data_mapping_dict = {}
+    default_field_name = None
+    explicit_mapped_field_name = None
+
+    # search in all direct key mappings for the specified mapping set
+    for field_mapping in table_entry['direct_key_mappings']:
+        for mapping_relation_name in field_mapping['relation_names']:
+
+            if mapping_relation_name == mapping_set_name:
+                if explicit_mapped_field_name == None:
+                    explicit_mapped_field_name = field_mapping['field_name']
+                else:
+                    #todo: add test for DKL-1
+                    register_error(
+                        f"DKL-1:Found more then one direct key mapping for relation '{mapping_set_name}' for table '{table_name}'")
+
+            if mapping_relation_name == "*":
+                if default_field_name == None:
+                    default_field_name = field_mapping['field_name']
+                else:
+                    #todo: add test for DKL-2
+                    register_error(
+                        f"DKL-2:Duplicate default field mappings for direct key for table {table_name}")
+
+    # Add the identified field name
+    if explicit_mapped_field_name != None:
+        load_operation['direct_key_field']= explicit_mapped_field_name
+        return   # we found the best solution
+
+    if default_field_name != None:
+        load_operation['direct_key_field']= default_field_name
+        return   # we use the default  solution
+
+    #no solution found
+    #todo: add test for DKL-3
+    register_error(
+        f"DKL-3: Could not determine direct key mapping for relation '{mapping_set_name}' for table '{table_name}'")
 
 
 def copy_data_column_properties_to_operation_mapping(data_mapping_dict, data_column):
