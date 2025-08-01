@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-06-12 12:25:28
+Compiling t1014_json_path_field_syntax.dvpd.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t1014_json_path_field_syntax.dvpi.json
+--- Compile successfull ---

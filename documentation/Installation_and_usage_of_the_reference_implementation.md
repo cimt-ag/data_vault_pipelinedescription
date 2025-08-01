@@ -268,9 +268,10 @@ Options:
 - --stage_column_naming_rule={stage|combined} : stage = pure generated stage column names are used in the stage combined= combination of target column names and stage column names
 
 Settings read from .ini file:
-- dvpi_default_directory
-- ddl_root_directory
-- stage_column_naming_rule
+- dvpi_default_directory - The directory where the generator searches for the dvpi-files
+- ddl_root_directory - The directory where the generator writes the ddl's into (creating subdirectorie for every schema)
+- stage_column_naming_rule - the column naming rule (see option above)
+- ddl_stage_directory_name - name of the subdirectory for stage table ddl scripts
 
 ### Purpose of the "combined" stage table generation rule
 Some data vault loading frameworks (e.g. cimt talend framework) use similarity of column names between stage table and target
@@ -298,6 +299,11 @@ When using the file name "@youngest", the script uses the youngest file in the d
 Options:
 - --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
 - --print: prints the html text to the console
+
+Settings read from dvpdc.ini file, section "datavault4dbt":
+- dvpd_default_directory - The directory where the generator searches for the dvpd-files
+- documentation_directory        - The directory where the datavault4dbt model files will be written to
+- documentation_column_labels - Column text for the 3 Colums in the mapping table separated by comma: field,type,mapping
 
 ## Developer sheet generator (dvpd_devsheet_render)
 The developer sheet is a human-readable text file, providing the essential key information

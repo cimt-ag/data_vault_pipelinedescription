@@ -1,3 +1,17 @@
+# release 0.6.3
+
+### other features
+* DDL render: added configuration to set name for directory of stage table ddl files 
+
+### bugfixes
+* DDL render: Now puts key column of satellite first in the primary key definition
+
+# release 0.6.2a
+- added JSON type to ghost record generator
+- DDL generator will add load date column to primary key of satellites in 
+- dev sheet shows json exclude/include declarations
+- dvpi filename will be logged by crosscheck in case of json formatting issues
+
 # release 0.6.2
  
 ### major features
