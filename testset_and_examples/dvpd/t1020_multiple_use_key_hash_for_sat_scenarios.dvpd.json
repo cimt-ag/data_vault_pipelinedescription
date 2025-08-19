@@ -3,7 +3,7 @@
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "t1020_multiple_use_key_hash_for_sat_scenarios",
 	"record_source_name_expression": "dvpd implementation test",
-	"pipeline_comment":"Multi case test for 'use_as_key_hash' on satellites.",
+	"pipeline_comment":"Multi case test for 'use_as_key_hash' on satellites. ",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
 		,"Query":"Select HK_AAA,LK_AAA_BBB, somethin as AAA_C1, somethin as AAA_BBB_C2, somethin as AAA_BBB_C2F From all tables you need to achieve this"
@@ -17,8 +17,8 @@
 		 	  ,{"field_name": "F3_AAA_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "btjj_1020_aaa_sat"}]}
 			  ,{"field_name": "F4_AAA_C2F",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "btjj_1020_aaa_sat"}]}
 			  ,{"field_name": "F5_AAA_BBB_C1F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "btjj_1020_aaa_bbb_sat"}]}
-			  ,{"field_name": "F6_CCC_BK1F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1020_ccc_hub"}]}
-			  ,{"field_name": "F7_DDD_BK1F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1020_ddd_hub"}]}
+			  ,{"field_name": "F6_GGG_BK1F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtnn_1020_ggg_hub"}]}
+			  ,{"field_name": "F7_HHH_BK1F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtnn_1020_hhh_hub"}]}
 			 ], 
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
@@ -36,13 +36,9 @@
 																					 ,"link_parent_tables": ["rtjj_1020_aaa_hub","rtjj_1020_bbb_hub"]
 		  																			 , "is_only_structural_element":true
 																					 }
-				,{"table_name": "rtjj_1020_ccc_hub",			"table_stereotype": "hub"}
-				,{"table_name": "rtjj_1020_ddd_hub", 		"table_stereotype": "hub"}
-				,{"table_name": "rtjj_1020_ccc_ddd_lnk",	"table_stereotype": "lnk"
-															 ,"link_parent_tables": ["rtjj_1020_ccc_hub","rtjj_1020_ddd_hub"]}
 		]
-		},
-				{"schema_name": "bvlt_test_jj", 
+		}
+		,{"schema_name": "bvlt_test_jj", 
 		 "tables": [
 		 		{"table_name": "btjj_1020_aaa_sat"		,"table_stereotype": "sat"
 																							,"satellite_parent_table": "rtjj_1020_aaa_hub"
@@ -57,5 +53,13 @@
 																							}
 				]
 				}
+		,{"schema_name": "rvlt_test_nn", 
+		 "tables": [
+				{"table_name": "rtnn_1020_ggg_hub",			"table_stereotype": "hub"}
+				,{"table_name": "rtnn_1020_hhh_hub", 		"table_stereotype": "hub"}
+				,{"table_name": "rtnn_1020_ggg_hhh_lnk",	"table_stereotype": "lnk"
+															 ,"link_parent_tables": ["rtnn_1020_ggg_hub","rtnn_1020_hhh_hub"]}
+		]
+		}
 	]
 }

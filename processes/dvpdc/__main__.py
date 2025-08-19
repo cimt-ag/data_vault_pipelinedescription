@@ -34,6 +34,10 @@ from lib.exceptions import DvpdcError
 import json
 from datetime import datetime
 
+#  ----------- Global Variables ---------
+# They are the "Blackboard" or "Brain" and contain the internal model of the dvpd, that is developed and read
+# during the compilation and rendereing procedurre
+
 g_error_count = 0
 g_table_dict = {}
 g_field_dict = {}
@@ -45,8 +49,12 @@ g_verbose_logging = False
 
 g_logfile = None
 
+# ----------  Utiltity Functions  ---------------------
 
 def print_the_brain():
+    """
+    Prints all global variablees of the "brain" to the console for debugging
+    """
     print("JSON of g_model_profile_dict:")
     print(json.dumps(g_model_profile_dict, indent=2, sort_keys=True))
 
@@ -60,7 +68,9 @@ def print_the_brain():
     print(json.dumps(g_hash_dict, indent=2, sort_keys=True))
 
 def dump_the_brain(dvpdc_report_path, dvpd_file_name):
-
+    """
+    Writes all global variables as json text to a file for debugging
+    """
     dvpdc_report_directory = Path(dvpdc_report_path)
     dvpdc_report_directory.mkdir(parents=True, exist_ok=True)
     dvpd_file_path = Path(dvpd_file_name)
@@ -91,11 +101,21 @@ def dump_the_brain(dvpdc_report_path, dvpd_file_name):
 
 
 def print_dvpi_document():
+    """
+    Print the DVPI to the console
+    """
     print("DVPI :")
     print(json.dumps(g_dvpi_document, indent=2))
 
 
 def log_function_step(function_name, message):
+    """
+    Print a function specific message to the console and write it to the log file
+
+    Args:
+        function_name: Name of the function, that logs the message
+        message: Sting with the message
+    """
     if not g_verbose_logging:
         return
     log_text = f"{function_name}: {message}"
@@ -105,6 +125,12 @@ def log_function_step(function_name, message):
 
 
 def register_error(message):
+    """
+    Increase the global error count, print thea error message to the console and write it to the log file
+
+    Args:
+        message: Sting with the message
+    """
     global g_error_count
     print("compile error:" + message)
     g_logfile.write(message)
@@ -113,14 +139,35 @@ def register_error(message):
 
 
 def log_progress(message):
+    """
+    Print a message to the console and write it to the log file
+    Args:
+        message: Sting with the message
+    """
     print(message)
     g_logfile.write(message)
     g_logfile.write("\n")
 
+def cast2Bool(boolCandidate):
+    """
+    Convert a variety of boolean data representation into a python boolean value
+    """
+    if isinstance(boolCandidate, bool):
+        return boolCandidate
+    if isinstance(boolCandidate, str):
+        return boolCandidate.lower() == 'true'
+    if isinstance(boolCandidate, int):
+        return boolCandidate != 0
+    raise Exception(f"can't cast '{boolCandidate}' to bool")
+
+#  ----------------- Best Practice utility functions --------------------------------
+
 
 def remove_stereotype_suffix(table_name):
-    """Removes cimt best practice stereotype suffixes from table names, so the name can be used for specific column name
-    derivation """
+    """
+    Removes cimt best practice stereotype suffixes from table names, so the name can be used for specific column name
+    derivation
+    """
     triggering_suffixes = ['hub', 'lnk', 'sat', 'ref']
     words = table_name.split("_")
     reduced_table_name = table_name
@@ -133,18 +180,18 @@ def remove_stereotype_suffix(table_name):
     return reduced_table_name
 
 
-def cast2Bool(boolCandidate):
-    if isinstance(boolCandidate, bool):
-        return boolCandidate
-    if isinstance(boolCandidate, str):
-        return boolCandidate.lower() == 'true'
-    if isinstance(boolCandidate, int):
-        return boolCandidate != 0
-    raise Exception(f"can't cast '{boolCandidate}' to bool")
+# --------- model profile handling functions
 
 
 def load_model_profiles(full_directory_name):
-    """Runs through model profile files and tries to load them"""
+    """
+    Runs through model profile files and tries to load them.
+
+    Args:
+        full_directory_name: Name of the directory to search for model profile files
+
+    Registers errors by its sub function
+    """
     directory = Path(full_directory_name)
 
     name_pattern_matcher = re.compile(".+profile.json$")
@@ -154,7 +201,17 @@ def load_model_profiles(full_directory_name):
 
 
 def add_model_profile_file(file_to_process: Path):
-    """Parses one model profile file, validates it and adds it to the internal dictionary"""
+    """
+    Parses one model profile file, validates it and adds it to the internal g_model_profile_dict
+
+
+    Args: Path to the model profile
+
+    Brain changes:
+        g_model_profile_dict with the model profile name as key word
+
+    Registers errors
+    """
     global g_model_profile_dict
 
     file_name = file_to_process.name
@@ -185,9 +242,17 @@ def add_model_profile_file(file_to_process: Path):
             register_error("duplicate declaration of model profile '{0}' in '{1}'. Already read from '{2}'".format(
                 model_profile_name, file_name, g_model_profile_dict[model_profile_name]['model_profile_file_name']))
 
+# -----------  functions, that transfer the data from the dvpd file into the brain structure ----------
 
-def check_essential_element(dvpd_object):
-    """Check for the essential keys, that are needed to identify the main objects"""
+def check_essential_structure(dvpd_object):
+    """
+    Check for the essential keys in the dvpd, that are needed to identify the main objects
+
+    Args:
+        dvpd_objet: The parsed (unmodified) dvpd json structure
+
+    Registers errors
+    """
 
     global g_pipeline_model_profile
 
@@ -236,9 +301,61 @@ def check_essential_element(dvpd_object):
                     register_error(
                         f"CEE-S7: missing declaration of 'table_name' for field [{field_count}], target [{target_count}] ")
 
+def collect_table_properties(dvpd_object):
+    """
+    collect and cleanse all necessary table properties
+    Args:
+        dvpd_objet: The parsed (unmodified) dvpd json structure
+
+    Brain changes:
+        by subfunctions
+
+    Registers errors by itself and subfunctions
+    """
+    for schema_entry in dvpd_object['data_vault_model']:
+        schema_name = schema_entry['schema_name'].lower()
+        storage_component = schema_entry.get('storage_component', '').lower()
+        for table_entry in schema_entry['tables']:
+            if g_table_dict.get(table_entry['table_name'].lower()):
+                register_error(
+                    f"table_name '{table_entry['table_name']}' has already been defined. table_name must be unique in the model")
+                continue
+
+            table_comment = table_entry['table_comment'] if 'table_comment' in table_entry else None
+
+            match table_entry['table_stereotype'].lower():
+                case 'hub':
+                    collect_hub_properties(table_entry, schema_name, storage_component, table_comment)
+                case 'lnk':
+                    collect_lnk_properties(table_entry, schema_name, storage_component, table_comment)
+                case 'sat':
+                    collect_sat_properties(table_entry, schema_name, storage_component, table_comment)
+                case 'ref':
+                    collect_ref_properties(table_entry, schema_name, storage_component, table_comment)
+                case _:
+                    register_error(
+                        f"Unknown table stereotype '{table_entry['table_stereotype']}' declared for table {table_entry['table_name']}")
+
+
 
 def collect_hub_properties(dvpd_table_entry, schema_name, storage_component, table_comment):
-    """Cleanse check and add table declaration for a hub table"""
+    """
+    Cleanse check and add table declaration for a hub table
+
+    Args:
+        dvpd_table_entry: the substructre in dvpd json structure for this table
+        schema_name: Name of the schema, this table was declared in
+        storage_component: storage component,this table was declaed in
+        table_comment: comment for the table
+
+    Brain changes:
+        g_table_dict: New entry with Key=cleansed table name and the table properties
+                cleansing: table_name is lower case
+                           is_only_structural_element defaults to false
+                           model_profile_name defaults to the globally declared profile name
+                           hub_key_column_name is cleansed to upper case
+                           hub_key_column_name defaults to cimt best practice naming convention
+    """
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
     model_profile_name = dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
@@ -258,7 +375,34 @@ def collect_hub_properties(dvpd_table_entry, schema_name, storage_component, tab
 
 
 def collect_lnk_properties(dvpd_table_entry, schema_name, storage_component, table_comment):
-    """Cleanse check and add table declaration for a lnk table"""
+    """
+    Cleanse check and add table declaration for a lnk table to g_table_dict/tables.
+    This includes the expansion of
+    the compressed parent table declaration syntax (single string with table_name) into the
+    general declaration (object with "table_name" key)
+
+    Args:
+        dvpd_table_entry: the substructre in dvpd json structure for this table
+        schema_name: Name of the schema, this table was declared in
+        storage_component: storage component,this table was declaed in
+        table_comment: comment for the table
+
+    Brain changes:
+        g_table_dict: New entry with Key=cleansed table name and the table properties
+                cleansing:  table_name is lower case
+                            is_only_structural_element defaults to false
+                            model_profile_name defaults to the globally declared profile name
+                            link_key_column_name is cleansed to upper case
+                            link_key_column_name defaults to cimt best practice naming convention
+                            is_link_without_sat defaults to false
+                            link_parent_tables/table_name cleansed to lower case
+                            link_parent_tables/hub_key_column_name_in_link defaults to none
+                            link_parent_tables/has_explicit_link_parent_relations defaults to false
+                            link_parent_tables/relation_name defaults to ?
+                generating: parent_list_position = positon of the  parent table entry in the array starting with 1
+
+    Registers errors for link specific structural mistakes
+    """
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
     model_profile_name = dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
@@ -317,7 +461,30 @@ def collect_lnk_properties(dvpd_table_entry, schema_name, storage_component, tab
 
 
 def collect_sat_properties(dvpd_table_entry, schema_name, storage_component, table_comment):
-    """Cleanse check and add table declaration for a satellite table"""
+    """
+    Cleanse check and add table declaration for a satellite table to g_table_dict/tables
+
+    Args:
+        dvpd_table_entry: the substructre in dvpd json structure for this table
+        schema_name: Name of the schema, this table was declared in
+        storage_component: storage component,this table was declaed in
+        table_comment: comment for the table
+
+    Brain changes:
+        g_table_dict: New entry with Key=cleansed table name and the table properties
+                cleansing: table_name is lower case
+                           is_only_structural_element defaults to false
+                           model_profile_name defaults to the globally declared profile name
+                           satellite_parent_table cleansed to lower case
+                           is_multiactive defatults to false
+                           compare_criteria defaults to model profile setting
+                           is_enddated defaults to model profile setting
+                           uses_diff_hash defaults to model profile setting
+                           diff_hash_column_name defaults to cimt best practice naming convention when needed
+                           has_deletion_flag defaults to model profile setting
+                           driving_keys defaults to empty list
+
+    """
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
     model_profile_name = dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
@@ -365,7 +532,27 @@ def collect_sat_properties(dvpd_table_entry, schema_name, storage_component, tab
 
 
 def collect_ref_properties(dvpd_table_entry, schema_name, storage_component, table_comment):
-    """Cleanse check and add table declaration for a satellite table"""
+    """
+    Cleanse check and add table declaration for a reference table to g_table_dict/tables
+
+    Args:
+        dvpd_table_entry: the substructre in dvpd json structure for this table
+        schema_name: Name of the schema, this table was declared in
+        storage_component: storage component,this table was declaed in
+        table_comment: comment for the table
+
+    Brain changes:
+        g_table_dict: New entry with Key=cleansed table name and the table properties
+                cleansing: table_name is lower case
+                           is_only_structural_element defaults to false
+                           model_profile_name defaults to the globally declared profile name
+                           hub_key_column_name is cleansed to upper case
+                           hub_key_column_name defaults to cimt best practice naming convention
+                           is_enddated defaults to model profile setting
+                           uses_diff_hash defaults to model profile setting
+                           diff_hash_column_name defaults to cimt best practice naming convention when needed
+
+    """
     global g_table_dict
     table_name = dvpd_table_entry['table_name'].lower()
     model_profile_name = dvpd_table_entry.get('model_profile_name', g_pipeline_model_profile_name)
@@ -392,34 +579,23 @@ def collect_ref_properties(dvpd_table_entry, schema_name, storage_component, tab
     g_table_dict[table_name] = table_properties
 
 
-def collect_table_properties(dvpd_object):
-    """collect and cleanse all necessary table properties"""
-    for schema_entry in dvpd_object['data_vault_model']:
-        schema_name = schema_entry['schema_name'].lower()
-        storage_component = schema_entry.get('storage_component', '').lower()
-        for table_entry in schema_entry['tables']:
-            if g_table_dict.get(table_entry['table_name'].lower()):
-                register_error(
-                    f"table_name '{table_entry['table_name']}' has already been defined. table_name must be unique in the model")
-                continue
-
-            table_comment = table_entry['table_comment'] if 'table_comment' in table_entry else None
-
-            match table_entry['table_stereotype'].lower():
-                case 'hub':
-                    collect_hub_properties(table_entry, schema_name, storage_component, table_comment)
-                case 'lnk':
-                    collect_lnk_properties(table_entry, schema_name, storage_component, table_comment)
-                case 'sat':
-                    collect_sat_properties(table_entry, schema_name, storage_component, table_comment)
-                case 'ref':
-                    collect_ref_properties(table_entry, schema_name, storage_component, table_comment)
-                case _:
-                    register_error(
-                        f"Unknown table stereotype '{table_entry['table_stereotype']}' declared for table {table_entry['table_name']}")
-
-
 def collect_field_properties(dvpd_object):
+    """
+    Transfer and cleanse the field declarations to the g_fields struct and add the column mappings
+    to all tables, the field is mapped to
+
+    Args:
+        dvpd_object: The parsed (unmodified) dvpd json structure
+
+    Brain changes:
+        g_field_dict: new entry for every field. Key= Fieldname
+             cleansing: field_name is upper case
+                        needs_encryption defaults to false
+
+        more changes are done by subfunctions
+
+    Registers errors by itself and subfunctions
+    """
     global g_field_dict
 
     field_position = 0
@@ -428,9 +604,9 @@ def collect_field_properties(dvpd_object):
         if g_field_dict.get(field_name) != None:
             register_error(f"Duplicate field_name declared: {field_name}")
         field_position += 1
-        cleansed_field_entry = field_entry.copy()
-        del cleansed_field_entry['targets']
-        del cleansed_field_entry['field_name']
+        cleansed_field_entry = field_entry.copy()   # we use the dvdp delcaration as blueprint
+        del cleansed_field_entry['targets']         # and remove elements that don't belong
+        del cleansed_field_entry['field_name']      # in the g_fields objects
         cleansed_field_entry['field_position'] = field_position
         cleansed_field_entry['needs_encryption'] = field_entry.get('needs_encryption', False)
         g_field_dict[field_name] = cleansed_field_entry
@@ -438,7 +614,41 @@ def collect_field_properties(dvpd_object):
 
 
 def create_columns_from_field_mapping(field_entry, field_position):
-    """Adds data column entries to all tables the field is mapped to."""
+    """
+    Adds data column entries and direct key mappings to all tables the field is mapped to.
+
+    Args:
+        field_entry: the substructre in dvpd json structure for this field
+        field_position: position of the field in the field list of the dvpd starting with 1
+
+    Brain changes:
+        g_table_dict/data_columns:  key entry for the target column with
+                                    a new list 'field_mapping' entry for the
+            cleansed:   field_name is cleansed to upper case
+                        relation_names defaults to empty list
+                        relation_names are cleansed to upper case
+                        column_name defaults to field name in upper case
+                        column_type default to field type
+                        is_multi_active_key is only set when declared !!
+                        row_order_direction default to ASC
+                        exclude_from_key_hash defaults to false
+                        exclude_from_change_detection devaults to false
+                        column_content_comment defaults to field comment
+                        update_on_every_load defaults to false
+                        prio_in_key_hash defaults to 0
+                        prio_for_column_position defaults to 50000
+                        prio_for_row_order defaults to 50000
+                        prio_in_diff_hash defaults to 0
+        g_table_dict/direct_key_mappings: new list entry for every field with a direct key value
+            cleansed:   field_name is cleansed to upper case
+                        relation_names defaults to empty list
+                        relation_names are cleansed to upper case
+
+
+        more changes are done by subfunctions
+
+    Registers errors
+    """
     global g_table_dict
 
     field_name = field_entry['field_name'].upper()
@@ -515,8 +725,15 @@ def create_columns_from_field_mapping(field_entry, field_position):
             theColumn['field_mappings'] = []
         theColumn['field_mappings'].append(column_map_entry)
 
+# ------------------  Check function
 
 def check_multifield_mapping_consistency():
+    """
+    Traverse for all data coluums in all tables and check the consistency for declaration, when
+    multiple fields map to the same column
+
+    Registers errors from subfunctions
+    """
     global g_table_dict
     for table_name, table_entry in g_table_dict.items():
         if 'data_columns' in table_entry:
@@ -525,6 +742,11 @@ def check_multifield_mapping_consistency():
 
 
 def check_multifield_mapping_consistency_of_column(table_name, column_name, column_entry):
+    """
+    Check the consistency of column declaration, when multiple fields map to the same column
+
+    Registers errors
+    """
     properties_to_align = ['column_type', 'prio_for_column_position', 'prio_for_row_order', 'exclude_from_key_hash'
         , 'prio_in_key_hash', 'exclude_from_change_detection', 'prio_in_diff_hash']
     if not 'field_mappings' in column_entry:
@@ -2062,11 +2284,13 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
     if not os.path.exists(dvpd_file_path):
         raise Exception(f'could not find dvpd file: {dvpd_file_path}')
 
+    # load the model profiles, that are available
     if model_profile_directory == None:
         load_model_profiles(params['dvpd_model_profile_directory'])
     else:
         load_model_profiles(model_profile_directory)
 
+    # parse the json dvpd file into dpvd_object
     try:
         with open(dvpd_file_path, "r") as dvpd_file:
             dvpd_object = json.load(dvpd_file)
@@ -2075,12 +2299,13 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
         log_progress(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
         raise DvpdcError
 
+    # check, if the model profile declared is available
     g_pipeline_model_profile_name = dvpd_object.get('model_profile_name', '_default')
     if g_pipeline_model_profile_name not in g_model_profile_dict:
         register_error(f"Model profile '{g_pipeline_model_profile_name}' declared in pipeline does not exist")
         raise DvpdcError
 
-    check_essential_element(dvpd_object)
+    check_essential_structure(dvpd_object)
     if g_error_count > 0:
         raise DvpdcError
 
