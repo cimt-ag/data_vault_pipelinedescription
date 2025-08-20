@@ -758,6 +758,12 @@ def check_multifield_mapping_consistency_of_column(table_name, column_name, colu
 
 
 def derive_content_dependent_table_properties():
+    """
+    Iterates over all tables to determine
+    stereotype specific properties from the table properies, set by the dvpd
+
+    Registers errors from subfunctions
+    """
     global g_table_dict
     for table_name, table_entry in g_table_dict.items():
         match table_entry['table_stereotype']:
@@ -775,6 +781,23 @@ def derive_content_dependent_table_properties():
 
 
 def derive_content_dependent_hub_properties(table_name, table_entry):
+    """
+    Determines hub specific properties from the hub declaration
+
+    Args:
+        table_name: String with the table name (needed to provide meaningful messages)
+        table_entry: the g_table_dict/tables object that has to be processed
+
+    Brain changes:
+        g_table_dict/data_columns:  add column_class (determines business key columns)
+                                    add field_mapping_Count
+                                    copy type and all hash postition properties from first field in the list
+                                    add_generic_relation_mappings()
+
+         g_table_dict/direct_key_mappings:
+                                    add_generic_releation_mappings()
+    """
+
     has_business_key = False
     if 'data_columns' in table_entry:
         for column_name, column_properties in table_entry['data_columns'].items():
@@ -800,6 +823,25 @@ def derive_content_dependent_hub_properties(table_name, table_entry):
         register_error(f"CDH-S1: Hub table {table_name} has no business key assigned")
 
 def derive_content_dependent_lnk_properties(table_name, table_entry):
+    """
+    Checks validity of link relations and determines link specific properties from the lnk declaration
+
+    Args:
+        table_name: String with the table name (needed to provide meaningful messages)
+        table_entry: the g_table_dict/tables object that has to be processed
+
+
+    Brain changes:
+        g_table_dict: parent_key_column_name
+        g_table_dict/data_columns:  add column_class (determines dependent child key columns)
+                                    add field_mapping_Count
+                                    copy type and all hash position properties from first field in the list
+                                    add_generic_relation_mappings()
+
+         g_table_dict/direct_key_mappings:
+                                    add_generic_releation_mappings()
+    """
+
     global g_table_dict
 
     for link_parent in table_entry['link_parent_tables']:
@@ -825,8 +867,28 @@ def derive_content_dependent_lnk_properties(table_name, table_entry):
                 column_properties[property_name] = first_field[property_name]
             add_generic_relation_mappings(column_properties)
 
+    if 'direct_key_mappings' in table_entry:
+        for direct_key_properties in table_entry['direct_key_mappings']:
+            add_generic_relation_mappings_to_field_mapping_of_column(direct_key_properties)
 
 def derive_content_dependent_sat_properties(table_name, table_entry):
+    """
+    Checks validity of satellite relations including declarations that
+    are only valid for a specific type of parent
+    Determines satellite specific properties from the sat declaration
+
+    Args:
+        table_name: String with the table name (needed to provide meaningful messages)
+        table_entry: the g_table_dict/tables object that has to be processed
+
+    Brain changes:
+        g_table_dict: add is_effectivity_sat
+        g_table_dict/data_columns:  add column_class (determines tracked and untracked columns)
+                                    add field_mapping_Count
+                                    copy type and all hash position properties from first field in the list
+                                    add_generic_relation_mappings()
+
+    """
     if table_entry['satellite_parent_table'] not in g_table_dict:
         register_error(
             f"parent table '{table_entry['satellite_parent_table']}' of satellite '{table_name}' is not declared")
@@ -873,6 +935,20 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
 
 
 def derive_content_dependent_ref_properties(table_name, table_entry):
+    """
+    Determines reference table specific properties from the reference table declaration
+
+    Args:
+        table_name: String with the table name (needed to provide meaningful messages)
+        table_entry: the g_table_dict/tables object that has to be processed
+
+
+    Brain changes:
+        g_table_dict/data_columns:  add column_class (determines tracked and untracked columns)
+                                    add field_mapping_Count
+                                    copy type and all hash position properties from first field in the list
+                                    add_generic_relation_mappings()
+    """
     for column_name, column_properties in table_entry['data_columns'].items():
         first_field = column_properties['field_mappings'][0]
         if first_field['exclude_from_change_detection']:
@@ -886,11 +962,32 @@ def derive_content_dependent_ref_properties(table_name, table_entry):
         add_generic_relation_mappings(column_properties)
 
 def add_generic_relation_mappings(column_properties):
+    """
+    Determies the relation mapping defaults for every field mapping of a lolumn
+
+    Args:
+        column_properties: the g_table_dict/tables/column object that has to be processed
+
+    """
     for field_entry in column_properties['field_mappings']:
         add_generic_relation_mappings_to_field_mapping_of_column(field_entry)
 
 def add_generic_relation_mappings_to_field_mapping_of_column(field_entry):
-    """STEP 1 of operation deduction procedure
+    """
+       This is STEP 1 of operation deduction procedure
+       It determines the relation name for a field mapping, that has no relation name declaration in the dvpd
+
+       Args:
+           field_entry: the field to investigate g_table_dict/tables/data_columns/<name>/field_mappings[n]
+
+       Brain changes:
+            g_table_dict/tables/data_columns/<name>/field_mappings[n]:
+                    when relation_names is an empty list:
+                        place the "/" relation into the list
+                        set implict_unnamed_relation to true
+                    else
+                        set implict_unnamed_relation to false
+
        Field mappings for every column, that have no relation names yet, will be placed in the "/" relation
        (the 'relation_names' list is created by create_columns_from_field_mapping but can be emtpy)"""
     if len(field_entry['relation_names']) == 0:

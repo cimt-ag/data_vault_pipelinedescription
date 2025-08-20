@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.2 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="25.0.2">
   <diagram name="Seite-1" id="_xlTrjUbBoeg_nsTucc6">
-    <mxGraphModel dx="3710" dy="2538" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="3772" dy="2490" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -593,7 +593,7 @@
         <mxCell id="a8UvxFbC1Uvgpi1f3dsa-2" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;ensure compativbiliy of child to parent properties&lt;/span&gt;" style="text;strokeColor=none;fillColor=#FF9999;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="a8UvxFbC1Uvgpi1f3dsa-1" vertex="1">
           <mxGeometry y="30" width="210" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="a8UvxFbC1Uvgpi1f3dsa-6" value="check_essential Element" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;fillColor=#FF3333;fontColor=#FFFFFF;" parent="1" vertex="1">
+        <mxCell id="a8UvxFbC1Uvgpi1f3dsa-6" value="check_essential Structure" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;fillColor=#FF3333;fontColor=#FFFFFF;" parent="1" vertex="1">
           <mxGeometry x="-1340" y="-1150" width="210" height="60" as="geometry" />
         </mxCell>
         <mxCell id="a8UvxFbC1Uvgpi1f3dsa-7" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;Check for essential keywords, needed in every section of the dvpd&lt;/span&gt;" style="text;strokeColor=none;fillColor=#FF9999;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="a8UvxFbC1Uvgpi1f3dsa-6" vertex="1">
