@@ -1001,6 +1001,21 @@ def add_generic_relation_mappings_to_field_mapping_of_column(field_entry):
         # todo: add test to trigger the upper error
 
 def derive_load_operations():
+    """
+    Orchestrate all steps, needed to determine the load operations for every table.
+    This will be done regardless if the table was only declared for structural
+    completness, since we need a full picture to determine the hash compositions.
+    The final descision if an operation is need will be done later.
+    The functions rely on the "black board principle": They only add information, where there is still none
+    (gap filling pattern)  and they are responsible for
+
+    Brain changes:
+        tables[n]: adds empty array as load_operations
+        more changes on g_table_dict from subfunctions
+
+    Subfunctions will register errors
+    """
+
     global g_table_dict
 
     # add load operations dict to every table, so we dont have to care about existence in the following code
@@ -1020,6 +1035,13 @@ def derive_load_operations():
 
 
 def set_load_operations_for_reference_tables():
+    """
+    Generate the "/" load operation for every reference table
+
+    Brain changes:
+        g_table_dict/tables[n]: adds '/' load_operations to load_operations
+
+    """
     # ref tables always only have  "/" operation
     for table_name, table_entry in g_table_dict.items():
         if table_entry['table_stereotype'] == 'ref':
@@ -1028,14 +1050,26 @@ def set_load_operations_for_reference_tables():
 
 
 def determine_load_operations_from_relations_in_mappings():
-    """Step 2 of load operation determination procedure
-        Every table, with a field mapping will get a load operation for every distinct relation in the mappings
-        This will include a "/" operation, for the mappings that defaulted to the  "/" relation
-        Hubs with only "/" relation, will get a "is_hub_with_universal_load_operation" flag
-        Tables with only a "*" relation, will not have an operation added.
-        The name of the load operation will be the name of the keyset, to be used. (this is probably the keyset in the parent)
-        the load operation will have a 'mapping_set' property.
-        The name of the mapping_set is the name of the field collection, to be used in this table for this keyset.
+    """
+    Step 2 of load operation determination procedure
+    Every table, with a field mapping will get a load operation for every distinct relation in the mappings
+    This will include a "/" operation, for the mappings that defaulted to the  "/" relation
+    Hubs with only "/" relation, will get a "is_hub_with_universal_load_operation" flag
+    Tables with only a "*" relation, will not have an operation added.
+    The name of the load operation will be the name of the keyset, to be used. (this is probably the keyset in the parent)
+    the load operation will have a 'mapping_set' property.
+    The name of the mapping_set is the name of the field collection, to be used in this table for this keyset.
+    It differs from the load_operation name, since it will not
+
+
+    Brain changes:
+        g_table_dict/tables[n]/:  adds  is_hub_with_universal_load_operation
+                                  adds data_is_mapped_to_generic_relation
+        g_table_dict/tables[n]/load_operations: adds keys with the name or the load operation,
+                                                derived from the relation_names that are not '*'
+                                                    adds operation_origin
+                                                    adds mapping_set with the relation_name
+
     """
     # collect declared relations
     for table_name, table_entry in g_table_dict.items():
@@ -1114,10 +1148,14 @@ def determine_load_operations_from_relations_in_mappings():
 
 
 def determine_load_operations_for_links_with_parent_relation_directives():
-    """Step 3 of load operation determination procedure
+    """
+    Step 3 of load operation determination procedure
         This only applies to links, that have at least one parent relation declaration
-        The load operation is set to "+" and the mapping set also to "+"
+        The load operation is set to "/" and the mapping set also to "*"
         All other links will not get a load operation here
+
+    Brain changes:
+        g_table_dict/tables[n]/load_operations: add keys with a '/' the load operation,
     """
     for table_name, table_entry in g_table_dict.items():
         if table_entry['table_stereotype'] != 'lnk' \
@@ -1135,8 +1173,15 @@ def determine_load_operations_for_links_with_parent_relation_directives():
 
 
 def determine_load_operations_from_tracking_directive():
-    """STEP 4 of load operation determination procedure
-       Will only work for satellites, that have no field mapping or only "*" field mappings
+    """
+    STEP 4 of load operation determination procedure
+    Adds load operations for satellites with a tracked_relation declaration
+    Will only work for satellites, that have no field mapping or only "*" field mappings
+
+    Brain changes:
+        g_table_dict/tables[n]/load_operations: add keys with the load operation, named like the tracked relation
+
+    register errors
     """
     for table_name, table_entry in g_table_dict.items():
         load_operations = table_entry['load_operations']
@@ -1151,10 +1196,16 @@ def determine_load_operations_from_tracking_directive():
 
 
 def pull_satellite_load_operations_into_links():
-    """STEP 5 of load operation determination procedure
-       For all links, that have not load operation yet, scan all its satellites for load operations(=key sets)
-       and add these to the the link as load operation (=key set of the links parents).
-       The mapping set is * (this is only true until we reach  0.7.0)
+    """
+    STEP 5 of load operation determination procedure
+    For all links, that have not load operation yet, scan all its satellites for load operations(=key sets)
+    and add these to the the link as load operation (=key set of the links parents).
+    The mapping set is * (this is only true until we reach  0.7.0)
+
+    Brain changes:
+        g_table_dict/tables[n]/load_operations: add keys with the load operation, named like the tracked relation
+
+    register errors
     """
     for link_table_name, link_table in g_table_dict.items():
         link_load_operations = link_table['load_operations']
@@ -1182,8 +1233,20 @@ def pull_satellite_load_operations_into_links():
 
 
 def is_operation_supported_by_link_hubs(link_table_name, load_operation_name):
-    """Delivers true, when at least one hub of the link explicitly supports the load operation and all hubs are
-    able to support the operation"""
+    """
+    Determines if  at least one hub of the link explicitly supports a given load operation
+    and if all hubs if the lin are able to support the operation (also have it as explcit,
+    operation or are universal supports)
+
+    Args:
+            link_table_name: Name of the link table
+            load_operation_name: Name of the load operation to check
+
+    Returns:
+            True: Operation is supported
+            False: Operation is not supported
+
+    """
     link_table = g_table_dict[link_table_name]
 
     if link_table['has_explicit_link_parent_relations']:
@@ -1208,13 +1271,27 @@ def is_operation_supported_by_link_hubs(link_table_name, load_operation_name):
 
 
 def pull_hub_load_operations_into_links():
-    """STEP 6 of load operation determination procedure"""
+    """
+    STEP 6 of load operation determination procedure
+    If there are any links left, that have no load operation declaration yet, (neither driven
+    by themself, nor dirven from their satellites). The link will have a load operation
+    for every load operation, that is defined by every of its hubs.
+
+    Brain changes:
+        g_table_dict/tables[n]/load_operations: add keys for load operation, named like the relations
+            common to all hubs
+
+    register errors
+
+    """
     for link_table_name, link_table in g_table_dict.items():
         link_load_operations = link_table['load_operations']
-        if link_table['table_stereotype'] != 'lnk' \
-                or len(link_load_operations) > 0 \
+
+        # skip non links, links with operations, links that are only structural
+        if link_table['table_stereotype'] != 'lnk'  \
+                or len(link_load_operations) > 0    \
                 or link_table['is_only_structural_element']:
-            continue  # only links without load operations yet
+            continue
 
         # collect the operations, all hubs have in common
         load_operation_collection = {}
@@ -1224,8 +1301,8 @@ def pull_hub_load_operations_into_links():
         for link_parent_table in link_table['link_parent_tables']:
             hub_table = g_table_dict[link_parent_table['table_name']]
             if hub_table['is_hub_with_universal_load_operation']:
-                universal_load_operation_involved = True
-                continue  # universal hubs dont count here
+                universal_load_operation_involved = True  # universal hubs don't add operations
+                continue
             relevant_hub_count += 1
             hub_load_operations = hub_table['load_operations']
             for hub_load_operation_name in hub_load_operations.keys():
@@ -1250,7 +1327,17 @@ def pull_hub_load_operations_into_links():
 
 
 def pull_parent_operations_into_sat():
-    """STEP 7"""
+    """
+    STEP 7
+    If there are any satellites left, that have no load operation declaration yet,
+    the parent operations are copied for the sat.
+
+    Brain changes:
+        g_table_dict/tables[n]/load_operations: add keys for load operation, named like the relations
+            of the parents
+
+    register errors
+    """
     for sat_table_name, sat_table in g_table_dict.items():
         sat_load_operations = sat_table['load_operations']
         if sat_table['table_stereotype'] != 'sat' or len(sat_load_operations) > 0:
@@ -1274,10 +1361,19 @@ def pull_parent_operations_into_sat():
                     f"DLO-70: Sat '{sat_table_name}' got multiple induced relations ('{sat_operation_list_string}') from parent,but have no '*' relation set. ")
 
 
-
+#  --------------------- Functions that assemble the hash compositions ----------------
 
 
 def add_hash_columns():
+    """
+    Orchestrate all steps, needed to assemble the hash compositions
+
+    Brain changes:
+        changes on g_table_dict, g_hash_dict from subfunctions
+
+    Subfunctions will register errors
+    """
+
     # all hubs hashes first
     for table_name, table_entry in g_table_dict.items():
         if table_entry['table_stereotype'] == "hub":
@@ -1306,6 +1402,30 @@ def add_hash_columns():
 
 
 def add_hash_column_mappings_for_hub(table_name, table_entry):
+    """
+    Assemble the hash definitions for all load operations of a hub table.
+    Hashes are identified by the "KEY_OF"+<name of the table>, extended by "__FOR__" +<operation name>
+    when the operation is not '*' or '/'.
+    also the Hash Column Name for the stage table is assembled from the tables key column name and
+    the relation name
+    All data columns mapped to the hub, that are not 'exlcuded from key hash' are used.
+
+    Args:
+            table_name: Name of the table, the hash is added (only used for messages)
+            table_entry: g_table_dict/tables[<key>] entry of the table
+
+    Brain changes:
+        g_hash_dict: add entry with the internal Hash name and the properties declared as hash description below
+                     this includes the list of hash_fields
+        g_table_dict.tables<table>.load_operations<operation_name>:
+                     add hash_mapping_dict with 'key' entry referring the internal hash name
+                        and hash_column_name in the target table
+        g_table_dict.tables<table>.hash_columns:
+                     add entry with key column name
+
+
+    will register errors
+    """
     global g_hash_dict
 
     if 'hash_columns' not in table_entry:
@@ -1369,6 +1489,43 @@ def add_hash_column_mappings_for_hub(table_name, table_entry):
 
 
 def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
+    """
+        Assemble the hash definitions for all load operations of a link table.
+        Hashes are identified by the "KEY_OF"+<name of the table>, extended by "__FOR__" +<operation name>
+        when the operation is not '*' or '/'.
+        also the Hash Column name  for the stage table is assembled from the tables key
+        column name and the relation name
+        All data columns mapped to the link, that are not 'exlcuded from key hash' are used as
+        dependent child keys.
+        The link hash input is assembled by all business key columns from all parents supporting
+        the load operation plus all dependent child keys.
+
+        Args:
+                table_name: Name of the table, the hash is added (only used for messages)
+                table_entry: g_table_dict/tables[<key>] entry of the table
+
+        Brain changes:
+            g_hash_dict: add entry with the internal Hash name and the properties
+                         declared as hash description below in link_hash_description
+                         this includes the list of hash_fields
+
+            g_table_dict.tables<table>.load_operations<operation_name>:
+                         add hash_mapping_dict with 'key' entry referring the internal hash name
+                            and hash_column_name in the target table
+                         add hash_mapping_dict entries for all parent key columns (named parent_key_<n>)
+
+            g_table_dict.tables<table>.hash_columns:
+                         add entry with link key column
+                         add entry with copies of parent key column
+                                    and parent_declaration_position
+
+            g_table_dict.tables<table>.link_parent_tables[n]:
+                         generate the hub_key_column_name_in_link from the parent hub key name and
+                         the relation
+
+
+        will register errors
+        """
     link_hash_base_name = "KEY_OF_" + link_table_name.upper()
     link_key_column_name = link_table_entry['link_key_column_name']
     load_operations = link_table_entry['load_operations']
@@ -1498,6 +1655,37 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
 
 
 def add_hash_column_mappings_for_sat(table_name, table_entry):
+    """
+    Assemble the hash definitions for all load operations of a sat table.
+    Key hashes looked up in the parent table.
+    Diff hashes are only created when there are relevant columns and the general
+    settings declare it.
+    Diff hashes are identified by  "DIFF_OF"+<name of the table>, extended by "__FOR__" +<operation name>
+        when the operation is not '*' or '/'.
+    All data columns mapped to the sat, that are not 'exlcuded from diff hash' are used for the diff hash
+
+    Args:
+            table_name: Name of the table, the hashes are added (only used for messages)
+            table_entry: g_table_dict/tables[<key>] entry of the table
+
+    Brain changes:
+        g_table_dict.tables<table>.hash_columns:
+                     add entry with key column name
+                     add entry with diff_hash column name
+
+        g_hash_dict: only the diff hash needs to be added  with the internal Hash name and
+                        the properties declared as hash description below
+                        this includes the list of hash_fields
+
+        g_table_dict.tables<table>.load_operations<operation_name>:
+                     add hash_mapping_dict with 'parent_key' entry referring the internal hash name
+                     of the proper parent key
+                     add hash_mapping_dict with 'diff_hash' entry referring the internal hash name
+                     of the proper parent key
+
+
+    will register errors
+    """
     log_function_step('add_hash_column_mappings_for_sat', str(table_name))
 
     if 'hash_columns' not in table_entry:
@@ -1623,6 +1811,31 @@ def add_hash_column_mappings_for_sat(table_name, table_entry):
 
 
 def add_hash_column_mappings_for_ref(table_name, table_entry):
+    """
+     Assemble the diff hash definitions for all load operations of a ref table.
+     Diff hashes are identified by  "DIFF_OF"+<name of the table>, extended by "__FOR__" +<operation name>
+         when the operation is not '*' or '/'.
+     All data columns mapped to the reference, that are not 'exlcuded from diff hash' are used for the diff hash
+
+     Args:
+             table_name: Name of the table, the hashes are added (only used for messages)
+             table_entry: g_table_dict/tables[<key>] entry of the table
+
+     Brain changes:
+         g_table_dict.tables<table>.hash_columns:
+                      add entry with diff_hash column name
+
+         g_hash_dict:  diff hash is  added  with the internal Hash name and
+                         the properties declared as hash description below
+                         this includes the list of hash_fields
+
+         g_table_dict.tables<table>.load_operations<operation_name>:
+                      add hash_mapping_dict with 'diff_hash' entry referring the internal hash name
+                      of the proper parent key
+
+
+     will register errors
+     """
     if 'hash_columns' not in table_entry:
         table_entry['hash_columns'] = {}
     table_hash_columns = table_entry['hash_columns']
@@ -1681,7 +1894,17 @@ def add_hash_column_mappings_for_ref(table_name, table_entry):
             table_hash_columns[diff_hash_column_name] = {"column_class": "diff_hash",
                                                          "column_type": diff_hash_column_type}
 
+# ------------------ function to add the data mapping properties depending on the load operation
+
 def add_data_mapping_dict_to_load_operations():
+    """
+    Walk through all tables and call the mapping dictionary functions
+
+    Brain changes:
+        subfunctions will change g_table_dict.tables<table>.load_operations<operation_name>
+
+    subfunctions register errors
+    """
     global g_table_dict
     for table_name, table_entry in g_table_dict.items():
         for load_operation_name, load_operation in table_entry['load_operations'].items():
@@ -1694,6 +1917,24 @@ def add_data_mapping_dict_to_load_operations():
                                                              load_operation)
 
 def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, mapping_set_name, load_operation):
+    """
+    Determine the required mapping from field to target column for a
+    specific load operation and mapping set by search
+    (currently the separation of load operation and mapping set seem to be redundant, but
+    this will change with upcoming featrures regarding the definition of releations)
+
+    Args:
+            table_name: Name of the table this is aone for (needed for messages)
+            table_entry: g_table_dict/tables[<key>] entry of the table
+            mapping_set_name: Name of the Mapping set to use
+            load_operation: g_table_dict/tables[<key>]/load_operations[n] this should be done for
+
+     Brain changes:
+             g_table_dict.tables<table>.load_operations<operation_name>:
+                add 'data_mapping_dict' with: <column_name> : <field_name>
+
+    will register errors
+    """
     data_mapping_dict = {}
     for data_column_name, data_column in table_entry['data_columns'].items():
         default_field_name = None
@@ -1726,7 +1967,7 @@ def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, mappin
         if default_field_name != None:
             data_mapping_dict[data_column_name] = {"field_name": default_field_name}
             copy_data_column_properties_to_operation_mapping(data_mapping_dict[data_column_name], data_column)
-            continue  # we prefer the explicit, so continue with next data column
+            continue  # we take the default and continue with next data column
 
         # when we reach this point, we have not found a valid mapping for the column
         register_error(
@@ -1738,6 +1979,8 @@ def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, mappin
 
 
 def add_direct_key_mapping_for_one_load_operation(table_name, table_entry, mapping_set_name, load_operation):
+    #todo this is old code from the first direct key approach and should not be relevant any more
+
     data_mapping_dict = {}
     default_field_name = None
     explicit_mapped_field_name = None
@@ -1778,6 +2021,20 @@ def add_direct_key_mapping_for_one_load_operation(table_name, table_entry, mappi
 
 
 def copy_data_column_properties_to_operation_mapping(data_mapping_dict, data_column):
+    """
+      Copies the hashing relevant properties of the data columns of a table to the data mappings
+      of the load operation.
+
+      Args:
+              data_mapping_dict: g_table_dict.tables<table>.load_operations<operation_name>.data_mapping_dict
+                                 to copy to
+              data_column: g_table_dict/tables[<key>].data_column[<column_name>] to copy from
+
+       Brain changes:
+               g_table_dict.tables<table>.load_operations<operation_name>.data_mapping_dict
+                  add all keys listed in the function below
+
+      """
     operation_relevant_column_properties = ['column_class', 'exclude_from_change_detection', 'prio_for_row_order',
                                             'prio_in_diff_hash', 'exclude_from_key_hash', 'prio_in_key_hash',
                                             'update_on_every_load', 'is_multi_active_key']
@@ -1787,7 +2044,14 @@ def copy_data_column_properties_to_operation_mapping(data_mapping_dict, data_col
 
 
 def check_intertable_column_constraints():
-    """Final checks, that need all columns derived for all tables"""
+    """
+    Final checks, that can only be done after all colunms and load operations have
+    been determined
+        -check if declared driving key columns can be resolved
+
+    will register errors
+
+    """
 
     # Driving Keys must be resolvable in the parent
     for table_name, table_entry in g_table_dict.items():
@@ -1803,7 +2067,19 @@ def check_intertable_column_constraints():
                         f"Driving Key '{driving_key}' is not a key hash or dependent child key in parent '{parent}'")
 
 
+# ------------------ Functions to render the dvpi from the brain content -------------------
+
 def assemble_dvpi(dvpd_object, dvpd_filename):
+    """
+    Create the dvpi structure and populate it with data from the brain.
+
+    Args:
+            dvpd_object: The source dvpd (used to copy some static properties, taht are not in he brain
+            dvpd_filename: Name of the final file, to write to (used to write it as property into the dvpi)
+
+    Changes: g_dvpi_document will contain a full dvpi when done
+
+    """
     global g_dvpi_document
 
     pipeline_revision_tag = dvpd_object.get('pipeline_revision_tag', '--none--')
@@ -1831,13 +2107,25 @@ def assemble_dvpi(dvpd_object, dvpd_filename):
     # copy data_extraction from dvpd
     g_dvpi_document['data_extraction'] = dvpd_object['data_extraction']
 
-    # add parse sets
+    # add parse sets (currently only one, will be more in later releases)
     dvpi_parse_sets = []
     g_dvpi_document['parse_sets'] = dvpi_parse_sets
     dvpi_parse_sets.append(assemble_dvpi_parse_set(dvpd_object))
 
 
 def assemble_dvpi_table_entry(table_name, table_entry):
+    """
+    Assembles a dvpi table entry from the brain
+
+    Args:
+            table_name: name of the table
+            table_entry: g_tables[<table_name>] entry to transform
+
+    returns: the final dvpi tables entry
+
+    will register errors
+    """
+
     table_properties_to_copy = ['table_stereotype', 'table_comment', 'schema_name', 'storage_component',
                                 'has_deletion_flag', 'is_effectivity_sat', 'is_enddated', 'is_multiactive',
                                 'compare_criteria', 'uses_diff_hash']
@@ -1911,6 +2199,17 @@ def assemble_dvpi_table_entry(table_name, table_entry):
 
 
 def assemble_dvpi_parse_set(dvpd_object):
+    """
+    Assembles a dvpi parse set entry from the brain
+
+    Args:
+            dvpd_object: the dvpd (needed, since some properties will be copied directly)
+
+    returns: the final dvpi parse set entry
+
+    will register errors
+    """
+
     parse_set = {}
 
     # add meta data for parsing
@@ -1968,6 +2267,15 @@ def assemble_dvpi_parse_set(dvpd_object):
 
 
 def assemble_dvpi_hash_mappings(load_operation_entry):
+    """
+    Assembles a dvpi hash mapping entry for a specific load operation
+
+    Args:
+            load_operation_entry: g_table_dict/tables[<key>]/load_operations[n] this should be done for
+
+    returns: the dvpi hash_mappings properties for this load operation
+
+    """
     dvpi_hash_mappings = []
     if not 'hash_mapping_dict' in load_operation_entry:
         return dvpi_hash_mappings
@@ -1992,6 +2300,15 @@ def assemble_dvpi_hash_mappings(load_operation_entry):
 
 
 def assemble_dvpi_data_mappings(load_operation_entry):
+    """
+    Assembles a dvpi data_mapping entry for a specific load operation
+
+    Args:
+            load_operation_entry: g_table_dict/tables[<key>]/load_operations[n] this should be done for
+
+    returns: the dvpi data_mapping properties for this load operation
+
+    """
     dvpi_data_mappings = []
     for column_name, data_mapping_dict_entry in load_operation_entry['data_mapping_dict'].items():
         dvpi_data_mapping_entry = {'column_name': column_name,
@@ -2007,6 +2324,15 @@ def assemble_dvpi_data_mappings(load_operation_entry):
 
 
 def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
+    """
+    Assembles a dvpi stage_columns entry for the current brain
+    (This will change, when multiple parse sets and stage tables are supported)
+
+    Args:
+            has_deletion_flag_in_a_table: must be set to true, if a deletion flag is needed in the stage table
+
+    returns: the dvpi stage_columns properties for this load operation
+    """
     dvpi_stage_columns = []
 
     model_profile = g_model_profile_dict[g_pipeline_model_profile_name]
@@ -2079,6 +2405,15 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
 
 
 def collect_column_classes_for_field(field_name):
+    """
+    Assistence for the staging assembly,
+    Collects for a specific field all column classes, this field is mapped to
+
+    Args:
+            field_name: name of the field of interest
+
+    returns: list of column classes
+    """
     column_classes = []
 
     for table_name, table_entry in g_table_dict.items():
@@ -2099,7 +2434,19 @@ def collect_column_classes_for_field(field_name):
     return column_classes
 
 
+# ------------------ Functions to write the dvpi Summary
+
 def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
+    """
+    Render the dvpi summary report to a file in the dvpdc report. The file is named
+    like the dvpd soure file wihtout any dvpd or json postfix but instaed with the
+    postfix ".dvpidum.txt"
+
+    Args:
+            dvpdc_report_path: relative or absolute directory path for the report file
+            dvpd_file_path: file path of the source dvpd file
+    """
+
     dvpdc_report_directory = Path(dvpdc_report_path)
     dvpdc_report_directory.mkdir(parents=True, exist_ok=True)
 
@@ -2191,6 +2538,17 @@ def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
 
 
 def renderHashFieldAssembly(parse_set_entry, hash_mapping_entry):
+    """
+     Render the text snippet of the hash field collection for a specific hash
+
+     Args:
+             parse_set_entry: dvpi.parse_set[n]
+             hash_mapping_entry: dvpi.parse_set[n].load_operation[n].hash_mapping[n]
+
+     Returns: String with the formatted and sorted field list of the hash
+
+     """
+
     if 'hash_name' in hash_mapping_entry:  # hash is caclulated
         hash_name = hash_mapping_entry['hash_name']
         for hash_entry in parse_set_entry['hashes']:
@@ -2215,38 +2573,18 @@ def renderHashFieldAssembly(parse_set_entry, hash_mapping_entry):
         raise ("Neither 'hash_name' nor 'field_name' given in hash_mapping_entry")
 
 
-def dvpdc(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None, ini_file=None, model_profile_directory=None,
-          verbose_logging=False):
-    """ this function is a wrapper around the real compiler to initialize the log file"""
-    global g_logfile
-    global g_verbose_logging
-
-    g_verbose_logging = verbose_logging
-
-    params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
-
-    if dvpdc_report_directory == None:
-        dvpdc_report_directory_path = Path(params['dvpdc_report_default_directory'])
-    else:
-        dvpdc_report_directory_path = Path(dvpdc_report_directory)
-
-    dvpdc_report_directory_path.mkdir(parents=True, exist_ok=True)
-    dvpdc_log_file_name = dvpd_filename.replace('.json', '').replace('.dvpd', '') + ".dvpdc.log"
-    dvpdc_log_file_path = dvpdc_report_directory_path.joinpath(dvpdc_log_file_name)
-
-    with open(dvpdc_log_file_path, "w") as g_logfile:
-        g_logfile.write(f"Data vault pipeline description compiler log \n")
-        log_progress(f"=== DVPD Compiler Version 0.6.2 ===")
-        g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-        log_progress(f"Compiling {dvpd_filename}\n")
-        try:
-            dvpdc_worker(dvpd_filename, dvpi_directory, dvpdc_report_directory_path, ini_file, model_profile_directory)
-        except DvpdcError:
-            log_progress("*** Compilation ended with errors ***")
-            raise
-
+# --------------------  Extention key word transfer ------------------
 
 def apply_syntax_extensions(dvpd_object, dvpi_document):
+    """
+     Search the dvpf for extention keywords (starting with 'x') an transfer them
+     to the proper position in the dpvi document. (Expects the dvpi document to be complete)
+
+     Args:
+             dvpd_object: the source dvpd document
+             dvpi_document: the already rendered dvpi document
+
+     """
     import re
 
     def is_ext_key(key):
@@ -2356,8 +2694,76 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
                     copy_extensions(target, hf)
 
 
+# --------------- The main compiler functions ------------------------
+def dvpdc(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None, ini_file=None, model_profile_directory=None,
+          verbose_logging=False):
+    """
+     Wrapper for the compiler function, needed to read the configuration file
+     and initialize the log files.
+     This function can be called as included function (e.g. from the automated test)
+
+     Args:
+            dvpd_filename
+            dvpi_directory
+            dvpdc_report_directory
+            ini_file
+            model_profile_directory
+            verbose_logging
+
+     """
+    global g_logfile
+    global g_verbose_logging
+
+    g_verbose_logging = verbose_logging
+
+    params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
+
+    if dvpdc_report_directory == None:
+        dvpdc_report_directory_path = Path(params['dvpdc_report_default_directory'])
+    else:
+        dvpdc_report_directory_path = Path(dvpdc_report_directory)
+
+    dvpdc_report_directory_path.mkdir(parents=True, exist_ok=True)
+    dvpdc_log_file_name = dvpd_filename.replace('.json', '').replace('.dvpd', '') + ".dvpdc.log"
+    dvpdc_log_file_path = dvpdc_report_directory_path.joinpath(dvpdc_log_file_name)
+
+    with open(dvpdc_log_file_path, "w") as g_logfile:
+        g_logfile.write(f"Data vault pipeline description compiler log \n")
+        log_progress(f"=== DVPD Compiler Version 0.6.2 ===")
+        g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        log_progress(f"Compiling {dvpd_filename}\n")
+        try:
+            dvpdc_worker(dvpd_filename, dvpi_directory, dvpdc_report_directory_path, ini_file, model_profile_directory)
+        except DvpdcError:
+            log_progress("*** Compilation ended with errors ***")
+            raise
+
+
 def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None, ini_file=None,
                  model_profile_directory=None):
+    """
+     Orchestrates the whole compiler exection: Initialize the brain, call all functions
+     to populate the brain, call functions to generate dvpi, write the dvpi and generate
+     the dvpisudm.
+     Will rais an DvpdError as soon as a step finishes with a registerd error. This allows the step
+     to declare as many errors as possible an prevent further processing until all requirements
+     for the step have been met.
+
+     Args:
+            dvpd_filename
+            dvpi_directory
+            dvpdc_report_directory
+            ini_file
+            model_profile_directory
+
+     Brain change:
+            full reset before running
+
+    Exceptions:
+        DvpcdError after any step that registered an error
+
+     """
+
     global g_table_dict
     global g_dvpi_document
     global g_field_dict
@@ -2474,7 +2880,19 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
 
 
 def get_name_of_youngest_dvpd_file(ini_file):
-    params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
+    """
+    Search the dvpd directory for the youngest dvpd file
+
+    Args:
+            ini_file: name of configuration file with the declatation of the dvpd_default_directory
+
+    Returns:
+            Name of the youngest file
+
+     """
+
+
+    params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_default_directory'])
 
     max_mtime = 0
     youngest_file = ''
@@ -2490,8 +2908,11 @@ def get_name_of_youngest_dvpd_file(ini_file):
     return youngest_file
 
 
-########################################################################################################################
-
+############################################# MAIN ##################################################
+"""
+The main block reads and prepares all call arguments calls the dvpc
+and adds some optinal debugging output afterwards 
+"""
 
 if __name__ == "__main__":
     description_for_terminal = "DVPD compiler. Parses a data vault pipeline description (dvpd) file and translates it into a data vault pipeline instruction (dvpi)." \
