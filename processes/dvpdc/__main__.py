@@ -395,6 +395,7 @@ def collect_lnk_properties(dvpd_table_entry, schema_name, storage_component, tab
                             link_key_column_name is cleansed to upper case
                             link_key_column_name defaults to cimt best practice naming convention
                             is_link_without_sat defaults to false
+                            remove link_parent_tables when is_only_structural_element=true
                             link_parent_tables/table_name cleansed to lower case
                             link_parent_tables/hub_key_column_name_in_link defaults to none
                             link_parent_tables/has_explicit_link_parent_relations defaults to false
@@ -421,40 +422,50 @@ def collect_lnk_properties(dvpd_table_entry, schema_name, storage_component, tab
     table_properties['is_link_without_sat'] = cast2Bool(
         dvpd_table_entry.get('is_link_without_sat', False))  # default is false
 
-    if 'link_parent_tables' in dvpd_table_entry:
-        list_position = 0
-        has_explicit_link_parent_relations = False
-        table_properties['link_parent_tables'] = []
-        for parent_entry in dvpd_table_entry['link_parent_tables']:
-            cleansed_parent_entry = {}
-            list_position += 1
-            if isinstance(parent_entry, dict):
-                if 'table_name' in parent_entry:
-                    cleansed_parent_entry['table_name'] = parent_entry['table_name'].lower()
-                    if 'relation_name' in parent_entry:
-                        cleansed_parent_entry['relation_name'] = parent_entry.get('relation_name').upper()
-                        has_explicit_link_parent_relations = True
-                    else:
-                        cleansed_parent_entry['relation_name'] = '?'
-                    if 'hub_key_column_name_in_link' in parent_entry:
-                        cleansed_parent_entry['hub_key_column_name_in_link'] = parent_entry.get(
-                            'hub_key_column_name_in_link').upper()
-                    else:
-                        cleansed_parent_entry['hub_key_column_name_in_link'] = None
-                    cleansed_parent_entry['parent_list_position'] = list_position
-                else:
-                    register_error(f"CLP-S3: property 'table_name' is not declared in link_parent_tables for lnk table '{table_name}'")
-            else:
-                cleansed_parent_entry['table_name'] = parent_entry.lower()
-                cleansed_parent_entry['relation_name'] = '?'
-                cleansed_parent_entry['hub_key_column_name_in_link'] = None
-                cleansed_parent_entry['parent_list_position'] = list_position
-            # else:
-            #    register_error(f'CLP-S4:  link_parent_tables has bad syntax for lnk table {table_name}')
-            table_properties['link_parent_tables'].append(cleansed_parent_entry)
-            table_properties['has_explicit_link_parent_relations'] = has_explicit_link_parent_relations
-    else:
+    table_properties['link_parent_tables'] = []
+
+    if is_only_structural_element:
+        table_properties['has_explicit_link_parent_relations'] = False
+        g_table_dict[table_name] = table_properties
+        if 'link_parent_tables'  in dvpd_table_entry:
+            dvpd_table_entry.pop('link_parent_tables')
+        return
+
+    if 'link_parent_tables' not in dvpd_table_entry:
         register_error(f"CLP-S5:  Declaration of 'link_parent_tables' clause is missing for lnk table '{table_name}'")
+        return
+
+    list_position = 0
+    has_explicit_link_parent_relations = False
+    for parent_entry in dvpd_table_entry['link_parent_tables']:
+        cleansed_parent_entry = {}
+        list_position += 1
+        if isinstance(parent_entry, dict):
+            if 'table_name' in parent_entry:
+                cleansed_parent_entry['table_name'] = parent_entry['table_name'].lower()
+                if 'relation_name' in parent_entry:
+                    cleansed_parent_entry['relation_name'] = parent_entry.get('relation_name').upper()
+                    has_explicit_link_parent_relations = True
+                else:
+                    cleansed_parent_entry['relation_name'] = '?'
+                if 'hub_key_column_name_in_link' in parent_entry:
+                    cleansed_parent_entry['hub_key_column_name_in_link'] = parent_entry.get(
+                        'hub_key_column_name_in_link').upper()
+                else:
+                    cleansed_parent_entry['hub_key_column_name_in_link'] = None
+                cleansed_parent_entry['parent_list_position'] = list_position
+            else:
+                register_error(f"CLP-S3: property 'table_name' is not declared in link_parent_tables for lnk table '{table_name}'")
+        else:
+            cleansed_parent_entry['table_name'] = parent_entry.lower()
+            cleansed_parent_entry['relation_name'] = '?'
+            cleansed_parent_entry['hub_key_column_name_in_link'] = None
+            cleansed_parent_entry['parent_list_position'] = list_position
+        # else:
+        #    register_error(f'CLP-S4:  link_parent_tables has bad syntax for lnk table {table_name}')
+        table_properties['link_parent_tables'].append(cleansed_parent_entry)
+        table_properties['has_explicit_link_parent_relations'] = has_explicit_link_parent_relations
+
 
     # finally add this to the global table dictionary
     g_table_dict[table_name] = table_properties
@@ -1475,6 +1486,10 @@ def add_hash_column_mappings_for_hub(table_name, table_entry):
                             "model_profile_name": table_entry['model_profile_name']
                             }
 
+        # add direct key field mapping if it exists
+        if 'direct_key_field' in load_operation_entry:
+            hash_description['direct_key_field' ] = load_operation_entry ['direct_key_field']
+
         if hash_name not in g_hash_dict:
             g_hash_dict[hash_name] = hash_description
 
@@ -1638,6 +1653,9 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
                                  "hash_null_value_string": model_profile['hash_null_value_string'],
                                  "model_profile_name": link_table_entry['model_profile_name']
                                  }
+
+        if 'direct_key_field' in link_load_operation_entry:
+            link_hash_description['direct_key_field' ] = link_load_operation_entry ['direct_key_field']
 
         if link_hash_name not in g_hash_dict:
             g_hash_dict[link_hash_name] = link_hash_description
