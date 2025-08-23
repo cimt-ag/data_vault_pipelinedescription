@@ -1476,7 +1476,6 @@ def add_hash_column_mappings_for_hub(table_name, table_entry):
         hash_description = {"stage_column_name": stage_column_name,
                             "hash_origin_table": table_name,
                             "column_class": "key",
-                            "hash_fields": hash_fields,
                             "column_type": table_key_column_type,
                             "hash_encoding": model_profile['table_key_hash_encoding'],
                             "hash_function": model_profile['table_key_hash_function'],
@@ -1486,9 +1485,15 @@ def add_hash_column_mappings_for_hub(table_name, table_entry):
                             "model_profile_name": table_entry['model_profile_name']
                             }
 
+        # add hash field list, when it has fields
+        if len(hash_fields) >0:
+            hash_description['hash_fields']= hash_fields
+
         # add direct key field mapping if it exists
         if 'direct_key_field' in load_operation_entry:
             hash_description['direct_key_field' ] = load_operation_entry ['direct_key_field']
+            hash_description['stage_column_name'] = load_operation_entry['direct_key_field']
+
 
         if hash_name not in g_hash_dict:
             g_hash_dict[hash_name] = hash_description
@@ -1654,8 +1659,14 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
                                  "model_profile_name": link_table_entry['model_profile_name']
                                  }
 
+        # add hash field list, when it has fields
+        if len(link_hash_fields) >0:
+            link_hash_description['hash_fields']= link_hash_fields
+
+        # add direct key field, when it was declared, and change stage column name to field name
         if 'direct_key_field' in link_load_operation_entry:
             link_hash_description['direct_key_field' ] = link_load_operation_entry ['direct_key_field']
+            link_hash_description['stage_column_name'] = link_load_operation_entry ['direct_key_field']
 
         if link_hash_name not in g_hash_dict:
             g_hash_dict[link_hash_name] = link_hash_description
@@ -2294,24 +2305,20 @@ def assemble_dvpi_hash_mappings(load_operation_entry):
     returns: the dvpi hash_mappings properties for this load operation
 
     """
+    global g_hash_dict
+
     dvpi_hash_mappings = []
     if not 'hash_mapping_dict' in load_operation_entry:
         return dvpi_hash_mappings
     for hash_class, load_operation_hash_dict_entry in load_operation_entry['hash_mapping_dict'].items():
+        hash_definition = g_hash_dict[load_operation_hash_dict_entry['hash_name']]
         dvpi_hash_mapping_entry = {'hash_class': hash_class,
                                    'column_name': load_operation_hash_dict_entry['hash_column_name'],
+                                   'hash_name':  load_operation_hash_dict_entry['hash_name'],
+                                   'stage_column_name': hash_definition['stage_column_name']
                                    }
-        if 'hash_name' in load_operation_hash_dict_entry:
-            dvpi_hash_mapping_entry['hash_name'] = load_operation_hash_dict_entry['hash_name']
-            dvpi_hash_mapping_entry['stage_column_name'] = g_hash_dict[load_operation_hash_dict_entry['hash_name']][
-                'stage_column_name']
-
-        elif 'field_name' in load_operation_hash_dict_entry:
-            dvpi_hash_mapping_entry['field_name'] = load_operation_hash_dict_entry['field_name']
-            dvpi_hash_mapping_entry['stage_column_name'] = dvpi_hash_mapping_entry['field_name']
-        else:
-            raise (
-                f"!!! Something bad happened !!! Neither 'hash_name' nor 'field_name' determined for {load_operation_hash_dict_entry['hash_column_name']} ")
+        if 'direct_key_field' in hash_definition:
+            dvpi_hash_mapping_entry['direct_key_field'] = hash_definition['direct_key_field']
 
         dvpi_hash_mappings.append(dvpi_hash_mapping_entry)
     return dvpi_hash_mappings
@@ -2373,16 +2380,23 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
              'column_type': model_profile['deletion_flag_column_type']})
 
     # add all hashes to stage list
+    hash_stage_column_dict={}
     for hash_name, hash_entry in g_hash_dict.items():
+        hash_stage_column_dict[hash_entry['stage_column_name']] = 1
         dvpi_stage_column_entry = {'stage_column_name': hash_entry['stage_column_name'],
                                    'stage_column_class': 'hash',
                                    'is_nullable': False,
                                    'hash_name': hash_name,
                                    'column_type': hash_entry['column_type']}
+        if 'direct_key_field'  in hash_entry:
+            dvpi_stage_column_entry['stage_column_class']='direct_key'
         dvpi_stage_columns.append(dvpi_stage_column_entry)
 
-    # add all fields to
+    # add all fields to the stage list
     for field_name, field_entry in g_field_dict.items():
+        if field_name in hash_stage_column_dict:
+            continue # skip fields, that have been added from hashes
+
         column_classes = collect_column_classes_for_field(field_name)
 
         # Collect target column information
@@ -2516,10 +2530,9 @@ def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
                         f"\n{load_operation_entry['table_name']} [{load_operation_entry['relation_name']}] {load_operation_entry['operation_origin']} \n")
                     for hash_mapping_entry in load_operation_entry['hash_mappings']:
                         dvpisum_file.write(
-                            f"     {hash_mapping_entry['hash_class']}:  {hash_mapping_entry['stage_column_name']} >> {hash_mapping_entry['column_name']}")
-                        if 'hash_name' in hash_mapping_entry:
-                            dvpisum_file.write(
-                                "  [" + renderHashFieldAssembly(parse_set_entry, hash_mapping_entry) + "]")
+                            f"     {hash_mapping_entry['hash_class'].ljust(10)}: {hash_mapping_entry['stage_column_name']} >> {hash_mapping_entry['column_name']}")
+                        dvpisum_file.write(
+                                "\n                 " + renderHashFieldAssembly(parse_set_entry, hash_mapping_entry) )
                         dvpisum_file.write("\n")
 
                     if 'data_mapping' not in load_operation_entry:
@@ -2527,7 +2540,7 @@ def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
 
                     for data_mapping_entry in load_operation_entry['data_mapping']:
                         dvpisum_file.write(
-                            f"     {data_mapping_entry['column_class']}:  {data_mapping_entry['stage_column_name']} >> {data_mapping_entry['column_name']}\n")
+                            f"     {data_mapping_entry['column_class'].ljust(10)}: {data_mapping_entry['stage_column_name']} >> {data_mapping_entry['column_name']}\n")
 
                 for stage_property_entry in parse_set_entry['stage_properties']:
                     dvpisum_file.write(
@@ -2567,28 +2580,31 @@ def renderHashFieldAssembly(parse_set_entry, hash_mapping_entry):
 
      """
 
-    if 'hash_name' in hash_mapping_entry:  # hash is caclulated
-        hash_name = hash_mapping_entry['hash_name']
-        for hash_entry in parse_set_entry['hashes']:
-            if hash_entry['hash_name'] == hash_name:
-                if hash_entry['column_class'] == 'key':
+    hash_name = hash_mapping_entry['hash_name']
+    for hash_entry in parse_set_entry['hashes']:  # look up the hash definition in the pase set
+        if hash_entry['hash_name'] == hash_name:
+
+            # format key hash
+            if hash_entry['column_class'] == 'key':
+                if 'direct_key_field' in hash_entry:
+                    return ">direct<"
+                if 'hash_fields' in hash_entry:
                     hash_fields_sorted = sorted(hash_entry['hash_fields'], key=lambda d: "{:03d}".format(
                         d.get('parent_declaration_position', 0)) + '_/_' + d['field_target_table'] + '_/_' + str(
                         d['prio_in_key_hash']) + '_/_' + d['field_target_column'])
                 else:
-                    hash_fields_sorted = sorted(hash_entry['hash_fields'],
-                                                key=lambda d: '_' + str(d['prio_in_diff_hash']) + '_/_' + d[
-                                                    'field_target_column'])
-                fields = []
-                for field_entry in hash_fields_sorted:
-                    fields.append(field_entry['field_name'])
-                return hash_entry['hash_concatenation_seperator'].join(fields)
-        raise (f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
+                    raise (f"There is a consistency error in the DVPI. Hash '{hash_name} has neither hash_fields nor a direct_key_field")
+            # format diff hash
+            else:
+                hash_fields_sorted = sorted(hash_entry['hash_fields'],
+                                            key=lambda d: '_' + str(d['prio_in_diff_hash']) + '_/_' + d[
+                                                'field_target_column'])
+            fields = []
+            for field_entry in hash_fields_sorted:
+                fields.append(field_entry['field_name'])
+            return "["+hash_entry['hash_concatenation_seperator'].join(fields)+"]"
+    raise (f"There is a consistency error in the DVPI. Could not find hash '{hash_name}")
 
-    elif 'field_name' in hash_mapping_entry:  # hash is deliverd in a source field
-        return hash_mapping_entry['field_name']
-    else:
-        raise ("Neither 'hash_name' nor 'field_name' given in hash_mapping_entry")
 
 
 # --------------------  Extention key word transfer ------------------

@@ -37,7 +37,7 @@ def assemble_column_name_and_stage_name_dict(parse_set):
                     stage_name_to_column_name_dict[stage_name].append(column_name)
 
         for column in load_operation['hash_mappings']: # collect the mappings from the hash_mappings
-            if not 'field_name' in column:             # where the hash is provided by a source field
+            if not 'direct_key_field' in column:             # where the hash is provided by a source field
                 continue
             column_name=column['column_name']
             stage_name=column['stage_column_name']
@@ -68,7 +68,9 @@ def assemble_stage_with_target_column_type_dict(parse_set,tables):
                         column_name=column_mapping['column_name']
                         break
             for hash_mapping in load_operation['hash_mappings']:  # scan the  hash_mappings
-                if not 'field_name' in hash_mapping:  # where the hash is provided by a source field
+                if 'direct_key_field' in hash_mapping:  # There is a direct key field in the source
+                    table_name = load_operation['table_name']
+                    column_name = column_mapping['column_name']
                     continue
                 if hash_mapping['stage_column_name']==stage_column['stage_column_name']:
                      table_name=load_operation['table_name']
@@ -340,14 +342,12 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
             for column in columns:
                 stage_column_name = column['stage_column_name']
                 stage_column_class = column['stage_column_class']
-                col_type=column['column_type']
-                if stage_column_class == 'data':
+                if stage_column_class == 'data' or stage_column_class == 'direct_key':
                     match stage_column_naming_rule:
                         case 'stage':
                             final_column_name=stage_column_name
                         case 'combined':
                             final_column_name=determine_combined_stage_column_name(stage_column_name, stage_name_to_column_name_dict, column_name_to_stage_name_dict)
-                            col_type=stage_with_target_column_type_dict[stage_column_name]
                         case _:
                             raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
 
@@ -387,14 +387,16 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
             # now provide the hash composition information
             g_report_file.write("\n\n------------------------------------------------------\n")
             g_report_file.write("Hash value composition\n")
-            for hash_value in parse_set['hashes']:
-                g_report_file.write(f"\n{hash_value['stage_column_name']} ({hash_value['column_class']})\n")
-                if hash_value['column_class'] == 'key':
-                    hash_fields_sorted = sorted(hash_value['hash_fields'], key=lambda d: "{:03d}".format(
+            for hash_definition in parse_set['hashes']:
+                if 'direct_key_field' in hash_definition:
+                    continue  # no need to print the trivial direct copy
+                g_report_file.write(f"\n{hash_definition['stage_column_name']} ({hash_definition['column_class']})\n")
+                if hash_definition['column_class'] == 'key':
+                    hash_fields_sorted=sorted(hash_definition['hash_fields'], key=lambda d: "{:03d}".format(
                         d.get('parent_declaration_position', 0)) + '_/_' + d['field_target_table'] + '_/_' + str(
                         d['prio_in_key_hash']) + '_/_' + d['field_target_column'])
                 else:
-                    hash_fields_sorted = sorted(hash_value['hash_fields'],
+                    hash_fields_sorted=sorted(hash_definition['hash_fields'],
                                                 key=lambda d: '_' + str(d['prio_in_diff_hash']) + '_/_' + d[
                                                     'field_target_column'])
                 for hash_field in hash_fields_sorted:
