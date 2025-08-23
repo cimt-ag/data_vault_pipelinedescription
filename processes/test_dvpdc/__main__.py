@@ -48,7 +48,9 @@ def report_unexpected(keyword, path):
 
 def report_type_missmatch(expected_value, found_value, path):
     global g_difference_count
-    print(f"ATST--EI:[{g_test_id}] /{path}:Wrong type '{type(found_value)}' ! Expected '{type(expected_value)}'  (ls-diff:{distance(found_value,expected_value)}) ")
+    found_type=str(type(found_value))
+    expected_type=str(type(expected_value))
+    print(f"ATST--EI:[{g_test_id}] /{path}:Wrong type '{found_type}' ! Expected '{expected_type}'  ")
     g_difference_count += 1
 
 def report_list_length_missmatch(expected_list, found_list, path):

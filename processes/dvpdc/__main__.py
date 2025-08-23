@@ -2008,7 +2008,6 @@ def add_data_mapping_dict_for_one_load_operation(table_name, table_entry, mappin
 
 
 def add_direct_key_mapping_for_one_load_operation(table_name, table_entry, mapping_set_name, load_operation):
-    #todo this is old code from the first direct key approach and should not be relevant any more
 
     data_mapping_dict = {}
     default_field_name = None
@@ -2358,83 +2357,130 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
 
     returns: the dvpi stage_columns properties for this load operation
     """
+
+    stage_column_dict={}
+
     dvpi_stage_columns = []
 
     model_profile = g_model_profile_dict[g_pipeline_model_profile_name]
 
-    # add meta columns to column stage dict
+    # add meta columns to column stage dict (assuming, we will not have a conflict in between meta column names
 
-    dvpi_stage_columns.append({'stage_column_name': model_profile['load_date_column_name'], 'is_nullable': False,
+    stage_column_dict[model_profile['load_date_column_name']]={'stage_column_name': model_profile['load_date_column_name'], 'is_nullable': False,
                                'stage_column_class': 'meta_load_date',
-                               'column_type': model_profile['load_date_column_type']})
-    dvpi_stage_columns.append({'stage_column_name': model_profile['load_process_id_column_name'], 'is_nullable': False,
+                               'column_type': model_profile['load_date_column_type']}
+    stage_column_dict[model_profile['load_process_id_column_name']]={'stage_column_name': model_profile['load_process_id_column_name'], 'is_nullable': False,
                                'stage_column_class': 'meta_load_process_id',
-                               'column_type': model_profile['load_process_id_column_type']})
-    dvpi_stage_columns.append({'stage_column_name': model_profile['record_source_column_name'], 'is_nullable': False,
+                               'column_type': model_profile['load_process_id_column_type']}
+    stage_column_dict[model_profile['record_source_column_name']] ={'stage_column_name': model_profile['record_source_column_name'], 'is_nullable': False,
                                'stage_column_class': 'meta_record_source',
-                               'column_type': model_profile['record_source_column_type']})
-    if has_deletion_flag_in_a_table:
-        dvpi_stage_columns.append(
-            {'stage_column_name': model_profile['deletion_flag_column_name'], 'is_nullable': False,
-             'stage_column_class': 'meta_deletion_flag',
-             'column_type': model_profile['deletion_flag_column_type']})
+                               'column_type': model_profile['record_source_column_type']}
 
-    # add all hashes to stage list
-    hash_stage_column_dict={}
+    if has_deletion_flag_in_a_table:
+        stage_column_dict[model_profile['deletion_flag_column_name']] =  {'stage_column_name': model_profile['deletion_flag_column_name'], 'is_nullable': False,
+                                'stage_column_class': 'meta_deletion_flag',
+                                'column_type': model_profile['deletion_flag_column_type']}
+
+    # add all hashes that have not direct key column to stage dict
+
+    direct_key_hashes={}
     for hash_name, hash_entry in g_hash_dict.items():
-        hash_stage_column_dict[hash_entry['stage_column_name']] = 1
+        if 'direct_key_field' in hash_entry:
+            if hash_entry['direct_key_field'] not in direct_key_hashes:
+                direct_key_hashes[ hash_entry['direct_key_field']]=1
+            else:
+                continue  # direct keys will only be added once
+        if hash_entry['stage_column_name'] in stage_column_dict:
+            register_error(
+                f"AD-SC0: Double stage column name '{hash_entry['stage_column_name']}' when assembling columns for stage table. Please check for name collisions between meta columns, fields and hash columns!")
+            continue
+
         dvpi_stage_column_entry = {'stage_column_name': hash_entry['stage_column_name'],
                                    'stage_column_class': 'hash',
                                    'is_nullable': False,
                                    'hash_name': hash_name,
                                    'column_type': hash_entry['column_type']}
-        if 'direct_key_field'  in hash_entry:
+        if 'direct_key_field' in hash_entry:
+            field_name = hash_entry['direct_key_field']
             dvpi_stage_column_entry['stage_column_class']='direct_key'
-        dvpi_stage_columns.append(dvpi_stage_column_entry)
+            targets = collect_target_column_data_for_direct_key(field_name)
+            dvpi_stage_column_entry['targets'] = targets
+            dvpi_stage_column_entry['column_classes']= collect_column_classes_from_targets(targets)
 
-    # add all fields to the stage list
+        stage_column_dict[hash_entry['stage_column_name']]=dvpi_stage_column_entry
+
+        # add all fields to the stage list
     for field_name, field_entry in g_field_dict.items():
-        if field_name in hash_stage_column_dict:
-            continue # skip fields, that have been added from hashes
+        if field_name in direct_key_hashes:
+            continue # direct key fields have been managed above
 
-        column_classes = collect_column_classes_for_field(field_name)
-
-        # Collect target column information
-        targets = []
-        for table_name, table_entry in g_table_dict.items():
-            if 'data_columns' in table_entry:
-                for column_name, column_entry in table_entry['data_columns'].items():
-                    for mapping in column_entry['field_mappings']:
-                        if mapping['field_name'] == field_name:
-                            targets.append({
-                                'table_name': table_name,
-                                'column_name': column_name,
-                                'column_type': column_entry['column_type'],
-                                'column_class': column_entry['column_class']
-                            })
-
-        dvpi_stage_columns.append({
-            'stage_column_name': field_name,
-            'stage_column_class': 'data',
-            'field_name': field_name,
-            'is_nullable': True,
-            'column_type': field_entry['field_type'],
-            'column_classes': column_classes,
-            'targets': targets  # Add the targets array
-        })
-
-        # final check for double stage column names
-    column_dict = {}
-    for stage_column_entry in dvpi_stage_columns:
-        stage_column_name = stage_column_entry['stage_column_name']
-        if stage_column_name not in column_dict:
-            column_dict[stage_column_name] = 1
-        else:
+        if field_name in stage_column_dict:
             register_error(
-                f"AD-SC1: Double stage column name '{stage_column_name}' when assembling columns for stage table. Please check for name collisions between meta columns, fields and hash columns!")
+                f"AD-SC0b: Double stage column name '{field_name}' when assembling columns for stage table. Please check for name collisions between meta columns, fields and hash columns!")
+
+        targets=collect_target_column_data_for_field(field_name)
+        stage_column_dict[field_name] = {'stage_column_name': field_name,
+                                         'stage_column_class': 'data',
+                                         'field_name': field_name,
+                                         'is_nullable': True,
+                                         'column_type': field_entry['field_type'],
+                                         'column_classes': collect_column_classes_from_targets(targets),
+                                         'targets': targets  # Add the targets array
+                                         }
+
+    # finally convert the dict into the stage column array
+    for stage_column_entry in stage_column_dict.values():
+        dvpi_stage_columns.append(stage_column_entry)
 
     return dvpi_stage_columns
 
+def collect_target_column_data_for_direct_key(field_name):
+    targets = []
+
+    # collect hashes, that use the field as direct key
+    hashes_using_field=[]
+    for hash_name, hash_entry in g_hash_dict.items():
+        if 'direct_key_field' in hash_entry:
+            if hash_entry['direct_key_field'] == field_name:
+                hashes_using_field.append(hash_name)
+
+    # search for uses of the hash in load operations
+    for table_name, table_entry in g_table_dict.items():
+        if 'load_operations' in table_entry:
+            for load_operation_entry in table_entry['load_operations'].values():
+                if 'hash_mapping_dict' in load_operation_entry:
+                    for load_operation_hash_entry in load_operation_entry ['hash_mapping_dict'].values():
+                        if load_operation_hash_entry['hash_name'] in hashes_using_field:
+                            hash_column_name_in_table=load_operation_hash_entry['hash_column_name']
+                            table_hash_column=table_entry['hash_columns'][hash_column_name_in_table]
+                            targets.append({
+                                'table_name': table_name,
+                                'column_name': hash_column_name_in_table,
+                                'column_type': table_hash_column['column_type'],
+                                'column_class': table_hash_column['column_class']
+                            })
+    return targets
+
+def collect_column_classes_from_targets(targets):
+    column_classes=[]
+    for target_entry in targets:
+        if target_entry['column_class'] not in column_classes:
+            column_classes.append(target_entry['column_class'] )
+    return column_classes
+def collect_target_column_data_for_field(field_name):
+    targets=[]
+    for table_name, table_entry in g_table_dict.items():
+        if 'data_columns' in table_entry:
+            for column_name, column_entry in table_entry['data_columns'].items():
+                for mapping in column_entry['field_mappings']:
+                    if mapping['field_name'] == field_name:
+                        targets.append({
+                            'table_name': table_name,
+                            'column_name': column_name,
+                            'column_type': column_entry['column_type'],
+                            'column_class': column_entry['column_class']
+                        })
+    return targets
 
 def collect_column_classes_for_field(field_name):
     """
@@ -2448,14 +2494,8 @@ def collect_column_classes_for_field(field_name):
     """
     column_classes = []
 
+    # collect from data column mappings
     for table_name, table_entry in g_table_dict.items():
-        if 'direct_key_hash_columns' in table_entry:
-            for column_name, hash_column_entry in table_entry['direct_key_hash_columns'].items():
-                for field_mapping_entry in hash_column_entry['field_mappings']:
-                    if field_mapping_entry['field_name'] == field_name:
-                        if hash_column_entry['column_class'] not in column_classes:
-                            column_classes.append(hash_column_entry['column_class'])
-
         if 'data_columns' in table_entry:
             for column_name, data_column_entry in table_entry['data_columns'].items():
                 for field_mapping_entry in data_column_entry['field_mappings']:
@@ -2463,7 +2503,22 @@ def collect_column_classes_for_field(field_name):
                         if data_column_entry['column_class'] not in column_classes:
                             column_classes.append(data_column_entry['column_class'])
 
+
+    # collect from usage as direct key value
+    for hash_name, hash_entry in g_hash_dict.items():
+        if  hash_entry.get('direct_key_field','') == field_name:
+            # search for table load operations, using this hash
+            for table_name, table_entry in g_table_dict.items():
+                if 'load_operations' in table_entry:
+                    for load_operation_name, load_operation_entry in table_entry['load_operations'].items():
+                        if 'hash_column_dict' in load_operation_entry:
+                            for hash_column_class, hash_mapping_entry in load_operation_entry['hash_column_dict']:
+                                if hash_mapping_entry['hash_name']== hash_name:
+                                    if hash_column_class not in column_classes:
+                                        column_classes.append(hash_column_class)
+
     return column_classes
+
 
 
 # ------------------ Functions to write the dvpi Summary
