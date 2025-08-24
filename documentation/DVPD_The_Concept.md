@@ -149,14 +149,20 @@ A complete investigation and catalog of possible combinations is specified seper
 (Yes, it currently takes two documents to get this into perspective)
 
 ## Business vault object mapping capabilities
-Even though, the processing of raw vault data into the business vault could be implemented like normal loading of the result of a query to the raw vault,  the implementation and processing can be made easier and faster, when already existing hash values of the raw vault can be reused, where possible. 
+Even though, the processing of raw vault data into the business vault could be implemented like normal loading of the result of a query to the raw vault, 
+the implementation and processing can be made easier and faster, when already existing hash values of the raw vault can be reused, where possible. 
 
-Example: when calculating new information for a product,and storing this in a satellite of the raw vault product hub, it is not necessary to calculate the the hub key again, since the hub keys can already be part of the resultset as identifiers. Detailled declartion about the busienss key and its composition rules is not needen. Still the diff hash must be determined for the newly won information).
+Example: when calculating new information for a product,and storing this in a satellite of the raw vault product hub, 
+it is not necessary to calculate the the hub key again, since the hub keys will not change. They can already be part of the incoming resultset as identifiers.
+
+Detailled declartion about the busienss key and its composition rules is only needed, when new link row are created, since the link
+key contains the business keys of all hubs.
 
 Scenarios, that must be supported by the syntax, are described here:
 * [Hash source scenarios](./images/hash_source_scenarios.drawio.png)
 
-This will result in dvpds, that contain incomplete table declarations. It es expected, that incomplete tables, will distinguishalbel from tables, that are will be loaded. Also the hash calculation rules should only be defined for the hashes, that have to be build by the pipeline. 
+Dvpds must allow the declaration of incoming key values, to omit unecessary loading of unchanged hubs/links and unnecessary calculation of
+hub/link keys. 
 
 ## Loading processes
 In addition to the structure, mapping and parsing description,  processing specific declarations are needed for the loading process (or at least the coding of it).
@@ -386,6 +392,17 @@ The declaration of the deletion detection depends on the method.
 
 For more insights about the variations, when trying to define a more general approach without SQL, check out the [deletion_detection_catalog](./deletion_detection_catalog.md).
 
+## "Pass Through" Hub/link keys for business vault pipelines
+Even though in case of business vault transformations, not all of the model will be loaded, a minimal declaration of more then just the loaded
+tables model is mandatory. By doing so, we gain the following benefits:
+- table structures can be copied from other pipelines and need only minimal adaption
+- Syntax regarding relation declaration and link key composition don't change
+- Name consistency for the hub/link is given through structure (no need to check, no source for mistakes)
+
+The option to reduce the syntax to only loaded tables was prototyped first. It became a declaration and consistency  
+nightmare, when multiple target tables used the same key and relation specific mappings came into play.
+To many exceptions from the approved syntax had to be invented and blow up the simple rules, that
+had been created for the "normal" data vault pipeline.
 
 ## Model Profile
 All **basic properties of the data vault model and loading**, are defined in a model profile.

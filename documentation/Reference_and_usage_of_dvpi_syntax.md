@@ -388,6 +388,11 @@ table is delivered by a source field.
 <br>List of the fields, that need to be concatenated for the hash.
 <br>→ see "hash_fields[]"
 
+**direct_key_field**
+<br>*optional*
+<br>When defined, this contains the name of the field, that provides the calculated hash value. Therefore
+a hash calculation for this hash is not necessary.
+
 **column_type**
 <br>Column type of the hash value in the target table.
 (This is copied from the model profile, that has to be used for the hash containing table)
@@ -495,8 +500,9 @@ Json Path: $.parse_sets[].load_operations[]
 **hash_class**
 <br>Class of the hash: key, parent_key, diff_hash. Needed to identify the special columns for the loading procedure, depending on the table_stereotype.
 
-**field_name**
-<br>Name of the field, containing the precalculated value in the source data set. Must only be set, when hash_name is not set.
+**direct_key_field**
+<br>*optional*
+<br>When defined, this contains the name of the field, that provides the calculated hash value. 
 
 **stage_column_name**
 <br>Name of the stage column, the hash can be taken from, when using stage table approach
