@@ -2026,7 +2026,6 @@ def add_direct_key_mapping_for_one_load_operation(table_name, table_entry, mappi
                 if explicit_mapped_field_name == None:
                     explicit_mapped_field_name = field_mapping['field_name']
                 else:
-                    #todo: add test for DKL-1
                     register_error(
                         f"DKL-1:Found more then one direct key mapping for relation '{mapping_set_name}' for table '{table_name}'")
 
@@ -2034,7 +2033,7 @@ def add_direct_key_mapping_for_one_load_operation(table_name, table_entry, mappi
                 if default_field_name == None:
                     default_field_name = field_mapping['field_name']
                 else:
-                    #todo: add test for DKL-2
+                    #todo: add test for DKL-2, this error might not be possible,since *
                     register_error(
                         f"DKL-2:Duplicate default field mappings for direct key for table {table_name}")
 
