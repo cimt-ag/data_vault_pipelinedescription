@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-08-24 18:06:53
+Compiling t1024c_AHS-S5_when_using_use_as_key_hash_directive.dvpd.json
+
+AHS-S5: Parent table 'rtjj_1024_aaa_hub' has no load operation for relation 'UUU' requiered for satellite 'btjj_1024_aaa_sat'
+*** Compilation ended with errors ***

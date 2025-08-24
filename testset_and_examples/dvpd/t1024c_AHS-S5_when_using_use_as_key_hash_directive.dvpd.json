@@ -1,15 +1,14 @@
 {
 	"dvpd_version": "0.6.2",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "t1024c_trigger_ahs_s4_missing_use_key_hash_mapping_in_one_relation",
+	"pipeline_name": "t1024c_AHS-S5_when_using_use_as_key_hash_directive",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
 	},
 
 	"fields": [
-			   {"field_name": "F1_HK_RTJJ_1024_AAA_DFT", 	"field_type": "CHAR(28)",	"targets": [{"table_name":"btjj_1024_aaa_sat"
-																								,"column_name":"HK_RTJJ_1024_AAA"
+			  {"field_name": "F1_HK_RTJJ_1024_AAA_DFT", 	"field_type": "CHAR(28)",	"targets": [{"table_name":"rtjj_1024_aaa_hub"
 																								,"use_as_key_hash":"true"}]}
              ,{"field_name": "F2_AAA_C1F_DFT",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "btjj_1024_aaa_sat"
 																							,"column_name":"F1F2_AAA_C1F"}]}									
