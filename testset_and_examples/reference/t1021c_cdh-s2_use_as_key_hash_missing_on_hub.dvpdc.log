@@ -1,0 +1,8 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-08-24 16:53:57
+Compiling t1021c_cdh-s2_use_as_key_hash_missing_on_hub.dvpd.json
+
+CDH-S2: Hub table rtjj_1021_aaa_hub is only structural but has no direct key mapping or business key
+CDH-S2: Hub table rtjj_1021_bbb_hub is only structural but has no direct key mapping or business key
+*** Compilation ended with errors ***

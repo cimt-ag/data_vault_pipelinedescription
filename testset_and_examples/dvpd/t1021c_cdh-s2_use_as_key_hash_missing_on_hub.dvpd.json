@@ -1,9 +1,9 @@
 {
 	"dvpd_version": "0.6.2",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "t1021c_missing_use_key_hash_for_sat",
+	"pipeline_name": "t1021c_cdh-s2_use_as_key_hash_missing_on_hub",
 	"record_source_name_expression": "dvpd implementation test",
-	"pipeline_comment":"Test for missing 'use_as_key_hash' in satellite key columns.",
+	"pipeline_comment":"Test for missing 'use_as_key_hash' in satellites hub parent key columns.",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"
 		,"Query":"Select HK_AAA,LK_AAA_BBB, somethin as AAA_C1, somethin as AAA_BBB_C2, something as AAA_BBB_C2F From all tables you need to achieve this"

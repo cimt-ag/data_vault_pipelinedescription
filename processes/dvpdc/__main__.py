@@ -833,6 +833,11 @@ def derive_content_dependent_hub_properties(table_name, table_entry):
     if not has_business_key and not table_entry['is_only_structural_element']:
         register_error(f"CDH-S1: Hub table {table_name} has no business key assigned")
 
+    if table_entry['is_only_structural_element'] and not has_business_key and  'direct_key_mappings' not in table_entry:
+        register_error(f"CDH-S2: Hub table {table_name} is only structural but has no direct key mapping or business key")
+
+
+
 def derive_content_dependent_lnk_properties(table_name, table_entry):
     """
     Checks validity of link relations and determines link specific properties from the lnk declaration
