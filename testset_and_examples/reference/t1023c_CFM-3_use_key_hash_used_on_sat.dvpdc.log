@@ -1,0 +1,9 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-08-24 17:59:42
+Compiling t1023c_CFM-3_use_key_hash_used_on_sat.dvpd.json
+
+CFM-3: 'use_as_key_hash' only possible for mappings to hubs and links. Can't map field 'HK_RTJJ_1021_XXXX' to table 'btjj_1021_aaa_sat'
+CFM-3: 'use_as_key_hash' only possible for mappings to hubs and links. Can't map field 'LK_RTJJ_1021_XXXX' to table 'btjj_1021_aaa_bbb_sat'
+CFM-3: 'use_as_key_hash' only possible for mappings to hubs and links. Can't map field 'LK_RTJJ_1021_XXXX' to table 'btjj_1021_aaa_bbb_esat'
+*** Compilation ended with errors ***
