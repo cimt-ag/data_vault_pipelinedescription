@@ -2094,6 +2094,8 @@ def check_intertable_column_constraints():
                     register_error(
                         f"Driving Key '{driving_key}' is not a key hash or dependent child key in parent '{parent}'")
 
+    #todo: check if fields are only mapped to tables, that will not be rendered. Throw error if so.
+
 
 # ------------------ Functions to render the dvpi from the brain content -------------------
 
@@ -2125,7 +2127,7 @@ def assemble_dvpi(dvpd_object, dvpd_filename):
     dvpi_tables = []
     g_dvpi_document['tables'] = dvpi_tables
     for table_name, table_entry in g_table_dict.items():
-        if table_entry['is_only_structural_element']:  # we dont care about sctructural elements
+        if table_entry['is_only_structural_element']:  # we dont care about structural elements
             continue
         dvpi_tables_entry = assemble_dvpi_table_entry(table_name, table_entry)
         dvpi_tables.append(dvpi_tables_entry)
@@ -2402,6 +2404,7 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
                                    'column_type': hash_entry['column_type']}
         if 'direct_key_field' in hash_entry:
             field_name = hash_entry['direct_key_field']
+            dvpi_stage_column_entry['field_name'] = field_name
             dvpi_stage_column_entry['stage_column_class']='direct_key'
             targets = collect_target_column_data_for_direct_key(field_name)
             dvpi_stage_column_entry['targets'] = targets

@@ -18,6 +18,9 @@ class MissingFieldError(Exception):
 
 g_report_file=None
 
+SECTION_END_STRING="\n\n"+"="*80+"\n"
+SECTION_HEAD_SEPARATOR_STRING="-"*80+"\n"
+
 def assemble_column_name_and_stage_name_dict(parse_set):
     """Collect the stage names for every target column name and vice versa over all load operations"""
     column_name_to_stage_name_dict = {}
@@ -136,6 +139,13 @@ def determine_combined_stage_column_name(stage_column_name, stage_name_to_column
 
 
 def operation_loadable_by_convention(load_operation,stage_column_to_final_column_name_dict):
+    """
+    Determines if the load operation can be loaded by following the "Equal column name" principle
+
+    Args:
+        load_operation: dvpi.load_operation[n] to chec
+        stage_column_to_final_column_name_dict:
+    """
     for hash_mapping in load_operation['hash_mappings']:
         if hash_mapping['column_name']!=hash_mapping['stage_column_name']:
             return False
@@ -243,32 +253,54 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
     """
     global  g_report_file
 
+    # load the dvpi and check
     with open(dvpi_filepath, 'r') as file:
         dvpi = json.load(file)
 
-    # Check for missing fields
+    # Check for essential properties
     if 'tables' not in dvpi:
         raise MissingFieldError("The field 'tables' is missing in the DVPI.")
     
     if 'parse_sets' not in dvpi:
         raise MissingFieldError("The field 'parse_sets' is missing in the DVPI.")
 
-    # Extract tables and stage tables
-
-    parse_sets = dvpi.get('parse_sets', [])
-    tables=dvpi['tables']
+    # Generate file name and path
     report_file_name = dvpi['pipeline_name']+".devsheet.txt"
     report_sheet_file_path = documentation_directory.joinpath(report_file_name)
-
     with open(report_sheet_file_path, "w") as g_report_file:
+
+        parse_sets = dvpi.get('parse_sets', [])
+        tables = dvpi['tables']
+
         g_report_file.write(f"Data vault pipeline developer cheat sheet \n")
         g_report_file.write(f"rendered from  {dvpi_filepath.stem}\n\n")
-        g_report_file.write(f"pipeline name:  {dvpi['pipeline_name']}\n\n")
-
+        g_report_file.write(f"pipeline name:  {dvpi['pipeline_name']}\n")
+        g_report_file.write(SECTION_END_STRING)
 
         for parse_set in parse_sets:
-            g_report_file.write("------------------------------------------------------\n")
-            g_report_file.write(f"record source:  {parse_set['record_source_name_expression']}\n\n")
+            # >>>>>>>>>>  Table list  section    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            g_report_file.write(f"Table List:\n")
+            g_report_file.write(SECTION_HEAD_SEPARATOR_STRING)
+            g_report_file.write(create_op_list(dvpi))
+
+            stage_properties = parse_set['stage_properties']
+            if len(stage_properties) == 1:
+                stage_properties = stage_properties[0]
+                schema_name = stage_properties['stage_schema']
+                table_name = stage_properties['stage_table_name']
+                full_name = "{}.{}".format(schema_name, table_name)
+            else:
+                raise AssertionError("Currently only one stage properties object is supportet!")
+                # TODO: implement this case
+
+            g_report_file.write(SECTION_END_STRING)
+
+            # >>>>>>>>>>  Source column section    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+            g_report_file.write("Source fields\n")
+
+            g_report_file.write(SECTION_HEAD_SEPARATOR_STRING)
+            g_report_file.write(f"record source:  {parse_set['record_source_name_expression']}\n")
 
             if 'json_array_path' in dvpi['data_extraction']:
                 g_report_file.write(f"Json array path: {dvpi['data_extraction']['json_array_path']}\n\n")
@@ -303,27 +335,17 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                     g_report_file.write(
                         f"            Include only json paths: '{json_path_string}'\n")
 
+            g_report_file.write(SECTION_END_STRING)
 
-            g_report_file.write("\n\n------------------------------------------------------\n")
-            g_report_file.write(f"Table List:\n")
-            g_report_file.write(create_op_list(dvpi))
 
-            stage_properties = parse_set['stage_properties']
-            if len(stage_properties) == 1:
-                stage_properties = stage_properties[0]
-                schema_name = stage_properties['stage_schema']
-                table_name = stage_properties['stage_table_name']
-                full_name = "{}.{}".format(schema_name, table_name)
-            else:
-                raise AssertionError("Currently only one stage properties object is supportet!")
-                # TODO: implement this case
+            # >>>>>>>>>>  Field to Stage mapping section    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-            g_report_file.write("\n\n------------------------------------------------------\n")
-            g_report_file.write(f"stage table:  {full_name}\n")
 
-            g_report_file.write(f"Field to Stage mapping:\n")
+            g_report_file.write("Stage Table mapping (Source field > stage column)\n")
+            g_report_file.write(SECTION_HEAD_SEPARATOR_STRING)
+            g_report_file.write(f"Stage table:  {full_name}\n")
 
-            columns = parse_set['stage_columns']
+            stage_columns = parse_set['stage_columns']
 
             column_name_to_stage_name_dict={}
             stage_name_to_column_name_dict={}
@@ -332,6 +354,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                 column_name_to_stage_name_dict,stage_name_to_column_name_dict=assemble_column_name_and_stage_name_dict(parse_set)
                 stage_with_target_column_type_dict=assemble_stage_with_target_column_type_dict(parse_set,tables)
 
+
             hash_keys = []
             business_keys = []
             content = []
@@ -339,7 +362,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
             field_to_stage_dict={}
             stage_column_to_final_column_name_dict = {}
 
-            for column in columns:
+            for column in stage_columns:
                 stage_column_name = column['stage_column_name']
                 stage_column_class = column['stage_column_class']
                 if stage_column_class == 'data' or stage_column_class == 'direct_key':
@@ -355,7 +378,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                     field_name=column['field_name']
                     field_to_stage_dict[field_name]=final_column_name # add the fineal column name to the field dict for later use
                     stage_column_to_final_column_name_dict[stage_column_name]=final_column_name
-                    if 'parent_key'  in column_classes:
+                    if 'key' in column_classes or 'parent_key'  in column_classes:
                         hash_keys.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
                     elif 'business_key' in column_classes or 'dependent_child_key' in column_classes:
                         business_keys.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
@@ -375,7 +398,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
             if len(hash_keys) > 0:
                 stage_column_info += ["\t--hash keys"] + hash_keys
             if len(business_keys) > 0:
-                stage_column_info += ["\t--business keys"] + business_keys
+                stage_column_info += ["\n\t--business keys"] + business_keys
             if len(content) > 0:
                 stage_column_info += ["\n\t--content"] + content
             if len(content_untracked) > 0:
@@ -384,9 +407,13 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
             stage_column_info = ',\n'.join(stage_column_info)
             g_report_file.write(stage_column_info)
 
-            # now provide the hash composition information
-            g_report_file.write("\n\n------------------------------------------------------\n")
-            g_report_file.write("Hash value composition\n")
+            g_report_file.write(SECTION_END_STRING)
+
+            # >>>>>>>>>>  hash composition information    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+            g_report_file.write("Composition of hash columns that must be calculated\n")
+            g_report_file.write(SECTION_HEAD_SEPARATOR_STRING)
+
             for hash_definition in parse_set['hashes']:
                 if 'direct_key_field' in hash_definition:
                     continue  # no need to print the trivial direct copy
@@ -402,10 +429,13 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                 for hash_field in hash_fields_sorted:
                     g_report_file.write(f"\t\t{field_to_stage_dict[hash_field['field_name']]} \n")
 
-            # finally list the load operations and annotate special constellations
-            g_report_file.write("\n\n------------------------------------------------------\n")
-            g_report_file.write("Table load method\n")
-            g_report_file.write("(STAGE >  VAULT)\n\n")
+
+            g_report_file.write(SECTION_END_STRING)
+
+            # >>>>>>>>>>  load operations    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+            g_report_file.write("Load mappings from stage to data vault table\n")
+            g_report_file.write(SECTION_HEAD_SEPARATOR_STRING)
             for load_operation in parse_set['load_operations']:
                 table_name=load_operation['table_name']
                 table=get_table_from_tables(tables,table_name)
@@ -420,6 +450,10 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                 load_description=get_load_description(load_operation,stage_column_to_final_column_name_dict)
                 g_report_file.write(f"{load_description}\n\n")
 
+            g_report_file.write(SECTION_END_STRING)
+
+        # iteration over parse sets complete at this point (yes we need to refactor this)
+        g_report_file.write("\n\n===  END OF SHEET  ===\n")
 
 def get_name_of_youngest_dvpi_file(dvpi_default_directory):
 
