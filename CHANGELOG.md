@@ -7,7 +7,8 @@ creating the key and not the table that is using the key. This allows the same k
 prevents mistakes in regarding the column namimg. You migrate existing dpvds by just changing the target table.
 
 ### other features
-* DDL render: added configuration to set name for directory of stage table ddl files 
+- DDL render: added configuration to set name for directory of stage table ddl files
+- Autotest: Hardcoded "rebranding" of the crash detection tests, to be successfull when captured in th
 
 ### bugfixes
 * DDL render: Now puts key column of satellite first in the primary key definition
