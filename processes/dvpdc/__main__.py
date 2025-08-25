@@ -1636,8 +1636,8 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
                 if 'hash_fields' not in parent_hash_entry:
                     register_error(
                         f"AHS-L2: Cant assemble link key fields for '{link_table_name}', since hub '{link_parent_entry['table_name']}' has no businiess keys mapped")
-                hash_assembly_had_errors = True
-                continue
+                    hash_assembly_had_errors = True
+                    continue
                 for parent_hash_field in parent_hash_entry['hash_fields']:
                     link_hash_field = parent_hash_field.copy()
                     link_hash_field['parent_declaration_position'] = link_parent_count
