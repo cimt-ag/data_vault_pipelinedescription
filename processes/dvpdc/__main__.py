@@ -1589,6 +1589,7 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
 
         # add parent hash key fields for this operation
         link_parent_count = 0
+        hash_assembly_had_errors=False
         for link_parent_entry in link_table_entry['link_parent_tables']:
             link_parent_count += 1
             parent_table_entry = g_table_dict[link_parent_entry['table_name']]
@@ -1610,8 +1611,9 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
 
             if not needed_key_set in parent_load_operations:
                 register_error(
-                    f"AHS-L1: Hub '{link_parent_entry['table_name']}' has no business key mapping for relation '{needed_key_set}' needed for link '{link_table_name}'")
-                return
+                    f"AHS-L1: Hub '{link_parent_entry['table_name']}' has no key mapping for relation '{needed_key_set}' needed for link '{link_table_name}'")
+                hash_assembly_had_errors=True
+                continue
             parent_load_operation = parent_load_operations[needed_key_set]
             parent_hash_reference_dict = parent_load_operation['hash_mapping_dict']
             parent_key_hash_reference = parent_hash_reference_dict['key']
@@ -1631,6 +1633,11 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
             # add the hash field mappings of the hash parent to the hash fields of the link if we dont have a direct key
             if 'direct_key_field' not in link_load_operation_entry:
                 parent_hash_entry = g_hash_dict[parent_key_hash_reference['hash_name']]
+                if 'hash_fields' not in parent_hash_entry:
+                    register_error(
+                        f"AHS-L2: Cant assemble link key fields for '{link_table_name}', since hub '{link_parent_entry['table_name']}' has no businiess keys mapped")
+                hash_assembly_had_errors = True
+                continue
                 for parent_hash_field in parent_hash_entry['hash_fields']:
                     link_hash_field = parent_hash_field.copy()
                     link_hash_field['parent_declaration_position'] = link_parent_count
@@ -1649,6 +1656,9 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
                                                                    "parent_key_column_name": parent_key_hash_reference[
                                                                        'hash_column_name'],
                                                                    "column_type": parent_table_key_column_type}
+
+        if hash_assembly_had_errors:
+            return
 
         # add dependent child keys if exist
         if 'data_mapping_dict' in link_load_operation_entry:
