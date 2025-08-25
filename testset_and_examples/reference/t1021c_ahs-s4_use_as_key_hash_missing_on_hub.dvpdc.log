@@ -1,0 +1,8 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-08-25 11:51:03
+Compiling t1021c_ahs-s4_use_as_key_hash_missing_on_hub.dvpd.json
+
+AHS-S4: Missing a key declaration for parent table 'rtjj_1021_aaa_hub' of satellite 'btjj_1021_aaa_sat'. Even though the parent is only structural, 'use_as_key_hash' or business keys are needed
+AHS-S4: Missing a key declaration for parent table 'rtjj_1021_aaa_bbb_lnk' of satellite 'btjj_1021_aaa_bbb_sat'. Even though the parent is only structural, 'use_as_key_hash' or business keys are needed
+*** Compilation ended with errors ***

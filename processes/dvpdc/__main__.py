@@ -833,8 +833,10 @@ def derive_content_dependent_hub_properties(table_name, table_entry):
     if not has_business_key and not table_entry['is_only_structural_element']:
         register_error(f"CDH-S1: Hub table {table_name} has no business key assigned")
 
-    if table_entry['is_only_structural_element'] and not has_business_key and  'direct_key_mappings' not in table_entry:
-        register_error(f"CDH-S2: Hub table {table_name} is only structural but has no direct key mapping or business key")
+    # checking the need of key declarations for structural elements need a full picture of all related
+    # tables. So it is done later.
+
+
 
 
 
@@ -1747,10 +1749,16 @@ def add_hash_column_mappings_for_sat(table_name, table_entry):
 
         parent_load_operations = satellite_parent_table['load_operations']
 
-        if not load_operation_name in parent_load_operations:
+        if not load_operation_name in parent_load_operations: #todo test this to be omitted for structural element parents that declare a BK
+            if satellite_parent_table['is_only_structural_element']:
+                if  'direct_key_mappings' not in satellite_parent_table:
+                    register_error(
+                        f"AHS-S4: Missing a key declaration for parent table '{table_entry['satellite_parent_table']}' of satellite '{table_name}'. Even though the parent is only structural, 'use_as_key_hash' or business keys are needed")
+                    return
             register_error(
                 f"AHS-S5: Parent table '{table_entry['satellite_parent_table']}' has no load operation for relation '{load_operation_name}' requiered for satellite '{table_name}'")
             return
+
 
         parent_load_operation = parent_load_operations[load_operation_name]
         parent_hash_reference_dict = parent_load_operation['hash_mapping_dict']
@@ -2074,6 +2082,8 @@ def copy_data_column_properties_to_operation_mapping(data_mapping_dict, data_col
         if relevant_key in data_column:
             data_mapping_dict[relevant_key] = data_column[relevant_key]
 
+# ------------------  Final intertable checks
+
 
 def check_intertable_column_constraints():
     """
@@ -2085,8 +2095,8 @@ def check_intertable_column_constraints():
 
     """
 
-    # Driving Keys must be resolvable in the parent
     for table_name, table_entry in g_table_dict.items():
+        # Driving Keys must be resolvable in the parent
         if 'driving_keys' in table_entry and table_entry['table_stereotype'] == 'sat':
             parent = table_entry['satellite_parent_table']
             parent_hash_columns = g_table_dict[parent]['hash_columns']
@@ -2097,6 +2107,7 @@ def check_intertable_column_constraints():
                 if driving_key not in parent_hash_columns and driving_key not in parent_data_columns:
                     register_error(
                         f"Driving Key '{driving_key}' is not a key hash or dependent child key in parent '{parent}'")
+
 
     #todo: check if fields are only mapped to tables, that will not be rendered. Throw error if so.
 

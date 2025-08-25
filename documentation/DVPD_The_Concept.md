@@ -155,7 +155,7 @@ the implementation and processing can be made easier and faster, when already ex
 Example: when calculating new information for a product,and storing this in a satellite of the raw vault product hub, 
 it is not necessary to calculate the the hub key again, since the hub keys will not change. They can already be part of the incoming resultset as identifiers.
 
-Detailled declartion about the busienss key and its composition rules is only needed, when new link row are created, since the link
+Detailed declaration about the business key and its composition rules is only needed, when new link row are created, since the link
 key contains the business keys of all hubs.
 
 Scenarios, that must be supported by the syntax, are described here:

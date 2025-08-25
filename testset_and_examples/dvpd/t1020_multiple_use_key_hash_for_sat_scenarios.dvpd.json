@@ -31,8 +31,9 @@
 			  ,{"field_name": "F10_EEE_C1F",				"field_type": "VARCHAR(200)",	"targets": [{"table_name": "btjj_1020_eee_sat"}]}
 			  ,{"field_name": "F11_FFF_C1F",				"field_type": "VARCHAR(200)",	"targets": [{"table_name": "btjj_1020_fff_sat"}]}
 
-			  ,{"field_name": "F12_GGG_BK1F",			"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtnn_1020_ggg_hub"}]}
-			  ,{"field_name": "F13_HHH_BK1F",			"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtnn_1020_hhh_hub"}]}
+			  ,{"field_name": "F12_GGGHHH_BK1",			"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtnn_1020_ggg_hub"},{"table_name": "rtnn_1020_hhh_hub"}]}
+			  ,{"field_name": "F13_GGG_BK2F",			"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtnn_1020_ggg_hub"}]}
+			  ,{"field_name": "F14_HHH_BK2F",			"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtnn_1020_hhh_hub"}]}
 			 ], 
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 

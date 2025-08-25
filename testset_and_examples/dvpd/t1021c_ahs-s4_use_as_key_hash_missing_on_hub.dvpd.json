@@ -1,7 +1,7 @@
 {
 	"dvpd_version": "0.6.2",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "t1021c_cdh-s2_use_as_key_hash_missing_on_hub",
+	"pipeline_name": "t1021c_ahs-s4_use_as_key_hash_missing_on_hub",
 	"record_source_name_expression": "dvpd implementation test",
 	"pipeline_comment":"Test for missing 'use_as_key_hash' in satellites hub parent key columns.",
 	"data_extraction": {
