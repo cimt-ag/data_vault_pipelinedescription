@@ -1,8 +1,8 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2024-04-05 11:05:40
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-07-18 18:59:52
 Compiling t0005c_check_link_specifics.dvpd.json
 
-link parent table 'rvlt_test_jj' of link 'rtjj_05_aaa_bbb_xxx_with_same_lk_lnk' is not declared
-link parent table 'rvlt_test_jj' of link 'rtjj_05_aaa_ccc_xxx_with_same_lk_lnk' is not declared
+CDL-S1: link parent table 'rvlt_test_jj' of link 'rtjj_05_aaa_bbb_xxx_with_same_lk_lnk' is not declared
+CDL-S1: link parent table 'rvlt_test_jj' of link 'rtjj_05_aaa_ccc_xxx_with_same_lk_lnk' is not declared
 *** Compilation ended with errors ***

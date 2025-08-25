@@ -216,7 +216,7 @@ def assemble_column_name_and_stage_name_dict(parse_set):
     return column_name_to_stage_name_dict,stage_name_to_column_name_dict
 
 
-def assemble_stage_with_target_column_type_dict(parse_set,tables, use_target_column_type):
+def assemble_stage_with_target_column_type_dict(parse_set,tables):
     stage_with_target_column_type_dict={}
     for stage_column in parse_set["stage_columns"]:
         if stage_column['stage_column_class'] != "data":

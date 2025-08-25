@@ -1,0 +1,86 @@
+{
+	"dvpd_version": "0.6.3",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t1021_multiple_use_key_hash_for_link_scenarios",
+	"record_source_name_expression": "dvpd implementation test",
+	"pipeline_comment":"Test for esat creation from business rule.",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+"fields": [
+			   {"field_name": "F1_HK_RTJJ_1021_AAA", 	"field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1021_aaa_hub"
+																									,"use_as_key_hash":"true"	}]}
+		 	  ,{"field_name": "F2_AAA_BK1",				"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1021_aaa_hub"}]}
+			  ,{"field_name": "F3_AAA_BK2F",			"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_1021_aaa_hub"}]}
+
+		 	  ,{"field_name": "F4_AAA_BBB_2_DC1F","field_type": "VARCHAR(200)",	"targets": [{"table_name": "btjj_1021_aaa_bbb_2_dlnk"}]}
+			  
+			  ,{"field_name": "F5_AAA_BBB_1_C1F",			"field_type": "VARCHAR(200)",	"targets": [{"table_name": "btjj_1021_aaa_bbb_1_sat"}]}
+
+			  ,{"field_name": "F6_HK_rtjj_1021_bbb", 	"field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1021_bbb_hub"
+																									,"use_as_key_hash":"true"	}]}
+			  ,{"field_name": "F6_BBB_BK1F",			"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_1021_bbb_hub"}]}
+			  ,{"field_name": "F7_HK_rtjj_1021_ccc", 	"field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1021_ccc_hub"
+																									,"use_as_key_hash":"true"	}]}
+			  ,{"field_name": "F8_LK_rtjj_1021_ccc_ddd","field_type": "CHAR(28)",		"targets": [{"table_name":"btjj_1021_ccc_ddd_lnk"
+																									,"use_as_key_hash":"true"	}]}																									
+			  ,{"field_name": "F9_HK_rtjj_1021_ddd", 	"field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1021_ddd_hub"
+																									,"use_as_key_hash":"true"	}]}
+			  ,{"field_name": "F10_LK_rtjj_1021_ccc_eee","field_type": "CHAR(28)",		"targets": [{"table_name":"btjj_1021_ccc_eee_lnk"
+																									,"use_as_key_hash":"true"	}]}																									
+			  ,{"field_name": "F11_EEE_BK1", 			"field_type": "DECIMAL(5,0)",	"targets": [{"table_name":"rtjj_1021_eee_hub"}]}
+			  ,{"field_name": "F12_EEE_BK2F", 			"field_type": "DECIMAL(5,0)",	"targets": [{"table_name":"rtjj_1021_eee_hub"}]}
+
+			  ,{"field_name": "F13_GGGHHH_BK1",			"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtnn_1021_ggg_hub"}
+																									,{"table_name": "rtnn_1021_hhh_hub"}]}
+			  ,{"field_name": "F14_GGG_BK2F",			"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtnn_1021_ggg_hub"}]}
+			  ,{"field_name": "F15_HHH_BK2F",			"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtnn_1021_hhh_hub"}]}
+			  ,{"field_name": "F16_III_HK",				"field_type": "CHAR(28)",		"targets": [{"table_name": "rtnn_1021_iii_hub"}]}
+			  ,{"field_name": "F17_III_C1F",			"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtnn_1021_iii_sat"}]}
+			 ], 
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_1021_aaa_hub",	"table_stereotype": "hub"		, "hub_key_column_name": "HK_rtjj_1021_aaa"
+																					, "is_only_structural_element":true}
+				,{"table_name": "rtjj_1021_bbb_hub","table_stereotype": "hub"		, "hub_key_column_name": "HK_rtjj_1021_bbb"
+ 																					, "is_only_structural_element":true}
+				,{"table_name": "rtjj_1021_ccc_hub","table_stereotype": "hub"		, "hub_key_column_name": "HK_rtjj_1021_ccc"
+																					, "is_only_structural_element":true}
+				,{"table_name": "rtjj_1021_ddd_hub","table_stereotype": "hub"		, "hub_key_column_name": "HK_rtjj_1021_ddd"
+ 																					, "is_only_structural_element":true}
+				,{"table_name": "rtjj_1021_eee_hub","table_stereotype": "hub"		, "hub_key_column_name": "HK_rtjj_1021_eee"
+																					, "is_only_structural_element":true}
+			]
+		}
+		,{"schema_name": "bvlt_test_jj", 
+		 "tables": [
+				{"table_name": "btjj_1021_aaa_bbb_1_lnk","table_stereotype": "lnk"	,"link_key_column_name": "LK_btjj_1021_aaa_bbb_1"
+																					,"link_parent_tables": ["rtjj_1021_aaa_hub","rtjj_1021_bbb_hub"]}
+				,{"table_name": "btjj_1021_aaa_bbb_2_dlnk","table_stereotype": "lnk"	,"link_key_column_name": "LK_btjj_1021_aaa_bbb_2"
+																					,"link_parent_tables": ["rtjj_1021_aaa_hub","rtjj_1021_bbb_hub"]}
+				,{"table_name": "btjj_1021_aaa_bbb_1_sat"	,"table_stereotype": "sat"	,"satellite_parent_table": "btjj_1021_aaa_bbb_1_lnk"
+																					,"diff_hash_column_name": "RH_btjj_1021_aaa_bbb_sat"}
+				,{"table_name": "btjj_1021_aaa_bbb_1_esat","table_stereotype": "sat"	,"satellite_parent_table": "btjj_1021_aaa_bbb_1_lnk"}
+				,{"table_name": "btjj_1021_aaa_bbb_2_esat","table_stereotype": "sat"	,"satellite_parent_table": "btjj_1021_aaa_bbb_2_dlnk"}
+				,{"table_name": "btjj_1021_ccc_ddd_lnk","table_stereotype": "lnk"	,"link_key_column_name": "LK_btjj_1021_ccc_ddd"
+																					,"link_parent_tables": ["rtjj_1021_ccc_hub","rtjj_1021_ddd_hub"]}
+				,{"table_name": "btjj_1021_ccc_ddd_esat","table_stereotype": "sat"	,"satellite_parent_table": "btjj_1021_ccc_ddd_lnk"}
+				,{"table_name": "btjj_1021_ccc_ddd_sat","table_stereotype": "sat"	,"satellite_parent_table": "btjj_1021_ccc_ddd_lnk"}
+				,{"table_name": "btjj_1021_ccc_eee_lnk","table_stereotype": "lnk"	,"link_key_column_name": "LK_btjj_1021_ccc_eee"
+																					,"link_parent_tables": ["rtjj_1021_ccc_hub","rtjj_1021_eee_hub"]}
+				,{"table_name": "btjj_1021_ccc_eee_esat","table_stereotype": "sat"	,"satellite_parent_table": "btjj_1021_ccc_eee_lnk"}
+				]
+			}
+		,{"schema_name": "rvlt_test_nn", 
+		 "tables": [
+				{"table_name": "rtnn_1021_ggg_hub",		"table_stereotype": "hub"}
+				,{"table_name": "rtnn_1021_hhh_hub", 	"table_stereotype": "hub"}
+				,{"table_name": "rtnn_1021_ggg_hhh_lnk","table_stereotype": "lnk"	,"link_parent_tables": ["rtnn_1021_ggg_hub","rtnn_1021_hhh_hub"]}
+				,{"table_name": "rtnn_1021_iii_hub", 	"table_stereotype": "hub",   "is_only_structural_element":true}
+				,{"table_name": "rtnn_1021_iii_sat",    "table_stereotype": "sat"	,"satellite_parent_table": "rtnn_1021_iii_hub"}
+		]
+		}
+	]
+}

@@ -1,0 +1,8 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-08-25 16:42:20
+Compiling t1026c_dlo-s61_use_as_key_hash_missing_on_hub_for_link.dvpd.json
+
+DLO-61: No load operations have been created for parent 'rtjj_1026_bbb_hub' of the link 'btjj_1026_aaa_bbb_lnk'
+DLO-61a: Table 'rtjj_1026_bbb_hub' is_only_structural_element and might miss a 'use_as_key_hash' mapping or business key
+*** Compilation ended with errors ***
