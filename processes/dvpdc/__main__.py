@@ -1315,11 +1315,10 @@ def pull_hub_load_operations_into_links():
         load_operation_collection = {}
         relevant_hub_count = 0
         first_relevant_hub = True
-        universal_load_operation_involved = False
+        dlo_61_triggered=False
         for link_parent_table in link_table['link_parent_tables']:
             hub_table = g_table_dict[link_parent_table['table_name']]
             if hub_table['is_hub_with_universal_load_operation']:
-                universal_load_operation_involved = True  # universal hubs don't add operations
                 continue
             relevant_hub_count += 1
             hub_load_operations = hub_table['load_operations']
@@ -1328,7 +1327,17 @@ def pull_hub_load_operations_into_links():
                     load_operation_collection[hub_load_operation_name] = 1
                 elif hub_load_operation_name in load_operation_collection:
                     load_operation_collection[hub_load_operation_name] += 1
+            if len(hub_load_operations) == 0:
+                register_error(
+                    f"DLO-61: No load operations have been created for parent '{link_parent_table['table_name']}' of the link '{link_table_name}'")
+                dlo_61_triggered=True
+                if hub_table['is_only_structural_element'] and 'direct_key_mappings' not in hub_table:
+                    register_error(
+                        f"DLO-61a: Table '{link_parent_table['table_name']}' is_only_structural_element and might miss a 'use_as_key_hash' mapping or business key")
             first_relevant_hub = False
+
+        if dlo_61_triggered:
+            return
 
         if relevant_hub_count > 0:
             for collected_operation_name, collected_operation_count in load_operation_collection.items():

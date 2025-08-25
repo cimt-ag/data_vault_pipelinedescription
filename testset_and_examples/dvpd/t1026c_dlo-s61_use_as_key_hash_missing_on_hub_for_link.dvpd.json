@@ -1,0 +1,32 @@
+{
+	"dvpd_version": "0.6.2",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t1026c_ahs-s4_use_as_key_hash_missing_on_hub",
+	"record_source_name_expression": "dvpd implementation test",
+	"pipeline_comment":"Test for missing 'use_as_key_hash' in satellites hub parent key columns.",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+		,"Query":"Select HK_AAA,LK_AAA_BBB, somethin as AAA_C1, somethin as AAA_BBB_C2, something as AAA_BBB_C2F From all tables you need to achieve this"
+	},
+
+	"fields": [
+				 {"field_name": "F1_HK_AAA",	"field_type": "CHAR(28)",	"targets": [{"table_name": "rtjj_1026_aaa_hub"}]}
+			 ], 
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_1026_aaa_hub",		"table_stereotype": "hub"	,"hub_key_column_name": "HK_rtjj_1026_aaa"
+																					,"is_only_structural_element":true}
+				,{"table_name": "rtjj_1026_bbb_hub", 	"table_stereotype": "hub"	,"hub_key_column_name1": "HK_rtjj_1026_bbb"
+ 																					,"is_only_structural_element":true}
+		]
+		},
+				{"schema_name": "bvlt_test_jj", 
+		 "tables": [
+				{"table_name": "btjj_1026_aaa_bbb_lnk","table_stereotype":"lnk"	,"link_key_column_name": "LK_btjj_1026_aaa_bbb"
+																					,"link_parent_tables": ["rtjj_1026_aaa_hub","rtjj_1026_bbb_hub"]}
+				,{"table_name": "btjj_1026_aaa_bbb_esat","table_stereotype":"sat","satellite_parent_table": "btjj_1026_aaa_bbb_lnk"}
+				]
+				}
+	]
+}
