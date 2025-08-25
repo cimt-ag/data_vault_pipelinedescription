@@ -246,12 +246,14 @@ is rare but possible).
 **use_as_key_hash**
 (optional, default=false)
 *defines: key hash assembly, load process validation*
-<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
-<br>Setting this to true, defines the field to contain a key_hash for the table. The field/column name must be equal to
-the name, given by the model structure. It can be applied to parent keys of satellites or links and instructs the staging
-phase to just copy the value from the source into the stage table. Parent elements must still be
-declared but can be "only_strutural_element"
+<br>Setting this to true, defines the field to contain a valid key_hash for the table and omit the key hash calculation.
+It can only be applied to links and hubs. It is usefule when the table itself will not be changed but child tables store
+new information (e.g. business vault satellites of a raw vault hub). When use_as_key_hash is used, the table
+can also be declared as "is_only_structural_element" (see syntax for hubs / links below). When the option is set, 
+the target column name will always be the column name set at the table definition in the model section.
 
+This directive will create "direct_key_field" properties in the dvpi in  Hash Entries, hash_mappings, providing
+the field_name to use (Check out dvpi syntax for details). 
 
 **exclude_from_change_detection**
 (optional, default=false, only useful on mappings to historized satellites)
@@ -368,10 +370,16 @@ Json Path : /data_vault_mode[]/tables[]
 **is_only_structural_element**
 (optional, default=false)
 *defines: hash calculation, loading procedure*
-<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
-Defines the hub to be only declared for structural completeness. The table will not be loaded, and the key_hash will not
-be calculated but must be provided to child tables via "use_as_key_hash" mappings.
-If there are no link children, that need to calculate their link key, the business keys can be omitted.
+Defines the hub to be only declared for structural completeness when child tables of the hub are loaded. 
+This is especially helpful to add business vault child tables to hubs, when the hub data is the base of the incoming data,
+and therefore will not change. In that case the hub key can be provided in the input data and needs not to be calculated again. 
+The field containing the hub key value must be mapped with the "use_as_key_hash" directive to the hub table.
+Still it can be necessary to also map the business keys to the hub, when links are using these to assemble their
+link key.
+
+Hubs, with this setting will not be part in the final dvpi and will have no load operation. Nevertheless, all rules
+to provide different key combinations for different relations are still applied. 
+
 
 ### "lnk" specific properties
 
@@ -389,9 +397,15 @@ Depending on mapped fields and the properties, this can be a
 **is_only_structural_element**
 (optional, default=false)
 *defines: hash calculation, loading procedure*
-<br>*Experimental implementation of a 0.6.2 feature. Not completly tested*
-Defines the link to be only declared for structural completeness. The table will not be loaded, and the link_key will not
-be calculated. The link key values for the children must be provided via "use_as_key_hash" mappings. 
+Defines the link to be only declared for structural completeness when child tables of the link are loaded. 
+This is especially helpful to add business vault child tables to links, when the link data is the base of the incoming data,
+and therefore will not change. In that case the link key can be provided in the input data and needs not to be calculated again. 
+This even allows omitting the hubs, the link is connected to, completly. 
+
+The field containing the hub key value must be mapped with the "use_as_key_hash" directive to the link table.
+
+Links, with this setting will not be part in the final dvpi and will have no load operation. Nevertheless, all rules
+to provide different key combinations for different relations are still applied. 
 
 **link_parent_tables[]**
 (mandatory)*defines: model structure*

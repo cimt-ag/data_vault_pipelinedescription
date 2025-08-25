@@ -266,6 +266,7 @@ Options:
 - --no_primary_keys: omit rendering of primary key constraints
 - --ddl_file_naming_pattern: declares the pattern for the file name. Valid settings: <br>```lll``` = everything lowercase<br>```lUl``` = table name upper case
 - --stage_column_naming_rule={stage|combined} : stage = pure generated stage column names are used in the stage combined= combination of target column names and stage column names
+- --use_target_column_type_in_stage: stage table columns use the data type defined in the target tables instead of the original field type, providing consistency between staging and target structures.
 
 Settings read from .ini file:
 - dvpi_default_directory - The directory where the generator searches for the dvpi-files

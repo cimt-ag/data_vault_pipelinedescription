@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-03-20 10:45:27",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5000_willibald_shop_bestellung_p1",
   "pipeline_revision_tag": "--none--",
@@ -880,6 +880,14 @@
           "column_type": "integer",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "bestellung_hub",
+              "column_name": "BESTELLUNGID",
+              "column_type": "INTEGER",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -890,6 +898,14 @@
           "column_type": "integer",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_hub",
+              "column_name": "KUNDEID",
+              "column_type": "INTEGER",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -900,6 +916,14 @@
           "column_type": "integer",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_hub",
+              "column_name": "LIEFERADRID",
+              "column_type": "INTEGER",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -910,6 +934,14 @@
           "column_type": "DATE",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "bestellung_p1_sat",
+              "column_name": "BESTELLDATUM",
+              "column_type": "DATE",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -920,6 +952,14 @@
           "column_type": "DATE",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "bestellung_p1_sat",
+              "column_name": "WUNSCHDATUM",
+              "column_type": "DATE",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -930,6 +970,14 @@
           "column_type": "DECIMAL(8,3)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "bestellung_p1_sat",
+              "column_name": "RABATT",
+              "column_type": "DECIMAL(8,3)",
+              "column_class": "content"
+            }
           ]
         }
       ]

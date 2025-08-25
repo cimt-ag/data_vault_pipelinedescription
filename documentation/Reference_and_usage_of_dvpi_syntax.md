@@ -388,6 +388,11 @@ table is delivered by a source field.
 <br>List of the fields, that need to be concatenated for the hash.
 <br>→ see "hash_fields[]"
 
+**direct_key_field**
+<br>*optional*
+<br>When defined, this contains the name of the field, that provides the calculated hash value. Therefore
+a hash calculation for this hash is not necessary.
+
 **column_type**
 <br>Column type of the hash value in the target table.
 (This is copied from the model profile, that has to be used for the hash containing table)
@@ -495,8 +500,9 @@ Json Path: $.parse_sets[].load_operations[]
 **hash_class**
 <br>Class of the hash: key, parent_key, diff_hash. Needed to identify the special columns for the loading procedure, depending on the table_stereotype.
 
-**field_name**
-<br>Name of the field, containing the precalculated value in the source data set. Must only be set, when hash_name is not set.
+**direct_key_field**
+<br>*optional*
+<br>When defined, this contains the name of the field, that provides the calculated hash value. 
 
 **stage_column_name**
 <br>Name of the stage column, the hash can be taken from, when using stage table approach
@@ -587,9 +593,30 @@ The consolidated list of stage table columns.
 <br>list of column classes of the target tables, this stage column is  mapped to.
 Might be used to order the columns of the stage table by class, when creating the table. (e.g. business keys first, then content columns, then untracked columns)
 
+**targets**
+<br>Provides detailed mapping information about where the stage column's data is stored in the target tables. 
+<br>This enables schema validation, data integrity enforcement, and transformation logic consistency.
+<br>Targets might be an empty list, when the field is only used to calculate hash values
+<br>→ see "targets[]"
 
+### targets[]
+<br>Provides detailed mapping information about where the stage column's data is stored in the target tables. 
+<br>This enables schema validation, data integrity enforcement, and transformation logic consistency.
+<br>The list might be empty, when the source field is only used to calculate hash values but never mapped 
+to a target table.
+<br>Each entry in the targets list contains:
 
+**table_name**
+<br> The name of the target table where this column's data is loaded.This ensures that data is placed in the correct table.
 
+**column_name**
+<br>The corresponding column name in the target table.Helps in verifying schema alignment and mapping correctness.
+
+**column_type**
+<br>The type of the column in the target table, ensuring that data types match between the stage and target tables.
+
+**column_class**
+<br>The classification of the column in the target table, defining its role (e.g., business key, dependent child key, content, etc.).
 
 # License and Credits
 

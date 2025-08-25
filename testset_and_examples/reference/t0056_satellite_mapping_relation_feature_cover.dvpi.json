@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:16",
+  "compile_timestamp": "2025-03-20 10:45:24",
   "dvpd_version": "0.6.1",
   "pipeline_name": "t0056_satellite_mapping_relation_feature_cover.dvpd",
   "pipeline_revision_tag": "--none--",
@@ -2949,6 +2949,26 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_aaa_hub",
+              "column_name": "F1_AAABBBCCC_BK1",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            },
+            {
+              "table_name": "rtjj_56_bbb_hub",
+              "column_name": "F1_AAABBBCCC_BK1",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            },
+            {
+              "table_name": "rtjj_56_ccc_hub",
+              "column_name": "F1_AAABBBCCC_BK1",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -2959,6 +2979,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_aaa_hub",
+              "column_name": "F2_AAA_BK2F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -2969,6 +2997,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_aaa_p1_sat",
+              "column_name": "F3_AAA_C1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -2979,6 +3015,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_bbb_hub",
+              "column_name": "F4F5_BBB_BK2F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -2989,6 +3033,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_bbb_hub",
+              "column_name": "F4F5_BBB_BK2F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -2999,6 +3051,26 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_bbb_p1_sat",
+              "column_name": "F6_BBB_C1",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            },
+            {
+              "table_name": "rtjj_56_bbb_unm_sat",
+              "column_name": "F6_BBB_C1",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            },
+            {
+              "table_name": "rtjj_56_bbb_ttt_sat",
+              "column_name": "F6_BBB_C1",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3009,6 +3081,20 @@
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_bbb_p1_sat",
+              "column_name": "F7F8_BBB_C2F",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content"
+            },
+            {
+              "table_name": "rtjj_56_bbb_unm_sat",
+              "column_name": "F7_BBB_C2F",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3019,6 +3105,20 @@
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_bbb_p1_sat",
+              "column_name": "F7F8_BBB_C2F",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content"
+            },
+            {
+              "table_name": "rtjj_56_bbb_ttt_sat",
+              "column_name": "F8_BBB_C2F",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3029,6 +3129,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_bbb_all_sat",
+              "column_name": "F9_BBB_ALL_C1F",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3039,6 +3147,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_ccc_hub",
+              "column_name": "F10F11_CCC_BK2F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3049,6 +3165,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_ccc_hub",
+              "column_name": "F10F11_CCC_BK2F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3059,6 +3183,26 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_ccc_p1_sat",
+              "column_name": "F12_CCC_C1",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            },
+            {
+              "table_name": "rtjj_56_ccc_unm_sat",
+              "column_name": "F12_CCC_C1",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            },
+            {
+              "table_name": "rtjj_56_ccc_uuu_sat",
+              "column_name": "F12_CCC_C1",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3069,6 +3213,20 @@
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_ccc_p1_sat",
+              "column_name": "F13F14_CCC_C2F",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content"
+            },
+            {
+              "table_name": "rtjj_56_ccc_unm_sat",
+              "column_name": "F13_CCC_C2F",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3079,6 +3237,20 @@
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_ccc_p1_sat",
+              "column_name": "F13F14_CCC_C2F",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content"
+            },
+            {
+              "table_name": "rtjj_56_ccc_uuu_sat",
+              "column_name": "F14_CCC_C2F",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3089,6 +3261,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_ccc_all_sat",
+              "column_name": "F15_CCC_ALL_C1F",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3099,6 +3279,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_aaa_bbb_sat",
+              "column_name": "F16_AAA_BBB_DFT_C1F",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3109,6 +3297,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_aaa_bbb_ttt_sat",
+              "column_name": "F17_AAA_BBB_TTT_C1F",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3119,6 +3315,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_aaa_bbb_all_sat",
+              "column_name": "F18_AAA_BBB_ALL_C1F",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3129,6 +3333,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_56_aaa_cccuuu_sat",
+              "column_name": "F19_AAA_CCCUUU_C1F",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         }
       ]

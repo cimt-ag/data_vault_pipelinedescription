@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-03-20 10:45:27",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5007_willibald_shop_vereinspartner_p1",
   "pipeline_revision_tag": "--none--",
@@ -631,6 +631,14 @@
           "column_type": "VARCHAR(30) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "vereinspartner_hub",
+              "column_name": "VEREINSPARTNERID",
+              "column_type": "VARCHAR(30) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -641,6 +649,14 @@
           "column_type": "CHAR(13) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_hub",
+              "column_name": "KUNDEID",
+              "column_type": "CHAR(13) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -651,6 +667,14 @@
           "column_type": "integer ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "vereinspartner_vereinspartner_p1_sat",
+              "column_name": "RABATT1",
+              "column_type": "INTEGER ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -661,6 +685,14 @@
           "column_type": "integer ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "vereinspartner_vereinspartner_p1_sat",
+              "column_name": "RABATT2",
+              "column_type": "INTEGER ",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -671,6 +703,14 @@
           "column_type": "integer ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "vereinspartner_vereinspartner_p1_sat",
+              "column_name": "RABATT3",
+              "column_type": "INTEGER ",
+              "column_class": "content"
+            }
           ]
         }
       ]

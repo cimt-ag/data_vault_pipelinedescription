@@ -1,7 +1,14 @@
 # release 0.6.3
 
+### DVPD syntax extentions or changes
+- 'use_as_key_hash' and 'is_only_structural_element' are now available. 
+- behavior of 'use_as_key_hash' changed from 0.6.2 to 0.6.3. Now you must map the key field to the table, that is 
+creating the key and not the table that is using the key. This allows the same kind of relation specific behavior and
+prevents mistakes in regarding the column namimg. You migrate existing dpvds by just changing the target table.
+
 ### other features
-* DDL render: added configuration to set name for directory of stage table ddl files 
+- DDL render: added configuration to set name for directory of stage table ddl files
+- Autotest: Hardcoded "rebranding" of the crash detection tests, to be successfull when captured in th
 
 ### bugfixes
 * DDL render: Now puts key column of satellite first in the primary key definition

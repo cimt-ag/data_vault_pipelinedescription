@@ -1,0 +1,41 @@
+{
+	"dvpd_version": "0.6.3",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t1027c_AHS-L2_since_lk_cant_be_calculated_when_hub_has_use_as_key_hash_mapping",
+	"record_source_name_expression": "dvpd implementation test",
+	"pipeline_comment":"Test for esat creation from business rule.",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+"fields": [
+		 	   {"field_name": "F1_AAA_BK1",				"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1027_aaa_hub"}]}
+			  ,{"field_name": "F2_AAA_BK2F",			"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_1027_aaa_hub"}]}
+
+			  ,{"field_name": "F3_HK_rtjj_1027_bbb", 	"field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1027_bbb_hub"
+																									,"use_as_key_hash":"true"	}]}
+			  ,{"field_name": "F4_HK_rtjj_1027_ccc", 	"field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1027_ccc_hub"
+																									,"use_as_key_hash":"true"	}]}
+			 ], 
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_1027_aaa_hub",	"table_stereotype": "hub"		, "hub_key_column_name": "HK_rtjj_1027_aaa"
+																					, "is_only_structural_element":true}
+				,{"table_name": "rtjj_1027_bbb_hub","table_stereotype": "hub"		, "hub_key_column_name": "HK_rtjj_1027_bbb"
+ 																					, "is_only_structural_element":true}
+				,{"table_name": "rtjj_1027_ccc_hub","table_stereotype": "hub"		, "hub_key_column_name": "HK_rtjj_1027_ccc"
+ 																					, "is_only_structural_element":true}
+			]
+		}
+		,{"schema_name": "bvlt_test_jj", 
+		 "tables": [
+				{"table_name": "btjj_1027_aaa_bbb_ccc_lnk","table_stereotype": "lnk"	,"link_key_column_name": "LK_btjj_1027_aaa_bbbccc_"
+																					,"link_parent_tables": 	["rtjj_1027_aaa_hub"
+																											,"rtjj_1027_bbb_hub"
+																											,"rtjj_1027_ccc_hub"]}
+				,{"table_name": "btjj_1027_aaa_bbb_ccc_esat","table_stereotype": "sat"	,"satellite_parent_table": "btjj_1027_aaa_bbb_ccc_lnk"}
+				]
+			}
+	]
+}

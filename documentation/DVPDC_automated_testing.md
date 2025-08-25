@@ -72,10 +72,12 @@ Tests are grouped by number ranges. See test list at the end of this article.
 
 **Names in the data model**
 - the main schema is "rlvt_text_jj" with the shortcut "rtjj"
-- for multi schema test cases, additional schemas are named by progressing in the alphabet (kk,ll,mm)
+- for multi schema test cases, additional schemas are named by progressing in the alphabet (kk,ll,mm,nn) using nn for
+elements that assist as reference during debugging 
 - table names are structured as follows: \<schema shortcut>_\<testnumber>_\<identifier>_\<stereotype>
     - \<schema_shortcut>: rtjj, rtkk, rtll ...
-    - \<identifier for hubs> 3 times a letter from A to G (e.g. AAA,BBB)
+    - \<identifier for hubs> 3 times a letter from A to I (e.g. AAA,BBB) A-F for test challenges and G-I to ass 
+elements that assist as reference during debugging 
     - \<identifier for links> identifiers of all connected hubs separated by + optional "_" \<identifier for relation> + optional "_" \<identifier for parent paths when different to relation>
     - \<identifier for sattelites> identifier of parent + part identification (p1, p2, ...) or optional \<identifier for relation>
     - \<stereotype> extended stereotype postfix (e.g. hub, sat, lnk, dlnk, esat,msat,...)
