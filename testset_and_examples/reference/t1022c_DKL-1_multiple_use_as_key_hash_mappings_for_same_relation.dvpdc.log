@@ -1,8 +1,0 @@
-Data vault pipeline description compiler log 
-=== DVPD Compiler Version 0.6.2 ===
-Compile time: 2025-08-24 17:51:16
-Compiling t1022c_DKL-1_multiple_use_as_key_hash_mappings_for_same_relation.dvpd.json
-
-DKL-1:Found more then one direct key mapping for relation 'TTT' for table 'rtjj_1022_aaa_hub'
-DKL-1:Found more then one direct key mapping for relation 'TTT' for table 'rtjj_1022_aaa_bbb_lnk'
-*** Compilation ended with errors ***

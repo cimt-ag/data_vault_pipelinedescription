@@ -40,8 +40,8 @@ def assemble_column_name_and_stage_name_dict(parse_set):
                     stage_name_to_column_name_dict[stage_name].append(column_name)
 
         for column in load_operation['hash_mappings']: # collect the mappings from the hash_mappings
-            if not 'direct_key_field' in column:             # where the hash is provided by a source field
-                continue
+           # if not 'direct_key_field' in column:             # where the hash is provided by a source field
+           #     continue
             column_name=column['column_name']
             stage_name=column['stage_column_name']
             if column_name not in column_name_to_stage_name_dict:
@@ -73,7 +73,7 @@ def assemble_stage_with_target_column_type_dict(parse_set,tables):
             for hash_mapping in load_operation['hash_mappings']:  # scan the  hash_mappings
                 if 'direct_key_field' in hash_mapping:  # There is a direct key field in the source
                     table_name = load_operation['table_name']
-                    column_name = column_mapping['column_name']
+                    column_name = hash_mapping['column_name']
                     continue
                 if hash_mapping['stage_column_name']==stage_column['stage_column_name']:
                      table_name=load_operation['table_name']
@@ -118,6 +118,8 @@ def determine_combined_stage_column_name(stage_column_name, stage_name_to_column
                 BK5b (2)  u.BK5 (2)
     """
 
+    if stage_column_name not in stage_name_to_column_name_dict: # this column has no target
+        return stage_column_name
     if len(stage_name_to_column_name_dict[stage_column_name]) == 1:    # stage column has only one target
         target_column_name = stage_name_to_column_name_dict[stage_column_name][0]
         if len(column_name_to_stage_name_dict[target_column_name]) == 1 or target_column_name==stage_column_name:    # target name is unique (1:1) or same
@@ -358,6 +360,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
             hash_keys = []
             business_keys = []
             content = []
+            unmapped = []
             content_untracked = []
             field_to_stage_dict={}
             stage_column_to_final_column_name_dict = {}
@@ -378,7 +381,9 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                     field_name=column['field_name']
                     field_to_stage_dict[field_name]=final_column_name # add the fineal column name to the field dict for later use
                     stage_column_to_final_column_name_dict[stage_column_name]=final_column_name
-                    if 'key' in column_classes or 'parent_key'  in column_classes:
+                    if len(column['targets'])==0:  # this stage column is not mapped to any target
+                        unmapped.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
+                    elif 'key' in column_classes or 'parent_key'  in column_classes:
                         hash_keys.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
                     elif 'business_key' in column_classes or 'dependent_child_key' in column_classes:
                         business_keys.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
@@ -399,12 +404,14 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                 stage_column_info += ["\t--hash keys"] + hash_keys
             if len(business_keys) > 0:
                 stage_column_info += ["\n\t--business keys"] + business_keys
+            if len(unmapped) > 0:
+                stage_column_info += ["\n\t--business keys only for hashes"] + unmapped
             if len(content) > 0:
                 stage_column_info += ["\n\t--content"] + content
             if len(content_untracked) > 0:
                 stage_column_info += ["\n\t--content untracked"] + content_untracked
 
-            stage_column_info = ',\n'.join(stage_column_info)
+            stage_column_info = '\n'.join(stage_column_info)
             g_report_file.write(stage_column_info)
 
             g_report_file.write(SECTION_END_STRING)

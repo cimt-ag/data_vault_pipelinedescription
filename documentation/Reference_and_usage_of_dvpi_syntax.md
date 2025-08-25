@@ -596,11 +596,14 @@ Might be used to order the columns of the stage table by class, when creating th
 **targets**
 <br>Provides detailed mapping information about where the stage column's data is stored in the target tables. 
 <br>This enables schema validation, data integrity enforcement, and transformation logic consistency.
+<br>Targets might be an empty list, when the field is only used to calculate hash values
 <br>→ see "targets[]"
 
 ### targets[]
 <br>Provides detailed mapping information about where the stage column's data is stored in the target tables. 
 <br>This enables schema validation, data integrity enforcement, and transformation logic consistency.
+<br>The list might be empty, when the source field is only used to calculate hash values but never mapped 
+to a target table.
 <br>Each entry in the targets list contains:
 
 **table_name**

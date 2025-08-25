@@ -2481,6 +2481,8 @@ def collect_target_column_data_for_direct_key(field_name):
 
 def collect_column_classes_from_targets(targets):
     column_classes=[]
+    if len(targets)==0:
+        column_classes.append('unmapped')
     for target_entry in targets:
         if target_entry['column_class'] not in column_classes:
             column_classes.append(target_entry['column_class'] )
@@ -2488,6 +2490,8 @@ def collect_column_classes_from_targets(targets):
 def collect_target_column_data_for_field(field_name):
     targets=[]
     for table_name, table_entry in g_table_dict.items():
+        if table_entry['is_only_structural_element']:
+            continue    #skip tables that are not created, therefor will not be a target
         if 'data_columns' in table_entry:
             for column_name, column_entry in table_entry['data_columns'].items():
                 for mapping in column_entry['field_mappings']:
