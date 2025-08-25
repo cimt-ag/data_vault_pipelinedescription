@@ -1562,6 +1562,7 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
 
         will register errors
         """
+
     link_hash_base_name = "KEY_OF_" + link_table_name.upper()
     link_key_column_name = link_table_entry['link_key_column_name']
     load_operations = link_table_entry['load_operations']
@@ -1572,6 +1573,7 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
 
     for link_load_operation_name, link_load_operation_entry in load_operations.items():
         hash_mapping_dict = {}
+        log_function_step('add_hash_column_mappings_for_lnk', f"{link_table_name}:{link_load_operation_name}")
         link_load_operation_entry['hash_mapping_dict'] = hash_mapping_dict
         # link_mapping_set=link_load_operation_entry['mapping_set']
 
@@ -1626,12 +1628,13 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
                 hub_key_column_name_in_link = parent_key_hash_reference['hash_column_name']
                 link_parent_entry['hub_key_column_name_in_link'] = hub_key_column_name_in_link
 
-            # add the hash field mappings of the hash parent to the hash fields of the link
-            parent_hash_entry = g_hash_dict[parent_key_hash_reference['hash_name']]
-            for parent_hash_field in parent_hash_entry['hash_fields']:
-                link_hash_field = parent_hash_field.copy()
-                link_hash_field['parent_declaration_position'] = link_parent_count
-                link_hash_fields.append(link_hash_field)
+            # add the hash field mappings of the hash parent to the hash fields of the link if we dont have a direct key
+            if 'direct_key_field' not in link_load_operation_entry:
+                parent_hash_entry = g_hash_dict[parent_key_hash_reference['hash_name']]
+                for parent_hash_field in parent_hash_entry['hash_fields']:
+                    link_hash_field = parent_hash_field.copy()
+                    link_hash_field['parent_declaration_position'] = link_parent_count
+                    link_hash_fields.append(link_hash_field)
 
             # add reference to global entry of parent into load operation
             link_parent_key_hash_reference = {"hash_name": parent_key_hash_reference['hash_name'],
