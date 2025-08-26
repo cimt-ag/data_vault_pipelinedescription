@@ -185,7 +185,6 @@ def assemble_column_name_and_stage_name_dict(parse_set):
     column_name_to_stage_name_dict = {}
     stage_name_to_column_name_dict ={}
     for load_operation in parse_set['load_operations']:
-
         if 'data_mapping' in load_operation:        # collect the mappings from the data_mappings
             for column in load_operation['data_mapping']:
                 column_name=column['column_name']
@@ -200,8 +199,8 @@ def assemble_column_name_and_stage_name_dict(parse_set):
                     stage_name_to_column_name_dict[stage_name].append(column_name)
 
         for column in load_operation['hash_mappings']: # collect the mappings from the hash_mappings
-            if not 'field_name' in column:             # where the hash is provided by a source field
-                continue
+            #if not 'field_name' in column:             # where the hash is provided by a source field
+            #    continue
             column_name=column['column_name']
             stage_name=column['stage_column_name']
             if column_name not in column_name_to_stage_name_dict:
@@ -225,6 +224,10 @@ def assemble_stage_with_target_column_type_dict(parse_set,tables):
         column_name = None
         for load_operation in parse_set['load_operations']:  # scan all operations for a mapping the current stage column
             for column_mapping in load_operation['hash_mappings']:
+                if 'direct_key_field' in column_mapping:  # There is a direct key field in the source
+                    table_name = load_operation['table_name']
+                    column_name = column_mapping['column_name']
+                    continue
                 if column_mapping['stage_column_name']==stage_column['stage_column_name']:
                     table_name=load_operation['table_name']
                     column_name=column_mapping['column_name']
@@ -275,6 +278,8 @@ def determine_combined_stage_column_name(stage_column_name, stage_name_to_column
                 BK5b (2)  u.BK5 (2)
     """
 
+    if stage_column_name not in stage_name_to_column_name_dict: # this column has no target
+        return stage_column_name
     if len(stage_name_to_column_name_dict[stage_column_name]) == 1:    # stage column has only one target
         target_column_name = stage_name_to_column_name_dict[stage_column_name][0]
         if len(column_name_to_stage_name_dict[target_column_name]) == 1 or target_column_name==stage_column_name:    # target name is unique (1:1) or same
@@ -527,6 +532,9 @@ def parse_json_to_ddl(filepath, ddl_render_path
                     meta_deletion_flag_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length),
                                                                       col_type.ljust(15), nullable)
                 case 'hash':
+                    hashkeys.append(
+                        "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable))
+                case 'direct_key':
                     hashkeys.append(
                         "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable))
                 case 'data':
