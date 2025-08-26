@@ -491,7 +491,7 @@ def parse_json_to_ddl(filepath, ddl_render_path
         business_keys = []
         content = []
         content_untracked = []
-        column_statements = []
+        unmapped=[]
         column_name_to_stage_name_dict = {}
         stage_name_to_column_name_dict = {}
         stage_with_target_column_type_dict = {}
@@ -553,7 +553,9 @@ def parse_json_to_ddl(filepath, ddl_render_path
                     column_classes = column['column_classes']
                     ddl_column_line = "\t{}\t{}\t{}".format(final_column_name.ljust(max_name_length),
                                                             col_type.ljust(15), nullable)
-                    if 'parent_key' in column_classes:
+                    if len(column['targets'])==0:  # this stage column is not mapped to any target
+                        unmapped.append(ddl_column_line)
+                    elif 'parent_key' in column_classes:
                         hashkeys.append(ddl_column_line)
                     elif 'business_key' in column_classes or 'dependent_child_key' in column_classes:
                         business_keys.append(ddl_column_line)
@@ -575,6 +577,8 @@ def parse_json_to_ddl(filepath, ddl_render_path
         column_statements = ["--metadata"] + column_statements + ["--hash keys"] + hashkeys
         if len(business_keys) > 0:
             column_statements += ["--business keys"] + business_keys
+        if len(unmapped) > 0:
+            column_statements += ["--business keys just for hashing"] + unmapped
         if len(content_untracked) > 0:
             column_statements += ["--content untracked"] + content_untracked
         if len(content) > 0:
