@@ -130,7 +130,7 @@ def get_statement_list_method_definition_for_hub(dvpi_table, dvpi_table_load_ope
     output += f'db_connection=dwh_connection,\n'
     output += "stage_schema=stage_schema,\nstage_table=stage_table,\nmeta_job_instance_id = my_job_instance.get_job_instance_id(),\nmeta_inserted_at = my_job_instance.get_job_started_at() )\n\n"
 
-    output += "dvf_execute_elt_statement_list(dwh_cursor, statement_list)\n\n# ----------\n\n"
+    output += f"dvf_execute_elt_statement_list(dwh_cursor, statement_list)\n"
     return output
 
 def get_statement_list_method_definition_for_lnk(dvpi_table,dvpi_table_load_operations):
@@ -148,7 +148,7 @@ def get_statement_list_method_definition_for_lnk(dvpi_table,dvpi_table_load_oper
         output += f"stage_dc_column_list={columns_by_class['dependent_child_key']['column_stage_name']},\n"
     output += f'db_connection=dwh_connection,\n'
     output += "stage_schema=stage_schema,\nstage_table=stage_table,\nmeta_job_instance_id = my_job_instance.get_job_instance_id(),\nmeta_inserted_at = my_job_instance.get_job_started_at() )\n\n"
-    output += "dvf_execute_elt_statement_list(dwh_cursor, statement_list)\n\n# ----------\n\n"
+    output += "dvf_execute_elt_statement_list(dwh_cursor, statement_list)\n"
     return output
 
 def get_statement_list_method_definition_for_sat(dvpi_table, tables_with_deletion_detection, dvpi_table_load_operations, include_stage_content_column_list):
@@ -167,7 +167,7 @@ def get_statement_list_method_definition_for_sat(dvpi_table, tables_with_deletio
     output += f"with_deletion_detection={True if dvpi_table['table_name'] in tables_with_deletion_detection else False},\n"
     output += f'db_connection=dwh_connection,\n'
     output += "stage_schema=stage_schema,\nstage_table=stage_table,\nmeta_job_instance_id = my_job_instance.get_job_instance_id(),\nmeta_inserted_at = my_job_instance.get_job_started_at() )\n\n"
-    output += "dvf_execute_elt_statement_list(dwh_cursor, statement_list)\n\n# ----------\n\n"
+    output += "dvf_execute_elt_statement_list(dwh_cursor, statement_list)\n"
     return output
 
 def get_statement_list_method_definition_for_esat(dvpi_table, tables_with_deletion_detection, dvpi_table_load_operations):
@@ -186,7 +186,7 @@ def get_statement_list_method_definition_for_esat(dvpi_table, tables_with_deleti
     output += f"with_deletion_detection={True if dvpi_table['table_name'] in tables_with_deletion_detection else False},\n"
     output += f'db_connection=dwh_connection,\n'
     output += "stage_schema=stage_schema,\nstage_table=stage_table,\nmeta_job_instance_id = my_job_instance.get_job_instance_id(),\nmeta_inserted_at = my_job_instance.get_job_started_at() )\n\n"
-    output += "dvf_execute_elt_statement_list(dwh_cursor, statement_list)\n\n# ----------\n\n"
+    output += "dvf_execute_elt_statement_list(dwh_cursor, statement_list)\n"
     return output
 
 def get_statement_list_method_definition_for_msat(dvpi_table, tables_with_deletion_detection, dvpi_table_load_operations, include_stage_content_column_list):
@@ -205,7 +205,7 @@ def get_statement_list_method_definition_for_msat(dvpi_table, tables_with_deleti
     output += f"with_deletion_detection={True if dvpi_table['table_name'] in tables_with_deletion_detection else False},\n"
     output += f'db_connection=dwh_connection,\n'
     output += "stage_schema=stage_schema,\nstage_table=stage_table,\nmeta_job_instance_id = my_job_instance.get_job_instance_id(),\nmeta_inserted_at = my_job_instance.get_job_started_at() )\n\n"
-    output += "dvf_execute_elt_statement_list(dwh_cursor, statement_list)\n\n# ----------\n\n"
+    output += "dvf_execute_elt_statement_list(dwh_cursor, statement_list)\n"
     return output
 
 def get_hash_collision_statement_method_definition_for_hub(dvpi_table, dvpi_table_load_operations):
@@ -268,12 +268,15 @@ def generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, inc
     output_all = textwrap.indent(f"# general constants\nstage_schema = '{stage_properties['stage_schema']}'\n" f"stage_table = '{stage_properties['stage_table']}'\n\n\ndwh_cursor = dwh_connection.cursor()\n\n\n",indent_level_2)
 
     print("Generating code for the following tables: load operations")
+    # todo: arrange code to load in stereotype specific order: hubs, links, sats, references
     for load_operations_for_table in load_operations:
         print(f"\t{load_operations_for_table.get('table_name')}: {load_operations_for_table.get('relation_name')}")
+        # todo: change the table stereotype identification from naming convention to dvpi property evaluation
         if load_operations_for_table.get('table_name').split('_')[-1] == 'hub':
             for table in dvpi_data['tables']:
                 if table['table_name'] == load_operations_for_table.get('table_name'):
-                    output = get_hash_collision_statement_method_definition_for_hub(table, load_operations_for_table)
+                    output = "# --------"+load_operations_for_table.get('table_name')+"-------\n\n"
+                    output += get_hash_collision_statement_method_definition_for_hub(table, load_operations_for_table)
                     output += get_statement_list_method_definition_for_hub(table, load_operations_for_table)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
@@ -281,14 +284,16 @@ def generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, inc
         if load_operations_for_table.get('table_name').split('_')[-1] == 'lnk':
             for table in dvpi_data['tables']:
                 if table['table_name'] == load_operations_for_table.get('table_name'):
-                    output = get_hash_collision_statement_method_definition_for_lnk(table,load_operations_for_table)
+                    output = "# --------" + load_operations_for_table.get('table_name') + "-------\n\n"
+                    output += get_hash_collision_statement_method_definition_for_lnk(table,load_operations_for_table)
                     output += get_statement_list_method_definition_for_lnk(table,load_operations_for_table)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
         if load_operations_for_table.get('table_name').split('_')[-1] == 'dlnk':
             for table in dvpi_data['tables']:
                 if table['table_name'] == load_operations_for_table.get('table_name'):
-                    output = get_hash_collision_statement_method_definition_for_lnk(table,load_operations_for_table)
+                    output = "# --------" + load_operations_for_table.get('table_name') + "-------\n\n"
+                    output += get_hash_collision_statement_method_definition_for_lnk(table,load_operations_for_table)
                     output += get_statement_list_method_definition_for_lnk(table,load_operations_for_table)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
@@ -296,21 +301,24 @@ def generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, inc
         if load_operations_for_table.get('table_name').split('_')[-1] == 'esat':
             for table in dvpi_data['tables']:
                 if table['table_name'] == load_operations_for_table.get('table_name'):
-                    output = get_statement_list_method_definition_for_esat(table, tables_with_deletion_detection, load_operations_for_table)
+                    output = "# --------" + load_operations_for_table.get('table_name') + "-------\n\n"
+                    output += get_statement_list_method_definition_for_esat(table, tables_with_deletion_detection, load_operations_for_table)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
 
         if load_operations_for_table.get('table_name').split('_')[-1] == 'msat':
             for table in dvpi_data['tables']:
                 if table['table_name'] == load_operations_for_table.get('table_name'):
-                    output = get_statement_list_method_definition_for_msat(table, tables_with_deletion_detection, load_operations_for_table, include_stage_content_column_list)
+                    output = "# --------" + load_operations_for_table.get('table_name') + "-------\n\n"
+                    output += get_statement_list_method_definition_for_msat(table, tables_with_deletion_detection, load_operations_for_table, include_stage_content_column_list)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
 
         if load_operations_for_table.get('table_name').split('_')[-1] == 'sat':
             for table in dvpi_data['tables']:
                 if table['table_name'] == load_operations_for_table.get('table_name'):
-                    output = get_hash_collision_statement_method_definition_for_sat(table,load_operations_for_table)
+                    output = "# --------" + load_operations_for_table.get('table_name') + "-------\n\n"
+                    output += get_hash_collision_statement_method_definition_for_sat(table,load_operations_for_table)
                     output += get_statement_list_method_definition_for_sat(table, tables_with_deletion_detection, load_operations_for_table, include_stage_content_column_list)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
