@@ -5,8 +5,9 @@
 	"record_source_name_expression": "dvpd implementation test",
 	"pipeline_comment":"Multi case test for 'use_as_key_hash' on satellites. ",
 	"data_extraction": {
-		"fetch_module_name":"none - this is a pure generator test case"
-		,"Query":"Select HK_AAA,LK_AAA_BBB, somethin as AAA_C1, somethin as AAA_BBB_C2, somethin as AAA_BBB_C2F From all tables you need to achieve this"
+		"fetch_module_name":"transformation_view",
+		"view_schema":"tfr_btjj",
+		"view_name":"tfr_btjj_demo_1020"
 	},
  
 	"fields": [

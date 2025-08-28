@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-08-25 11:23:52",
+  "compile_timestamp": "2025-08-28 13:46:39",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t1020_multiple_use_key_hash_for_sat_scenarios",
   "pipeline_revision_tag": "--none--",
@@ -630,8 +630,9 @@
     }
   ],
   "data_extraction": {
-    "fetch_module_name": "none - this is a pure generator test case",
-    "Query": "Select HK_AAA,LK_AAA_BBB, somethin as AAA_C1, somethin as AAA_BBB_C2, somethin as AAA_BBB_C2F From all tables you need to achieve this"
+    "fetch_module_name": "transformation_view",
+    "view_schema": "tfr_btjj",
+    "view_name": "tfr_btjj_demo_1020"
   },
   "parse_sets": [
     {

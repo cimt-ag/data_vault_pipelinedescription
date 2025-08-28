@@ -5,7 +5,9 @@
 	"record_source_name_expression": "dvpd implementation test",
 	"pipeline_comment":"Test for esat creation from business rule.",
 	"data_extraction": {
-		"fetch_module_name":"none - this is a pure generator test case"
+		"fetch_module_name":"transformation_view",
+		"view_schema":"tfr_btjj",
+		"view_name":"tfr_btjj_demo_1021"
 	},
 
 "fields": [
