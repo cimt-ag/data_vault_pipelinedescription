@@ -2862,7 +2862,7 @@ def dvpdc(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None, ini_f
 
     with open(dvpdc_log_file_path, "w") as g_logfile:
         g_logfile.write(f"Data vault pipeline description compiler log \n")
-        log_progress(f"=== DVPD Compiler Version 0.6.2 ===")
+        log_progress(f"=== DVPD Compiler Version 0.6.3 ===")
         g_logfile.write(f"Compile time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
         log_progress(f"Compiling {dvpd_filename}\n")
         try:
