@@ -395,11 +395,11 @@ if __name__ == "__main__":
     file_list_fp=assemble_file_list_fingerprint(successful_file_list)
     report_line+=f"success {len(successful_file_list)} ({file_list_fp})"
 
-    print(f"  {len(successful_file_list)} tests passed ({file_list_fp})")
+    print(f"  {len(successful_file_list)} passed compiler tests({file_list_fp})")
 
     file_list_fp=assemble_file_list_fingerprint(autotest_file_list)
     report_line += f"+ cd passed {len(autotest_file_list)} ({file_list_fp})"
-    print(f"  {len(autotest_file_list)} crash detection tests passed ({file_list_fp})")
+    print(f"  {len(autotest_file_list)} passed crash detection tests ({file_list_fp})")
 
     if len(difference_file_list)>0:
         file_list_fp=assemble_file_list_fingerprint(difference_file_list)
