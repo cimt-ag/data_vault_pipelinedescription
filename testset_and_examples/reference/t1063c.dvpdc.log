@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2025-09-24 10:37:32
+Compiling t1063c.dvpd.json
+
+DLO-21:There is no field mapping for relation 'VVV' into column 'F2F3F4_BBB_BK1F' of table 'rtjj_1063_bbb_hub'
+*** Compilation ended with errors ***
