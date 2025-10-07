@@ -2728,6 +2728,28 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
             if is_ext_key(key):
                 target[key] = value
 
+    # --- Preserve original casing of field names (no case-insensitive duplicates) ---
+
+    for field in dvpd_object.get("fields", []):
+        if "json_path" not in field:
+            field["json_path"] = field["field_name"]
+
+    # --- STEP 2: Validate case-insensitive uniqueness ---
+    seen_fields_ci = {}
+    for field in dvpd_object.get("fields", []):
+        field_name = field["field_name"]
+        field_name_ci = field_name.lower()
+
+        if field_name_ci in seen_fields_ci:
+            other_field = seen_fields_ci[field_name_ci]
+            if "json_path" not in field and "json_path" not in other_field:
+                raise Exception(
+                    f"Field name '{field_name}' conflicts with '{other_field['field_name']}' "
+                    f"— at least one must define 'json_path' explicitly for JSON parsing."
+                )
+        else:
+            seen_fields_ci[field_name_ci] = field
+
     # --- 1. Root level ---
     copy_extensions(dvpd_object, dvpi_document)
 
