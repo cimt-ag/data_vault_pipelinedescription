@@ -33,7 +33,8 @@ from lib.configuration import configuration_load_ini
 from lib.exceptions import DvpdcError
 import json
 from datetime import datetime
-
+import hashlib
+import base64
 #  ----------- Global Variables ---------
 # They are the "Blackboard" or "Brain" and contain the internal model of the dvpd, that is developed and read
 # during the compilation and rendereing procedurre
@@ -611,7 +612,7 @@ def collect_field_properties(dvpd_object):
 
     field_position = 0
     for field_entry in dvpd_object['fields']:
-        field_name = field_entry['field_name'].upper()
+        field_name = field_entry['field_name']
         if g_field_dict.get(field_name) != None:
             register_error(f"Duplicate field_name declared: {field_name}")
         field_position += 1
@@ -623,6 +624,21 @@ def collect_field_properties(dvpd_object):
         g_field_dict[field_name] = cleansed_field_entry
         create_columns_from_field_mapping(field_entry, field_position)
 
+
+def conflict_safe_column_name(base_name: str, field_name: str, existing_names) -> str:
+    """
+    Generate a deterministic short postfix from field_name and return a unique column name.
+    """
+    md5_hash = hashlib.md5(field_name.encode("utf-8")).digest()
+    sqlfp_b32 = base64.b32encode(md5_hash).decode("utf-8")
+    suffix = sqlfp_b32[:5]
+    new_name = f"{base_name}__{suffix}"
+    i = 1
+    # Guarantee uniqueness even if the same suffix already exists
+    while new_name in existing_names:
+        new_name = f"{base_name}__{suffix}{i}"
+        i += 1
+    return new_name
 
 def create_columns_from_field_mapping(field_entry, field_position):
     """
@@ -662,7 +678,7 @@ def create_columns_from_field_mapping(field_entry, field_position):
     """
     global g_table_dict
 
-    field_name = field_entry['field_name'].upper()
+    field_name = field_entry['field_name']
     for table_mapping in field_entry['targets']:
         table_name = table_mapping['table_name'].lower()
         if not table_name in g_table_dict:
@@ -697,7 +713,7 @@ def create_columns_from_field_mapping(field_entry, field_position):
         # assemble data column mapping
         column_name = table_mapping.get('column_name', field_name).upper()  # defaults to field name
         column_map_entry['column_type'] = table_mapping.get('column_type',
-                                                            field_entry['field_type']).upper()  # defaults to field type
+                                                            field_entry['field_type'])  # defaults to field type
         if 'is_multi_active_key' in table_mapping:
             if table_entry['table_stereotype'] == 'sat':
                 column_map_entry['is_multi_active_key'] = table_mapping.get('is_multi_active_key')
@@ -721,6 +737,7 @@ def create_columns_from_field_mapping(field_entry, field_position):
                 table_mapping.get('prio_for_row_order', 50000))  # defaults to 50000
             column_map_entry['prio_in_diff_hash'] = int(table_mapping.get('prio_in_diff_hash', 0))  # defaults to 0
         except ValueError as ve:
+            #todo: error code to message
             register_error(
                 f"Error when reading numerical properties from  mapping of field '{field_name}' to table '{table_name}':" + str(
                     ve))
@@ -729,6 +746,17 @@ def create_columns_from_field_mapping(field_entry, field_position):
         if not 'data_columns' in table_entry:
                 table_entry['data_columns'] = {}
         column_dict = table_entry['data_columns']
+
+        original_column_name = column_name
+        if original_column_name in column_dict:
+            new_name = conflict_safe_column_name(original_column_name, field_name, column_dict.keys())
+            log_progress(
+                f"Name conflict on table '{table_name}': field '{field_name}' mapped to "
+                f"'{original_column_name}'. Renamed target column to '{new_name}' using a hash postfix. "
+                f"To control this explicitly, set a unique 'column_name' in the DVPD."
+            )
+            column_name = new_name
+
         if not column_name in column_dict:
             column_dict[column_name] = {}
         theColumn = column_dict[column_name]
@@ -1147,6 +1175,8 @@ def determine_load_operations_from_relations_in_mappings():
                                 count_matches += 1
                             if relation_name == '*':
                                 universal_mapping_defined = True
+
+
                     if count_matches > 1:
                         register_error(
                             f"DLO-20:There are multiple explicit mappings for relation '{load_operation_name}' into column '{data_column_name}' of table '{table_name}'")
@@ -2727,28 +2757,6 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
         for key, value in source.items():
             if is_ext_key(key):
                 target[key] = value
-
-    # --- Preserve original casing of field names (no case-insensitive duplicates) ---
-
-    for field in dvpd_object.get("fields", []):
-        if "json_path" not in field:
-            field["json_path"] = field["field_name"]
-
-    # --- STEP 2: Validate case-insensitive uniqueness ---
-    seen_fields_ci = {}
-    for field in dvpd_object.get("fields", []):
-        field_name = field["field_name"]
-        field_name_ci = field_name.lower()
-
-        if field_name_ci in seen_fields_ci:
-            other_field = seen_fields_ci[field_name_ci]
-            if "json_path" not in field and "json_path" not in other_field:
-                raise Exception(
-                    f"Field name '{field_name}' conflicts with '{other_field['field_name']}' "
-                    f"— at least one must define 'json_path' explicitly for JSON parsing."
-                )
-        else:
-            seen_fields_ci[field_name_ci] = field
 
     # --- 1. Root level ---
     copy_extensions(dvpd_object, dvpi_document)
