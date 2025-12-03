@@ -13,20 +13,15 @@
 		 	  {"field_name": "F2_AAA_BK2F",		"field_type": "Decimal(200,0)",	"targets": [{"table_name": "rtjj_2004_aaa_hub"}]},
 		 	  {"field_name": "F3_AAA_P12_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_2004_aaa_p1_sat"}]},
 			  {"field_name": "f3_AaA_P12_c1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_2004_aaa_p1_sat", "column_name": "f3_aaa_p12_c1_mixed"}]},
-			  {"field_name": "f3_aaa_p12_c1",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_2004_aaa_p2_sat", "column_name": "f3_aaa_p12_c1_lower"}]},
-			  {"field_name": "F5XX_AAA_P1_c3F",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_2004_aaa_p1_sat",
-																									 "column_name":"F5_AAA_P1_C3F"}]},
-			  {"field_name": "F6_AAA_P1_C1F",	"field_type": "TIMESTAMP",		"targets": [{"table_name": "rtjj_2004_aaa_p1_sat","exclude_from_change_detection": "true"}]}
+			  {"field_name": "f3_aaa_p12_c1",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_2004_aaa_p2_sat"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj", 
 		 "tables": [
 				{"table_name": "rtjj_2004_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_2004_aaa"},
-				{"table_name": "rtjj_2004_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_2004_aaa_lnk"
-																			,"diff_hash_column_name": "RH_rtjj_2004_aaa_P1_SAT"},
-				{"table_name": "rtjj_2004_aaa_lnk",	"table_stereotype": "lnk","link_key_column_name": "LK_rtjj_120_aaa",
-												"link_parent_tables": [	"rtjj_2004_aaa_hub"]},															
-				{"table_name": "rtjj_2004_aaa_p2_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_2004_aaa_lnk"
+				{"table_name": "rtjj_2004_aaa_p1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_2004_aaa_hub"
+																			,"diff_hash_column_name": "RH_rtjj_2004_aaa_P1_SAT"},															
+				{"table_name": "rtjj_2004_aaa_p2_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_2004_aaa_hub"
 																			,"diff_hash_column_name": "RH_rtjj_2004_aaa_P2_SAT"}															
 				] 
 		}

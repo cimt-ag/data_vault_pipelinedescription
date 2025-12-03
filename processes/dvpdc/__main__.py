@@ -2316,6 +2316,42 @@ def assemble_dvpi_table_entry(table_name, table_entry):
 
     return dvpi_table_entry
 
+def determine_stage_table_column_names():
+    """
+    Determine unique stage column names for all DVPD fields,
+    resolving case-insensitive conflicts.
+    """
+
+    global g_field_to_stage_column_name
+
+    # Group fields by lowercase to detect case-insensitive duplicates
+    field_groups = {}
+    for field_name in g_field_dict.keys():
+        field_groups.setdefault(field_name.lower(), []).append(field_name)
+
+    preassigned = set()
+
+    for lower_key, originals in field_groups.items():
+        if len(originals) > 1:
+            log_progress(f"Detected case-insensitive duplicate field group: {originals}")
+
+            base_name = originals[0].upper()
+            preassigned.add(base_name) # Mark base name as taken so postfix is added even for the first one
+
+            for original in sorted(originals):
+
+                conflict_name = conflict_safe_column_name(base_name, original, preassigned) # Unique conflict-safe name
+                conflict_name_upper = conflict_name.upper()
+                preassigned.add(conflict_name_upper)
+                g_field_to_stage_column_name[original] = conflict_name_upper # Store mapping
+
+                log_progress(
+                    f"Field '{original}' assigned stage column name '{conflict_name_upper}' "
+                )
+        else:
+            # No conflict, default to uppercase
+            only = originals[0]
+            g_field_to_stage_column_name.setdefault(only, only.upper())
 
 def assemble_dvpi_parse_set(dvpd_object):
     """
@@ -2428,7 +2464,7 @@ def assemble_dvpi_data_mappings(load_operation_entry):
     for column_name, data_mapping_dict_entry in load_operation_entry['data_mapping_dict'].items():
         resolved_stage_name = g_field_to_stage_column_name.get(
             data_mapping_dict_entry['field_name'],
-            data_mapping_dict_entry['field_name']
+            data_mapping_dict_entry['field_name'].upper()
         )
 
         dvpi_data_mapping_entry = {
@@ -2506,26 +2542,7 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
 
         stage_column_dict[hash_entry['stage_column_name']]=dvpi_stage_column_entry
 
-    #PRESCAN
-    field_name_case_insensitive_dict = {}
-    for field_name in g_field_dict.keys():
-        field_name_case_insensitive_dict.setdefault(field_name.lower(), []).append(field_name)
 
-    preassigned_stage_names = set()
-    for case_insensitive_key, duplicate_fields in field_name_case_insensitive_dict.items():
-        if len(duplicate_fields) > 1:
-            base_stage_name = duplicate_fields[0].upper()
-            log_progress(
-                f"Detected case-insensitive duplicate field group {duplicate_fields}. "
-            )
-            for field_name in sorted(duplicate_fields):
-                generated_stage_name = conflict_safe_column_name(base_stage_name, field_name, preassigned_stage_names)
-                preassigned_stage_names.add(generated_stage_name)
-                g_field_to_stage_column_name[field_name] = generated_stage_name.upper()
-                log_progress(
-                    f"Field '{field_name}' assigned stage column name '{generated_stage_name.upper()}' "
-                    f"using hash postfix."
-                )
 
     for field_name, field_entry in g_field_dict.items():
         if field_name in direct_key_hashes:
@@ -2724,18 +2741,43 @@ def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
                     dvpisum_file.write(
                         f"\n{load_operation_entry['table_name']} [{load_operation_entry['relation_name']}] {load_operation_entry['operation_origin']} \n")
                     for hash_mapping_entry in load_operation_entry['hash_mappings']:
+
+                        #Fields
+                        fields = []
+
+                        # multi-field hash
+                        if 'fields' in hash_mapping_entry:
+                            fields = hash_mapping_entry['fields']
+
+                        # multi-field direct key hash (hub/link keys)
+                        elif 'direct_key_fields' in hash_mapping_entry:
+                            fields = hash_mapping_entry['direct_key_fields']
+
+                        # hub/link direct key hash
+                        elif 'direct_key_field' in hash_mapping_entry:
+                            fields = [hash_mapping_entry['direct_key_field']]
+
+                        # single-field hash
+                        elif 'field_name' in hash_mapping_entry:
+                            fields = [hash_mapping_entry['field_name']]
+
+                        fields_list = ", ".join(fields)
+
                         dvpisum_file.write(
-                            f"     {hash_mapping_entry['hash_class'].ljust(10)}: {hash_mapping_entry['stage_column_name']} >> {hash_mapping_entry['column_name']}")
-                        dvpisum_file.write(
-                                "\n                 " + renderHashFieldAssembly(parse_set_entry, hash_mapping_entry) )
+                            f"     {hash_mapping_entry['hash_class'].ljust(10)}: {hash_mapping_entry['column_name']} << {hash_mapping_entry['stage_column_name']} << {renderHashFieldAssembly(parse_set_entry, hash_mapping_entry)} ")
                         dvpisum_file.write("\n")
 
                     if 'data_mapping' not in load_operation_entry:
                         continue
 
                     for data_mapping_entry in load_operation_entry['data_mapping']:
+
+                        field = data_mapping_entry.get('field_name', "")
+
+                        field_list = field
+
                         dvpisum_file.write(
-                            f"     {data_mapping_entry['column_class'].ljust(10)}: {data_mapping_entry['stage_column_name']} >> {data_mapping_entry['column_name']}\n")
+                            f"     {data_mapping_entry['column_class'].ljust(10)}: {data_mapping_entry['column_name']} << {data_mapping_entry['stage_column_name']} << [{field_list}] \n")
 
                 for stage_property_entry in parse_set_entry['stage_properties']:
                     dvpisum_file.write(
@@ -3071,6 +3113,10 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
         raise DvpdcError
 
     check_intertable_column_constraints()
+    if g_error_count > 0:
+        raise DvpdcError
+
+    determine_stage_table_column_names()
     if g_error_count > 0:
         raise DvpdcError
 
