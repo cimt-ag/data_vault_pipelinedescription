@@ -5,7 +5,7 @@ Concept and reference implementation
 (C) Matthias Wegner, cimt ag
 
 [![License: CC BY-ND 4.0](https://img.shields.io/badge/License-CC%20BY--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nd/4.0/)
-[![Version](https://img.shields.io/badge/version-0.6.2-green)]()  
+[![Version](https://img.shields.io/badge/version-0.6.3-green)]()  
 
 
 ## Introduction
