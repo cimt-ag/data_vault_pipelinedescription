@@ -5,13 +5,22 @@
 - behavior of 'use_as_key_hash' changed from 0.6.2 to 0.6.3. Now you must map the key field to the table, that is 
 creating the key and not the table that is using the key. This allows the same kind of relation specific behavior and
 prevents mistakes in regarding the column namimg. You migrate existing dpvds by just changing the target table.
+- field names are not normalized to uppercase any more. This allows implicit usage of the field name as json key.
+If this creates conflict on stage column level, the stage columns will get a unique postfix.
+  
+### other features on core system 
+- Autotest: Hardcoded "rebranding" of the crash detection tests, to be successfull when captured in the full test
 
-### other features
+### features/changes on generators
 - DDL render: added configuration to set name for directory of stage table ddl files
-- Autotest: Hardcoded "rebranding" of the crash detection tests, to be successfull when captured in th
-
+ 
 ### bugfixes
 * DDL render: Now puts key column of satellite first in the primary key definition
+
+### credits
+Lead Designer and coding: Matthias Wegner (cimt ag)<br>
+Compiler extension and tests: Albin Cekaj (cimt ag)<br>
+Documentation: Peter Oravezc (cimt ag)<br>
 
 # release 0.6.2a
 - added JSON type to ghost record generator
