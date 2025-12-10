@@ -92,11 +92,11 @@ json path: /
 **field_name**
 (mandatory)
 *defines: source parsing, model structure*
-<br>Name of the field. Must be unique in the DVPD. Is normally used als the column name in the target table
+<br>Name of the field. It is case-sensitive and must be unique in the DVPD. The upper-cased field name is used as default column name in the target table.
 <br>*"customer_id" | "article _name"*
 <br> For internal processing and stage table generation, the compiler applies:
 <br>→ Automatic uppercasing of field names when used as technical identifiers
-<br>→ Case-insesitive conflict detection
+<br>→ Case-insensitive conflict detection
 <br>→ If two field names differ only by case, the compiler assigns them unique stage column names by adding a hash postfix:
 <br>* (e.g. "F3AAA_P1_C1_ABCD1")
 <br> This affects only stage tables and DVPI output, not the DVPD input.
