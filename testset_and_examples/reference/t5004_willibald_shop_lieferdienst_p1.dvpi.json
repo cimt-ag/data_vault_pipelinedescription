@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-03-20 10:45:27",
+  "compile_timestamp": "2025-12-10 08:57:28",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5004_willibald_shop_p1_lieferdienst_p1",
   "pipeline_revision_tag": "--none--",
@@ -201,7 +201,7 @@
           "null_values": "0",
           "field_position": 1,
           "needs_encryption": false,
-          "field_name": "LIEFERDIENSTID"
+          "field_name": "lieferdienstid"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -212,7 +212,7 @@
           "null_values": "0",
           "field_position": 2,
           "needs_encryption": false,
-          "field_name": "EMAIL"
+          "field_name": "email"
         },
         {
           "field_type": "VARCHAR(20) ",
@@ -223,7 +223,7 @@
           "null_values": "0",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "FAX"
+          "field_name": "fax"
         },
         {
           "field_type": "VARCHAR(10) ",
@@ -234,7 +234,7 @@
           "null_values": "0",
           "field_position": 4,
           "needs_encryption": false,
-          "field_name": "HAUSNUMMER"
+          "field_name": "hausnummer"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -245,7 +245,7 @@
           "null_values": "0",
           "field_position": 5,
           "needs_encryption": false,
-          "field_name": "LAND"
+          "field_name": "land"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -256,7 +256,7 @@
           "null_values": "0",
           "field_position": 6,
           "needs_encryption": false,
-          "field_name": "NAME"
+          "field_name": "name"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -267,7 +267,7 @@
           "null_values": "0",
           "field_position": 7,
           "needs_encryption": false,
-          "field_name": "ORT"
+          "field_name": "ort"
         },
         {
           "field_type": "VARCHAR(10) ",
@@ -278,7 +278,7 @@
           "null_values": "0",
           "field_position": 8,
           "needs_encryption": false,
-          "field_name": "PLZ"
+          "field_name": "plz"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -289,7 +289,7 @@
           "null_values": "0",
           "field_position": 9,
           "needs_encryption": false,
-          "field_name": "STRASSE"
+          "field_name": "strasse"
         },
         {
           "field_type": "VARCHAR(20) ",
@@ -300,7 +300,7 @@
           "null_values": "0",
           "field_position": 10,
           "needs_encryption": false,
-          "field_name": "TELEFON"
+          "field_name": "telefon"
         }
       ],
       "hashes": [
@@ -308,14 +308,6 @@
           "stage_column_name": "HK_LIEFERDIENST",
           "hash_origin_table": "lieferdienst_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "LIEFERDIENSTID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "lieferdienst_hub",
-              "field_target_column": "LIEFERDIENSTID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -323,6 +315,14 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "lieferdienstid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "lieferdienst_hub",
+              "field_target_column": "LIEFERDIENSTID"
+            }
+          ],
           "hash_name": "KEY_OF_LIEFERDIENST_HUB"
         },
         {
@@ -332,63 +332,63 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "EMAIL",
+              "field_name": "email",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferdienst_lieferdienst_p1_sat",
               "field_target_column": "EMAIL"
             },
             {
-              "field_name": "FAX",
+              "field_name": "fax",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferdienst_lieferdienst_p1_sat",
               "field_target_column": "FAX"
             },
             {
-              "field_name": "HAUSNUMMER",
+              "field_name": "hausnummer",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferdienst_lieferdienst_p1_sat",
               "field_target_column": "HAUSNUMMER"
             },
             {
-              "field_name": "LAND",
+              "field_name": "land",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferdienst_lieferdienst_p1_sat",
               "field_target_column": "LAND"
             },
             {
-              "field_name": "NAME",
+              "field_name": "name",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferdienst_lieferdienst_p1_sat",
               "field_target_column": "NAME"
             },
             {
-              "field_name": "ORT",
+              "field_name": "ort",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferdienst_lieferdienst_p1_sat",
               "field_target_column": "ORT"
             },
             {
-              "field_name": "PLZ",
+              "field_name": "plz",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferdienst_lieferdienst_p1_sat",
               "field_target_column": "PLZ"
             },
             {
-              "field_name": "STRASSE",
+              "field_name": "strasse",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferdienst_lieferdienst_p1_sat",
               "field_target_column": "STRASSE"
             },
             {
-              "field_name": "TELEFON",
+              "field_name": "telefon",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferdienst_lieferdienst_p1_sat",
@@ -422,7 +422,7 @@
           "data_mapping": [
             {
               "column_name": "LIEFERDIENSTID",
-              "field_name": "LIEFERDIENSTID",
+              "field_name": "lieferdienstid",
               "column_class": "business_key",
               "stage_column_name": "LIEFERDIENSTID"
             }
@@ -449,55 +449,55 @@
           "data_mapping": [
             {
               "column_name": "EMAIL",
-              "field_name": "EMAIL",
+              "field_name": "email",
               "column_class": "content",
               "stage_column_name": "EMAIL"
             },
             {
               "column_name": "FAX",
-              "field_name": "FAX",
+              "field_name": "fax",
               "column_class": "content",
               "stage_column_name": "FAX"
             },
             {
               "column_name": "HAUSNUMMER",
-              "field_name": "HAUSNUMMER",
+              "field_name": "hausnummer",
               "column_class": "content",
               "stage_column_name": "HAUSNUMMER"
             },
             {
               "column_name": "LAND",
-              "field_name": "LAND",
+              "field_name": "land",
               "column_class": "content",
               "stage_column_name": "LAND"
             },
             {
               "column_name": "NAME",
-              "field_name": "NAME",
+              "field_name": "name",
               "column_class": "content",
               "stage_column_name": "NAME"
             },
             {
               "column_name": "ORT",
-              "field_name": "ORT",
+              "field_name": "ort",
               "column_class": "content",
               "stage_column_name": "ORT"
             },
             {
               "column_name": "PLZ",
-              "field_name": "PLZ",
+              "field_name": "plz",
               "column_class": "content",
               "stage_column_name": "PLZ"
             },
             {
               "column_name": "STRASSE",
-              "field_name": "STRASSE",
+              "field_name": "strasse",
               "column_class": "content",
               "stage_column_name": "STRASSE"
             },
             {
               "column_name": "TELEFON",
-              "field_name": "TELEFON",
+              "field_name": "telefon",
               "column_class": "content",
               "stage_column_name": "TELEFON"
             }
@@ -546,7 +546,7 @@
         {
           "stage_column_name": "LIEFERDIENSTID",
           "stage_column_class": "data",
-          "field_name": "LIEFERDIENSTID",
+          "field_name": "lieferdienstid",
           "is_nullable": true,
           "column_type": "VARCHAR(30) ",
           "column_classes": [
@@ -564,7 +564,7 @@
         {
           "stage_column_name": "EMAIL",
           "stage_column_class": "data",
-          "field_name": "EMAIL",
+          "field_name": "email",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
@@ -582,7 +582,7 @@
         {
           "stage_column_name": "FAX",
           "stage_column_class": "data",
-          "field_name": "FAX",
+          "field_name": "fax",
           "is_nullable": true,
           "column_type": "VARCHAR(20) ",
           "column_classes": [
@@ -600,7 +600,7 @@
         {
           "stage_column_name": "HAUSNUMMER",
           "stage_column_class": "data",
-          "field_name": "HAUSNUMMER",
+          "field_name": "hausnummer",
           "is_nullable": true,
           "column_type": "VARCHAR(10) ",
           "column_classes": [
@@ -618,7 +618,7 @@
         {
           "stage_column_name": "LAND",
           "stage_column_class": "data",
-          "field_name": "LAND",
+          "field_name": "land",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
@@ -636,7 +636,7 @@
         {
           "stage_column_name": "NAME",
           "stage_column_class": "data",
-          "field_name": "NAME",
+          "field_name": "name",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
@@ -654,7 +654,7 @@
         {
           "stage_column_name": "ORT",
           "stage_column_class": "data",
-          "field_name": "ORT",
+          "field_name": "ort",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
@@ -672,7 +672,7 @@
         {
           "stage_column_name": "PLZ",
           "stage_column_class": "data",
-          "field_name": "PLZ",
+          "field_name": "plz",
           "is_nullable": true,
           "column_type": "VARCHAR(10) ",
           "column_classes": [
@@ -690,7 +690,7 @@
         {
           "stage_column_name": "STRASSE",
           "stage_column_class": "data",
-          "field_name": "STRASSE",
+          "field_name": "strasse",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
@@ -708,7 +708,7 @@
         {
           "stage_column_name": "TELEFON",
           "stage_column_class": "data",
-          "field_name": "TELEFON",
+          "field_name": "telefon",
           "is_nullable": true,
           "column_type": "VARCHAR(20) ",
           "column_classes": [

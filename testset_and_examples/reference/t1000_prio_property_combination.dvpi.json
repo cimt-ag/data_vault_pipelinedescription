@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-03-20 10:45:26",
+  "compile_timestamp": "2025-12-10 08:57:26",
   "dvpd_version": "0.6.0",
   "pipeline_name": "test22_one_link_one_esat",
   "pipeline_revision_tag": "--none--",
@@ -374,6 +374,13 @@
           "stage_column_name": "HK_RTJJ_1000_AAA",
           "hash_origin_table": "rtjj_1000_aaa_hub",
           "column_class": "key",
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
           "hash_fields": [
             {
               "field_name": "F1_AAA_BK2",
@@ -394,6 +401,12 @@
               "field_target_column": "F3_AAA_BK1"
             }
           ],
+          "hash_name": "KEY_OF_RTJJ_1000_AAA_HUB"
+        },
+        {
+          "stage_column_name": "HK_RTJJ_1000_BBB",
+          "hash_origin_table": "rtjj_1000_bbb_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -401,12 +414,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTJJ_1000_AAA_HUB"
-        },
-        {
-          "stage_column_name": "HK_RTJJ_1000_BBB",
-          "hash_origin_table": "rtjj_1000_bbb_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F4_BBB_BK2",
@@ -421,13 +428,6 @@
               "field_target_column": "F5_BBB_BK1"
             }
           ],
-          "column_type": "CHAR(28)",
-          "hash_encoding": "BASE64",
-          "hash_function": "sha-1",
-          "hash_concatenation_seperator": "|",
-          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
-          "hash_null_value_string": "",
-          "model_profile_name": "_default",
           "hash_name": "KEY_OF_RTJJ_1000_BBB_HUB"
         },
         {

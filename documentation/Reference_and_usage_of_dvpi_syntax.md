@@ -506,6 +506,8 @@ Json Path: $.parse_sets[].load_operations[]
 
 **stage_column_name**
 <br>Name of the stage column, the hash can be taken from, when using stage table approach
+<br>Uses the same conflict-safe uppercase stage column name determined:
+<br>*HK_RTJJ_2000_AAA << F3_AAA_P1_C1__ABCD1*
 
 ### data_mapping[]
 (will be renamed to "field_mappings" in 0.6.3)
@@ -525,6 +527,9 @@ Json Path: $.parse_sets[].load_operations[]
 
 **stage_column_name**
 <br>Name of the stage column, the data must be taken from, when using the stage table approach.
+<br>If the originating DVPD field belonged to a case-insensitive duplicate group,
+the compiler uses the stage name with a generated postfix:
+<br>*(e.g."F3_AAA_P1_C1__ABCD1")*
 
 **update_on_every_load**
 <br>When this property is set to true on at least one data mapping, the loading process must update
@@ -573,7 +578,8 @@ The consolidated list of stage table columns.
 
 **stage_column_name**
 <br>Name of the stage column. Must be used, when generating the table object.
-
+<br>If two DVPD fields differ only by case (e.g. F3_AAA_P1_C1 vs f3_aaa_p1_c1),
+the compiler generates unique stage column names by appending a deterministic short hash postfix.
 **column_type**
 <br>Type of the stage column.Must be used, when generating the table object.
 

@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-03-20 10:45:23",
+  "compile_timestamp": "2025-12-10 09:18:36",
   "dvpd_version": "0.6.0",
   "pipeline_name": "example_simple",
   "pipeline_revision_tag": "--none--",
@@ -148,25 +148,25 @@
           "field_type": "varchar(5)",
           "field_position": 1,
           "needs_encryption": false,
-          "field_name": "COMPANY"
+          "field_name": "company"
         },
         {
           "field_type": "varchar(10)",
           "field_position": 2,
           "needs_encryption": false,
-          "field_name": "PERSON_ID"
+          "field_name": "person_id"
         },
         {
           "field_type": "varchar(250)",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "NAME"
+          "field_name": "name"
         },
         {
           "field_type": "varchar(250)",
           "field_position": 4,
           "needs_encryption": false,
-          "field_name": "JOB"
+          "field_name": "job"
         }
       ],
       "hashes": [
@@ -174,20 +174,6 @@
           "stage_column_name": "HK_PERSON",
           "hash_origin_table": "person_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "COMPANY",
-              "prio_in_key_hash": 0,
-              "field_target_table": "person_hub",
-              "field_target_column": "COMPANY"
-            },
-            {
-              "field_name": "PERSON_ID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "person_hub",
-              "field_target_column": "PERSON_ID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -195,6 +181,20 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "company",
+              "prio_in_key_hash": 0,
+              "field_target_table": "person_hub",
+              "field_target_column": "COMPANY"
+            },
+            {
+              "field_name": "person_id",
+              "prio_in_key_hash": 0,
+              "field_target_table": "person_hub",
+              "field_target_column": "PERSON_ID"
+            }
+          ],
           "hash_name": "KEY_OF_PERSON_HUB"
         },
         {
@@ -204,14 +204,14 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "NAME",
+              "field_name": "name",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "person_sat",
               "field_target_column": "NAME"
             },
             {
-              "field_name": "JOB",
+              "field_name": "job",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "person_sat",
@@ -245,13 +245,13 @@
           "data_mapping": [
             {
               "column_name": "COMPANY",
-              "field_name": "COMPANY",
+              "field_name": "company",
               "column_class": "business_key",
               "stage_column_name": "COMPANY"
             },
             {
               "column_name": "PERSON_ID",
-              "field_name": "PERSON_ID",
+              "field_name": "person_id",
               "column_class": "business_key",
               "stage_column_name": "PERSON_ID"
             }
@@ -278,13 +278,13 @@
           "data_mapping": [
             {
               "column_name": "NAME",
-              "field_name": "NAME",
+              "field_name": "name",
               "column_class": "content",
               "stage_column_name": "NAME"
             },
             {
               "column_name": "JOB",
-              "field_name": "JOB",
+              "field_name": "job",
               "column_class": "content",
               "stage_column_name": "JOB"
             }
@@ -333,7 +333,7 @@
         {
           "stage_column_name": "COMPANY",
           "stage_column_class": "data",
-          "field_name": "COMPANY",
+          "field_name": "company",
           "is_nullable": true,
           "column_type": "varchar(5)",
           "column_classes": [
@@ -351,7 +351,7 @@
         {
           "stage_column_name": "PERSON_ID",
           "stage_column_class": "data",
-          "field_name": "PERSON_ID",
+          "field_name": "person_id",
           "is_nullable": true,
           "column_type": "varchar(10)",
           "column_classes": [
@@ -369,7 +369,7 @@
         {
           "stage_column_name": "NAME",
           "stage_column_class": "data",
-          "field_name": "NAME",
+          "field_name": "name",
           "is_nullable": true,
           "column_type": "varchar(250)",
           "column_classes": [
@@ -387,7 +387,7 @@
         {
           "stage_column_name": "JOB",
           "stage_column_class": "data",
-          "field_name": "JOB",
+          "field_name": "job",
           "is_nullable": true,
           "column_type": "varchar(250)",
           "column_classes": [

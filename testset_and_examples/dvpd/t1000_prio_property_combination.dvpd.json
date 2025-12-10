@@ -16,7 +16,7 @@
 												"prio_in_key_hash": "1","prio_for_column_position": "10"}]}
 		 	  ,{"field_name": "F4_BBB_BK2",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_1000_bbb_hub",
 												"prio_in_key_hash": "2","prio_for_column_position": "20"}]}
-		 	  ,{"field_name": "F5_BBB_Bk1",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_1000_bbb_hub",
+		 	  ,{"field_name": "F5_BBB_BK1",	"field_type": "Decimal(20,0)",	"targets": [{"table_name": "rtjj_1000_bbb_hub",
 												"prio_in_key_hash": "1","prio_for_column_position": "10"}]}
 		 	  ,{"field_name": "F6_AAA_SP1_C2",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1000_aaa_p1_sat",
 												"prio_in_diff_hash": "2","prio_for_column_position": "20"}]}

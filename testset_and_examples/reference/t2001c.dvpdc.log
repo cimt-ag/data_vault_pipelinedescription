@@ -1,0 +1,8 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2025-12-10 09:11:15
+Compiling t2001c.dvpd.json
+
+ERROR: JSON Parsing error of file t2001c.dvpd.json
+Expecting value in line 16 column 6
+*** Compilation ended with errors ***

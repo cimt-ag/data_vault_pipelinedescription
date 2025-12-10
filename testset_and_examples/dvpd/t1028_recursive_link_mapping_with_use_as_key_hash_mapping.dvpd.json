@@ -16,12 +16,12 @@
 		 	  ,{"field_name": "F3_AAA_BK1F_VVV",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1028_aaa_hub"
 																									,"column_name":"F1_AAA_BK1F"
 																									,"relation_names":["VVV"]}]}
-			  ,{"field_name": "F4_HK_rtjj_1028_aaa", 	"field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1028_aaa_hub"
+			  ,{"field_name": "F4_HK_rtjj_1028_AAA", 	"field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1028_aaa_hub"
 																									,"use_as_key_hash":"true"}]}
-			  ,{"field_name": "F5_HK_rtjj_1028_aaa_uuu","field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1028_aaa_hub"
+			  ,{"field_name": "F5_HK_rtjj_1028_AAA_UUU","field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1028_aaa_hub"
 																									,"use_as_key_hash":"true"
 																									,"relation_names":["UUU"]}]}
-			  ,{"field_name": "F6_HK_rtjj_1028_aaa_vvv","field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1028_aaa_hub"
+			  ,{"field_name": "F6_HK_rtjj_1028_AAA_VVV","field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1028_aaa_hub"
 																									,"use_as_key_hash":"true"
 																									,"relation_names":["VVV"]}]}
 			 ], 
