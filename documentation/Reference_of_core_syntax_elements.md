@@ -94,6 +94,13 @@ json path: /
 *defines: source parsing, model structure*
 <br>Name of the field. Must be unique in the DVPD. Is normally used als the column name in the target table
 <br>*"customer_id" | "article _name"*
+<br> For internal processing and stage table generation, the compiler applies:
+<br>→ Automatic uppercasing of field names when used as technical identifiers
+<br>→ Case-insesitive conflict detection
+<br>→ If two field names differ only by case, the compiler assigns them unique stage column names by adding a hash postfix:
+<br>* (e.g. "F3AAA_P1_C1_ABCD1")
+<br> This affects only stage tables and DVPI output, not the DVPD input.
+
 
 **field_type** (mandatory)
 *puprpose: source parsing, model structure*
@@ -159,6 +166,10 @@ This array must contain at least one target mapping. Fields, that are mapped to 
 (optional)*defines: model structure*
 <br>Name of the column in the data vault table. If not defined, the field_name will be used.
 <br>*"customer_number"*
+<br>*Additional behavior:*
+<br>→ Column names are normalized to UPPER CASE unless explicitly declared otherwise.
+<br>→ The compiler does not rename automatically table columns.
+<br>→ If multiple fields map to the same column_name (case-insensitive), an error is raised unless this is controlled through relation_names.
 
 **column_type**
 (optional)*defines: model structure*
