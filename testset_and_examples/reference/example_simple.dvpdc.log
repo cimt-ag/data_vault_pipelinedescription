@@ -1,6 +1,6 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.1
-Compile time: 2024-06-13 11:57:26
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2025-12-10 09:18:36
 Compiling example_simple.dvpd.json
 
 Writing DVPI to /git_ordner/dvpd/var/dvpi/example_simple.dvpi.json

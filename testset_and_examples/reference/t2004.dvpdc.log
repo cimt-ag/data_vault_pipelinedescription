@@ -1,9 +1,9 @@
 Data vault pipeline description compiler log 
 === DVPD Compiler Version 0.6.3 ===
-Compile time: 2025-11-19 12:09:11
+Compile time: 2025-12-10 09:05:30
 Compiling t2004.dvpd.json
 
-Detected case-insensitive duplicate field group ['F3_AAA_P12_C1', 'f3_AaA_P12_c1', 'f3_aaa_p12_c1']. 
+Detected case-insensitive duplicate field group: ['F3_AAA_P12_C1', 'f3_AaA_P12_c1', 'f3_aaa_p12_c1']
 Field 'F3_AAA_P12_C1' assigned stage column name 'F3_AAA_P12_C1__FCJXW' 
 Field 'f3_AaA_P12_c1' assigned stage column name 'F3_AAA_P12_C1__CHI54' 
 Field 'f3_aaa_p12_c1' assigned stage column name 'F3_AAA_P12_C1__QGMON' 

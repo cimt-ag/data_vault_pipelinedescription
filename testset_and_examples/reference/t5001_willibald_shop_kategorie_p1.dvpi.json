@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-03-20 10:45:27",
+  "compile_timestamp": "2025-12-10 08:57:28",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5001_willibald_shop_kategorie_p1",
   "pipeline_revision_tag": "--none--",
@@ -236,7 +236,7 @@
           "null_values": "0",
           "field_position": 1,
           "needs_encryption": false,
-          "field_name": "KATID"
+          "field_name": "katid"
         },
         {
           "field_type": "VARCHAR(512) ",
@@ -247,7 +247,7 @@
           "null_values": "0",
           "field_position": 2,
           "needs_encryption": false,
-          "field_name": "NAME"
+          "field_name": "name"
         },
         {
           "field_type": "VARCHAR(50) ",
@@ -258,7 +258,7 @@
           "null_values": "3",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "OBERKATID"
+          "field_name": "oberkatid"
         }
       ],
       "hashes": [
@@ -266,14 +266,6 @@
           "stage_column_name": "HK_KATEGORIE",
           "hash_origin_table": "kategorie_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "KATID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "kategorie_hub",
-              "field_target_column": "KATID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -281,20 +273,20 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "katid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "kategorie_hub",
+              "field_target_column": "KATID"
+            }
+          ],
           "hash_name": "KEY_OF_KATEGORIE_HUB"
         },
         {
           "stage_column_name": "HK_KATEGORIE_OBERKATEGORIE",
           "hash_origin_table": "kategorie_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "OBERKATID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "kategorie_hub",
-              "field_target_column": "KATID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -302,6 +294,14 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "oberkatid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "kategorie_hub",
+              "field_target_column": "KATID"
+            }
+          ],
           "hash_name": "KEY_OF_KATEGORIE_HUB__FOR__OBERKATEGORIE"
         },
         {
@@ -310,14 +310,14 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "KATID",
+              "field_name": "katid",
               "prio_in_key_hash": 0,
               "field_target_table": "kategorie_hub",
               "field_target_column": "KATID",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "OBERKATID",
+              "field_name": "oberkatid",
               "prio_in_key_hash": 0,
               "field_target_table": "kategorie_hub",
               "field_target_column": "KATID",
@@ -340,7 +340,7 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "NAME",
+              "field_name": "name",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "kategorie_kategorie_p1_sat",
@@ -374,7 +374,7 @@
           "data_mapping": [
             {
               "column_name": "KATID",
-              "field_name": "KATID",
+              "field_name": "katid",
               "column_class": "business_key",
               "stage_column_name": "KATID"
             }
@@ -395,7 +395,7 @@
           "data_mapping": [
             {
               "column_name": "KATID",
-              "field_name": "OBERKATID",
+              "field_name": "oberkatid",
               "column_class": "business_key",
               "stage_column_name": "OBERKATID"
             }
@@ -422,7 +422,7 @@
           "data_mapping": [
             {
               "column_name": "NAME",
-              "field_name": "NAME",
+              "field_name": "name",
               "column_class": "content",
               "stage_column_name": "NAME"
             }
@@ -523,7 +523,7 @@
         {
           "stage_column_name": "KATID",
           "stage_column_class": "data",
-          "field_name": "KATID",
+          "field_name": "katid",
           "is_nullable": true,
           "column_type": "VARCHAR(50) ",
           "column_classes": [
@@ -541,7 +541,7 @@
         {
           "stage_column_name": "NAME",
           "stage_column_class": "data",
-          "field_name": "NAME",
+          "field_name": "name",
           "is_nullable": true,
           "column_type": "VARCHAR(512) ",
           "column_classes": [
@@ -559,7 +559,7 @@
         {
           "stage_column_name": "OBERKATID",
           "stage_column_class": "data",
-          "field_name": "OBERKATID",
+          "field_name": "oberkatid",
           "is_nullable": true,
           "column_type": "VARCHAR(50) ",
           "column_classes": [

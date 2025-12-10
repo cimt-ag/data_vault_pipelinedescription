@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-03-20 10:45:27",
+  "compile_timestamp": "2025-12-10 08:57:28",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5002_willibald_shop_kunde_p1",
   "pipeline_revision_tag": "--none--",
@@ -347,7 +347,7 @@
           "null_values": "0",
           "field_position": 1,
           "needs_encryption": false,
-          "field_name": "KUNDEID"
+          "field_name": "kundeid"
         },
         {
           "field_type": "VARCHAR(30) ",
@@ -358,7 +358,7 @@
           "null_values": "162",
           "field_position": 2,
           "needs_encryption": false,
-          "field_name": "VEREINSPARTNERID"
+          "field_name": "vereinspartnerid"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -369,7 +369,7 @@
           "null_values": "0",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "EMAIL"
+          "field_name": "email"
         },
         {
           "field_type": "date ",
@@ -380,7 +380,7 @@
           "null_values": "0",
           "field_position": 4,
           "needs_encryption": false,
-          "field_name": "GEBURTSDATUM"
+          "field_name": "geburtsdatum"
         },
         {
           "field_type": "CHAR(1) ",
@@ -391,7 +391,7 @@
           "null_values": "53",
           "field_position": 5,
           "needs_encryption": false,
-          "field_name": "GESCHLECHT"
+          "field_name": "geschlecht"
         },
         {
           "field_type": "CHAR(5) ",
@@ -402,7 +402,7 @@
           "null_values": "0",
           "field_position": 6,
           "needs_encryption": false,
-          "field_name": "GUELTIGBIS"
+          "field_name": "gueltigbis"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -413,7 +413,7 @@
           "null_values": "0",
           "field_position": 7,
           "needs_encryption": false,
-          "field_name": "KKFIRMA"
+          "field_name": "kkfirma"
         },
         {
           "field_type": "VARCHAR(30) ",
@@ -424,7 +424,7 @@
           "null_values": "0",
           "field_position": 8,
           "needs_encryption": false,
-          "field_name": "KREDITKARTE"
+          "field_name": "kreditkarte"
         },
         {
           "field_type": "VARCHAR(20) ",
@@ -435,7 +435,7 @@
           "null_values": "56",
           "field_position": 9,
           "needs_encryption": false,
-          "field_name": "MOBIL"
+          "field_name": "mobil"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -446,7 +446,7 @@
           "null_values": "0",
           "field_position": 10,
           "needs_encryption": false,
-          "field_name": "NAME"
+          "field_name": "name"
         },
         {
           "field_type": "VARCHAR(20) ",
@@ -457,7 +457,7 @@
           "null_values": "66",
           "field_position": 11,
           "needs_encryption": false,
-          "field_name": "TELEFON"
+          "field_name": "telefon"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -468,7 +468,7 @@
           "null_values": "0",
           "field_position": 12,
           "needs_encryption": false,
-          "field_name": "VORNAME"
+          "field_name": "vorname"
         }
       ],
       "hashes": [
@@ -476,14 +476,6 @@
           "stage_column_name": "HK_KUNDE",
           "hash_origin_table": "kunde_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "KUNDEID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "kunde_hub",
-              "field_target_column": "KUNDEID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -491,20 +483,20 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "kundeid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "kunde_hub",
+              "field_target_column": "KUNDEID"
+            }
+          ],
           "hash_name": "KEY_OF_KUNDE_HUB"
         },
         {
           "stage_column_name": "HK_VEREINSPARTNER",
           "hash_origin_table": "vereinspartner_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "VEREINSPARTNERID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "vereinspartner_hub",
-              "field_target_column": "VEREINSPARTNERID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -512,6 +504,14 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "vereinspartnerid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "vereinspartner_hub",
+              "field_target_column": "VEREINSPARTNERID"
+            }
+          ],
           "hash_name": "KEY_OF_VEREINSPARTNER_HUB"
         },
         {
@@ -520,14 +520,14 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "KUNDEID",
+              "field_name": "kundeid",
               "prio_in_key_hash": 0,
               "field_target_table": "kunde_hub",
               "field_target_column": "KUNDEID",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "VEREINSPARTNERID",
+              "field_name": "vereinspartnerid",
               "prio_in_key_hash": 0,
               "field_target_table": "vereinspartner_hub",
               "field_target_column": "VEREINSPARTNERID",
@@ -550,70 +550,70 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "EMAIL",
+              "field_name": "email",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "kunde_kunde_p1_sat",
               "field_target_column": "EMAIL"
             },
             {
-              "field_name": "GEBURTSDATUM",
+              "field_name": "geburtsdatum",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "kunde_kunde_p1_sat",
               "field_target_column": "GEBURTSDATUM"
             },
             {
-              "field_name": "GESCHLECHT",
+              "field_name": "geschlecht",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "kunde_kunde_p1_sat",
               "field_target_column": "GESCHLECHT"
             },
             {
-              "field_name": "GUELTIGBIS",
+              "field_name": "gueltigbis",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "kunde_kunde_p1_sat",
               "field_target_column": "GUELTIGBIS"
             },
             {
-              "field_name": "KKFIRMA",
+              "field_name": "kkfirma",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "kunde_kunde_p1_sat",
               "field_target_column": "KKFIRMA"
             },
             {
-              "field_name": "KREDITKARTE",
+              "field_name": "kreditkarte",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "kunde_kunde_p1_sat",
               "field_target_column": "KREDITKARTE"
             },
             {
-              "field_name": "MOBIL",
+              "field_name": "mobil",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "kunde_kunde_p1_sat",
               "field_target_column": "MOBIL"
             },
             {
-              "field_name": "NAME",
+              "field_name": "name",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "kunde_kunde_p1_sat",
               "field_target_column": "NAME"
             },
             {
-              "field_name": "TELEFON",
+              "field_name": "telefon",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "kunde_kunde_p1_sat",
               "field_target_column": "TELEFON"
             },
             {
-              "field_name": "VORNAME",
+              "field_name": "vorname",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "kunde_kunde_p1_sat",
@@ -647,7 +647,7 @@
           "data_mapping": [
             {
               "column_name": "KUNDEID",
-              "field_name": "KUNDEID",
+              "field_name": "kundeid",
               "column_class": "business_key",
               "stage_column_name": "KUNDEID"
             }
@@ -674,61 +674,61 @@
           "data_mapping": [
             {
               "column_name": "EMAIL",
-              "field_name": "EMAIL",
+              "field_name": "email",
               "column_class": "content",
               "stage_column_name": "EMAIL"
             },
             {
               "column_name": "GEBURTSDATUM",
-              "field_name": "GEBURTSDATUM",
+              "field_name": "geburtsdatum",
               "column_class": "content",
               "stage_column_name": "GEBURTSDATUM"
             },
             {
               "column_name": "GESCHLECHT",
-              "field_name": "GESCHLECHT",
+              "field_name": "geschlecht",
               "column_class": "content",
               "stage_column_name": "GESCHLECHT"
             },
             {
               "column_name": "GUELTIGBIS",
-              "field_name": "GUELTIGBIS",
+              "field_name": "gueltigbis",
               "column_class": "content",
               "stage_column_name": "GUELTIGBIS"
             },
             {
               "column_name": "KKFIRMA",
-              "field_name": "KKFIRMA",
+              "field_name": "kkfirma",
               "column_class": "content",
               "stage_column_name": "KKFIRMA"
             },
             {
               "column_name": "KREDITKARTE",
-              "field_name": "KREDITKARTE",
+              "field_name": "kreditkarte",
               "column_class": "content",
               "stage_column_name": "KREDITKARTE"
             },
             {
               "column_name": "MOBIL",
-              "field_name": "MOBIL",
+              "field_name": "mobil",
               "column_class": "content",
               "stage_column_name": "MOBIL"
             },
             {
               "column_name": "NAME",
-              "field_name": "NAME",
+              "field_name": "name",
               "column_class": "content",
               "stage_column_name": "NAME"
             },
             {
               "column_name": "TELEFON",
-              "field_name": "TELEFON",
+              "field_name": "telefon",
               "column_class": "content",
               "stage_column_name": "TELEFON"
             },
             {
               "column_name": "VORNAME",
-              "field_name": "VORNAME",
+              "field_name": "vorname",
               "column_class": "content",
               "stage_column_name": "VORNAME"
             }
@@ -749,7 +749,7 @@
           "data_mapping": [
             {
               "column_name": "VEREINSPARTNERID",
-              "field_name": "VEREINSPARTNERID",
+              "field_name": "vereinspartnerid",
               "column_class": "business_key",
               "stage_column_name": "VEREINSPARTNERID"
             }
@@ -850,7 +850,7 @@
         {
           "stage_column_name": "KUNDEID",
           "stage_column_class": "data",
-          "field_name": "KUNDEID",
+          "field_name": "kundeid",
           "is_nullable": true,
           "column_type": "CHAR(13) ",
           "column_classes": [
@@ -868,7 +868,7 @@
         {
           "stage_column_name": "VEREINSPARTNERID",
           "stage_column_class": "data",
-          "field_name": "VEREINSPARTNERID",
+          "field_name": "vereinspartnerid",
           "is_nullable": true,
           "column_type": "VARCHAR(30) ",
           "column_classes": [
@@ -886,7 +886,7 @@
         {
           "stage_column_name": "EMAIL",
           "stage_column_class": "data",
-          "field_name": "EMAIL",
+          "field_name": "email",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
@@ -904,7 +904,7 @@
         {
           "stage_column_name": "GEBURTSDATUM",
           "stage_column_class": "data",
-          "field_name": "GEBURTSDATUM",
+          "field_name": "geburtsdatum",
           "is_nullable": true,
           "column_type": "date ",
           "column_classes": [
@@ -922,7 +922,7 @@
         {
           "stage_column_name": "GESCHLECHT",
           "stage_column_class": "data",
-          "field_name": "GESCHLECHT",
+          "field_name": "geschlecht",
           "is_nullable": true,
           "column_type": "CHAR(1) ",
           "column_classes": [
@@ -940,7 +940,7 @@
         {
           "stage_column_name": "GUELTIGBIS",
           "stage_column_class": "data",
-          "field_name": "GUELTIGBIS",
+          "field_name": "gueltigbis",
           "is_nullable": true,
           "column_type": "CHAR(5) ",
           "column_classes": [
@@ -958,7 +958,7 @@
         {
           "stage_column_name": "KKFIRMA",
           "stage_column_class": "data",
-          "field_name": "KKFIRMA",
+          "field_name": "kkfirma",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
@@ -976,7 +976,7 @@
         {
           "stage_column_name": "KREDITKARTE",
           "stage_column_class": "data",
-          "field_name": "KREDITKARTE",
+          "field_name": "kreditkarte",
           "is_nullable": true,
           "column_type": "VARCHAR(30) ",
           "column_classes": [
@@ -994,7 +994,7 @@
         {
           "stage_column_name": "MOBIL",
           "stage_column_class": "data",
-          "field_name": "MOBIL",
+          "field_name": "mobil",
           "is_nullable": true,
           "column_type": "VARCHAR(20) ",
           "column_classes": [
@@ -1012,7 +1012,7 @@
         {
           "stage_column_name": "NAME",
           "stage_column_class": "data",
-          "field_name": "NAME",
+          "field_name": "name",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
@@ -1030,7 +1030,7 @@
         {
           "stage_column_name": "TELEFON",
           "stage_column_class": "data",
-          "field_name": "TELEFON",
+          "field_name": "telefon",
           "is_nullable": true,
           "column_type": "VARCHAR(20) ",
           "column_classes": [
@@ -1048,7 +1048,7 @@
         {
           "stage_column_name": "VORNAME",
           "stage_column_class": "data",
-          "field_name": "VORNAME",
+          "field_name": "vorname",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [

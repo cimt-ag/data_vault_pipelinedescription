@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-12-03 13:20:29",
+  "compile_timestamp": "2025-12-10 09:11:15",
   "dvpd_version": "0.6.3",
   "pipeline_name": "t2005",
   "pipeline_revision_tag": "demoRevisionTagOf t2005",
@@ -317,7 +317,7 @@
               "column_name": "F3_AAA_P1_C1",
               "field_name": "F3_AAA_P1_C1",
               "column_class": "content",
-              "stage_column_name": "F3_AAA_P1_C1"
+              "stage_column_name": "F3_AAA_P1_C1__GZSRR"
             }
           ]
         },
@@ -344,7 +344,7 @@
               "column_name": "F3_AAA_P1_C1",
               "field_name": "F3_AAA_P1_C1",
               "column_class": "content",
-              "stage_column_name": "F3_AAA_P1_C1"
+              "stage_column_name": "F3_AAA_P1_C1__GZSRR"
             }
           ]
         }
@@ -450,7 +450,7 @@
           ]
         },
         {
-          "stage_column_name": "F3_AAA_P1_C1",
+          "stage_column_name": "F3_AAA_P1_C1__GZSRR",
           "stage_column_class": "data",
           "field_name": "F3_AAA_P1_C1",
           "is_nullable": true,

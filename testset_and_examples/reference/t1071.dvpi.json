@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-09-24 10:42:44",
+  "compile_timestamp": "2025-12-10 08:57:26",
   "dvpd_version": "0.6.3",
   "pipeline_name": "t1071",
   "pipeline_revision_tag": "--none--",
@@ -98,18 +98,18 @@
           "field_type": "CHAR(28)",
           "field_position": 2,
           "needs_encryption": false,
-          "field_name": "F2_HK_RTJJ_1071_AAA_TTT"
+          "field_name": "F2_HK_rtjj_1071_aaa_ttt"
         },
         {
           "field_type": "CHAR(28)",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "F3_HK_RTJJ_1071_AAA_UUU"
+          "field_name": "F3_HK_rtjj_1071_aaa_uuu"
         }
       ],
       "hashes": [
         {
-          "stage_column_name": "F2_HK_RTJJ_1071_AAA_TTT",
+          "stage_column_name": "F2_HK_rtjj_1071_aaa_ttt",
           "hash_origin_table": "rtjj_1071_aaa_hub",
           "column_class": "key",
           "column_type": "CHAR(28)",
@@ -119,11 +119,11 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "direct_key_field": "F2_HK_RTJJ_1071_AAA_TTT",
+          "direct_key_field": "F2_HK_rtjj_1071_aaa_ttt",
           "hash_name": "KEY_OF_RTJJ_1071_AAA_HUB__FOR__TTT"
         },
         {
-          "stage_column_name": "F3_HK_RTJJ_1071_AAA_UUU",
+          "stage_column_name": "F3_HK_rtjj_1071_aaa_uuu",
           "hash_origin_table": "rtjj_1071_aaa_hub",
           "column_class": "key",
           "column_type": "CHAR(28)",
@@ -133,7 +133,7 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "direct_key_field": "F3_HK_RTJJ_1071_AAA_UUU",
+          "direct_key_field": "F3_HK_rtjj_1071_aaa_uuu",
           "hash_name": "KEY_OF_RTJJ_1071_AAA_HUB__FOR__UUU"
         },
         {
@@ -171,8 +171,8 @@
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_1071_AAA",
               "hash_name": "KEY_OF_RTJJ_1071_AAA_HUB__FOR__TTT",
-              "stage_column_name": "F2_HK_RTJJ_1071_AAA_TTT",
-              "direct_key_field": "F2_HK_RTJJ_1071_AAA_TTT"
+              "stage_column_name": "F2_HK_rtjj_1071_aaa_ttt",
+              "direct_key_field": "F2_HK_rtjj_1071_aaa_ttt"
             },
             {
               "hash_class": "diff_hash",
@@ -199,8 +199,8 @@
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_1071_AAA",
               "hash_name": "KEY_OF_RTJJ_1071_AAA_HUB__FOR__UUU",
-              "stage_column_name": "F3_HK_RTJJ_1071_AAA_UUU",
-              "direct_key_field": "F3_HK_RTJJ_1071_AAA_UUU"
+              "stage_column_name": "F3_HK_rtjj_1071_aaa_uuu",
+              "direct_key_field": "F3_HK_rtjj_1071_aaa_uuu"
             },
             {
               "hash_class": "diff_hash",
@@ -245,12 +245,12 @@
           "column_type": "BOOLEAN"
         },
         {
-          "stage_column_name": "F2_HK_RTJJ_1071_AAA_TTT",
+          "stage_column_name": "F2_HK_rtjj_1071_aaa_ttt",
           "stage_column_class": "direct_key",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1071_AAA_HUB__FOR__TTT",
           "column_type": "CHAR(28)",
-          "field_name": "F2_HK_RTJJ_1071_AAA_TTT",
+          "field_name": "F2_HK_rtjj_1071_aaa_ttt",
           "targets": [
             {
               "table_name": "btjj_1071_aaa_sat",
@@ -264,12 +264,12 @@
           ]
         },
         {
-          "stage_column_name": "F3_HK_RTJJ_1071_AAA_UUU",
+          "stage_column_name": "F3_HK_rtjj_1071_aaa_uuu",
           "stage_column_class": "direct_key",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1071_AAA_HUB__FOR__UUU",
           "column_type": "CHAR(28)",
-          "field_name": "F3_HK_RTJJ_1071_AAA_UUU",
+          "field_name": "F3_HK_rtjj_1071_aaa_uuu",
           "targets": [
             {
               "table_name": "btjj_1071_aaa_sat",

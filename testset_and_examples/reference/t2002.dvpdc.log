@@ -1,10 +1,8 @@
 Data vault pipeline description compiler log 
 === DVPD Compiler Version 0.6.3 ===
-Compile time: 2025-11-25 12:04:39
+Compile time: 2025-12-10 09:05:30
 Compiling t2002.dvpd.json
 
-Detected case-insensitive duplicate field group ['F3_AAA_P12_C1', 'f3_aaa_p12_c1']. 
-Field 'F3_AAA_P12_C1' assigned stage column name 'F3_AAA_P12_C1__FCJXW' 
-Field 'f3_aaa_p12_c1' assigned stage column name 'F3_AAA_P12_C1__QGMON' 
-Writing DVPI to /git_ordner/dvpd/var/dvpi/t2002.dvpi.json
---- Compile successfull ---
+ERROR: JSON Parsing error of file t2002.dvpd.json
+Expecting value in line 16 column 6
+*** Compilation ended with errors ***

@@ -1,6 +1,6 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.2
-Compile time: 2024-10-02 12:57:20
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2025-12-10 08:57:26
 Compiling t1000_prio_property_combination.dvpd.json
 
 Writing DVPI to /git_ordner/dvpd/var/dvpi/t1000_prio_property_combination.dvpi.json
