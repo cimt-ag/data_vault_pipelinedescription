@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-11-25 12:04:39",
+  "compile_timestamp": "2025-12-10 11:28:26",
   "dvpd_version": "0.6.3",
   "pipeline_name": "t2002",
   "pipeline_revision_tag": "demoRevisionTagOf t002002",
@@ -116,22 +116,6 @@
           "column_type": "VARCHAR(200)",
           "exclude_from_change_detection": false,
           "prio_for_column_position": 50000
-        },
-        {
-          "column_name": "F5_AAA_P1_C3F",
-          "is_nullable": true,
-          "column_class": "content",
-          "column_type": "VARCHAR(200)",
-          "exclude_from_change_detection": false,
-          "prio_for_column_position": 50000
-        },
-        {
-          "column_name": "F6_AAA_P1_C1F",
-          "is_nullable": true,
-          "column_class": "content_untracked",
-          "column_type": "TIMESTAMP",
-          "exclude_from_change_detection": "true",
-          "prio_for_column_position": 50000
         }
       ]
     },
@@ -239,18 +223,6 @@
           "field_position": 4,
           "needs_encryption": false,
           "field_name": "f3_aaa_p12_c1"
-        },
-        {
-          "field_type": "VARCHAR(200)",
-          "field_position": 5,
-          "needs_encryption": false,
-          "field_name": "F5XX_AAA_P1_c3F"
-        },
-        {
-          "field_type": "TIMESTAMP",
-          "field_position": 6,
-          "needs_encryption": false,
-          "field_name": "F6_AAA_P1_C1F"
         }
       ],
       "hashes": [
@@ -293,13 +265,6 @@
               "prio_for_row_order": 50000,
               "field_target_table": "rtjj_2002_aaa_p1_sat",
               "field_target_column": "F3_AAA_P12_C1"
-            },
-            {
-              "field_name": "F5XX_AAA_P1_c3F",
-              "prio_in_diff_hash": 0,
-              "prio_for_row_order": 50000,
-              "field_target_table": "rtjj_2002_aaa_p1_sat",
-              "field_target_column": "F5_AAA_P1_C3F"
             }
           ],
           "column_type": "CHAR(28)",
@@ -388,19 +353,7 @@
               "column_name": "F3_AAA_P12_C1",
               "field_name": "F3_AAA_P12_C1",
               "column_class": "content",
-              "stage_column_name": "F3_AAA_P12_C1"
-            },
-            {
-              "column_name": "F5_AAA_P1_C3F",
-              "field_name": "F5XX_AAA_P1_c3F",
-              "column_class": "content",
-              "stage_column_name": "F5XX_AAA_P1_c3F"
-            },
-            {
-              "column_name": "F6_AAA_P1_C1F",
-              "field_name": "F6_AAA_P1_C1F",
-              "column_class": "content_untracked",
-              "stage_column_name": "F6_AAA_P1_C1F"
+              "stage_column_name": "F3_AAA_P12_C1__FCJXW"
             }
           ]
         },
@@ -427,7 +380,7 @@
               "column_name": "F3_AAA_P12_C1",
               "field_name": "f3_aaa_p12_c1",
               "column_class": "content",
-              "stage_column_name": "f3_aaa_p12_c1"
+              "stage_column_name": "F3_AAA_P12_C1__QGMON"
             }
           ]
         }
@@ -547,42 +500,6 @@
               "column_name": "F3_AAA_P12_C1",
               "column_type": "DECIMAL(5,0)",
               "column_class": "content"
-            }
-          ]
-        },
-        {
-          "stage_column_name": "F5XX_AAA_P1_C3F",
-          "stage_column_class": "data",
-          "field_name": "F5XX_AAA_P1_c3F",
-          "is_nullable": true,
-          "column_type": "VARCHAR(200)",
-          "column_classes": [
-            "content"
-          ],
-          "targets": [
-            {
-              "table_name": "rtjj_2002_aaa_p1_sat",
-              "column_name": "F5_AAA_P1_C3F",
-              "column_type": "VARCHAR(200)",
-              "column_class": "content"
-            }
-          ]
-        },
-        {
-          "stage_column_name": "F6_AAA_P1_C1F",
-          "stage_column_class": "data",
-          "field_name": "F6_AAA_P1_C1F",
-          "is_nullable": true,
-          "column_type": "TIMESTAMP",
-          "column_classes": [
-            "content_untracked"
-          ],
-          "targets": [
-            {
-              "table_name": "rtjj_2002_aaa_p1_sat",
-              "column_name": "F6_AAA_P1_C1F",
-              "column_type": "TIMESTAMP",
-              "column_class": "content_untracked"
             }
           ]
         }
