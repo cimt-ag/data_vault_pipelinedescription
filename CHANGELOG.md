@@ -7,6 +7,7 @@ creating the key and not the table that is using the key. This allows the same k
 prevents mistakes in regarding the column namimg. You migrate existing dpvds by just changing the target table.
 - field names are not normalized to uppercase any more. This allows implicit usage of the field name as json key.
 If this creates conflict on stage column level, the stage columns will get a unique postfix.
+- Syntax for extention keyqwords has been added to allow declaration of custom keywords and provide them in the dvpi
   
 ### other features on core system 
 - Autotest: Hardcoded "rebranding" of the crash detection tests, to be successfull when captured in the full test
