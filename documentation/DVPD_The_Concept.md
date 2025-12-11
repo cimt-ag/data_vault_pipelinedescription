@@ -19,7 +19,7 @@ Even though the data vault approach provides a hughe leap to unifiy, generalize 
 
 At cimt ag we developed and adapted multiple variants of tools and frameworks to support the modelling and loading of Data Vault, depending on the needs and capabilities of our customers. Exchangebilty of our tools between different teams/projects was very limited. One major issue was the lack of a reusable approach to describe the major asset we always create: The Data Vault loading Process, or as we call it **"The Data Vault Pipeline"**.
 
-The Data Vault Pipeline Description is our solution, to fill taht gap. It specifies a data structure with all necessary information to generate/implement/execute a data vault loading process. The structure is independent from any technology or product. It can be created, converted and consumed by any tool, that wants to support it. This will enable development/adoption/integration/chaining of tools in the implementation process. Rather then trying to solve all problems in one tool (that either will be very expensive or might not support all steps of the implementation on the necessary level), there can be a more loosly coupled set of tools with exchangable components, depending on the individual requirements of the project.
+The Data Vault Pipeline Description is our solution, to fill that gap. It specifies a data structure with all necessary information to generate/implement/execute a data vault loading process. The structure is independent from any technology or product. It can be created, converted and consumed by any tool, that wants to support it. This will enable development/adoption/integration/chaining of tools in the implementation process. Rather then trying to solve all problems in one tool (that either will be very expensive or might not support all steps of the implementation on the necessary level), there can be a more loosly coupled set of tools with exchangable components, depending on the individual requirements of the project.
 
 ## Take your time
 
@@ -138,8 +138,8 @@ Since DVPD will focus only to tabularized data (as discussed in "Scope Limitatio
 - properties how to parse the field from the source data format
 - the mapping to the target table(s)
 
-Beside the simple singluar mapping of one field to one or more data vault table columns, a mapping of multiple fields to the same tables/columns must be supported. Common scenarios for this are multiple foreign keys that are mapped to the same partner object, representing different relation meanings. This also covers the description of recursive links (also known as hierachical)
-In some cases also two seperate data sets might be interweaved in the same row. 
+Beside the simple singular mapping of one field to one or more data vault table columns, a mapping of multiple fields to the same tables/columns must be supported. Common scenarios for this are multiple foreign keys that are mapped to the same partner object, representing different relation meanings. This also covers the description of recursive links (also known as hierachical)
+In some cases also two separate data sets might be interweaved in the same row. 
 
 A complete investigation and catalog of possible combinations is specified seperatly in
 
@@ -152,8 +152,9 @@ A complete investigation and catalog of possible combinations is specified seper
 Even though, the processing of raw vault data into the business vault could be implemented like normal loading of the result of a query to the raw vault, 
 the implementation and processing can be made easier and faster, when already existing hash values of the raw vault can be reused, where possible. 
 
-Example: when calculating new information for a product,and storing this in a satellite of the raw vault product hub, 
-it is not necessary to calculate the the hub key again, since the hub keys will not change. They can already be part of the incoming resultset as identifiers.
+Example: when calculating new information for an *invoice* and storing this in a satellite of the raw vault invoice hub, 
+it is not necessary to calculate the the hub key again, since the hub keys will not change. 
+They can already be part of the incoming resultset as identifiers.
 
 Detailed declaration about the business key and its composition rules is only needed, when new link row are created, since the link
 key contains the business keys of all hubs.
@@ -223,6 +224,11 @@ overall compatibilty of modells between different DVPDs in the project must be a
 modelling process/toolset and/or some automated QA cross checking during the development process. (Future 
 Versions of DVPD will provide a property, to declare the maturity of the DVPD. This can be used during the model
 crosscheck to distinguish between established parts of the model and parts currently under construction.)
+
+## Extendability
+To focus the core syntax and transformation to the needs of data vault models and source data mapping
+but also allow the extention of the content with project or tool specific properties, a 
+generic syntax will allow the addition of project or tool specific keywords. 
 
 # Information content of the DVPD
 In general terms: A DVPD contains all declarations to describe the source and target data model and the loading process.
@@ -331,6 +337,21 @@ Just adding some annotations for the mapping, keeps the effort small and support
 
 The source driven mapping approach also allows an efficient declaration of "relation specific" mappings (see below).
 
+**Why is the naming of fields case sensitive**
+
+This enables the  usage of the field name in case sensitive source format 
+parsings (e.g. json).
+
+**Why are column names and table names normaized to upper / lower case**
+
+SQL Syntax is not case sensitive unless the quotation of object names is used. To support the main goal of providing a 
+database, that can be queried easily, it is a good habit not to use case sensitive column names.
+By normalizing the names during the dvpd compile, conflicts in naming will be detected and must be solved by
+the modelling.
+
+Using upper case for columns and lower case for tables helps to distinguish theses types 
+in generated code.
+
 **How do you enforce consistency of Hub columns, when different sources have different names for the business key fields ?**
 
 Consistency of the overlapping tables between different DVPDs must be enforced by the build pipeline. It is no concern of the DVPD syntax.
@@ -373,7 +394,7 @@ Declaration of explicit relations will result in additional, relation specific h
 
 A full investigation about the properties of Data Vault, that lead to this desing is described in [Catalog of field mappings](./catalog_of_field_mappings.md).
 
-## Denormalizing data is out of scope
+## Normalizing data is out of scope
 When source data contains multiple fields, which target the same satellite columns without different business keys, 
 this might look like denormalized data and bring up the desire to normalize it into a multiactive satellite. 
 
@@ -396,13 +417,25 @@ For more insights about the variations, when trying to define a more general app
 Even though in case of business vault transformations, not all of the model will be loaded, a minimal declaration of more then just the loaded
 tables model is mandatory. By doing so, we gain the following benefits:
 - table structures can be copied from other pipelines and need only minimal adaption
-- Syntax regarding relation declaration and link key composition don't change
+- Syntax regarding relation declaration and link key composition stay the same
 - Name consistency for the hub/link is given through structure (no need to check, no source for mistakes)
 
-The option to reduce the syntax to only loaded tables was prototyped first. It became a declaration and consistency  
+*Side note:* The option to reduce the syntax to only loaded tables was prototyped first. It became a declaration and consistency  
 nightmare, when multiple target tables used the same key and relation specific mappings came into play.
-To many exceptions from the approved syntax had to be invented and blow up the simple rules, that
+To many exceptions from the approved syntax had to be invented and blew up the simple rules, that
 had been created for the "normal" data vault pipeline.
+
+## Extention key word syntax
+Keywords, that are not part of the dvpd core syntax, have to have a prefix, starting with "x" and an extention identifier. (e.g. "xdbt_column_is_multi_active_key" with "xdbt" beeing
+the prefix for the dbt extention
+)
+These keywords will not be evaluated by a dvpd compiler but get copied to corresponding elements in the compiler output (dvpi) depending on
+- the dvpd element, it was set 
+- dedicated name elements in the key word (e.g. "column" in "xdbt_load_is_multi_active_key")
+
+The core syntax reference and dvpi reference document explain the mapping rules for extention keywords in the **x???_????..**
+paragraphs. 
+
 
 ## Model Profile
 All **basic properties of the data vault model and loading**, are defined in a model profile.
@@ -438,16 +471,20 @@ The following diagram explains the general dependencies, how elements are derive
 
 ## Data Vault model tables ##
 The following elements are derived
-- columns of a table = all mapped fields deduplicated on column_name (default of target column name is the field name). Data type is column_type (default is the field type) and must be the same for all fields mapped to this target_column_name.
+- columns of a table = all mapped fields deduplicated on column_name (default for the target column name is the field name). 
+Data type is column_type (default is the field type) and must be the same for all fields mapped to this target_column_name.
 - business key columns = fields mapped to a hub and not explicitly excluded from key hash
 - dependend child key columns = fields mapped to a link and not explicitly excluded from key hash 
 - Key column of satellites = Key column of its parent
-- Hub Key columns in link = Key columns of all parents. If the parent mapping declares a relation_name but no explicit hub_key_column_name_in_link the hub key column name in the link will be the hub key column name in the hub followed by an underscore and the relation name
+- Hub Key columns in link = Key columns of all parents. If the parent mapping declares a relation_name but no explicit
+hub_key_column_name_in_link the hub key column name in the link will be the hub key column name in the hub followed by an underscore and the relation name
 - meta data columns are created depending on the table stereotype, model profile settings and table specific settings
 	- deletion flag will be added for satellites when "has_deletion_flag" is set to true
 	- load enddate column will be added when "is_endated" is set to true
 	
-It is recommended to group and order the columns during table creation in a convinient arragement (e.g. Meta->key->parent_key in alphabetical order ->diff hash->data columns in alphabetical order ). The compiler provides all these classifications. It is the responsibility of the DDL generator to use them wisely.
+It is recommended to group and order the columns during table creation in a convinient arragement 
+(e.g. Meta->key->parent_key in alphabetical order ->diff hash->data columns in alphabetical order ). 
+The compiler provides all these classifications. It is the responsibility of the DDL generator to use them wisely.
 
 ## Relation participation  = load operation deriviation
 Depending on the number of relations the table participates in and the table stereotype, there will be one or more load processes needed. 
