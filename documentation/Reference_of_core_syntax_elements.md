@@ -316,17 +316,19 @@ regardless of the exclude_from_change_detection setting.
 
 **x???_????..**
 (optional)
-<br>Extention keyword: Keyword and value will be copied to the corresponding dvpi element. Depending on the usage of defined 
-words immediatly after the prefix in the keyword, the property can be routed to specific dvpi elements as follows:
-- "column" (e.g. "xoltp_column_index_group") will only be added to the column definition on the target table (tables[].columns[]). 
+<br>Extention keyword: Keyword and value will be copied to the corresponding dvpi element. Since field mapping
+properties can be related to different dvpi aspects, it is recommended to retrict keywords to the dvpi parts,
+they are influencing.
+("c"= Target Column definition, "hash" = Hash compostion and caclulation, "l" = Load process specific property of the mapping )
+
+By adding a  # postfix declartion (e.g. `xxmpl_demo#h`), the property can be routed to specific dvpi elements as follows:
+- "c" (e.g. "xxmpl_index_group#c") will be added to the column definition on the target table (tables[].columns[]). 
 In case of conflicting values  from different fields for the same column, there will be an compiler error
-- "hash" (e.g. "xxmpl_hash_demo" ) will only be added to the field list in the hash declaration (parse_sets.hashes[].hash_fields[])
-- "load" (e.g. "xenc_load_encrypt") will only be added to the data mapping in the corresponding load operation (parse_sets.load_operations[].data_mappings[])
+- "h" (e.g. "xxmpl_invert_first#h" ) will be added to the field list in the hash declaration (parse_sets.hashes[].hash_fields[])
+- "l" (e.g. "xxmpl_is_subkey#l") will be added to the data mapping in the corresponding load operation (parse_sets.load_operations[].data_mappings[])
 
-Extention keywords without the "column","hash","load" declaration will be placed in all three dvpi elements. It is recommended to 
-focus keywords to the dvpi parts, they are designed for. ("column"= Table definition, "hash" = Hash compostion and caclulation, "load" = Transformation of the 
-field content to the target)
-
+Extention keywords without the # postfix will be placed in all three dvpi elements. Extention keywords with multiple
+letters in the postfix will be placed in all corresponding dvpi elements.
 
 ## data_vault_model[]
 
@@ -553,19 +555,18 @@ to every load operation. When having multiple elements, it must have the same nu
 key_sets[] from the other link_parent_table declaraions, that have more then one element.
 The number of elements define the number of loading operations.
 
-**x???_????..**
+**x???_????..#..**
 (optional)
-<br>Extention keyword: Keyword and value will be copied depending on the usage of defined words after the extention prefix
-to specific dvpi elements as follows:
-- "column" (e.g. "xxmpl_column_index_group") will only be added to the corresponding parent key column definition 
+<br>Extention keyword: Keyword and value will be copied, depending on the optional # postfix:
+- postfix contains "c" (e.g. `xxmpl_index_group#c`) will only be added to the corresponding parent key column definition 
 in the link table (tables[].columns[]). In case of conflicting values from different fields for the same column,
 there will be an compiler error.
-- "hash" (e.g. "xxmpl_hash_demo" ) will only be added to all business keys fields of the parent 
+- postfix contains "h" (e.g. `xxmpl_demo#h` ) will only be added to all business keys fields of the parent 
 in the field list of the *link key declaration* (parse_sets.hashes[].hash_fields[])
 
-Extention keywords without the "column","hash" declaration will be placed in both  dvpi elements. It is recommended to 
-focus keywords to the dvpi parts, they are designed for. ("column"= Table definition, "hash" = Hash compostion and 
-calculation)
+Extention keywords without a # postfix will be placed in both dvpi elements. It is recommended to 
+focus keywords to the dvpi parts, they are designed for. ("c"= Column definition of the table
+, "h" = Hash compostion and calculation)
 
 
 ### "sat" specific properties
