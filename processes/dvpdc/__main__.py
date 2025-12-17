@@ -1013,6 +1013,81 @@ def derive_content_dependent_ref_properties(table_name, table_entry):
             column_properties[property_name] = first_field[property_name]
         add_generic_relation_mappings(column_properties)
 
+
+def check_link_parent_consistency():
+    """
+    Checks that a link table does not reference the same parent table
+    more than once without distinguishing the references via relation name.
+
+    """
+
+    for table_name, table_entry in g_table_dict.items():
+
+
+        if table_entry.get('table_stereotype') != 'lnk':
+            continue
+
+        parent_entries = []
+
+        # Extended syntax
+        if 'parent_tables' in table_entry:
+            for p in table_entry['parent_tables']:
+                parent_entries.append(p)
+
+        # Short syntax
+        elif 'link_parent_tables' in table_entry:
+            for p in table_entry['link_parent_tables']:
+                parent_entries.append({'table_name': p})
+
+        if not parent_entries:
+            continue
+
+        # Group by normalized parent table name
+        parent_groups = {}
+
+        for parent in parent_entries:
+
+            parent_table_name = parent.get('table_name')
+
+            # Normalize to string
+            if isinstance(parent_table_name, dict):
+                parent_name = parent_table_name.get('table_name')
+            else:
+                parent_name = parent_table_name
+
+            if not isinstance(parent_name, str):
+                register_error(
+                    f"Invalid parent table declaration "
+                    f"in link '{table_name}': {parent}"
+                )
+                continue
+
+            parent_groups.setdefault(parent_name, []).append(parent)
+
+
+        for parent_name, entries in parent_groups.items():
+
+            if len(entries) <= 1:
+                continue
+
+            relation_names = [e.get('relation_name') for e in entries]
+
+            # Missing relation_name
+            if any(rn is None for rn in relation_names):
+                register_error(
+                    f"LPC-01: Parent table '{parent_name}' is declared multiple times "
+                    f"in link '{table_name}' without distinct relation_name"
+                )
+                continue
+
+            # Duplicate relation_name
+            if len(set(relation_names)) != len(relation_names):
+                register_error(
+                    f"LPC-02: Parent table '{parent_name}' is declared multiple times "
+                    f"in link '{table_name}' with duplicate relation_name values {relation_names}"
+                )
+
+
 def add_generic_relation_mappings(column_properties):
     """
     Determies the relation mapping defaults for every field mapping of a lolumn
@@ -3099,6 +3174,9 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
     if g_error_count > 0:
         raise DvpdcError
 
+    check_link_parent_consistency()
+    if g_error_count > 0:
+        raise DvpdcError
 
     derive_load_operations()
     if g_error_count > 0:
