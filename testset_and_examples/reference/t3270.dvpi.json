@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-03-20 10:45:27",
+  "compile_timestamp": "2025-12-18 14:39:32",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t3270",
   "pipeline_revision_tag": "--none--",
@@ -231,6 +231,13 @@
           "stage_column_name": "HK_RTJJ_3270_AAA",
           "hash_origin_table": "rtjj_3270_aaa_hub",
           "column_class": "key",
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
           "hash_fields": [
             {
               "field_name": "F1_AAA_BK1F",
@@ -239,13 +246,6 @@
               "field_target_column": "F1_AAA_BK1F"
             }
           ],
-          "column_type": "CHAR(28)",
-          "hash_encoding": "BASE64",
-          "hash_function": "sha-1",
-          "hash_concatenation_seperator": "|",
-          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
-          "hash_null_value_string": "",
-          "model_profile_name": "_default",
           "hash_name": "KEY_OF_RTJJ_3270_AAA_HUB"
         },
         {
@@ -259,13 +259,6 @@
               "field_target_table": "rtjj_3270_aaa_hub",
               "field_target_column": "F1_AAA_BK1F",
               "parent_declaration_position": 1
-            },
-            {
-              "field_name": "F1_AAA_BK1F",
-              "prio_in_key_hash": 0,
-              "field_target_table": "rtjj_3270_aaa_hub",
-              "field_target_column": "F1_AAA_BK1F",
-              "parent_declaration_position": 2
             },
             {
               "field_name": "F2XX_AAA_AAA_DC1",
@@ -300,13 +293,6 @@
               "field_target_table": "rtjj_3270_aaa_hub",
               "field_target_column": "F1_AAA_BK1F",
               "parent_declaration_position": 1
-            },
-            {
-              "field_name": "F1_AAA_BK1F",
-              "prio_in_key_hash": 0,
-              "field_target_table": "rtjj_3270_aaa_hub",
-              "field_target_column": "F1_AAA_BK1F",
-              "parent_declaration_position": 2
             },
             {
               "field_name": "F2XX_AAA_AAA_DC1",
@@ -396,12 +382,6 @@
               "stage_column_name": "HK_RTJJ_3270_AAA"
             },
             {
-              "hash_class": "parent_key_2",
-              "column_name": "HK_RTJJ_3270_AAA",
-              "hash_name": "KEY_OF_RTJJ_3270_AAA_HUB",
-              "stage_column_name": "HK_RTJJ_3270_AAA"
-            },
-            {
               "hash_class": "key",
               "column_name": "LK_RTJJ_3270_AAA_AAA",
               "hash_name": "KEY_OF_RTJJ_3270_AAA_AAA_DLNK_TTT",
@@ -430,12 +410,6 @@
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
-              "column_name": "HK_RTJJ_3270_AAA",
-              "hash_name": "KEY_OF_RTJJ_3270_AAA_HUB",
-              "stage_column_name": "HK_RTJJ_3270_AAA"
-            },
-            {
-              "hash_class": "parent_key_2",
               "column_name": "HK_RTJJ_3270_AAA",
               "hash_name": "KEY_OF_RTJJ_3270_AAA_HUB",
               "stage_column_name": "HK_RTJJ_3270_AAA"

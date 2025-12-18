@@ -1029,15 +1029,14 @@ def check_link_parent_consistency():
 
         parent_entries = []
 
-        # Extended syntax
-        if 'parent_tables' in table_entry:
-            for p in table_entry['parent_tables']:
-                parent_entries.append(p)
-
-        # Short syntax
-        elif 'link_parent_tables' in table_entry:
+        if 'link_parent_tables' in table_entry:
             for p in table_entry['link_parent_tables']:
-                parent_entries.append({'table_name': p})
+                if isinstance(p, dict):
+                    # extended syntax → keep relation_name
+                    parent_entries.append(p)
+                else:
+                    # short syntax → wrap
+                    parent_entries.append({'table_name': p})
 
         if not parent_entries:
             continue
@@ -1070,10 +1069,10 @@ def check_link_parent_consistency():
             if len(entries) <= 1:
                 continue
 
-            relation_names = [e.get('relation_name') for e in entries]
+            relation_names = [e.get('relation_name') for e in entries if 'relation_name' in e]
 
             # Missing relation_name
-            if any(rn is None for rn in relation_names):
+            if len(relation_names) != len(entries):
                 register_error(
                     f"LPC-01: Parent table '{parent_name}' is declared multiple times "
                     f"in link '{table_name}' without distinct relation_name"
