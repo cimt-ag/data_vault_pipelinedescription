@@ -66,6 +66,8 @@ def create_documentation(dvpd,column_labels):
     if len(header_text)<3:
         print(f"Not enough header labels given in 'documentation_column_labels'. Need 3 got {len(header_text)}: >>{column_labels}<< ")
         exit()
+    if len(header_text) < 4:
+        header_text.append("field comment")  # 4th declaraion is optional
     html = "<!DOCTYPE html>\n<html>\n"
     html += "<head>\n"
     html += "<style>\n"
@@ -85,6 +87,7 @@ def create_documentation(dvpd,column_labels):
     html += f"           <th>{header_text[0]}</th>\n"
     html += f"           <th>{header_text[1]}</th>\n"
     html += f"           <th>{header_text[2]}</th>\n"
+    html += f"           <th>{header_text[3]}</th>\n"
     html += "       </tr>\n"
     for field in fields:
         if with_json_parsing:
@@ -105,6 +108,7 @@ def create_documentation(dvpd,column_labels):
             field_text = field["field_name"]
         field_type = field["field_type"]
         targets = field["targets"]
+        field_comment = field.get('field_comment','')
 
         html += "       <tr>\n"
         html += f"           <td>{field_text}</td>\n"
@@ -116,6 +120,7 @@ def create_documentation(dvpd,column_labels):
             for target in targets:
                 t.append(render_target(target,field["field_name"],field_text))
             html += "               <td>" + ",<br/> ".join(t) + "</td>\n"
+        html += f"           <td>{field_comment}</td>\n"
         html += "       </tr>\n"
 
     html += "   </table>\n"
@@ -139,7 +144,7 @@ def main(dvpd_filename,
         column_labels=params['documentation_column_labels']
 
     dvpd = parse_json_file(dvpd_file_path)
-    pipeline_name = dvpd["pipeline_name"]
+    pipeline_name = dvpd['pipeline_name']
     if isinstance(dvpd['fields'], (dict, list)):
         html = create_documentation(dvpd,column_labels)
         if print_html:
