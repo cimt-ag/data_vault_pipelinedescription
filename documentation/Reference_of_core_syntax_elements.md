@@ -70,6 +70,10 @@ Name of the model profile to be used. The model profile defines the names and ty
 <br>Object with stage table declarations. (one for every storage component)
 <br>→ see "stage_properties”
 
+**x???_????..**
+(optional)
+<br>Extention keyword. Keyword and valoue will be copied to the dvpi root element.
+
 
 ## data_extraction 
 json path: /
@@ -85,6 +89,11 @@ json path: /
 Depending on the used fetch module, there will be additional keys necessary to control the
 genereal fetching process. Valid keys must be documented in the module documentation. Please note, that field specific paramterers for fetching and parsing have to be placed
 as keys in the ***fields*** array
+
+**x???_????..**
+(optional)
+<br>Extention keyword. Keyword and value will be copied to the dvpi data_extraction element.
+
 
 ## fields[]
 json path: /
@@ -151,6 +160,10 @@ The following constants are defined by the core syntax
 <br> Depending of the data format and transport, there will be some more declarations necessary to identify the field in the source data. These properties can be added here. They must be documented in the fetch module documentation.
 
 The order of elements in the array should be used for parsing positional data (csv, excel etc)..
+
+**x???_????..**
+(optional)
+<br>Extention keyword. Keyword and value will be copied to the corresponding dvpi parse_set[].fields[] element.
 
 ### targets[]
 json path: /fields[]/
@@ -301,6 +314,22 @@ regardless of the exclude_from_change_detection setting.
 *defines: documentation, table DDL*
 <br>comment that will be added to the column in the data vault model. Default is the comment of the field
 
+**x???_????..**
+(optional)
+<br>Extention keyword: Keyword and value will be copied to the corresponding dvpi element. Since field mapping
+properties can be related to different dvpi aspects, it is recommended to retrict keywords to the dvpi parts,
+they are influencing.
+("c"= Target Column definition, "hash" = Hash compostion and caclulation, "l" = Load process specific property of the mapping )
+
+By adding a  # postfix declartion (e.g. `xxmpl_demo#h`), the property can be routed to specific dvpi elements as follows:
+- "c" (e.g. "xxmpl_index_group#c") will be added to the column definition on the target table (tables[].columns[]). 
+In case of conflicting values  from different fields for the same column, there will be an compiler error
+- "h" (e.g. "xxmpl_invert_first#h" ) will be added to the field list in the hash declaration (parse_sets.hashes[].hash_fields[])
+- "l" (e.g. "xxmpl_is_subkey#l") will be added to the data mapping in the corresponding load operation (parse_sets.load_operations[].data_mappings[])
+
+Extention keywords without the # postfix will be placed in all three dvpi elements. Extention keywords with multiple
+letters in the postfix will be placed in all corresponding dvpi elements.
+
 ## data_vault_model[]
 
 Json Path: /
@@ -318,6 +347,10 @@ Json Path: /
 
 Especially for situations where the schema name must also be used to provide dev/test/prod stages, it is recommended to declare parsable placeholders in the schema name. It is recommended to use the "\${value name}" syntax for this purpose (e.g. "\${STAGE_TAG}"). Those will be filled at runtime by the process, depending on the stage it runs in.
 <br>*"rvlt_accounting"*
+
+**x???_????..**
+(optional)
+<br>Extention keyword: Keyword and value will be copied to all dvpi tables[] elements of the same schema.
 
 **tables[]**
 (mandatory)
@@ -351,8 +384,6 @@ Json Path : /data_vault_mode[]/
 
 Satellites without any mapped content column are allowed (effectivity satellites). 
 
-
-
 **table_comment**
 (optional)
 *defines: documentation, table ddl*
@@ -369,6 +400,12 @@ Satellites without any mapped content column are allowed (effectivity satellites
 *defines: general declarations*
 <br> Name of the model profile to be used. The model profile defines the names and types of data vault specific columns, declares the ruleset for hashing and more. Declartion on table level allows interconnection between different profiles in the same model
 <br> *"postgres_main"*
+
+**x???_????..**
+(optional)
+<br>Extention keyword: Keyword and value will be copied to 
+- the corresponding dvpi tables[] element
+- all parse_sets.load_operations[] elements of the table
 
 ### "hub" specific properties
 Json Path : /data_vault_mode[]/tables[]
@@ -517,6 +554,19 @@ Defines the key set to be used from the parent hub, for a specific load operatio
 to every load operation. When having multiple elements, it must have the same number of elements like all 
 key_sets[] from the other link_parent_table declaraions, that have more then one element.
 The number of elements define the number of loading operations.
+
+**x???_????..#..**
+(optional)
+<br>Extention keyword: Keyword and value will be copied, depending on the optional # postfix:
+- postfix contains "c" (e.g. `xxmpl_index_group#c`) will only be added to the corresponding parent key column definition 
+in the link table (tables[].columns[]). In case of conflicting values from different fields for the same column,
+there will be an compiler error.
+- postfix contains "h" (e.g. `xxmpl_demo#h` ) will only be added to all business keys fields of the parent 
+in the field list of the *link key declaration* (parse_sets.hashes[].hash_fields[])
+
+Extention keywords without a # postfix will be placed in both dvpi elements. It is recommended to 
+focus keywords to the dvpi parts, they are designed for. ("c"= Column definition of the table
+, "h" = Hash compostion and calculation)
 
 
 ### "sat" specific properties
@@ -731,6 +781,10 @@ Json Path: /
 *defines: db element name*
 <br>Name of the stage table. Default is the name of the pipeline.
 <br>*"srvlt_crm_person_p1"
+
+**x???_????..**
+(optional)
+<br>Extention keyword: Keyword and value will be copied to the stage_properties dvpi element.
 
 
 # Open concepts
