@@ -3008,16 +3008,35 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
         for f in h.get("hash_fields", []):
             dvpi_hash_lookup[(f["field_name"], f["field_target_table"], f["field_target_column"])] = f
     # load keyword
-    for load_op in dvpi_document.get("parse_sets", [{}])[0].get("load_operations", []):
-        table_name = load_op.get("table_name", "")
-        for dm in load_op.get("data_mapping", []):
-            key = (dm["field_name"], table_name, dm["column_name"])
-            for field in dvpd_fields:
-                if field["field_name"] != dm["field_name"]:
+    for load_operation in dvpi_document.get("parse_sets", [{}])[0].get("load_operations", []):
+        load_operation_table = load_operation.get("table_name")
+        load_operation_relation = (load_operation.get("relation_name", "/") or "/").lower()
+
+        for data_mapping in load_operation.get("data_mapping", []):
+            data_mapping_field = data_mapping.get("field_name")
+            data_mapping_column = data_mapping.get("column_name")
+
+            source_field = next((f for f in dvpd_fields if f.get("field_name") == data_mapping_field), None)
+            if not source_field:
+                continue
+
+            for target in source_field.get("targets", []):
+                target_table = target.get("table_name")
+                target_column = target.get("column_name", source_field.get("field_name"))
+
+                relations = target.get("relation_names")
+                target_relations = relations if isinstance(relations, list) and relations else ["/"]
+                tgt_rels_norm = [(r or "/").lower() for r in target_relations]
+
+                if target_table != load_operation_table:
                     continue
-                for target in field.get("targets", []):
-                    if any(is_ext_key(k) and "load" in k for k in target):
-                        dm.update({k: v for k, v in target.items() if is_ext_key(k) and "load" in k})   # fields[0].targets[0]. with "load" in name -> parse_sets.load_operations[0].data_mappings[0]
+                if target_column != data_mapping_column:
+                    continue
+                if load_operation_relation not in tgt_rels_norm:
+                    continue
+
+                data_mapping.update({k: v for k, v in target.items()
+                           if is_ext_key(k) and "load" in k})
 
     for field in dvpd_fields:
         for target in field.get("targets", []):
