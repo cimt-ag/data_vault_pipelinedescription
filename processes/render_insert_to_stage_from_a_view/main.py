@@ -87,14 +87,12 @@ def render_insert_for_parse_set(output_file,parse_set,view_schema,view_name,reco
                              {'meta_deletion_flag': 'false'}
                              ]
 
-    output_file.write(f"-- === BEGIN OF GENERATED INSERT TO STAGE STATEMENT === \n\n")
-
-
     stage_table_name = parse_set['stage_properties']['stage_table_name']
     stage_schema = parse_set['stage_properties']['stage_schema']
 
 
     stage_columns = parse_set['stage_columns']
+    fields=parse_set['fields']
 
 
     column_name_to_stage_name_dict={}
@@ -115,11 +113,14 @@ def render_insert_for_parse_set(output_file,parse_set,view_schema,view_name,reco
             continue
 
         if stage_column_class=='hash':
-            hash_ppt=get_hash_ppt_by_name(stage_column_ppt['hash_name'], parse_set['hashes'])
-            hash_input_string=assemble_hash_concat_expression(hash_ppt)
-            sql_expression="lib.DV_HASH("+hash_input_string+")"
+            hash_definition=get_hash_definition_by_name(stage_column_ppt['hash_name'], parse_set['hashes'])
+            if 'direct_key_field' in hash_definition:
+                raise AssertionError(f"'hash' stage column '{stage_column_name}' references  a 'direct_key_field' hash. This is invalid.")
+            hash_field_list_string=assemble_hash_field_list_string(hash_definition,fields)
+            sql_expression=f"lib.DV_HASH(CONCAT_WS('{hash_definition['hash_concatenation_seperator']}'"+hash_field_list_string+"))"
             insert_column={'stage_column_name':stage_column_name,'select_expression':sql_expression}
             insert_columns.append(insert_column)
+            continue
 
 
         if stage_column_class == 'data' or stage_column_class == 'direct_key':
@@ -130,65 +131,97 @@ def render_insert_for_parse_set(output_file,parse_set,view_schema,view_name,reco
                     final_column_name=determine_combined_stage_column_name(stage_column_ppt,column_name_to_stage_name_dict)
                 case _:
                     raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
+            insert_column = {'stage_column_name': final_column_name, 'select_expression': stage_column_ppt['field_name']}
+            insert_columns.append(insert_column)
+            continue
 
-            column_classes = stage_column_ppt['column_classes']
-            field_name=stage_column_ppt['field_name']
-            field_to_stage_dict[field_name]=final_column_name # add the fineal column name to the field dict for later use
-            stage_column_to_final_column_name_dict[stage_column_name]=final_column_name
-            if len(stage_column_ppt['targets'])==0:  # this stage column is not mapped to any target
-                unmapped.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
-            elif 'key' in column_classes or 'parent_key'  in column_classes:
-                hash_keys.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
-            elif 'business_key' in column_classes or 'dependent_child_key' in column_classes:
-                business_keys.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
-            elif 'content_untracked' in column_classes:
-                content_untracked.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
-            elif 'content' in column_classes:
-                content.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
-            else:
-                raise AssertionError(f"unexpected column class! {column_classes} are currently not supported!")
+        raise AssertionError(f"unhandled column class during insert column collection")
 
-    # sort the arrays of the stage columns
-    hash_keys.sort()
-    business_keys.sort()
-    content.sort()
-    content_untracked.sort()
-    stage_column_info = []
-    if len(hash_keys) > 0:
-        stage_column_info += ["\t--hash keys"] + hash_keys
-    if len(business_keys) > 0:
-        stage_column_info += ["\n\t--business keys"] + business_keys
-    if len(unmapped) > 0:
-        stage_column_info += ["\n\t--business keys only for hashes"] + unmapped
-    if len(content) > 0:
-        stage_column_info += ["\n\t--content"] + content
-    if len(content_untracked) > 0:
-        stage_column_info += ["\n\t--content untracked"] + content_untracked
+    # >>>>>>>>>>  finally write the statement  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-    stage_column_info = '\n'.join(stage_column_info)
-    output_file.write(stage_column_info)
+    output_file.write(f"-- vvvvv BEGIN OF GENERATED INSERT TO STAGE STATEMENT vvvvv \n\n")
 
-    output_file.write(SECTION_END_STRING)
+    output_file.write(f"insert into {stage_schema}.{stage_table_name} (\n")
 
-    # >>>>>>>>>>  hash composition information    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    column_list=[]
+    expression_list = []
+    for insert_column in insert_columns:
+        column_list.append(insert_column['stage_column_name'])
+        expression_list.append("\n"+insert_column['select_expression']+" AS "+insert_column['stage_column_name'])
+    output_file.write(",".join(column_list))
 
-    output_file.write("Composition of hash columns that must be calculated\n")
-    output_file.write(SECTION_HEAD_SEPARATOR_STRING)
+    output_file.write("\n)\n") # Close insert column list
 
-    for hash_definition in parse_set['hashes']:
-        if 'direct_key_field' in hash_definition:
-            continue  # no need to print the trivial direct copy
-        output_file.write(f"\n{hash_definition['stage_column_name']} ({hash_definition['column_class']})\n")
-        if hash_definition['column_class'] == 'key':
-            hash_fields_sorted=sorted(hash_definition['hash_fields'], key=lambda d: "{:03d}".format(
-                d.get('parent_declaration_position', 0)) + '_/_' + d['field_target_table'] + '_/_' + str(
-                d['prio_in_key_hash']) + '_/_' + d['field_target_column'])
-        else:
-            hash_fields_sorted=sorted(hash_definition['hash_fields'],
-                                        key=lambda d: '_' + str(d['prio_in_diff_hash']) + '_/_' + d[
-                                            'field_target_column'])
-        for hash_field in hash_fields_sorted:
-            output_file.write(f"\t\t{field_to_stage_dict[hash_field['field_name']]} \n")
+    output_file.write("select ")
+    output_file.write(",".join(expression_list))
+    output_file.write(f"from {view_schema}.{view_name}")
+
+    output_file.write(f"-- ^^^^^ END OF GENERATED INSERT TO STAGE STATEMENT ^^^^^ \n\n")
+
+
+def assemble_hash_field_list_string(hash_definition,fields):
+    """Returns the comma separatedn hash member fields including all converions function wrappings"""
+
+    timestamp_db_type_list=['TIMESTAMP','DATETIME']
+
+    if hash_definition['column_class'] == 'key':
+        hash_fields_sorted=sorted(hash_definition['hash_fields'], key=lambda d: "{:03d}".format(
+            d.get('parent_declaration_position', 0)) + '_/_' + d['field_target_table'] + '_/_' + str(
+            d['prio_in_key_hash']) + '_/_' + d['field_target_column'])
+    else: # this is a diff hash
+        hash_fields_sorted=sorted(hash_definition['hash_fields'],
+                                    key=lambda d: '_' + str(d['prio_in_diff_hash']) + '_/_' + d[
+                                        'field_target_column'])
+
+    hash_timestamp_format_sqlstyle=hash_definition['hash_timestamp_format_sqlstyle']
+
+    for hash_field in hash_fields_sorted: # rewrite hash_field into conversion expression depending on db type
+        source_field=get_field_by_name(hash_field['field_name'],fields)
+        if db_type_is_numerical(source_field['field_type']):
+            hash_field=f"cast({hash_field['field_name']} as varchar(40))"
+        elif db_type_is_timestamp(source_field['field_type']):
+            hash_field = f"to_varchar({hash_field['field_name']},'{hash_timestamp_format_sqlstyle}')"
+        elif db_type_is_time(source_field['field_type']):
+            hash_field = f"to_varchar({hash_field['field_name']},'HH24:MI:SS')"
+        elif db_type_is_date(source_field['field_type']):
+            hash_field = f"to_varchar({hash_field['field_name']},'YYYY-MM-DD')"
+
+
+    return ','.join(hash_fields_sorted)
+
+def db_type_is_numerical (db_type):
+    numerical_db_type_list = ['DECIMAL', 'NUMBER', 'NUMERIC', 'INTEGER', 'FLOAT', 'DOUBLE PRECISION', 'MONEY']
+    for type_to_search_for in numerical_db_type_list:
+        if type_to_search_for in db_type:
+            return True
+    return False
+
+def db_type_is_timestamp (db_type):
+    timestamp_db_type_list=['TIMESTAMP','DATETIME']
+    for type_to_search_for in timestamp_db_type_list:
+        if type_to_search_for in db_type:
+            return True
+    return False
+
+def db_type_is_date (db_type):
+    db_type_list=['DATE']
+    for type_to_search_for in db_type_list:
+        if type_to_search_for in db_type:
+            return True
+    return False
+
+def db_type_is_time (db_type):
+    db_type_list=['TIME']
+    for type_to_search_for in db_type_list:
+        if type_to_search_for in db_type:
+            return True
+    return False
+
+def get_field_by_name(field_name,fields):
+    for field_ppt in fields:
+        if field_ppt['field_name'] ==field_name:
+            return field_ppt
+    raise AssertionError(f"Could not find '{field_name}' in fields of DVPI")
 
 
     output_file.write(SECTION_END_STRING)
@@ -199,6 +232,11 @@ def render_insert_for_parse_set(output_file,parse_set,view_schema,view_name,reco
     output_file.write("\n\n--- END OF GENERATED INSERT TO STAGE STATEMENT   ---\n")
 
 
+def get_hash_definition_by_name(hash_name, hashes):
+    for hash_definition in hashes:
+        if hash_definition['hash_name']==hash_name:
+            return hash_definition
+    raise AssertionError(f"Could not find hash definition in DVPI for hash name '{hash_name}'")
 
 
 def assemble_column_name_to_stage_name_dict(stage_columns):
