@@ -624,6 +624,16 @@ to a target table.
 **column_class**
 <br>The classification of the column in the target table, defining its role (e.g., business key, dependent child key, content, etc.).
 
+### Syntax Extensions
+All syntax ectensions that are declared in DVPD are materialized into DVPI according to routing rules.
+They are copied only to their defined semantic targets and applied only when table, column and relation match.
+
+**Extension Design**
+*The syntax extension mechanism is designed to:*
+<br> Keep DVPD concise and readable.
+<br> Allow adding new behavior without changing the base structure.
+<br> Work correctly with complex models and different relations.
+
 # License and Credits
 
 (C) Matthias Wegner, cimt ag

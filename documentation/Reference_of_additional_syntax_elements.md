@@ -67,7 +67,7 @@ Depending on the parsing module, this declaration can be left out, when the fiel
 
 The expression always starts on the "looped" Element (see json_loop_level). 
 The expression must lead to a single value or a Json subobject.
-Even though a path staring at the json document root can be declare by starting using "$" it
+Even though a path staring at the json document root can be declared by starting using "$" it
 is recommended to express all hierarchy navigation with the "json_loop_level"
 
 
@@ -77,6 +77,27 @@ is recommended to express all hierarchy navigation with the "json_loop_level"
 <br>Defines the loop level, the json path is beginning. Level 0 (= the default) is the loop of the row granularity. To address elements of parent objects to the row object, the level must be decreased. -1 = direct parent, -2 = Parent of parent and so on.
 (Loop levels are used to iterate over hierarchical stacked arrays)
 
+## Syntax Extension Mechanics
+DVPD supports syntax extensions with keywords defined by user without changing the core DVPD schema.
+The extensions are declarative metadata only.
+
+**A syntax extension key is identified by the following rules:**
+<br> The key must start with "xtkwx_".
+<br> The key name defines the semantic scope of the extension.
+
+**General principles**
+<br> Are explicitly declared.
+<br> Are routed to defined locations in the DVPI
+<br> Are applied only at matching semantic locations.
+
+**Syntax extension keys may appear at root level, stage_properties, data extraction, data_vault_model and its elements, fields and their targets.**
+
+**Target-scoped extensions**
+*When they are declared under field.targets, the keyword name determines its routing behavior:*
+<br> Extensions containing column apply to table column definitions
+<br> Extensions containing hash apply to hash field definitions
+<br> Extensions containing load apply to load-operation field mappings
+<br> If relation_names are defined, syntax extensions are bound to those relations only.
 
 # License and Credits
 

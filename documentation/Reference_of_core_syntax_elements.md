@@ -321,13 +321,13 @@ properties can be related to different dvpi aspects, it is recommended to retric
 they are influencing.
 ("c"= Target Column definition, "hash" = Hash compostion and caclulation, "l" = Load process specific property of the mapping )
 
-By adding a  # postfix declartion (e.g. `xxmpl_demo#h`), the property can be routed to specific dvpi elements as follows:
-- "c" (e.g. "xxmpl_index_group#c") will be added to the column definition on the target table (tables[].columns[]). 
+By adding a  ">" postfix declartion (e.g. `xxmpl_demo>h`), the property can be routed to specific dvpi elements as follows:
+- "c" (e.g. "xxmpl_index_group>c") will be added to the column definition on the target table (tables[].columns[]). 
 In case of conflicting values  from different fields for the same column, there will be an compiler error
-- "h" (e.g. "xxmpl_invert_first#h" ) will be added to the field list in the hash declaration (parse_sets.hashes[].hash_fields[])
-- "l" (e.g. "xxmpl_is_subkey#l") will be added to the data mapping in the corresponding load operation (parse_sets.load_operations[].data_mappings[])
+- "h" (e.g. "xxmpl_invert_first>h" ) will be added to the field list in the hash declaration (parse_sets.hashes[].hash_fields[])
+- "l" (e.g. "xxmpl_is_subkey>l") will be added to the data mapping in the corresponding load operation (parse_sets.load_operations[].data_mappings[])
 
-Extention keywords without the # postfix will be placed in all three dvpi elements. Extention keywords with multiple
+Extention keywords without the ">" postfix will be placed in all three dvpi elements. Extention keywords with multiple
 letters in the postfix will be placed in all corresponding dvpi elements.
 
 ## data_vault_model[]

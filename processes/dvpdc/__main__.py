@@ -21,6 +21,7 @@ import argparse
 import copy
 import os
 import sys
+import re
 
 # Include data_vault_pipelinedescription folder into
 project_directory = os.path.dirname(os.path.dirname(sys.path[0]))
@@ -2930,10 +2931,10 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
              dvpi_document: the already rendered dvpi document
 
      """
-    import re
+
 
     def is_ext_key(key):
-        return re.match(r"x.+_.+", key)
+        return re.match(r"xtkwx.+_.+", key)
 
     def copy_extensions(source, target):
         for key, value in source.items():
@@ -2972,12 +2973,24 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
     for table_name, (dvpd_table, dvpd_schema) in dvpd_table_lookup.items():
         dvpi_table = dvpi_table_lookup.get(table_name)
         if dvpi_table:
-            copy_extensions(dvpd_table, dvpi_table)     # data_vaullt_model[].tables[0] -> tables[0]
+            # allow only ONE extension
+            table_ext_keys = [k for k in dvpd_table.keys() if is_ext_key(k)]
+            if len(table_ext_keys) > 1:
+                register_error(
+                    f"ASE-1: '{dvpd_table.get('table_name')}' has more than one syntax extension keyword: "
+                    f"{', '.join(table_ext_keys)}"
+                )
+                continue
+
             copy_extensions(dvpd_schema, dvpi_table)
 
-            for load_op in dvpi_document.get("parse_sets", [{}])[0].get("load_operations", []):
-                if load_op.get("table_name", "").lower() == table_name:
-                    copy_extensions(dvpd_table, load_op)    # data_vaullt_model[].tables[0] -> parse_sets.load_operations[0]
+            if len(table_ext_keys) == 1:
+                k = table_ext_keys[0]
+                dvpi_table[k] = dvpd_table[k]
+
+                for load_op in dvpi_document.get("parse_sets", [{}])[0].get("load_operations", []):
+                    if load_op.get("table_name", "").lower() == table_name:
+                        load_op[k] = dvpd_table[k]
 
     # --- 6. Link parent keywords ---
     for table in dvpd_table_lookup.values():
@@ -2989,7 +3002,7 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
                     parent_exts = {}
                 elif isinstance(parent, dict):
                     parent_table = parent.get("table_name", "").lower()
-                    parent_exts = {k: v for k, v in parent.items() if is_ext_key(k)}    # data_vaullt_model[].tables[0].link_parent_tabes -> tables[0].columns[0]
+                    parent_exts = {k: v for k, v in parent.items() if is_ext_key(k)}
                 else:
                     continue
 
@@ -3037,6 +3050,30 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
 
                 data_mapping.update({k: v for k, v in target.items()
                            if is_ext_key(k) and "load" in k})
+
+    for hash in dvpi_document.get("parse_sets", [{}])[0].get("hashes", []):
+        for hash_field in hash.get("hash_fields", []):
+            hf_field = hash_field.get("field_name")
+            hf_table = hash_field.get("field_target_table")
+            hf_column = hash_field.get("field_target_column")
+
+            source_field = next((f for f in dvpd_fields if f.get("field_name") == hf_field), None)
+            if not source_field:
+                continue
+
+            for target in source_field.get("targets", []):
+                target_table = target.get("table_name")
+                target_column = target.get("column_name", source_field.get("field_name"))
+
+                if target_table != hf_table:
+                    continue
+                if target_column != hf_column:
+                    continue
+
+                hash_field.update({
+                    k: v for k, v in target.items()
+                    if is_ext_key(k) and "load" in k
+                })
 
     for field in dvpd_fields:
         for target in field.get("targets", []):
@@ -3223,7 +3260,8 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
 
     assemble_dvpi(dvpd_object, dvpd_filename)
     apply_syntax_extensions(dvpd_object, g_dvpi_document)
-    # print_dvpi_document()
+    if g_error_count > 0:
+        raise DvpdcError
 
     # write DVPI to file
     if dvpi_directory == None:
