@@ -12,35 +12,35 @@
 		      ,{"field_name": "F2_AAA_C1F", 	  "field_type": "Varchar(20)",	"targets": [{"table_name": "rtjj_1302_aaa_sat"}]}	 	  
 		      ,{"field_name": "F3XX_BBB_BK1_TTT_UUU", "field_type": "Varchar(20)","targets": [{"table_name": "rtjj_1302_bbb_hub" ,"column_name": "F3F4_BBB_BK1"
 																				 	,"relation_names":["TTT","UUU"]
-																					,"xtkwx_test_load_flag": "BK1_TTT_UUU_SHARED"} ]}		 	  
+																					,"xtkwx_test_load_flag_x": "BK1_TTT_UUU_SHARED"} ]}		 	  
 		      ,{"field_name": "F4XX_BBB_BK1_VVV","field_type": "Varchar(20)",  "targets": [{"table_name": "rtjj_1302_bbb_hub" ,"column_name": "F3F4_BBB_BK1"
 																				 	,"relation_names":["VVV"]
-																					,"xtkwx_test_load_flag": "BK1_VVV_ONLY"} ]}		 	  
+																					,"xtkwx_test_load_flag_x": "BK1_VVV_ONLY"} ]}		 	  
 		      ,{"field_name": "F5XX_BBB_BK2F_TTT", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_1302_bbb_hub" ,"column_name": "F5F6F7_BBB_BK2F"
 																				 	,"relation_names":["TTT"]
-																					,"xtkwx_test_load_flag": "BK2_TTT_ONLY"} ]}	 
+																					,"xtkwx_test_load_flag_x": "BK2_TTT_ONLY"} ]}	 
 		      ,{"field_name": "F6XX_BBB_BK2F_UUU", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_1302_bbb_hub" ,"column_name": "F5F6F7_BBB_BK2F"
 																				 	,"relation_names":["UUU"]
-																					,"xtkwx_test_load_flag": "BK2_UUU_ONLY"} ]}	 
+																					,"xtkwx_test_load_flag_x": "BK2_UUU_ONLY"} ]}	 
 		      ,{"field_name": "F7XX_BBB_BK2F_VVV", "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_1302_bbb_hub" ,"column_name": "F5F6F7_BBB_BK2F"
 																				 	,"relation_names":["VVV"]
-																					,"xtkwx_test_load_flag": "BK2_VVV_ONLY"} ]}
+																					,"xtkwx_test_load_flag_x": "BK2_VVV_ONLY"} ]}
 	 
 		      ,{"field_name": "F8XX_BBB_C1_TTT",  "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_1302_bbb_sat" ,"column_name": "F8F9_BBB_C1"
 																				 	,"relation_names":["TTT"]
-																					,"xtkwx_test_load_flag": "C1_TTT_ONLY"} ]}
+																					,"xtkwx_test_load_flag_x": "C1_TTT_ONLY"} ]}
 		      ,{"field_name": "F9XX_BBB_C1_UUU_VVV",  "field_type": "Varchar(20)", "targets": [{"table_name": "rtjj_1302_bbb_sat" ,"column_name": "F8F9_BBB_C1"
 																				 	,"relation_names":["UUU","VVV"]
-																					,"xtkwx_test_load_flag": "C1_UUU_VVV_SHARED"} ]}
+																					,"xtkwx_test_load_flag_x": "C1_UUU_VVV_SHARED"} ]}
 		      ,{"field_name": "F10XX_BBB_C2F_TTT",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_1302_bbb_sat" ,"column_name": "F10F11F12_BBB_C2F"
 																				 	,"relation_names":["TTT"]
-																					,"xtkwx_test_load_flag": "C2_TTT_ONLY"} ]}
+																					,"xtkwx_test_load_flag_x": "C2_TTT_ONLY"} ]}
 		      ,{"field_name": "F11XX_BBB_C2F_UUU",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_1302_bbb_sat" ,"column_name": "F10F11F12_BBB_C2F"
 																				 	,"relation_names":["UUU"]
-																					,"xtkwx_test_load_flag": "C2_UUU_ONLY"} ]}
+																					,"xtkwx_test_load_flag_x": "C2_UUU_ONLY"} ]}
 		      ,{"field_name": "F12XX_BBB_C2F_VVV",  "field_type": "decimal(12,2)", "targets": [{"table_name": "rtjj_1302_bbb_sat" ,"column_name": "F10F11F12_BBB_C2F"
 																				 	,"relation_names":["VVV"]
-																					,"xtkwx_test_load_flag": "C2_VVV_ONLY"} ]}
+																					,"xtkwx_test_load_flag_x": "C2_VVV_ONLY"} ]}
  
 			 ],
 	"data_vault_model": [

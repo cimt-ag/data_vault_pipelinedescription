@@ -2920,10 +2920,30 @@ def renderHashFieldAssembly(parse_set_entry, hash_mapping_entry):
 
 
 # --------------------  Extention key word transfer ------------------
+def parse_ext_destinations(key: str):
+    """
+    Returns a set containing any of {'c','h','l'} if key has a valid postfix token.
+    """
+    if not isinstance(key, str) or "_" not in key:
+        return None
+
+    last_token = key.rsplit("_", 1)[-1]
+    if not last_token.startswith("x"):
+        return None
+
+    flags = last_token[1:]
+    if flags == "":
+        return {"c", "h", "l"}
+
+    allowed_characters = {"c", "h", "l"}
+    if any(character not in allowed_characters for character in flags):
+        return None
+
+    return set(flags)
 
 def apply_syntax_extensions(dvpd_object, dvpi_document):
     """
-     Search the dvpf for extention keywords (starting with 'x') an transfer them
+     Search the dvpd for extention keywords (starting with 'x') and transfer them
      to the proper position in the dpvi document. (Expects the dvpi document to be complete)
 
      Args:
@@ -3039,17 +3059,21 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
 
                 relations = target.get("relation_names")
                 target_relations = relations if isinstance(relations, list) and relations else ["/"]
-                tgt_rels_norm = [(r or "/").lower() for r in target_relations]
+                target_relations_norm = [(r or "/").lower() for r in target_relations]
 
                 if target_table != load_operation_table:
                     continue
                 if target_column != data_mapping_column:
                     continue
-                if load_operation_relation not in tgt_rels_norm:
+                if load_operation_relation not in target_relations_norm:
                     continue
 
-                data_mapping.update({k: v for k, v in target.items()
-                           if is_ext_key(k) and "load" in k})
+                for k, v in target.items():
+                    if not is_ext_key(k):
+                        continue
+                    postfix_flags = parse_ext_destinations(k)
+                    if postfix_flags and "l" in postfix_flags:
+                        data_mapping[k] = v
 
     for hash in dvpi_document.get("parse_sets", [{}])[0].get("hashes", []):
         for hash_field in hash.get("hash_fields", []):
@@ -3070,10 +3094,12 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
                 if target_column != hf_column:
                     continue
 
-                hash_field.update({
-                    k: v for k, v in target.items()
-                    if is_ext_key(k) and "load" in k
-                })
+                for k, v in target.items():
+                    if not is_ext_key(k):
+                        continue
+                    postfix_flags = parse_ext_destinations(k)
+                    if postfix_flags and "h" in postfix_flags:
+                        hash_field[k] = v
 
     for field in dvpd_fields:
         for target in field.get("targets", []):
@@ -3081,15 +3107,33 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
             column = target.get("column_name", field["field_name"])
 
             # column keyword
-            if any(is_ext_key(k) and "column" in k for k in target):    # fields[0].targets[0]. with "column" in name -> tables[0].columns[0]
-                for tbl in dvpi_document.get("tables", []):
-                    if tbl["table_name"].lower() == table.lower():
-                        for col in tbl.get("columns", []):
-                            if col["column_name"] == column:
-                                copy_extensions(target, col)
+            # column routing via postfix (and conflict check)
+            for k, v in target.items():
+                if not is_ext_key(k):
+                    continue
+                postfix_flags = parse_ext_destinations(k)
+                if not postfix_flags or "c" not in postfix_flags:
+                    continue
+
+                for target_table_name in dvpi_document.get("tables", []):
+                    if target_table_name["table_name"].lower() != table.lower():
+                        continue
+
+                    for target_column_name in target_table_name.get("columns", []):
+                        if target_column_name.get("column_name") != column:
+                            continue
+
+                        # conflict check: same table+column+key but different value
+                        if k in target_column_name and target_column_name[k] != v:
+                            register_error(
+                                f"ASE-2: More than one extension value '{k}' for column '{column}' "
+                                f"of table '{table}': '{target_column_name[k]}', '{v}'"
+                            )
+                        else:
+                            target_column_name[k] = v
 
             # hash keyword
-            if any(is_ext_key(k) and "hash" in k for k in target):  # fields[0].targets[0]. with "hash" in name -> parse_sets.hashes[0].hash_fields[0]
+            if any(is_ext_key(k) and "hash" in k for k in target):
                 hf = dvpi_hash_lookup.get((field["field_name"], table.lower(), column))
                 if hf:
                     copy_extensions(target, hf)
