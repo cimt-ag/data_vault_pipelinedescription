@@ -424,7 +424,7 @@ if __name__ == "__main__":
 
     print("\nTest state: "+report_line)
 
-    if autotests_sucessfull:
+    if autotests_sucessfull or explicit_file != None:
         print("--- Automated test of DVPDC complete ---")
     else:
         print ('*** Automated test failed due to internal autotest deviation. Check t0010c and t0011 ***')
