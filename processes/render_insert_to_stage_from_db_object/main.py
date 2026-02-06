@@ -66,24 +66,25 @@ def render_for_all_parsesets(dvpi_filepath, documentation_directory, stage_colum
         print("Ignoring DVPI, since data extraction fetch module name is not 'transformation_view'")
         return 0
 
-    if 'view_schema' not in data_extraction_ppt:
-        raise MissingFieldError("The keyword 'data_extraction.view_schema' is missing in the DVPI.")
-    if 'view_name'  not in data_extraction_ppt:
-        raise MissingFieldError("The keyword 'data_extraction.view_name' is missing in the DVPI.")
+    if 'source_object_schema' not in data_extraction_ppt:
+        raise MissingFieldError("The keyword 'data_extraction.source_object_schema' is missing in the DVPI.")
+    if 'source_object_name'  not in data_extraction_ppt:
+        raise MissingFieldError("The keyword 'data_extraction.source_object_name' is missing in the DVPI.")
 
-    view_schema=data_extraction_ppt['view_schema']
-    view_name = data_extraction_ppt['view_name']
+    source_object_schema=data_extraction_ppt['source_object_schema']
+    source_object_name = data_extraction_ppt['source_object_name']
 
 
     for parse_set in parse_sets:
         stage_table_name = parse_set['stage_properties'][0]['stage_table_name']
-        report_file_name = "insert_" + view_name + "_to_" + stage_table_name +".sql"
-        report_sheet_file_path = documentation_directory.joinpath(report_file_name)
-        with open(report_sheet_file_path, "w") as output_file:
-            render_insert_for_parse_set(output_file,parse_set,view_schema,view_name,stage_column_naming_rule)
+        statement_file_name = "insert_" + source_object_name + "_to_" + stage_table_name +".sql"
+        statement_file_path = documentation_directory.joinpath(statement_file_name)
+        with open(statement_file_path, "w") as output_file:
+            render_insert_for_parse_set(output_file,parse_set,source_object_schema,source_object_name,stage_column_naming_rule)
+            print("Written sql statement to " + statement_file_path.as_posix())
 
 
-def render_insert_for_parse_set(output_file,parse_set,view_schema,view_name,stage_column_naming_rule):
+def render_insert_for_parse_set(output_file, parse_set, source_object_schema, source_object_name, stage_column_naming_rule):
 
     if 'record_source_name_expression' not in parse_set:
         raise MissingFieldError("The keyword 'record_source_name_expression' is missing in the DVPI/parse_set.")
@@ -91,7 +92,7 @@ def render_insert_for_parse_set(output_file,parse_set,view_schema,view_name,stag
 
     meta_column_expressions={'meta_load_date':'current_timestamp',
                              'meta_load_process_id':'-999',
-                             'meta_record_source':record_source_expression,
+                             'meta_record_source':f"'{record_source_expression}'",
                              'meta_deletion_flag': 'false'
                              }
 
@@ -126,7 +127,7 @@ def render_insert_for_parse_set(output_file,parse_set,view_schema,view_name,stag
             if 'direct_key_field' in hash_definition:
                 raise AssertionError(f"'hash' stage column '{stage_column_name}' references  a 'direct_key_field' hash. This is invalid.")
             hash_field_list_string=assemble_hash_field_list_string(hash_definition,fields)
-            sql_expression=f"lib.DV_HASH(CONCAT_WS('{hash_definition['hash_concatenation_seperator']}'"+hash_field_list_string+"))"
+            sql_expression=f"lib.DV_HASH(CONCAT_WS('{hash_definition['hash_concatenation_seperator']}',"+hash_field_list_string+"))"
             insert_column={'stage_column_name':stage_column_name,'select_expression':sql_expression}
             insert_columns.append(insert_column)
             continue
@@ -150,6 +151,8 @@ def render_insert_for_parse_set(output_file,parse_set,view_schema,view_name,stag
 
     output_file.write(f"-- vvvvv BEGIN OF GENERATED INSERT TO STAGE STATEMENT vvvvv \n\n")
 
+    output_file.write(f"-- truncate table  {stage_schema}.{stage_table_name}; \n\n")
+
     output_file.write(f"insert into {stage_schema}.{stage_table_name} (\n")
 
     column_list=[]
@@ -163,9 +166,11 @@ def render_insert_for_parse_set(output_file,parse_set,view_schema,view_name,stag
 
     output_file.write("select ")
     output_file.write(",".join(expression_list))
-    output_file.write(f"from {view_schema}.{view_name};\n\n")
+    output_file.write(f"\nfrom {source_object_schema}.{source_object_name};\n\n")
 
     output_file.write(f"-- ^^^^^ END OF GENERATED INSERT TO STAGE STATEMENT ^^^^^ \n\n")
+
+
 
 def sortkey_of_stage_column(stage_column):
     stage_column_class_rank={
