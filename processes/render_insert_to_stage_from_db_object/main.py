@@ -42,7 +42,7 @@ class MissingFieldError(Exception):
 output_file=None
 
 
-def render_for_all_parsesets(dvpi_filepath, documentation_directory, stage_column_naming_rule='stage'):
+def render_for_all_parsesets(dvpi_filepath, insert_to_stage_sql_directory, stage_column_naming_rule='stage'):
     """
     Checks main requirements and creates files for every parse set and calls the rendering function
     """
@@ -78,7 +78,7 @@ def render_for_all_parsesets(dvpi_filepath, documentation_directory, stage_colum
     for parse_set in parse_sets:
         stage_table_name = parse_set['stage_properties'][0]['stage_table_name']
         statement_file_name = "insert_" + source_object_name + "_to_" + stage_table_name +".sql"
-        statement_file_path = documentation_directory.joinpath(statement_file_name)
+        statement_file_path = insert_to_stage_sql_directory.joinpath(statement_file_name)
         with open(statement_file_path, "w") as output_file:
             render_insert_for_parse_set(output_file,parse_set,source_object_schema,source_object_name,stage_column_naming_rule)
             print("Written sql statement to " + statement_file_path.as_posix())
@@ -354,7 +354,8 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
 ########################   MAIN ################################
 if __name__ == '__main__':
 
-    print("=== render insert stage from a view  ===")
+    print("=== render insert stage from a view or table  ===")
+    error_catched = False
 
     description_for_terminal = "Process dvpi at the given location to render a statement, that inserts data from a view into the stage table."
     usage_for_terminal = "Add option -h for further instruction"
@@ -369,7 +370,7 @@ if __name__ == '__main__':
     parser.add_argument("--stage_column_naming_rule", help="Rule to use for stage column naming [stage,combined]", default='#notset#')
     args = parser.parse_args()
 
-    params = configuration_load_ini(args.ini_file, 'rendering', ['dvpi_default_directory','insert_to_stage_from_a_view_directory'])
+    params = configuration_load_ini(args.ini_file, 'rendering', ['dvpi_default_directory','insert_to_stage_sql_directory'])
 
     if args.stage_column_naming_rule =='#notset#':
         stage_column_naming_rule=params.get('stage_column_naming_rule','stage')
@@ -377,12 +378,12 @@ if __name__ == '__main__':
         stage_column_naming_rule=args.stage_column_naming_rule
 
     dvpi_default_directory = Path(params['dvpi_default_directory'])
-    insert_to_stage_from_a_view_directory = Path(params['insert_to_stage_from_a_view_directory'])
+    insert_to_stage_sql_directory = Path(params['insert_to_stage_sql_directory'])
 
     # create target directory
-    if not os.path.isdir(insert_to_stage_from_a_view_directory):
-        print(f"creating dir: "+insert_to_stage_from_a_view_directory.name)
-        insert_to_stage_from_a_view_directory.mkdir(parents=True)
+    if not os.path.isdir(insert_to_stage_sql_directory):
+        print(f"creating dir: "+insert_to_stage_sql_directory.name)
+        insert_to_stage_sql_directory.mkdir(parents=True)
     
     dvpi_file_name=args.dvpi_file_name
     if dvpi_file_name == '@youngest':
@@ -393,9 +394,23 @@ if __name__ == '__main__':
     if not dvpi_file_path.exists():
        dvpi_file_path = dvpi_default_directory.joinpath(dvpi_file_name)
        if not dvpi_file_path.exists():
-            print(f"could not find file {args.dvpi_file_name}")
+            print(f"Could not find file {args.dvpi_file_name}")
+            error_catched=True
 
-    render_for_all_parsesets(dvpi_file_path, insert_to_stage_from_a_view_directory
-                             , stage_column_naming_rule=stage_column_naming_rule)
+    if not error_catched:
+        try:
+            render_for_all_parsesets(dvpi_file_path, insert_to_stage_sql_directory
+                                     , stage_column_naming_rule=stage_column_naming_rule)
+        except MissingFieldError as mfe:
+            print(mfe)
+            error_catched=True
 
-    print("--- render insert stage from a view complete ---\n")
+        except AssertionError as ase:
+            print(ase)
+            error_catched = True
+
+    if error_catched:
+        print("*** error during  render insert stage from a view or table ***\n")
+        exit(1)
+
+    print("--- completed render insert stage from a view or table ---\n")
