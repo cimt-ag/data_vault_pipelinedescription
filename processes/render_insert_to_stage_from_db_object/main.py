@@ -410,7 +410,7 @@ if __name__ == '__main__':
             error_catched = True
 
     if error_catched:
-        print("*** error during  render insert stage from a view or table ***\n")
+        print("*** error during render insert stage from a view or table ***\n")
         exit(1)
 
     print("--- completed render insert stage from a view or table ---\n")
