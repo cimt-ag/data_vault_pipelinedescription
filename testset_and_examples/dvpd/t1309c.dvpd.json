@@ -1,7 +1,7 @@
 {
 	"dvpd_version": "0.6.3",
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
-	"pipeline_name": "t1309",
+	"pipeline_name": "t1309c",
 	"record_source_name_expression": "test_xc_conflict",
 	"data_extraction": {
 		"fetch_module_name":"none - this is a pure generator test case"

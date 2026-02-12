@@ -2929,6 +2929,10 @@ def parse_ext_destinations(key: str):
 
     last_token = key.rsplit("_", 1)[-1]
     if not last_token.startswith("x"):
+        register_error(
+            f"ASE-3: Extension '{key}' uses non-standard postfix '_{last_token}'. "
+            f"Postfix should start with 'x' (e.g. _xc, _xh, _xl)."
+        )
         return None
 
     flags = last_token[1:]
@@ -2936,8 +2940,10 @@ def parse_ext_destinations(key: str):
         return {"c", "h", "l"}
 
     allowed_characters = {"c", "h", "l"}
-    if any(character not in allowed_characters for character in flags):
-        return None
+
+    # if flags contains any char outside c/h/l -> treat as '_x' (all)
+    if any(ch not in allowed_characters for ch in flags):
+        return {"c", "h", "l"}
 
     return set(flags)
 

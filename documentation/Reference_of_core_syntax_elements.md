@@ -314,21 +314,28 @@ regardless of the exclude_from_change_detection setting.
 *defines: documentation, table DDL*
 <br>comment that will be added to the column in the data vault model. Default is the comment of the field
 
-**x???_????..**
+**apply_syntax_extensions**
 (optional)
-<br>Extention keyword: Keyword and value will be copied to the corresponding dvpi element. Since field mapping
-properties can be related to different dvpi aspects, it is recommended to retrict keywords to the dvpi parts,
-they are influencing.
-("c"= Target Column definition, "hash" = Hash compostion and caclulation, "l" = Load process specific property of the mapping )
+<br>Extension keyword: The keyword and its value will be copied to the corresponding DVPI element.
+Routing of an extension is controlled by a postfix token in the last underscore-separated part of the key.
+The postfix must start with "x" and may optionally be followed by the letters "c", "h", and/or "l".
 
-By adding a  ">" postfix declartion (e.g. `xxmpl_demo>h`), the property can be routed to specific dvpi elements as follows:
-- "c" (e.g. "xxmpl_index_group>c") will be added to the column definition on the target table (tables[].columns[]). 
-In case of conflicting values  from different fields for the same column, there will be an compiler error
-- "h" (e.g. "xxmpl_invert_first>h" ) will be added to the field list in the hash declaration (parse_sets.hashes[].hash_fields[])
-- "l" (e.g. "xxmpl_is_subkey>l") will be added to the data mapping in the corresponding load operation (parse_sets.load_operations[].data_mappings[])
+Postfix Routing Rules
 
-Extention keywords without the ">" postfix will be placed in all three dvpi elements. Extention keywords with multiple
-letters in the postfix will be placed in all corresponding dvpi elements.
+- "_xc" added to the column definition of the target table (tables[].columns[])
+In case of conflicting values from different fields for the same column, the compiler raises an error.
+- "_xh" added to the hash field definition (parse_sets.hashes[].hash_fields[]).
+- "_xl" added to the data mapping of the corresponding load operation
+(parse_sets.load_operations[].data_mapping[]).
+- "_x" added to columns, hashes and load operations and "_x" followed by multiple letters (e.g. _xhl, _xhc, _xchl)
+added to all corresponding DVPI elements based on the letters used.
+
+Non-standard postfix
+
+If the last token does not start with x, a compiler warning is issued and the extension
+is not routed via postfix logic.
+If the last token starts with x but contains characters other than c, h, or l, 
+a compiler warning is issued and the extension is treated like _x (applied to all DVPI elements).
 
 ## data_vault_model[]
 

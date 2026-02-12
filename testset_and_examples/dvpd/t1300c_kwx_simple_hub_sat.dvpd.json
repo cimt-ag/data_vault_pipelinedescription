@@ -3,7 +3,7 @@
 	"stage_properties" : [{"stage_schema":"stage_rvlt"
 							,"stage_table_name":"srtjj_1300"
 							,"xtkwx_stage_kw1f":"stage_key_word_1 value"}],
-	"pipeline_name": "t1300_kwx_simple_hub_sat",
+	"pipeline_name": "t1300c_kwx_simple_hub_sat",
 	"pipeline_revision_tag":"demoRevisionTagOf t1300",
 	"record_source_name_expression": "dvpd implementation test",
 	"xtkwx_dvpd_root_kw1f":"root_key_word_1 value",
