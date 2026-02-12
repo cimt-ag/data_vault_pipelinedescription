@@ -16,7 +16,7 @@ class MissingFieldError(Exception):
     def __init__(self, message):
         super().__init__(message)
 
-g_report_file=None
+output_file=None
 
 SECTION_END_STRING="\n\n"+"="*80+"\n"
 SECTION_HEAD_SEPARATOR_STRING="-"*80+"\n"
@@ -253,7 +253,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
     """
     renders a cheat sheet, that contains all crucial information for the developer
     """
-    global  g_report_file
+    global  output_file
 
     # load the dvpi and check
     with open(dvpi_filepath, 'r') as file:

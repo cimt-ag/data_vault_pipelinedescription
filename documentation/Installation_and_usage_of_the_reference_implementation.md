@@ -248,45 +248,6 @@ The output contains 4 sections:
 - Summary Report: Statistics about the analysis
 - Summary report line: comprehensive statistics about the analys in one single string (thought to be used as commit message)
 
-## ddl generator (dvpd_ddl_render)
-The ddl generator renders all create statements for a given dvpi file. Since this is an example and not
-core part of the dvpd concept, syntax and structure are also only example (mainly taken from a current project).
-To adapt this to your needs, you should copy and adapt the script.
-
-The ddl generator is started on the command line with
-
-```dvdp_ddl_render <name of the dvpi file> options```
-
-When using the file name "@youngest", the script uses the youngest file in the dvpi default directory
-
-Options:
-- --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
-- --print: prints the full ddl set to the console
-- --add_ghost_records: adds ghost record inserts to the script 
-- --no_primary_keys: omit rendering of primary key constraints
-- --ddl_file_naming_pattern: declares the pattern for the file name. Valid settings: <br>```lll``` = everything lowercase<br>```lUl``` = table name upper case
-- --stage_column_naming_rule={stage|combined} : stage = pure generated stage column names are used in the stage combined= combination of target column names and stage column names
-- --use_target_column_type_in_stage: stage table columns use the data type defined in the target tables instead of the original field type, providing consistency between staging and target structures.
-
-Settings read from .ini file:
-- dvpi_default_directory - The directory where the generator searches for the dvpi-files
-- ddl_root_directory - The directory where the generator writes the ddl's into (creating subdirectorie for every schema)
-- stage_column_naming_rule - the column naming rule (see option above)
-- ddl_stage_directory_name - name of the subdirectory for stage table ddl scripts
-
-### Purpose of the "combined" stage table generation rule
-Some data vault loading frameworks (e.g. cimt talend framework) use similarity of column names between stage table and target
-table for automatic mapping. In that case it is more convenient to generate a stage table
-with the target column names. This will work well, until the same column name for different
-content is used in different tables of the pipeline or different source fields are 
-mapped to the same target.
-
-The "combined" stage column naming rule resolves this as follows:
-- one or more target columns with same name and same single source field: stage column name = Target name
-- one target column with a unique name and multiple source fields: stage column name = Target name + field name
-- multiple target columns with different names have the same single source field: stage column name = all target field names concatenated
-- multiple target columns sharing the same name using different source fields: stage column name = field name
-
 ## Documentation generator (dvdp_doc_render)
 The documentation generator creates a simple html table of the field mapping,
 ready to be copied into a documentation tool of your choice (confluence, one Note / Word, ...)
@@ -332,6 +293,70 @@ see "stage_column_naming_rule" in the ddl generator for explanation of the namin
 Settings read from .ini file:
 - dvpi_default_directory
 - stage_column_naming_rule
+
+## ddl generator (dvpd_ddl_render)
+The ddl generator renders all create statements for a given dvpi file. Since this is an example and not
+core part of the dvpd concept, syntax and structure are also only example (mainly taken from a current project).
+To adapt this to your needs, you should copy and adapt the script.
+
+The ddl generator is started on the command line with
+
+```dvdp_ddl_render <name of the dvpi file> options```
+
+When using the file name "@youngest", the script uses the youngest file in the dvpi default directory
+
+Options:
+- --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
+- --print: prints the full ddl set to the console
+- --add_ghost_records: adds ghost record inserts to the script 
+- --no_primary_keys: omit rendering of primary key constraints
+- --ddl_file_naming_pattern: declares the pattern for the file name. Valid settings: <br>```lll``` = everything lowercase<br>```lUl``` = table name upper case
+- --stage_column_naming_rule={stage|combined} : stage = pure generated stage column names are used in the stage combined= combination of target column names and stage column names
+- --use_target_column_type_in_stage: stage table columns use the data type defined in the target tables instead of the original field type, providing consistency between staging and target structures.
+
+Settings read from .ini file:
+- dvpi_default_directory - The directory where the generator searches for the dvpi-files
+- ddl_root_directory - The directory where the generator writes the ddl's into (creating subdirectorie for every schema)
+- stage_column_naming_rule - the column naming rule (see option above)
+- ddl_stage_directory_name - name of the subdirectory for stage table ddl scripts
+
+### Purpose of the "combined" stage table generation rule
+Some data vault loading frameworks (e.g. cimt talend framework) use similarity of column names between stage table and target
+table for automatic mapping. In that case it is more convenient to generate a stage table
+with the target column names. This will work well, until the same column name for different
+content is used in different tables of the pipeline or different source fields are 
+mapped to the same target.
+
+The "combined" stage column naming rule resolves this as follows:
+- one or more target columns with same name and same single source field: stage column name = Target name
+- one target column with a unique name and multiple source fields: stage column name = Target name + field name
+- multiple target columns with different names have the same single source field: stage column name = all target field names concatenated
+- multiple target columns sharing the same name using different source fields: stage column name = field name
+
+
+## Insert to stage from db object sql generator (dvpd_insert_stage_sql_render)
+Generates a sql statement to insert data from a view or table into the stage table of a pipeline.
+- using proper generative expressions for the meta columns
+- using the necessary fields in conversion, string concatenaton and hashing functions for the hash columns
+- copiing the fields to the mapped stage columns
+
+The statement renderer  is started on the command line with:
+
+```dvpd_insert_stage_sql_render <name of the dvpi file> [options] ```
+
+When using the file name "@youngest", the script uses the youngest file in the dvpi default directory
+
+Options:
+- --ini_file=\<path of ini file>:Defines the ini file to use (default is dvpdc.ini in the local directory)
+- --stage_column_naming_rule={stage|combined} : stage = pure generated stage column names are used in the stage combined= combination of target column names and stage column names
+
+see "stage_column_naming_rule" in the ddl generator for explanation of the naming rules.
+
+Settings read from .ini file:
+- dvpi_default_directory
+- stage_column_naming_rule
+- insert_to_stage_sql_directory
+
 
 ## Generator for dvpd templates from database tables (dvpd_generate_from_db)
 This command generates a template dvpd file from the table structure of a database tables.
