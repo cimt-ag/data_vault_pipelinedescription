@@ -1332,7 +1332,6 @@ def determine_load_operations_from_tracking_directive():
         load_operations = table_entry['load_operations']
         if 'tracked_relation_name' in table_entry:
             if len(load_operations) > 0:
-                # todo add compiler test to trigger this error
                 register_error(
                     f"DLO-40:You cannot define a tracked relation, when you declared relations in data mappings other then ['*']. Table: '{table_name}'")
             if table_entry['tracked_relation_name'] != '*':
@@ -2919,33 +2918,8 @@ def renderHashFieldAssembly(parse_set_entry, hash_mapping_entry):
 
 
 
-# --------------------  Extention key word transfer ------------------
-def parse_ext_destinations(key: str):
-    """
-    Returns a set containing any of {'c','h','l'} if key has a valid postfix token.
-    """
-    if not isinstance(key, str) or "_" not in key:
-        return None
 
-    last_token = key.rsplit("_", 1)[-1]
-    if not last_token.startswith("x"):
-        register_error(
-            f"ASE-3: Extension '{key}' uses non-standard postfix '_{last_token}'. "
-            f"Postfix should start with 'x' (e.g. _xc, _xh, _xl)."
-        )
-        return None
 
-    flags = last_token[1:]
-    if flags == "":
-        return {"c", "h", "l"}
-
-    allowed_characters = {"c", "h", "l"}
-
-    # if flags contains any char outside c/h/l -> treat as '_x' (all)
-    if any(ch not in allowed_characters for ch in flags):
-        return {"c", "h", "l"}
-
-    return set(flags)
 
 def apply_syntax_extensions(dvpd_object, dvpi_document):
     """
@@ -2957,7 +2931,52 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
              dvpi_document: the already rendered dvpi document
 
      """
+    postfix_keys = set()
+    # --------------------  Extention key word transfer ------------------
+    def parse_ext_destinations(key: str):
+        """
+        Returns a set containing any of {'c','h','l'} if key has a postfix token.
+        """
 
+        if not isinstance(key, str) or "_" not in key:
+            return None
+
+        last_token = key.rsplit("_", 1)[-1]
+
+        # No postfix routing -> treat as all (no message)
+        if not last_token.startswith("x"):
+            return {"c", "h", "l"}
+
+        flags = last_token[1:]
+        allowed = {"c", "h", "l"}
+
+        if flags == "":
+            return {"c", "h", "l"}
+
+        if any(ch not in allowed for ch in flags):
+            return {"c", "h", "l"}
+
+        destination = set(flags)
+
+        # Only log when routing is restricted (not all)
+        if destination != {"c", "h", "l"} and key not in postfix_keys:
+            postfix_keys.add(key)
+
+            def describe(d):
+                parts = []
+                if "c" in d:
+                    parts.append("columns")
+                if "h" in d:
+                    parts.append("hashes")
+                if "l" in d:
+                    parts.append("load_operations")
+                return ", ".join(parts)
+
+            log_progress(
+                f"Syntax extension '{key}' is routed to: {describe(destination)}"
+            )
+
+        return destination
 
     def is_ext_key(key):
         return re.match(r"xtkwx.+_.+", key)

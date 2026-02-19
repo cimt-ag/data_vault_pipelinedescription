@@ -318,7 +318,8 @@ regardless of the exclude_from_change_detection setting.
 (optional)
 <br>Extension keyword: The keyword and its value will be copied to the corresponding DVPI element.
 Routing of an extension is controlled by a postfix token in the last underscore-separated part of the key.
-The postfix must start with "x" and may optionally be followed by the letters "c", "h", and/or "l".
+If this token starts with "x", it is interpreted as a routing declaration. 
+The letters following "x" define the DVPI elements the property will be applied to.
 
 Postfix Routing Rules
 
@@ -330,12 +331,10 @@ In case of conflicting values from different fields for the same column, the com
 - "_x" added to columns, hashes and load operations and "_x" followed by multiple letters (e.g. _xhl, _xhc, _xchl)
 added to all corresponding DVPI elements based on the letters used.
 
-Non-standard postfix
 
-If the last token does not start with x, a compiler warning is issued and the extension
-is not routed via postfix logic.
-If the last token starts with x but contains characters other than c, h, or l, 
-a compiler warning is issued and the extension is treated like _x (applied to all DVPI elements).
+If the last token does not start with "x", it is not interpreted as a routing declaration.
+If the last token starts with "x" but contains characters other than "c", "h", or "l", 
+ the extension is treated like _x (applied to all DVPI elements).
 
 ## data_vault_model[]
 

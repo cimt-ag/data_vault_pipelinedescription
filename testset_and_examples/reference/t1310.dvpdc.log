@@ -1,0 +1,8 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2026-02-19 11:37:53
+Compiling t1310.dvpd.json
+
+Syntax extension 'xtkwx_test_load_flag_xhl' is routed to: hashes, load_operations
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t1310.dvpi.json
+--- Compile successfull ---

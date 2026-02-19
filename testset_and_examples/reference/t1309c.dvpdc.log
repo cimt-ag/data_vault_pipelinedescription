@@ -1,0 +1,8 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2026-02-19 11:37:53
+Compiling t1309c.dvpd.json
+
+Syntax extension 'xtkwx_test_load_flag_xc' is routed to: columns
+ASE-2: More than one extension value 'xtkwx_test_load_flag_xc' for column 'F1F2F3_AAA_BK1F' of table 'rtjj_1309_aaa_hub': 'IDX_A', 'IDX_B'
+*** Compilation ended with errors ***

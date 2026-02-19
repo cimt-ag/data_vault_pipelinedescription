@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2026-02-19 11:37:53
+Compiling t1300c_kwx_simple_hub_sat.dvpd.json
+
+ASE-1: 'rtjj_1300_aaa_p1_sat' has more than one syntax extension keyword: xtkwx_table_kw1, xtkwx_table_kw2f
+*** Compilation ended with errors ***

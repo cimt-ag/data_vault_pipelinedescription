@@ -1,0 +1,167 @@
+{
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
+  "dvpi_version": "0.6.2",
+  "compile_timestamp": "2026-02-19 11:37:53",
+  "dvpd_version": "0.6.3",
+  "pipeline_name": "t1312",
+  "pipeline_revision_tag": "--none--",
+  "dvpd_filename": "t1312.dvpd.json",
+  "tables": [
+    {
+      "table_name": "rtjj_1312_aaa_hub",
+      "table_stereotype": "hub",
+      "schema_name": "rvlt_test_jj",
+      "storage_component": "",
+      "columns": [
+        {
+          "column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "column_name": "HK_RTJJ_1312_AAA",
+          "is_nullable": false,
+          "column_class": "key",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "column_name": "F1F2F3_AAA_BK1F",
+          "is_nullable": true,
+          "column_class": "business_key",
+          "column_type": "VARCHAR(20)",
+          "prio_for_column_position": 50000,
+          "xtkwx_test_load_flag_abcd": "ALL"
+        }
+      ]
+    }
+  ],
+  "data_extraction": {
+    "fetch_module_name": "none - this is a pure generator test case"
+  },
+  "parse_sets": [
+    {
+      "stage_properties": [
+        {
+          "stage_schema": "stage_rvlt",
+          "stage_table_name": "t1312_stage",
+          "storage_component": ""
+        }
+      ],
+      "record_source_name_expression": "test_xtra",
+      "fields": [
+        {
+          "field_type": "Varchar(20)",
+          "field_position": 1,
+          "needs_encryption": false,
+          "field_name": "F1XX_AAA_BK1F_TTT"
+        }
+      ],
+      "hashes": [
+        {
+          "stage_column_name": "HK_RTJJ_1312_AAA",
+          "hash_origin_table": "rtjj_1312_aaa_hub",
+          "column_class": "key",
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "F1XX_AAA_BK1F_TTT",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rtjj_1312_aaa_hub",
+              "field_target_column": "F1F2F3_AAA_BK1F",
+              "xtkwx_test_load_flag_abcd": "ALL"
+            }
+          ],
+          "hash_name": "KEY_OF_RTJJ_1312_AAA_HUB"
+        }
+      ],
+      "load_operations": [
+        {
+          "table_name": "rtjj_1312_aaa_hub",
+          "relation_name": "TTT",
+          "operation_origin": "field mapping relation",
+          "hash_mappings": [
+            {
+              "hash_class": "key",
+              "column_name": "HK_RTJJ_1312_AAA",
+              "hash_name": "KEY_OF_RTJJ_1312_AAA_HUB",
+              "stage_column_name": "HK_RTJJ_1312_AAA"
+            }
+          ],
+          "data_mapping": [
+            {
+              "column_name": "F1F2F3_AAA_BK1F",
+              "field_name": "F1XX_AAA_BK1F_TTT",
+              "column_class": "business_key",
+              "stage_column_name": "F1XX_AAA_BK1F_TTT",
+              "xtkwx_test_load_flag_abcd": "ALL"
+            }
+          ]
+        }
+      ],
+      "stage_columns": [
+        {
+          "stage_column_name": "MD_INSERTED_AT",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_date",
+          "column_type": "TIMESTAMP"
+        },
+        {
+          "stage_column_name": "MD_RUN_ID",
+          "is_nullable": false,
+          "stage_column_class": "meta_load_process_id",
+          "column_type": "INT"
+        },
+        {
+          "stage_column_name": "MD_RECORD_SOURCE",
+          "is_nullable": false,
+          "stage_column_class": "meta_record_source",
+          "column_type": "VARCHAR(255)"
+        },
+        {
+          "stage_column_name": "HK_RTJJ_1312_AAA",
+          "stage_column_class": "hash",
+          "is_nullable": false,
+          "hash_name": "KEY_OF_RTJJ_1312_AAA_HUB",
+          "column_type": "CHAR(28)"
+        },
+        {
+          "stage_column_name": "F1XX_AAA_BK1F_TTT",
+          "stage_column_class": "data",
+          "field_name": "F1XX_AAA_BK1F_TTT",
+          "is_nullable": true,
+          "column_type": "Varchar(20)",
+          "column_classes": [
+            "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1312_aaa_hub",
+              "column_name": "F1F2F3_AAA_BK1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
