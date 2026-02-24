@@ -590,17 +590,24 @@ The number of elements define the number of loading operations.
 
 **x???_????.. = extention key word **
 (optional)
-<br>Extention keyword: Keyword and value will be copied, depending on the optional # postfix:
-- postfix contains "c" (e.g. `xxmpl_index_group#c`) will only be added to the corresponding parent key column definition 
-in the link table (tables[].columns[]). In case of conflicting values from different fields for the same column,
-there will be an compiler error.
-- postfix contains "h" (e.g. `xxmpl_demo#h` ) will only be added to all business keys fields of the parent 
-in the field list of the *link key declaration* (parse_sets.hashes[].hash_fields[])
+<br>The keyword and its value will be copied to the followong corresponding DVPI elements
+- column definition in the target table  (tables[].columns[])
+- hash field definition (parse_sets.hashes[].hash_fields[]).
 
-Extention keywords without a # postfix will be placed in both dvpi elements. It is recommended to 
-focus keywords to the dvpi parts, they are designed for. ("c"= Column definition of the table
-, "h" = Hash compostion and calculation)
+Keywords and values will be copied according to the declared relation_names, so different values can be 
+set for different relations. This could lead to a value conflict for the table definition  will raise an error, 
+since it independent of the relation and.
 
+Routing of the key word can be restricted by using a specific postfix as follows:
+The postfix will be the last token in an underscore separated keyword.
+It must start with "x" and must only contain at least one of the letters "c","h"
+
+Depending on the declared letters, the keyword is routed only to the coresponding DVPI emelents
+
+- "c" added to the column definition of the target table.
+- "h" added to the hash field definition
+
+Example: "xcenc_encoding_xc" - would only be placed in the columns section of the table
 
 ### "sat" specific properties
 
