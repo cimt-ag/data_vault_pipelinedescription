@@ -1,11 +1,25 @@
 # DVPD Core Element Syntax Reference
-DVPD core elements described here must be supported by any implementation in the same way. If an implementation leaves out elements for simplicity, it should implement a check and warning message, to prevent false assumptions.
+DVPD core elements described here must be supported by any implementation in the same way. 
+If an implementation leaves out elements for simplicity, it should implement a 
+check and warning message, to prevent false assumptions.
 
-The syntax must and can be extended by properties, needed for project specific solutions (e.g. data_extraction modules, data encryption frameworks). Documentation for these properties must be provided for every module in a separate document. Properties and value, not defined in the core, must be prefixed with a "x", followed by an abbreviation of the using module. (e.g. "xenc" for encryption module of cimt)
 
 For examples please look in : [Data Vault method coverage and syntax examples](./Data_Vault_method_coverage_and_syntax_examples.md)
 
 A DVPD is expressed with JSON syntax and contains the following attributes (Keys):
+
+## Extending the syntax
+The syntax can  and should be extended by properties of project specific implementations 
+(e.g. parsing logic, data encryption frameworks, dbt rendering and more).
+
+The core syntax only defines, how the extention keywords are routed from the dvpd to the dvpi elements.
+
+Extention property names, must be prefixed with a "x". It is best practice to give all keywords of the 
+same extention module the same prefix.(e.g. "xenc" for encryption module of cimt)
+
+Documentation for these properties must be provided for every module in a separate document.
+
+
 
 # Root 
 
@@ -70,9 +84,9 @@ Name of the model profile to be used. The model profile defines the names and ty
 <br>Object with stage table declarations. (one for every storage component)
 <br>→ see "stage_properties”
 
-**x???_????..**
+**x???_????.. = extention key word**
 (optional)
-<br>Extention keyword. Keyword and valoue will be copied to the dvpi root element.
+<br>Extention keyword. Keyword and value will be copied to the dvpi root element.
 
 
 ## data_extraction 
@@ -90,7 +104,7 @@ Depending on the used fetch module, there will be additional keys necessary to c
 genereal fetching process. Valid keys must be documented in the module documentation. Please note, that field specific paramterers for fetching and parsing have to be placed
 as keys in the ***fields*** array
 
-**x???_????..**
+**x???_????.. = extention key word**
 (optional)
 <br>Extention keyword. Keyword and value will be copied to the dvpi data_extraction element.
 
@@ -98,26 +112,31 @@ as keys in the ***fields*** array
 ## fields[]
 json path: /
 
+All declarations about the field structure of the source an the mapping. 
+The order of elements in the array should be used for parsing data, where the column position defines the content
+(csv, excel etc  without headline interpretation).
+
 **field_name**
 (mandatory)
-*defines: source parsing, model structure*
+<br>*controls: source parsing, model structure*
 <br>Name of the field. It is case-sensitive and must be unique in the DVPD. The upper-cased field name is used as default column name in the target table.
 <br>*"customer_id" | "article _name"*
-<br> For internal processing and stage table generation, the compiler applies:
-<br>→ Automatic uppercasing of field names when used as technical identifiers
-<br>→ Case-insensitive conflict detection
-<br>→ If two field names differ only by case, the compiler assigns them unique stage column names by adding a hash postfix:
+<br> For internal processing and stage table generation, the compiler applies a
+ Case-insensitive conflict detection as follows:
+If two field names differ only by case, causing a conflict in the stage table the compiler assigns them 
+unique stage column names by adding a hash postfix:
 <br>* (e.g. "F3AAA_P1_C1_ABCD1")
-<br> This affects only stage tables and DVPI output, not the DVPD input.
+<br>If the upper case version of a field name leads to column names comflict in the target table, the compiler
+will raise error.
 
 
 **field_type** (mandatory)
-*puprpose: source parsing, model structure*
+<br>*controls: source parsing, model structure*
 <br>Expected type of the field. Delivered data must be compliant to this type, or will be rejected by the loading process. (Rejection method depends on the fetch module). Valid types depend on the fetch module, but should be chosen from SQL Syntax, so this technical type can be directly used in the definition of the data model.
 <br>*"VARCHAR(200)" | "INT8" | "TIMESTAMP"*
 
 **field_value** (optional)
-*defines: data generation*
+<br>*controls: data generation*
 <br>>will be implemented in later version<
 <br>Sets a value for the field, that is constant over the whole processing. 
 This field will not be parsed from the source. Depending on the consuming code generator,
@@ -141,7 +160,7 @@ The following constants are defined by the core syntax
 
 **needs_encryption**
 (optional boolean with default false)
-*defines: encryption processing*
+<br>*controls:encryption processing*
 <br>When set to true, the data will be encrypted, according to the underlying concept for data protection
 (This is the only standardized core element regarding encryption. All other properties are defined by the specific method of encryption)
 
@@ -152,16 +171,14 @@ The following constants are defined by the core syntax
 
 **field_comment**
 (optional)
-*defines: documentation, table DDL*
+<br>*controls: documentation, table DDL*
 <br>Text that will be added as comment of the column and probably in generated documentation
 
 **> fetch module specific keys <**
-*defines: parsing*
+<br>*controls: parsing*
 <br> Depending of the data format and transport, there will be some more declarations necessary to identify the field in the source data. These properties can be added here. They must be documented in the fetch module documentation.
 
-The order of elements in the array should be used for parsing positional data (csv, excel etc)..
-
-**x???_????..**
+**x???_????..= extention key word**
 (optional)
 <br>Extention keyword. Keyword and value will be copied to the corresponding dvpi parse_set[].fields[] element.
 
@@ -171,12 +188,14 @@ json path: /fields[]/
 This array must contain at least one target mapping. Fields, that are mapped to multiple tables, must have one entry for each target table
 
 **table_name**
-(mandatory)*defines: mapping*
+(mandatory)
+<br>*controls: field to table mapping, table structure*
 <br>Name of the data vault table. (Must be defined in the data_vault_model section)
 <br>*"rexmp_customer_hub" | "rgopd_ad_click_sat"*
 
 **column_name**
-(optional)*defines: model structure*
+(optional)
+<br>*controls:  model structure*
 <br>Name of the column in the data vault table. If not defined, the field_name will be used.
 <br>*"customer_number"*
 <br>*Additional behavior:*
@@ -185,24 +204,28 @@ This array must contain at least one target mapping. Fields, that are mapped to 
 <br>→ If multiple fields map to the same column_name (case-insensitive), an error is raised unless this is controlled through relation_names.
 
 **column_type**
-(optional)*defines: model structure*
+(optional)
+<br>*controls: model structure*
 <br>Datatype of the column in the data vault table. Must be a valid type of the platform database. If not defined, the technical_type of the field will be used
 <br>*"VARCHAR(200)"*
 
 **prio_for_column_position**
-(optional, default is 50000)*defines: table DDL*
+(optional, default is 50000)
+<br>*controls: table DDL*
 <br>>will be implemented later<
 <br>Defines the position of the column in the table declaration. Columns of the same prio will be ordered alphabetically by the column name.
 
 **prio_for_row_order**
-(optional, default is 50000) *defines: diff hash input assembly*
+(optional, default is 50000) 
+<br>*controls:  diff hash input assembly*
 <br>>will be implemented later<
 <br>Defines the position of the column, when ordering rows for calculation of the group hash for multiactive satellite loading. Columns of the same prio will be ordered alphabetically by the column name. 
 The high default value sets all columns without any declaration at the end of the list. Usage of the setting depends on the
 module, responsible for calculating the group hash.
 
 **row_order_direction**
-(optional, default=ASC) *defines: diff hash input assembly*
+(optional, default=ASC) 
+<br>*controls:  diff hash input assembly*
 <br>*will be implemented in 6.2.0 *
 <br>Defines the direction of the order of content of this column, for calculation of the group hash for multiactive satellite loading. Possible values are "ASC" and "DESC".
 
@@ -213,7 +236,8 @@ module, responsible for calculating the group hash.
 on it. 
 
 **relation_names[]**
-(optional) *defines: mapping, data model, load operations*
+(optional) 
+<br>*controls:  mapping, data model, load operations*
 <br>*will be replaced by "key_sets[]" in release 0.7.0*
 <br>Declares this mapping to be used only in specific relations. It should be valid as a SQL name, since it 
 will be used as name extension for staging columns.
@@ -236,7 +260,7 @@ This can not be applied to hubs, since they don't have a parent.
 <br>*["parent"] , ["child1","child2"], ["/","Sibling"]*
 
 **key_sets[]**
-(optional) *defines: mapping, data model, load operations, hash key composition*
+(optional) <br>*controls: mapping, data model, load operations, hash key composition*
 <br>***announced for release 0.7.0** as part of the keyset syntax refactoring*
 <br>Declares this mapping to be used only for a specific key set. It should be valid as a SQL name, since it 
 will be used as name extension for staging columns.
@@ -258,18 +282,18 @@ applied to hubs, since they don't have a parent.
 
 **exclude_from_key_hash**
 <br>(optional, default=false, only useful for hub and link table mappings)
-<br>*defines: key hash assembly, business key identification*
+<br><br>*controls: key hash assembly, business key identification*
 <br>true = exclude the field from the calculation of the hub/link key. Used to define pure content column in the hub / link (this 
 is rare but possible).
 
 **prio_in_key_hash**
 (optional, default=0) 
-*defines: key hash assembly*
+<br>*controls: key hash assembly*
 <br>This property provides explicit control over the order of concatination of fields for the key hash calculation. It will overrule the implicit ordering, that is defined by the implementation. Implicit ordering will still be applied to columns of the same prio. 
 
 **use_as_key_hash**
 (optional, default=false)
-*defines: key hash assembly, load process validation*
+<br>*controls: key hash assembly, load process validation*
 <br>Setting this to true, defines the field to contain a valid key_hash for the table and omit the key hash calculation.
 It can only be applied to links and hubs. It is usefule when the table itself will not be changed but child tables store
 new information (e.g. business vault satellites of a raw vault hub). When use_as_key_hash is used, the table
@@ -281,25 +305,25 @@ the field_name to use (Check out dvpi syntax for details).
 
 **exclude_from_change_detection**
 (optional, default=false, only useful on mappings to historized satellites)
-*defines: satellite load, diff hash assembly*
+<br>*controls: satellite load, diff hash assembly*
 <br>true = exclude the field from the change detection. Depending on the method of the target,
 this will modify the comparison SQL or the calculation of the diff hash.
 This property will be overruled by the setting of "update_on_every_load"
 
 **prio_in_diff_hash**
 (optional, default=0)
-*defines: diff hash assembly*
+<br>*controls: diff hash assembly*
 <br>depending on the implementation, the order of concatination of fields for the diff hash calculation is determined by the target_column name. This property provides more explicit control. Implicit ordering will still be applied to columns of the same prio. When columns are added to productive satellites this will allow placing new columns behind already existing ones during concatination.
 
 **hash_cleansing_rules**
 (optional)
-*defines: hash assembly*
+<br>*controls: hash assembly*
 <br>object containing properties to describe a cleansing of the data before it is used in the hash. 
 <br>→ see "hash_cleansing_rules"
 
 **update_on_every_load**
 (optional, default=false, can't be set for business keys)
-*defines: load steps*
+<br>*controls: load steps*
 <br>*announced for upcoming version*
 <br>*if not supported on specific stereotypes, this must throw a warning*
 <br>Forces the load process to update the column with the staged value every time (e.g. for a last
@@ -311,30 +335,33 @@ regardless of the exclude_from_change_detection setting.
 
 **column_comment**
 (optional, default=comment of the field)
-*defines: documentation, table DDL*
+<br>*controls: documentation, table DDL*
 <br>comment that will be added to the column in the data vault model. Default is the comment of the field
 
-**apply_syntax_extensions**
+**x???_????.. = extention key word**
 (optional)
-<br>Extension keyword: The keyword and its value will be copied to the corresponding DVPI element.
-Routing of an extension is controlled by a postfix token in the last underscore-separated part of the key.
-If this token starts with "x", it is interpreted as a routing declaration. 
-The letters following "x" define the DVPI elements the property will be applied to.
+<br>The keyword and its value will be copied to the followong corresponding DVPI elements
+- column definition in the target table  (tables[].columns[])
+- hash field definition (parse_sets.hashes[].hash_fields[]).
+- data mapping of the field in a load operation (parse_sets.load_operations[].data_mapping[]).
 
-Postfix Routing Rules
+Keywords and values will be copied according to the declared relation_names, so different values can be 
+set for different relations. This could lead to a value conflict for the table definition  will raise an error, 
+since it independent of the relation and.
 
-- "_xc" added to the column definition of the target table (tables[].columns[])
-In case of conflicting values from different fields for the same column, the compiler raises an error.
-- "_xh" added to the hash field definition (parse_sets.hashes[].hash_fields[]).
-- "_xl" added to the data mapping of the corresponding load operation
-(parse_sets.load_operations[].data_mapping[]).
-- "_x" added to columns, hashes and load operations and "_x" followed by multiple letters (e.g. _xhl, _xhc, _xchl)
-added to all corresponding DVPI elements based on the letters used.
+Routing of the key word can be restricted by using a specific postfix as follows:
+The postfix will be the last token in an underscore separated keyword.
+It must start with "x" and must only contain at least one of the letters "c","h","l"
 
+Depending on the declared letters, the keyword is routed only to the coresponding DVPI emelents
 
-If the last token does not start with "x", it is not interpreted as a routing declaration.
-If the last token starts with "x" but contains characters other than "c", "h", or "l", 
- the extension is treated like _x (applied to all DVPI elements).
+- "c" added to the column definition of the target table.
+- "h" added to the hash field definition
+- "l" added to the data mapping of the corresponding load operation
+
+Example: "xcenc_encoding_xc" - would only be placed in the columns section of the table
+<br> "xctln_addon_xhl" - would only be placed in the hash field and the load operation sections
+
 
 ## data_vault_model[]
 
@@ -342,19 +369,19 @@ Json Path: /
 
 **storage_component**
 (optional)
-*defines: load procedure, SQL dialect*
+<br>*controls: load procedure, SQL dialect*
 <br>Identification of the storage, this part of the model resides. If not defined, there is only one storage component. Valid values depend on the processing modules and the overall architecture.
 <br>*"main_dwh_db" | "big_data_storage"*
 
 **schema_name**
 (mandatory)
-*defines: database structure*
+<br>*controls: database structure*
 <br>Name of the database schema, the tables are located. (this may also be the “database name”, since different database engines adress this differently)
 
 Especially for situations where the schema name must also be used to provide dev/test/prod stages, it is recommended to declare parsable placeholders in the schema name. It is recommended to use the "\${value name}" syntax for this purpose (e.g. "\${STAGE_TAG}"). Those will be filled at runtime by the process, depending on the stage it runs in.
 <br>*"rvlt_accounting"*
 
-**x???_????..**
+**x???_????.. = extention key word**
 (optional)
 <br>Extention keyword: Keyword and value will be copied to all dvpi tables[] elements of the same schema.
 
@@ -370,13 +397,13 @@ Json Path : /data_vault_mode[]/
 
 **table_name**
 (mandatory)
-*defines: model structure*
+<br>*controls: model structure*
 <br>Name of the database table. 
 <br>*"raccn_account_hub"*
 
 **table_stereotype**
 (mandatory)
-*defines: model structure, loading procedure*
+<br>*controls: model structure, loading procedure*
 <br>Data Vault Stereotype of the table. Valid values are: hub, lnk, sat, ref
 <br>Depending on the stereotype, different properties have to be provided. The stereotype controls the processing for the load. The class of a column, generated for a mapped field, is derived from the stereotype of the table as follows:
 
@@ -392,22 +419,22 @@ Satellites without any mapped content column are allowed (effectivity satellites
 
 **table_comment**
 (optional)
-*defines: documentation, table ddl*
+<br>*controls: documentation, table ddl*
 <br>Comment to add to the table in the database
 
 **storage_component**
 (optional, default=storage_component on schema level)
-*defines: load procedure, SQL dialect*
+<br>*controls: load procedure, SQL dialect*
 <br>If the data vault tables are distributed over different storage engines (e.g. for keeping big data out of expensive database storage), this property can be used to identify the location. Valid values depend on the implementation.
 <br>*"fast_bi_db" |"big_data_storage_gcp" |"big_data_storage_hadoop"*
 
 **model_profile_name**
 (optional, default is model_profile_name declared on pipeline level)
-*defines: general declarations*
+<br>*controls: general declarations*
 <br> Name of the model profile to be used. The model profile defines the names and types of data vault specific columns, declares the ruleset for hashing and more. Declartion on table level allows interconnection between different profiles in the same model
 <br> *"postgres_main"*
 
-**x???_????..**
+**x???_????.. = extention key word**
 (optional)
 <br>Extention keyword: Keyword and value will be copied to 
 - the corresponding dvpi tables[] element
@@ -417,13 +444,13 @@ Satellites without any mapped content column are allowed (effectivity satellites
 Json Path : /data_vault_mode[]/tables[]
  
 **hub_key_column_name**
-(mandatory)*defines: model structure*
+(mandatory)<br>*controls: model structure*
 <br>Name of the hub key in the table. (Currently this name must be unique over all tables in the declared model. Future versions will extend the syntax to allow the same name in different tables, even though it is highly recommended to have unique hub key names)
 <br>*"hk_raccn_account"*
 
 **is_only_structural_element**
 (optional, default=false)
-*defines: hash calculation, loading procedure*
+<br>*controls: hash calculation, loading procedure*
 Defines the hub to be only declared for structural completeness when child tables of the hub are loaded. 
 This is especially helpful to add business vault child tables to hubs, when the hub data is the base of the incoming data,
 and therefore will not change. In that case the hub key can be provided in the input data and needs not to be calculated again. 
@@ -444,13 +471,13 @@ Depending on mapped fields and the properties, this can be a
 * **Link with dependend child keys**: Defined by mapping a field to the link table (without excluding it from the key)
 
 **link_key_column_name**
-(mandatory)*defines: model structure*
+(mandatory)<br>*controls: model structure*
 <br>Name of the link key in the table
 <br>*"lk_raccn_account_department"*
 
 **is_only_structural_element**
 (optional, default=false)
-*defines: hash calculation, loading procedure*
+<br>*controls: hash calculation, loading procedure*
 Defines the link to be only declared for structural completeness when child tables of the link are loaded. 
 This is especially helpful to add business vault child tables to links, when the link data is the base of the incoming data,
 and therefore will not change. In that case the link key can be provided in the input data and needs not to be calculated again. 
@@ -462,7 +489,7 @@ Links, with this setting will not be part in the final dvpi and will have no loa
 to provide different key combinations for different relations are still applied. 
 
 **link_parent_tables[]**
-(mandatory)*defines: model structure*
+(mandatory)<br>*controls: model structure*
 <br>The following two options are possible contents
 1. Just a list of the table_names of all hubs, this link is connecting.
 2. A list of json objects with full link parent property declarations 
@@ -474,11 +501,11 @@ The order of the tables in the list can be relevant to the hashing order of the 
 <br>*Example for 2: "[{"table_name":“raccn_account_hub”, "relation_name":"PARTNER"},{"table_name":“raccn_account_hub”}]"*
 
 **is_link_without_sat**
-(optional)*defines: compiler behaviour*
+(optional)<br>*controls: compiler behaviour*
 <br>must be set to true, to avoid warnings for links without an esat or sat.
 
 **link_key_sets[]**
-(situational)*defines: hash key content, load operations, field mapping*
+(situational)<br>*controls: hash key content, load operations, field mapping*
 <br>*announced for release 0.7.0 as part of the keyset syntax refactoring*
 
 Defines the number of load operations and  key sets of the link. The number of elements must be equal to the number of 
@@ -528,13 +555,13 @@ Json Path : /data_vault_mode[]/tables[]
 By using the full property declaration syntax for parent tables, multiple relations to the same hub can be expressed properly
 
 **table_name**
-(mandatory)*defines: model structure*
+(mandatory)<br>*controls: model structure*
 <br>name of the link_parent_table <br>
 *"raccn_department_hub"*
 
 **relation_name**
 (mandatory for every table, declared more then once in the list)
-<br>*defines: model structure, loading operations*
+<br><br>*controls: model structure, loading operations*
 <br>Name of the relation. The name should be usable to extend the hub key column names.
 <br>*will be replaced by "parent_relation_name" in release 0.7.0*
 The name is referenced by the "relation_name" property of a field, 
@@ -543,17 +570,17 @@ to declare the field to be used for this relation.
 
 **parent_relation_name**
 (mandatory for 2 and more relations to the same hub)
-<br>*defines: model structure*
+<br><br>*controls: model structure*
 <br>*announced for release 0.7.0 as part of the key_set syntax refactoring*
 It is used to generate different hub key and stage column names. Is source for the default content of "key_sets[]" It defaults to "/".
 
 **hub_key_column_name_in_link**
-(optional)*defines: db element naming*
+(optional)<br>*controls: db element naming*
 <br>Name of the hub key columns, to be used for the mapping of this relation. If ommitted the hub key column name will be generated by adding the relation name to the original hub key column name
 
 **key_sets[]**
 (optional, defaults to 1 element using the parent_relation_name)
-<br>*defines: loading operations, hash keys*
+<br><br>*controls: loading operations, hash keys*
 <br>*announced for release 0.7.0 as part of the key_set syntax refactoring*
 
 Defines the key set to be used from the parent hub, for a specific load operation. With only one element,it will be applied
@@ -561,7 +588,7 @@ to every load operation. When having multiple elements, it must have the same nu
 key_sets[] from the other link_parent_table declaraions, that have more then one element.
 The number of elements define the number of loading operations.
 
-**x???_????..#..**
+**x???_????.. = extention key word **
 (optional)
 <br>Extention keyword: Keyword and value will be copied, depending on the optional # postfix:
 - postfix contains "c" (e.g. `xxmpl_index_group#c`) will only be added to the corresponding parent key column definition 
@@ -580,16 +607,16 @@ focus keywords to the dvpi parts, they are designed for. ("c"= Column definition
 Json Path : /data_vault_mode[]/tables[]
 
 **satellite_parent_table**
-(mandatory) *defines: model structure*
+(mandatory) <br>*controls: model structure*
 <br>Name of the hub/link table, this satellite is connected to
 *"raccn_account_hub"*
 
 **is_multiactive**
-(optional, default=false) *defines: loading procedure, diff hash assembly*
+(optional, default=false) <br>*controls: loading procedure, diff hash assembly*
 <br>when set to true, the declaration and processing for multiactive satellites will be applied (no primary key, awarenes of multiple active rows for change detection)
 
 **compare_criteria**
-(optional, default depends on model profile)*defines: loading procedure*
+(optional, default depends on model profile)<br>*controls: loading procedure*
 <br>defines the criteria that have to be met, for inserting from stage into the satellite. Valid settings are:
 - key = the key (hub key, link key) is not already in the satellite
 - data = the value combination of the relevant compare columns or the diff hash are not already in the satellite
@@ -603,28 +630,28 @@ The settings "key", "current" and "key+current" should be supported by every imp
 The settings "key" and "none" make the setting of diff_hash_column_name optional 
 
 **is_enddated**
-(optional, default depends on model profile)*defines: loading procedure, table structure*
+(optional, default depends on model profile)<br>*controls: loading procedure, table structure*
 <br>when set to true (default), metadata columns for historization enddating will be added to the table and the loading process will execute enddating functions
 
 **uses_diff_hash**
-(optional, default depends on model profile)*defines: loading procedure, table structure*<br>
+(optional, default depends on model profile)<br>*controls: loading procedure, table structure*<br>
 When set to true, data change is detected by calculation of a hash value over all relevant columns and comparison of the hash value.
 
 **diff_hash_column_name**
-(depending on uses_diff_hash setting and compare_criteria) *defines: db element naming*
+(depending on uses_diff_hash setting and compare_criteria) <br>*controls: db element naming*
 <br> Name of the column that will contain the diff_hash. (Currently, this name must be unique in the declared model, since all diff hash columns will be part of the stage table. Future versions will extend the syntax to allow the same physical name in different tables of pipeline model)
 
 This must be set, when uses_diff_hash is true and compare_criteria is not "key" or "none". The diff hash will be put in the table for any compare_criteria setting, when declared.
 <br>*"rh_account_p1_sat"*
 
 **has_deletion_flag**
-(optional, default set by data model profile)*defines: loading procedure, table structure*<br>
+(optional, default set by data model profile)<br>*controls: loading procedure, table structure*<br>
 Determines if a deletion flag column will be added to the satellite.
 <br>*Example:true*
 
 **driving_keys[]**
 (optional, must refer to a parent_key or dependent_child_key in the parent link table of the satellite)
-*defines: loading procedure*
+<br>*controls: loading procedure*
 <br>List of column names of the parent link, that are used as driving keys, to end former relations. 
 
 In general, the name must match the final name of a hub key column in the link. Especially in case of multiple relations to the same table, the method of creating the key column name must be taken into account.
@@ -632,7 +659,7 @@ In general, the name must match the final name of a hub key column in the link. 
 
 **tracked_relation_name**
 (optional, only valid on effectivity satellites)
-*defines: loading operations*
+<br>*controls: loading operations*
 <br>Name of the relation this satellite will track the validity for.  
 This property can only be used for satellites without any field mapping. The relation name must be valid for the satellites parent.
 
@@ -644,7 +671,7 @@ will be changed to "tracked_key_set".
 
 **history_depth_criteria**
 (mandatory when history_depth_limit is set)
-*defines: loading procedure*
+<br>*controls: loading procedure*
 <br>>announced for upcoming version<
 <br> Defines the criteria to determine the history depth
 - versions : the number of versions for every key is limited to the given threshold (i.e. only store the last x entries for a given key).
@@ -653,7 +680,7 @@ will be changed to "tracked_key_set".
 
 **history_depth_limit**
 (optional)
-*defines: loading procedure*
+<br>*controls: loading procedure*
 <br>>announced for upcoming version<
 <br> defines a maximum depth of history in the satellite. No declaration or nagative values are treated as "no limit". When the satellite is loaded, all "not current" rows, that are beyond the given threshhold, are deleted. 
 
@@ -665,23 +692,23 @@ Json Path : /data_vault_mode[]/tables[]
 
 **is_enddated**
 (optional, default depends on model profile)
-*defines: loading procedure, table structure*
+<br>*controls: loading procedure, table structure*
 <br>Defines, if the reference table will be historized by providing an enddate
 
 **uses_diff_hash**
 (optional, default depends on model profile)
-*defines: loading procedure, table structure*<br>
+<br>*controls: loading procedure, table structure*<br>
 When set to true, existence of a specific value combination  in the source is detected by calculation of a hash value over all relevant columns and comparison of the hash value against the actual valid rows in the reference table.
 
 **diff_hash_column_name**
 (mandatory)
-*defines: db element naming*
+<br>*controls: db element naming*
 <br>Colum that contains the diff_hash to determine the existence of the data constellation
 <br>*"rh_country_iso_ref"*
 
 **history_depth_limit**
 (optional)
-*defines: loading procedure*
+<br>*controls: loading procedure*
 <br>>announced for upcoming version<
 <br> defines a maximum depth of history in the reference table in days . No declaration or nagative values are treated as "no limit". When the table is loaded, all rows, that are beyond the given threshhold, are deleted. 
 <br>(in reference tables, the row can only age "on their own", they have no "key" to measure a version count)
@@ -694,7 +721,7 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 
 **procedure**
 (mandatory)
-*defines: loading procedure*
+<br>*controls: loading procedure*
 <br>declares deletion detection procedure for this rule. Suggested valid values are:
 - "key_comparison" : Retrieve all (or a partition of) keys from the source, compare vault to the keys and create & stage deletion records for keys, that are not present anymore
 - "deletion_event_transformation" : Convert explicit deletion event messages into a deletion record that is staged
@@ -703,13 +730,13 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 
 **tables_to_cleanup[]**
 (mandatory, only declared table names allowed)
-*defines: loading procedure*
+<br>*controls: loading procedure*
 <br>List of table names, on which to apply the deletion detection rule. Multiple entries are only allowed for satellites of the same parent.
 <br>“rsfdl_customer_p1_sat”,”rsfdl_customer_p2_sat”
 
 **rule_comment**
 (optional)
-*defines: documentation*
+<br>*controls: documentation*
 <br>Name or short description of the rule. Enables more readable logging of exection progress and errors.
 <br>*“All satellites of customer”*
 
@@ -717,24 +744,24 @@ Deletion detection can be implemented in multiple ways. DVPD will support declar
 
 **key_fields[]**
 (mandatory for "key_comparison", valid fields must be declared in fields[]. The fields must be mapped to business keys of a parent of the satellite)
-*defines: loading procedure*
+<br>*controls: loading procedure*
 <br>Names of the fields, used to retrieve the list of still available keys in the source. The model mapping provides the necessary join relation to the satellite tables, for determining the currently valid values in the vault.
 
 **partitioning_fields[]**
 (optional)
-*defines: loading procedure*
+<br>*controls: loading procedure*
 <br>Names of the fields, which identify fully delivered datasets (partitions) in the current load. If set, the deletion detection wil be restricted to these partitions.
 
 ##### deletion_rule properties for procedure "stage_comparison"
 
 **partitioning_fields[]**
 (optional)
-*defines: loading procedure*
+<br>*controls: loading procedure*
 <br>Names of the fields, which identify fully delivered datasets (partitions) in the current load. If set, the deletion detection wil be restricted to these partitions.
 
 **join_path[]**
 (optional, must contain all tables needed to be joined to reach the partitioning columns)
-*defines: loading procedure*
+<br>*controls: loading procedure*
 <br>Describes the join path in the model, to get from the tables to delete, to the tables with partitioning fields. The path begins with the parent table of all listed satellites to delete. The path must not branch except when adding satellites to provide partitioning columns or restrict the validity of links. The path can skip unnecessary tables (e.g. hubs, whose business keys are not a partition criteria).
 
 An empty join path means that the partitioning columns are all in the table to cleanup. It can't be set, when there are no partitioning_fields.
@@ -757,7 +784,7 @@ Example:
 	
 **active_keys_of_partition_sql**
 (optional, used for cases that can't be described by partitioning_fields and joins_path, only applicable for a single satellite to delete)
-*defines: loading procedure*
+<br>*controls: loading procedure*
 <br> To solve more complex scenarios for deletion detection, a select statement can be provided, that determines all active keys of a satellite for a specific partition. The engine will only compare the given set with the staged data and insert deletion records accordingly . (If by ELT or ETL depends on the engine)
 The DVPD properties "join_path" and "partitioning_columns" must be empty.
  	
@@ -772,23 +799,23 @@ Json Path: /
 
 **storage_component**
 (optional)
-*defines: load procedure, SQL dialect*
+<br>*controls: load procedure, SQL dialect*
 <br>Identification of the storage, this staging table is placed. If not defined, there is only one storage component. Valid values depend on the processing modules and the overall architecture.
 <br>*"main_dwh_db" | "big_data_storage"*
 
 **stage_schema** 
 (mandatory)
-*defines: database structure*
+<br>*controls: database structure*
 <br>Name of the schema the stage table is placed in. 
 <br>*"stage_rvlt" 
 
 **stage_table_name** 
 (optional)
-*defines: db element name*
+<br>*controls: db element name*
 <br>Name of the stage table. Default is the name of the pipeline.
 <br>*"srvlt_crm_person_p1"
 
-**x???_????..**
+**x???_????.. = extention key word**
 (optional)
 <br>Extention keyword: Keyword and value will be copied to the stage_properties dvpi element.
 

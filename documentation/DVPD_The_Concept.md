@@ -426,14 +426,20 @@ To many exceptions from the approved syntax had to be invented and blew up the s
 had been created for the "normal" data vault pipeline.
 
 ## Extention key word syntax
+
+The syntax extension mechanism is designed to:
+- Keep DVPD concise and readable.
+- Allow adding new behavior without changing the base structure.
+- Work correctly with complex models and different relations.
+
 Keywords, that are not part of the dvpd core syntax, have to have a prefix, starting with "x" and an extention identifier. (e.g. "xdbt_column_is_multi_active_key" with "xdbt" beeing
 the prefix for the dbt extention
 )
 These keywords will not be evaluated by a dvpd compiler but get copied to corresponding elements in the compiler output (dvpi) depending on
 - the dvpd element, it was set 
-- dedicated name elements in the key word (e.g. "column" in "xdbt_load_is_multi_active_key")
+- an optional routing postfix to restrict it to only necessary dvpi elements (e.g.  "xctln_addon_xhl" - would only be placed in the hash field and the load operation sections of the DVPI)
 
-The core syntax reference and dvpi reference document explain the mapping rules for extention keywords in the **x???_????..**
+The core syntax reference explains the mapping rules for extention keywords in the **x???_????.. = extention key word**
 paragraphs. 
 
 

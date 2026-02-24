@@ -1,13 +1,14 @@
 # release 0.6.3
 
 ### DVPD syntax extentions or changes
-- 'use_as_key_hash' and 'is_only_structural_element' are now available. 
+- 'use_as_key_hash' and 'is_only_structural_element' are now available. They allow the declaration of business
+vault loading, where we can leave out some tables and hash calculation, since they are also the source
 - behavior of 'use_as_key_hash' changed from 0.6.2 to 0.6.3. Now you must map the key field to the table, that is 
-creating the key and not the table that is using the key. This allows the same kind of relation specific behavior and
-prevents mistakes in regarding the column namimg. You migrate existing dpvds by just changing the target table.
-- field names are not normalized to uppercase any more. This allows implicit usage of the field name as json key.
+defining the key and not the table that is using the key. This allows the same kind of relation specific behavior and
+prevents mistakes in regarding the column naming. You migrate existing dpvds by just changing the target table.
+- field names are not normalized to uppercase any more. This allows implicit usage of the field name as json keyword.
 If this creates conflict on stage column level, the stage columns will get a unique postfix.
-- Syntax for extention keyqwords has been added to allow declaration of custom keywords and provide them in the dvpi
+- Syntax for **extention keyqwords** has been added to allow declaration of custom keywords and provide them in the dvpi
   
 ### other features on core system 
 - Autotest: Hardcoded "rebranding" of the crash detection tests, to be successfull when captured in the full test

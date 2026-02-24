@@ -154,6 +154,9 @@ A DVPI is expressed with JSON syntax and contains the following attributes (Keys
 **dvpd_filemame**
 <br>Name of the compiled DVPD file. Just for auditability
 
+**x???_????.. = extention key word**
+<br>Will show up for extention keywords that are declared on root level
+
 **tables[]**
 <br>List of all data vault tables, loaded by this pipeline.
 <br>→ see "tables[]"
@@ -265,6 +268,10 @@ Possible values:
 **exclude_from_change_detection**
 <br>Defines, if the column should be used in the change detection for loading satellites or reference tables. (#the meaning needs more clarification, since column_class and uses_diff_hash also control the elements involved#)
 
+**x???_????.. = extention key word**
+<br>Will show up for field to table mappings, that have the extention keyword as property of the table column 
+
+
 ### data_extraction
 Json path: $
 
@@ -276,6 +283,9 @@ Contains all declarations needed to define the methods, how to retrieve the data
 **parse_module_name**
 <br>(future version)
 <br>The name of the module to be used for parsing
+
+**x???_????.. = extention key word**
+<br>Will show up for data_extractions , that have the extention keyword declared
 
 **...**
 <br>
@@ -356,7 +366,10 @@ Be aware: This property can be missused to provide cleansing and transformation 
 not to do so. It's purpose should be restricted to insert data from the execution environment into the dataset. Every kind of cleansing and 
 transformation of the source data, should be done before the staging.
 
-**\<more properties to come>**
+
+
+**x???_????.. = extention key word**
+<br>Will show up for fields , that have the extention keyword declared
 
 
 ### hashes[]
@@ -455,6 +468,9 @@ This should be used to organize a column name specific order when assembling lin
 **parent_declaration_position** (on link key hashes only)
 <br>Only for link hash keys, this is the position of the parent table in the link_parent_tables[] list in the DVPD. 
 This might be used to organize a link parent  declaration specific order, when assembling link keys.
+
+**x???_????.. = extention key word**
+<br>Will show up for field to table mappings, that have the extention keyword as property of the table column
 
 
 ### load_operations[]
@@ -624,15 +640,11 @@ to a target table.
 **column_class**
 <br>The classification of the column in the target table, defining its role (e.g., business key, dependent child key, content, etc.).
 
-### Syntax Extensions
-All syntax ectensions that are declared in DVPD are materialized into DVPI according to routing rules.
-They are copied only to their defined semantic targets and applied only when table, column and relation match.
+### x???_????.. = extention key word
+All syntax ectension keyword that are declared in DVPD are materialized into DVPI according to routing rules (See DVPD core syntax).
+They are copied only to their defined semantic targets.
 
-**Extension Design**
-*The syntax extension mechanism is designed to:*
-<br> Keep DVPD concise and readable.
-<br> Allow adding new behavior without changing the base structure.
-<br> Work correctly with complex models and different relations.
+
 
 # License and Credits
 
