@@ -257,7 +257,7 @@ def get_hash_collision_statement_method_definition_for_lnk(dvpi_table, dvpi_tabl
     return output
 
 
-def generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, include_stage_content_column_list):
+def generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, include_stage_content_column_list, with_hash_collision_detection=True):
     indent_level_1 = " " * 4 * 1
     indent_level_2 = " " * 4 * 2
 
@@ -265,7 +265,9 @@ def generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, inc
 
     stage_properties = get_stage_properties(dvpi_data)
 
-    output_all = textwrap.indent(f"# general constants\nstage_schema = '{stage_properties['stage_schema']}'\n" f"stage_table = '{stage_properties['stage_table']}'\n\n\ndwh_cursor = dwh_connection.cursor()\n\n\n",indent_level_2)
+    output_all = textwrap.indent(f"# vvvvv BEGIN OF GENERATED LOAD VAULT  CODE vvvvv \n\n",indent_level_2)
+
+    output_all += textwrap.indent(f"# general constants\nstage_schema = '{stage_properties['stage_schema']}'\n" f"stage_table = '{stage_properties['stage_table']}'\n\n\ndwh_cursor = dwh_connection.cursor()\n\n\n",indent_level_2)
 
     print("Generating code for the following tables: load operations")
     # todo: arrange code to load in stereotype specific order: hubs, links, sats, references
@@ -276,7 +278,8 @@ def generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, inc
             for table in dvpi_data['tables']:
                 if table['table_name'] == load_operations_for_table.get('table_name'):
                     output = "# --------"+load_operations_for_table.get('table_name')+"-------\n\n"
-                    output += get_hash_collision_statement_method_definition_for_hub(table, load_operations_for_table)
+                    if with_hash_collision_detection:
+                        output += get_hash_collision_statement_method_definition_for_hub(table, load_operations_for_table)
                     output += get_statement_list_method_definition_for_hub(table, load_operations_for_table)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
@@ -285,7 +288,8 @@ def generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, inc
             for table in dvpi_data['tables']:
                 if table['table_name'] == load_operations_for_table.get('table_name'):
                     output = "# --------" + load_operations_for_table.get('table_name') + "-------\n\n"
-                    output += get_hash_collision_statement_method_definition_for_lnk(table,load_operations_for_table)
+                    if with_hash_collision_detection:
+                        output += get_hash_collision_statement_method_definition_for_lnk(table,load_operations_for_table)
                     output += get_statement_list_method_definition_for_lnk(table,load_operations_for_table)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
@@ -293,7 +297,8 @@ def generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, inc
             for table in dvpi_data['tables']:
                 if table['table_name'] == load_operations_for_table.get('table_name'):
                     output = "# --------" + load_operations_for_table.get('table_name') + "-------\n\n"
-                    output += get_hash_collision_statement_method_definition_for_lnk(table,load_operations_for_table)
+                    if with_hash_collision_detection:
+                        output += get_hash_collision_statement_method_definition_for_lnk(table,load_operations_for_table)
                     output += get_statement_list_method_definition_for_lnk(table,load_operations_for_table)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
 
@@ -321,6 +326,8 @@ def generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, inc
                     output += get_hash_collision_statement_method_definition_for_sat(table,load_operations_for_table)
                     output += get_statement_list_method_definition_for_sat(table, tables_with_deletion_detection, load_operations_for_table, include_stage_content_column_list)
                     output_all += textwrap.indent(output, indent_level_2) + '\n'
+
+    output_all += textwrap.indent(f"\n\n# ^^^^^ END OF GENERATED LOAD VAULT CODE ^^^^^\n",indent_level_2)
 
     return output_all
 
@@ -397,7 +404,7 @@ def search_for_dvpifile_of_test(testnumber):
     return None
 
 
-def render_load_vault_snippet(dvpi_file_name, ini_file, put_snippet_into_load_vault_py, start_marker, end_marker, project_pipeline_name, load_vault_py_filename, include_stage_content_column_list):
+def render_load_vault_snippet(dvpi_file_name, ini_file, put_snippet_into_load_vault_py, start_marker, end_marker, project_pipeline_name, load_vault_py_filename, include_stage_content_column_list,with_hash_collision_detection=True):
     params = configuration_load_ini(ini_file, 'rendering',
                                     ['load_vault_snippet_directory', 'dvpi_default_directory'])
 
@@ -439,7 +446,7 @@ def render_load_vault_snippet(dvpi_file_name, ini_file, put_snippet_into_load_va
         project_pipeline_name = dvpi_pipeline_name
 
     tables_with_deletion_detection = get_tables_with_deletion_detection_from_dvpd(dvpd_file_path)
-    Snippet_code = generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, include_stage_content_column_list)
+    Snippet_code = generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, include_stage_content_column_list,with_hash_collision_detection)
 
     # write load_vault snippet to file
     lvs_render_path.mkdir(parents=True, exist_ok=True)
@@ -473,6 +480,7 @@ def main():
     # input Arguments
     parser.add_argument('dvpi_file_name',  help='Name the file to process. File must be in the configured dvpi_default_directory.Use @youngest to parse the youngest. @t<number> to use a test result file starting')
     parser.add_argument("--put_snippet_into_load_vault_py", help="The code snippet will additionally be inserted/replaced betwenn the start and end marker in the load_vault.py of the process.",  action='store_true')
+    parser.add_argument("--omit_hash_collision_detection", help="Calls to hash collission statemengt generators will be omitted.",  action='store_true')
     parser.add_argument("--start_marker",help="Start marker.",default="# ---- BEGIN LOAD VAULT SNIPPET ----")
     parser.add_argument("--end_marker",help="End marker",default="# ---- END LOAD VAULT SNIPPET ----")
     parser.add_argument("--project_pipeline_name", help="Pipeline name in your DWH project.")
@@ -503,7 +511,8 @@ def main():
                               end_marker=args.end_marker,
                               project_pipeline_name=args.project_pipeline_name,
                               load_vault_py_filename=args.project_load_vault_file,
-                              include_stage_content_column_list=args.include_stage_content_column_list
+                              include_stage_content_column_list=args.include_stage_content_column_list,
+                              with_hash_collision_detection=not args.omit_hash_collision_detection
                               )
 
 
