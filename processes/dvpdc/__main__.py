@@ -3241,6 +3241,7 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
     global g_hash_dict
     global g_model_profile_dict
     global g_pipeline_model_profile_name
+    global g_field_to_stage_column_name
 
     g_table_dict = {}
     g_dvpi_document = {}
@@ -3248,6 +3249,7 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
     g_error_count = 0
     g_hash_dict = {}
     g_model_profile_dict = {}
+    g_field_to_stage_column_name ={}
     g_pipeline_model_profile_name = ""
 
     params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
