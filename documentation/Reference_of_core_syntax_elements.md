@@ -724,6 +724,10 @@ When set to true, existence of a specific value combination  in the source is de
 
 Json Path: /
 
+**ATTENTION: The syntax to describe deletion detection is still work in progress. The following definition is
+the current draft. There is no implementation yet, and therefore also no evalutation if, this is a good
+way**
+
 Deletion detection can be implemented in multiple ways. DVPD will support declaration for some basic methods by using the following properties in the deletion_detection object.
 
 **procedure**
