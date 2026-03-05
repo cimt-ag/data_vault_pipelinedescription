@@ -16,6 +16,8 @@ If this creates conflict on stage column level, the stage columns will get a uni
 ### features/changes on generators
 - DDL render: added configuration to set name for directory of stage table ddl files
 - insert_to_stage_from_db_object render:  example and command added (see installation and usage for details)
+- Added example of documentation for extentions with xcdvf_cimt_datavault_framework.md
+- Python snippet generator uses xcdvf_msat_diff_logic keyword for msat elt function call.
  
 ### bugfixes
 * DDL render: Now puts key column of satellite first in the primary key definition
