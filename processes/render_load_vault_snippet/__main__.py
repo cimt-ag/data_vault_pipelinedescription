@@ -195,11 +195,18 @@ def get_statement_list_method_definition_for_msat(dvpi_table, tables_with_deleti
     hash_mapping = dvpi_table_load_operations.get('hash_mappings') or []
     columns_mapping = data_mapping + hash_mapping
     columns_by_class = get_columns_by_class(columns_mapping)
+    msat_diff_logic=dvpi_table.get('xcdvf_msat_diff_logic','group_hash')
+
 
     output += f"statement_list = {function_names['msat']}(vault_table='{dvpi_table['table_name']}',\n"
     output += f"vault_schema='{dvpi_table['schema_name']}',\n"
     output += f"stage_hk_column='{columns_by_class['parent_key']['column_stage_name'][0]}',\n"
-    output += f"stage_gh_column='{columns_by_class['diff_hash']['column_stage_name'][0]}',\n"
+    if msat_diff_logic=='row_hash':
+        output += f"stage_rh_column='{columns_by_class['diff_hash']['column_stage_name'][0]}',\n"
+    elif msat_diff_logic=='group_hash':
+        output += f"stage_gh_column='{columns_by_class['diff_hash']['column_stage_name'][0]}',\n"
+    else:
+        raise ApplicationException(f"invalid setting '{msat_diff_logic}' in keyword 'xcdvf_msat_diff_logic' at table '{dvpi_table['table_name']}'")
     if include_stage_content_column_list:
         output += f"stage_content_column_list={columns_by_class['content_all']['column_stage_name']},\n"
     output += f"with_deletion_detection={True if dvpi_table['table_name'] in tables_with_deletion_detection else False},\n"
