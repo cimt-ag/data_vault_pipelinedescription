@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2026-03-05 20:11:50
+Compiling t1212c.dvpd.json
+
+ DW-3: Field list must be a non-empty list.
+*** Compilation ended with errors ***

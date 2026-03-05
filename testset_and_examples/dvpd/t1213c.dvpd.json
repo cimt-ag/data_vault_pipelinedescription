@@ -1,0 +1,27 @@
+{
+  "dvpd_version": "0.6.3",
+  "stage_properties": [{ "stage_schema": "stage_rvlt" }],
+  "pipeline_name": "t1213c",
+  "record_source_name_expression": "satellite_as_is_only_structural_element",
+  "data_extraction": { "fetch_module_name": "none" },
+
+  "fields": [
+			{ "field_name": "F1_AAA_BK1F", "field_type": "VARCHAR(20)", "targets": [{ "table_name": "rtjj_1213_aaa_hub",
+																						"use_as_key_hash": true }] },
+			{ "field_name": "F2_AAA_C1F", "field_type": "VARCHAR(20)", "targets": [{ "table_name": "rtjj_1213_aaa_sat" }] }
+  
+  ],
+
+  "data_vault_model": [
+    {
+      "schema_name": "rvlt_test_jj",
+      "tables": [
+        { "table_name": "rtjj_1213_aaa_hub",		 "table_stereotype": "hub", 		"hub_key_column_name": "HK_rtjj_1213_aaa",
+																						"is_only_structural_element": true },
+        { "table_name": "rtjj_1213_aaa_sat",		 "table_stereotype": "sat",			"satellite_parent_table": "rtjj_1213_aaa_hub",
+																						"diff_hash_column_name": "RH_rtjj_1213_aaa_sat",
+																						"is_only_structural_element": true}
+      ]
+    }
+  ]
+}

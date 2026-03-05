@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2026-03-05 20:11:50
+Compiling t1213c.dvpd.json
+
+DW-4: 'is_only_structural_element' cannot be declared for satellites. ('rtjj_1213_aaa_sat')
+*** Compilation ended with errors ***

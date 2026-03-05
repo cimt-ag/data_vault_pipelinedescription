@@ -1917,16 +1917,13 @@ def add_hash_column_mappings_for_sat(table_name, table_entry):
             'hash_column_name']  # currently the same as parent. Might be overwritten by sat propetery later
 
         if 'hash_name' not in parent_key_hash_reference:
-            # todo: create compiler check test case to trigger this message
-            register_error(
-                f"AHS-S6: Parent table '{table_entry['satellite_parent_table']}' for satellite '{table_name}' has no hash calculation for {satellite_parent_table_key_column_name}. You may need a 'use_as_key_hash' mapping to the satellite.")
-            return
-
-        # put reference to hash description in load operation hash list
-        sat_key_hash_reference = {"hash_name": parent_key_hash_reference['hash_name'],
-                                  "hash_column_name": sat_key_column_name}
-
-        hash_mapping_dict['parent_key'] = sat_key_hash_reference
+            pass
+        else:
+            sat_key_hash_reference = {
+                "hash_name": parent_key_hash_reference["hash_name"],
+                "hash_column_name": sat_key_column_name
+            }
+            hash_mapping_dict["parent_key"] = sat_key_hash_reference
 
         # put hash column in table hash list
         if sat_key_column_name not in table_hash_columns:
@@ -2979,9 +2976,11 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
         return destination
 
     def is_ext_key(key):
-        return re.match(r"xtkwx.+_.+", key)
+        return isinstance(key, str) and key.startswith("x")
 
     def copy_extensions(source, target):
+        if not isinstance(source, dict) or not isinstance(target, dict):
+            return
         for key, value in source.items():
             if is_ext_key(key):
                 target[key] = value
@@ -3014,51 +3013,66 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
             table_name = table["table_name"]
             dvpd_table_lookup[table_name.lower()] = (table, schema)
 
-    dvpi_table_lookup = {t["table_name"].lower(): t for t in dvpi_document.get("tables", [])}
-    for table_name, (dvpd_table, dvpd_schema) in dvpd_table_lookup.items():
-        dvpi_table = dvpi_table_lookup.get(table_name)
-        if dvpi_table:
-            # allow only ONE extension
-            table_ext_keys = [k for k in dvpd_table.keys() if is_ext_key(k)]
-            if len(table_ext_keys) > 1:
-                register_error(
-                    f"ASE-1: '{dvpd_table.get('table_name')}' has more than one syntax extension keyword: "
-                    f"{', '.join(table_ext_keys)}"
-                )
+    dvpi_table_lookup = {
+        t.get("table_name", "").lower(): t
+        for t in dvpi_document.get("tables", [])
+        if t.get("table_name")
+    }
+
+    for table_name_lc, (dvpd_table, dvpd_schema) in dvpd_table_lookup.items():
+        dvpi_table = dvpi_table_lookup.get(table_name_lc)
+        if not dvpi_table:
+            continue
+
+        # schema-level extension keywords
+        copy_extensions(dvpd_schema, dvpi_table)
+
+        # table-level extension keywords
+        for k, v in dvpd_table.items():
+            if not is_ext_key(k):
                 continue
+            dvpi_table[k] = v
 
-            copy_extensions(dvpd_schema, dvpi_table)
-
-            if len(table_ext_keys) == 1:
-                k = table_ext_keys[0]
-                dvpi_table[k] = dvpd_table[k]
-
-                for load_op in dvpi_document.get("parse_sets", [{}])[0].get("load_operations", []):
-                    if load_op.get("table_name", "").lower() == table_name:
-                        load_op[k] = dvpd_table[k]
+            # table-level extension keywords
+            for load_op in dvpi_document.get("parse_sets", [{}])[0].get("load_operations", []):
+                if load_op.get("table_name", "").lower() == table_name_lc:
+                    load_op[k] = v
 
     # --- 6. Link parent keywords ---
     for table in dvpd_table_lookup.values():
         dvpd_table = table[0]
-        if dvpd_table.get("table_stereotype", "").lower() == "lnk" and "link_parent_tables" in dvpd_table:
-            for parent in dvpd_table["link_parent_tables"]:
-                if isinstance(parent, str):
-                    parent_table = parent.lower()
-                    parent_exts = {}
-                elif isinstance(parent, dict):
-                    parent_table = parent.get("table_name", "").lower()
-                    parent_exts = {k: v for k, v in parent.items() if is_ext_key(k)}
-                else:
-                    continue
+        if dvpd_table.get("table_stereotype", "").lower() != "lnk":
+            continue
+        if "link_parent_tables" not in dvpd_table:
+            continue
 
-                if not parent_exts:
-                    continue
-                target_table = dvpi_table_lookup.get(dvpd_table["table_name"].lower())
-                if not target_table:
-                    continue
-                for col in target_table.get("columns", []):
-                    if col.get("parent_table_name", "").lower() == parent_table:
-                        col.update(parent_exts)
+        for parent in dvpd_table["link_parent_tables"]:
+            if isinstance(parent, str):
+                parent_table = parent.lower()
+                parent_exts_for_columns = {}
+            elif isinstance(parent, dict):
+                parent_table = (parent.get("table_name") or "").lower()
+
+                parent_exts_for_columns = {}
+                for k, v in parent.items():
+                    if not is_ext_key(k):
+                        continue
+                    dests = parse_ext_destinations(k)
+                    if dests and "c" in dests:
+                        parent_exts_for_columns[k] = v
+            else:
+                continue
+
+            if not parent_exts_for_columns:
+                continue
+
+            target_table = dvpi_table_lookup.get(dvpd_table["table_name"].lower())
+            if not target_table:
+                continue
+
+            for col in target_table.get("columns", []):
+                if col.get("parent_table_name", "").lower() == parent_table:
+                    col.update(parent_exts_for_columns)
 
     # --- 7. Field Targets ---
     dvpi_hash_lookup = {}
@@ -3151,7 +3165,7 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
                         # conflict check: same table+column+key but different value
                         if k in target_column_name and target_column_name[k] != v:
                             register_error(
-                                f"ASE-2: More than one extension value '{k}' for column '{column}' "
+                                f"ASE-1: More than one extension value '{k}' for column '{column}' "
                                 f"of table '{table}': '{target_column_name[k]}', '{v}'"
                             )
                         else:
@@ -3268,14 +3282,14 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
         with open(dvpd_file_path, "r") as dvpd_file:
             dvpd_object = json.load(dvpd_file)
     except json.JSONDecodeError as e:
-        register_error("ERROR: JSON Parsing error of file " + dvpd_file_path.name)
+        register_error("DW-1: JSON Parsing error of file " + dvpd_file_path.name)
         log_progress(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
         raise DvpdcError
 
     # check, if the model profile declared is available
     g_pipeline_model_profile_name = dvpd_object.get('model_profile_name', '_default')
     if g_pipeline_model_profile_name not in g_model_profile_dict:
-        register_error(f"Model profile '{g_pipeline_model_profile_name}' declared in pipeline does not exist")
+        register_error(f"DW-2: Model profile '{g_pipeline_model_profile_name}' declared in pipeline does not exist")
         raise DvpdcError
 
     check_essential_structure(dvpd_object)
@@ -3322,6 +3336,22 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
     if g_error_count > 0:
         raise DvpdcError
 
+    # fields must not be empty
+    fields = dvpd_object.get("fields", None)
+    if not isinstance(fields, list) or len(fields) == 0:
+        register_error(" DW-3: Field list must be a non-empty list.")
+        raise DvpdcError
+
+    # structural elements not allowed for satellites
+    for schema in dvpd_object.get("data_vault_model", []):
+        for table in schema.get("tables", []):
+            if table.get("table_stereotype", "").lower() == "sat":
+                if table.get("is_only_structural_element", False):
+                    register_error(
+                        f"DW-4: 'is_only_structural_element' cannot be declared for satellites. ('{table.get('table_name')}')"
+                    )
+                    raise DvpdcError
+
     # remove any load operations from "is_only_structural_element" tables
     for table_name, table_entry in g_table_dict.items():
         if table_entry['is_only_structural_element']:
@@ -3347,7 +3377,7 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
         with open(dvpi_file_path, "w") as dvpi_file:
             json.dump(g_dvpi_document, dvpi_file, ensure_ascii=False, indent=2)
     except json.JSONDecodeError as e:
-        register_error("ERROR: JSON writing to  of file " + dvpi_file_path.as_posix())
+        register_error("DW-5: JSON writing to  of file " + dvpi_file_path.as_posix())
         log_progress(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
         raise DvpdcError
 
