@@ -1,12 +1,12 @@
 Data vault pipeline description compiler log 
 === DVPD Compiler Version 0.6.3 ===
-Compile time: 2026-02-19 11:37:53
+Compile time: 2026-03-05 20:03:43
 Compiling t1302c.dvpd.json
 
-ASE-2: More than one extension value 'xtkwx_test_load_flag_x' for column 'F3F4_BBB_BK1' of table 'rtjj_1302_bbb_hub': 'BK1_TTT_UUU_SHARED', 'BK1_VVV_ONLY'
-ASE-2: More than one extension value 'xtkwx_test_load_flag_x' for column 'F5F6F7_BBB_BK2F' of table 'rtjj_1302_bbb_hub': 'BK2_TTT_ONLY', 'BK2_UUU_ONLY'
-ASE-2: More than one extension value 'xtkwx_test_load_flag_x' for column 'F5F6F7_BBB_BK2F' of table 'rtjj_1302_bbb_hub': 'BK2_TTT_ONLY', 'BK2_VVV_ONLY'
-ASE-2: More than one extension value 'xtkwx_test_load_flag_x' for column 'F8F9_BBB_C1' of table 'rtjj_1302_bbb_sat': 'C1_TTT_ONLY', 'C1_UUU_VVV_SHARED'
-ASE-2: More than one extension value 'xtkwx_test_load_flag_x' for column 'F10F11F12_BBB_C2F' of table 'rtjj_1302_bbb_sat': 'C2_TTT_ONLY', 'C2_UUU_ONLY'
-ASE-2: More than one extension value 'xtkwx_test_load_flag_x' for column 'F10F11F12_BBB_C2F' of table 'rtjj_1302_bbb_sat': 'C2_TTT_ONLY', 'C2_VVV_ONLY'
+ASE-1: More than one extension value 'xtkwx_test_load_flag_x' for column 'F3F4_BBB_BK1' of table 'rtjj_1302_bbb_hub': 'BK1_TTT_UUU_SHARED', 'BK1_VVV_ONLY'
+ASE-1: More than one extension value 'xtkwx_test_load_flag_x' for column 'F5F6F7_BBB_BK2F' of table 'rtjj_1302_bbb_hub': 'BK2_TTT_ONLY', 'BK2_UUU_ONLY'
+ASE-1: More than one extension value 'xtkwx_test_load_flag_x' for column 'F5F6F7_BBB_BK2F' of table 'rtjj_1302_bbb_hub': 'BK2_TTT_ONLY', 'BK2_VVV_ONLY'
+ASE-1: More than one extension value 'xtkwx_test_load_flag_x' for column 'F8F9_BBB_C1' of table 'rtjj_1302_bbb_sat': 'C1_TTT_ONLY', 'C1_UUU_VVV_SHARED'
+ASE-1: More than one extension value 'xtkwx_test_load_flag_x' for column 'F10F11F12_BBB_C2F' of table 'rtjj_1302_bbb_sat': 'C2_TTT_ONLY', 'C2_UUU_ONLY'
+ASE-1: More than one extension value 'xtkwx_test_load_flag_x' for column 'F10F11F12_BBB_C2F' of table 'rtjj_1302_bbb_sat': 'C2_TTT_ONLY', 'C2_VVV_ONLY'
 *** Compilation ended with errors ***
