@@ -1,0 +1,39 @@
+{
+	"dvpd_version": "0.6.3",
+	"stage_properties" : [{"stage_schema":"stage_rvlt","stage_table_name":"rzzd_t5200_xcdvf_msat_diff_logic_stage"}],
+	"pipeline_name": "t5200_xcdvf_msat_diff_logic",
+	"record_source_name_expression": "demo daten",
+	"data_extraction": {
+		"fetch_module_name":"none - ddl and script generation only",
+		"mark_module_name":"cimt_datavault_framework",
+		"load_module_name":"cimt_datavault_framework"
+	},
+	"fields": [
+		      {"field_name": "F1_AAA_BK1", 	"field_type": "Varchar(50)",	"targets": [{"table_name": "rzzd_d01_aaa_hub"}]},
+		      {"field_name": "F2_AAA_BK2F",	"field_type": "Varchar(50)",	"targets": [{"table_name": "rzzd_d01_aaa_hub"}]},
+		      {"field_name": "F3_AAA_C1",	"field_type": "Varchar(50)",	"targets": [{"table_name": "rsap_d01_aaa_p1_rh_msat"},
+																						  {"table_name": "rsap_d01_aaa_p2_gh_msat"},
+																						  {"table_name": "rsap_d01_aaa_p3_gh_msat"}]},
+		      {"field_name": "F4_AAA_C2F",	"field_type": "Varchar(50)",	"targets": [{"table_name": "rsap_d01_aaa_p1_rh_msat"},
+																						  {"table_name": "rsap_d01_aaa_p2_gh_msat"},
+																						  {"table_name": "rsap_d01_aaa_p3_gh_msat"}]}
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_zz_demo",
+		 "tables": [
+				{"table_name": "rzzd_d01_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rzzd_d01_aaa"},
+				{"table_name": "rsap_d01_aaa_p1_rh_msat",	"table_stereotype": "sat","satellite_parent_table": "rzzd_d01_aaa_hub"
+																			,"is_multiactive":"true"
+																			,"diff_hash_column_name": "rh_rsap_d01_aaa_p1_rh_msat"
+																			,"xcdvf_msat_diff_logic": "row_hash"},
+				{"table_name": "rsap_d01_aaa_p2_gh_msat",	"table_stereotype": "sat","satellite_parent_table": "rzzd_d01_aaa_hub"
+																			,"is_multiactive":"true"
+																			,"diff_hash_column_name": "gh_rsap_d01_aaa_p2_gh_msat"
+																			,"xcdvf_msat_diff_logic": "group_hash"},
+				{"table_name": "rsap_d01_aaa_p3_gh_msat",	"table_stereotype": "sat","satellite_parent_table": "rzzd_d01_aaa_hub"
+																			,"is_multiactive":"true"
+																			,"diff_hash_column_name": "gh_rsap_d01_aaa_p3_gh_msat"}
+				]
+		}
+	]
+}

@@ -24,6 +24,16 @@ is essential to understand the concept.**
 
 Please consult appropriate literature, to **learn Data Vault first**.
 
+### about the data model diagram notation
+The data vault model diagrams in the documentation use the Wegner/Peschl (WPD) notation for data vault models.
+It is hopefully easy to understand. 
+- Ovals are hubs
+- Flattened hexagons are links
+- Rectangles with rounded corners are satellites
+- Rectangles with sharp corner are reference tables
+A more elaborate documentation about the notation will be added later.
+ 
+
 ## The main articles
 
 ### [DVPD The Concept](./DVPD_The_Concept.md) 

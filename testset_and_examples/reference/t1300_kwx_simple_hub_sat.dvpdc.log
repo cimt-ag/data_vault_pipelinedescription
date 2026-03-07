@@ -1,7 +1,16 @@
 Data vault pipeline description compiler log 
-=== DVPD Compiler Version 0.6.2 ===
-Compile time: 2025-07-16 15:14:39
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2026-03-05 20:07:03
 Compiling t1300_kwx_simple_hub_sat.dvpd.json
 
-Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t1300_kwx_simple_hub_sat.dvpi.json
+Syntax extension 'xtkwx_link_parent_kw2f_xc' is routed to: columns
+Syntax extension 'xtkwx_link_parent_kw2f_xh' is routed to: hashes
+Syntax extension 'xtkwx_link_parent_kw1f_xhc' is routed to: columns, hashes
+Syntax extension 'xtkwx_target_kw1f_xch' is routed to: columns, hashes
+Syntax extension 'xtkwx_target_kw1f_xcl' is routed to: columns, load_operations
+Syntax extension 'xtkwx_target_kw1f_xhl' is routed to: hashes, load_operations
+Syntax extension 'xtkwx_target_kw1f_xc' is routed to: columns
+Syntax extension 'xtkwx_target_kw1f_xh' is routed to: hashes
+Syntax extension 'xtkwx_target_kw1f_xl' is routed to: load_operations
+Writing DVPI to /git_ordner/dvpd/var/dvpi/t1300_kwx_simple_hub_sat.dvpi.json
 --- Compile successfull ---

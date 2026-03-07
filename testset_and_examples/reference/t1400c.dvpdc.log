@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2026-02-19 11:40:24
+Compiling t1400c.dvpd.json
+
+DLO-40:You cannot define a tracked relation, when you declared relations in data mappings other then ['*']. Table: 'rtjj_1400_aaa_sat'
+*** Compilation ended with errors ***

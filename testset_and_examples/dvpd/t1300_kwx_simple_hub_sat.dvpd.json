@@ -3,7 +3,7 @@
 	"stage_properties" : [{"stage_schema":"stage_rvlt"
 							,"stage_table_name":"srtjj_1300"
 							,"xtkwx_stage_kw1f":"stage_key_word_1 value"}],
-	"pipeline_name": "t1300_kwx_simple_hub_sat",
+	"pipeline_name": "t1300c_kwx_simple_hub_sat",
 	"pipeline_revision_tag":"demoRevisionTagOf t1300",
 	"record_source_name_expression": "dvpd implementation test",
 	"xtkwx_dvpd_root_kw1f":"root_key_word_1 value",
@@ -12,45 +12,61 @@
 	},
 
 	"fields": [
-		      {"field_name": "F1_AAA_BK1F", 		"field_type": "Varchar(1300)",	"targets": [{"table_name": "rtjj_1300_aaa_hub"}]
-																			 , "xtkwx_field_kw1f":"F1 field_key_word_1 value"},
-		 	  {"field_name": "F2_BBB_BK1F",		"field_type": "Decimal(1300,0)","targets": [{"table_name": "rtjj_1300_bbb_hub"}]
-			  																 , "xtkwx_field_kw1f":"F2 field_key_word_1 value"},
-		 	  {"field_name": "F3_AAA_P1_C1",	"field_type": "VARCHAR(13000)",	"targets": [{"table_name": "rtjj_1300_aaa_p1_sat"
-																							 ,"xtkwx_column_kw1f":"F3 column_key_word_1 value"}]},
-			  {"field_name": "F4_AAA_P1_C2",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_1300_aaa_p1_sat"
-																							 ,"xtkwx_hash_kw1f":"F4 hash_key_word_1 value"}]},
-			  {"field_name": "F5XX_AAA_P1_C3F",	"field_type": "VARCHAR(13000)",	"targets": [{"table_name": "rtjj_1300_aaa_p1_sat",
-																									 "column_name":"F5_AAA_P1_C3F"
-																							 ,"xtkwx_load_kw1f":"F5 load_key_word_1 value"}]},
-			  {"field_name": "F6_AAA_P1_CU1F",	"field_type": "TIMESTAMP",		"targets": [{"table_name": "rtjj_1300_aaa_p1_sat"}]}
+		      {"field_name": "F1_AAA_BK1F", 	"field_type": "Varchar(100)"	,"xtkwx_field_kw1":"F1 field_key_word_1 value"
+																				,"xtkwx_field_kw2f":"F1 field_key_word_2 value"
+																				,"targets": [{"table_name": "rtjj_1300_aaa_hub"}]},
+		 	  {"field_name": "F2_BBB_BK1",		"field_type": "Decimal(10,0)","targets": [{"table_name": "rtjj_1300_bbb_hub"
+																							, "xtkwx_target_kw1f_xchl":"F2 map to all (colunm, hash, load) elements"}]},
+  		 	  {"field_name": "F3_BBB_BK2F",		"field_type": "Decimal(5,0)","targets": [{"table_name": "rtjj_1300_bbb_hub"
+																							, "xtkwx_target_kw1f_xc":"F3 map to table column only"
+																							, "xtkwx_target_kw1f_xh":"F3 map to hash field list only"
+																							, "xtkwx_target_kw1f_xl":"F3 map to load data mapping only"}]},
+		 	  {"field_name": "F4_AAA_P1_C1",	"field_type": "VARCHAR(13000)",	"targets": [{"table_name": "rtjj_1300_aaa_p1_sat"
+																							 ,"xtkwx_target_kw1f_xch":"F4 map to table column and hash field list only"}]},
+			  {"field_name": "F5_AAA_P1_C2",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_1300_aaa_p1_sat"
+																							 ,"xtkwx_target_kw1f_xcl":"F5 map to table column and load  mapping only"}]},
+			  {"field_name": "F6_AAA_P1_C3F",	"field_type": "VARCHAR(13000)",	"targets": [{"table_name": "rtjj_1300_aaa_p1_sat"
+																							 ,"xtkwx_target_kw1f_xhl":"F6 map to hash field list and load  mapping only"}]},
+			  {"field_name": "F7_AAA_P2_C1F",	"field_type": "VARCHAR(130)",	"targets": [{"table_name": "rtjj_1300_aaa_p2_msat"
+																							 ,"xtkwx_target_kw1f":"F7 map to all column positions"}]}
 			 ],
 	"data_vault_model": [
 		{"schema_name": "rvlt_test_jj" ,
-		 "xtkwx_schema_kw1f":"rvlt_test_jj schema_key_word_1 value",
+		 "xtkwx_s_kw1f":"rvlt_test_jj schema_key_word_1 value",
 		 "tables": [
 				{"table_name": "rtjj_1300_aaa_hub",		"table_stereotype": "hub"
 														,"hub_key_column_name": "HK_rtjj_1300_aaa"
-														,"xtkwx_table_kw1f":"rtjj_1300_aaa_hub table_key_word_1 value"
+														,"xtkwx_htkw1f":"set for rtjj_1300_aaa_hub"
 														}
 				,{"table_name": "rtjj_1300_aaa_p1_sat",	"table_stereotype": "sat"
 														,"satellite_parent_table": "rtjj_1300_aaa_HUB"
 														,"diff_hash_column_name": "RH_rtjj_1300_aaa_P1_SAT"
-														,"xtkwx_table_kw1":"rtjj_1300_aaa_p1_sat table_key_word_1 value"
-														,"xtkwx_table_kw2f":"rtjj_1300_aaa_p1_sat table_key_word_2 value"
+														,"xtkwx_stkw1":"set for rtjj_1300_aaa_p1_sat"
 														}
+				,{"table_name": "rtjj_1300_aaa_p2_msat" ,"table_stereotype": "sat"
+														,"is_multiactive":true
+														,"satellite_parent_table": "rtjj_1300_aaa_HUB"
+														,"diff_hash_column_name": "RH_rtjj_1300_aaa_p2_msat"
+														,"xtkwx_st_kw1":"set for rtjj_1300_aaa_p2_sat kw1"
+														,"xtkwx_st_kw2f":"set for rtjj_1300_aaa_p2_sat kw2"
+														}													
 				,{"table_name": "rtjj_1300_bbb_hub",	"table_stereotype": "hub"
 														,"hub_key_column_name": "HK_rtjj_1300_bbb"
-														,"xtkwx_table_kw1f":"rtjj_1300_bbb_hub table_key_word_1 value"
+														,"xtkwx_ht_kw1f":"set for rtjj_1300_bbb_hub"
 														}
 				,{"table_name": "rtjj_1300_aaa_bbb_lnk","table_stereotype": "lnk"
 														,"link_key_column_name": "LK_rtjj_1300_aaa_bbb"
-														,"link_parent_tables": [{"table_name":"rtjj_1300_aaa_hub","xtkwx_link_parent_kw1f":"rtjj_1300_aaa_hub link parent keyword 1 value"}
-																				,{"table_name":"rtjj_1300_bbb_hub","xtkwx_link_parent_kw1f":"rtjj_1300_bbb_hub link parent keyword 1 value"}]}
+														,"xtkwx_lt_kw1f":"set for rtjj_1300_aaa_bbb_lnk value"
+														,"link_parent_tables": [{"table_name":"rtjj_1300_aaa_hub"
+																						,"xtkwx_link_parent_kw1":"1300_aaa all"
+																						,"xtkwx_link_parent_kw2f_xc":"1300_aaa column only"
+																						,"xtkwx_link_parent_kw2f_xh":"1300_aaa hash only"}
+																				,{"table_name":"rtjj_1300_bbb_hub"
+																						,"xtkwx_link_parent_kw1f_xhc":"1300_bbb column and hash only"}]}
 				,{"table_name": "rtjj_1300_aaa_bbb_esat",	"table_stereotype": "sat"
 														,"satellite_parent_table": "rtjj_1300_aaa_bbb_lnk"
 														,"driving_keys":["HK_rtjj_1300_aaa"]
-														,"xtkwx_table_kw1f":"rtjj_1300_aaa_bbb_esat table_key_word_1 value"}														
+														,"xtkwx_table_kw1f":"set for rtjj_1300_aaa_bbb_esat"}														
 				]
 		}
 	]

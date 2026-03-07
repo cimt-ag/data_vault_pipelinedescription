@@ -12,6 +12,9 @@ sys.path.insert(0,project_directory)
 
 from lib.configuration import configuration_load_ini
 
+class ApplicationException(Exception):
+    pass
+
 # global dictionaries
 g_model_profile_dict={}
 g_current_model_profile=None
@@ -120,7 +123,9 @@ def create_ghost_records(full_name, columns):
             if scale != None:
                 scale = int(scale)
             base_type = base_type.upper()
-            nullable = True if 'is_nullable' in column and column['is_nullable']==True else False
+            if base_type not in const_for_missing_map:
+                raise ApplicationException(f"Have no rule how to set the 'missing value' for column type '{base_type}' used at column '{column['column_name']}'")
+
             value_for_missing = const_for_missing_map[base_type]
             # print(f'base_type: {base_type} | nullable: {nullable} | const_for_missing: {value_for_missing}\n')
             if base_type == 'VARCHAR':
@@ -243,7 +248,7 @@ def assemble_stage_with_target_column_type_dict(parse_set,tables):
                 break
         # at this point we should have a hit, so search for the column type definition
         if table_name == None:
-            raise Exception(f"Stage column '{stage_column['stage_column_name']}' is not mapped in any operation. This should not happen")
+            raise ApplicationException(f"Stage column '{stage_column['stage_column_name']}' is not mapped in any operation. This should not happen")
         column_type=None
         for table in tables:
             if table['table_name']==table_name:
@@ -479,7 +484,7 @@ def parse_json_to_ddl(filepath, ddl_render_path
             table_name = stage_properties['stage_table_name']
             full_name = "{}.{}".format(schema_name, table_name)
         else:
-            raise AssertionError("Currently only one stage properties object is supportet!")
+            raise ApplicationException("Currently only one stage properties object is supportet!")
             # TODO: implement this case
 
         columns = parse_set['stage_columns']
@@ -548,7 +553,7 @@ def parse_json_to_ddl(filepath, ddl_render_path
                                                                                      column_name_to_stage_name_dict)
                             col_type = stage_with_target_column_type_dict[stage_column_name]
                         case _:
-                            raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
+                            raise ApplicationException(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
 
                     column_classes = column['column_classes']
                     ddl_column_line = "\t{}\t{}\t{}".format(final_column_name.ljust(max_name_length),
@@ -564,7 +569,7 @@ def parse_json_to_ddl(filepath, ddl_render_path
                     elif 'content' in column_classes:
                         content.append(ddl_column_line)
                     else:
-                        raise AssertionError(f"unexpected column class! {column_classes} are currently not supported!")
+                        raise ApplicationException(f"unexpected column class! {column_classes} are currently not supported!")
 
         # sort the arrays of the stage columns
         hashkeys.sort()
@@ -622,9 +627,8 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
 
     return youngest_file
 
-def search_for_dvpifile_of_test(testnumber):
-    params = configuration_load_ini(args.ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
-    dvpi_directory = Path(params['dvpi_default_directory'])
+def search_for_dvpifile_of_test(dvpi_default_directory,testnumber):
+    dvpi_directory = Path(dvpi_default_directory)
 
     fileprefix="t{:04d}".format(int(testnumber))
 
@@ -679,7 +683,7 @@ def add_model_profile_file(file_to_process: Path):
 
 
 ########################   MAIN ################################
-if __name__ == '__main__':
+def main():
     description_for_terminal = "Process dvpi at the given location to render the ddl statements."
     usage_for_terminal = "Add option -h for further instruction"
 
@@ -717,8 +721,8 @@ if __name__ == '__main__':
     else:
         no_primary_keys=args.no_primary_keys
 
-    ddl_render_path = Path(params['ddl_root_directory'], fallback=None)
-    dvpi_default_directory = Path(params['dvpi_default_directory'], fallback=None)
+    ddl_render_path = Path(params['ddl_root_directory'])
+    dvpi_default_directory = Path(params['dvpi_default_directory'])
 
     if args.model_profile_directory==None:
         load_model_profiles(params['dvpd_model_profile_directory'])
@@ -728,14 +732,12 @@ if __name__ == '__main__':
     dvpi_file_name=args.dvpi_file_name
     if dvpi_file_name == '@youngest':
         dvpi_file_name = get_name_of_youngest_dvpi_file(params['dvpi_default_directory'])
-        print(f"Rendering from file {dvpi_file_name}")
     if dvpi_file_name[:2]=='@t':
         testnumber=dvpi_file_name[2:]
-        dvpi_file_name=search_for_dvpifile_of_test(testnumber)
+        dvpi_file_name=search_for_dvpifile_of_test(dvpi_default_directory,testnumber)
         if dvpi_file_name is None:
-            raise Exception(f"Could not find test file for testnumber {testnumber}")
+            raise ApplicationException(f"Could not find test file for testnumber {testnumber}")
 
-    print("=== ddl render ===")
     print("Reading dvpi file '"+dvpi_file_name+"'\n")
     dvpi_file_path = Path(dvpi_file_name)
     if not dvpi_file_path.exists():
@@ -753,4 +755,26 @@ if __name__ == '__main__':
                                    ,use_target_column_type_in_stage=args.use_target_column_type_in_stage)
     if args.print:
         print(ddl_output)
-    print("--- ddl render complete ---\n")
+
+
+
+if __name__ == '__main__':
+    print("=== ddl render ===")
+
+    try:
+        main()
+    except ApplicationException as ae:
+        print("ERROR: >"+str(ae)+"<")
+        print("*** ddl render aborted ***")
+        exit(1)
+    except MissingFieldError as me:
+        print("MISSING FIELD ERROR: >"+str(me)+"<")
+        print("*** ddl render aborted ***")
+        exit(1)
+    except DeclarationError as de:
+        print("DECLARATION ERROR: >"+str(de)+"<")
+        print("*** ddl render aborted ***")
+        exit(1)
+
+
+    print("--- ddl render complete ---")

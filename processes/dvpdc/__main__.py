@@ -21,6 +21,7 @@ import argparse
 import copy
 import os
 import sys
+import re
 
 # Include data_vault_pipelinedescription folder into
 project_directory = os.path.dirname(os.path.dirname(sys.path[0]))
@@ -1013,6 +1014,80 @@ def derive_content_dependent_ref_properties(table_name, table_entry):
             column_properties[property_name] = first_field[property_name]
         add_generic_relation_mappings(column_properties)
 
+
+def check_link_parent_consistency():
+    """
+    Checks that a link table does not reference the same parent table
+    more than once without distinguishing the references via relation name.
+
+    """
+
+    for table_name, table_entry in g_table_dict.items():
+
+
+        if table_entry.get('table_stereotype') != 'lnk':
+            continue
+
+        parent_entries = []
+
+        if 'link_parent_tables' in table_entry:
+            for p in table_entry['link_parent_tables']:
+                if isinstance(p, dict):
+                    # extended syntax → keep relation_name
+                    parent_entries.append(p)
+                else:
+                    # short syntax → wrap
+                    parent_entries.append({'table_name': p})
+
+        if not parent_entries:
+            continue
+
+        # Group by normalized parent table name
+        parent_groups = {}
+
+        for parent in parent_entries:
+
+            parent_table_name = parent.get('table_name')
+
+            # Normalize to string
+            if isinstance(parent_table_name, dict):
+                parent_name = parent_table_name.get('table_name')
+            else:
+                parent_name = parent_table_name
+
+            if not isinstance(parent_name, str):
+                register_error(
+                    f"Invalid parent table declaration "
+                    f"in link '{table_name}': {parent}"
+                )
+                continue
+
+            parent_groups.setdefault(parent_name, []).append(parent)
+
+
+        for parent_name, entries in parent_groups.items():
+
+            if len(entries) <= 1:
+                continue
+
+            relation_names = [e.get('relation_name') for e in entries if 'relation_name' in e]
+
+            # Missing relation_name
+            if len(relation_names) != len(entries):
+                register_error(
+                    f"LPC-01: Parent table '{parent_name}' is declared multiple times "
+                    f"in link '{table_name}' without distinct relation_name"
+                )
+                continue
+
+            # Duplicate relation_name
+            if len(set(relation_names)) != len(relation_names):
+                register_error(
+                    f"LPC-02: Parent table '{parent_name}' is declared multiple times "
+                    f"in link '{table_name}' with duplicate relation_name values {relation_names}"
+                )
+
+
 def add_generic_relation_mappings(column_properties):
     """
     Determies the relation mapping defaults for every field mapping of a lolumn
@@ -1257,7 +1332,6 @@ def determine_load_operations_from_tracking_directive():
         load_operations = table_entry['load_operations']
         if 'tracked_relation_name' in table_entry:
             if len(load_operations) > 0:
-                # todo add compiler test to trigger this error
                 register_error(
                     f"DLO-40:You cannot define a tracked relation, when you declared relations in data mappings other then ['*']. Table: '{table_name}'")
             if table_entry['tracked_relation_name'] != '*':
@@ -1843,16 +1917,13 @@ def add_hash_column_mappings_for_sat(table_name, table_entry):
             'hash_column_name']  # currently the same as parent. Might be overwritten by sat propetery later
 
         if 'hash_name' not in parent_key_hash_reference:
-            # todo: create compiler check test case to trigger this message
-            register_error(
-                f"AHS-S6: Parent table '{table_entry['satellite_parent_table']}' for satellite '{table_name}' has no hash calculation for {satellite_parent_table_key_column_name}. You may need a 'use_as_key_hash' mapping to the satellite.")
-            return
-
-        # put reference to hash description in load operation hash list
-        sat_key_hash_reference = {"hash_name": parent_key_hash_reference['hash_name'],
-                                  "hash_column_name": sat_key_column_name}
-
-        hash_mapping_dict['parent_key'] = sat_key_hash_reference
+            pass
+        else:
+            sat_key_hash_reference = {
+                "hash_name": parent_key_hash_reference["hash_name"],
+                "hash_column_name": sat_key_column_name
+            }
+            hash_mapping_dict["parent_key"] = sat_key_hash_reference
 
         # put hash column in table hash list
         if sat_key_column_name not in table_hash_columns:
@@ -2844,11 +2915,12 @@ def renderHashFieldAssembly(parse_set_entry, hash_mapping_entry):
 
 
 
-# --------------------  Extention key word transfer ------------------
+
+
 
 def apply_syntax_extensions(dvpd_object, dvpi_document):
     """
-     Search the dvpf for extention keywords (starting with 'x') an transfer them
+     Search the dvpd for extention keywords (starting with 'x') and transfer them
      to the proper position in the dpvi document. (Expects the dvpi document to be complete)
 
      Args:
@@ -2856,12 +2928,59 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
              dvpi_document: the already rendered dvpi document
 
      """
-    import re
+    postfix_keys = set()
+    # --------------------  Extention key word transfer ------------------
+    def parse_ext_destinations(key: str):
+        """
+        Returns a set containing any of {'c','h','l'} if key has a postfix token.
+        """
+
+        if not isinstance(key, str) or "_" not in key:
+            return None
+
+        last_token = key.rsplit("_", 1)[-1]
+
+        # No postfix routing -> treat as all (no message)
+        if not last_token.startswith("x"):
+            return {"c", "h", "l"}
+
+        flags = last_token[1:]
+        allowed = {"c", "h", "l"}
+
+        if flags == "":
+            return {"c", "h", "l"}
+
+        if any(ch not in allowed for ch in flags):
+            return {"c", "h", "l"}
+
+        destination = set(flags)
+
+        # Only log when routing is restricted (not all)
+        if destination != {"c", "h", "l"} and key not in postfix_keys:
+            postfix_keys.add(key)
+
+            def describe(d):
+                parts = []
+                if "c" in d:
+                    parts.append("columns")
+                if "h" in d:
+                    parts.append("hashes")
+                if "l" in d:
+                    parts.append("load_operations")
+                return ", ".join(parts)
+
+            log_progress(
+                f"Syntax extension '{key}' is routed to: {describe(destination)}"
+            )
+
+        return destination
 
     def is_ext_key(key):
-        return re.match(r"x.+_.+", key)
+        return isinstance(key, str) and key.startswith("x")
 
     def copy_extensions(source, target):
+        if not isinstance(source, dict) or not isinstance(target, dict):
+            return
         for key, value in source.items():
             if is_ext_key(key):
                 target[key] = value
@@ -2894,39 +3013,66 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
             table_name = table["table_name"]
             dvpd_table_lookup[table_name.lower()] = (table, schema)
 
-    dvpi_table_lookup = {t["table_name"].lower(): t for t in dvpi_document.get("tables", [])}
-    for table_name, (dvpd_table, dvpd_schema) in dvpd_table_lookup.items():
-        dvpi_table = dvpi_table_lookup.get(table_name)
-        if dvpi_table:
-            copy_extensions(dvpd_table, dvpi_table)     # data_vaullt_model[].tables[0] -> tables[0]
-            copy_extensions(dvpd_schema, dvpi_table)
+    dvpi_table_lookup = {
+        t.get("table_name", "").lower(): t
+        for t in dvpi_document.get("tables", [])
+        if t.get("table_name")
+    }
 
+    for table_name_lc, (dvpd_table, dvpd_schema) in dvpd_table_lookup.items():
+        dvpi_table = dvpi_table_lookup.get(table_name_lc)
+        if not dvpi_table:
+            continue
+
+        # schema-level extension keywords
+        copy_extensions(dvpd_schema, dvpi_table)
+
+        # table-level extension keywords
+        for k, v in dvpd_table.items():
+            if not is_ext_key(k):
+                continue
+            dvpi_table[k] = v
+
+            # table-level extension keywords
             for load_op in dvpi_document.get("parse_sets", [{}])[0].get("load_operations", []):
-                if load_op.get("table_name", "").lower() == table_name:
-                    copy_extensions(dvpd_table, load_op)    # data_vaullt_model[].tables[0] -> parse_sets.load_operations[0]
+                if load_op.get("table_name", "").lower() == table_name_lc:
+                    load_op[k] = v
 
     # --- 6. Link parent keywords ---
     for table in dvpd_table_lookup.values():
         dvpd_table = table[0]
-        if dvpd_table.get("table_stereotype", "").lower() == "lnk" and "link_parent_tables" in dvpd_table:
-            for parent in dvpd_table["link_parent_tables"]:
-                if isinstance(parent, str):
-                    parent_table = parent.lower()
-                    parent_exts = {}
-                elif isinstance(parent, dict):
-                    parent_table = parent.get("table_name", "").lower()
-                    parent_exts = {k: v for k, v in parent.items() if is_ext_key(k)}    # data_vaullt_model[].tables[0].link_parent_tabes -> tables[0].columns[0]
-                else:
-                    continue
+        if dvpd_table.get("table_stereotype", "").lower() != "lnk":
+            continue
+        if "link_parent_tables" not in dvpd_table:
+            continue
 
-                if not parent_exts:
-                    continue
-                target_table = dvpi_table_lookup.get(dvpd_table["table_name"].lower())
-                if not target_table:
-                    continue
-                for col in target_table.get("columns", []):
-                    if col.get("parent_table_name", "").lower() == parent_table:
-                        col.update(parent_exts)
+        for parent in dvpd_table["link_parent_tables"]:
+            if isinstance(parent, str):
+                parent_table = parent.lower()
+                parent_exts_for_columns = {}
+            elif isinstance(parent, dict):
+                parent_table = (parent.get("table_name") or "").lower()
+
+                parent_exts_for_columns = {}
+                for k, v in parent.items():
+                    if not is_ext_key(k):
+                        continue
+                    dests = parse_ext_destinations(k)
+                    if dests and "c" in dests:
+                        parent_exts_for_columns[k] = v
+            else:
+                continue
+
+            if not parent_exts_for_columns:
+                continue
+
+            target_table = dvpi_table_lookup.get(dvpd_table["table_name"].lower())
+            if not target_table:
+                continue
+
+            for col in target_table.get("columns", []):
+                if col.get("parent_table_name", "").lower() == parent_table:
+                    col.update(parent_exts_for_columns)
 
     # --- 7. Field Targets ---
     dvpi_hash_lookup = {}
@@ -2934,16 +3080,65 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
         for f in h.get("hash_fields", []):
             dvpi_hash_lookup[(f["field_name"], f["field_target_table"], f["field_target_column"])] = f
     # load keyword
-    for load_op in dvpi_document.get("parse_sets", [{}])[0].get("load_operations", []):
-        table_name = load_op.get("table_name", "")
-        for dm in load_op.get("data_mapping", []):
-            key = (dm["field_name"], table_name, dm["column_name"])
-            for field in dvpd_fields:
-                if field["field_name"] != dm["field_name"]:
+    for load_operation in dvpi_document.get("parse_sets", [{}])[0].get("load_operations", []):
+        load_operation_table = load_operation.get("table_name")
+        load_operation_relation = (load_operation.get("relation_name", "/") or "/").lower()
+
+        for data_mapping in load_operation.get("data_mapping", []):
+            data_mapping_field = data_mapping.get("field_name")
+            data_mapping_column = data_mapping.get("column_name")
+
+            source_field = next((f for f in dvpd_fields if f.get("field_name") == data_mapping_field), None)
+            if not source_field:
+                continue
+
+            for target in source_field.get("targets", []):
+                target_table = target.get("table_name")
+                target_column = target.get("column_name", source_field.get("field_name"))
+
+                relations = target.get("relation_names")
+                target_relations = relations if isinstance(relations, list) and relations else ["/"]
+                target_relations_norm = [(r or "/").lower() for r in target_relations]
+
+                if target_table != load_operation_table:
                     continue
-                for target in field.get("targets", []):
-                    if any(is_ext_key(k) and "load" in k for k in target):
-                        dm.update({k: v for k, v in target.items() if is_ext_key(k) and "load" in k})   # fields[0].targets[0]. with "load" in name -> parse_sets.load_operations[0].data_mappings[0]
+                if target_column != data_mapping_column:
+                    continue
+                if load_operation_relation not in target_relations_norm:
+                    continue
+
+                for k, v in target.items():
+                    if not is_ext_key(k):
+                        continue
+                    postfix_flags = parse_ext_destinations(k)
+                    if postfix_flags and "l" in postfix_flags:
+                        data_mapping[k] = v
+
+    for hash in dvpi_document.get("parse_sets", [{}])[0].get("hashes", []):
+        for hash_field in hash.get("hash_fields", []):
+            hf_field = hash_field.get("field_name")
+            hf_table = hash_field.get("field_target_table")
+            hf_column = hash_field.get("field_target_column")
+
+            source_field = next((f for f in dvpd_fields if f.get("field_name") == hf_field), None)
+            if not source_field:
+                continue
+
+            for target in source_field.get("targets", []):
+                target_table = target.get("table_name")
+                target_column = target.get("column_name", source_field.get("field_name"))
+
+                if target_table != hf_table:
+                    continue
+                if target_column != hf_column:
+                    continue
+
+                for k, v in target.items():
+                    if not is_ext_key(k):
+                        continue
+                    postfix_flags = parse_ext_destinations(k)
+                    if postfix_flags and "h" in postfix_flags:
+                        hash_field[k] = v
 
     for field in dvpd_fields:
         for target in field.get("targets", []):
@@ -2951,15 +3146,33 @@ def apply_syntax_extensions(dvpd_object, dvpi_document):
             column = target.get("column_name", field["field_name"])
 
             # column keyword
-            if any(is_ext_key(k) and "column" in k for k in target):    # fields[0].targets[0]. with "column" in name -> tables[0].columns[0]
-                for tbl in dvpi_document.get("tables", []):
-                    if tbl["table_name"].lower() == table.lower():
-                        for col in tbl.get("columns", []):
-                            if col["column_name"] == column:
-                                copy_extensions(target, col)
+            # column routing via postfix (and conflict check)
+            for k, v in target.items():
+                if not is_ext_key(k):
+                    continue
+                postfix_flags = parse_ext_destinations(k)
+                if not postfix_flags or "c" not in postfix_flags:
+                    continue
+
+                for target_table_name in dvpi_document.get("tables", []):
+                    if target_table_name["table_name"].lower() != table.lower():
+                        continue
+
+                    for target_column_name in target_table_name.get("columns", []):
+                        if target_column_name.get("column_name") != column:
+                            continue
+
+                        # conflict check: same table+column+key but different value
+                        if k in target_column_name and target_column_name[k] != v:
+                            register_error(
+                                f"ASE-1: More than one extension value '{k}' for column '{column}' "
+                                f"of table '{table}': '{target_column_name[k]}', '{v}'"
+                            )
+                        else:
+                            target_column_name[k] = v
 
             # hash keyword
-            if any(is_ext_key(k) and "hash" in k for k in target):  # fields[0].targets[0]. with "hash" in name -> parse_sets.hashes[0].hash_fields[0]
+            if any(is_ext_key(k) and "hash" in k for k in target):
                 hf = dvpi_hash_lookup.get((field["field_name"], table.lower(), column))
                 if hf:
                     copy_extensions(target, hf)
@@ -3042,6 +3255,7 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
     global g_hash_dict
     global g_model_profile_dict
     global g_pipeline_model_profile_name
+    global g_field_to_stage_column_name
 
     g_table_dict = {}
     g_dvpi_document = {}
@@ -3049,6 +3263,7 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
     g_error_count = 0
     g_hash_dict = {}
     g_model_profile_dict = {}
+    g_field_to_stage_column_name ={}
     g_pipeline_model_profile_name = ""
 
     params = configuration_load_ini(ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
@@ -3069,14 +3284,14 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
         with open(dvpd_file_path, "r") as dvpd_file:
             dvpd_object = json.load(dvpd_file)
     except json.JSONDecodeError as e:
-        register_error("ERROR: JSON Parsing error of file " + dvpd_file_path.name)
+        register_error("DW-1: JSON Parsing error of file " + dvpd_file_path.name)
         log_progress(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
         raise DvpdcError
 
     # check, if the model profile declared is available
     g_pipeline_model_profile_name = dvpd_object.get('model_profile_name', '_default')
     if g_pipeline_model_profile_name not in g_model_profile_dict:
-        register_error(f"Model profile '{g_pipeline_model_profile_name}' declared in pipeline does not exist")
+        register_error(f"DW-2: Model profile '{g_pipeline_model_profile_name}' declared in pipeline does not exist")
         raise DvpdcError
 
     check_essential_structure(dvpd_object)
@@ -3099,6 +3314,9 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
     if g_error_count > 0:
         raise DvpdcError
 
+    check_link_parent_consistency()
+    if g_error_count > 0:
+        raise DvpdcError
 
     derive_load_operations()
     if g_error_count > 0:
@@ -3120,6 +3338,22 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
     if g_error_count > 0:
         raise DvpdcError
 
+    # fields must not be empty
+    fields = dvpd_object.get("fields", None)
+    if not isinstance(fields, list) or len(fields) == 0:
+        register_error(" DW-3: Field list must be a non-empty list.")
+        raise DvpdcError
+
+    # structural elements not allowed for satellites
+    for schema in dvpd_object.get("data_vault_model", []):
+        for table in schema.get("tables", []):
+            if table.get("table_stereotype", "").lower() == "sat":
+                if table.get("is_only_structural_element", False):
+                    register_error(
+                        f"DW-4: 'is_only_structural_element' cannot be declared for satellites. ('{table.get('table_name')}')"
+                    )
+                    raise DvpdcError
+
     # remove any load operations from "is_only_structural_element" tables
     for table_name, table_entry in g_table_dict.items():
         if table_entry['is_only_structural_element']:
@@ -3127,7 +3361,8 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
 
     assemble_dvpi(dvpd_object, dvpd_filename)
     apply_syntax_extensions(dvpd_object, g_dvpi_document)
-    # print_dvpi_document()
+    if g_error_count > 0:
+        raise DvpdcError
 
     # write DVPI to file
     if dvpi_directory == None:
@@ -3144,7 +3379,7 @@ def dvpdc_worker(dvpd_filename, dvpi_directory=None, dvpdc_report_directory=None
         with open(dvpi_file_path, "w") as dvpi_file:
             json.dump(g_dvpi_document, dvpi_file, ensure_ascii=False, indent=2)
     except json.JSONDecodeError as e:
-        register_error("ERROR: JSON writing to  of file " + dvpi_file_path.as_posix())
+        register_error("DW-5: JSON writing to  of file " + dvpi_file_path.as_posix())
         log_progress(e.msg + " in line " + str(e.lineno) + " column " + str(e.colno))
         raise DvpdcError
 

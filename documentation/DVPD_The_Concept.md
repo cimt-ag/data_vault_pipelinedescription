@@ -154,15 +154,15 @@ the implementation and processing can be made easier and faster, when already ex
 
 Example: when calculating new information for an *invoice* and storing this in a satellite of the raw vault invoice hub, 
 it is not necessary to calculate the the hub key again, since the hub keys will not change. 
-They can already be part of the incoming resultset as identifiers.
+They can already be part of the incoming resultset as identifiers and just copied to the new target.
 
-Detailed declaration about the business key and its composition rules is only needed, when new link row are created, since the link
+Detailed declaration about the business key and its composition rules is only needed, when new link rows are created, since the link
 key contains the business keys of all hubs.
 
 Scenarios, that must be supported by the syntax, are described here:
 * [Hash source scenarios](./images/hash_source_scenarios.drawio.png)
 
-Dvpds must allow the declaration of incoming key values, to omit unecessary loading of unchanged hubs/links and unnecessary calculation of
+Dvpds must allow the declaration of incoming vault key values, to omit unnecessary loading of unchanged hubs/links and unnecessary calculation of
 hub/link keys. 
 
 ## Loading processes
@@ -426,14 +426,21 @@ To many exceptions from the approved syntax had to be invented and blew up the s
 had been created for the "normal" data vault pipeline.
 
 ## Extention key word syntax
-Keywords, that are not part of the dvpd core syntax, have to have a prefix, starting with "x" and an extention identifier. (e.g. "xdbt_column_is_multi_active_key" with "xdbt" beeing
+
+The syntax extension mechanism is designed to:
+- Keep DVPD concise and readable.
+- Allow adding new behavior without changing the base structure.
+- Work correctly with complex models and different relations.
+
+Keywords, that are not part of the dvpd core syntax, have to have a **prefix, starting with "x"** and an extention identifier. (e.g. "xdbt_column_is_multi_active_key" with "xdbt" beeing
 the prefix for the dbt extention
 )
-These keywords will not be evaluated by a dvpd compiler but get copied to corresponding elements in the compiler output (dvpi) depending on
-- the dvpd element, it was set 
-- dedicated name elements in the key word (e.g. "column" in "xdbt_load_is_multi_active_key")
+These keywords and their values will not be evaluated by a dvpd compiler but get copied to corresponding elements in the compiler output (dvpi).
+The target location depends on on
+- the dvpd element, teh keyword was placed in (e.g puttin it into a dvpd field definition will place it in corresponding field definition in the DVPI) 
+- an optional routing postfix  (e.g.  "xctln_addon_xhl" - would only be placed in the hash field and the load operation sections of the DVPI)
 
-The core syntax reference and dvpi reference document explain the mapping rules for extention keywords in the **x???_????..**
+The core syntax reference explains the mapping rules for extention keywords in the **x???_????.. = extention key word**
 paragraphs. 
 
 

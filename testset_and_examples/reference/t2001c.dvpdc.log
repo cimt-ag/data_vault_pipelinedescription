@@ -1,8 +1,7 @@
 Data vault pipeline description compiler log 
 === DVPD Compiler Version 0.6.3 ===
-Compile time: 2025-12-10 09:11:15
+Compile time: 2025-12-12 14:56:05
 Compiling t2001c.dvpd.json
 
-ERROR: JSON Parsing error of file t2001c.dvpd.json
-Expecting value in line 16 column 6
+DLO-23: Column name conflict in table 'rtjj_2001_aaa_p1_sat' for column 'F3_AAA_P1_C1': fields ['F3_AAA_P1_C1', 'f3_aaa_p1_c1']. Set different 'column_name' in the DVPD.
 *** Compilation ended with errors ***
