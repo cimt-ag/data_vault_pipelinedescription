@@ -124,7 +124,7 @@ def create_ghost_records(full_name, columns):
                 scale = int(scale)
             base_type = base_type.upper()
             if base_type not in const_for_missing_map:
-                raise ApplicationException(f"Have no rule to create missing value for Column type '{base_type}' from column'{column['column_name']}'")
+                raise ApplicationException(f"Have no rule how to set the 'missing value' for column type '{base_type}' used at column '{column['column_name']}'")
 
             value_for_missing = const_for_missing_map[base_type]
             # print(f'base_type: {base_type} | nullable: {nullable} | const_for_missing: {value_for_missing}\n')
