@@ -706,7 +706,7 @@ def create_columns_from_field_mapping(field_entry, field_position):
                             'relation_names':relation_names_cleansed}
 
         # assemble direct key mapping, and store it as table property
-        if table_mapping.get('use_as_key_hash', False):
+        if cast2Bool(table_mapping.get('use_as_key_hash', False)):
             if table_entry['table_stereotype'] != 'hub' and table_entry['table_stereotype'] != 'lnk':
                 #todo: create test for CFM-3
                 register_error(
@@ -723,19 +723,19 @@ def create_columns_from_field_mapping(field_entry, field_position):
                                                             field_entry['field_type']).upper()  # defaults to field type
         if 'is_multi_active_key' in table_mapping:
             if table_entry['table_stereotype'] == 'sat':
-                column_map_entry['is_multi_active_key'] = table_mapping.get('is_multi_active_key')
+                column_map_entry['is_multi_active_key'] = cast2Bool(table_mapping.get('is_multi_active_key'))
             else:
                 register_error(
                     "CFM-1: 'is_multi_avtive_key' property declared for non-sat entity. (property can only be declared if target is a multi-active satellite)")
         column_map_entry['row_order_direction'] = table_mapping.get('row_order_direction', 'ASC')  # defaults to ASC
-        column_map_entry['exclude_from_key_hash'] = table_mapping.get('exclude_from_key_hash',
-                                                                      False)  # defaults to False
-        column_map_entry['exclude_from_change_detection'] = table_mapping.get('exclude_from_change_detection',
-                                                                              False)  # defaults to False
+        column_map_entry['exclude_from_key_hash'] = cast2Bool(table_mapping.get('exclude_from_key_hash',
+                                                                      False))  # defaults to False
+        column_map_entry['exclude_from_change_detection'] = cast2Bool(table_mapping.get('exclude_from_change_detection',
+                                                                              False))  # defaults to False
         column_map_entry['column_content_comment'] = table_mapping.get('column_content_comment',
                                                                        field_entry.get('field_comment'))
-        column_map_entry['update_on_every_load'] = table_mapping.get('update_on_every_load',
-                                                                     False)  # defaults to False
+        column_map_entry['update_on_every_load'] = cast2Bool(table_mapping.get('update_on_every_load',
+                                                                     False))  # defaults to False
         try:
             column_map_entry['prio_in_key_hash'] = int(table_mapping.get('prio_in_key_hash', 0))  # defaults to 0
             column_map_entry['prio_for_column_position'] = int(
@@ -744,8 +744,7 @@ def create_columns_from_field_mapping(field_entry, field_position):
                 table_mapping.get('prio_for_row_order', 50000))  # defaults to 50000
             column_map_entry['prio_in_diff_hash'] = int(table_mapping.get('prio_in_diff_hash', 0))  # defaults to 0
         except ValueError as ve:
-            #todo: error code to message
-            register_error(
+            log_progress(
                 f"Error when reading numerical properties from  mapping of field '{field_name}' to table '{table_name}':" + str(
                     ve))
 
@@ -794,7 +793,7 @@ def check_multifield_mapping_consistency_of_column(table_name, column_name, colu
     Registers errors
     """
     properties_to_align = ['column_type', 'prio_for_column_position', 'prio_for_row_order', 'exclude_from_key_hash'
-        , 'prio_in_key_hash', 'exclude_from_change_detection', 'prio_in_diff_hash']
+        , 'prio_in_key_hash', 'exclude_from_change_detection', 'prio_in_diff_hash', 'update_on_every_load']
     if not 'field_mappings' in column_entry:
         raise (f" no field mappings on data column {column_name} in table {table_name}")
     if len(column_entry['field_mappings']) < 2:
@@ -853,9 +852,14 @@ def derive_content_dependent_hub_properties(table_name, table_entry):
             else:
                 column_properties['column_class'] = 'business_key'
                 has_business_key = True
+                if first_field.get('update_on_every_load', False):
+                    register_error(
+                        f"CDH-S2: Hub table '{table_name}' column '{column_name}' is a business key and "
+                        f"must not declare 'update_on_every_load=true'"
+                    )
             column_properties['field_mapping_count'] = len(column_properties['field_mappings'])
             for property_name in ['column_type', 'prio_for_column_position', 'field_position', 'prio_in_key_hash',
-                                  'exclude_from_key_hash', 'column_content_comment']:
+                                  'exclude_from_key_hash', 'column_content_comment', 'update_on_every_load']:
                 column_properties[property_name] = first_field[property_name]
             add_generic_relation_mappings(column_properties)
 
@@ -914,9 +918,14 @@ def derive_content_dependent_lnk_properties(table_name, table_entry):
                 column_properties['column_class'] = 'content_untracked'
             else:
                 column_properties['column_class'] = 'dependent_child_key'
+                if first_field.get('update_on_every_load', False):
+                    register_error(
+                        f"CDL-S3: Link table '{table_name}' column '{column_name}' is a dependent child key and "
+                        f"must not declare 'update_on_every_load=true'"
+                    )
             column_properties['field_mapping_count'] = len(column_properties['field_mappings'])
             for property_name in ['column_type', 'prio_for_column_position', 'field_position', 'prio_in_key_hash',
-                                  'exclude_from_key_hash', 'column_content_comment']:
+                                  'exclude_from_key_hash', 'column_content_comment', 'update_on_every_load']:
                 column_properties[property_name] = first_field[property_name]
             add_generic_relation_mappings(column_properties)
 
@@ -970,7 +979,7 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
 
     for column_name, column_properties in table_entry['data_columns'].items():
         first_field = column_properties['field_mappings'][0]
-        if first_field['exclude_from_change_detection']:
+        if first_field['exclude_from_change_detection'] :
             column_properties['column_class'] = 'content_untracked'
         else:
             column_properties['column_class'] = 'content'
@@ -982,7 +991,7 @@ def derive_content_dependent_sat_properties(table_name, table_entry):
                     f"CDP-1: 'is_multi_active_key' property can only be used when target table is a multi-active satellite")
         column_properties['field_mapping_count'] = len(column_properties['field_mappings'])
         for property_name in ['column_type', 'column_content_comment', 'prio_for_column_position', 'prio_for_row_order',
-                              'row_order_direction', 'exclude_from_change_detection', 'prio_in_diff_hash']:
+                              'row_order_direction', 'exclude_from_change_detection', 'prio_in_diff_hash', 'update_on_every_load']:
             column_properties[property_name] = first_field[property_name]
         add_generic_relation_mappings(column_properties)
 
@@ -1010,7 +1019,7 @@ def derive_content_dependent_ref_properties(table_name, table_entry):
             column_properties['column_class'] = 'content'
         column_properties['field_mapping_count'] = len(column_properties['field_mappings'])
         for property_name in ['column_type', 'column_content_comment', 'prio_for_column_position',
-                              'exclude_from_change_detection', 'prio_in_diff_hash']:
+                              'exclude_from_change_detection', 'prio_in_diff_hash', 'update_on_every_load']:
             column_properties[property_name] = first_field[property_name]
         add_generic_relation_mappings(column_properties)
 
@@ -1958,7 +1967,7 @@ def add_hash_column_mappings_for_sat(table_name, table_entry):
 
         hash_fields = []
         for column_name, column_entry in load_operation_entry['data_mapping_dict'].items():
-            if column_entry['exclude_from_change_detection']:
+            if column_entry['exclude_from_change_detection'] or column_entry.get('update_on_every_load', False):
                 continue
             hash_field = {'field_name': column_entry['field_name'],
                           'prio_in_diff_hash': column_entry['prio_in_diff_hash'],
@@ -2048,7 +2057,7 @@ def add_hash_column_mappings_for_ref(table_name, table_entry):
 
         hash_fields = []
         for column_name, column_entry in load_operation_entry['data_mapping_dict'].items():
-            if column_entry['exclude_from_change_detection']:
+            if column_entry['exclude_from_change_detection'] or column_entry.get('update_on_every_load', False):
                 continue
             hash_field = {'field_name': column_entry['field_name'],
                           'prio_in_diff_hash': column_entry['prio_in_diff_hash'],
@@ -2366,7 +2375,7 @@ def assemble_dvpi_table_entry(table_name, table_entry):
 
     # add data columns to columns
     data_column_properties_to_copy = ['column_class', 'column_type', 'column_content_comment',
-                                      'exclude_from_change_detection', 'prio_for_column_position']
+                                      'exclude_from_change_detection', 'prio_for_column_position', 'update_on_every_load']
     if 'data_columns' in table_entry:
         for column_name, column_entry in table_entry['data_columns'].items():
             dvpi_column_entry = {'column_name': column_name, 'is_nullable': True, }
@@ -2546,6 +2555,8 @@ def assemble_dvpi_data_mappings(load_operation_entry):
         }
         if 'is_multi_active_key' in data_mapping_dict_entry:
             dvpi_data_mapping_entry['is_multi_active_key'] = data_mapping_dict_entry['is_multi_active_key']
+        if 'update_on_every_load' in data_mapping_dict_entry:
+            dvpi_data_mapping_entry['update_on_every_load'] = data_mapping_dict_entry['update_on_every_load']
         dvpi_data_mappings.append(dvpi_data_mapping_entry)
     return dvpi_data_mappings
 

@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2026-04-08 10:56:44
+Compiling t1356c.dvpd.json
+
+CDL-S3: Link table 'rtjj_1356_aaa_bbb_lnk' column 'F3_AAA_BBB_DCK1F' is a dependent child key and must not declare 'update_on_every_load=true'
+*** Compilation ended with errors ***

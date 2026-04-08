@@ -1,0 +1,21 @@
+{
+	"dvpd_version": "0.6.3",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t1355c",
+	"record_source_name_expression": "t_uoel_hub_conflict_01",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+	"fields": [
+				{ "field_name": "F1_AAA_BK1F", "field_type": "VARCHAR(20)", "targets": [{ "table_name": "rtjj_1355_aaa_hub",
+																							"exclude_from_key_hash": false,
+																							"update_on_every_load": true }] }
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_1355_aaa_hub",		"table_stereotype": "hub", 	"hub_key_column_name": "HK_rtjj_1355_aaa"}
+				]
+		}
+	]
+}

@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2026-04-08 10:56:44
+Compiling t1355c.dvpd.json
+
+CDH-S2: Hub table 'rtjj_1355_aaa_hub' column 'F1_AAA_BK1F' is a business key and must not declare 'update_on_every_load=true'
+*** Compilation ended with errors ***

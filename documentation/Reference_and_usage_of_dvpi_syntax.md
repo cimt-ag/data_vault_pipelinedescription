@@ -551,7 +551,7 @@ the compiler uses the stage name with a generated postfix:
 <br>When this property is set to true on at least one data mapping, the loading process must update
 the column in an existing current record if no new row is inserted. Identification of the record is 
 done as follows: hub - hub key, link - link key, sat - parent key, multi active sat - <depends on 
-multiactive historization pattern>, reference table- same set of values in all columns that are not udpated
+multiactive historization pattern>, reference table- same set of values in all columns that are not updated
 on every load (diff hash can be used as shortcut when available)
 
 **is_multi_active_key**
