@@ -48,7 +48,9 @@ def report_unexpected(keyword, path):
 
 def report_type_missmatch(expected_value, found_value, path):
     global g_difference_count
-    print(f"ATST--EI:[{g_test_id}] /{path}:Wrong type '{type(found_value)}' ! Expected '{type(expected_value)}'  (ls-diff:{distance(found_value,expected_value)}) ")
+    found_type=str(type(found_value))
+    expected_type=str(type(expected_value))
+    print(f"ATST--EI:[{g_test_id}] /{path}:Wrong type '{found_type}' ! Expected '{expected_type}'  ")
     g_difference_count += 1
 
 def report_list_length_missmatch(expected_list, found_list, path):
@@ -281,6 +283,7 @@ if __name__ == "__main__":
     reference_missing_list=[]
     crashed_file_list=[]
     incorrect_file_list=[]
+    autotest_file_list=[]
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--dvpd_filename","-f", required=False, help="Name of the dvpd file to test")
@@ -324,10 +327,34 @@ if __name__ == "__main__":
         else:
             print(f"!!! Unhandled test result: {result} !!!")
 
+    # check for the 2 tripwire tests we have evaluate the crash detection in the automated test
+
+    autotests_sucessfull= True
+    autotest_filename='t0011_autotest_with_error_provocation.json'
+    if autotest_filename in failing_file_list:
+        autotest_file_list.append(autotest_filename)
+        failing_file_list.remove(autotest_filename)
+    else:
+        autotests_sucessfull=False
+
+    autotest_filename = 't0010c_autotest_c_without_error_provocation.json'
+    if autotest_filename in incorrect_file_list:
+        autotest_file_list.append(autotest_filename)
+        incorrect_file_list.remove(autotest_filename)
+    else:
+        autotests_sucessfull=False
+
+
+
     print("\n==================== Test Summary ================================")
     print("\nvvv---Passed tests---vvv")
     for filename in successful_file_list:
         print(filename)
+
+    print("\nvvv---Autotest Crash detection  tests---vvv")
+    for filename in autotest_file_list:
+        print(filename)
+
 
     if len(difference_file_list)>0:
         print("\nvvv---Result differs---vvv")
@@ -355,11 +382,6 @@ if __name__ == "__main__":
             print(filename)
 
 
-
-
-
-
-
     print('\nTest log search hint:')
     print ('find "ATST---" for main results only,  "ATST--" to also include details, "ATST--EI" for details only')
     print ('find "ATST-" for all log output of automated test')
@@ -373,7 +395,11 @@ if __name__ == "__main__":
     file_list_fp=assemble_file_list_fingerprint(successful_file_list)
     report_line+=f"success {len(successful_file_list)} ({file_list_fp})"
 
-    print(f"  {len(successful_file_list)} tests passed ({file_list_fp})")
+    print(f"  {len(successful_file_list)} passed compiler tests({file_list_fp})")
+
+    file_list_fp=assemble_file_list_fingerprint(autotest_file_list)
+    report_line += f"+ cd passed {len(autotest_file_list)} ({file_list_fp})"
+    print(f"  {len(autotest_file_list)} passed crash detection tests ({file_list_fp})")
 
     if len(difference_file_list)>0:
         file_list_fp=assemble_file_list_fingerprint(difference_file_list)
@@ -396,6 +422,9 @@ if __name__ == "__main__":
         report_line += f"+ crash {len(crashed_file_list)} ({file_list_fp})"
         print(f"* {len(crashed_file_list)} tests crashed ({file_list_fp}) **** ")
 
-    print("\nTest state:"+report_line)
+    print("\nTest state: "+report_line)
 
-    print("--- Automated test of DVPDC complete ---")
+    if autotests_sucessfull or explicit_file != None:
+        print("--- Automated test of DVPDC complete ---")
+    else:
+        print ('*** Automated test failed due to internal autotest deviation. Check t0010c and t0011 ***')

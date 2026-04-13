@@ -1,0 +1,8 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-08-25 17:59:12
+Compiling t1027c_AHS-L2_since_lk_cant_be_calculated_when_hub_has_use_as_key_hash_mapping.dvpd.json
+
+AHS-L2: Cant assemble link key fields for 'btjj_1027_aaa_bbb_ccc_lnk', since hub 'rtjj_1027_bbb_hub' has no businiess keys mapped
+AHS-L2: Cant assemble link key fields for 'btjj_1027_aaa_bbb_ccc_lnk', since hub 'rtjj_1027_ccc_hub' has no businiess keys mapped
+*** Compilation ended with errors ***

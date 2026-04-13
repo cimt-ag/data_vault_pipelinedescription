@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-12-10 08:57:28",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5003_willibald_shop_lieferadresse_p1",
   "pipeline_revision_tag": "--none--",
@@ -315,7 +315,7 @@
           "null_values": "0",
           "field_position": 1,
           "needs_encryption": false,
-          "field_name": "LIEFERADRID"
+          "field_name": "lieferadrid"
         },
         {
           "field_type": "CHAR(13) ",
@@ -326,7 +326,7 @@
           "null_values": "0",
           "field_position": 2,
           "needs_encryption": false,
-          "field_name": "KUNDEID"
+          "field_name": "kundeid"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -337,7 +337,7 @@
           "null_values": "803",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "ADRESSZUSATZ"
+          "field_name": "adresszusatz"
         },
         {
           "field_type": "VARCHAR(10) ",
@@ -348,7 +348,7 @@
           "null_values": "0",
           "field_position": 4,
           "needs_encryption": false,
-          "field_name": "HAUSNUMMER"
+          "field_name": "hausnummer"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -359,7 +359,7 @@
           "null_values": "0",
           "field_position": 5,
           "needs_encryption": false,
-          "field_name": "ORT"
+          "field_name": "ort"
         },
         {
           "field_type": "VARCHAR(10) ",
@@ -370,7 +370,7 @@
           "null_values": "0",
           "field_position": 6,
           "needs_encryption": false,
-          "field_name": "PLZ"
+          "field_name": "plz"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -381,7 +381,7 @@
           "null_values": "0",
           "field_position": 7,
           "needs_encryption": false,
-          "field_name": "STRASSE"
+          "field_name": "strasse"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -392,7 +392,7 @@
           "null_values": "806",
           "field_position": 8,
           "needs_encryption": false,
-          "field_name": "LAND"
+          "field_name": "land"
         }
       ],
       "hashes": [
@@ -400,14 +400,6 @@
           "stage_column_name": "HK_LIEFERADRESSE",
           "hash_origin_table": "lieferadresse_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "LIEFERADRID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "lieferadresse_hub",
-              "field_target_column": "LIEFERADRID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -415,20 +407,20 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "lieferadrid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "lieferadresse_hub",
+              "field_target_column": "LIEFERADRID"
+            }
+          ],
           "hash_name": "KEY_OF_LIEFERADRESSE_HUB"
         },
         {
           "stage_column_name": "HK_KUNDE",
           "hash_origin_table": "kunde_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "KUNDEID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "kunde_hub",
-              "field_target_column": "KUNDEID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -436,6 +428,14 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "kundeid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "kunde_hub",
+              "field_target_column": "KUNDEID"
+            }
+          ],
           "hash_name": "KEY_OF_KUNDE_HUB"
         },
         {
@@ -444,14 +444,14 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "LIEFERADRID",
+              "field_name": "lieferadrid",
               "prio_in_key_hash": 0,
               "field_target_table": "lieferadresse_hub",
               "field_target_column": "LIEFERADRID",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "KUNDEID",
+              "field_name": "kundeid",
               "prio_in_key_hash": 0,
               "field_target_table": "kunde_hub",
               "field_target_column": "KUNDEID",
@@ -474,42 +474,42 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "ADRESSZUSATZ",
+              "field_name": "adresszusatz",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferadresse_lieferadresse_p1_sat",
               "field_target_column": "ADRESSZUSATZ"
             },
             {
-              "field_name": "HAUSNUMMER",
+              "field_name": "hausnummer",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferadresse_lieferadresse_p1_sat",
               "field_target_column": "HAUSNUMMER"
             },
             {
-              "field_name": "ORT",
+              "field_name": "ort",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferadresse_lieferadresse_p1_sat",
               "field_target_column": "ORT"
             },
             {
-              "field_name": "PLZ",
+              "field_name": "plz",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferadresse_lieferadresse_p1_sat",
               "field_target_column": "PLZ"
             },
             {
-              "field_name": "STRASSE",
+              "field_name": "strasse",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferadresse_lieferadresse_p1_sat",
               "field_target_column": "STRASSE"
             },
             {
-              "field_name": "LAND",
+              "field_name": "land",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "lieferadresse_lieferadresse_p1_sat",
@@ -543,7 +543,7 @@
           "data_mapping": [
             {
               "column_name": "LIEFERADRID",
-              "field_name": "LIEFERADRID",
+              "field_name": "lieferadrid",
               "column_class": "business_key",
               "stage_column_name": "LIEFERADRID"
             }
@@ -570,37 +570,37 @@
           "data_mapping": [
             {
               "column_name": "ADRESSZUSATZ",
-              "field_name": "ADRESSZUSATZ",
+              "field_name": "adresszusatz",
               "column_class": "content",
               "stage_column_name": "ADRESSZUSATZ"
             },
             {
               "column_name": "HAUSNUMMER",
-              "field_name": "HAUSNUMMER",
+              "field_name": "hausnummer",
               "column_class": "content",
               "stage_column_name": "HAUSNUMMER"
             },
             {
               "column_name": "ORT",
-              "field_name": "ORT",
+              "field_name": "ort",
               "column_class": "content",
               "stage_column_name": "ORT"
             },
             {
               "column_name": "PLZ",
-              "field_name": "PLZ",
+              "field_name": "plz",
               "column_class": "content",
               "stage_column_name": "PLZ"
             },
             {
               "column_name": "STRASSE",
-              "field_name": "STRASSE",
+              "field_name": "strasse",
               "column_class": "content",
               "stage_column_name": "STRASSE"
             },
             {
               "column_name": "LAND",
-              "field_name": "LAND",
+              "field_name": "land",
               "column_class": "content",
               "stage_column_name": "LAND"
             }
@@ -621,7 +621,7 @@
           "data_mapping": [
             {
               "column_name": "KUNDEID",
-              "field_name": "KUNDEID",
+              "field_name": "kundeid",
               "column_class": "business_key",
               "stage_column_name": "KUNDEID"
             }
@@ -722,81 +722,145 @@
         {
           "stage_column_name": "LIEFERADRID",
           "stage_column_class": "data",
-          "field_name": "LIEFERADRID",
+          "field_name": "lieferadrid",
           "is_nullable": true,
           "column_type": "integer ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_hub",
+              "column_name": "LIEFERADRID",
+              "column_type": "INTEGER ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "KUNDEID",
           "stage_column_class": "data",
-          "field_name": "KUNDEID",
+          "field_name": "kundeid",
           "is_nullable": true,
           "column_type": "CHAR(13) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_hub",
+              "column_name": "KUNDEID",
+              "column_type": "CHAR(13) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "ADRESSZUSATZ",
           "stage_column_class": "data",
-          "field_name": "ADRESSZUSATZ",
+          "field_name": "adresszusatz",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_lieferadresse_p1_sat",
+              "column_name": "ADRESSZUSATZ",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "HAUSNUMMER",
           "stage_column_class": "data",
-          "field_name": "HAUSNUMMER",
+          "field_name": "hausnummer",
           "is_nullable": true,
           "column_type": "VARCHAR(10) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_lieferadresse_p1_sat",
+              "column_name": "HAUSNUMMER",
+              "column_type": "VARCHAR(10) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "ORT",
           "stage_column_class": "data",
-          "field_name": "ORT",
+          "field_name": "ort",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_lieferadresse_p1_sat",
+              "column_name": "ORT",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "PLZ",
           "stage_column_class": "data",
-          "field_name": "PLZ",
+          "field_name": "plz",
           "is_nullable": true,
           "column_type": "VARCHAR(10) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_lieferadresse_p1_sat",
+              "column_name": "PLZ",
+              "column_type": "VARCHAR(10) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "STRASSE",
           "stage_column_class": "data",
-          "field_name": "STRASSE",
+          "field_name": "strasse",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_lieferadresse_p1_sat",
+              "column_name": "STRASSE",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "LAND",
           "stage_column_class": "data",
-          "field_name": "LAND",
+          "field_name": "land",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_lieferadresse_p1_sat",
+              "column_name": "LAND",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         }
       ]

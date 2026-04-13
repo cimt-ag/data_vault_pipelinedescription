@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:16",
+  "compile_timestamp": "2025-03-20 10:45:24",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0050_double_esat_relation_separation",
   "pipeline_revision_tag": "--none--",
@@ -1033,6 +1033,20 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_50_aaa_hub",
+              "column_name": "F1_AAABBB_BK1",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            },
+            {
+              "table_name": "rtkk_50_bbb_hub",
+              "column_name": "F1_AAABBB_BK1",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -1043,6 +1057,14 @@
           "column_type": "Decimal(10,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_50_aaa_hub",
+              "column_name": "F2_AAA_BK2F",
+              "column_type": "DECIMAL(10,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -1053,6 +1075,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_50_aaa_p1_sat",
+              "column_name": "F3_AAA_P1_C1",
+              "column_type": "VARCHAR(20)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -1063,6 +1093,14 @@
           "column_type": "DECIMAL(12,2)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_50_aaa_p1_sat",
+              "column_name": "F4_AAA_P1_C2",
+              "column_type": "DECIMAL(12,2)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -1073,6 +1111,14 @@
           "column_type": "VARCHAR(10)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_50_aaa_p1_sat",
+              "column_name": "F5_AAA_P1_C3",
+              "column_type": "VARCHAR(10)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -1083,6 +1129,14 @@
           "column_type": "TIMESTAMP",
           "column_classes": [
             "content_untracked"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_50_aaa_p1_sat",
+              "column_name": "F6_AAA_P1_C4F",
+              "column_type": "TIMESTAMP",
+              "column_class": "content_untracked"
+            }
           ]
         },
         {
@@ -1093,6 +1147,14 @@
           "column_type": "DECIMAL(10,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_50_bbb_hub",
+              "column_name": "F7F8_BBB_BK2F",
+              "column_type": "DECIMAL(10,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -1103,6 +1165,14 @@
           "column_type": "DECIMAL(10,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_50_bbb_hub",
+              "column_name": "F7F8_BBB_BK2F",
+              "column_type": "DECIMAL(10,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -1113,6 +1183,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_50_bbb_p1_sat",
+              "column_name": "F9_BBB_P1_C1F",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         }
       ]

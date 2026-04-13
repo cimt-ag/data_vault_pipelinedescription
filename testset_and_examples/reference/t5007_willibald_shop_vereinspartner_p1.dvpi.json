@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-12-10 08:57:28",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5007_willibald_shop_vereinspartner_p1",
   "pipeline_revision_tag": "--none--",
@@ -291,7 +291,7 @@
           "null_values": "0",
           "field_position": 1,
           "needs_encryption": false,
-          "field_name": "VEREINSPARTNERID"
+          "field_name": "vereinspartnerid"
         },
         {
           "field_type": "CHAR(13) ",
@@ -302,7 +302,7 @@
           "null_values": "0",
           "field_position": 2,
           "needs_encryption": false,
-          "field_name": "KUNDEIDVEREIN"
+          "field_name": "kundeidverein"
         },
         {
           "field_type": "integer ",
@@ -313,7 +313,7 @@
           "null_values": "0",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "RABATT1"
+          "field_name": "rabatt1"
         },
         {
           "field_type": "integer ",
@@ -324,7 +324,7 @@
           "null_values": "0",
           "field_position": 4,
           "needs_encryption": false,
-          "field_name": "RABATT2"
+          "field_name": "rabatt2"
         },
         {
           "field_type": "integer ",
@@ -335,7 +335,7 @@
           "null_values": "0",
           "field_position": 5,
           "needs_encryption": false,
-          "field_name": "RABATT3"
+          "field_name": "rabatt3"
         }
       ],
       "hashes": [
@@ -343,14 +343,6 @@
           "stage_column_name": "HK_VEREINSPARTNER",
           "hash_origin_table": "vereinspartner_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "VEREINSPARTNERID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "vereinspartner_hub",
-              "field_target_column": "VEREINSPARTNERID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -358,20 +350,20 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "vereinspartnerid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "vereinspartner_hub",
+              "field_target_column": "VEREINSPARTNERID"
+            }
+          ],
           "hash_name": "KEY_OF_VEREINSPARTNER_HUB"
         },
         {
           "stage_column_name": "HK_KUNDE",
           "hash_origin_table": "kunde_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "KUNDEIDVEREIN",
-              "prio_in_key_hash": 0,
-              "field_target_table": "kunde_hub",
-              "field_target_column": "KUNDEID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -379,6 +371,14 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "kundeidverein",
+              "prio_in_key_hash": 0,
+              "field_target_table": "kunde_hub",
+              "field_target_column": "KUNDEID"
+            }
+          ],
           "hash_name": "KEY_OF_KUNDE_HUB"
         },
         {
@@ -387,14 +387,14 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "VEREINSPARTNERID",
+              "field_name": "vereinspartnerid",
               "prio_in_key_hash": 0,
               "field_target_table": "vereinspartner_hub",
               "field_target_column": "VEREINSPARTNERID",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "KUNDEIDVEREIN",
+              "field_name": "kundeidverein",
               "prio_in_key_hash": 0,
               "field_target_table": "kunde_hub",
               "field_target_column": "KUNDEID",
@@ -417,21 +417,21 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "RABATT1",
+              "field_name": "rabatt1",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "vereinspartner_vereinspartner_p1_sat",
               "field_target_column": "RABATT1"
             },
             {
-              "field_name": "RABATT2",
+              "field_name": "rabatt2",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "vereinspartner_vereinspartner_p1_sat",
               "field_target_column": "RABATT2"
             },
             {
-              "field_name": "RABATT3",
+              "field_name": "rabatt3",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "vereinspartner_vereinspartner_p1_sat",
@@ -465,7 +465,7 @@
           "data_mapping": [
             {
               "column_name": "VEREINSPARTNERID",
-              "field_name": "VEREINSPARTNERID",
+              "field_name": "vereinspartnerid",
               "column_class": "business_key",
               "stage_column_name": "VEREINSPARTNERID"
             }
@@ -492,19 +492,19 @@
           "data_mapping": [
             {
               "column_name": "RABATT1",
-              "field_name": "RABATT1",
+              "field_name": "rabatt1",
               "column_class": "content",
               "stage_column_name": "RABATT1"
             },
             {
               "column_name": "RABATT2",
-              "field_name": "RABATT2",
+              "field_name": "rabatt2",
               "column_class": "content",
               "stage_column_name": "RABATT2"
             },
             {
               "column_name": "RABATT3",
-              "field_name": "RABATT3",
+              "field_name": "rabatt3",
               "column_class": "content",
               "stage_column_name": "RABATT3"
             }
@@ -525,7 +525,7 @@
           "data_mapping": [
             {
               "column_name": "KUNDEID",
-              "field_name": "KUNDEIDVEREIN",
+              "field_name": "kundeidverein",
               "column_class": "business_key",
               "stage_column_name": "KUNDEIDVEREIN"
             }
@@ -626,51 +626,91 @@
         {
           "stage_column_name": "VEREINSPARTNERID",
           "stage_column_class": "data",
-          "field_name": "VEREINSPARTNERID",
+          "field_name": "vereinspartnerid",
           "is_nullable": true,
           "column_type": "VARCHAR(30) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "vereinspartner_hub",
+              "column_name": "VEREINSPARTNERID",
+              "column_type": "VARCHAR(30) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "KUNDEIDVEREIN",
           "stage_column_class": "data",
-          "field_name": "KUNDEIDVEREIN",
+          "field_name": "kundeidverein",
           "is_nullable": true,
           "column_type": "CHAR(13) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_hub",
+              "column_name": "KUNDEID",
+              "column_type": "CHAR(13) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "RABATT1",
           "stage_column_class": "data",
-          "field_name": "RABATT1",
+          "field_name": "rabatt1",
           "is_nullable": true,
           "column_type": "integer ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "vereinspartner_vereinspartner_p1_sat",
+              "column_name": "RABATT1",
+              "column_type": "INTEGER ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "RABATT2",
           "stage_column_class": "data",
-          "field_name": "RABATT2",
+          "field_name": "rabatt2",
           "is_nullable": true,
           "column_type": "integer ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "vereinspartner_vereinspartner_p1_sat",
+              "column_name": "RABATT2",
+              "column_type": "INTEGER ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "RABATT3",
           "stage_column_class": "data",
-          "field_name": "RABATT3",
+          "field_name": "rabatt3",
           "is_nullable": true,
           "column_type": "integer ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "vereinspartner_vereinspartner_p1_sat",
+              "column_name": "RABATT3",
+              "column_type": "INTEGER ",
+              "column_class": "content"
+            }
           ]
         }
       ]

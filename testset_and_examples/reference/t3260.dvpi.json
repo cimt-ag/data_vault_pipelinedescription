@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-12-18 14:39:23",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t3260",
   "pipeline_revision_tag": "--none--",
@@ -225,6 +225,13 @@
           "stage_column_name": "HK_RTJJ_3260_AAA",
           "hash_origin_table": "rtjj_3260_aaa_hub",
           "column_class": "key",
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
           "hash_fields": [
             {
               "field_name": "F1_AAA_BK1F",
@@ -233,13 +240,6 @@
               "field_target_column": "F1_AAA_BK1F"
             }
           ],
-          "column_type": "CHAR(28)",
-          "hash_encoding": "BASE64",
-          "hash_function": "sha-1",
-          "hash_concatenation_seperator": "|",
-          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
-          "hash_null_value_string": "",
-          "model_profile_name": "_default",
           "hash_name": "KEY_OF_RTJJ_3260_AAA_HUB"
         },
         {
@@ -253,13 +253,6 @@
               "field_target_table": "rtjj_3260_aaa_hub",
               "field_target_column": "F1_AAA_BK1F",
               "parent_declaration_position": 1
-            },
-            {
-              "field_name": "F1_AAA_BK1F",
-              "prio_in_key_hash": 0,
-              "field_target_table": "rtjj_3260_aaa_hub",
-              "field_target_column": "F1_AAA_BK1F",
-              "parent_declaration_position": 2
             },
             {
               "field_name": "F2XX_AAA_AAA_DC1",
@@ -344,12 +337,6 @@
           "hash_mappings": [
             {
               "hash_class": "parent_key_1",
-              "column_name": "HK_RTJJ_3260_AAA",
-              "hash_name": "KEY_OF_RTJJ_3260_AAA_HUB",
-              "stage_column_name": "HK_RTJJ_3260_AAA"
-            },
-            {
-              "hash_class": "parent_key_2",
               "column_name": "HK_RTJJ_3260_AAA",
               "hash_name": "KEY_OF_RTJJ_3260_AAA_HUB",
               "stage_column_name": "HK_RTJJ_3260_AAA"
@@ -464,6 +451,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_3260_aaa_hub",
+              "column_name": "F1_AAA_BK1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -474,6 +469,14 @@
           "column_type": "DATE",
           "column_classes": [
             "dependent_child_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_3260_aaa_aaa_dlnk",
+              "column_name": "F2_AAA_AAA_DC1",
+              "column_type": "DATE",
+              "column_class": "dependent_child_key"
+            }
           ]
         },
         {
@@ -484,6 +487,14 @@
           "column_type": "DATE",
           "column_classes": [
             "dependent_child_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_3260_aaa_aaa_dlnk",
+              "column_name": "F3_AAA_AAA_DC2F",
+              "column_type": "DATE",
+              "column_class": "dependent_child_key"
+            }
           ]
         },
         {
@@ -494,6 +505,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_3260_aaa_aaa_sat",
+              "column_name": "F4_AAA_AAA_C1",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -504,6 +523,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_3260_aaa_aaa_sat",
+              "column_name": "F5_AAA_AAA_C2F",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         }
       ]

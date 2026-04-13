@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2025-12-18 14:48:36
+Compiling t2007c.dvpd.json
+
+LPC-02: Parent table 'rtjj_2007_aaa_hub' is declared multiple times in link 'rtjj_2007_aaa_lnk' with duplicate relation_name values ['TTT', 'TTT']
+*** Compilation ended with errors ***

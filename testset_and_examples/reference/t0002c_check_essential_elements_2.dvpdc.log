@@ -1,11 +1,11 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2024-04-05 12:53:15
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-07-18 19:36:49
 Compiling t0002c_check_essential_elements_2.dvpd.json
 
-missing declaration of 'schema_name' for data_vault_model entry [1]
-missing declaration of 'tables' for data_vault_model entry [2]
-missing declaration of essential field property 'field_name' for field [1]
-missing declaration of essential field property 'field_type' for field [2]
-missing declaration of essential field property 'targets' for field [3]
+CEE-S2: missing declaration of 'schema_name' for data_vault_model entry [1]
+CEE-S3: missing declaration of 'tables' for data_vault_model entry [2]
+CEE-S6: missing declaration of essential field property 'field_name' for field [1]
+CEE-S6: missing declaration of essential field property 'field_type' for field [2]
+CEE-S6: missing declaration of essential field property 'targets' for field [3]
 *** Compilation ended with errors ***

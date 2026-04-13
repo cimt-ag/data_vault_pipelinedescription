@@ -1,0 +1,8 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2026-03-05 20:03:43
+Compiling t1303c.dvpd.json
+
+ASE-1: More than one extension value 'xtkwx_test_load_flag_x' for column 'F4F5F6_BBB_BK2F' of table 'rtjj_1303_bbb_hub': 'BK2_TTT_ONLY', 'BK2_UUU_ONLY'
+ASE-1: More than one extension value 'xtkwx_test_load_flag_x' for column 'F4F5F6_BBB_BK2F' of table 'rtjj_1303_bbb_hub': 'BK2_TTT_ONLY', 'BK2_VVV_ONLY'
+*** Compilation ended with errors ***

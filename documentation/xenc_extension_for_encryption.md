@@ -6,6 +6,10 @@
 
 Creative Commons License [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/)
 
+# DISCLAIMER
+This documentation is a draft and there is no implementation or testing yet in the projekt.
+Check out the release plan in the git project to determine further progress.
+
 # Overview
 
 DVPD is open for extensions, to allow to add features. XENC is a first appliance of this concept.

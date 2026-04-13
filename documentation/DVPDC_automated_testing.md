@@ -72,10 +72,12 @@ Tests are grouped by number ranges. See test list at the end of this article.
 
 **Names in the data model**
 - the main schema is "rlvt_text_jj" with the shortcut "rtjj"
-- for multi schema test cases, additional schemas are named by progressing in the alphabet (kk,ll,mm)
+- for multi schema test cases, additional schemas are named by progressing in the alphabet (kk,ll,mm,nn) using nn for
+elements that assist as reference during debugging 
 - table names are structured as follows: \<schema shortcut>_\<testnumber>_\<identifier>_\<stereotype>
     - \<schema_shortcut>: rtjj, rtkk, rtll ...
-    - \<identifier for hubs> 3 times a letter from A to G (e.g. AAA,BBB)
+    - \<identifier for hubs> 3 times a letter from A to I (e.g. AAA,BBB) A-F for test challenges and G-I to ass 
+elements that assist as reference during debugging 
     - \<identifier for links> identifiers of all connected hubs separated by + optional "_" \<identifier for relation> + optional "_" \<identifier for parent paths when different to relation>
     - \<identifier for sattelites> identifier of parent + part identification (p1, p2, ...) or optional \<identifier for relation>
     - \<stereotype> extended stereotype postfix (e.g. hub, sat, lnk, dlnk, esat,msat,...)
@@ -115,24 +117,25 @@ Examples:
 # test list
 The following number ranges are defined (a legacy from the proof the development):
 
-| Number           | Focussed Features                                                                                    | 
-|------------------|------------------------------------------------------------------------------------------------------|
-| **00 - 19**      | **Violation of validation rules**                                                                    |
-| 00               | Compiler must complain about missing essential syntax elements                                       |
-| 01               | Compiler must complain about bad model relations                                                     |
-| 02               | Compiler must complain about bad fiels mapping                                                       |
-| 03               | Compiler must complain about satellite specifc violations                                             |
-| **20 - 39**      | **Varations of basic data vault modelling**                                                          |
-| **40 - 49**      | Reference tables**                                                                                   |
-| **50 - 59**      | **multiple features in many variations, used in compiler development**                               |
-| **60- 89**       | **relation variations (might be replaced by 100-999 and 3xxx later**                                 |
-| **90 - 99**      | **model profile usage**                                                                              |
-| **100-999**      | see  [catalog_of_field_mappings_in_relations.md](catalog_of_field_mappings_in_relations.md)          |                                                        |
-| **1000-2999**    | **Collection without central topic**                                                                 |
-| **300x-499x**    | **process generation variations** with x = 0 for basic tests and x>0 for violations of compiler rules |
-| **5000-5099**    | **DDVUG Test Usecase "Gartenscenter** willibald"                                                       |
-| **7xxx-9xxx**    | **Compiler rule checks, based on cases in 100-999. Using the same 3 digit numbers**                  |
-|                  |                                                                                                      |
+| Number         | Focussed Features                                                                                     | 
+|----------------|-------------------------------------------------------------------------------------------------------|
+| **00 - 19**    | **Violation of validation rules**                                                                     |
+| 00             | Compiler must complain about missing essential syntax elements                                        |
+| 01             | Compiler must complain about bad model relations                                                      |
+| 02             | Compiler must complain about bad fiels mapping                                                        |
+| 03             | Compiler must complain about satellite specifc violations                                             |
+| **20 - 39**    | **Varations of basic data vault modelling**                                                           |
+| **40 - 49**    | Reference tables**                                                                                    |
+| **50 - 59**    | **multiple features in many variations, used in compiler development**                                |
+| **60- 89**     | **relation variations (might be replaced by 100-999 and 3xxx later**                                  |
+| **90 - 99**    | **model profile usage**                                                                               |
+| **100-999**    | see  [catalog_of_field_mappings_in_relations.md](catalog_of_field_mappings_in_relations.md)           |                                                        |
+| **1000-2999**  | **Collection without central topic**                                                                  |
+| **300x-499x**  | **process generation variations** with x = 0 for basic tests and x>0 for violations of compiler rules |
+| **5000-5099**  | **DDVUG Test Usecase "Gartenscenter** willibald"                                                      |
+| **5200-5299**  | **cimt framework special cases**                                                            |
+| **7xxx-9xxx**  | **Compiler rule checks, based on cases in 100-999. Using the same 3 digit numbers**                   |
+|                |                                                                                                       |
 
 ## Collection without central topic
 Test numbers 1000 to 2999 can be used for singular or very small groups of tests, for any topic, not targeted by the big

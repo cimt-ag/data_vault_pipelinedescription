@@ -154,6 +154,9 @@ A DVPI is expressed with JSON syntax and contains the following attributes (Keys
 **dvpd_filemame**
 <br>Name of the compiled DVPD file. Just for auditability
 
+**x???_????.. = extention key word**
+<br>Will show up for extention keywords that are declared on root level
+
 **tables[]**
 <br>List of all data vault tables, loaded by this pipeline.
 <br>→ see "tables[]"
@@ -265,6 +268,10 @@ Possible values:
 **exclude_from_change_detection**
 <br>Defines, if the column should be used in the change detection for loading satellites or reference tables. (#the meaning needs more clarification, since column_class and uses_diff_hash also control the elements involved#)
 
+**x???_????.. = extention key word**
+<br>Will show up for field to table mappings, that have the extention keyword as property of the table column 
+
+
 ### data_extraction
 Json path: $
 
@@ -276,6 +283,9 @@ Contains all declarations needed to define the methods, how to retrieve the data
 **parse_module_name**
 <br>(future version)
 <br>The name of the module to be used for parsing
+
+**x???_????.. = extention key word**
+<br>Will show up for data_extractions , that have the extention keyword declared
 
 **...**
 <br>
@@ -356,7 +366,10 @@ Be aware: This property can be missused to provide cleansing and transformation 
 not to do so. It's purpose should be restricted to insert data from the execution environment into the dataset. Every kind of cleansing and 
 transformation of the source data, should be done before the staging.
 
-**\<more properties to come>**
+
+
+**x???_????.. = extention key word**
+<br>Will show up for fields , that have the extention keyword declared
 
 
 ### hashes[]
@@ -387,6 +400,11 @@ table is delivered by a source field.
 **hash_fields[]**
 <br>List of the fields, that need to be concatenated for the hash.
 <br>→ see "hash_fields[]"
+
+**direct_key_field**
+<br>*optional*
+<br>When defined, this contains the name of the field, that provides the calculated hash value. Therefore
+a hash calculation for this hash is not necessary.
 
 **column_type**
 <br>Column type of the hash value in the target table.
@@ -451,6 +469,9 @@ This should be used to organize a column name specific order when assembling lin
 <br>Only for link hash keys, this is the position of the parent table in the link_parent_tables[] list in the DVPD. 
 This might be used to organize a link parent  declaration specific order, when assembling link keys.
 
+**x???_????.. = extention key word**
+<br>Will show up for field to table mappings, that have the extention keyword as property of the table column
+
 
 ### load_operations[]
 Json Path: $.parse_sets[]
@@ -495,11 +516,14 @@ Json Path: $.parse_sets[].load_operations[]
 **hash_class**
 <br>Class of the hash: key, parent_key, diff_hash. Needed to identify the special columns for the loading procedure, depending on the table_stereotype.
 
-**field_name**
-<br>Name of the field, containing the precalculated value in the source data set. Must only be set, when hash_name is not set.
+**direct_key_field**
+<br>*optional*
+<br>When defined, this contains the name of the field, that provides the calculated hash value. 
 
 **stage_column_name**
 <br>Name of the stage column, the hash can be taken from, when using stage table approach
+<br>Uses the same conflict-safe uppercase stage column name determined:
+<br>*HK_RTJJ_2000_AAA << F3_AAA_P1_C1__ABCD1*
 
 ### data_mapping[]
 (will be renamed to "field_mappings" in 0.6.3)
@@ -519,6 +543,9 @@ Json Path: $.parse_sets[].load_operations[]
 
 **stage_column_name**
 <br>Name of the stage column, the data must be taken from, when using the stage table approach.
+<br>If the originating DVPD field belonged to a case-insensitive duplicate group,
+the compiler uses the stage name with a generated postfix:
+<br>*(e.g."F3_AAA_P1_C1__ABCD1")*
 
 **update_on_every_load**
 <br>When this property is set to true on at least one data mapping, the loading process must update
@@ -567,7 +594,8 @@ The consolidated list of stage table columns.
 
 **stage_column_name**
 <br>Name of the stage column. Must be used, when generating the table object.
-
+<br>If two DVPD fields differ only by case (e.g. F3_AAA_P1_C1 vs f3_aaa_p1_c1),
+the compiler generates unique stage column names by appending a deterministic short hash postfix.
 **column_type**
 <br>Type of the stage column.Must be used, when generating the table object.
 
@@ -587,7 +615,34 @@ The consolidated list of stage table columns.
 <br>list of column classes of the target tables, this stage column is  mapped to.
 Might be used to order the columns of the stage table by class, when creating the table. (e.g. business keys first, then content columns, then untracked columns)
 
+**targets**
+<br>Provides detailed mapping information about where the stage column's data is stored in the target tables. 
+<br>This enables schema validation, data integrity enforcement, and transformation logic consistency.
+<br>Targets might be an empty list, when the field is only used to calculate hash values
+<br>→ see "targets[]"
 
+### targets[]
+<br>Provides detailed mapping information about where the stage column's data is stored in the target tables. 
+<br>This enables schema validation, data integrity enforcement, and transformation logic consistency.
+<br>The list might be empty, when the source field is only used to calculate hash values but never mapped 
+to a target table.
+<br>Each entry in the targets list contains:
+
+**table_name**
+<br> The name of the target table where this column's data is loaded.This ensures that data is placed in the correct table.
+
+**column_name**
+<br>The corresponding column name in the target table.Helps in verifying schema alignment and mapping correctness.
+
+**column_type**
+<br>The type of the column in the target table, ensuring that data types match between the stage and target tables.
+
+**column_class**
+<br>The classification of the column in the target table, defining its role (e.g., business key, dependent child key, content, etc.).
+
+### x???_????.. = extention key word
+All syntax ectension keyword that are declared in DVPD are materialized into DVPI according to routing rules (See DVPD core syntax).
+They are copied only to their defined semantic targets.
 
 
 

@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-12-10 08:57:28",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5050_willibald_roadshow_rs_bestellung_p1",
   "pipeline_revision_tag": "--none--",
@@ -417,7 +417,7 @@
           "null_values": "0",
           "field_position": 1,
           "needs_encryption": false,
-          "field_name": "BESTELLUNGID"
+          "field_name": "bestellungid"
         },
         {
           "field_type": "VARCHAR(30) ",
@@ -428,7 +428,7 @@
           "null_values": "0",
           "field_position": 2,
           "needs_encryption": false,
-          "field_name": "VEREINSPARTNERID"
+          "field_name": "vereinspartnerid"
         },
         {
           "field_type": "CHAR(13) ",
@@ -439,7 +439,7 @@
           "null_values": "912",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "KUNDEID"
+          "field_name": "kundeid"
         },
         {
           "field_type": "integer ",
@@ -450,7 +450,7 @@
           "null_values": "0",
           "field_position": 4,
           "needs_encryption": false,
-          "field_name": "PRODUKTID"
+          "field_name": "produktid"
         },
         {
           "field_type": "CHAR(5) ",
@@ -461,7 +461,7 @@
           "null_values": "626",
           "field_position": 5,
           "needs_encryption": false,
-          "field_name": "GUELTIGBIS"
+          "field_name": "gueltigbis"
         },
         {
           "field_type": "date ",
@@ -472,7 +472,7 @@
           "null_values": "0",
           "field_position": 6,
           "needs_encryption": false,
-          "field_name": "KAUFDATUM"
+          "field_name": "kaufdatum"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -483,7 +483,7 @@
           "null_values": "626",
           "field_position": 7,
           "needs_encryption": false,
-          "field_name": "KKFIRMA"
+          "field_name": "kkfirma"
         },
         {
           "field_type": "VARCHAR(30) ",
@@ -494,7 +494,7 @@
           "null_values": "626",
           "field_position": 8,
           "needs_encryption": false,
-          "field_name": "KREDITKARTE"
+          "field_name": "kreditkarte"
         },
         {
           "field_type": "integer ",
@@ -505,7 +505,7 @@
           "null_values": "0",
           "field_position": 9,
           "needs_encryption": false,
-          "field_name": "MENGE"
+          "field_name": "menge"
         },
         {
           "field_type": "NUMERIC(10,2) ",
@@ -516,7 +516,7 @@
           "null_values": "0",
           "field_position": 10,
           "needs_encryption": false,
-          "field_name": "PREIS"
+          "field_name": "preis"
         },
         {
           "field_type": "NUMERIC(5,2) ",
@@ -527,7 +527,7 @@
           "null_values": "0",
           "field_position": 11,
           "needs_encryption": false,
-          "field_name": "RABATT"
+          "field_name": "rabatt"
         }
       ],
       "hashes": [
@@ -535,14 +535,6 @@
           "stage_column_name": "HK_RS_BESTELLUNG",
           "hash_origin_table": "rs_bestellung_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "BESTELLUNGID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "rs_bestellung_hub",
-              "field_target_column": "BESTELLUNGID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -550,20 +542,20 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "bestellungid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "rs_bestellung_hub",
+              "field_target_column": "BESTELLUNGID"
+            }
+          ],
           "hash_name": "KEY_OF_RS_BESTELLUNG_HUB"
         },
         {
           "stage_column_name": "HK_KUNDE",
           "hash_origin_table": "kunde_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "KUNDEID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "kunde_hub",
-              "field_target_column": "KUNDEID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -571,20 +563,20 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "kundeid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "kunde_hub",
+              "field_target_column": "KUNDEID"
+            }
+          ],
           "hash_name": "KEY_OF_KUNDE_HUB"
         },
         {
           "stage_column_name": "HK_PRODUKT",
           "hash_origin_table": "produkt_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "PRODUKTID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "produkt_hub",
-              "field_target_column": "PRODUKTID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -592,20 +584,20 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "produktid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "produkt_hub",
+              "field_target_column": "PRODUKTID"
+            }
+          ],
           "hash_name": "KEY_OF_PRODUKT_HUB"
         },
         {
           "stage_column_name": "HK_VEREINSPARTNER",
           "hash_origin_table": "vereinspartner_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "VEREINSPARTNERID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "vereinspartner_hub",
-              "field_target_column": "VEREINSPARTNERID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -613,6 +605,14 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "vereinspartnerid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "vereinspartner_hub",
+              "field_target_column": "VEREINSPARTNERID"
+            }
+          ],
           "hash_name": "KEY_OF_VEREINSPARTNER_HUB"
         },
         {
@@ -621,28 +621,28 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "BESTELLUNGID",
+              "field_name": "bestellungid",
               "prio_in_key_hash": 0,
               "field_target_table": "rs_bestellung_hub",
               "field_target_column": "BESTELLUNGID",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "KUNDEID",
+              "field_name": "kundeid",
               "prio_in_key_hash": 0,
               "field_target_table": "kunde_hub",
               "field_target_column": "KUNDEID",
               "parent_declaration_position": 2
             },
             {
-              "field_name": "VEREINSPARTNERID",
+              "field_name": "vereinspartnerid",
               "prio_in_key_hash": 0,
               "field_target_table": "vereinspartner_hub",
               "field_target_column": "VEREINSPARTNERID",
               "parent_declaration_position": 3
             },
             {
-              "field_name": "PRODUKTID",
+              "field_name": "produktid",
               "prio_in_key_hash": 0,
               "field_target_table": "produkt_hub",
               "field_target_column": "PRODUKTID",
@@ -665,49 +665,49 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "GUELTIGBIS",
+              "field_name": "gueltigbis",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
               "field_target_column": "GUELTIGBIS"
             },
             {
-              "field_name": "KAUFDATUM",
+              "field_name": "kaufdatum",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
               "field_target_column": "KAUFDATUM"
             },
             {
-              "field_name": "KKFIRMA",
+              "field_name": "kkfirma",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
               "field_target_column": "KKFIRMA"
             },
             {
-              "field_name": "KREDITKARTE",
+              "field_name": "kreditkarte",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
               "field_target_column": "KREDITKARTE"
             },
             {
-              "field_name": "MENGE",
+              "field_name": "menge",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
               "field_target_column": "MENGE"
             },
             {
-              "field_name": "PREIS",
+              "field_name": "preis",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
               "field_target_column": "PREIS"
             },
             {
-              "field_name": "RABATT",
+              "field_name": "rabatt",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "rs_bestellung_rs_bestellung_p1_sat",
@@ -741,7 +741,7 @@
           "data_mapping": [
             {
               "column_name": "BESTELLUNGID",
-              "field_name": "BESTELLUNGID",
+              "field_name": "bestellungid",
               "column_class": "business_key",
               "stage_column_name": "BESTELLUNGID"
             }
@@ -768,43 +768,43 @@
           "data_mapping": [
             {
               "column_name": "GUELTIGBIS",
-              "field_name": "GUELTIGBIS",
+              "field_name": "gueltigbis",
               "column_class": "content",
               "stage_column_name": "GUELTIGBIS"
             },
             {
               "column_name": "KAUFDATUM",
-              "field_name": "KAUFDATUM",
+              "field_name": "kaufdatum",
               "column_class": "content",
               "stage_column_name": "KAUFDATUM"
             },
             {
               "column_name": "KKFIRMA",
-              "field_name": "KKFIRMA",
+              "field_name": "kkfirma",
               "column_class": "content",
               "stage_column_name": "KKFIRMA"
             },
             {
               "column_name": "KREDITKARTE",
-              "field_name": "KREDITKARTE",
+              "field_name": "kreditkarte",
               "column_class": "content",
               "stage_column_name": "KREDITKARTE"
             },
             {
               "column_name": "MENGE",
-              "field_name": "MENGE",
+              "field_name": "menge",
               "column_class": "content",
               "stage_column_name": "MENGE"
             },
             {
               "column_name": "PREIS",
-              "field_name": "PREIS",
+              "field_name": "preis",
               "column_class": "content",
               "stage_column_name": "PREIS"
             },
             {
               "column_name": "RABATT",
-              "field_name": "RABATT",
+              "field_name": "rabatt",
               "column_class": "content",
               "stage_column_name": "RABATT"
             }
@@ -875,7 +875,7 @@
           "data_mapping": [
             {
               "column_name": "KUNDEID",
-              "field_name": "KUNDEID",
+              "field_name": "kundeid",
               "column_class": "business_key",
               "stage_column_name": "KUNDEID"
             }
@@ -896,7 +896,7 @@
           "data_mapping": [
             {
               "column_name": "PRODUKTID",
-              "field_name": "PRODUKTID",
+              "field_name": "produktid",
               "column_class": "business_key",
               "stage_column_name": "PRODUKTID"
             }
@@ -917,7 +917,7 @@
           "data_mapping": [
             {
               "column_name": "VEREINSPARTNERID",
-              "field_name": "VEREINSPARTNERID",
+              "field_name": "vereinspartnerid",
               "column_class": "business_key",
               "stage_column_name": "VEREINSPARTNERID"
             }
@@ -994,111 +994,199 @@
         {
           "stage_column_name": "BESTELLUNGID",
           "stage_column_class": "data",
-          "field_name": "BESTELLUNGID",
+          "field_name": "bestellungid",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rs_bestellung_hub",
+              "column_name": "BESTELLUNGID",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "VEREINSPARTNERID",
           "stage_column_class": "data",
-          "field_name": "VEREINSPARTNERID",
+          "field_name": "vereinspartnerid",
           "is_nullable": true,
           "column_type": "VARCHAR(30) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "vereinspartner_hub",
+              "column_name": "VEREINSPARTNERID",
+              "column_type": "VARCHAR(30) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "KUNDEID",
           "stage_column_class": "data",
-          "field_name": "KUNDEID",
+          "field_name": "kundeid",
           "is_nullable": true,
           "column_type": "CHAR(13) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_hub",
+              "column_name": "KUNDEID",
+              "column_type": "CHAR(13) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "PRODUKTID",
           "stage_column_class": "data",
-          "field_name": "PRODUKTID",
+          "field_name": "produktid",
           "is_nullable": true,
           "column_type": "integer ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "produkt_hub",
+              "column_name": "PRODUKTID",
+              "column_type": "INTEGER ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "GUELTIGBIS",
           "stage_column_class": "data",
-          "field_name": "GUELTIGBIS",
+          "field_name": "gueltigbis",
           "is_nullable": true,
           "column_type": "CHAR(5) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rs_bestellung_rs_bestellung_p1_sat",
+              "column_name": "GUELTIGBIS",
+              "column_type": "CHAR(5) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "KAUFDATUM",
           "stage_column_class": "data",
-          "field_name": "KAUFDATUM",
+          "field_name": "kaufdatum",
           "is_nullable": true,
           "column_type": "date ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rs_bestellung_rs_bestellung_p1_sat",
+              "column_name": "KAUFDATUM",
+              "column_type": "DATE ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "KKFIRMA",
           "stage_column_class": "data",
-          "field_name": "KKFIRMA",
+          "field_name": "kkfirma",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rs_bestellung_rs_bestellung_p1_sat",
+              "column_name": "KKFIRMA",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "KREDITKARTE",
           "stage_column_class": "data",
-          "field_name": "KREDITKARTE",
+          "field_name": "kreditkarte",
           "is_nullable": true,
           "column_type": "VARCHAR(30) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rs_bestellung_rs_bestellung_p1_sat",
+              "column_name": "KREDITKARTE",
+              "column_type": "VARCHAR(30) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "MENGE",
           "stage_column_class": "data",
-          "field_name": "MENGE",
+          "field_name": "menge",
           "is_nullable": true,
           "column_type": "integer ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rs_bestellung_rs_bestellung_p1_sat",
+              "column_name": "MENGE",
+              "column_type": "INTEGER ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "PREIS",
           "stage_column_class": "data",
-          "field_name": "PREIS",
+          "field_name": "preis",
           "is_nullable": true,
           "column_type": "NUMERIC(10,2) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rs_bestellung_rs_bestellung_p1_sat",
+              "column_name": "PREIS",
+              "column_type": "NUMERIC(10,2) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "RABATT",
           "stage_column_class": "data",
-          "field_name": "RABATT",
+          "field_name": "rabatt",
           "is_nullable": true,
           "column_type": "NUMERIC(5,2) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rs_bestellung_rs_bestellung_p1_sat",
+              "column_name": "RABATT",
+              "column_type": "NUMERIC(5,2) ",
+              "column_class": "content"
+            }
           ]
         }
       ]

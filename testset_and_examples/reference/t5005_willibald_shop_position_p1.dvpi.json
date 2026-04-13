@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-12-10 08:57:28",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5005_willibald_shop_position_p1",
   "pipeline_revision_tag": "--none--",
@@ -424,7 +424,7 @@
           "null_values": "0",
           "field_position": 1,
           "needs_encryption": false,
-          "field_name": "BESTELLUNGID"
+          "field_name": "bestellungid"
         },
         {
           "field_type": "bigint ",
@@ -435,7 +435,7 @@
           "null_values": "0",
           "field_position": 2,
           "needs_encryption": false,
-          "field_name": "POSID"
+          "field_name": "posid"
         },
         {
           "field_type": "integer ",
@@ -446,7 +446,7 @@
           "null_values": "0",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "MENGE"
+          "field_name": "menge"
         },
         {
           "field_type": "NUMERIC(10,2) ",
@@ -457,7 +457,7 @@
           "null_values": "0",
           "field_position": 4,
           "needs_encryption": false,
-          "field_name": "PREIS"
+          "field_name": "preis"
         },
         {
           "field_type": "integer ",
@@ -468,7 +468,7 @@
           "null_values": "0",
           "field_position": 5,
           "needs_encryption": false,
-          "field_name": "PRODUKTID"
+          "field_name": "produktid"
         },
         {
           "field_type": "integer ",
@@ -479,7 +479,7 @@
           "null_values": "1700",
           "field_position": 6,
           "needs_encryption": false,
-          "field_name": "SPEZLIEFERADRID"
+          "field_name": "spezlieferadrid"
         }
       ],
       "hashes": [
@@ -487,20 +487,6 @@
           "stage_column_name": "HK_POSITION",
           "hash_origin_table": "position_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "BESTELLUNGID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "position_hub",
-              "field_target_column": "BESTELLUNGID"
-            },
-            {
-              "field_name": "POSID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "position_hub",
-              "field_target_column": "POSID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -508,20 +494,26 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "bestellungid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "position_hub",
+              "field_target_column": "BESTELLUNGID"
+            },
+            {
+              "field_name": "posid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "position_hub",
+              "field_target_column": "POSID"
+            }
+          ],
           "hash_name": "KEY_OF_POSITION_HUB"
         },
         {
           "stage_column_name": "HK_BESTELLUNG",
           "hash_origin_table": "bestellung_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "BESTELLUNGID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "bestellung_hub",
-              "field_target_column": "BESTELLUNGID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -529,20 +521,20 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "bestellungid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "bestellung_hub",
+              "field_target_column": "BESTELLUNGID"
+            }
+          ],
           "hash_name": "KEY_OF_BESTELLUNG_HUB"
         },
         {
           "stage_column_name": "HK_PRODUKT",
           "hash_origin_table": "produkt_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "PRODUKTID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "produkt_hub",
-              "field_target_column": "PRODUKTID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -550,20 +542,20 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "produktid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "produkt_hub",
+              "field_target_column": "PRODUKTID"
+            }
+          ],
           "hash_name": "KEY_OF_PRODUKT_HUB"
         },
         {
           "stage_column_name": "HK_LIEFERADRESSE",
           "hash_origin_table": "lieferadresse_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "SPEZLIEFERADRID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "lieferadresse_hub",
-              "field_target_column": "LIEFERADRID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -571,6 +563,14 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "spezlieferadrid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "lieferadresse_hub",
+              "field_target_column": "LIEFERADRID"
+            }
+          ],
           "hash_name": "KEY_OF_LIEFERADRESSE_HUB"
         },
         {
@@ -579,21 +579,21 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "BESTELLUNGID",
+              "field_name": "bestellungid",
               "prio_in_key_hash": 0,
               "field_target_table": "position_hub",
               "field_target_column": "BESTELLUNGID",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "POSID",
+              "field_name": "posid",
               "prio_in_key_hash": 0,
               "field_target_table": "position_hub",
               "field_target_column": "POSID",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "BESTELLUNGID",
+              "field_name": "bestellungid",
               "prio_in_key_hash": 0,
               "field_target_table": "bestellung_hub",
               "field_target_column": "BESTELLUNGID",
@@ -615,28 +615,28 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "BESTELLUNGID",
+              "field_name": "bestellungid",
               "prio_in_key_hash": 0,
               "field_target_table": "position_hub",
               "field_target_column": "BESTELLUNGID",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "POSID",
+              "field_name": "posid",
               "prio_in_key_hash": 0,
               "field_target_table": "position_hub",
               "field_target_column": "POSID",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "PRODUKTID",
+              "field_name": "produktid",
               "prio_in_key_hash": 0,
               "field_target_table": "produkt_hub",
               "field_target_column": "PRODUKTID",
               "parent_declaration_position": 2
             },
             {
-              "field_name": "SPEZLIEFERADRID",
+              "field_name": "spezlieferadrid",
               "prio_in_key_hash": 0,
               "field_target_table": "lieferadresse_hub",
               "field_target_column": "LIEFERADRID",
@@ -659,14 +659,14 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "MENGE",
+              "field_name": "menge",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "position_position_p1_sat",
               "field_target_column": "MENGE"
             },
             {
-              "field_name": "PREIS",
+              "field_name": "preis",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "position_position_p1_sat",
@@ -700,13 +700,13 @@
           "data_mapping": [
             {
               "column_name": "BESTELLUNGID",
-              "field_name": "BESTELLUNGID",
+              "field_name": "bestellungid",
               "column_class": "business_key",
               "stage_column_name": "BESTELLUNGID"
             },
             {
               "column_name": "POSID",
-              "field_name": "POSID",
+              "field_name": "posid",
               "column_class": "business_key",
               "stage_column_name": "POSID"
             }
@@ -733,13 +733,13 @@
           "data_mapping": [
             {
               "column_name": "MENGE",
-              "field_name": "MENGE",
+              "field_name": "menge",
               "column_class": "content",
               "stage_column_name": "MENGE"
             },
             {
               "column_name": "PREIS",
-              "field_name": "PREIS",
+              "field_name": "preis",
               "column_class": "content",
               "stage_column_name": "PREIS"
             }
@@ -760,7 +760,7 @@
           "data_mapping": [
             {
               "column_name": "BESTELLUNGID",
-              "field_name": "BESTELLUNGID",
+              "field_name": "bestellungid",
               "column_class": "business_key",
               "stage_column_name": "BESTELLUNGID"
             }
@@ -806,7 +806,7 @@
           "data_mapping": [
             {
               "column_name": "PRODUKTID",
-              "field_name": "PRODUKTID",
+              "field_name": "produktid",
               "column_class": "business_key",
               "stage_column_name": "PRODUKTID"
             }
@@ -827,7 +827,7 @@
           "data_mapping": [
             {
               "column_name": "LIEFERADRID",
-              "field_name": "SPEZLIEFERADRID",
+              "field_name": "spezlieferadrid",
               "column_class": "business_key",
               "stage_column_name": "SPEZLIEFERADRID"
             }
@@ -955,61 +955,115 @@
         {
           "stage_column_name": "BESTELLUNGID",
           "stage_column_class": "data",
-          "field_name": "BESTELLUNGID",
+          "field_name": "bestellungid",
           "is_nullable": true,
           "column_type": "bigint ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "position_hub",
+              "column_name": "BESTELLUNGID",
+              "column_type": "BIGINT ",
+              "column_class": "business_key"
+            },
+            {
+              "table_name": "bestellung_hub",
+              "column_name": "BESTELLUNGID",
+              "column_type": "BIGINT ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "POSID",
           "stage_column_class": "data",
-          "field_name": "POSID",
+          "field_name": "posid",
           "is_nullable": true,
           "column_type": "bigint ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "position_hub",
+              "column_name": "POSID",
+              "column_type": "BIGINT ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "MENGE",
           "stage_column_class": "data",
-          "field_name": "MENGE",
+          "field_name": "menge",
           "is_nullable": true,
           "column_type": "integer ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "position_position_p1_sat",
+              "column_name": "MENGE",
+              "column_type": "INTEGER ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "PREIS",
           "stage_column_class": "data",
-          "field_name": "PREIS",
+          "field_name": "preis",
           "is_nullable": true,
           "column_type": "NUMERIC(10,2) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "position_position_p1_sat",
+              "column_name": "PREIS",
+              "column_type": "NUMERIC(10,2) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "PRODUKTID",
           "stage_column_class": "data",
-          "field_name": "PRODUKTID",
+          "field_name": "produktid",
           "is_nullable": true,
           "column_type": "integer ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "produkt_hub",
+              "column_name": "PRODUKTID",
+              "column_type": "INTEGER ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "SPEZLIEFERADRID",
           "stage_column_class": "data",
-          "field_name": "SPEZLIEFERADRID",
+          "field_name": "spezlieferadrid",
           "is_nullable": true,
           "column_type": "integer ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_hub",
+              "column_name": "LIEFERADRID",
+              "column_type": "INTEGER ",
+              "column_class": "business_key"
+            }
           ]
         }
       ]

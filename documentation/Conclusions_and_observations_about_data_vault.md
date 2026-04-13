@@ -89,7 +89,7 @@ The loading procedure needs an efficient way to
 
 Managing the repetitions can be challenging.
 
-Only the usual satellite parameters are needed to run this procedure. An enddate must be configured.
+Only the usual satellite parameters are needed to run this procedure. An enddate column must be configured.
 
 ### Individual diff hash insertion
 Without an enddate the valid data for a specific point in time is determined by

@@ -1,6 +1,6 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.2
-Compile time: 2025-01-14 13:44:39
+=== DVPD Compiler Version 0.6.2 ===
+Compile time: 2025-07-16 14:08:47
 Compiling t1023c_wrong_column_name_for_use_key_as_hash_for_sat.dvpd.json
 
 CST-S2: Satellite 'btjj_1021_aaa_sat': Missing a 'use_as_key_hash' field mapping for the key column 'HK_RTJJ_1021_AAA'.

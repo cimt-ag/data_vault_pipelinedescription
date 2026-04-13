@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-12-10 08:57:28",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5000_willibald_shop_bestellung_p1",
   "pipeline_revision_tag": "--none--",
@@ -431,37 +431,37 @@
           "field_type": "integer",
           "field_position": 1,
           "needs_encryption": false,
-          "field_name": "BESTELLUNGID"
+          "field_name": "BestellungID"
         },
         {
           "field_type": "integer",
           "field_position": 2,
           "needs_encryption": false,
-          "field_name": "KUNDEID"
+          "field_name": "KundeID"
         },
         {
           "field_type": "integer",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "ALLGLIEFERADRID"
+          "field_name": "AllgLieferAdrID"
         },
         {
           "field_type": "DATE",
           "field_position": 4,
           "needs_encryption": false,
-          "field_name": "BESTELLDATUM"
+          "field_name": "Bestelldatum"
         },
         {
           "field_type": "DATE",
           "field_position": 5,
           "needs_encryption": false,
-          "field_name": "WUNSCHDATUM"
+          "field_name": "Wunschdatum"
         },
         {
           "field_type": "DECIMAL(8,3)",
           "field_position": 6,
           "needs_encryption": false,
-          "field_name": "RABATT"
+          "field_name": "Rabatt"
         }
       ],
       "hashes": [
@@ -469,14 +469,6 @@
           "stage_column_name": "HK_BESTELLUNG",
           "hash_origin_table": "bestellung_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "BESTELLUNGID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "bestellung_hub",
-              "field_target_column": "BESTELLUNGID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -484,20 +476,20 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "BestellungID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "bestellung_hub",
+              "field_target_column": "BESTELLUNGID"
+            }
+          ],
           "hash_name": "KEY_OF_BESTELLUNG_HUB"
         },
         {
           "stage_column_name": "HK_KUNDE",
           "hash_origin_table": "kunde_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "KUNDEID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "kunde_hub",
-              "field_target_column": "KUNDEID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -505,20 +497,20 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "KundeID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "kunde_hub",
+              "field_target_column": "KUNDEID"
+            }
+          ],
           "hash_name": "KEY_OF_KUNDE_HUB"
         },
         {
           "stage_column_name": "HK_LIEFERADRESSE",
           "hash_origin_table": "lieferadresse_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "ALLGLIEFERADRID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "lieferadresse_hub",
-              "field_target_column": "LIEFERADRID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -526,6 +518,14 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "AllgLieferAdrID",
+              "prio_in_key_hash": 0,
+              "field_target_table": "lieferadresse_hub",
+              "field_target_column": "LIEFERADRID"
+            }
+          ],
           "hash_name": "KEY_OF_LIEFERADRESSE_HUB"
         },
         {
@@ -534,14 +534,14 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "BESTELLUNGID",
+              "field_name": "BestellungID",
               "prio_in_key_hash": 0,
               "field_target_table": "bestellung_hub",
               "field_target_column": "BESTELLUNGID",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "KUNDEID",
+              "field_name": "KundeID",
               "prio_in_key_hash": 0,
               "field_target_table": "kunde_hub",
               "field_target_column": "KUNDEID",
@@ -563,14 +563,14 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "BESTELLUNGID",
+              "field_name": "BestellungID",
               "prio_in_key_hash": 0,
               "field_target_table": "bestellung_hub",
               "field_target_column": "BESTELLUNGID",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "ALLGLIEFERADRID",
+              "field_name": "AllgLieferAdrID",
               "prio_in_key_hash": 0,
               "field_target_table": "lieferadresse_hub",
               "field_target_column": "LIEFERADRID",
@@ -593,21 +593,21 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "BESTELLDATUM",
+              "field_name": "Bestelldatum",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "bestellung_p1_sat",
               "field_target_column": "BESTELLDATUM"
             },
             {
-              "field_name": "WUNSCHDATUM",
+              "field_name": "Wunschdatum",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "bestellung_p1_sat",
               "field_target_column": "WUNSCHDATUM"
             },
             {
-              "field_name": "RABATT",
+              "field_name": "Rabatt",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "bestellung_p1_sat",
@@ -641,7 +641,7 @@
           "data_mapping": [
             {
               "column_name": "BESTELLUNGID",
-              "field_name": "BESTELLUNGID",
+              "field_name": "BestellungID",
               "column_class": "business_key",
               "stage_column_name": "BESTELLUNGID"
             }
@@ -668,19 +668,19 @@
           "data_mapping": [
             {
               "column_name": "BESTELLDATUM",
-              "field_name": "BESTELLDATUM",
+              "field_name": "Bestelldatum",
               "column_class": "content",
               "stage_column_name": "BESTELLDATUM"
             },
             {
               "column_name": "WUNSCHDATUM",
-              "field_name": "WUNSCHDATUM",
+              "field_name": "Wunschdatum",
               "column_class": "content",
               "stage_column_name": "WUNSCHDATUM"
             },
             {
               "column_name": "RABATT",
-              "field_name": "RABATT",
+              "field_name": "Rabatt",
               "column_class": "content",
               "stage_column_name": "RABATT"
             }
@@ -701,7 +701,7 @@
           "data_mapping": [
             {
               "column_name": "KUNDEID",
-              "field_name": "KUNDEID",
+              "field_name": "KundeID",
               "column_class": "business_key",
               "stage_column_name": "KUNDEID"
             }
@@ -760,7 +760,7 @@
           "data_mapping": [
             {
               "column_name": "LIEFERADRID",
-              "field_name": "ALLGLIEFERADRID",
+              "field_name": "AllgLieferAdrID",
               "column_class": "business_key",
               "stage_column_name": "ALLGLIEFERADRID"
             }
@@ -875,61 +875,109 @@
         {
           "stage_column_name": "BESTELLUNGID",
           "stage_column_class": "data",
-          "field_name": "BESTELLUNGID",
+          "field_name": "BestellungID",
           "is_nullable": true,
           "column_type": "integer",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "bestellung_hub",
+              "column_name": "BESTELLUNGID",
+              "column_type": "INTEGER",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "KUNDEID",
           "stage_column_class": "data",
-          "field_name": "KUNDEID",
+          "field_name": "KundeID",
           "is_nullable": true,
           "column_type": "integer",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "kunde_hub",
+              "column_name": "KUNDEID",
+              "column_type": "INTEGER",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "ALLGLIEFERADRID",
           "stage_column_class": "data",
-          "field_name": "ALLGLIEFERADRID",
+          "field_name": "AllgLieferAdrID",
           "is_nullable": true,
           "column_type": "integer",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "lieferadresse_hub",
+              "column_name": "LIEFERADRID",
+              "column_type": "INTEGER",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "BESTELLDATUM",
           "stage_column_class": "data",
-          "field_name": "BESTELLDATUM",
+          "field_name": "Bestelldatum",
           "is_nullable": true,
           "column_type": "DATE",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "bestellung_p1_sat",
+              "column_name": "BESTELLDATUM",
+              "column_type": "DATE",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "WUNSCHDATUM",
           "stage_column_class": "data",
-          "field_name": "WUNSCHDATUM",
+          "field_name": "Wunschdatum",
           "is_nullable": true,
           "column_type": "DATE",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "bestellung_p1_sat",
+              "column_name": "WUNSCHDATUM",
+              "column_type": "DATE",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "RABATT",
           "stage_column_class": "data",
-          "field_name": "RABATT",
+          "field_name": "Rabatt",
           "is_nullable": true,
           "column_type": "DECIMAL(8,3)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "bestellung_p1_sat",
+              "column_name": "RABATT",
+              "column_type": "DECIMAL(8,3)",
+              "column_class": "content"
+            }
           ]
         }
       ]

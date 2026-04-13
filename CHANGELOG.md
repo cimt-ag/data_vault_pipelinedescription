@@ -1,10 +1,34 @@
 # release 0.6.3
 
-### other features
-* DDL render: added configuration to set name for directory of stage table ddl files 
+### DVPD syntax extentions or changes
+- To support **declaration of business vault** loading the keywords ```use_as_key_hash``` and ```is_only_structural_element```
+are now officailly available. They provide a mechanic to leave out some hash calculations and the load of some tables. This
+can be done, when the result of the business rule can only contain already existing objects or relations and therefore
+also can contain the already calculated hash values.
+- behavior of 'use_as_key_hash' changed from 0.6.2 to 0.6.3. You now must map the key field to the table, that is 
+defining the key (e.g. the hub of the hub key). This allows the same kind of relation specific behavior and
+prevents mistakes in regarding the column naming. You migrate existing dpvds by just changing the target table.
+- **field names are not normalized to uppercase any more**. This allows implicit usage of the field name as json keyword.
+If this creates conflict on stage column level, the stage columns will get a unique postfix. See 
+- A clear syntax for **extention keywords** and rules how they will be copied to the DVPI has been added.
+This allows a consistnet declaration of custom keywords to provide additional properties for generators
+  
+### other features on core system 
+- Autotest: Hardcoded "rebranding" of the crash detection tests, to be successfull when captured in the full test
 
+### features/changes on generators
+- **DDL render**: added configuration to set name for directory of stage table ddl files
+- New moddule **render_insert_to_stage_from_db_object** :  example and command added (see installation and usage for details)
+- Python snippet generator uses extentention keyword ```xcdvf_msat_diff_logic``` keyword for msat elt function call.
+- Added example of documentation for extentions with xcdvf_cimt_datavault_framework.md
+ 
 ### bugfixes
 * DDL render: Now puts key column of satellite first in the primary key definition
+
+### credits
+Lead Designer and coding: Matthias Wegner (cimt ag)<br>
+Compiler extension and tests: Albin Cekaj (cimt ag)<br>
+Documentation: Peter Oravezc (cimt ag)<br>
 
 # release 0.6.2a
 - added JSON type to ghost record generator

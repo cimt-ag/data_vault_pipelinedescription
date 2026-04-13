@@ -1,6 +1,6 @@
 Data vault pipeline description compiler log 
-Compiler Version 0.6.0
-Compile time: 2024-04-05 13:18:04
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2025-12-18 14:52:12
 Compiling t0018c_check_intertable_structure_constraints_1.json
 
 Driving Key 'HK_RTJJ_18_XXX' is not a key hash or dependent child key in parent 'rtjj_18_aaa_bbb_lnk'

@@ -1,0 +1,47 @@
+{
+	"dvpd_version": "0.6.3",
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t1028_recursive_link_mapping_with_use_as_key_hash_mapping",
+	"record_source_name_expression": "dvpd implementation test",
+	"pipeline_comment":"Test for esat creation from business rule.",
+	"data_extraction": {
+		"fetch_module_name":"none - this is a pure generator test case"
+	},
+
+"fields": [
+		 	   {"field_name": "F1_AAA_BK1F",			"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1028_aaa_hub"}]}
+		 	  ,{"field_name": "F2_AAA_BK1F_UUU",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1028_aaa_hub"
+																									,"column_name":"F1_AAA_BK1F"
+																									,"relation_names":["UUU"]}]}
+		 	  ,{"field_name": "F3_AAA_BK1F_VVV",		"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1028_aaa_hub"
+																									,"column_name":"F1_AAA_BK1F"
+																									,"relation_names":["VVV"]}]}
+			  ,{"field_name": "F4_HK_rtjj_1028_AAA", 	"field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1028_aaa_hub"
+																									,"use_as_key_hash":"true"}]}
+			  ,{"field_name": "F5_HK_rtjj_1028_AAA_UUU","field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1028_aaa_hub"
+																									,"use_as_key_hash":"true"
+																									,"relation_names":["UUU"]}]}
+			  ,{"field_name": "F6_HK_rtjj_1028_AAA_VVV","field_type": "CHAR(28)",		"targets": [{"table_name":"rtjj_1028_aaa_hub"
+																									,"use_as_key_hash":"true"
+																									,"relation_names":["VVV"]}]}
+			 ], 
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_1028_aaa_hub",	"table_stereotype": "hub"		, "hub_key_column_name": "HK_rtjj_1028_aaa"
+																					, "is_only_structural_element":true}
+			]
+		}
+		,{"schema_name": "bvlt_test_jj", 
+		 "tables": [
+				{"table_name": "btjj_1028_aaa_aaavvv_aaauuu_lnk","table_stereotype": "lnk"	
+																,"link_parent_tables": 	["rtjj_1028_aaa_hub"
+																						,{"table_name":"rtjj_1028_aaa_hub","relation_name":"UUU"}
+																						,{"table_name":"rtjj_1028_aaa_hub","relation_name":"VVV"}
+																											]}
+				,{"table_name": "btjj_1028_aaa_aaavvv_aaauuu_esat","table_stereotype": "sat"	
+																,"satellite_parent_table": "btjj_1028_aaa_aaavvv_aaauuu_lnk"}
+				]
+			}
+	]
+}

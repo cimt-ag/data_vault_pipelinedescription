@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:17",
+  "compile_timestamp": "2025-12-10 08:57:28",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5006_willibald_shop_produkt_p1",
   "pipeline_revision_tag": "--none--",
@@ -373,7 +373,7 @@
           "null_values": "0",
           "field_position": 1,
           "needs_encryption": false,
-          "field_name": "PRODUKTID"
+          "field_name": "produktid"
         },
         {
           "field_type": "VARCHAR(50) ",
@@ -384,7 +384,7 @@
           "null_values": "0",
           "field_position": 2,
           "needs_encryption": false,
-          "field_name": "KATID"
+          "field_name": "katid"
         },
         {
           "field_type": "VARCHAR(512) ",
@@ -395,7 +395,7 @@
           "null_values": "0",
           "field_position": 3,
           "needs_encryption": false,
-          "field_name": "BEZEICHNUNG"
+          "field_name": "bezeichnung"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -406,7 +406,7 @@
           "null_values": "0",
           "field_position": 4,
           "needs_encryption": false,
-          "field_name": "PFLANZABSTAND"
+          "field_name": "pflanzabstand"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -417,7 +417,7 @@
           "null_values": "0",
           "field_position": 5,
           "needs_encryption": false,
-          "field_name": "PFLANZORT"
+          "field_name": "pflanzort"
         },
         {
           "field_type": "integer ",
@@ -428,7 +428,7 @@
           "null_values": "0",
           "field_position": 6,
           "needs_encryption": false,
-          "field_name": "TYP"
+          "field_name": "typ"
         },
         {
           "field_type": "VARCHAR(128) ",
@@ -439,7 +439,7 @@
           "null_values": "0",
           "field_position": 7,
           "needs_encryption": false,
-          "field_name": "UMFANG"
+          "field_name": "umfang"
         },
         {
           "field_type": "NUMERIC(5,2) ",
@@ -450,7 +450,7 @@
           "null_values": "0",
           "field_position": 8,
           "needs_encryption": false,
-          "field_name": "PREIS"
+          "field_name": "preis"
         }
       ],
       "hashes": [
@@ -458,14 +458,6 @@
           "stage_column_name": "HK_PRODUKT",
           "hash_origin_table": "produkt_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "PRODUKTID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "produkt_hub",
-              "field_target_column": "PRODUKTID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -473,20 +465,20 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "produktid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "produkt_hub",
+              "field_target_column": "PRODUKTID"
+            }
+          ],
           "hash_name": "KEY_OF_PRODUKT_HUB"
         },
         {
           "stage_column_name": "HK_KATEGORIE",
           "hash_origin_table": "kategorie_hub",
           "column_class": "key",
-          "hash_fields": [
-            {
-              "field_name": "KATID",
-              "prio_in_key_hash": 0,
-              "field_target_table": "kategorie_hub",
-              "field_target_column": "KATID"
-            }
-          ],
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -494,6 +486,14 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
+          "hash_fields": [
+            {
+              "field_name": "katid",
+              "prio_in_key_hash": 0,
+              "field_target_table": "kategorie_hub",
+              "field_target_column": "KATID"
+            }
+          ],
           "hash_name": "KEY_OF_KATEGORIE_HUB"
         },
         {
@@ -502,14 +502,14 @@
           "column_class": "key",
           "hash_fields": [
             {
-              "field_name": "PRODUKTID",
+              "field_name": "produktid",
               "prio_in_key_hash": 0,
               "field_target_table": "produkt_hub",
               "field_target_column": "PRODUKTID",
               "parent_declaration_position": 1
             },
             {
-              "field_name": "KATID",
+              "field_name": "katid",
               "prio_in_key_hash": 0,
               "field_target_table": "kategorie_hub",
               "field_target_column": "KATID",
@@ -532,35 +532,35 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "BEZEICHNUNG",
+              "field_name": "bezeichnung",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "produkt_produkt_p1_sat",
               "field_target_column": "BEZEICHNUNG"
             },
             {
-              "field_name": "PFLANZABSTAND",
+              "field_name": "pflanzabstand",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "produkt_produkt_p1_sat",
               "field_target_column": "PFLANZABSTAND"
             },
             {
-              "field_name": "PFLANZORT",
+              "field_name": "pflanzort",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "produkt_produkt_p1_sat",
               "field_target_column": "PFLANZORT"
             },
             {
-              "field_name": "TYP",
+              "field_name": "typ",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "produkt_produkt_p1_sat",
               "field_target_column": "TYP"
             },
             {
-              "field_name": "UMFANG",
+              "field_name": "umfang",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "produkt_produkt_p1_sat",
@@ -584,7 +584,7 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "PREIS",
+              "field_name": "preis",
               "prio_in_diff_hash": 0,
               "prio_for_row_order": 50000,
               "field_target_table": "produkt_produkt_p1s_sat",
@@ -618,7 +618,7 @@
           "data_mapping": [
             {
               "column_name": "PRODUKTID",
-              "field_name": "PRODUKTID",
+              "field_name": "produktid",
               "column_class": "business_key",
               "stage_column_name": "PRODUKTID"
             }
@@ -645,31 +645,31 @@
           "data_mapping": [
             {
               "column_name": "BEZEICHNUNG",
-              "field_name": "BEZEICHNUNG",
+              "field_name": "bezeichnung",
               "column_class": "content",
               "stage_column_name": "BEZEICHNUNG"
             },
             {
               "column_name": "PFLANZABSTAND",
-              "field_name": "PFLANZABSTAND",
+              "field_name": "pflanzabstand",
               "column_class": "content",
               "stage_column_name": "PFLANZABSTAND"
             },
             {
               "column_name": "PFLANZORT",
-              "field_name": "PFLANZORT",
+              "field_name": "pflanzort",
               "column_class": "content",
               "stage_column_name": "PFLANZORT"
             },
             {
               "column_name": "TYP",
-              "field_name": "TYP",
+              "field_name": "typ",
               "column_class": "content",
               "stage_column_name": "TYP"
             },
             {
               "column_name": "UMFANG",
-              "field_name": "UMFANG",
+              "field_name": "umfang",
               "column_class": "content",
               "stage_column_name": "UMFANG"
             }
@@ -696,7 +696,7 @@
           "data_mapping": [
             {
               "column_name": "PREIS",
-              "field_name": "PREIS",
+              "field_name": "preis",
               "column_class": "content",
               "stage_column_name": "PREIS"
             }
@@ -717,7 +717,7 @@
           "data_mapping": [
             {
               "column_name": "KATID",
-              "field_name": "KATID",
+              "field_name": "katid",
               "column_class": "business_key",
               "stage_column_name": "KATID"
             }
@@ -825,81 +825,145 @@
         {
           "stage_column_name": "PRODUKTID",
           "stage_column_class": "data",
-          "field_name": "PRODUKTID",
+          "field_name": "produktid",
           "is_nullable": true,
           "column_type": "integer ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "produkt_hub",
+              "column_name": "PRODUKTID",
+              "column_type": "INTEGER ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "KATID",
           "stage_column_class": "data",
-          "field_name": "KATID",
+          "field_name": "katid",
           "is_nullable": true,
           "column_type": "VARCHAR(50) ",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "kategorie_hub",
+              "column_name": "KATID",
+              "column_type": "VARCHAR(50) ",
+              "column_class": "business_key"
+            }
           ]
         },
         {
           "stage_column_name": "BEZEICHNUNG",
           "stage_column_class": "data",
-          "field_name": "BEZEICHNUNG",
+          "field_name": "bezeichnung",
           "is_nullable": true,
           "column_type": "VARCHAR(512) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "produkt_produkt_p1_sat",
+              "column_name": "BEZEICHNUNG",
+              "column_type": "VARCHAR(512) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "PFLANZABSTAND",
           "stage_column_class": "data",
-          "field_name": "PFLANZABSTAND",
+          "field_name": "pflanzabstand",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "produkt_produkt_p1_sat",
+              "column_name": "PFLANZABSTAND",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "PFLANZORT",
           "stage_column_class": "data",
-          "field_name": "PFLANZORT",
+          "field_name": "pflanzort",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "produkt_produkt_p1_sat",
+              "column_name": "PFLANZORT",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "TYP",
           "stage_column_class": "data",
-          "field_name": "TYP",
+          "field_name": "typ",
           "is_nullable": true,
           "column_type": "integer ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "produkt_produkt_p1_sat",
+              "column_name": "TYP",
+              "column_type": "INTEGER ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "UMFANG",
           "stage_column_class": "data",
-          "field_name": "UMFANG",
+          "field_name": "umfang",
           "is_nullable": true,
           "column_type": "VARCHAR(128) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "produkt_produkt_p1_sat",
+              "column_name": "UMFANG",
+              "column_type": "VARCHAR(128) ",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "PREIS",
           "stage_column_class": "data",
-          "field_name": "PREIS",
+          "field_name": "preis",
           "is_nullable": true,
           "column_type": "NUMERIC(5,2) ",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "produkt_produkt_p1s_sat",
+              "column_name": "PREIS",
+              "column_type": "NUMERIC(5,2) ",
+              "column_class": "content"
+            }
           ]
         }
       ]

@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-03-06 12:55:25",
+  "compile_timestamp": "2025-03-20 10:45:26",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t1051_ghost_record_type_catalog_ms",
   "pipeline_revision_tag": "demoRevisionTagOf t001051",
@@ -716,6 +716,14 @@
           "column_type": "Varchar(100)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_hub",
+              "column_name": "F1_AAA_BK1F",
+              "column_type": "VARCHAR(100)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -726,6 +734,14 @@
           "column_type": "Varchar(100)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F2_AAA_P1_C1",
+              "column_type": "VARCHAR(100)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -736,6 +752,14 @@
           "column_type": "char(3)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F3_AAA_P1_C2",
+              "column_type": "CHAR(3)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -746,6 +770,14 @@
           "column_type": "TEXT",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F4_AAA_P1_C3",
+              "column_type": "TEXT",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -756,6 +788,14 @@
           "column_type": "INT",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F5_AAA_P1_C4",
+              "column_type": "INT",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -766,6 +806,14 @@
           "column_type": "INTEGER",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F6_AAA_P1_C5",
+              "column_type": "INTEGER",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -776,6 +824,14 @@
           "column_type": "SMALLINT",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F7_AAA_P1_C6",
+              "column_type": "SMALLINT",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -786,6 +842,14 @@
           "column_type": "BIGINT",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F8_AAA_P1_C7",
+              "column_type": "BIGINT",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -796,6 +860,14 @@
           "column_type": "DECIMAL",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F9_AAA_P1_C8",
+              "column_type": "DECIMAL",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -806,6 +878,14 @@
           "column_type": "NUMERIC",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F10_AAA_P1_C9",
+              "column_type": "NUMERIC",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -816,6 +896,14 @@
           "column_type": "FLOAT",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F11_AAA_P1_C10",
+              "column_type": "FLOAT",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -826,6 +914,14 @@
           "column_type": "REAL",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F12_AAA_P1_C11",
+              "column_type": "REAL",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -836,6 +932,14 @@
           "column_type": "DOUBLE",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F13_AAA_P1_C12",
+              "column_type": "DOUBLE",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -846,6 +950,14 @@
           "column_type": "DATE",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F15_AAA_P1_C14",
+              "column_type": "DATE",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -856,6 +968,14 @@
           "column_type": "DATETIME",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F16_AAA_P1_C15",
+              "column_type": "DATETIME",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -866,6 +986,14 @@
           "column_type": "TIME",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F18_AAA_P1_C17",
+              "column_type": "TIME",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -876,6 +1004,14 @@
           "column_type": "BYTE",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F19_AAA_P1_C18",
+              "column_type": "BYTE",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -886,6 +1022,14 @@
           "column_type": "JSON",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_1051_aaa_p1_sat",
+              "column_name": "F20_AAA_P1_C19F",
+              "column_type": "JSON",
+              "column_class": "content"
+            }
           ]
         }
       ]

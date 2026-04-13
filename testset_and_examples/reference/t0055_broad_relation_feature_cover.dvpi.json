@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-01-06 19:00:16",
+  "compile_timestamp": "2025-12-10 08:57:24",
   "dvpd_version": "0.6.1",
   "pipeline_name": "t0055_broad_relation_feature_cover",
   "pipeline_revision_tag": "--none--",
@@ -1347,13 +1347,13 @@
           "field_type": "DECIMAL(5,0)",
           "field_position": 18,
           "needs_encryption": false,
-          "field_name": "F18_GGG_SP1_C1"
+          "field_name": "F18_ggg_SP1_C1"
         },
         {
           "field_type": "VARCHAR(200)",
           "field_position": 19,
           "needs_encryption": false,
-          "field_name": "F19XX_GGG_SP1_C2F"
+          "field_name": "F19xx_ggg_SP1_C2F"
         },
         {
           "field_type": "Varchar(20)",
@@ -1439,6 +1439,13 @@
           "stage_column_name": "HK_RTJJ_55_AAA",
           "hash_origin_table": "rtjj_55_aaa_hub",
           "column_class": "key",
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
           "hash_fields": [
             {
               "field_name": "F1_AAABBBCCC_BK1",
@@ -1453,6 +1460,12 @@
               "field_target_column": "F2_AAA_BK2F"
             }
           ],
+          "hash_name": "KEY_OF_RTJJ_55_AAA_HUB"
+        },
+        {
+          "stage_column_name": "HK_RTJJ_55_CCC",
+          "hash_origin_table": "rtjj_55_ccc_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -1460,12 +1473,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTJJ_55_AAA_HUB"
-        },
-        {
-          "stage_column_name": "HK_RTJJ_55_CCC",
-          "hash_origin_table": "rtjj_55_ccc_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F1_AAABBBCCC_BK1",
@@ -1480,6 +1487,12 @@
               "field_target_column": "F20_CCC_BK2F"
             }
           ],
+          "hash_name": "KEY_OF_RTJJ_55_CCC_HUB"
+        },
+        {
+          "stage_column_name": "HK_RTJJ_55_DDD_PPP",
+          "hash_origin_table": "rtjj_55_ddd_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -1487,12 +1500,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTJJ_55_CCC_HUB"
-        },
-        {
-          "stage_column_name": "HK_RTJJ_55_DDD_PPP",
-          "hash_origin_table": "rtjj_55_ddd_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F14_DDD_BK1F_PPP",
@@ -1501,6 +1508,12 @@
               "field_target_column": "F14F15_DDD_BK1F"
             }
           ],
+          "hash_name": "KEY_OF_RTJJ_55_DDD_HUB__FOR__PPP"
+        },
+        {
+          "stage_column_name": "HK_RTJJ_55_DDD_QQQ",
+          "hash_origin_table": "rtjj_55_ddd_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -1508,12 +1521,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTJJ_55_DDD_HUB__FOR__PPP"
-        },
-        {
-          "stage_column_name": "HK_RTJJ_55_DDD_QQQ",
-          "hash_origin_table": "rtjj_55_ddd_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F15_DDD_BK1F_QQQ",
@@ -1522,6 +1529,12 @@
               "field_target_column": "F14F15_DDD_BK1F"
             }
           ],
+          "hash_name": "KEY_OF_RTJJ_55_DDD_HUB__FOR__QQQ"
+        },
+        {
+          "stage_column_name": "HK_RTKK_55_BBB",
+          "hash_origin_table": "rtkk_55_bbb_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -1529,12 +1542,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTJJ_55_DDD_HUB__FOR__QQQ"
-        },
-        {
-          "stage_column_name": "HK_RTKK_55_BBB",
-          "hash_origin_table": "rtkk_55_bbb_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F1_AAABBBCCC_BK1",
@@ -1549,6 +1556,12 @@
               "field_target_column": "F3F4F5F6_BBB_BK2F"
             }
           ],
+          "hash_name": "KEY_OF_RTKK_55_BBB_HUB"
+        },
+        {
+          "stage_column_name": "HK_RTKK_55_BBB_TTT",
+          "hash_origin_table": "rtkk_55_bbb_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -1556,12 +1569,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTKK_55_BBB_HUB"
-        },
-        {
-          "stage_column_name": "HK_RTKK_55_BBB_TTT",
-          "hash_origin_table": "rtkk_55_bbb_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F1_AAABBBCCC_BK1",
@@ -1576,6 +1583,12 @@
               "field_target_column": "F3F4F5F6_BBB_BK2F"
             }
           ],
+          "hash_name": "KEY_OF_RTKK_55_BBB_HUB__FOR__TTT"
+        },
+        {
+          "stage_column_name": "HK_RTKK_55_BBB_UUU",
+          "hash_origin_table": "rtkk_55_bbb_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -1583,12 +1596,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTKK_55_BBB_HUB__FOR__TTT"
-        },
-        {
-          "stage_column_name": "HK_RTKK_55_BBB_UUU",
-          "hash_origin_table": "rtkk_55_bbb_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F1_AAABBBCCC_BK1",
@@ -1603,6 +1610,12 @@
               "field_target_column": "F3F4F5F6_BBB_BK2F"
             }
           ],
+          "hash_name": "KEY_OF_RTKK_55_BBB_HUB__FOR__UUU"
+        },
+        {
+          "stage_column_name": "HK_RTKK_55_BBB_VVV",
+          "hash_origin_table": "rtkk_55_bbb_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -1610,12 +1623,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTKK_55_BBB_HUB__FOR__UUU"
-        },
-        {
-          "stage_column_name": "HK_RTKK_55_BBB_VVV",
-          "hash_origin_table": "rtkk_55_bbb_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F1_AAABBBCCC_BK1",
@@ -1630,6 +1637,12 @@
               "field_target_column": "F3F4F5F6_BBB_BK2F"
             }
           ],
+          "hash_name": "KEY_OF_RTKK_55_BBB_HUB__FOR__VVV"
+        },
+        {
+          "stage_column_name": "HK_RTKK_55_EEE",
+          "hash_origin_table": "rtkk_55_eee_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -1637,12 +1650,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTKK_55_BBB_HUB__FOR__VVV"
-        },
-        {
-          "stage_column_name": "HK_RTKK_55_EEE",
-          "hash_origin_table": "rtkk_55_eee_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F26_EEE_BK1F",
@@ -1651,6 +1658,12 @@
               "field_target_column": "F26F27F28_EEE_BK1F"
             }
           ],
+          "hash_name": "KEY_OF_RTKK_55_EEE_HUB"
+        },
+        {
+          "stage_column_name": "HK_RTKK_55_EEE_TTT",
+          "hash_origin_table": "rtkk_55_eee_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -1658,12 +1671,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTKK_55_EEE_HUB"
-        },
-        {
-          "stage_column_name": "HK_RTKK_55_EEE_TTT",
-          "hash_origin_table": "rtkk_55_eee_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F27_EEE_BK1F_TTT",
@@ -1672,6 +1679,12 @@
               "field_target_column": "F26F27F28_EEE_BK1F"
             }
           ],
+          "hash_name": "KEY_OF_RTKK_55_EEE_HUB__FOR__TTT"
+        },
+        {
+          "stage_column_name": "HK_RTKK_55_EEE_UUU",
+          "hash_origin_table": "rtkk_55_eee_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -1679,12 +1692,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTKK_55_EEE_HUB__FOR__TTT"
-        },
-        {
-          "stage_column_name": "HK_RTKK_55_EEE_UUU",
-          "hash_origin_table": "rtkk_55_eee_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F28_EEE_BK1F_UUU",
@@ -1693,6 +1700,12 @@
               "field_target_column": "F26F27F28_EEE_BK1F"
             }
           ],
+          "hash_name": "KEY_OF_RTKK_55_EEE_HUB__FOR__UUU"
+        },
+        {
+          "stage_column_name": "HK_RTKK_55_FFF_TTT",
+          "hash_origin_table": "rtkk_55_fff_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -1700,12 +1713,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTKK_55_EEE_HUB__FOR__UUU"
-        },
-        {
-          "stage_column_name": "HK_RTKK_55_FFF_TTT",
-          "hash_origin_table": "rtkk_55_fff_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F29_FFF_BK1F_TTT",
@@ -1714,6 +1721,12 @@
               "field_target_column": "F29F30F31_FFF_BK1F"
             }
           ],
+          "hash_name": "KEY_OF_RTKK_55_FFF_HUB__FOR__TTT"
+        },
+        {
+          "stage_column_name": "HK_RTKK_55_FFF_UUU",
+          "hash_origin_table": "rtkk_55_fff_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -1721,12 +1734,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTKK_55_FFF_HUB__FOR__TTT"
-        },
-        {
-          "stage_column_name": "HK_RTKK_55_FFF_UUU",
-          "hash_origin_table": "rtkk_55_fff_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F30_FFF_BK1F_UUU",
@@ -1735,6 +1742,12 @@
               "field_target_column": "F29F30F31_FFF_BK1F"
             }
           ],
+          "hash_name": "KEY_OF_RTKK_55_FFF_HUB__FOR__UUU"
+        },
+        {
+          "stage_column_name": "HK_RTKK_55_FFF_VVV",
+          "hash_origin_table": "rtkk_55_fff_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -1742,12 +1755,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTKK_55_FFF_HUB__FOR__UUU"
-        },
-        {
-          "stage_column_name": "HK_RTKK_55_FFF_VVV",
-          "hash_origin_table": "rtkk_55_fff_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F31_FFF_BK1F_VVV",
@@ -1756,13 +1763,6 @@
               "field_target_column": "F29F30F31_FFF_BK1F"
             }
           ],
-          "column_type": "CHAR(28)",
-          "hash_encoding": "BASE64",
-          "hash_function": "sha-1",
-          "hash_concatenation_seperator": "|",
-          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
-          "hash_null_value_string": "",
-          "model_profile_name": "_default",
           "hash_name": "KEY_OF_RTKK_55_FFF_HUB__FOR__VVV"
         },
         {
@@ -2327,13 +2327,13 @@
           "column_class": "diff_hash",
           "hash_fields": [
             {
-              "field_name": "F18_GGG_SP1_C1",
+              "field_name": "F18_ggg_SP1_C1",
               "prio_in_diff_hash": 0,
               "field_target_table": "rtjj_55_ggg_ref",
               "field_target_column": "F18_GGG_SP1_C1"
             },
             {
-              "field_name": "F19XX_GGG_SP1_C2F",
+              "field_name": "F19xx_ggg_SP1_C2F",
               "prio_in_diff_hash": 0,
               "field_target_table": "rtjj_55_ggg_ref",
               "field_target_column": "F19_GGG_SP1_C2F"
@@ -2815,13 +2815,13 @@
           "data_mapping": [
             {
               "column_name": "F18_GGG_SP1_C1",
-              "field_name": "F18_GGG_SP1_C1",
+              "field_name": "F18_ggg_SP1_C1",
               "column_class": "content",
               "stage_column_name": "F18_GGG_SP1_C1"
             },
             {
               "column_name": "F19_GGG_SP1_C2F",
-              "field_name": "F19XX_GGG_SP1_C2F",
+              "field_name": "F19xx_ggg_SP1_C2F",
               "column_class": "content",
               "stage_column_name": "F19XX_GGG_SP1_C2F"
             }
@@ -3595,6 +3595,26 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_aaa_hub",
+              "column_name": "F1_AAABBBCCC_BK1",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            },
+            {
+              "table_name": "rtjj_55_ccc_hub",
+              "column_name": "F1_AAABBBCCC_BK1",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            },
+            {
+              "table_name": "rtkk_55_bbb_hub",
+              "column_name": "F1_AAABBBCCC_BK1",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3605,6 +3625,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_aaa_hub",
+              "column_name": "F2_AAA_BK2F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3615,6 +3643,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_bbb_hub",
+              "column_name": "F3F4F5F6_BBB_BK2F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3625,6 +3661,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_bbb_hub",
+              "column_name": "F3F4F5F6_BBB_BK2F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3635,6 +3679,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_bbb_hub",
+              "column_name": "F3F4F5F6_BBB_BK2F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3645,6 +3697,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_bbb_hub",
+              "column_name": "F3F4F5F6_BBB_BK2F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3655,6 +3715,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_aaa_p1_sat",
+              "column_name": "F7_AAA_P1_C1",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3665,6 +3733,14 @@
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_aaa_p1_sat",
+              "column_name": "F8_AAA_P1_C2",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3675,6 +3751,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_aaa_p1_sat",
+              "column_name": "F9_AAA_P1_C3F",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3685,6 +3769,14 @@
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
             "content_untracked"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_aaa_p1_sat",
+              "column_name": "F10_AAA_P1_CU1F",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content_untracked"
+            }
           ]
         },
         {
@@ -3695,6 +3787,14 @@
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_aaa_ccc_p1_sat",
+              "column_name": "F11_AAA_CCC_P1_C1",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3705,6 +3805,14 @@
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_aaa_ccc_p1_sat",
+              "column_name": "F12_AAA_CCC_P1_C2F",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3715,6 +3823,14 @@
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
             "dependent_child_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_aaa_ccc_lnk",
+              "column_name": "F13_AAA_CCC_DC1F",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "dependent_child_key"
+            }
           ]
         },
         {
@@ -3725,6 +3841,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_ddd_hub",
+              "column_name": "F14F15_DDD_BK1F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3735,6 +3859,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_ddd_hub",
+              "column_name": "F14F15_DDD_BK1F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3745,6 +3877,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_ddd_p1_sat",
+              "column_name": "F16F17_DDD_SP1_C1F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3755,26 +3895,50 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_ddd_p1_sat",
+              "column_name": "F16F17_DDD_SP1_C1F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "F18_GGG_SP1_C1",
           "stage_column_class": "data",
-          "field_name": "F18_GGG_SP1_C1",
+          "field_name": "F18_ggg_SP1_C1",
           "is_nullable": true,
           "column_type": "DECIMAL(5,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_ggg_ref",
+              "column_name": "F18_GGG_SP1_C1",
+              "column_type": "DECIMAL(5,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
           "stage_column_name": "F19XX_GGG_SP1_C2F",
           "stage_column_class": "data",
-          "field_name": "F19XX_GGG_SP1_C2F",
+          "field_name": "F19xx_ggg_SP1_C2F",
           "is_nullable": true,
           "column_type": "VARCHAR(200)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_ggg_ref",
+              "column_name": "F19_GGG_SP1_C2F",
+              "column_type": "VARCHAR(200)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3785,6 +3949,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_ccc_hub",
+              "column_name": "F20_CCC_BK2F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3795,6 +3967,14 @@
           "column_type": "Varchar(20)",
           "column_classes": [
             "content_untracked"
+          ],
+          "targets": [
+            {
+              "table_name": "rtjj_55_ccc_hub",
+              "column_name": "F21_CCC_CU1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "content_untracked"
+            }
           ]
         },
         {
@@ -3805,6 +3985,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_bbb_p1_sat",
+              "column_name": "F22F23_BBB_P1_C1",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3815,6 +4003,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_bbb_p1_sat",
+              "column_name": "F22F23_BBB_P1_C1",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3825,6 +4021,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_bbb_p1_sat",
+              "column_name": "F24F25_BBB_P1_C2F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3835,6 +4039,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_bbb_p1_sat",
+              "column_name": "F24F25_BBB_P1_C2F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "content"
+            }
           ]
         },
         {
@@ -3845,6 +4057,14 @@
           "column_type": "VARCHAR(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_eee_hub",
+              "column_name": "F26F27F28_EEE_BK1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3855,6 +4075,14 @@
           "column_type": "VARCHAR(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_eee_hub",
+              "column_name": "F26F27F28_EEE_BK1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3865,6 +4093,14 @@
           "column_type": "VARCHAR(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_eee_hub",
+              "column_name": "F26F27F28_EEE_BK1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3875,6 +4111,14 @@
           "column_type": "VARCHAR(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_fff_hub",
+              "column_name": "F29F30F31_FFF_BK1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3885,6 +4129,14 @@
           "column_type": "VARCHAR(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_fff_hub",
+              "column_name": "F29F30F31_FFF_BK1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3895,6 +4147,14 @@
           "column_type": "VARCHAR(20)",
           "column_classes": [
             "business_key"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_fff_hub",
+              "column_name": "F29F30F31_FFF_BK1F",
+              "column_type": "VARCHAR(20)",
+              "column_class": "business_key"
+            }
           ]
         },
         {
@@ -3905,6 +4165,14 @@
           "column_type": "Decimal(20,0)",
           "column_classes": [
             "content"
+          ],
+          "targets": [
+            {
+              "table_name": "rtkk_55_bbb_p2_sat",
+              "column_name": "F32_BBB_P2_C1F",
+              "column_type": "DECIMAL(20,0)",
+              "column_class": "content"
+            }
           ]
         }
       ]

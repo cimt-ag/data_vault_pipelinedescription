@@ -12,6 +12,9 @@ sys.path.insert(0,project_directory)
 
 from lib.configuration import configuration_load_ini
 
+class ApplicationException(Exception):
+    pass
+
 # global dictionaries
 g_model_profile_dict={}
 g_current_model_profile=None
@@ -120,7 +123,9 @@ def create_ghost_records(full_name, columns):
             if scale != None:
                 scale = int(scale)
             base_type = base_type.upper()
-            nullable = True if 'is_nullable' in column and column['is_nullable']==True else False
+            if base_type not in const_for_missing_map:
+                raise ApplicationException(f"Have no rule how to set the 'missing value' for column type '{base_type}' used at column '{column['column_name']}'")
+
             value_for_missing = const_for_missing_map[base_type]
             # print(f'base_type: {base_type} | nullable: {nullable} | const_for_missing: {value_for_missing}\n')
             if base_type == 'VARCHAR':
@@ -185,7 +190,6 @@ def assemble_column_name_and_stage_name_dict(parse_set):
     column_name_to_stage_name_dict = {}
     stage_name_to_column_name_dict ={}
     for load_operation in parse_set['load_operations']:
-
         if 'data_mapping' in load_operation:        # collect the mappings from the data_mappings
             for column in load_operation['data_mapping']:
                 column_name=column['column_name']
@@ -200,8 +204,8 @@ def assemble_column_name_and_stage_name_dict(parse_set):
                     stage_name_to_column_name_dict[stage_name].append(column_name)
 
         for column in load_operation['hash_mappings']: # collect the mappings from the hash_mappings
-            if not 'field_name' in column:             # where the hash is provided by a source field
-                continue
+            #if not 'field_name' in column:             # where the hash is provided by a source field
+            #    continue
             column_name=column['column_name']
             stage_name=column['stage_column_name']
             if column_name not in column_name_to_stage_name_dict:
@@ -215,6 +219,7 @@ def assemble_column_name_and_stage_name_dict(parse_set):
 
     return column_name_to_stage_name_dict,stage_name_to_column_name_dict
 
+
 def assemble_stage_with_target_column_type_dict(parse_set,tables):
     stage_with_target_column_type_dict={}
     for stage_column in parse_set["stage_columns"]:
@@ -224,6 +229,10 @@ def assemble_stage_with_target_column_type_dict(parse_set,tables):
         column_name = None
         for load_operation in parse_set['load_operations']:  # scan all operations for a mapping the current stage column
             for column_mapping in load_operation['hash_mappings']:
+                if 'direct_key_field' in column_mapping:  # There is a direct key field in the source
+                    table_name = load_operation['table_name']
+                    column_name = column_mapping['column_name']
+                    continue
                 if column_mapping['stage_column_name']==stage_column['stage_column_name']:
                     table_name=load_operation['table_name']
                     column_name=column_mapping['column_name']
@@ -239,7 +248,7 @@ def assemble_stage_with_target_column_type_dict(parse_set,tables):
                 break
         # at this point we should have a hit, so search for the column type definition
         if table_name == None:
-            raise Exception(f"Stage column '{stage_column['stage_column_name']}' is not mapped in any operation. This should not happen")
+            raise ApplicationException(f"Stage column '{stage_column['stage_column_name']}' is not mapped in any operation. This should not happen")
         column_type=None
         for table in tables:
             if table['table_name']==table_name:
@@ -274,6 +283,8 @@ def determine_combined_stage_column_name(stage_column_name, stage_name_to_column
                 BK5b (2)  u.BK5 (2)
     """
 
+    if stage_column_name not in stage_name_to_column_name_dict: # this column has no target
+        return stage_column_name
     if len(stage_name_to_column_name_dict[stage_column_name]) == 1:    # stage column has only one target
         target_column_name = stage_name_to_column_name_dict[stage_column_name][0]
         if len(column_name_to_stage_name_dict[target_column_name]) == 1 or target_column_name==stage_column_name:    # target name is unique (1:1) or same
@@ -312,19 +323,39 @@ def guess_and_pinpoint_model_profile(dvpi):
             return
 
 
+def target_column_type_in_stage(parse_set):
+    """
+    Checks if a stage column maps to more than one column type in target tables.
+    """
+    for stage_column in parse_set["stage_columns"]:
+        if stage_column["stage_column_class"] != "data":
+            continue
+
+        target_types = set()
+        for target in stage_column.get("targets", []):
+            target_types.add(target["column_type"])
+
+        if len(target_types) > 1:
+            print(
+                f"TCTS-01: Stage column '{stage_column['stage_column_name']}' maps to multiple types: {target_types}")
+            return False
+
+    return True
+
 
 def parse_json_to_ddl(filepath, ddl_render_path
-                    ,add_ghost_records=False
-                    ,add_primary_keys=True
-                    ,stage_column_naming_rule='stage'
-                    ,ddl_file_naming_pattern='lll'
-                    ,ddl_stage_directory_name='stage'):
-    """creates all ddl scripts and stres them in files
+                      , add_ghost_records=False
+                      , add_primary_keys=True
+                      , stage_column_naming_rule='stage'
+                      , ddl_file_naming_pattern='lll'
+                      , ddl_stage_directory_name='stage'
+                      , use_target_column_type_in_stage=False):
+    """creates all ddl scripts and stores them in files
     special parameter: stage column naming , field= use field name, when available, stage=use stagename (might create duplicates), combine=combine stage and field name, when different
     combined stage column mappings tries to name the stage column like the target column. To prevent using the same stage column name for different content
     the following scenarios are mitigated as follows:
     single stage column -> equally named target columns: use target column name
-    single stage column -> multiple differently named target columns: use concatinated target column names
+    single stage column -> multiple differently named target columns: use concatenated target column names
     multiple stage columns -> equally named target column(s): use target column name_append stage column name
     """
     with open(filepath, 'r') as file:
@@ -333,13 +364,19 @@ def parse_json_to_ddl(filepath, ddl_render_path
     # Check for missing fields
     if 'tables' not in data:
         raise MissingFieldError("The field 'tables' is missing in the DVPI.")
-    
+
     if 'parse_sets' not in data:
         raise MissingFieldError("The field 'parse_sets' is missing in the DVPI.")
 
+    for parse_set in data['parse_sets']:
+        if not target_column_type_in_stage(parse_set):
+            print("Can not use target column type for stage")
+            exit(5)
+
+    #print("No column type conflicts detected. Proceeding with DDL generation.")
+
     guess_and_pinpoint_model_profile(data)
     # todo this needs more precision later, since model profile can be table specific. Depends on more precision in dvpi
-
 
     # Extract tables and stage tables
     tables = data.get('tables', [])
@@ -351,7 +388,7 @@ def parse_json_to_ddl(filepath, ddl_render_path
 
     # Generate DDL for tables
     for table in tables:
-        # Check for missing fields 
+        # Check for missing fields
         if 'schema_name' not in table:
             raise MissingFieldError("The field 'schema_name' is missing from the DVPI.")
         schema_name = table['schema_name']
@@ -359,9 +396,9 @@ def parse_json_to_ddl(filepath, ddl_render_path
             schema_count[schema_name] += 1
         else:
             schema_count[schema_name] = 1
-        
+
         table_stereotype = table['table_stereotype']
-        if table_stereotype=='sat':
+        if table_stereotype == 'sat':
             if schema_name in schema_sats:
                 schema_sats[schema_name] += 1
             else:
@@ -377,27 +414,27 @@ def parse_json_to_ddl(filepath, ddl_render_path
         column_statements = []
         comment_statements = []
 
-        max_name_length=0
+        max_name_length = 0
         for column in columns:
             if len(column['column_name']) > max_name_length:
-              max_name_length = len(column['column_name'])
+                max_name_length = len(column['column_name'])
 
         for column in columns:
             column_name = column['column_name']
             col_type = column['column_type']
-            nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
+            nullable = "NULL" if 'is_nullable' in column and column['is_nullable'] == True else "NOT NULL"
             comment = column['column_content_comment'] if 'column_content_comment' in column else None
             column_statement = "\t{}\t{}\t{}".format(column_name.ljust(max_name_length), col_type.ljust(15), nullable)
             column_statements.append(column_statement)
             if comment is not None:
-                comment_statements.append("COMMENT ON COLUMN {}.{}.{} IS '{}';".format(schema_name, table_name, column_name, comment))
+                comment_statements.append(
+                    "COMMENT ON COLUMN {}.{}.{} IS '{}';".format(schema_name, table_name, column_name, comment))
 
         column_statements = ',\n'.join(column_statements)
         if 'table_comment' in table:
             comment_statements.insert(0, f"COMMENT ON TABLE {schema_name}.{table_name} IS '{table['table_comment']}';")
 
         comment_statements = '\n'.join(comment_statements)
-        
 
         ddl = f"-- generated script for {full_name}"
         ddl += f"\n\n-- DROP TABLE {full_name};\n\nCREATE TABLE {full_name} (\n{column_statements}\n);\n\n--COMMENT STATEMENTS\n{comment_statements}"
@@ -405,10 +442,10 @@ def parse_json_to_ddl(filepath, ddl_render_path
         if add_primary_keys:
             ddl += render_primary_key_clause(table)
 
-        if add_ghost_records and table_stereotype!='ref':
+        if add_ghost_records and table_stereotype != 'ref':
             ddl += create_ghost_records(full_name, columns)
 
-        ddl +="\n-- end of script --"
+        ddl += "\n-- end of script --"
 
         ddl_statements.append(ddl)
 
@@ -417,40 +454,38 @@ def parse_json_to_ddl(filepath, ddl_render_path
         if not os.path.isdir(schema_path):
             print(f"creating dir: {schema_path}")
             schema_path.mkdir(parents=True)
-        
+
         # save ddl in directory
         table_ddl_path = schema_path / f"table_{table_name}.sql"
-        if ddl_file_naming_pattern=='lUl':
+        if ddl_file_naming_pattern == 'lUl':
             table_ddl_path = schema_path / f"table_{table_name.upper()}.sql"
         print(table_ddl_path.name)
         with open(table_ddl_path, 'w') as file:
-          file.write(ddl)
-        
+            file.write(ddl)
 
     # Generate DDL for stage tables
     max_count = max(schema_count.values())
     # Identify all schemas with the maximum count
     schema_with_max_count = [schema for schema, count in schema_count.items() if count == max_count]
     stage_schema_dir = None
-    if len(schema_with_max_count)==1:
+    if len(schema_with_max_count) == 1:
         stage_schema_dir = schema_with_max_count[0]
     else:
         # Filter schema_sat to keep only schemas with max counts
         filtered_schemas = {key: schema_sats[key] for key in schema_sats if key in schema_with_max_count}
         stage_schema_dir = max(filtered_schemas, key=filtered_schemas.get)
-    #print(f'stage_schema_dir: {stage_schema_dir}')
-
+    # print(f'stage_schema_dir: {stage_schema_dir}')
 
     for parse_set in parse_sets:
         stage_properties = parse_set['stage_properties']
-        if len(stage_properties)==1:
+        if len(stage_properties) == 1:
             stage_properties = stage_properties[0]
             schema_name = stage_properties['stage_schema']
             table_name = stage_properties['stage_table_name']
             full_name = "{}.{}".format(schema_name, table_name)
         else:
-            raise AssertionError("Currently only one stage properties object is supportet!")
-            # TODO: implement this case     
+            raise ApplicationException("Currently only one stage properties object is supportet!")
+            # TODO: implement this case
 
         columns = parse_set['stage_columns']
         meta_load_date_column = None
@@ -461,51 +496,71 @@ def parse_json_to_ddl(filepath, ddl_render_path
         business_keys = []
         content = []
         content_untracked = []
+        unmapped=[]
+        column_name_to_stage_name_dict = {}
+        stage_name_to_column_name_dict = {}
+        stage_with_target_column_type_dict = {}
+        if stage_column_naming_rule == 'combined':
+            column_name_to_stage_name_dict, stage_name_to_column_name_dict = assemble_column_name_and_stage_name_dict(
+                parse_set)
+            stage_with_target_column_type_dict = assemble_stage_with_target_column_type_dict(parse_set, tables)
 
-        column_name_to_stage_name_dict={}
-        stage_name_to_column_name_dict={}
-        stage_with_target_column_type_dict={}
-        if stage_column_naming_rule=='combined':
-            column_name_to_stage_name_dict,stage_name_to_column_name_dict=assemble_column_name_and_stage_name_dict(parse_set)
-            stage_with_target_column_type_dict=assemble_stage_with_target_column_type_dict(parse_set,tables)
-
-        max_name_length=0
+        max_name_length = 0
         for column in columns:
             if len(column['stage_column_name']) > max_name_length:
-              max_name_length = len(column['stage_column_name'])
+                max_name_length = len(column['stage_column_name'])
 
         for column in columns:
             stage_column_name = column['stage_column_name']
             stage_column_class = column['stage_column_class']
-            col_type=column['column_type']
-            nullable = "NULL" if 'is_nullable' in column and column['is_nullable']==True else "NOT NULL"
+            col_type = column['column_type']
+
+            if use_target_column_type_in_stage and 'targets' in column and column['targets']:
+                target_types = [target['column_type'] for target in column['targets']]
+                col_type = target_types[0]  # Get the first (and only) target column type
+
+            nullable = "NULL" if 'is_nullable' in column and column['is_nullable'] == True else "NOT NULL"
             match stage_column_class:
                 case 'meta_load_date':
-                    meta_load_date_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
+                    meta_load_date_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length),
+                                                                  col_type.ljust(15), nullable)
                 case 'meta_load_process':
-                    meta_load_date_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
+                    meta_load_date_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length),
+                                                                  col_type.ljust(15), nullable)
                 case 'meta_load_process_id':
-                    meta_load_process_id_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
+                    meta_load_process_id_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length),
+                                                                        col_type.ljust(15), nullable)
                 case 'meta_record_source':
-                    meta_record_source_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
+                    meta_record_source_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length),
+                                                                      col_type.ljust(15), nullable)
                 case 'meta_deletion_flag':
-                    meta_deletion_flag_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
+                    meta_deletion_flag_column = "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length),
+                                                                      col_type.ljust(15), nullable)
                 case 'hash':
-                    hashkeys.append("\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable))
+                    hashkeys.append(
+                        "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable))
+                case 'direct_key':
+                    hashkeys.append(
+                        "\t{}\t{}\t{}".format(stage_column_name.ljust(max_name_length), col_type.ljust(15), nullable))
                 case 'data':
-                    final_column_name=stage_column_name
+                    final_column_name = stage_column_name
                     match stage_column_naming_rule:
                         case 'stage':
-                            final_column_name=stage_column_name
+                            final_column_name = stage_column_name
                         case 'combined':
-                            final_column_name=determine_combined_stage_column_name(stage_column_name, stage_name_to_column_name_dict, column_name_to_stage_name_dict)
-                            col_type=stage_with_target_column_type_dict[stage_column_name]
+                            final_column_name = determine_combined_stage_column_name(stage_column_name,
+                                                                                     stage_name_to_column_name_dict,
+                                                                                     column_name_to_stage_name_dict)
+                            col_type = stage_with_target_column_type_dict[stage_column_name]
                         case _:
-                            raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
+                            raise ApplicationException(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
 
                     column_classes = column['column_classes']
-                    ddl_column_line="\t{}\t{}\t{}".format(final_column_name.ljust(max_name_length), col_type.ljust(15), nullable)
-                    if 'parent_key'  in column_classes:
+                    ddl_column_line = "\t{}\t{}\t{}".format(final_column_name.ljust(max_name_length),
+                                                            col_type.ljust(15), nullable)
+                    if len(column['targets'])==0:  # this stage column is not mapped to any target
+                        unmapped.append(ddl_column_line)
+                    elif 'parent_key' in column_classes:
                         hashkeys.append(ddl_column_line)
                     elif 'business_key' in column_classes or 'dependent_child_key' in column_classes:
                         business_keys.append(ddl_column_line)
@@ -514,18 +569,21 @@ def parse_json_to_ddl(filepath, ddl_render_path
                     elif 'content' in column_classes:
                         content.append(ddl_column_line)
                     else:
-                        raise AssertionError(f"unexpected column class! {column_classes} are currently not supported!")
-            
+                        raise ApplicationException(f"unexpected column class! {column_classes} are currently not supported!")
+
         # sort the arrays of the stage columns
         hashkeys.sort()
         business_keys.sort()
         content.sort()
         content_untracked.sort()
-        column_statements = [meta_load_date_column, meta_load_process_id_column, meta_record_source_column, meta_deletion_flag_column]
-        column_statements = [item for item in column_statements if item is not None] 
-        column_statements = ["--metadata"] + column_statements + ["--hash keys"] + hashkeys 
+        column_statements = [meta_load_date_column, meta_load_process_id_column, meta_record_source_column,
+                             meta_deletion_flag_column]
+        column_statements = [item for item in column_statements if item is not None]
+        column_statements = ["--metadata"] + column_statements + ["--hash keys"] + hashkeys
         if len(business_keys) > 0:
             column_statements += ["--business keys"] + business_keys
+        if len(unmapped) > 0:
+            column_statements += ["--business keys just for hashing"] + unmapped
         if len(content_untracked) > 0:
             column_statements += ["--content untracked"] + content_untracked
         if len(content) > 0:
@@ -542,14 +600,14 @@ def parse_json_to_ddl(filepath, ddl_render_path
         if not os.path.isdir(schema_path):
             print(f"creating dir: {schema_path}")
             schema_path.mkdir()
-        
+
         # save ddl in directory
         table_ddl_path = schema_path / f"table_{table_name}.sql"
-        if ddl_file_naming_pattern=='lUl':
+        if ddl_file_naming_pattern == 'lUl':
             table_ddl_path = schema_path / f"table_{table_name.upper()}.sql"
         print(table_ddl_path.name)
         with open(table_ddl_path, 'w') as file:
-          file.write(ddl)
+            file.write(ddl)
 
     return "\n\n".join(ddl_statements)
 
@@ -569,9 +627,8 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
 
     return youngest_file
 
-def search_for_dvpifile_of_test(testnumber):
-    params = configuration_load_ini(args.ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
-    dvpi_directory = Path(params['dvpi_default_directory'])
+def search_for_dvpifile_of_test(dvpi_default_directory,testnumber):
+    dvpi_directory = Path(dvpi_default_directory)
 
     fileprefix="t{:04d}".format(int(testnumber))
 
@@ -626,7 +683,7 @@ def add_model_profile_file(file_to_process: Path):
 
 
 ########################   MAIN ################################
-if __name__ == '__main__':
+def main():
     description_for_terminal = "Process dvpi at the given location to render the ddl statements."
     usage_for_terminal = "Add option -h for further instruction"
 
@@ -644,7 +701,8 @@ if __name__ == '__main__':
     parser.add_argument("--ddl_file_naming_pattern", choices=['lll', 'lUl'], default='lll'
                             ,help="Define the pattern of the file names. Currently possible patterns. 'lll' all name parts lower case (default). 'lUl' only table name in upper case")
     parser.add_argument("--model_profile_directory",help="Name of the model profile directory")
-
+    parser.add_argument("--use_target_column_type_in_stage", help="Use target column type in stage table",
+                        action="store_true")
 
     args = parser.parse_args()
 
@@ -663,8 +721,8 @@ if __name__ == '__main__':
     else:
         no_primary_keys=args.no_primary_keys
 
-    ddl_render_path = Path(params['ddl_root_directory'], fallback=None)
-    dvpi_default_directory = Path(params['dvpi_default_directory'], fallback=None)
+    ddl_render_path = Path(params['ddl_root_directory'])
+    dvpi_default_directory = Path(params['dvpi_default_directory'])
 
     if args.model_profile_directory==None:
         load_model_profiles(params['dvpd_model_profile_directory'])
@@ -674,30 +732,49 @@ if __name__ == '__main__':
     dvpi_file_name=args.dvpi_file_name
     if dvpi_file_name == '@youngest':
         dvpi_file_name = get_name_of_youngest_dvpi_file(params['dvpi_default_directory'])
-        print(f"Rendering from file {dvpi_file_name}")
     if dvpi_file_name[:2]=='@t':
         testnumber=dvpi_file_name[2:]
-        dvpi_file_name=search_for_dvpifile_of_test(testnumber)
+        dvpi_file_name=search_for_dvpifile_of_test(dvpi_default_directory,testnumber)
         if dvpi_file_name is None:
-            raise Exception(f"Could not find test file for testnumber {testnumber}")
+            raise ApplicationException(f"Could not find test file for testnumber {testnumber}")
 
-    print("=== ddl render ===")
     print("Reading dvpi file '"+dvpi_file_name+"'\n")
     dvpi_file_path = Path(dvpi_file_name)
     if not dvpi_file_path.exists():
        dvpi_file_path = dvpi_default_directory.joinpath(dvpi_file_name)
        if not dvpi_file_path.exists():
             print(f"could not find file {args.dvpi_file_name}")
-
     print("Generating ddl files:")
-
+    print(f"Option use_target_column_type_in_stage set to {args.use_target_column_type_in_stage}")
     ddl_output = parse_json_to_ddl(dvpi_file_path, ddl_render_path
                                         , add_ghost_records=args.add_ghost_records
                                         , add_primary_keys=not no_primary_keys
                                    , stage_column_naming_rule=stage_column_naming_rule
                                    , ddl_file_naming_pattern=args.ddl_file_naming_pattern
-                                   ,ddl_stage_directory_name=ddl_stage_directory_name)
+                                   ,ddl_stage_directory_name=ddl_stage_directory_name
+                                   ,use_target_column_type_in_stage=args.use_target_column_type_in_stage)
     if args.print:
         print(ddl_output)
 
-    print("--- ddl render complete ---\n")
+
+
+if __name__ == '__main__':
+    print("=== ddl render ===")
+
+    try:
+        main()
+    except ApplicationException as ae:
+        print("ERROR: >"+str(ae)+"<")
+        print("*** ddl render aborted ***")
+        exit(1)
+    except MissingFieldError as me:
+        print("MISSING FIELD ERROR: >"+str(me)+"<")
+        print("*** ddl render aborted ***")
+        exit(1)
+    except DeclarationError as de:
+        print("DECLARATION ERROR: >"+str(de)+"<")
+        print("*** ddl render aborted ***")
+        exit(1)
+
+
+    print("--- ddl render complete ---")
