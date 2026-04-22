@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-12-10 08:57:26",
+  "compile_timestamp": "2026-04-22 17:53:14",
   "dvpd_version": "0.6.3",
   "pipeline_name": "t1028_recursive_link_mapping_with_use_as_key_hash_mapping",
   "pipeline_revision_tag": "--none--",
@@ -169,7 +169,7 @@
       ],
       "hashes": [
         {
-          "stage_column_name": "F4_HK_rtjj_1028_AAA",
+          "stage_column_name": "F4_HK_RTJJ_1028_AAA",
           "hash_origin_table": "rtjj_1028_aaa_hub",
           "column_class": "key",
           "column_type": "CHAR(28)",
@@ -191,7 +191,7 @@
           "hash_name": "KEY_OF_RTJJ_1028_AAA_HUB"
         },
         {
-          "stage_column_name": "F5_HK_rtjj_1028_AAA_UUU",
+          "stage_column_name": "F5_HK_RTJJ_1028_AAA_UUU",
           "hash_origin_table": "rtjj_1028_aaa_hub",
           "column_class": "key",
           "column_type": "CHAR(28)",
@@ -213,7 +213,7 @@
           "hash_name": "KEY_OF_RTJJ_1028_AAA_HUB__FOR__UUU"
         },
         {
-          "stage_column_name": "F6_HK_rtjj_1028_AAA_VVV",
+          "stage_column_name": "F6_HK_RTJJ_1028_AAA_VVV",
           "hash_origin_table": "rtjj_1028_aaa_hub",
           "column_class": "key",
           "column_type": "CHAR(28)",
@@ -281,21 +281,21 @@
               "hash_class": "parent_key_1",
               "column_name": "HK_RTJJ_1028_AAA",
               "hash_name": "KEY_OF_RTJJ_1028_AAA_HUB",
-              "stage_column_name": "F4_HK_rtjj_1028_AAA",
+              "stage_column_name": "F4_HK_RTJJ_1028_AAA",
               "direct_key_field": "F4_HK_rtjj_1028_AAA"
             },
             {
               "hash_class": "parent_key_2",
               "column_name": "HK_RTJJ_1028_AAA_UUU",
               "hash_name": "KEY_OF_RTJJ_1028_AAA_HUB__FOR__UUU",
-              "stage_column_name": "F5_HK_rtjj_1028_AAA_UUU",
+              "stage_column_name": "F5_HK_RTJJ_1028_AAA_UUU",
               "direct_key_field": "F5_HK_rtjj_1028_AAA_UUU"
             },
             {
               "hash_class": "parent_key_3",
               "column_name": "HK_RTJJ_1028_AAA_VVV",
               "hash_name": "KEY_OF_RTJJ_1028_AAA_HUB__FOR__VVV",
-              "stage_column_name": "F6_HK_rtjj_1028_AAA_VVV",
+              "stage_column_name": "F6_HK_RTJJ_1028_AAA_VVV",
               "direct_key_field": "F6_HK_rtjj_1028_AAA_VVV"
             },
             {
@@ -346,7 +346,7 @@
           "column_type": "BOOLEAN"
         },
         {
-          "stage_column_name": "F4_HK_rtjj_1028_AAA",
+          "stage_column_name": "F4_HK_RTJJ_1028_AAA",
           "stage_column_class": "direct_key",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1028_AAA_HUB",
@@ -365,7 +365,7 @@
           ]
         },
         {
-          "stage_column_name": "F5_HK_rtjj_1028_AAA_UUU",
+          "stage_column_name": "F5_HK_RTJJ_1028_AAA_UUU",
           "stage_column_class": "direct_key",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1028_AAA_HUB__FOR__UUU",
@@ -384,7 +384,7 @@
           ]
         },
         {
-          "stage_column_name": "F6_HK_rtjj_1028_AAA_VVV",
+          "stage_column_name": "F6_HK_RTJJ_1028_AAA_VVV",
           "stage_column_class": "direct_key",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1028_AAA_HUB__FOR__VVV",

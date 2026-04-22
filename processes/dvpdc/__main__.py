@@ -528,7 +528,7 @@ def collect_sat_properties(dvpd_table_entry, schema_name, storage_component, tab
     table_properties['uses_diff_hash'] = cast2Bool(
         dvpd_table_entry.get('uses_diff_hash', model_profile['uses_diff_hash_default']))  # default is profile
     if 'diff_hash_column_name' in dvpd_table_entry:
-        table_properties['diff_hash_column_name'] = dvpd_table_entry['diff_hash_column_name'].upper()
+        table_properties['diff_hash_column_name'] = dvpd_table_entry['diff_hash_column_name']
     else:  # derive default for diff column hash name
         if table_properties['is_multiactive']:
             table_properties['diff_hash_column_name'] = 'GH_' + table_name.upper()
@@ -632,20 +632,20 @@ def collect_field_properties(dvpd_object):
         create_columns_from_field_mapping(field_entry, field_position)
 
 
-def conflict_safe_column_name(base_name: str, field_name: str, existing_names) -> str:
+def conflict_safe_column_name(field_name_upper: str, field_name: str, existing_names) -> str:
     """
     Generate a deterministic short postfix from field_name and return a unique column name.
     """
     md5_hash = hashlib.md5(field_name.encode("utf-8")).digest()
     sqlfp_b32 = base64.b32encode(md5_hash).decode("utf-8")
     suffix = sqlfp_b32[:5]
-    new_name = f"{base_name}__{suffix}"
-    i = 1
+    unique_name = f"{field_name_upper}__{suffix}"
+    #i = 1
     # Guarantee uniqueness even if the same suffix already exists
-    while new_name in existing_names:
-        new_name = f"{base_name}__{suffix}{i}"
-        i += 1
-    return new_name
+    #while unique_name in existing_names:
+    #    unique_name = f"{field_name_upper}__{suffix}{i}"
+    #    i += 1
+    return unique_name
 
 def create_columns_from_field_mapping(field_entry, field_position):
     """
@@ -1634,7 +1634,7 @@ def add_hash_column_mappings_for_hub(table_name, table_entry):
         # add direct key field mapping if it exists
         if 'direct_key_field' in load_operation_entry:
             hash_description['direct_key_field' ] = load_operation_entry ['direct_key_field']
-            hash_description['stage_column_name'] = load_operation_entry['direct_key_field']
+            hash_description['stage_column_name'] = load_operation_entry['direct_key_field'].upper()
 
 
         if hash_name not in g_hash_dict:
@@ -1821,7 +1821,7 @@ def add_hash_column_mappings_for_lnk(link_table_name, link_table_entry):
         # add direct key field, when it was declared, and change stage column name to field name
         if 'direct_key_field' in link_load_operation_entry:
             link_hash_description['direct_key_field' ] = link_load_operation_entry ['direct_key_field']
-            link_hash_description['stage_column_name'] = link_load_operation_entry ['direct_key_field']
+            link_hash_description['stage_column_name'] = link_load_operation_entry ['direct_key_field'].upper()
 
         if link_hash_name not in g_hash_dict:
             g_hash_dict[link_hash_name] = link_hash_description
@@ -1945,7 +1945,7 @@ def add_hash_column_mappings_for_sat(table_name, table_entry):
         mapping_set = load_operation_entry['mapping_set']
 
         diff_hash_base_name = "DIFF_OF_" + table_name.upper()
-        diff_hash_column_name = table_entry['diff_hash_column_name']
+        diff_hash_column_name = table_entry['diff_hash_column_name'].upper()
         model_profile = g_model_profile_dict[table_entry['model_profile_name']]
         diff_hash_column_type = model_profile['diff_hash_column_type']
 
@@ -2396,33 +2396,30 @@ def determine_stage_table_column_names():
     global g_field_to_stage_column_name
 
     # Group fields by lowercase to detect case-insensitive duplicates
-    field_groups = {}
+    field_name_groups = {}
     for field_name in g_field_dict.keys():
-        field_groups.setdefault(field_name.lower(), []).append(field_name)
+        field_name_groups.setdefault(field_name.upper(), []).append(field_name)
 
-    preassigned = set()
+    stage_column_name_list = set()
 
-    for lower_key, originals in field_groups.items():
-        if len(originals) > 1:
-            log_progress(f"Detected case-insensitive duplicate field group: {originals}")
+    for field_name_upper, field_names in field_name_groups.items():
+        if len(field_names) > 1:
+            log_progress(f"Detected case-insensitive duplicate field group: {field_names}")
 
-            base_name = originals[0].upper()
-            preassigned.add(base_name) # Mark base name as taken so postfix is added even for the first one
+            #stage_column_name_list.add(field_name_upper) # Mark field_name_upper as taken so postfix is added even for the first one
 
-            for original in sorted(originals):
+            for field_name in sorted(field_names):
 
-                conflict_name = conflict_safe_column_name(base_name, original, preassigned) # Unique conflict-safe name
-                conflict_name_upper = conflict_name.upper()
-                preassigned.add(conflict_name_upper)
-                g_field_to_stage_column_name[original] = conflict_name_upper # Store mapping
+                unique_name = conflict_safe_column_name(field_name_upper, field_name, stage_column_name_list) # Unique conflict-safe name
+               # stage_column_name_list.add(unique_name)
+                g_field_to_stage_column_name[field_name] = unique_name # Store mapping
 
                 log_progress(
-                    f"Field '{original}' assigned stage column name '{conflict_name_upper}' "
+                    f"Field '{field_name}' assigned stage column name '{unique_name}' "
                 )
         else:
             # No conflict, default to uppercase
-            only = originals[0]
-            g_field_to_stage_column_name.setdefault(only, only.upper())
+            g_field_to_stage_column_name.setdefault(field_names[0], field_name_upper)
 
 def assemble_dvpi_parse_set(dvpd_object):
     """
@@ -2631,7 +2628,7 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
         if stage_name.lower() in conflict_lower_names:
             new_stage_name = conflict_safe_column_name(stage_name, field_name, stage_column_dict.keys())
             log_progress(
-                f"Dublicates on stage_column_name detected: field '{field_name}' renamed to '{new_stage_name}' "
+                f"Duplicates on stage_column_name detected: field '{field_name}' renamed to '{new_stage_name}' "
                 f"using a hash postfix."
             )
             stage_name = new_stage_name
