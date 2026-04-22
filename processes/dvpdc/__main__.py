@@ -2275,8 +2275,8 @@ def assemble_dvpi(dvpd_object, dvpd_filename):
     pipeline_revision_tag = dvpd_object.get('pipeline_revision_tag', '--none--')
 
     # add meta declaration and dpvd meta data
-    g_dvpi_document = {'dvdp_compiler': 'dvpdc reference compiler,  release 0.6.2',
-                       'dvpi_version': '0.6.2',
+    g_dvpi_document = {'dvdp_compiler': 'dvpdc reference compiler,  release 0.6.3',
+                       'dvpi_version': '0.6.3',
                        'compile_timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                        'dvpd_version': dvpd_object['dvpd_version'],
                        'pipeline_name': dvpd_object['pipeline_name'],
@@ -2635,6 +2635,9 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
             g_field_to_stage_column_name[field_name] = stage_name.upper()
 
         targets = collect_target_column_data_for_field(field_name)
+        if len(targets)==0:
+            continue  #we do not declare stage columns, that have not target
+
         stage_name_upper = stage_name.upper()
         if field_name not in g_field_to_stage_column_name:
             g_field_to_stage_column_name[field_name] = stage_name_upper
@@ -2674,12 +2677,14 @@ def collect_target_column_data_for_direct_key(field_name):
                         if load_operation_hash_entry['hash_name'] in hashes_using_field:
                             hash_column_name_in_table=load_operation_hash_entry['hash_column_name']
                             table_hash_column=table_entry['hash_columns'][hash_column_name_in_table]
-                            targets.append({
+                            new_target={
                                 'table_name': table_name,
                                 'column_name': hash_column_name_in_table,
                                 'column_type': table_hash_column['column_type'],
                                 'column_class': table_hash_column['column_class']
-                            })
+                            }
+                            if new_target not in targets:
+                                targets.append(new_target)
     return targets
 
 def collect_column_classes_from_targets(targets):
@@ -2699,12 +2704,19 @@ def collect_target_column_data_for_field(field_name):
             for column_name, column_entry in table_entry['data_columns'].items():
                 for mapping in column_entry['field_mappings']:
                     if mapping['field_name'] == field_name:
-                        targets.append({
-                            'table_name': table_name,
-                            'column_name': column_name,
-                            'column_type': column_entry['column_type'],
-                            'column_class': column_entry['column_class']
-                        })
+                        already_in = False
+                        for target in targets:
+                            if target['table_name']== table_name and target['column_name']==column_name:
+                                already_in=True
+                                break
+                        if not already_in:
+                            new_mapping = {
+                                'table_name': table_name,
+                                'column_name': column_name,
+                                'column_type': column_entry['column_type'],
+                                'column_class': column_entry['column_class']
+                            }
+                            targets.append(new_mapping)
     return targets
 
 def collect_column_classes_for_field(field_name):
