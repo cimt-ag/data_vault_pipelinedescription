@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2026-02-10 17:45:30",
+  "compile_timestamp": "2026-04-22 17:53:14",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t1020_multiple_use_key_hash_for_sat_scenarios",
   "pipeline_revision_tag": "--none--",
@@ -732,7 +732,7 @@
       ],
       "hashes": [
         {
-          "stage_column_name": "F1_HK_rtjj_1020_AAA",
+          "stage_column_name": "F1_HK_RTJJ_1020_AAA",
           "hash_origin_table": "rtjj_1020_aaa_hub",
           "column_class": "key",
           "column_type": "CHAR(28)",
@@ -746,7 +746,7 @@
           "hash_name": "KEY_OF_RTJJ_1020_AAA_HUB"
         },
         {
-          "stage_column_name": "F8_HK_rtjj_1020_EEEFFF",
+          "stage_column_name": "F8_HK_RTJJ_1020_EEEFFF",
           "hash_origin_table": "rtjj_1020_eee_hub",
           "column_class": "key",
           "column_type": "CHAR(28)",
@@ -760,7 +760,7 @@
           "hash_name": "KEY_OF_RTJJ_1020_EEE_HUB"
         },
         {
-          "stage_column_name": "F8_HK_rtjj_1020_EEEFFF",
+          "stage_column_name": "F8_HK_RTJJ_1020_EEEFFF",
           "hash_origin_table": "btjj_1020_fff_hub",
           "column_class": "key",
           "column_type": "CHAR(28)",
@@ -836,7 +836,7 @@
           "hash_name": "KEY_OF_RTNN_1020_HHH_HUB"
         },
         {
-          "stage_column_name": "F2_LK_rtjj_1020_AAA_BBB",
+          "stage_column_name": "F2_LK_RTJJ_1020_AAA_BBB",
           "hash_origin_table": "rtjj_1020_aaa_bbb_lnk",
           "column_class": "key",
           "hash_fields": [],
@@ -851,7 +851,7 @@
           "hash_name": "KEY_OF_RTJJ_1020_AAA_BBB_LNK"
         },
         {
-          "stage_column_name": "F6_LK_rtjj_1020_CCC_DDD",
+          "stage_column_name": "F6_LK_RTJJ_1020_CCC_DDD",
           "hash_origin_table": "rtjj_1020_ccc_ddd_lnk",
           "column_class": "key",
           "hash_fields": [],
@@ -1046,7 +1046,7 @@
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_1020_AAA",
               "hash_name": "KEY_OF_RTJJ_1020_AAA_HUB",
-              "stage_column_name": "F1_HK_rtjj_1020_AAA",
+              "stage_column_name": "F1_HK_RTJJ_1020_AAA",
               "direct_key_field": "F1_HK_rtjj_1020_AAA"
             },
             {
@@ -1080,7 +1080,7 @@
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_1020_AAA_BBB",
               "hash_name": "KEY_OF_RTJJ_1020_AAA_BBB_LNK",
-              "stage_column_name": "F2_LK_rtjj_1020_AAA_BBB",
+              "stage_column_name": "F2_LK_RTJJ_1020_AAA_BBB",
               "direct_key_field": "F2_LK_rtjj_1020_AAA_BBB"
             },
             {
@@ -1108,7 +1108,7 @@
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_1020_AAA_BBB",
               "hash_name": "KEY_OF_RTJJ_1020_AAA_BBB_LNK",
-              "stage_column_name": "F2_LK_rtjj_1020_AAA_BBB",
+              "stage_column_name": "F2_LK_RTJJ_1020_AAA_BBB",
               "direct_key_field": "F2_LK_rtjj_1020_AAA_BBB"
             }
           ]
@@ -1122,7 +1122,7 @@
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_1020_CCC_DDD",
               "hash_name": "KEY_OF_RTJJ_1020_CCC_DDD_LNK",
-              "stage_column_name": "F6_LK_rtjj_1020_CCC_DDD",
+              "stage_column_name": "F6_LK_RTJJ_1020_CCC_DDD",
               "direct_key_field": "F6_LK_rtjj_1020_CCC_DDD"
             },
             {
@@ -1150,7 +1150,7 @@
               "hash_class": "parent_key",
               "column_name": "LK_RTJJ_1020_CCC_DDD",
               "hash_name": "KEY_OF_RTJJ_1020_CCC_DDD_LNK",
-              "stage_column_name": "F6_LK_rtjj_1020_CCC_DDD",
+              "stage_column_name": "F6_LK_RTJJ_1020_CCC_DDD",
               "direct_key_field": "F6_LK_rtjj_1020_CCC_DDD"
             }
           ]
@@ -1164,7 +1164,7 @@
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_1020_EEE",
               "hash_name": "KEY_OF_RTJJ_1020_EEE_HUB",
-              "stage_column_name": "F8_HK_rtjj_1020_EEEFFF",
+              "stage_column_name": "F8_HK_RTJJ_1020_EEEFFF",
               "direct_key_field": "F8_HK_rtjj_1020_EEEFFF"
             },
             {
@@ -1192,7 +1192,7 @@
               "hash_class": "key",
               "column_name": "HK_RTJJ_1020_FFF",
               "hash_name": "KEY_OF_BTJJ_1020_FFF_HUB",
-              "stage_column_name": "F8_HK_rtjj_1020_EEEFFF",
+              "stage_column_name": "F8_HK_RTJJ_1020_EEEFFF",
               "direct_key_field": "F8_HK_rtjj_1020_EEEFFF"
             }
           ],
@@ -1214,7 +1214,7 @@
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_1020_FFF",
               "hash_name": "KEY_OF_BTJJ_1020_FFF_HUB",
-              "stage_column_name": "F8_HK_rtjj_1020_EEEFFF",
+              "stage_column_name": "F8_HK_RTJJ_1020_EEEFFF",
               "direct_key_field": "F8_HK_rtjj_1020_EEEFFF"
             },
             {
@@ -1339,7 +1339,7 @@
           "column_type": "BOOLEAN"
         },
         {
-          "stage_column_name": "F1_HK_rtjj_1020_AAA",
+          "stage_column_name": "F1_HK_RTJJ_1020_AAA",
           "stage_column_class": "direct_key",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1020_AAA_HUB",
@@ -1358,7 +1358,7 @@
           ]
         },
         {
-          "stage_column_name": "F8_HK_rtjj_1020_EEEFFF",
+          "stage_column_name": "F8_HK_RTJJ_1020_EEEFFF",
           "stage_column_class": "direct_key",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1020_EEE_HUB",
@@ -1404,7 +1404,7 @@
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "F2_LK_rtjj_1020_AAA_BBB",
+          "stage_column_name": "F2_LK_RTJJ_1020_AAA_BBB",
           "stage_column_class": "direct_key",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1020_AAA_BBB_LNK",
@@ -1429,7 +1429,7 @@
           ]
         },
         {
-          "stage_column_name": "F6_LK_rtjj_1020_CCC_DDD",
+          "stage_column_name": "F6_LK_RTJJ_1020_CCC_DDD",
           "stage_column_class": "direct_key",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1020_CCC_DDD_LNK",
