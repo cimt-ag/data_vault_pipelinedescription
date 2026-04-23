@@ -15,9 +15,11 @@ This allows a consistnet declaration of custom keywords to provide additional pr
   
 ### other features on core system 
 - Autotest: Hardcoded "rebranding" of the crash detection tests, to be successfull when captured in the full test
+- DVPI Sum: now provides the list of fields, annotating also fields, that will not be staged(mostly because they are only needed to calculation key hashes)
 
 ### features/changes on generators
 - **DDL render**: added configuration to set name for directory of stage table ddl files
+- **Dev Sheet render**: Anntotates field and stage column at hash value composition list. Places '-' as stage column when field is not staged
 - New moddule **render_insert_to_stage_from_db_object** :  example and command added (see installation and usage for details)
 - Python snippet generator uses extentention keyword ```xcdvf_msat_diff_logic``` keyword for msat elt function call.
 - Added example of documentation for extentions with xcdvf_cimt_datavault_framework.md

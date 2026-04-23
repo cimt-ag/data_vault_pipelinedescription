@@ -418,7 +418,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
 
             # >>>>>>>>>>  hash composition information    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-            g_report_file.write("Composition of hash column values (source field > stage column)\n")
+            g_report_file.write("Composition of hash column values (source field : stage column)\n")
             g_report_file.write(SECTION_HEAD_SEPARATOR_STRING)
 
             for hash_definition in parse_set['hashes']:
@@ -435,7 +435,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                                                     'field_target_column'])
                 for hash_field in hash_fields_sorted:
                     name_to_print= field_to_stage_dict.get(hash_field['field_name'],'-')
-                    g_report_file.write(f"\t\t{hash_field['field_name']}  >  {name_to_print} \n")
+                    g_report_file.write(f"\t\t{hash_field['field_name']}  :  {name_to_print} \n")
 
 
             g_report_file.write(SECTION_END_STRING)
