@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
-  "dvpi_version": "0.6.2",
-  "compile_timestamp": "2026-04-22 17:53:14",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.3",
+  "dvpi_version": "0.6.3",
+  "compile_timestamp": "2026-04-23 15:56:06",
   "dvpd_version": "0.6.3",
   "pipeline_name": "t1032",
   "pipeline_revision_tag": "--none--",
@@ -483,50 +483,6 @@
           "is_nullable": false,
           "hash_name": "KEY_OF_BTJJ_1032_AAA_BBB_LNK",
           "column_type": "CHAR(28)"
-        },
-        {
-          "stage_column_name": "F1_AAA_BK1F",
-          "stage_column_class": "data",
-          "field_name": "F1_AAA_BK1F",
-          "is_nullable": true,
-          "column_type": "Varchar(20)",
-          "column_classes": [
-            "unmapped"
-          ],
-          "targets": []
-        },
-        {
-          "stage_column_name": "F2XX_BBB_BK1F_TTT",
-          "stage_column_class": "data",
-          "field_name": "F2XX_BBB_BK1F_TTT",
-          "is_nullable": true,
-          "column_type": "Varchar(20)",
-          "column_classes": [
-            "unmapped"
-          ],
-          "targets": []
-        },
-        {
-          "stage_column_name": "F3XX_BBB_BK1F_UUU",
-          "stage_column_class": "data",
-          "field_name": "F3XX_BBB_BK1F_UUU",
-          "is_nullable": true,
-          "column_type": "Varchar(20)",
-          "column_classes": [
-            "unmapped"
-          ],
-          "targets": []
-        },
-        {
-          "stage_column_name": "F4XX_BBB_BK1F_VVV",
-          "stage_column_class": "data",
-          "field_name": "F4XX_BBB_BK1F_VVV",
-          "is_nullable": true,
-          "column_type": "Varchar(20)",
-          "column_classes": [
-            "unmapped"
-          ],
-          "targets": []
         }
       ]
     }

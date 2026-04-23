@@ -2817,6 +2817,43 @@ def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
             for parse_set_index, parse_set_entry in enumerate(g_dvpi_document['parse_sets'], start=1):
                 dvpisum_file.write(f"\nParse set {parse_set_index}\n")
                 dvpisum_file.write("--------------------------------------------------\n")
+
+                ## --- field section
+                dvpisum_file.write("\nFields:\n")
+                staged_fields=[]
+                for column_entry in parse_set_entry['stage_columns']:
+                    if 'field_name' in column_entry:
+                        if column_entry['field_name'] not in staged_fields:
+                            staged_fields.append(column_entry['field_name'])
+                not_staged_annotation=''
+                for field_entry in parse_set_entry['fields']:
+                    field_name=field_entry['field_name']
+                    field_type=field_entry['field_type']
+                    if field_name in staged_fields:
+                        staged_marker=' '
+                    else:
+                        staged_marker = '*'
+                        not_staged_annotation = '* = not staged'
+                    dvpisum_file.write(
+                        f"     {staged_marker}{field_name}\t {field_type}\n")
+                dvpisum_file.write(f"{not_staged_annotation}\n")
+
+                ## -- stage table section
+                for stage_property_entry in parse_set_entry['stage_properties']:
+                    dvpisum_file.write(
+                        f"\nStage table: {stage_property_entry['storage_component']}.{stage_property_entry['stage_schema']}.{stage_property_entry['stage_table_name']}\n")
+
+                max_column_name_length = 0
+                for column_entry in parse_set_entry['stage_columns']:
+                    if len(column_entry['stage_column_name']) > max_column_name_length:
+                        max_column_name_length = len(column_entry['stage_column_name'])
+                for column_entry in parse_set_entry['stage_columns']:
+                    dvpisum_file.write(
+                        f"      {column_entry['stage_column_class'].ljust(20)}| {column_entry['stage_column_name'].ljust(max_column_name_length)}  {column_entry['column_type']}\n")
+                dvpisum_file.write("\n")
+
+                ## --- load operation section
+                dvpisum_file.write("\nOperations:")
                 for load_operation_entry in parse_set_entry['load_operations']:
                     dvpisum_file.write(
                         f"\n{load_operation_entry['table_name']} [{load_operation_entry['relation_name']}] {load_operation_entry['operation_origin']} \n")
@@ -2859,19 +2896,8 @@ def writeDvpiSummary(dvpdc_report_path, dvpd_file_path):
                         dvpisum_file.write(
                             f"     {data_mapping_entry['column_class'].ljust(10)}: {data_mapping_entry['column_name']} << {data_mapping_entry['stage_column_name']} << [{field_list}] \n")
 
-                for stage_property_entry in parse_set_entry['stage_properties']:
-                    dvpisum_file.write(
-                        f"\nStage table: {stage_property_entry['storage_component']}.{stage_property_entry['stage_schema']}.{stage_property_entry['stage_table_name']}\n")
 
-                max_column_name_length = 0
-                for column_entry in parse_set_entry['stage_columns']:
-                    if len(column_entry['stage_column_name']) > max_column_name_length:
-                        max_column_name_length = len(column_entry['stage_column_name'])
-                for column_entry in parse_set_entry['stage_columns']:
-                    dvpisum_file.write(
-                        f"      {column_entry['stage_column_class'].ljust(20)}| {column_entry['stage_column_name'].ljust(max_column_name_length)}  {column_entry['column_type']}\n")
-                dvpisum_file.write("\n")
-
+            ## ------------------- dvpd copy
             dvpisum_file.write("\nDVPD\n")
             dvpisum_file.write("--------------------------------------------------\n")
 

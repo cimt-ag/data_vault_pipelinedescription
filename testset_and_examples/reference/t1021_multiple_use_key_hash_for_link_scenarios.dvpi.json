@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
-  "dvpi_version": "0.6.2",
-  "compile_timestamp": "2026-04-22 17:53:14",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.3",
+  "dvpi_version": "0.6.3",
+  "compile_timestamp": "2026-04-23 15:49:14",
   "dvpd_version": "0.6.3",
   "pipeline_name": "t1021_multiple_use_key_hash_for_link_scenarios",
   "pipeline_revision_tag": "--none--",
@@ -1806,28 +1806,6 @@
           "column_type": "CHAR(28)"
         },
         {
-          "stage_column_name": "F2_AAA_BK1",
-          "stage_column_class": "data",
-          "field_name": "F2_AAA_BK1",
-          "is_nullable": true,
-          "column_type": "VARCHAR(200)",
-          "column_classes": [
-            "unmapped"
-          ],
-          "targets": []
-        },
-        {
-          "stage_column_name": "F3_AAA_BK2F",
-          "stage_column_class": "data",
-          "field_name": "F3_AAA_BK2F",
-          "is_nullable": true,
-          "column_type": "DECIMAL(5,0)",
-          "column_classes": [
-            "unmapped"
-          ],
-          "targets": []
-        },
-        {
           "stage_column_name": "F4_AAA_BBB_2_DC1F",
           "stage_column_class": "data",
           "field_name": "F4_AAA_BBB_2_DC1F",
@@ -1862,39 +1840,6 @@
               "column_class": "content"
             }
           ]
-        },
-        {
-          "stage_column_name": "F6_BBB_BK1F",
-          "stage_column_class": "data",
-          "field_name": "F6_BBB_BK1F",
-          "is_nullable": true,
-          "column_type": "DECIMAL(5,0)",
-          "column_classes": [
-            "unmapped"
-          ],
-          "targets": []
-        },
-        {
-          "stage_column_name": "F11_EEE_BK1",
-          "stage_column_class": "data",
-          "field_name": "F11_EEE_BK1",
-          "is_nullable": true,
-          "column_type": "DECIMAL(5,0)",
-          "column_classes": [
-            "unmapped"
-          ],
-          "targets": []
-        },
-        {
-          "stage_column_name": "F12_EEE_BK2F",
-          "stage_column_class": "data",
-          "field_name": "F12_EEE_BK2F",
-          "is_nullable": true,
-          "column_type": "DECIMAL(5,0)",
-          "column_classes": [
-            "unmapped"
-          ],
-          "targets": []
         },
         {
           "stage_column_name": "F13_GGGHHH_BK1",
@@ -1955,17 +1900,6 @@
               "column_class": "business_key"
             }
           ]
-        },
-        {
-          "stage_column_name": "F16_III_HK",
-          "stage_column_class": "data",
-          "field_name": "F16_III_HK",
-          "is_nullable": true,
-          "column_type": "CHAR(28)",
-          "column_classes": [
-            "unmapped"
-          ],
-          "targets": []
         },
         {
           "stage_column_name": "F17_III_C1F",
