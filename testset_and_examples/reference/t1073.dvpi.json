@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
   "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-12-10 08:57:26",
+  "compile_timestamp": "2026-04-22 17:53:14",
   "dvpd_version": "0.6.3",
   "pipeline_name": "t1073",
   "pipeline_revision_tag": "--none--",
@@ -115,7 +115,7 @@
       ],
       "hashes": [
         {
-          "stage_column_name": "F3_HK_rtjj_1073_aaa_ttt",
+          "stage_column_name": "F3_HK_RTJJ_1073_AAA_TTT",
           "hash_origin_table": "rtjj_1073_aaa_hub",
           "column_class": "key",
           "column_type": "CHAR(28)",
@@ -129,7 +129,7 @@
           "hash_name": "KEY_OF_RTJJ_1073_AAA_HUB__FOR__TTT"
         },
         {
-          "stage_column_name": "F4_HK_rtjj_1073_aaa_uuu",
+          "stage_column_name": "F4_HK_RTJJ_1073_AAA_UUU",
           "hash_origin_table": "rtjj_1073_aaa_hub",
           "column_class": "key",
           "column_type": "CHAR(28)",
@@ -201,7 +201,7 @@
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_1073_AAA",
               "hash_name": "KEY_OF_RTJJ_1073_AAA_HUB__FOR__TTT",
-              "stage_column_name": "F3_HK_rtjj_1073_aaa_ttt",
+              "stage_column_name": "F3_HK_RTJJ_1073_AAA_TTT",
               "direct_key_field": "F3_HK_rtjj_1073_aaa_ttt"
             },
             {
@@ -229,7 +229,7 @@
               "hash_class": "parent_key",
               "column_name": "HK_RTJJ_1073_AAA",
               "hash_name": "KEY_OF_RTJJ_1073_AAA_HUB__FOR__UUU",
-              "stage_column_name": "F4_HK_rtjj_1073_aaa_uuu",
+              "stage_column_name": "F4_HK_RTJJ_1073_AAA_UUU",
               "direct_key_field": "F4_HK_rtjj_1073_aaa_uuu"
             },
             {
@@ -275,7 +275,7 @@
           "column_type": "BOOLEAN"
         },
         {
-          "stage_column_name": "F3_HK_rtjj_1073_aaa_ttt",
+          "stage_column_name": "F3_HK_RTJJ_1073_AAA_TTT",
           "stage_column_class": "direct_key",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1073_AAA_HUB__FOR__TTT",
@@ -294,7 +294,7 @@
           ]
         },
         {
-          "stage_column_name": "F4_HK_rtjj_1073_aaa_uuu",
+          "stage_column_name": "F4_HK_RTJJ_1073_AAA_UUU",
           "stage_column_class": "direct_key",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1073_AAA_HUB__FOR__UUU",

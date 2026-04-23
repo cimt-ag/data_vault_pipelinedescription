@@ -1,7 +1,7 @@
 {
 	"dvpd_version": "0.6.3",
 	"stage_properties" : [{"stage_schema":"stage_rvlt","stage_table_name":"srtjj_2000"}],
-	"pipeline_name": "t2000",
+	"pipeline_name": "t2000_case_collision_solved_explicitly",
 	"pipeline_revision_tag":"demoRevisionTagOf t002000",
 	"record_source_name_expression": "dvpd implementation test",
 	"data_extraction": {
