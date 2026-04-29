@@ -356,8 +356,8 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                 column_name_to_stage_name_dict,stage_name_to_column_name_dict=assemble_column_name_and_stage_name_dict(parse_set)
                 stage_with_target_column_type_dict=assemble_stage_with_target_column_type_dict(parse_set,tables)
 
-
-            hash_keys = []
+            other_stage_columns = []
+            direct_hash_keys = []
             business_keys = []
             content = []
             unmapped = []
@@ -368,14 +368,16 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
             for column in stage_columns:
                 stage_column_name = column['stage_column_name']
                 stage_column_class = column['stage_column_class']
+                match stage_column_naming_rule:
+                    case 'stage':
+                        final_column_name = stage_column_name
+                    case 'combined':
+                        final_column_name = determine_combined_stage_column_name(stage_column_name,
+                                                                                 stage_name_to_column_name_dict,
+                                                                                 column_name_to_stage_name_dict)
+                    case _:
+                        raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
                 if stage_column_class == 'data' or stage_column_class == 'direct_key':
-                    match stage_column_naming_rule:
-                        case 'stage':
-                            final_column_name=stage_column_name
-                        case 'combined':
-                            final_column_name=determine_combined_stage_column_name(stage_column_name, stage_name_to_column_name_dict, column_name_to_stage_name_dict)
-                        case _:
-                            raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
                     column_classes = column['column_classes']
                     field_name=column['field_name']
                     field_to_stage_dict[field_name]=final_column_name # add the final column name to the field dict for later use
@@ -384,7 +386,7 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                     if len(column['targets'])==0:  # this stage column is not mapped to any target
                         unmapped.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
                     elif 'key' in column_classes or 'parent_key'  in column_classes:
-                        hash_keys.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
+                        direct_hash_keys.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
                     elif 'business_key' in column_classes or 'dependent_child_key' in column_classes:
                         business_keys.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
                     elif 'content_untracked' in column_classes:
@@ -393,15 +395,20 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                         content.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
                     else:
                         raise AssertionError(f"unexpected column class! {column_classes} are currently not supported!")
+                else: # other stage columns, without input field mappings
+                    other_stage_columns.append("\t\t{}  >  {}".format("-".ljust(max_name_length), final_column_name))
             
             # sort the arrays of the stage columns
-            hash_keys.sort()
+            direct_hash_keys.sort()
             business_keys.sort()
             content.sort()
             content_untracked.sort()
             stage_column_info = []
-            if len(hash_keys) > 0:
-                stage_column_info += ["\t--hash keys"] + hash_keys
+            if len(other_stage_columns) > 0:
+                stage_column_info += ["\t--calculated stage columns"] + other_stage_columns
+
+            if len(direct_hash_keys) > 0:
+                stage_column_info += ["\n\t--direct hash keys"] + direct_hash_keys
             if len(business_keys) > 0:
                 stage_column_info += ["\n\t--business keys"] + business_keys
             if len(unmapped) > 0:
