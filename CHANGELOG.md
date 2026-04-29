@@ -1,3 +1,11 @@
+# release 0.6.3b
+
+### bugfixes
+* dvpdc: targets array on stage columns is now also rendered for all stage columns with hashes
+ 
+### enhancements
+* dev sheet output now provides all stage columns (event the one that will be calculated)
+
 # release 0.6.3
 
 ### DVPD syntax extentions or changes
