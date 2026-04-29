@@ -2690,35 +2690,6 @@ def assemble_dvpi_stage_targets_of_hash_column(stage_column_name):
     return dvpi_stage_targets
 
 
-def collect_target_column_data_for_direct_key(field_name):
-    targets = []
-
-    # collect hashes, that use the field as direct key
-    hashes_using_field=[]
-    for hash_name, hash_entry in g_hash_dict.items():
-        if 'direct_key_field' in hash_entry:
-            if hash_entry['direct_key_field'] == field_name:
-                hashes_using_field.append(hash_name)
-
-    # search for uses of the hash in load operations
-    for table_name, table_entry in g_table_dict.items():
-        if 'load_operations' in table_entry:
-            for load_operation_entry in table_entry['load_operations'].values():
-                if 'hash_mapping_dict' in load_operation_entry:
-                    for load_operation_hash_entry in load_operation_entry ['hash_mapping_dict'].values():
-                        if load_operation_hash_entry['hash_name'] in hashes_using_field:
-                            hash_column_name_in_table=load_operation_hash_entry['hash_column_name']
-                            table_hash_column=table_entry['hash_columns'][hash_column_name_in_table]
-                            new_target={
-                                'table_name': table_name,
-                                'column_name': hash_column_name_in_table,
-                                'column_type': table_hash_column['column_type'],
-                                'column_class': table_hash_column['column_class']
-                            }
-                            if new_target not in targets:
-                                targets.append(new_target)
-    return targets
-
 def collect_column_classes_from_targets(targets):
     column_classes=[]
     if len(targets)==0:
