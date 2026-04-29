@@ -376,11 +376,11 @@ def render_dev_cheat_sheet(dvpi_filepath, documentation_directory, stage_column_
                             final_column_name=determine_combined_stage_column_name(stage_column_name, stage_name_to_column_name_dict, column_name_to_stage_name_dict)
                         case _:
                             raise AssertionError(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
-
                     column_classes = column['column_classes']
                     field_name=column['field_name']
-                    field_to_stage_dict[field_name]=final_column_name # add the fineal column name to the field dict for later use
+                    field_to_stage_dict[field_name]=final_column_name # add the final column name to the field dict for later use
                     stage_column_to_final_column_name_dict[stage_column_name]=final_column_name
+
                     if len(column['targets'])==0:  # this stage column is not mapped to any target
                         unmapped.append("\t\t{}  >  {}".format(field_name.ljust(max_name_length),final_column_name))
                     elif 'key' in column_classes or 'parent_key'  in column_classes:

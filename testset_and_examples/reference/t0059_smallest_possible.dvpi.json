@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
-  "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-03-20 10:45:24",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.3",
+  "dvpi_version": "0.6.3",
+  "compile_timestamp": "2026-04-29 19:55:50",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t0059_smallest_possible",
   "pipeline_revision_tag": "demoRevisionTagOf t0059",
@@ -73,6 +73,13 @@
           "stage_column_name": "HK_RTJJ_59_AAA",
           "hash_origin_table": "rtjj_59_aaa_hub",
           "column_class": "key",
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
           "hash_fields": [
             {
               "field_name": "F1_AAA_BK1",
@@ -81,13 +88,6 @@
               "field_target_column": "F1_AAA_BK1"
             }
           ],
-          "column_type": "CHAR(28)",
-          "hash_encoding": "BASE64",
-          "hash_function": "sha-1",
-          "hash_concatenation_seperator": "|",
-          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
-          "hash_null_value_string": "",
-          "model_profile_name": "_default",
           "hash_name": "KEY_OF_RTJJ_59_AAA_HUB"
         }
       ],
@@ -138,7 +138,18 @@
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_59_AAA_HUB",
-          "column_type": "CHAR(28)"
+          "column_type": "CHAR(28)",
+          "targets": [
+            {
+              "table_name": "rtjj_59_aaa_hub",
+              "column_name": "HK_RTJJ_59_AAA",
+              "column_type": "CHAR(28)",
+              "column_class": "key"
+            }
+          ],
+          "column_classes": [
+            "key"
+          ]
         },
         {
           "stage_column_name": "F1_AAA_BK1",

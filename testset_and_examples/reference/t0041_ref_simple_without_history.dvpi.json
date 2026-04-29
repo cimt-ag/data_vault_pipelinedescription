@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
-  "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-03-20 10:45:24",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.3",
+  "dvpi_version": "0.6.3",
+  "compile_timestamp": "2026-04-29 19:55:50",
   "dvpd_version": "0.6.0",
   "pipeline_name": "t0041_ref_simple_without_history",
   "pipeline_revision_tag": "--none--",

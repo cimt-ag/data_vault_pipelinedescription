@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
-  "dvpi_version": "0.6.2",
-  "compile_timestamp": "2026-02-19 11:37:53",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.3",
+  "dvpi_version": "0.6.3",
+  "compile_timestamp": "2026-04-29 19:55:51",
   "dvpd_version": "0.6.3",
   "pipeline_name": "t1311",
   "pipeline_revision_tag": "--none--",
@@ -141,7 +141,18 @@
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1311_AAA_HUB",
-          "column_type": "CHAR(28)"
+          "column_type": "CHAR(28)",
+          "targets": [
+            {
+              "table_name": "rtjj_1311_aaa_hub",
+              "column_name": "HK_RTJJ_1311_AAA",
+              "column_type": "CHAR(28)",
+              "column_class": "key"
+            }
+          ],
+          "column_classes": [
+            "key"
+          ]
         },
         {
           "stage_column_name": "F1XX_AAA_BK1F_TTT",
