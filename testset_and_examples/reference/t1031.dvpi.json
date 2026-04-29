@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.3",
   "dvpi_version": "0.6.3",
-  "compile_timestamp": "2026-04-23 15:55:04",
+  "compile_timestamp": "2026-04-29 19:55:51",
   "dvpd_version": "0.6.3",
   "pipeline_name": "t1031",
   "pipeline_revision_tag": "--none--",
@@ -576,21 +576,75 @@
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_BTJJ_1031_AAA_BBB_LNK_TTT",
-          "column_type": "CHAR(28)"
+          "column_type": "CHAR(28)",
+          "targets": [
+            {
+              "table_name": "btjj_1031_aaa_bbb_lnk",
+              "column_name": "LK_RTJJ_1031_AAA_BBB",
+              "column_type": "CHAR(28)",
+              "column_class": "key"
+            },
+            {
+              "table_name": "btjj_1031_aaa_bbb_esat",
+              "column_name": "LK_RTJJ_1031_AAA_BBB",
+              "column_type": "CHAR(28)",
+              "column_class": "parent_key"
+            }
+          ],
+          "column_classes": [
+            "key",
+            "parent_key"
+          ]
         },
         {
           "stage_column_name": "LK_RTJJ_1031_AAA_BBB_UUU",
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_BTJJ_1031_AAA_BBB_LNK_UUU",
-          "column_type": "CHAR(28)"
+          "column_type": "CHAR(28)",
+          "targets": [
+            {
+              "table_name": "btjj_1031_aaa_bbb_lnk",
+              "column_name": "LK_RTJJ_1031_AAA_BBB",
+              "column_type": "CHAR(28)",
+              "column_class": "key"
+            },
+            {
+              "table_name": "btjj_1031_aaa_bbb_esat",
+              "column_name": "LK_RTJJ_1031_AAA_BBB",
+              "column_type": "CHAR(28)",
+              "column_class": "parent_key"
+            }
+          ],
+          "column_classes": [
+            "key",
+            "parent_key"
+          ]
         },
         {
           "stage_column_name": "LK_RTJJ_1031_AAA_BBB_VVV",
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_BTJJ_1031_AAA_BBB_LNK_VVV",
-          "column_type": "CHAR(28)"
+          "column_type": "CHAR(28)",
+          "targets": [
+            {
+              "table_name": "btjj_1031_aaa_bbb_lnk",
+              "column_name": "LK_RTJJ_1031_AAA_BBB",
+              "column_type": "CHAR(28)",
+              "column_class": "key"
+            },
+            {
+              "table_name": "btjj_1031_aaa_bbb_esat",
+              "column_name": "LK_RTJJ_1031_AAA_BBB",
+              "column_type": "CHAR(28)",
+              "column_class": "parent_key"
+            }
+          ],
+          "column_classes": [
+            "key",
+            "parent_key"
+          ]
         }
       ]
     }

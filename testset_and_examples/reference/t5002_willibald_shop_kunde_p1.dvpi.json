@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
-  "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-12-10 08:57:28",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.3",
+  "dvpi_version": "0.6.3",
+  "compile_timestamp": "2026-04-29 19:55:52",
   "dvpd_version": "0.6.2",
   "pipeline_name": "t5002_willibald_shop_kunde_p1",
   "pipeline_revision_tag": "--none--",
@@ -824,28 +824,99 @@
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_KUNDE_HUB",
-          "column_type": "CHAR(28)"
+          "column_type": "CHAR(28)",
+          "targets": [
+            {
+              "table_name": "kunde_hub",
+              "column_name": "HK_KUNDE",
+              "column_type": "CHAR(28)",
+              "column_class": "key"
+            },
+            {
+              "table_name": "kunde_kunde_p1_sat",
+              "column_name": "HK_KUNDE",
+              "column_type": "CHAR(28)",
+              "column_class": "parent_key"
+            },
+            {
+              "table_name": "kunde_vereinspartner_lnk",
+              "column_name": "HK_KUNDE",
+              "column_type": "CHAR(28)",
+              "column_class": "parent_key"
+            }
+          ],
+          "column_classes": [
+            "key",
+            "parent_key"
+          ]
         },
         {
           "stage_column_name": "HK_VEREINSPARTNER",
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_VEREINSPARTNER_HUB",
-          "column_type": "CHAR(28)"
+          "column_type": "CHAR(28)",
+          "targets": [
+            {
+              "table_name": "vereinspartner_hub",
+              "column_name": "HK_VEREINSPARTNER",
+              "column_type": "CHAR(28)",
+              "column_class": "key"
+            },
+            {
+              "table_name": "kunde_vereinspartner_lnk",
+              "column_name": "HK_VEREINSPARTNER",
+              "column_type": "CHAR(28)",
+              "column_class": "parent_key"
+            }
+          ],
+          "column_classes": [
+            "key",
+            "parent_key"
+          ]
         },
         {
           "stage_column_name": "LK_KUNDE_VEREINSPARTNER",
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_KUNDE_VEREINSPARTNER_LNK",
-          "column_type": "CHAR(28)"
+          "column_type": "CHAR(28)",
+          "targets": [
+            {
+              "table_name": "kunde_vereinspartner_lnk",
+              "column_name": "LK_KUNDE_VEREINSPARTNER",
+              "column_type": "CHAR(28)",
+              "column_class": "key"
+            },
+            {
+              "table_name": "kunde_vereinspartner_esat",
+              "column_name": "LK_KUNDE_VEREINSPARTNER",
+              "column_type": "CHAR(28)",
+              "column_class": "parent_key"
+            }
+          ],
+          "column_classes": [
+            "key",
+            "parent_key"
+          ]
         },
         {
           "stage_column_name": "DIFF_KUNDE_KUNDE_P1_SAT",
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "DIFF_OF_KUNDE_KUNDE_P1_SAT",
-          "column_type": "CHAR(28)"
+          "column_type": "CHAR(28)",
+          "targets": [
+            {
+              "table_name": "kunde_kunde_p1_sat",
+              "column_name": "DIFF_KUNDE_KUNDE_P1_SAT",
+              "column_type": "CHAR(28)",
+              "column_class": "diff_hash"
+            }
+          ],
+          "column_classes": [
+            "diff_hash"
+          ]
         },
         {
           "stage_column_name": "KUNDEID",

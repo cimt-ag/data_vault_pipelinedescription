@@ -2585,7 +2585,7 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
 
     direct_key_hashes={}
     for hash_name, hash_entry in g_hash_dict.items():
-        if 'direct_key_field' in hash_entry:  # keep this hash as direct key in mind
+        if 'direct_key_field' in hash_entry:  # register direct key and skip it, when already registered
             if hash_entry['direct_key_field'] not in direct_key_hashes:
                 direct_key_hashes[ hash_entry['direct_key_field']]=1
             else:
@@ -2607,7 +2607,7 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
             dvpi_stage_column_entry['field_name'] = field_name
             dvpi_stage_column_entry['stage_column_class']='direct_key'
 
-        targets = assemble_dvpi_stage_targets_of_hash_column(hash_name)
+        targets = assemble_dvpi_stage_targets_of_hash_column(hash_entry['stage_column_name'])
         dvpi_stage_column_entry['targets'] = targets
         dvpi_stage_column_entry['column_classes']= collect_column_classes_from_targets(targets)
 
@@ -2663,27 +2663,29 @@ def assemble_dvpi_stage_columns(has_deletion_flag_in_a_table):
     return dvpi_stage_columns
 
 
-def assemble_dvpi_stage_targets_of_hash_column(hash_name):
+def assemble_dvpi_stage_targets_of_hash_column(stage_column_name):
     """Searches all load operation mappings for the specified hash name and creates the dvpi targets declaration element"""
     dvpi_stage_targets=[]
 
-    for table_name, table_entry in g_table_dict.items():
-        if 'load_operations' in table_entry:
-            for load_operation_entry in table_entry['load_operations'].values():
-                for hash_mapping_name, hash_mapping_entry in load_operation_entry['hash_mapping_dict'].items():
-                    if hash_mapping_entry['hash_name'] == hash_name:
-                        if hash_mapping_name.startswith('parent_key'):
-                            column_class='parent_key'
-                        else:
-                            column_class=hash_mapping_name
-                        new_target = {
-                            'table_name': table_name,
-                            'column_name': hash_mapping_entry['hash_column_name'],
-                            'column_type': g_hash_dict[hash_name]['column_type'],
-                            'column_class': column_class
-                        }
-                        if new_target not in dvpi_stage_targets:
-                            dvpi_stage_targets.append(new_target)
+    for hash_name, hash_entry in g_hash_dict.items(): # scan for hashes, that are covered by the stage column
+        if hash_entry['stage_column_name'] == stage_column_name:
+            for table_name, table_entry in g_table_dict.items(): # scan table loadoperations that use the hash
+                if 'load_operations' in table_entry:
+                    for load_operation_entry in table_entry['load_operations'].values():
+                        for hash_mapping_name,hash_mapping_entry in load_operation_entry['hash_mapping_dict'].items():
+                            if hash_mapping_entry['hash_name'] == hash_name: # found one
+                                    if hash_mapping_name.startswith('parent_key'):
+                                        column_class='parent_key'
+                                    else:
+                                        column_class=hash_mapping_name
+                                    new_target = {
+                                        'table_name': table_name,
+                                        'column_name': hash_mapping_entry['hash_column_name'],
+                                        'column_type': hash_entry['column_type'],
+                                        'column_class': column_class
+                                    }
+                                    if new_target not in dvpi_stage_targets:
+                                        dvpi_stage_targets.append(new_target)
 
     return dvpi_stage_targets
 

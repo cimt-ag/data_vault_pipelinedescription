@@ -1,7 +1,7 @@
 {
-  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.2",
-  "dvpi_version": "0.6.2",
-  "compile_timestamp": "2025-03-20 10:45:26",
+  "dvdp_compiler": "dvpdc reference compiler,  release 0.6.3",
+  "dvpi_version": "0.6.3",
+  "compile_timestamp": "2026-04-29 19:55:51",
   "dvpd_version": "0.6.1",
   "pipeline_name": "t1107_hub_only_with_relations",
   "pipeline_revision_tag": "--none--",
@@ -79,6 +79,13 @@
           "stage_column_name": "HK_RTJJ_1107_AAA_TTT",
           "hash_origin_table": "rtjj_1107_aaa_hub",
           "column_class": "key",
+          "column_type": "CHAR(28)",
+          "hash_encoding": "BASE64",
+          "hash_function": "sha-1",
+          "hash_concatenation_seperator": "|",
+          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
+          "hash_null_value_string": "",
+          "model_profile_name": "_default",
           "hash_fields": [
             {
               "field_name": "F1XX_AAA_BK1F_TTT",
@@ -87,6 +94,12 @@
               "field_target_column": "F1F2_AAA_BK1F"
             }
           ],
+          "hash_name": "KEY_OF_RTJJ_1107_AAA_HUB__FOR__TTT"
+        },
+        {
+          "stage_column_name": "HK_RTJJ_1107_AAA_UUU",
+          "hash_origin_table": "rtjj_1107_aaa_hub",
+          "column_class": "key",
           "column_type": "CHAR(28)",
           "hash_encoding": "BASE64",
           "hash_function": "sha-1",
@@ -94,12 +107,6 @@
           "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
           "hash_null_value_string": "",
           "model_profile_name": "_default",
-          "hash_name": "KEY_OF_RTJJ_1107_AAA_HUB__FOR__TTT"
-        },
-        {
-          "stage_column_name": "HK_RTJJ_1107_AAA_UUU",
-          "hash_origin_table": "rtjj_1107_aaa_hub",
-          "column_class": "key",
           "hash_fields": [
             {
               "field_name": "F2XX_AAA_BK1F_UUU",
@@ -108,13 +115,6 @@
               "field_target_column": "F1F2_AAA_BK1F"
             }
           ],
-          "column_type": "CHAR(28)",
-          "hash_encoding": "BASE64",
-          "hash_function": "sha-1",
-          "hash_concatenation_seperator": "|",
-          "hash_timestamp_format_sqlstyle": "YYYY-MM-DD HH24:MI:SS.US",
-          "hash_null_value_string": "",
-          "model_profile_name": "_default",
           "hash_name": "KEY_OF_RTJJ_1107_AAA_HUB__FOR__UUU"
         }
       ],
@@ -186,14 +186,36 @@
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1107_AAA_HUB__FOR__TTT",
-          "column_type": "CHAR(28)"
+          "column_type": "CHAR(28)",
+          "targets": [
+            {
+              "table_name": "rtjj_1107_aaa_hub",
+              "column_name": "HK_RTJJ_1107_AAA",
+              "column_type": "CHAR(28)",
+              "column_class": "key"
+            }
+          ],
+          "column_classes": [
+            "key"
+          ]
         },
         {
           "stage_column_name": "HK_RTJJ_1107_AAA_UUU",
           "stage_column_class": "hash",
           "is_nullable": false,
           "hash_name": "KEY_OF_RTJJ_1107_AAA_HUB__FOR__UUU",
-          "column_type": "CHAR(28)"
+          "column_type": "CHAR(28)",
+          "targets": [
+            {
+              "table_name": "rtjj_1107_aaa_hub",
+              "column_name": "HK_RTJJ_1107_AAA",
+              "column_type": "CHAR(28)",
+              "column_class": "key"
+            }
+          ],
+          "column_classes": [
+            "key"
+          ]
         },
         {
           "stage_column_name": "F1XX_AAA_BK1F_TTT",
