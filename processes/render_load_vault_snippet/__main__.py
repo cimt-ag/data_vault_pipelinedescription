@@ -263,6 +263,42 @@ def get_hash_collision_statement_method_definition_for_lnk(dvpi_table, dvpi_tabl
     output += "dvf_execute_elt_statement_list(dwh_cursor, hash_collision_check_statement_list)\n\n"
     return output
 
+def generate_deploy_function_calls(dvpi):
+    indent_level_2 = " " * 4 * 2
+    sat_schema_usage={}
+    output_text = textwrap.indent(f"# vvvvv BEGIN OF GENERATED DEPLOY FUNCTION CODE vvvvv \n\n", indent_level_2)
+
+    # render all normal table deployments
+    last_schema_name=''
+    for table in dvpi['tables']:
+        schema_name = table['schema_name']
+        last_schema_name = schema_name
+        table_name = table['table_name']
+        if table['table_stereotype'] == "sat":
+            if schema_name in sat_schema_usage:
+                sat_schema_usage[schema_name] += 1
+            else:
+                sat_schema_usage[schema_name] = 1
+        #deployment_manager.deploy_table("rvlt_general", "rgnr_global_product_hub")
+        code_line= f'deployment_manager.deploy_table("{schema_name}", "{table_name}")'
+        output_text += textwrap.indent(code_line, indent_level_2) + '\n'
+
+    # determine schema name with most satellite usage
+    if len(sat_schema_usage) <= 1:
+        stage_ddl_schema_name = last_schema_name
+    else:
+        # Filter schema_sat to keep only schemas with max counts
+        max_count = max(sat_schema_usage.values())
+        stage_ddl_schema_name = [schema for schema, count in sat_schema_usage.items() if count == max_count]
+
+    for stage_table in dvpi['parse_sets'][0]['stage_properties']:
+        stage_table_name = stage_table['stage_table_name']
+        code_line = f'deployment_manager.deploy_stage_table("{stage_ddl_schema_name}", "{stage_table_name}")'
+        output_text += textwrap.indent(code_line, indent_level_2) + '\n'
+
+    output_text += textwrap.indent(f"\n\n# ^^^^^ END OF GENERATED DEPLOY FUNCTION CODE ^^^^^\n", indent_level_2)
+
+    return output_text
 
 def generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, include_stage_content_column_list, with_hash_collision_detection=True):
     indent_level_1 = " " * 4 * 1
@@ -397,8 +433,8 @@ def get_name_of_youngest_dvpi_file(dvpi_default_directory):
 
     return youngest_file
 
-def search_for_dvpifile_of_test(testnumber):
-    params = configuration_load_ini(args.ini_file, 'dvpdc', ['dvpd_model_profile_directory'])
+def search_for_dvpifile_of_test(testnumber,ini_file_path):
+    params = configuration_load_ini(ini_file_path, 'dvpdc', ['dvpd_model_profile_directory'])
     dvpi_directory = Path(params['dvpi_default_directory'])
 
     fileprefix="t{:04d}".format(int(testnumber))
@@ -453,7 +489,8 @@ def render_load_vault_snippet(dvpi_file_name, ini_file, put_snippet_into_load_va
         project_pipeline_name = dvpi_pipeline_name
 
     tables_with_deletion_detection = get_tables_with_deletion_detection_from_dvpd(dvpd_file_path)
-    Snippet_code = generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, include_stage_content_column_list,with_hash_collision_detection)
+    load_vaul_snippet = generate_lv_snippet_from_dvpi(dvpi_data, tables_with_deletion_detection, include_stage_content_column_list,with_hash_collision_detection)
+    deployment_function_call_snippet= generate_deploy_function_calls(dvpi_data)
 
     # write load_vault snippet to file
     lvs_render_path.mkdir(parents=True, exist_ok=True)
@@ -463,14 +500,15 @@ def render_load_vault_snippet(dvpi_file_name, ini_file, put_snippet_into_load_va
     print("Writing load_vault snippet to " + lvs_file_path.as_posix())
 
     with open(lvs_file_path, 'w') as file:
-        file.writelines(Snippet_code)
+        file.writelines(deployment_function_call_snippet)
+        file.writelines(load_vaul_snippet)
 
 
     if put_snippet_into_load_vault_py :
         dwh_processes_directory = Path(params.get('dwh_processes_directory', None))
         load_vault_py_path = dwh_processes_directory.joinpath(f'{project_pipeline_name}', f'{load_vault_py_filename}')
 
-        replace_code_in_file_between_markers(load_vault_py_path, Snippet_code, start_marker, end_marker)
+        replace_code_in_file_between_markers(load_vault_py_path, load_vaul_snippet, start_marker, end_marker)
 
         print(f"Code inserted into {load_vault_py_path} between markers")
 
@@ -507,7 +545,7 @@ def main():
         print(f"Rendering from file {dvpi_file_name}")
     if dvpi_file_name[:2] == '@t':
         testnumber = dvpi_file_name[2:]
-        dvpi_file_name = search_for_dvpifile_of_test(testnumber)
+        dvpi_file_name = search_for_dvpifile_of_test(testnumber,args.ini_file)
         if dvpi_file_name is None:
             raise ApplicationException(f"Could not find test file for testnumber {testnumber}")
 
