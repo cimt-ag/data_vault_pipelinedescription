@@ -90,7 +90,7 @@ def render_insert_for_parse_set(output_file, parse_set, source_object_schema, so
         raise MissingFieldError("The keyword 'record_source_name_expression' is missing in the DVPI/parse_set.")
     record_source_expression=parse_set['record_source_name_expression']
 
-    meta_column_expressions={'meta_load_date':'current_timestamp /* {my_job_instance.get_job_started_at().isoformat()} */',
+    meta_column_expressions={'meta_load_date':'current_timestamp /* \'{my_job_instance.get_job_started_at().isoformat()}\' */',
                              'meta_load_process_id':'-999 /* {my_job_instance.get_job_instance_id()} */',
                              'meta_record_source':f"'{record_source_expression}'",
                              'meta_deletion_flag': 'false'
