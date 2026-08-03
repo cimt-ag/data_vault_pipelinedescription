@@ -62,36 +62,52 @@ def render_for_all_parsesets(dvpi_filepath, insert_to_stage_sql_directory, stage
 
     if 'fetch_module_name' not in data_extraction_ppt:
         raise MissingFieldError("The keyword 'data_extraction.fetch_module_name' is missing in the DVPI.")
-    if data_extraction_ppt['fetch_module_name'] != 'transformation_view':
-        print("Ignoring DVPI, since data extraction fetch module name is not 'transformation_view'")
+
+    # only continue, when the fetch module name is matching
+    if data_extraction_ppt['fetch_module_name'] not in ['transformation_view','retrieval_by_sql']:
+        print(f"Ignoring DVPI, since data extraction fetch module name '{data_extraction_ppt['fetch_module_name']}' is not relevant for this generator")
         return 0
 
-    if 'source_object_schema' not in data_extraction_ppt:
-        raise MissingFieldError("The keyword 'data_extraction.source_object_schema' is missing in the DVPI.")
-    if 'source_object_name'  not in data_extraction_ppt:
-        raise MissingFieldError("The keyword 'data_extraction.source_object_name' is missing in the DVPI.")
+    sql_template='##invalid sql##'
+    source_object_name='##invalid object name##'
+    in_transformation_view_mode=True
 
-    source_object_schema=data_extraction_ppt['source_object_schema']
-    source_object_name = data_extraction_ppt['source_object_name']
+    if data_extraction_ppt['fetch_module_name'] == 'transformation_view':
+        if 'source_object_schema' not in data_extraction_ppt:
+            raise MissingFieldError("The keyword 'data_extraction.source_object_schema' is missing in the DVPI.")
+        if 'source_object_name'  not in data_extraction_ppt:
+            raise MissingFieldError("The keyword 'data_extraction.source_object_name' is missing in the DVPI.")
+        source_object_name = data_extraction_ppt['source_object_name']
+        sql_template =f"select \n {{fields}} \n from {data_extraction_ppt['source_object_schema']}.{source_object_name}"
+
+    if data_extraction_ppt['fetch_module_name'] == 'retrieval_by_sql':
+        if 'sql_template' not in data_extraction_ppt:
+            raise MissingFieldError("The keyword 'data_extraction.sql_template' is missing in the DVPI.")
+        sql_template=data_extraction_ppt['sql_template']
+        in_transformation_view_mode = False
 
 
     for parse_set in parse_sets:
         stage_table_name = parse_set['stage_properties'][0]['stage_table_name']
+        if not in_transformation_view_mode:
+            if 'record_source_name_expression' not in parse_set:
+                raise MissingFieldError("The keyword 'parse_set.record_source_name_expression' is missing in the DVPI.")
+            source_object_name=parse_set['record_source_name_expression']
         statement_file_name = "insert_" + source_object_name + "_to_" + stage_table_name +".sql"
         statement_file_path = insert_to_stage_sql_directory.joinpath(statement_file_name)
         with open(statement_file_path, "w") as output_file:
-            render_insert_for_parse_set(output_file,parse_set,source_object_schema,source_object_name,stage_column_naming_rule)
+            render_insert_for_parse_set(output_file,parse_set,sql_template,stage_column_naming_rule)
             print("Written sql statement to " + statement_file_path.as_posix())
 
 
-def render_insert_for_parse_set(output_file, parse_set, source_object_schema, source_object_name, stage_column_naming_rule):
+def render_insert_for_parse_set(output_file, parse_set, sql_template, stage_column_naming_rule):
 
     if 'record_source_name_expression' not in parse_set:
         raise MissingFieldError("The keyword 'record_source_name_expression' is missing in the DVPI/parse_set.")
     record_source_expression=parse_set['record_source_name_expression']
 
-    meta_column_expressions={'meta_load_date':'current_timestamp',
-                             'meta_load_process_id':'-999',
+    meta_column_expressions = {'meta_load_date':'current_timestamp /* \'{my_job_instance.get_job_started_at().isoformat()}\' */',
+                             'meta_load_process_id':'-999 /* {my_job_instance.get_job_instance_id()} */',
                              'meta_record_source':f"'{record_source_expression}'",
                              'meta_deletion_flag': 'false'
                              }
@@ -127,7 +143,7 @@ def render_insert_for_parse_set(output_file, parse_set, source_object_schema, so
             if 'direct_key_field' in hash_definition:
                 raise AssertionError(f"'hash' stage column '{stage_column_name}' references  a 'direct_key_field' hash. This is invalid.")
             hash_field_list_string=assemble_hash_field_list_string(hash_definition,fields)
-            sql_expression=f"lib.DV_HASH(CONCAT_WS('{hash_definition['hash_concatenation_seperator']}',"+hash_field_list_string+"))"
+            sql_expression=f"lib.DV_HASH_FROM_ARRAY(["+hash_field_list_string+"])"
             insert_column={'stage_column_name':stage_column_name,'select_expression':sql_expression}
             insert_columns.append(insert_column)
             continue
@@ -147,7 +163,17 @@ def render_insert_for_parse_set(output_file, parse_set, source_object_schema, so
 
         raise AssertionError(f"unhandled column class during insert column collection")
 
-    # >>>>>>>>>>  finally write the statement  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    # assemble the field lists for insert and select syntax
+    column_list = []
+    expression_list = []
+    for insert_column in insert_columns:
+        column_list.append(insert_column['stage_column_name'])
+        expression_list.append(insert_column['select_expression'] + " AS " + insert_column['stage_column_name']+"\n"  )
+
+    # add the select columns to the sql template
+    sql_final=sql_template.replace("{fields}", "\n"+",".join(expression_list))
+
+    #   finally write the statement
 
     output_file.write(f"-- vvvvv BEGIN OF GENERATED INSERT TO STAGE STATEMENT vvvvv \n\n")
 
@@ -155,18 +181,12 @@ def render_insert_for_parse_set(output_file, parse_set, source_object_schema, so
 
     output_file.write(f"insert into {stage_schema}.{stage_table_name} (\n")
 
-    column_list=[]
-    expression_list = []
-    for insert_column in insert_columns:
-        column_list.append(insert_column['stage_column_name'])
-        expression_list.append("\n"+insert_column['select_expression']+" AS "+insert_column['stage_column_name'])
     output_file.write(",\n".join(column_list))
 
     output_file.write("\n)\n") # Close insert column list
 
-    output_file.write("select ")
-    output_file.write(",".join(expression_list))
-    output_file.write(f"\nfrom {source_object_schema}.{source_object_name};\n\n")
+    output_file.write(sql_final)
+    output_file.write(f"\n;")
 
     output_file.write(f"-- ^^^^^ END OF GENERATED INSERT TO STAGE STATEMENT ^^^^^ \n\n")
 

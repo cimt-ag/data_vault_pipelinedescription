@@ -1,0 +1,7 @@
+Data vault pipeline description compiler log 
+=== DVPD Compiler Version 0.6.3 ===
+Compile time: 2026-08-03 19:04:34
+Compiling t1015_retrieval_by_sql_example.json
+
+Writing DVPI to /aa_gitBox/data_vault_pipeline_description_poc/var/dvpi/t1015_retrieval_by_sql_example.dvpi.json
+--- Compile successfull ---
