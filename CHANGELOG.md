@@ -1,3 +1,8 @@
+# release 0.6.4
+
+### enhancements
+* retrieval statement generator now works on sql templates.(is not restriced to simple Select from view syntax)
+
 # release 0.6.3b
 
 ### bugfixes
