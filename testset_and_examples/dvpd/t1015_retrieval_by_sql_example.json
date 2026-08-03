@@ -1,0 +1,27 @@
+{
+	"dvpd_version": "0.6.3", 
+	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
+	"pipeline_name": "t1015_retrieval_by_sql_example",
+	"record_source_name_expression": "sql generator test",
+	"data_extraction": {
+			"fetch_module_name":"retrieval_by_sql",
+			"sql_template":"SELECT {fields} from {database}.sc_schema.sc_table1 t1 join {database}.sc_schema.sc_table2 t2 on t2.F1_AAA_XXX_BK1F=t1.F1_AAA_XXX_BK1F"
+	},
+
+	"fields": [
+		      {"field_name": "t1.F1_AAA_XXX_BK1F", 	"field_type": "VARCHAR(20)",	"targets": [{"table_name": "rtjj_1015_aaa_hub","column_name":"F1_AAA_BK1F"}]}
+		 	  ,{"field_name": "F2_AAA_T1_C1",	"field_type": "VARCHAR(200)",	"targets": [{"table_name": "rtjj_1015_aaa_t1_sat"}]}
+			  ,{"field_name": "F3_AAA_T1_C2F",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_1015_aaa_t1_sat"}]}
+
+			  ,{"field_name": "F4_AAA_T2_C1F",	"field_type": "DECIMAL(5,0)",	"targets": [{"table_name": "rtjj_1015_aaa_t2_sat"}]}
+			 ],
+	"data_vault_model": [
+		{"schema_name": "rvlt_test_jj", 
+		 "tables": [
+				{"table_name": "rtjj_1015_aaa_hub",		"table_stereotype": "hub","hub_key_column_name": "HK_rtjj_1015_aaa"}
+				,{"table_name": "rtjj_1015_aaa_t1_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_1015_aaa_HUB","diff_hash_column_name": "RH_rtjj_1015_aaa_t1_sat"}
+				,{"table_name": "rtjj_1015_aaa_t2_sat",	"table_stereotype": "sat","satellite_parent_table": "rtjj_1015_aaa_HUB","diff_hash_column_name": "RH_rtjj_1015_aaa_t2_sat"}
+				]
+			}
+		]
+}

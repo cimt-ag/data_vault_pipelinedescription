@@ -62,7 +62,9 @@ def render_for_all_parsesets(dvpi_filepath, insert_to_stage_sql_directory, stage
 
     if 'fetch_module_name' not in data_extraction_ppt:
         raise MissingFieldError("The keyword 'data_extraction.fetch_module_name' is missing in the DVPI.")
-    if data_extraction_ppt['fetch_module_name'] != 'transformation_view':
+
+    # only continue, when the fetch module name is matching
+    if data_extraction_ppt['fetch_module_name'] not in ['transformation_view']:
         print("Ignoring DVPI, since data extraction fetch module name is not 'transformation_view'")
         return 0
 
