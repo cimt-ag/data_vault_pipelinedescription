@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.3",
   "dvpi_version": "0.6.3",
-  "compile_timestamp": "2026-08-03 19:04:34",
+  "compile_timestamp": "2026-08-03 19:32:39",
   "dvpd_version": "0.6.3",
   "pipeline_name": "t1015_retrieval_by_sql_example",
   "pipeline_revision_tag": "--none--",
@@ -200,7 +200,7 @@
           "storage_component": ""
         }
       ],
-      "record_source_name_expression": "sql generator test",
+      "record_source_name_expression": "sc_table1 and sc_table2",
       "fields": [
         {
           "field_type": "VARCHAR(20)",

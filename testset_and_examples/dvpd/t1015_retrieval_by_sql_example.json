@@ -2,7 +2,7 @@
 	"dvpd_version": "0.6.3", 
 	"stage_properties" : [{"stage_schema":"stage_rvlt"}],
 	"pipeline_name": "t1015_retrieval_by_sql_example",
-	"record_source_name_expression": "sql generator test",
+	"record_source_name_expression": "sc_table1 and sc_table2",
 	"data_extraction": {
 			"fetch_module_name":"retrieval_by_sql",
 			"sql_template":"SELECT {fields} from {database}.sc_schema.sc_table1 t1 join {database}.sc_schema.sc_table2 t2 on t2.F1_AAA_XXX_BK1F=t1.F1_AAA_XXX_BK1F"
