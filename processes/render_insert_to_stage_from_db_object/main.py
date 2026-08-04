@@ -87,13 +87,12 @@ def render_for_all_parsesets(dvpi_filepath, insert_to_stage_sql_directory, stage
         in_transformation_view_mode = False
 
 
-    for parse_set in parse_sets:
+    for index,parse_set in enumerate(parse_sets):
         stage_table_name = parse_set['stage_properties'][0]['stage_table_name']
-        if not in_transformation_view_mode:
-            if 'record_source_name_expression' not in parse_set:
-                raise MissingFieldError("The keyword 'parse_set.record_source_name_expression' is missing in the DVPI.")
-            source_object_name=parse_set['record_source_name_expression']
-        statement_file_name = "insert_" + source_object_name + "_to_" + stage_table_name +".sql"
+        if in_transformation_view_mode:
+            statement_file_name = "insert_" + source_object_name + "_to_" + stage_table_name + ".sql"
+        else:
+            statement_file_name = "insert_to_stage_for_" + dvpi['pipeline_name'] + "_PS"+str(index+1)+".sql"
         statement_file_path = insert_to_stage_sql_directory.joinpath(statement_file_name)
         with open(statement_file_path, "w") as output_file:
             render_insert_for_parse_set(output_file,parse_set,sql_template,stage_column_naming_rule)
