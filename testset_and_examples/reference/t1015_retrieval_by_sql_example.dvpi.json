@@ -1,7 +1,7 @@
 {
   "dvdp_compiler": "dvpdc reference compiler,  release 0.6.3",
   "dvpi_version": "0.6.3",
-  "compile_timestamp": "2026-08-03 19:32:39",
+  "compile_timestamp": "2026-08-04 17:49:32",
   "dvpd_version": "0.6.3",
   "pipeline_name": "t1015_retrieval_by_sql_example",
   "pipeline_revision_tag": "--none--",
@@ -323,7 +323,7 @@
               "column_name": "F1_AAA_BK1F",
               "field_name": "t1.F1_AAA_XXX_BK1F",
               "column_class": "business_key",
-              "stage_column_name": "T1.F1_AAA_XXX_BK1F"
+              "stage_column_name": "T1__F1_AAA_XXX_BK1F"
             }
           ]
         },
@@ -481,7 +481,7 @@
           ]
         },
         {
-          "stage_column_name": "T1.F1_AAA_XXX_BK1F",
+          "stage_column_name": "T1__F1_AAA_XXX_BK1F",
           "stage_column_class": "data",
           "field_name": "t1.F1_AAA_XXX_BK1F",
           "is_nullable": true,
