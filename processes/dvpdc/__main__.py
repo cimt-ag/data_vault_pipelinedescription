@@ -2395,14 +2395,14 @@ def determine_stage_table_column_names():
 
     global g_field_to_stage_column_name
 
-    # Group fields by lowercase to detect case-insensitive duplicates
+    # Group fields by uppercase to detect case-insensitive duplicates
     field_name_groups = {}
     for field_name in g_field_dict.keys():
-        field_name_groups.setdefault(field_name.upper(), []).append(field_name)
+        field_name_groups.setdefault(field_name.upper().replace(".","__"), []).append(field_name)
 
     stage_column_name_list = set()
 
-    for field_name_upper, field_names in field_name_groups.items():
+    for field_name_normalized, field_names in field_name_groups.items():
         if len(field_names) > 1:
             log_progress(f"Detected case-insensitive duplicate field group: {field_names}")
 
@@ -2410,7 +2410,7 @@ def determine_stage_table_column_names():
 
             for field_name in sorted(field_names):
 
-                unique_name = conflict_safe_column_name(field_name_upper, field_name, stage_column_name_list) # Unique conflict-safe name
+                unique_name = conflict_safe_column_name(field_name_normalized, field_name, stage_column_name_list) # Unique conflict-safe name
                # stage_column_name_list.add(unique_name)
                 g_field_to_stage_column_name[field_name] = unique_name # Store mapping
 
@@ -2419,7 +2419,7 @@ def determine_stage_table_column_names():
                 )
         else:
             # No conflict, default to uppercase
-            g_field_to_stage_column_name.setdefault(field_names[0], field_name_upper)
+            g_field_to_stage_column_name.setdefault(field_names[0], field_name_normalized)
 
 def assemble_dvpi_parse_set(dvpd_object):
     """
