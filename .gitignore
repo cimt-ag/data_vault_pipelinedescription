@@ -16,3 +16,4 @@ resources/
 .dbeaver/
 documentation/.vs/
 Scripts/
+offline_package/
