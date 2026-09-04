@@ -142,7 +142,10 @@ def render_insert_for_parse_set(output_file, parse_set, sql_template, stage_colu
             if 'direct_key_field' in hash_definition:
                 raise AssertionError(f"'hash' stage column '{stage_column_name}' references  a 'direct_key_field' hash. This is invalid.")
             hash_field_list_string=assemble_hash_field_list_string(hash_definition,fields)
-            sql_expression=f"lib.DV_HASH_FROM_ARRAY(["+hash_field_list_string+"])"
+            if 'rvlt' in stage_schema.lower(): # target is the raw vault (cimt best practice naming convention)
+                sql_expression=f"lib.DV_HASH_FROM_ARRAY(["+hash_field_list_string+"],false)"
+            else:
+                sql_expression = f"lib.DV_HASH_FROM_ARRAY([" + hash_field_list_string + "],true)"
             insert_column={'stage_column_name':stage_column_name,'select_expression':sql_expression}
             insert_columns.append(insert_column)
             continue
