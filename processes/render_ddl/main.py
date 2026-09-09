@@ -220,49 +220,6 @@ def assemble_column_name_and_stage_name_dict(parse_set):
     return column_name_to_stage_name_dict,stage_name_to_column_name_dict
 
 
-def assemble_stage_with_target_column_type_dict(parse_set,tables):
-    stage_with_target_column_type_dict={}
-    for stage_column in parse_set["stage_columns"]:
-        if stage_column['stage_column_class'] != "data":
-            continue
-        table_name = None
-        column_name = None
-        for load_operation in parse_set['load_operations']:  # scan all operations for a mapping the current stage column
-            for column_mapping in load_operation['hash_mappings']:
-                if 'direct_key_field' in column_mapping:  # There is a direct key field in the source
-                    table_name = load_operation['table_name']
-                    column_name = column_mapping['column_name']
-                    continue
-                if column_mapping['stage_column_name']==stage_column['stage_column_name']:
-                    table_name=load_operation['table_name']
-                    column_name=column_mapping['column_name']
-                    break
-            if 'data_mapping' not in load_operation:
-                continue
-            for column_mapping in load_operation['data_mapping']:
-                if column_mapping['stage_column_name']==stage_column['stage_column_name']:
-                    table_name=load_operation['table_name']
-                    column_name=column_mapping['column_name']
-                    break
-            if table_name != None:
-                break
-        # at this point we should have a hit, so search for the column type definition
-        if table_name == None:
-            raise ApplicationException(f"Stage column '{stage_column['stage_column_name']}' is not mapped in any operation. This should not happen")
-        column_type=None
-        for table in tables:
-            if table['table_name']==table_name:
-                for column in table['columns']:
-                    if column['column_name']==column_name: #gotcha
-                        column_type=column['column_type']
-                        break
-                if column_type != None:
-                    break
-        stage_with_target_column_type_dict[stage_column['stage_column_name']]=column_type #finally we know
-
-    return stage_with_target_column_type_dict
-
-
 def determine_combined_stage_column_name(stage_column_name, stage_name_to_column_name_dict,
                                          column_name_to_stage_name_dict):
     """
@@ -503,7 +460,6 @@ def parse_json_to_ddl(filepath, ddl_render_path
         if stage_column_naming_rule == 'combined':
             column_name_to_stage_name_dict, stage_name_to_column_name_dict = assemble_column_name_and_stage_name_dict(
                 parse_set)
-            stage_with_target_column_type_dict = assemble_stage_with_target_column_type_dict(parse_set, tables)
 
         max_name_length = 0
         for column in columns:
@@ -551,7 +507,6 @@ def parse_json_to_ddl(filepath, ddl_render_path
                             final_column_name = determine_combined_stage_column_name(stage_column_name,
                                                                                      stage_name_to_column_name_dict,
                                                                                      column_name_to_stage_name_dict)
-                            col_type = stage_with_target_column_type_dict[stage_column_name]
                         case _:
                             raise ApplicationException(f"unknown stage_column_naming_rule! '{stage_column_naming_rule}'")
 
